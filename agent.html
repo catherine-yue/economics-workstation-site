@@ -203,6 +203,19 @@ function bm25Search(query, chunks, topK) {
   return scores.filter((s) => s.score > 0).sort((a, b) => b.score - a.score).slice(0, topK);
 }
 
+// 带自动重试的 fetch（应对间歇性网络波动/浏览器限流）
+async function fetchWithRetry(url, options, retries) {
+  const maxTry = retries || 3;
+  for (let i = 0; i < maxTry; i++) {
+    try {
+      return await fetch(url, options);
+    } catch (e) {
+      if (i === maxTry - 1) throw e;
+      await new Promise((r) => setTimeout(r, 2500 * (i + 1)));
+    }
+  }
+}
+
 // ================= 网络搜索（免费多源，全部容错） =================
 async function webSearch(query) {
   const withTimeout = (fn, ms) => Promise.race([fn(), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))]);
@@ -227,7 +240,7 @@ async function webSearch(query) {
 
 async function searchCrossref(q) {
   const url = 'https://api.crossref.org/works?query=' + encodeURIComponent(q) + '&rows=4&select=title,URL,published,author';
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url, 2);
   if (!res.ok) return [];
   const d = await res.json();
   return (d.message.items || []).map((it) => ({
@@ -240,7 +253,7 @@ async function searchCrossref(q) {
 
 async function searchOpenAlex(q) {
   const url = 'https://api.openalex.org/works?search=' + encodeURIComponent(q) + '&per-page=4&select=title,doi,publication_year';
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url, 2);
   if (!res.ok) return [];
   const d = await res.json();
   return (d.results || []).map((it) => ({
@@ -253,7 +266,7 @@ async function searchOpenAlex(q) {
 
 async function searchArxiv(q) {
   const url = 'https://export.arxiv.org/api/query?search_query=all:' + encodeURIComponent(q) + '&max_results=4';
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url, 2);
   const xml = await res.text();
   const dom = new DOMParser().parseFromString(xml, 'text/xml');
   return [...dom.querySelectorAll('entry')].map((e) => ({
@@ -266,7 +279,7 @@ async function searchArxiv(q) {
 
 async function searchSemanticScholar(q) {
   const url = 'https://api.semanticscholar.org/graph/v1/paper/search?query=' + encodeURIComponent(q) + '&limit=4&fields=title,year,url';
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url, 2);
   if (!res.ok) return [];
   const d = await res.json();
   return (d.data || []).map((it) => ({
@@ -276,7 +289,7 @@ async function searchSemanticScholar(q) {
 
 async function searchWikipedia(q, lang) {
   const url = 'https://' + lang + '.wikipedia.org/w/api.php?action=query&list=search&srsearch=' + encodeURIComponent(q) + '&format=json&origin=*&srlimit=3';
-  const res = await fetch(url);
+  const res = await fetchWithRetry(url, 2);
   if (!res.ok) return [];
   const d = await res.json();
   return (d.query && d.query.search || []).map((h) => ({
@@ -477,7 +490,7 @@ async function sendMessage() {
       if (err.name === 'AbortError') {
         addMessage('assistant', '⏳ AI 生成耗时较长（已等待 120 秒），可能是免费模型排队繁忙。请把问题拆成更小步骤提问，稍候重试。');
       } else {
-        addMessage('assistant', '网络错误：' + err.message + '\n\n已为你展示站内检索结果。');
+        addMessage('assistant', '网络错误：' + err.message + '（已自动重试 3 次仍失败，可能是网络波动或浏览器跨域限制）。请点击"发送"重试；若持续失败，可稍等 1-2 分钟。\n\n已为你展示站内检索结果：');
       }
       addMessage('assistant', buildRetrievalAnswer(results), sources);
     }
@@ -513,7 +526,7 @@ async function callZhipu(question, context, model, timeoutMs) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs || 120000);
   try {
-    const resp = await fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
+    const resp = await fetchWithRetry('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -526,7 +539,7 @@ async function callZhipu(question, context, model, timeoutMs) {
         max_tokens: isReasoning ? 2200 : 12000,
         ...(isReasoning ? {} : { temperature: 0.3 }),
       }),
-    });
+    }, 3);
     clearTimeout(timer);
     const data = await resp.json().catch(() => ({}));
     const content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
