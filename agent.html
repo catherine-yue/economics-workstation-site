@@ -65,7 +65,7 @@
 let CHUNKS = [];
 (async function loadChunks() {
   try {
-    const resp = await fetch('/api/chunks.json');
+    const resp = await fetch('api/chunks.json');
     const data = await resp.json();
     CHUNKS = data.chunks || [];
     console.log('chunks loaded:', CHUNKS.length);
