@@ -447,5 +447,34 @@ function buildRetrievalAnswer(results) {
   return '已为你从站内 95 页教程中检索到以下相关内容（点击链接可打开完整教程页；配置 API Key 后可获得 AI 生成的完整回答）：\n\n' + lines.join('\n\n');
 }
 </script>
+
+<script>
+/* 代码注释高亮：注释(绿) vs 命令(暖白)，便于一眼区分哪行是解释、哪行能运行 */
+(function () {
+  function esc(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function hl() {
+    document.querySelectorAll('.code-block pre code').forEach(function (el) {
+      var raw = el.textContent;
+      var out = raw.split('\n').map(function (line) {
+        if (/^\s*\*/.test(line)) return '<span class="cm-l">' + esc(line) + '</span>';
+        var ci = line.indexOf('//');
+        if (ci >= 0) return esc(line.slice(0, ci)) + '<span class="cm">' + esc(line.slice(ci)) + '</span>';
+        var bi = line.indexOf('/*');
+        if (bi >= 0) {
+          var bj = line.indexOf('*/', bi + 2);
+          if (bj >= 0) return esc(line.slice(0, bi)) + '<span class="cm">' + esc(line.slice(bi, bj + 2)) + '</span>' + esc(line.slice(bj + 2));
+        }
+        return esc(line);
+      }).join('\n');
+      el.innerHTML = out;
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hl);
+  else hl();
+})();
+</script>
+
 </body>
 </html>

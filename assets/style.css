@@ -257,14 +257,15 @@ code.inline {
   border-radius: var(--radius);
   margin: 18px 0;
   overflow: hidden;
-  box-shadow: var(--shadow);
-  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 3px 16px rgba(0,0,0,0.28);
+  border: 1px solid #2f3540;
+  outline: 2px solid rgba(184,116,42,0.18);
 }
 .code-header {
   display: flex; justify-content: space-between; align-items: center;
   padding: 8px 16px;
-  background: rgba(255,255,255,0.04);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: #242933;
+  border-bottom: 1px solid #343b48;
 }
 .code-header .lang {
   font-size: 11.5px; color: var(--code-function);
@@ -285,8 +286,39 @@ code.inline {
   font-family: 'JetBrains Mono', 'Consolas', monospace;
   font-size: 13px; line-height: 1.75;
   color: var(--code-text);
+  background: #1a1d23;
 }
 .code-block code { font-family: inherit; }
+/* Stata 注释：与命令明显区分（绿色斜体注释） */
+.code-block pre code .cm {
+  color: #7ee0a3;
+  font-style: italic;
+  opacity: 0.92;
+}
+.code-block pre code .cmd {
+  color: #f2e9c9; /* 命令主体用暖白，进一步拉开与注释的对比 */
+}
+/* 代码块内的中文注释若未包 span 时兜底：整行 * 开头的注释 */
+.code-block pre code .cm-l {
+  display: inline-block;
+  width: 100%;
+  color: #7ee0a3;
+  font-style: italic;
+  opacity: 0.92;
+}
+
+/* ---------- 代码使用指南（解释说明块，与代码块/正文三色分明） ---------- */
+.callout.codeguide {
+  background: #f3fbf5;
+  border: 1px solid #34a05c;
+  border-left: 4px solid #2e8b57;
+}
+.callout.codeguide .callout-title {
+  color: #1d6b3c;
+  font-weight: 700;
+}
+.callout.codeguide p { color: #22311f; }
+.callout.codeguide b { color: #1d6b3c; }
 
 /* ---------- 公式块 ---------- */
 .formula-block {
