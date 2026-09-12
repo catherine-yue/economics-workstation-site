@@ -309,10 +309,14 @@ async function sendMessage() {
       const res = await callZhipu(text, context, model, 120000);
       removeTyping();
       if (!res.ok) {
-        // 429 限流：自动用更快的 GLM-4-Flash 重试一次
+        // 429 限流：自动降级到更稳的 GLM-4-Flash，并间隔重试（限流通常几秒内恢复）
         if ((res.status === 429 || res.code === '1305') && model !== 'glm-4-flash') {
           addTyping();
-          const fb = await callZhipu(text, context, 'glm-4-flash', 120000);
+          let fb = await callZhipu(text, context, 'glm-4-flash', 120000);
+          if (!(fb.ok && fb.content)) {
+            await new Promise((r) => setTimeout(r, 4000));
+            fb = await callZhipu(text, context, 'glm-4-flash', 120000);
+          }
           removeTyping();
           if (fb.ok && fb.content) {
             addMessage('assistant', fb.content + '\n\n> 注：当前所选免费模型访问量过大，本次已自动切换至备选模型 glm-4-flash 回答，内容不受影响。', sources);
