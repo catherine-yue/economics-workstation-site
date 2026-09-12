@@ -186,14 +186,15 @@
       <div class="toc-title">本页目录 / CONTENTS</div>
       <ol>
         <li><a href="#intro">为什么需要这个手法库：合法设定 vs p-hacking</a></li>
-        <li><a href="#overview">总览表：23 种手法一览（含红线）</a></li>
-        <li><a href="#catA">A. 样本与数据类（6 种）</a></li>
-        <li><a href="#catB">B. 变量与测量类（5 种）</a></li>
-        <li><a href="#catC">C. 模型与估计类（6 种）</a></li>
-        <li><a href="#catD">D. 统计推断类（2 种）</a></li>
-        <li><a href="#catE">E. 时间与识别类（3 种）</a></li>
-        <li><a href="#catG">G. DID 与因果识别诊断（6 种）</a></li>
-        <li><a href="#catH">H. 透明度与多重检验（6 种）</a></li>
+        <li><a href="#overview">总览表：35 种手法一览（含红线）</a></li>
+        <li><a href="#stage-nav">论文阶段导航（四阶段对应表）</a></li>
+        <li><a href="#catA">A. 样本与数据类（6 种）<span style="color:#9ca3af;font-size:11px;"> · 阶段一</span></a></li>
+        <li><a href="#catB">B. 变量与测量类（5 种）<span style="color:#9ca3af;font-size:11px;"> · 阶段一</span></a></li>
+        <li><a href="#catC">C. 模型与估计类（6 种）<span style="color:#9ca3af;font-size:11px;"> · 阶段二</span></a></li>
+        <li><a href="#catD">D. 统计推断类（2 种）<span style="color:#9ca3af;font-size:11px;"> · 阶段二</span></a></li>
+        <li><a href="#catE">E. 时间与识别类（3 种）<span style="color:#9ca3af;font-size:11px;"> · 阶段二</span></a></li>
+        <li><a href="#catG">G. DID 与因果识别诊断（6 种）<span style="color:#9ca3af;font-size:11px;"> · 阶段三</span></a></li>
+        <li><a href="#catH">H. 透明度与多重检验（6 种）<span style="color:#9ca3af;font-size:11px;"> · 阶段四</span></a></li>
         <li><a href="#catF">F. 红线条目：留一系数排序删样本</a></li>
         <li><a href="#errors">常见错误（≥8 条）</a></li>
         <li><a href="#papers">论文案例：p-hacking 文献</a></li>
@@ -264,9 +265,61 @@
       </div>
     </div>
 
+
+    <!-- 论文阶段导航 -->
+    <div class="section" id="stage-nav">
+      <h2><span class="sec-num">01.5</span> 论文阶段导航：35 种手法对应你写论文的哪一步</h2>
+      <p>下表把 35 种手法按<strong>论文撰写的四个阶段</strong>重新组织。你写到论文的哪一步，就查对应阶段的手法——它们不是抽象的"操作技巧"，而是你在每个环节都会面对的选择。<strong>F1 是红线警示，贯穿所有阶段，任何时候都不能碰。</strong></p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>论文阶段</th><th>你在做什么</th><th>会用到的手法</th><th>核心风险</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><b>阶段一<br>数据准备</b></td>
+              <td>清洗数据、构造样本、定义变量、处理极端值</td>
+              <td>A1 样本筛选 · A2 样本量功效 · A3 缺失值 · A4 极端值winsor · A5 log/winsor顺序 · A6 影响诊断 · B1 控制变量组合 · B2 核心变量定义 · B3 变量变换 · B4 量级/单位 · B5 企业年龄控制</td>
+              <td>事后挑子样本、挑缩尾分位、换变量定义试到显著</td>
+            </tr>
+            <tr>
+              <td><b>阶段二<br>模型估计</b></td>
+              <td>选估计模型、设固定效应、定函数形式、算标准误、定时间结构</td>
+              <td>C1 换估计模型 · C2 FE组合 · C3 行业粒度 · C4 函数形式 · C5 高维FE · C6 稀有事件 · D1 标准误聚类 · D2 加权 · E1 滞后结构 · E2 平行趋势 · E3 逐步回归(红线)</td>
+              <td>试模型/FE/SE到显著、逐期扫滞后、按p值选控制</td>
+            </tr>
+            <tr>
+              <td><b>阶段三<br>因果识别与诊断</b></td>
+              <td>DID/RDD的识别假设检验、事件研究、安慰剂、交叠DID诊断</td>
+              <td>G1 事件研究图 · G2 pre-trend联合检验 · G3 安慰剂 · G4 动态效应 · G5 交叠DID诊断 · G6 平行趋势不通过处理</td>
+              <td>只画post期"显得平行"、不通过却硬说通过、事后改窗口</td>
+            </tr>
+            <tr>
+              <td><b>阶段四<br>稳健性与报告</b></td>
+              <td>机制检验、异质性、多重检验校正、规格曲线、功效报告、等价检验</td>
+              <td>H1 坏控制 · H2 异质性交互项 · H3 多重检验校正 · H4 specification curve · H5 功效分析 · H6 TOST等价检验</td>
+              <td>把中介当控制、事后挑子样本讲故事、不校正多重检验</td>
+            </tr>
+            <tr style="background:#fef2f2;">
+              <td><b style="color:#b91c1c;">红线警示</b></td>
+              <td colspan="2">F1 留一系数排序删样本——按回归结果反选样本，最典型的数据操纵</td>
+              <td style="color:#b91c1c;"><b>任何阶段都严禁使用</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">怎么用这张导航表</div>
+        <p>当你在写论文的某个环节想"动一下"某个设定时，先到对应阶段查该手法的"合法性判别"——确认它站在花园的哪一边。每个手法下方的代码块都标注了✓合法做法和⛔红线演示。</p>
+      </div>
+    </div>
+
     <!-- ===================== A 类 ===================== -->
     <div class="section" id="catA">
-      <h2><span class="sec-num">02</span> A 类 · 样本与数据操作（6 种）</h2>
+      <h2><span class="sec-num">02</span> <span class="diff intermediate" style="font-size:11px;margin-right:8px;">阶段一·数据准备</span>A 类 · 样本与数据操作（6 种）</h2>
+
+      <div class="callout info">
+        <div class="callout-title">阶段一 · 数据准备：你写到论文第3章时会用到这些手法</div>
+        <p>数据清洗、样本构造、变量定义是所有回归的基础。A 类讲"选哪些观测"，B 类讲"怎么定义变量"。这一阶段的每一个选择（删不删缺失、缩尾几分位、变量取水平还是对数）都会改变后续回归的显著性——<strong>关键是这些选择必须在看到回归结果之前由数据结构或理论决定</strong>，而不是试出来的。</p>
+      </div>
 
       <h3><span class="tech-label">A1</span>样本筛选：换年份 / 剔除特殊时期 / 子样本</h3>
       <p><b>是什么：</b>用 <code class="inline">if</code> 限定估计样本，例如 <code class="inline">if Year&gt;=2011</code>、<code class="inline">if SOE==1</code>、剔除 2008 金融危机或 2015 股灾。<b>为什么能改显著性：</b>样本期变了，X 与 Y 的共变结构、处理强度、噪声水平全变；子样本（国企/民企、东中西部）更直接地重新定义了"你在回答谁的因果问题"。<b>合法性判别：</b>如果窗口是由制度时点（政策实施年份、会计准则变更）或研究问题本身（只关心 2011 年政策之后）<em>事前</em>决定的，合法；如果是跑完全样本不显著，回头把 2015–2018 剔除、把国企单拎出来，那就是事后挑子样本，是红线。<b>审稿人如何识破：</b>正文样本区间与数据附录对不上、稳健性表里全样本与子样本方向相反却只报告显著那张、删改理由与正文叙事巧合。<b>诚实替代：</b>主回归报全样本；子样本、剔除危机年放进稳健性并全部报告；删样本的理由在论文设计阶段就写死。</p>
@@ -481,7 +534,7 @@ reg y x if cook &lt;= 4/_N
 
     <!-- ===================== B 类 ===================== -->
     <div class="section" id="catB">
-      <h2><span class="sec-num">03</span> B 类 · 变量与测量操作（5 种）</h2>
+      <h2><span class="sec-num">03</span> <span class="diff intermediate" style="font-size:11px;margin-right:8px;">阶段一·数据准备</span>B 类 · 变量与测量操作（5 种）</h2>
 
       <h3><span class="tech-label">B1</span>控制变量组合：Model1→Model2→Model3</h3>
       <p><b>是什么：</b>从"只放核心解释变量"逐步加入企业层面、行业层面、宏观层面控制，用 <code class="inline">esttab</code> 输出 Model1–3 对比。<b>机制：</b>加控制变量同时做三件事——改变遗漏变量偏误、改变共线性（坏控制/对撞控制会引入偏误）、以及<em>因为新控制变量有缺失值而悄悄改变样本</em>。<b>合法性判别：</b>控制集由理论与文献惯例决定、逐级报告、无论核心系数是否显著都照报，合法；<em>按 p 值逐个试加控制变量，直到核心变量变显著</em>，是经典数据挖掘。<b>审稿人如何识破：</b>Model1 不显著、Model3 突然三颗星、加入的那个"救命"控制变量与论文叙事关系牵强。<b>诚实替代：</b>事前确定基准控制集；逐步加入仅用于展示稳健性；注意每加一个控制 N 是否变化并说明。</p>
@@ -644,7 +697,12 @@ reg y x lnage                           // ✓ 推荐：对数化后更稳健
 
     <!-- ===================== C 类 ===================== -->
     <div class="section" id="catC">
-      <h2><span class="sec-num">04</span> C 类 · 模型与估计操作（6 种）</h2>
+      <h2><span class="sec-num">04</span> <span class="diff intermediate" style="font-size:11px;margin-right:8px;">阶段二·模型估计</span>C 类 · 模型与估计操作（6 种）</h2>
+
+      <div class="callout info">
+        <div class="callout-title">阶段二 · 模型估计：你写到论文第4-5章时会用到这些手法</div>
+        <p>选什么估计模型、加几层固定效应、用哪种标准误、滞后几期——这些是"主回归表"的核心设定。C 类讲模型与FE，D 类讲推断（SE/加权），E 类讲时间结构。<strong>同一个 β，只换标准误算法 p 值就能从 0.02 跳到 0.20</strong>，所以这一阶段的选择必须由数据结构和理论决定，不能挑最显著的那种。</p>
+      </div>
 
       <h3><span class="tech-label">C1</span>换估计模型：OLS / logit / probit / xtlogit / reghdfe / stcox / Poisson / negbin</h3>
       <p><b>是什么：</b>因变量是 0-1 用 logit/probit，面板二值用 xtlogit，计数用 Poisson/negbin，生存数据用 stcox，连续用 OLS/reghdfe。<b>机制：</b>不同估计量对分布假设、异质性处理、小样本偏误的处理不同；FE logit 只用组内变异，丢弃组间信息，系数可能与 pooled logit 差很多。<b>合法性判别：</b>模型选择应由因变量性质（连续/二值/计数/生存）与理论决定；把 OLS、logit、probit、Poisson、negbin 全跑一遍挑显著的，红线。<b>审稿人如何识破：</b>二值因变量正文用 OLS 却在附录换成 logit 才显著。<b>诚实替代：</b>主模型按因变量性质选；其他模型作为稳健性全报告；边际效应要换算出来比较。</p>
@@ -840,7 +898,7 @@ esttab plain_logit firth, b(%9.3f) se star(*.1 **.05 ***.01)
 
     <!-- ===================== D 类 ===================== -->
     <div class="section" id="catD">
-      <h2><span class="sec-num">05</span> D 类 · 统计推断操作（2 种）</h2>
+      <h2><span class="sec-num">05</span> <span class="diff intermediate" style="font-size:11px;margin-right:8px;">阶段二·模型估计</span>D 类 · 统计推断操作（2 种）</h2>
 
       <h3><span class="tech-label">D1</span>标准误与聚类：ordinary / robust / cluster / two-way</h3>
       <p><b>是什么：</b>系数 β 不变，但标准误可以从普通 OLS、异方差稳健（robust）、单维聚类（个体/行业）到双向聚类（行业×年份）逐级放宽。<b>机制：</b>t = β / SE，<em>同一个 β，只换标准误算法，p 值就能从 0.02 跳到 0.20</em>——这是所有旋钮里性价比最高、也最容易被滥用的一个。<b>合法性判别：</b>标准误必须按数据的真实相关结构选（误差在哪一层相关就聚到哪一层），聚类数太少（&lt;约 40–50）要用 wild cluster bootstrap；<em>把四种 SE 全试一遍、挑最窄的那个写正文</em>，是审稿人最警惕的红线边缘行为。<b>审稿人如何识破：</b>正文用的是从未在方法论上辩护过的那种 SE；OLS 显著、聚类后立刻不显著却仍宣称"稳健"。<b>诚实替代：</b>在方法论节明确论证聚类层级；四种 SE 同表对比；选最保守且有理论依据的。</p>
@@ -910,7 +968,7 @@ reg y x [pw=pop]                        // 人口加权：估计"人口意义上
 
     <!-- ===================== E 类 ===================== -->
     <div class="section" id="catE">
-      <h2><span class="sec-num">06</span> E 类 · 时间结构与识别操作（3 种）</h2>
+      <h2><span class="sec-num">06</span> <span class="diff intermediate" style="font-size:11px;margin-right:8px;">阶段二·模型估计</span>E 类 · 时间结构与识别操作（3 种）</h2>
 
       <h3><span class="tech-label">E1</span>时间结构 / Lag：X_t→Y_t 不显著，但 X_{t-1}→Y_t 显著</h3>
       <p><b>是什么：</b>把解释变量从当期换成滞后一期/二期/三期 <code class="inline">L1.x / L2.x / L3.x</code>，或换成移动平均。<b>机制：</b>政策传导、预期调整需要时间，滞后效应可能比当期更合理；但<em>逐期扫描 L1..L5 直到某一期显著</em>，本质是多重检验。<b>合法性判别：</b>滞后阶数必须由经济理论（传导期、财报披露时滞）事前决定；<strong>合理性要注意</strong>——不能纯靠数据扫出来。<b>审稿人如何识破：</b>只报告 L2 显著、L1/L3 不显著却无任何理论解释为何是二期。<b>诚实替代：</b>事前声明主滞后阶；各阶滞后同表报告；用 AIC/BIC 或理论而非显著性定阶。</p>
@@ -1013,10 +1071,15 @@ reg y x c1 c3 c7</code></pre>
 
     <!-- ===================== G 类：DID 与因果识别诊断 ===================== -->
     <div class="section" id="catG">
-      <h2><span class="sec-num">07</span> G 类 · DID 与因果识别诊断（6 种）</h2>
+      <h2><span class="sec-num">07</span> <span class="diff advanced" style="font-size:11px;margin-right:8px;">阶段三·因果识别诊断</span>G 类 · DID 与因果识别诊断（6 种）</h2>
       <div class="callout info">
         <div class="callout-title">ℹ 这一类与前面 A–E 类性质不同</div>
         <p>A–E 类讲的是"哪些旋钮能把 p 值拧来拧去"；G 类讲的是<strong>识别本身可不可信</strong>。平行趋势是 DID 的<strong>不可检验假设</strong>——你只能用政策前数据"诊断"它，永远不能"证明"它通过。把 G 类当成"体检报告"：体检正常不能保证没病，体检异常也不一定就没救，但<strong>体检报告必须如实、完整地交出来</strong>。与姊妹页 <a href="06-did.html">07 DID 双重差分</a> 配合阅读。</p>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-title">阶段三 · 因果识别与诊断：你写到论文第5章识别策略时会用到这些手法</div>
+        <p>DID/RDD 的识别假设（平行趋势、连续性）是"不可检验"的——你只能用诊断来"体检"，不能"证明"它通过。G 类的 6 种手法就是体检报告：事件研究图看形状、联合检验看显著性、安慰剂看伪效应、交叠DID用新估计量做干净诊断。<strong>体检报告必须如实完整交出，不能只摘正常的那几项。</strong></p>
       </div>
 
       <h3><span class="tech-label">G1</span>事件研究图（event study plot）：leads/lags 系数 + 95% 置信带</h3>
@@ -1296,8 +1359,13 @@ estat event
 
     <!-- ===================== H 类：透明度与多重检验 ===================== -->
     <div class="section" id="catH">
-      <h2><span class="sec-num">08</span> H 类 · 透明度与多重检验（6 种）</h2>
+      <h2><span class="sec-num">08</span> <span class="diff advanced" style="font-size:11px;margin-right:8px;">阶段四·稳健性与报告</span>H 类 · 透明度与多重检验（6 种）</h2>
       <p>这一类不是"旋钮"，而是<strong>结构性诊断与披露工具</strong>。它们的共同特征是：不管你结果显著不显著，都应该做；做了反而让审稿人更信任你，而不是更怀疑你。</p>
+
+      <div class="callout info">
+        <div class="callout-title">阶段四 · 稳健性与报告：你写到论文第6-7章时会用到这些手法</div>
+        <p>主回归跑出来后，审稿人要求你证明"稳得住、讲得通、因人而异"，并规范报告显著性。H 类不是"旋钮"，而是<strong>结构性诊断与披露工具</strong>——不管结果显著不显著都应该做。坏控制、异质性交互项、多重检验校正、specification curve、功效报告、TOST等价检验，这些是让审稿人信任你的必要手段。</p>
+      </div>
 
       <h3><span class="tech-label">H1</span>机制/中介检验与坏控制（bad control）问题</h3>
       <p><b>是什么：</b>机制检验（mediation）想识别 X→M→Y 的传导路径；坏控制指把<strong>处理后变量（post-treatment variable）或对撞因子（collider）</strong>当作控制变量加入回归。<b>为什么改变显著性/可信度：</b>典型坏控制是"政策后才形成的中间变量 M"——控制 M 等于把 X→M→Y 这条因果路上的效应<em>差掉</em>，人为把 X 对 Y 的总效应压小；更糟的是控制对撞因子会引入 collider bias，把本来无关的两个变量强行变得相关。Bullock, Green &amp; Ha (2010) 指出：多数"机制检验"本质上都在做坏控制。<b>Stata 代码：</b>见下方 DAG 判别法。<b>合法性判别：</b>控制变量必须是<strong>处理前或前定（pre-determined）</strong>变量；处理后变量不能当控制，只能作为"机制证据"单独报告其随处理的变化。<b>审稿人如何识破：</b>控制变量里混入了"政策实施后才可能发生变化"的变量（如"企业生产率"被当作控制去估计"补贴对就业"的效应，而生产率本身就是补贴的结果）。<b>诚实替代：</b>画 DAG 标出哪些是 confounder、哪些是 mediator、哪些是 collider；主回归只放 confounder；机制检验用"X→M"和"M→Y"分开报告，不把 M 塞进 X→Y 的主回归。</p>
@@ -1495,7 +1563,7 @@ reg y x
 
     <!-- ===================== F 红线 ===================== -->
     <div class="section" id="catF">
-      <h2><span class="sec-num">09</span> F 类 · 红线条目：留一系数排序删样本</h2>
+      <h2><span class="sec-num">09</span> <span class="tech-label red">红线警示</span> F 类 · 留一系数排序删样本</h2>
 
       <div class="callout danger">
         <div class="callout-title">⛔ 学术不端高风险：几乎无合法用途，切勿用于正式研究</div>

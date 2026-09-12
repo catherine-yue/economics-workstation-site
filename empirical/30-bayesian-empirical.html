@@ -158,6 +158,11 @@
     <p class="desc">频率派把参数 $\theta$ 当作未知常数，把数据当作随机样本；贝叶斯派把参数本身也当作随机变量，用先验分布 $p(\theta)$ 表达你在看到数据之前的信念，用似然 $p(Y|\theta)$ 更新成后验 $p(\theta|Y)$。当样本小、模型复杂（DSGE、随机效应、高维）时，贝叶斯推断比频率派更自然；后验概率 $P(\theta&gt;0|Y)$ 也比 p 值更贴近"政策讨论"的语言。本页讲清 Bayes 定理、共轭先验下的解析解、MCMC 三大算法（MH/Gibbs/NUTS）、收敛诊断（R-hat、trace plot），以及 Stata <code class="inline">bayesmh</code> 与 Python PyMC 的完整实现。</p>
   </div>
 
+  <div class="callout info">
+    <div class="callout-title">本页定位</div>
+    <p><strong>贝叶斯实证是「④ 诊断稳健与机制异质」阶段的进阶估计与推断工具</strong>：当你需要在先验信息下做收缩估计、处理小样本/弱识别、或报告完整后验分布而非单点估计时使用。它是估计与推断的高级范式——先做频率派基准回归，再用贝叶斯方法做敏感性分析与后验推断，两者互补而非替代。</p>
+  </div>
+
   <div class="prereq-box">
     <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
     <div class="prereq-grid">

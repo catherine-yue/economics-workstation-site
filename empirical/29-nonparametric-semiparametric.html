@@ -158,6 +158,11 @@
     <p class="desc">OOLS 假设 $Y = \alpha + \beta X + \varepsilon$——但真实世界里"教育回报率随经验年限怎么变"、"收入与污染的关系"往往不是直线。非参数估计（核回归、局部线性、样条）不假设函数形式，让数据自己说话；半参数模型（部分线性 PLM、变系数、可加模型 GAM）则保留一部分线性结构、只让关键变量走非参。本页讲清 Nadaraya–Watson 估计量的推导、局部线性估计为何能消除边界偏差、带宽选择的交叉验证，以及 Stata 与 Python 的完整实现。</p>
   </div>
 
+  <div class="callout info">
+    <div class="callout-title">本页定位</div>
+    <p><strong>非参/半参方法是「④ 诊断稳健与机制异质」阶段的进阶工具</strong>：当你怀疑线性函数形式误设、想检验"结果是否依赖于参数假设"时，用核估计、半参部分线性模型、可加模型做稳健性估计。它是稳健性检验的高级方法——先做 OLS 基准，再用非参/半参验证结论不依赖函数形式假设。</p>
+  </div>
+
   <div class="prereq-box">
     <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
     <div class="prereq-grid">
