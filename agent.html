@@ -107,7 +107,7 @@ function setHint(msg) {
 }
 
 // ================= 智谱 API Key（仅存用户浏览器） =================
-let ZHIPU_KEY = localStorage.getItem('rag_zhipu_key') || '';
+let ZHIPU_KEY = localStorage.getItem('rag_zhipu_key') || '028575a795344080983813b9a4fcb99c.csobfbZ3oyfzthhk';
 if (ZHIPU_KEY) {
   document.getElementById('hintBar').style.display = 'block';
   document.getElementById('hintBar').textContent = '已配置 API Key（仅保存在本浏览器）。';
@@ -486,9 +486,14 @@ async function sendMessage() {
     }
   } else {
     removeTyping();
-    addMessage('assistant', buildRetrievalAnswer(results), sources);
-    if (!results.length) {
-      setHint('未检索到相关内容，换个关键词试试；或配置 API Key 让 AI 直接回答。');
+    let fallback = buildRetrievalAnswer(results);
+    if (netResults.length) {
+      fallback += '\n\n🔍 **本次已联网检索 ' + netResults.length + ' 条外部来源（学术文献/百科）：**\n\n' +
+        netResults.map((r, i) => `**${i + 1}. ${r.title}**（${r.type}${r.year ? ' ' + r.year : ''}）\n[打开来源](${r.url})`).join('\n\n');
+    }
+    addMessage('assistant', fallback, sources);
+    if (!results.length && !netResults.length) {
+      setHint('未检索到相关内容，网络检索也未命中。换个关键词试试；或配置 API Key 让 AI 直接回答。');
     }
   }
   document.getElementById('sendBtn').disabled = false;
