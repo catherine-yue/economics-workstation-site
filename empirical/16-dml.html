@@ -159,6 +159,11 @@
       <p class="desc">当控制变量维度很高、关系非线性时，Lasso 等正则化估计会产生<strong>正则化偏误</strong>，$\sqrt{n}$ 推断不再可靠。DML（Chernozhukov et al., 2018 Econometrica）用"正交化 + cross-fitting"两步法：先用机器学习残差化，再在残差上做回归，得到半参有效、对模型误设稳健的处理效应估计。本节讲清 Neyman 正交矩、部分线性模型、Python/R/Stata 三种实现，以及常见失败模式。</p>
     </div>
 
+      <div class="callout info">
+        <div class="callout-title">本页定位</div>
+        <p><strong>DML 是「③ 基准回归与因果识别」阶段的高级工具</strong>：当基准 DID/RDD/OLS 存在高维混杂（控制变量多到无法逐个筛选）、或函数形式不确定时，用 DML 的 Neyman 正交化与交叉拟合来获得稳健的因果效应估计。它不是独立于实证流程的"前沿方法"，而是因果识别阶段的进阶估计器——先跑通基准回归，再在高维混杂场景下用 DML 替代。</p>
+      </div>
+
     <div class="prereq-box">
       <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
       <div class="prereq-grid">

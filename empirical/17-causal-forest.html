@@ -159,6 +159,11 @@
       <p class="desc">从平均处理效应（ATE）到<strong>条件平均处理效应 $CATE(x)$</strong>：谁受政策影响最大？因果森林（Athey-Tibshirani-Wager, 2019 PNAS）把随机森林改造成一个"非参数 CATE 估计器"，并用诚实树（honest tree）给出渐近正态的置信区间。政策树（Athey-Wager, 2021 Operations Research）进一步从"估计异质性效应"跨到"把资源分配给谁最优"。本节讲 grf（R）与 econml（Python）的完整用法。</p>
     </div>
 
+      <div class="callout info">
+        <div class="callout-title">本页定位</div>
+        <p><strong>因果森林是「④ 诊断稳健与机制异质」阶段的进阶工具</strong>：当你做完基准回归和基本异质性分析后，想进一步刻画"处理效应因人而异"的完整分布（CATE），或用数据驱动的方式发现哪些子群体受益最大，就用因果森林。它是异质性分析的高级延伸，不是独立的"前沿方法"——先做交互项/分样本异质性，再用因果森林做精细化政策学习。</p>
+      </div>
+
     <div class="prereq-box">
       <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
       <div class="prereq-grid">
