@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>潜在结果框架与因果图 Potential Outcomes & Causal DAG | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item active" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">实证论文</a><span class="sep">/</span>
+      <span>潜在结果与因果图</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">Empirical · Causal Inference Foundation</span>
+      <h1>潜在结果框架与因果图 Potential Outcomes &amp; Causal DAG</h1>
+      <p class="desc">从 Rubin 的潜在结果记号 $Y_i(1),Y_i(0)$ 到 Pearl 的 do-calculus 与后门准则。本节讲清楚因果推断的两大语言体系：为什么存在"因果推断的根本问题"、什么是可忽略性假设、DAG 上的混杂因子/对撞因子/中介变量如何识别、以及如何用一张因果图判断"控制哪些变量才对"。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">条件期望 $E[Y|D,X]$、条件独立 $A\perp B\mid C$、相关与独立的区别、线性回归系数的条件均值解释。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">能基于经济理论画出"X→Y"的因果链条，并指出可能的混淆变量（confounder）。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">Python 3.8+（<code class="inline">pip install networkx matplotlib</code>）；可选 R 包 <code class="inline">dagitty</code>、Stata 外部命令 <code class="inline">dagitty</code>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body">建议先看 <a href="04-baseline-regression.html">04 基准回归</a> 与 <a href="05-endogeneity-iv.html">05 内生性与IV</a>，本节是它们的"因果语言"升级。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">核心基础</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">Rubin 潜在结果框架与根本问题</a></li>
+        <li><a href="#s2">ATE / ATT / ATU 的定义与关系</a></li>
+        <li><a href="#s3">可忽略性 / 无混杂假设</a></li>
+        <li><a href="#s4">因果图 DAG：节点、箭头与三类变量</a></li>
+        <li><a href="#s5">后门准则 backdoor criterion</a></li>
+        <li><a href="#s6">do-calculus 入门</a></li>
+        <li><a href="#s7">选择偏误 vs 混杂偏误</a></li>
+        <li><a href="#s8">完整示例：教育对收入的影响</a></li>
+        <li><a href="#s9">代码：DAG 可视化与混杂模拟</a></li>
+        <li><a href="#s10">论文案例与常见错误</a></li>
+      </ol>
+    </div>
+
+    <!-- ========== 正文 ========== -->
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> Rubin 潜在结果框架与根本问题</h2>
+      <p>因果推断的第一语言是 <strong>Rubin 潜在结果框架（Rubin Causal Model, RCM）</strong>。对每一个个体 $i$，设想两种"平行宇宙"：一种宇宙里 $i$ 接受处理（treatment，记 $D_i=1$），另一种里 $i$ 不接受处理（$D_i=0$）。两个宇宙下的结果变量分别记为潜在结果：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (1) — 潜在结果记号</div>
+        $$Y_i(1)\ =\ \text{个体 }i\text{ 若接受处理的结果},\qquad Y_i(0)\ =\ \text{个体 }i\text{ 若不接受处理的结果}$$
+      </div>
+      <p>个体 $i$ 的<strong>个体处理效应（individual treatment effect）</strong>被定义为两个潜在结果之差：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (2) — 个体处理效应</div>
+        $$\tau_i\ =\ Y_i(1)-Y_i(0)$$
+      </div>
+      <p>问题来了：现实中 $i$ 要么接受处理、要么不接受，<strong>只能观测到其中一个潜在结果</strong>。我们实际观测到的结果 $Y_i$ 是一个"拼接"出来的量：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (3) — 观测结果的拼接</div>
+        $$Y_i\ =\ D_i\,Y_i(1)+(1-D_i)\,Y_i(0)$$
+      </div>
+      <p>这就是 Holland (1986) 所说的 <strong>"因果推断的根本问题（fundamental problem of causal inference）"</strong>：$\tau_i$ 本身永远不可观测，因为我们无法对同一个人同时做实验和不做实验。反事实（counterfactual）——即"如果 $i$ 接受了相反的处理，他的结果会是什么"——在原则上不可见。于是因果推断的全部艺术，就是<strong>用其他个体的观测结果作为 $i$ 的反事实替身</strong>。这也解释了为什么"处理组 vs 对照组"的设计如此重要：我们只能假设"在给定协变量后，对照组的平均结果可以近似处理组的反事实平均结果"。</p>
+      <div class="callout info">
+        <div class="callout-title">📌 直觉</div>
+        <p>如果你想知道"上大学对收入的影响"，你不能拿"上过大学的你"和"没上过大学的你"比——因为后者根本不存在。你只能拿"另一个和你很像但没上大学的人"来替你想象那个平行宇宙。因果推断就是把这个"很像"用数学严格化。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> ATE / ATT / ATU 的定义与关系</h2>
+      <p>既然个体效应不可观测，统计上只能估计某种<strong>平均效应</strong>。最常用的三个量是：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (4) — 三种平均处理效应</div>
+        $$
+        \begin{aligned}
+        \text{ATE} &\equiv E\big[Y(1)-Y(0)\big] \\
+        \text{ATT} &\equiv E\big[Y(1)-Y(0)\mid D=1\big] \\
+        \text{ATU} &\equiv E\big[Y(1)-Y(0)\mid D=0\big]
+        \end{aligned}
+        $$
+      </div>
+      <ul>
+        <li><strong>ATE（Average Treatment Effect）</strong>：在整个人群上的平均效应。回答"随机抽一个人，处理平均影响多大？"</li>
+        <li><strong>ATT（Average Treatment effect on the Treated）</strong>：在<strong>实际接受处理</strong>人群中的平均效应。回答"已经上大学的这批人，上大学对他们的收入影响多大？"——这是政策评估中最关心的量，因为政策的受益者已经或即将是这批人。</li>
+        <li><strong>ATU（Average Treatment effect on the Untreated）</strong>：在<strong>未接受处理</strong>人群中的平均效应。回答"如果把政策扩大到目前没被覆盖的人群，他们的效应会是多大？"</li>
+      </ul>
+      <p>三者关系：设 $P(D=1)=p$，则 $p\cdot\text{ATT}+(1-p)\cdot\text{ATU}=\text{ATE}$。当处理效应存在异质性（即 $\tau_i$ 随 $X$ 变化）且处理分配 $D$ 与异质性相关时，$\text{ATT}\neq\text{ATU}\neq\text{ATE}$。例如：<strong>上大学的回报在"本来就该上大学"的人身上更高</strong>，则 ATT &gt; ATE &gt; ATU，这就是著名的自选择偏差。</p>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 不要混淆 ATE 与 ATT</div>
+        <p>OLS 在可忽略性下估的是 ATE；匹配/PSM 若在处理组内加权，估的是 ATT；LATE（IV）估的是 complier 上的 LATE，既不是 ATE 也不是 ATT。写论文时必须明确报告估的是哪一个，并说明政策含义对应哪一个。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 可忽略性 / 无混杂假设</h2>
+      <p>要让"用对照组结果当反事实"在统计上成立，必须施加一个核心假设——<strong>可忽略性（ignorability）/ 无混杂（unconfoundedness）</strong>：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (5) — 可忽略性假设</div>
+        $$Y(0),\,Y(1)\ \perp\ D\mid X$$
+      </div>
+      <p>读作：<strong>在给定观测协变量 $X$ 后，潜在结果与是否接受处理 $D$ 相互独立</strong>。直觉是：一旦我们控制了 $X$，"谁接受处理"就近似于随机分配——处理组和对照组在 $X$ 相同的子集上，$Y(0),Y(1)$ 的分布是相同的。此时对照组在 $X=x$ 处的平均结果 $E[Y\mid D=0,X=x]$ 就可以无偏地当处理组在 $x$ 处的反事实 $E[Y(0)\mid X=x]$。</p>
+      <p>这个假设等价于：<strong>所有同时影响 $D$ 和 $Y$ 的混淆变量都已被 $X$ 完整观测并控制</strong>。它本质上是一个"信仰声明"——我们永远无法用数据直接证明它成立，只能靠经济理论、制度背景、平衡检验（covariate balance）和稳健性检验来间接说服读者。</p>
+      <div class="callout danger">
+        <div class="callout-title">❌ 可忽略性为什么强</div>
+        <p>它要求<strong>没有未观测混淆变量</strong>（no unobserved confounder）。如果存在一个 $U$ 同时影响 $D$ 和 $Y$ 且 $U\not\perp D\mid X$，那么即使你控制了所有观测协变量，估计仍有偏。这正是内生性问题的本质，也是 IV / RDD / DID 这些"识别策略"存在的理由——它们用不同的方式绕开"无观测混淆"这个强假设。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 因果图 DAG：节点、箭头与三类变量</h2>
+      <p><strong>有向无环图（Directed Acyclic Graph, DAG）</strong>是 Pearl 的因果语言：节点代表变量，箭头 $A\to B$ 代表"$A$ 对 $B$ 有直接因果影响"。DAG 把"可忽略性假设是否成立"翻译成一张可以肉眼检查的图。在 DAG 上有三类关键变量：</p>
+      <ul>
+        <li><strong>混杂因子（confounder）$Z$</strong>：同时指向处理 $D$ 和结果 $Y$，即 $Z\to D$ 且 $Z\to Y$。它是造成"$D$ 与 $Y$ 相关但非因果"的元凶。控制它可以切断伪相关。</li>
+        <li><strong>对撞因子（collider）$C$</strong>：同时被 $D$ 和 $Y$ 指向，即 $D\to C$ 且 $Y\to C$。对撞因子的特点是：<strong>不控制它时，它不造成偏误；但一旦控制它（或基于它做条件），反而会在原本独立的 $D,Y$ 之间制造伪相关</strong>。这就是 Berkson 悖论。</li>
+        <li><strong>中介变量（mediator）$M$</strong>：$D\to M\to Y$。它是处理影响结果的<strong>传导通道</strong>。控制 $M$ 会"切断"$D$ 经由 $M$ 对 $Y$ 的因果效应，把总效应分解为直接效应和间接效应。估计 ATE 时<strong>不要</strong>控制中介；估计"直接效应"时才需要控制。</li>
+      </ul>
+      <p>一条从 $D$ 到 $Y$ 的<strong>路径（path）</strong>就是顺着箭头走出来的一串节点序列。路径分两种：</p>
+      <ul>
+        <li><strong>因果路径（causal path）</strong>：所有箭头方向都与 $D\to Y$ 同向，代表真正的因果通道。</li>
+        <li><strong>后门路径（backdoor path）</strong>：从 $D$ 出发、沿某个箭头<strong>反向</strong>回到 $D$、再正向走到 $Y$ 的路径——即 $D \leftarrow \cdots \to Y$ 的形式。后门路径上承载的都是<strong>非因果的相关</strong>，必须全部阻断。</li>
+      </ul>
+      <div class="callout tip">
+        <div class="callout-title">✅ 一句话记忆</div>
+        <p>混杂因子要<strong>控制</strong>；对撞因子要<strong>绕开</strong>（控制了反而出问题）；中介变量在估总效应时要<strong>绕开</strong>、估直接效应时才控制。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 后门准则 backdoor criterion</h2>
+      <p>Pearl 提出的 <strong>后门准则（backdoor criterion）</strong>给出了一个可机械检查的规则：给定处理变量 $D$、结果变量 $Y$，一组变量 $Z$ 是否足够"控制混杂"？规则有两条：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (6) — 后门准则</div>
+        <p style="margin:6px 0 2px;">(i) $Z$ 中不包含任何 $D$ 的<strong>后代节点（descendant）</strong>；</p>
+        <p style="margin:6px 0;">(ii) $Z$ <strong>阻断（block）</strong>所有从 $D$ 到 $Y$ 的后门路径（即所有含有指向 $D$ 的箭头的路径）。</p>
+      </div>
+      <p>"阻断"一条路径的含义是：路径上存在一个<strong>非对撞的中介/混杂变量</strong>被 $Z$ 控制，或存在一个<strong>对撞因子</strong>不被 $Z$ 控制（对撞因子本身就阻断路径，无需控制）。</p>
+      <p>若 $Z$ 满足后门准则，则在 $Z$ 上做条件化后，$D$ 与 $Y$ 之间的关联 $P(Y\mid D,Z)$ 就等于因果效应 $P(Y\mid \text{do}(D))$，可以从观测数据非参数地识别。这正是"可忽略性 $Y(0),Y(1)\perp D\mid Z$"的图论版本。</p>
+      <div class="callout info">
+        <div class="callout-title">📌 直觉</div>
+        <p>后门准则告诉你：<strong>不是变量越多越好</strong>。多控制一个对撞因子或后代节点，可能反而引入偏误；少控制一个混杂因子，则残留偏误。写实证之前，先画一张 DAG，列出候选后门集，是避免"控制错变量"的最便宜方法。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> do-calculus 入门</h2>
+      <p><strong>do 算子</strong>是 Pearl 区分"观测到 $D=d$"与"人为把 $D$ 设为 $d$"的关键记号：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (7) — do 算子</div>
+        $$P(Y=y\mid D=d)\quad\text{vs.}\quad P(Y=y\mid \text{do}(D)=d)$$
+      </div>
+      <p>前者是观测条件分布："我们看到的人里，$D=d$ 的人 $Y$ 分布如何"；后者是干预后分布："我们<strong>手术式地</strong>把所有人的 $D$ 都设为 $d$（切断所有指向 $D$ 的箭头），$Y$ 的分布如何"。因果效应就是后者的函数。<strong>do-calculus 给出三条规则</strong>，允许我们在 DAG 上把含 do 的表达式逐步改写为不含 do 的、可从观测数据计算的表达式：</p>
+      <ol>
+        <li><strong>规则1（删除观测）</strong>：若在 $G_{\overline{D}}$（删掉所有指向 $D$ 的箭头后的图）上有 $Y\perp D\mid Z$，则 $P(Y\mid \text{do}(D),Z)=P(Y\mid Z)$。</li>
+        <li><strong>规则2（观测/干预交换）</strong>：若在 $G_{\underline{D},\overline{Z}}$ 上有 $Y\perp D\mid Z$，则 $P(Y\mid \text{do}(D),\text{do}(Z),X)=P(Y\mid \text{do}(D),Z,X)$——把对 $Z$ 的"干预"降级为"观测"。</li>
+        <li><strong>规则3（删除干预）</strong>：若在 $G_{\overline{DZ}}$（删掉所有指向 $D$ 和 $Z$ 的箭头）上 $Y$ 与 $\text{do}(Z)$ 无路径，则 $P(Y\mid \text{do}(D),\text{do}(Z),X)=P(Y\mid \text{do}(D),X)$。</li>
+      </ol>
+      <p>对入门读者，最实用的结论是：<strong>如果后门准则满足，规则2直接给出 $P(Y\mid \text{do}(D))=\sum_z P(Y\mid D,Z=z)P(Z=z)$</strong>，这就是标准的调整公式（adjustment formula）。当后门准则不满足时（例如存在未观测混淆但有工具变量），do-calculus 的三条规则是判断"这个因果效应到底能不能从观测数据识别"的形式化工具。</p>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 选择偏误 vs 混杂偏误</h2>
+      <p>这两个概念经常被混用，但在 DAG 语言里它们有本质区别：</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>维度</th><th>混杂偏误 confounding</th><th>选择偏误 selection bias</th></tr></thead>
+          <tbody>
+            <tr><td>结构</td><td>$Z\to D$ 且 $Z\to Y$（后门路径未阻断）</td><td>在对撞因子 $C$ 上做条件，或基于 $D,Y$ 的共同后代抽样</td></tr>
+            <tr><td>来源</td><td>遗漏变量（omitted variable）</td><td>对撞偏倚 / 样本选择（Berkson 悖论、Heckman 选择）</td></tr>
+            <tr><td>何时出现</td><td>没控制 $Z$</td><td><strong>控制了不该控制的 $C$</strong>，或抽样框只覆盖 $C=1$</td></tr>
+            <tr><td>修正</td><td>把 $Z$ 加入回归 / 匹配 / 加权</td><td>不要在 $C$ 上做条件；用 Heckman 两阶段 / IPW 修正抽样</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>典型例子：<strong>大学毕业生的工资差异</strong>。若你只在"进入大学"的人里研究"专业选择→工资"，你可能控制了"是否上大学"这个对撞因子——因为"上大学"同时由能力（影响工资）和专业偏好（影响工资）决定，控制它反而在专业与工资之间制造伪相关。另一个经典例子是 Heckman (1979)：研究工资方程时，样本只包含<strong>已工作的人</strong>，这等价于在"工作参与"这个对撞因子上做条件，导致 OLS 有偏。</p>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 完整示例：教育对收入的影响</h2>
+      <p>用一个经典研究问题——<strong>上大学（$D$）对年收入（$Y$）的影响</strong>——演示完整的 DAG 分析流程。候选变量：</p>
+      <ul>
+        <li><code class="inline">Ability</code>（能力，未观测）：$Ability\to D$（能力强的人更可能上大学）且 $Ability\to Y$（能力直接影响收入）。</li>
+        <li><code class="inline">FatherEdu</code>（父亲教育）：$FatherEdu\to Ability$、$FatherEdu\to D$、$FatherEdu\to Y$。</li>
+        <li><code class="inline">Age</code>（年龄）：$Age\to Y$（经验效应）。</li>
+        <li><code class="inline">CollegeQuality</code>（大学质量）：$D\to CollegeQuality\to Y$，是中介。</li>
+      </ul>
+      <p>画出 DAG 后，从 $D$ 到 $Y$ 的后门路径有：$D\leftarrow FatherEdu\rightarrow Y$、$D\leftarrow Ability\rightarrow Y$、$D\leftarrow FatherEdu\rightarrow Ability\rightarrow Y$。</p>
+      <p><strong>后门集识别</strong>：</p>
+      <ul>
+        <li>控制 $\{FatherEdu, Age\}$：阻断了 $D\leftarrow FatherEdu\rightarrow Y$，但 $D\leftarrow Ability\rightarrow Y$ 仍在——因为 Ability 未观测。<strong>不满足</strong>后门准则。</li>
+        <li>若 Ability 可观测（如用 IQ 分数代理），控制 $\{FatherEdu, Ability, Age\}$：所有后门路径被阻断，且这三个变量都不是 $D$ 的后代。<strong>满足</strong>后门准则，可识别 ATE。</li>
+        <li>若 Ability 不可观测，则后门准则失败，观测数据无法识别因果效应——必须借助 IV（如 Card (1995) 的"出生地距大学距离"）、RDD（如 Clark &amp; Royer）或 DID。</li>
+        <li><strong>不要控制</strong> <code class="inline">CollegeQuality</code>，因为它是 $D$ 的后代（中介）；控制它会切断 $D\to CollegeQuality\to Y$ 这条因果路径，估计的是"直接效应"而非总效应。</li>
+      </ul>
+      <div class="callout tip">
+        <div class="callout-title">✅ 写作模板</div>
+        <p>"我们以 DAG 梳理识别策略（图1）。控制父亲教育、年龄后，剩余后门路径 $D\leftarrow Ability\rightarrow Y$ 无法被观测变量阻断。因此基准 OLS 有自选择偏误，我们以距大学距离作为 IV ……（见 05 内生性与IV）。"</p>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 代码：DAG 可视化与混杂模拟</h2>
+      <p>下面两段 Python 代码：第一段用 <code class="inline">networkx</code> 画一张教育-收入的 DAG；第二段模拟数据，演示"不控制混杂"时 OLS 估计的偏误，以及"控制后门集"后偏误消失。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · 用 networkx 画 DAG</span><button class="copy-btn">复制</button></div>
+        <pre><code># ============================================================
+# 09.1 用 networkx 画"教育 -> 收入"的因果 DAG
+# pip install networkx matplotlib
+# ============================================================
+import networkx as nx
+import matplotlib.pyplot as plt
+
+G = nx.DiGraph()
+# 节点：D=上大学, Y=收入, A=能力(未观测), F=父亲教育, Age=年龄, Q=大学质量(中介)
+nodes = ["D", "Y", "A", "F", "Age", "Q"]
+G.add_nodes_from(nodes)
+
+# 因果箭头：从左到右
+edges = [
+    ("A", "D"),          # 能力影响是否上大学
+    ("A", "Y"),          # 能力直接影响收入
+    ("F", "A"),          # 父亲教育 -> 能力
+    ("F", "D"),          # 父亲教育 -> 上大学
+    ("F", "Y"),          # 父亲教育 -> 收入（网络）
+    ("Age", "Y"),        # 年龄 -> 收入
+    ("D", "Q"),          # 上大学 -> 大学质量
+    ("Q", "Y"),          # 大学质量 -> 收入
+]
+G.add_edges_from(edges)
+
+# 手工布局：让 D 在左、Y 在右
+pos = {
+    "F":   (-2,  1),
+    "A":   (-1,  0),
+    "Age": (-1, -1),
+    "D":   ( 0,  0.5),
+    "Q":   ( 1,  1.2),
+    "Y":   ( 2,  0),
+}
+labels = {
+    "D": "D (上大学)",
+    "Y": "Y (年收入)",
+    "A": "A (能力,未观测)",
+    "F": "F (父亲教育)",
+    "Age": "Age (年龄)",
+    "Q": "Q (大学质量,中介)",
+}
+plt.figure(figsize=(9, 5))
+nx.draw_networkx(G, pos, labels=labels, with_labels=True,
+                 node_size=2200, node_color="#e8eef5",
+                 font_size=10, font_family="Noto Sans CJK SC",
+                 edge_color="#888", arrows=True, arrowsize=15)
+plt.title("因果图：教育 -> 收入（A 未观测，后门路径未阻断）")
+plt.axis("off")
+plt.tight_layout()
+plt.savefig("dag_edu_income.png", dpi=150)
+# 读图可知：D<-A->Y 是无法用观测变量阻断的后门路径
+</code></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · 模拟数据演示混杂偏误</span><button class="copy-btn">复制</button></div>
+        <pre><code># ============================================================
+# 09.2 模拟数据：演示"控制混杂前后 OLS 系数的变化"
+# 真实 DGP：A -> D, A -> Y, D -> Y, 且 A 不可观测
+# 真实因果效应 tau0 = 1.0
+# ============================================================
+import numpy as np
+import statsmodels.api as sm
+
+np.random.seed(42)
+n = 5000
+
+# 混淆变量 A（未观测）
+A = np.random.normal(0, 1, n)
+# 处理 D 由 A 决定：A 高的人更可能上大学
+D = (A + np.random.normal(0, 1, n) &gt; 0).astype(float)
+# 结果 Y：真实 tau=1.0，A 对 Y 也有直接效应 0.8
+Y = 1.0 * D + 0.8 * A + np.random.normal(0, 1, n)
+
+# ---- 模型1：错误地不控制 A ----
+X_bad = sm.add_constant(D)
+m1 = sm.OLS(Y, X_bad).fit()
+print("不控制混杂：beta_D =", round(m1.params[1], 3),
+      "(真实=1.0，被 A 抬高)")
+
+# ---- 模型2：假设我们观测到 A（理想世界）----
+X_good = sm.add_constant(np.column_stack([D, A]))
+m2 = sm.OLS(Y, X_good).fit()
+print("控制混杂 A：beta_D =", round(m2.params[1], 3),
+      "(接近真实 1.0，无偏)")
+
+# ---- 模型3：用一个代理变量 A_hat 控制（部分缓解）----
+A_hat = A + np.random.normal(0, 0.3, n)   # 带噪代理
+X_proxy = sm.add_constant(np.column_stack([D, A_hat]))
+m3 = sm.OLS(Y, X_proxy).fit()
+print("用噪声代理 A_hat：beta_D =", round(m3.params[1], 3),
+      "(偏误缩小但未消失)")
+</code></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">R · 用 dagitty 自动找后门集</span><button class="copy-btn">复制</button></div>
+        <pre><code># install.packages("dagitty")
+library(dagitty)
+
+# 用 DAGitty 语法定义图：D 是处理，Y 是结果
+dag &lt;- dagitty('dag {
+  A [unobserved]
+  F -&gt; A
+  F -&gt; D
+  F -&gt; Y
+  A -&gt; D
+  A -&gt; Y
+  Age -&gt; Y
+  D -&gt; Q
+  Q -&gt; Y
+  D [exposure]
+  Y [outcome]
+}')
+
+# 自动计算满足后门准则的最小调整集
+adjustmentSets(dag, exposure = "D", outcome = "Y",
+               type = "backdoor")
+# 输出会给出：{ F, Age } 等可观测的调整集；
+# 但因为 A 未观测，含 A 的集合并不可行，
+# 说明：仅靠观测变量无法识别 ATE —— 必须找 IV。
+
+# 画出 DAG
+plot(graphLayout(dag))
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 逐步流程</h2>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 写下潜在结果与目标量</div>
+          <div class="step-desc">明确处理 $D$、结果 $Y$、目标是 ATE / ATT / LATE 中哪一个，并写出 $Y(1),Y(0)$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 画 DAG</div>
+          <div class="step-desc">把理论上的因果链条画成节点和箭头，标出混淆因子、对撞因子、中介变量，区分观测与未观测。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 找后门路径与最小调整集</div>
+          <div class="step-desc">从 $D$ 出发枚举所有后门路径，用后门准则判断一组候选控制变量 $Z$ 是否阻断全部后门路径。可用 dagitty 自动检查。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4 · 检查是否控制错变量</div>
+          <div class="step-desc">确认 $Z$ 中不包含对撞因子、不包含 $D$ 的后代（中介）。控制中介会把总效应"切碎"，不是估 ATE 想要的。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 5 · 若后门准则失败，升级识别策略</div>
+          <div class="step-desc">存在未观测混淆时，观测数据无法识别 ATE；改用 IV / RDD / DID / 实验，并在文中明确说明。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 6 · 写识别假设与反事实讨论</div>
+          <div class="step-desc">在论文中明确陈述可忽略性假设、平衡检验、敏感性分析（unobserved confounding 的 robustnes）。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><span class="sec-num">11</span> 论文案例与常见错误</h2>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Journal of Educational Statistics</span>
+        <div class="paper-title">Estimating Causal Effects of Treatments in Randomized and Nonrandomized Studies</div>
+        <div class="paper-meta">Donald B. Rubin · Journal of Educational Psychology, 1974</div>
+        <div class="paper-desc">Rubin 提出潜在结果框架的奠基论文。把因果效应定义为 $Y_i(1)-Y_i(0)$ 的差异，并指出非随机研究中反事实不可观测，必须借助"在给定协变量下可忽略"的假设。是现代因果推断的源头。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Book</span>
+        <div class="paper-title">Causality: Models, Reasoning, and Inference (2nd ed.)</div>
+        <div class="paper-meta">Judea Pearl · Cambridge University Press, 2009</div>
+        <div class="paper-desc">Pearl 的因果图圣经。系统提出 DAG、后门准则、do-calculus 三条规则，并把潜在结果框架与图模型统一在"结构因果模型"下。是做 DAG 识别分析的标准参考。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Book</span>
+        <div class="paper-title">Causal Inference for Statistics, Social, and Biomedical Sciences</div>
+        <div class="paper-meta">Guido W. Imbens &amp; Donald B. Rubin · Cambridge University Press, 2015</div>
+        <div class="paper-desc">把 Rubin 模型写成一本"操作手册"。从随机化实验、可忽略性、匹配、PSM 到工具变量，给出了完整的非参数因果推断工具箱。是应用微观实证研究者的标准教材。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Biometrika</span>
+        <div class="paper-title">Statistics and Causal Inference</div>
+        <div class="paper-meta">Paul W. Holland · Biometrika, 1986</div>
+        <div class="paper-desc">提出"因果推断的根本问题"（fundamental problem of causal inference），明确"没有反事实就没有因果"。是因果推断方法论史上被引用最多的短文之一。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · QJE</span>
+        <div class="paper-title">Estimating the Return to Schooling: Progress on Some Persistent Econometric Problems</div>
+        <div class="paper-meta">David Card · Econometrica, 2001（亦见 Card 1995, NBER）</div>
+        <div class="paper-desc">"教育→收入"的经典研究。用"出生地距大学距离"作 IV，绕开了未观测能力混淆。是本节 DAG 示例的现实原型：当 Ability 不可观测时，IV 是后门准则失败后的出路。</div>
+      </div>
+
+      <h3>常见错误</h3>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 1：把控制变量当"垃圾桶"，越多越好</div>
+        <p>控制对撞因子或 $D$ 的后代（中介）会引入偏误或切断因果通道。写论文前先画 DAG，明确每一个控制变量为什么要控制。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 2：把 ATT 当 ATE 报告</div>
+        <p>OLS 在可忽略性下估 ATE，PSM 估 ATT，IV 估 LATE。三者不可互换。报告时必须写清楚估的是哪个量，并讨论政策含义对应哪个。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 3：用代理变量控制未观测混淆后，就宣称"无内生性"</div>
+        <p>带噪代理变量（如用 IQ 代理能力）只能部分缓解偏误。残留的测量误差本身会造成衰减偏误。要做敏感性分析（如 Oster 2019 的 $\delta$ 法）。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 4：把相关当因果，忽略后门路径</div>
+        <p>"上大学的人收入高"可能完全来自能力混淆。不画 DAG、不识别后门集，直接把 OLS 系数解释为因果效应，是中文论文最常见的硬伤。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 5：在对撞因子上做条件而不自知</div>
+        <p>例如只研究"在职人群"的工资方程、只研究"上线产品"的销售差异、只在"通过筛选的样本"里做回归——这些都是在对撞因子上做条件，会引入 Berkson 偏误。</p>
+      </div>
+
+      <h3>进阶资料</h3>
+      <ul>
+        <li>Pearl, Glymour &amp; Jewell (2016), <em>Causal Inference in Statistics: A Primer</em> —— 入门最友好。</li>
+        <li>Hernán &amp; Robins, <em>Causal Inference: What If</em>（免费在线书）—— 流行病学家视角，强调 DAG 与 g-formula。</li>
+        <li>R 包 <code class="inline">dagitty</code> / Stata 包 <code class="inline">dagitty</code>：自动找后门集、画 DAG。</li>
+        <li>Python 包 <code class="inline">networkx</code>、<code class="inline">graphviz</code>：画自定义 DAG。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="11-significance-practice.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">显著性诊断实务</div>
+      </a>
+      <a href="16-dml.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">DML 双重/去偏机器学习</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+(function() {
+  const path = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('href') && item.getAttribute('href').endsWith(path)) {
+      item.classList.add('active');
+    }
+  });
+})();
+</script>
+</body>
+</html>

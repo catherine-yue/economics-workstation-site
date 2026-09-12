@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>对数线性化 | DSGE模型 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ========== 侧边栏 ========== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item active" href="04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- ========== 主内容 ========== -->
+<div class="main">
+  <div class="content-wrap">
+    <!-- 面包屑 -->
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">DSGE模型</a>
+      <span class="sep">/</span>
+      <span>对数线性化</span>
+    </div>
+
+    <!-- 页面标题 -->
+    <div class="page-header">
+      <span class="tag">DSGE · 第 5 站</span>
+      <h1>对数线性化：把非线性均衡系统翻译成 Dynare 能求解的线性方程组</h1>
+      <p class="desc">Log-linearization 是连接"非线性微观优化"与"线性理性预期求解"的桥梁。本页讲清为什么要线性化、对数偏离的定义、一阶泰勒展开的标准技巧，并对手写 NK 模型的四个核心方程（Euler 方程、NKPC、Taylor 规则、资源约束）逐行推导到 $\hat{x}$ 形式，最后组装成矩阵系统 $A E_t X_{t+1}+B X_t+C X_{t-1}+D \varepsilon_t=0$。</p>
+    </div>
+
+    <!-- 本页目录 -->
+    <div class="prereq-box">
+      <div class="prereq-head">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-item"><span class="prereq-label">数学 / 统计基础</span>一元/多元一阶泰勒展开、$\hat x_t=\ln(X_t/X)$ 技巧、矩阵代数、理性预期线性系统与 Blanchard-Kahn 条件的线性代数基础。</div>
+      <div class="prereq-item"><span class="prereq-label">经济学理论前置</span>NK 模型的非线性 FOC 与稳态值——本页正是把它们在稳态处翻成线性系统。</div>
+      <div class="prereq-item"><span class="prereq-label">软件 / 计算前置</span>MATLAB + Dynare；能读懂 .mod 并理解 Dynare 自动线性化的输出。</div>
+      <div class="prereq-item"><span class="prereq-label">站内前置页面</span>先学 03-steady-state：必须先有稳态值，才能在其处展开。</div>
+      <div class="prereq-item"><span class="prereq-label">难度与路线位置</span><span class="prereq-level lv-inter">进阶</span>DSGE 线性化的核心技术页，也是 05 Dynare 求解与 15 扰动法的前置。</div>
+    </div>
+
+    <!-- 基础知识库定位 -->
+    <div class="callout info">
+      <div class="callout-title">📚 基础知识库 · 本页定位</div>
+      <p>本页是 <strong>DSGE 基础知识库</strong>页面。定位：<strong>先单独学会这个工具，再到模型分支里看它怎么用</strong>。对数线性化是连接"非线性微观优化"与"线性理性预期求解"的桥梁，吃透 $\hat{x}_t$ 与一阶泰勒展开后，再去各分支里看它如何落地。</p>
+      <p style="margin-top:8px;margin-bottom:0"><strong>在哪些模型分支中使用：</strong>几乎所有线性求解的 DSGE 分支都靠它——
+        <a href="09-rbc-model.html">RBC 基准模型</a> ·
+        <a href="10-nk-three-equation.html">NK 三方程</a> ·
+        <a href="11-medium-scale-sw.html">中尺度 SW</a> ·
+        <a href="12-small-open-economy.html">小国开放经济</a> ·
+        <a href="07-financial-frictions.html">金融摩擦 BGG/GK</a> ·
+        <a href="13-fiscal-monetary-rules.html">财政与货币规则</a> ·
+        <a href="14-tank.html">TANK两主体</a> · <a href="21-hank.html">HANK</a> ·
+        <a href="16-adaptive-learning.html">适应性学习</a>
+      </p>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么必须线性化</a></li>
+        <li><a href="#s2">对数偏离与一阶泰勒展开</a></li>
+        <li><a href="#s3">逐步推导①：Euler 方程</a></li>
+        <li><a href="#s4">逐步推导②：新凯恩斯菲利普斯曲线</a></li>
+        <li><a href="#s5">逐步推导③：Taylor 规则</a></li>
+        <li><a href="#s6">逐步推导④：资源约束与技术</a></li>
+        <li><a href="#s7">线性化后的完整模型系统</a></li>
+        <li><a href="#s8">矩阵形式与 Dynare 自动线性化</a></li>
+        <li><a href="#s9">经典论文与参考文献</a></li>
+        <li><a href="#s10">常见错误与进阶资料</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么必须线性化</h2>
+      <p>DSGE 的原始均衡条件（equilibrium conditions）几乎都是<strong>非线性</strong>的：$C_t^{-\sigma}=\beta E_t[C_{t+1}^{-\sigma}(1+r_t)]$、价格加成 $\frac{\theta}{\theta-1}\frac{MC_t}{P_t}=\pi_t$ 之类。要对一个理性预期（rational expectations）非线性系统求解析解，一般是不可能的；即便用数值方法，全局解（global solution）在十维以上的中型模型里代价极高。而宏观时间序列中的波动（business-cycle fluctuations）相对稳态（steady state）的偏离通常很小——战后美国产出缺口基本在 $\pm 5\%$ 以内。这给了我们一个便宜而可靠的近似：<strong>在稳态附近把所有方程做一阶泰勒展开（first-order Taylor expansion）</strong>，只保留偏离稳态的一阶项，扔掉二阶及以上的"小量平方"。</p>
+      <p>这样做的回报巨大：(1) 系统变成<strong>线性</strong>的，可用 Blanchard-Kahn 条件、Blanchard-Kahn-Klein 或 Uhlig 方法一步求出政策函数（policy function）；(2) 脉冲响应（IRF）关于冲击是线性的、可加的，方差分解、历史分解都变成线性代数；(3) Dynare 等工具会自动做这一步，我们只需写对非线性方程。代价是：一阶近似下<strong>不确定性不影响决策</strong>（确定性等价，certainty equivalence），也看不到风险溢价（risk premium）和偏态；要研究零利率下限（ZLB）、尾部风险或福利成本的二阶项，就必须升级到二阶/三阶近似（见第 06、08 站）。</p>
+      <div class="callout info">
+        <div class="callout-title">💡 直觉</div>
+        <p>线性化 = 在稳态这个"锚"附近，把弯弯曲曲的曲线局部拉直。$\hat{x}_t$ 不是 $x_t$ 本身，而是 $x_t$ 相对稳态的<strong>百分比偏离</strong>。IRF 横轴上的"1% 冲击"，纵轴读出来的数字就是这个百分比。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 对数偏离的定义与一阶泰勒展开技巧</h2>
+      <p>设变量 $x_t$ 的确定性稳态为 $x$（去掉时间下标、不加帽）。<strong>对数偏离</strong>（log deviation / hat variable）定义为：</p>
+      <div class="formula-block">
+        <div class="formula-label">定义 · 对数偏离</div>
+        $$\hat{x}_t \equiv \log\left(\frac{x_t}{x}\right) = \log x_t - \log x$$
+      </div>
+      <p>当偏离很小时，$\hat{x}_t \approx \frac{x_t - x}{x}$，即$\hat{x}_t$ 在数值上等于"偏离稳态的百分比"（乘以 100 就是百分数）。由 $x_t = x e^{\hat{x}_t}$，再做泰勒展开 $e^{\hat{x}_t}\approx 1+\hat{x}_t$，得到整个 DSGE 线性化最常用的三条"恒等式"：</p>
+      <div class="formula-block">
+        <div class="formula-label">核心恒等式（只保留一阶）</div>
+        $$x_t \approx x\,(1+\hat{x}_t),\qquad \hat{x}_t \approx \frac{x_t-x}{x},\qquad \widehat{x_t y_t} \approx \hat{x}_t + \hat{y}_t,\qquad \left(\widehat{x_t^\alpha}\right) \approx \alpha\,\hat{x}_t$$
+      </div>
+      <p>对数把"乘积"变"和"、把"幂次"变"倍数"，这正是对数线性化比直接线性化好用的原因。<strong>对任意函数 $f(x_t)$ 在 $x$ 处做一阶泰勒展开</strong>：</p>
+      <div class="formula-block">
+        <div class="formula-label">一阶泰勒展开</div>
+        $$f(x_t) \approx f(x) + f'(x)\,(x_t - x) = f(x)\,\big[1 + \underbrace{\frac{x\,f'(x)}{f(x)}}_{\text{弹性}} \hat{x}_t\big]$$
+      </div>
+      <p>实操口诀：<strong>先把方程写成"稳态值 × 各变量的幂次乘积 = 1 或常数"的形式，两边取对数，再扔掉所有稳态常数项和交叉二阶项</strong>。下文四个方程我们都按这一步一步做。</p>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 逐步推导①：Euler 方程（消费跨期替代）</h2>
+      <p>家庭最优化的核心是 Euler 方程。设 CRRA 效用 $u(C_t)=C_t^{1-\sigma}/(1-\sigma)$，资本/债券实际收益率为 $r_t$（净利率，$1+r_t$ 为总回报）：</p>
+      <div class="formula-block">
+        <div class="formula-label">原始非线性 Euler 方程</div>
+        $$C_t^{-\sigma} = \beta\,E_t\big[ C_{t+1}^{-\sigma}\,(1+r_t)\big]$$
+      </div>
+      <p><strong>第一步：代入稳态。</strong> 稳态时没有预期误差，$C_t=C_{t+1}=C$，$r_t=r$，于是 $1=\beta(1+r)$，即 $1+r=1/\beta$。</p>
+      <p><strong>第二步：写成"稳态常数 × 变量幂次 = 常数"。</strong> 两边除以 $C^{-\sigma}=\beta E_t[C^{-\sigma}(1+r)]$，利用稳态 $C^{-\sigma}=\beta C^{-\sigma}(1+r)$ 约掉：</p>
+      <div class="formula-block">
+        $$\left(\frac{C_t}{C}\right)^{-\sigma} = E_t\left[\left(\frac{C_{t+1}}{C}\right)^{-\sigma}\,\frac{1+r_t}{1+r}\right]$$
+      </div>
+      <p><strong>第三步：用 $x_t/x = e^{\hat{x}_t}\approx 1+\hat{x}_t$，再取对数。</strong> $\log(C_t/C)=\hat{c}_t$，于是 $(C_t/C)^{-\sigma}=e^{-\sigma \hat{c}_t}\approx 1-\sigma \hat{c}_t$。同理 $\left(\frac{1+r_t}{1+r}\right)$ 这一项记 $\hat{r}_t = \frac{r_t - r}{1+r}$（注意利率是净利率，其对数偏离要除以总回报 $1+r$，见下方 callout）：</p>
+      <div class="formula-block">
+        <div class="formula-label">逐项展开（只保留一阶）</div>
+        $$1-\sigma \hat{c}_t = E_t\big[(1-\sigma \hat{c}_{t+1})(1+\hat{r}_t)\big] \approx E_t\big[1-\sigma \hat{c}_{t+1}+\hat{r}_t\big]$$
+      </div>
+      <p><strong>第四步：两边减 1，整理。</strong> 常数项消去，$E_t[1]=1$：</p>
+      <div class="formula-block">
+        <div class="formula-label">✅ Euler 方程的对数线性化结果</div>
+        $$\hat{c}_t = E_t\hat{c}_{t+1} - \frac{1}{\sigma}\,\hat{r}_t$$
+      </div>
+      <p>这就是教科书式的消费 Euler 方程：当前消费等于预期未来消费减去$1/\sigma$乘以实际利率偏离。$1/\sigma$ 是跨期替代弹性（IES）。若模型还带投资 $I_t$、资本 $K_t$ 与 Tobin's Q，对 $\frac{1}{I_t^{1}}$ 型调整成本展开后会得到类似的投资-Q 方程，推导套路完全一致。</p>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 利率变量的坑</div>
+        <p>利率 $r_t$ 本身可正可负、且稳态 $r\neq 1$，<strong>不能</strong>直接写 $\hat{r}_t=\log(r_t/r)$。标准做法是对<strong>总回报</strong> $R_t=1+r_t$ 做对数偏离：$\widehat{R}_t=\log(R_t/R)$，而 $\hat{r}_t\equiv \frac{r_t-r}{1+r}=\widehat{R}_t$。若你把名义利率写成总回报 $R_t^n$，则费雪关系 $\hat{r}_t=\widehat{R}_t^n-E_t\hat{\pi}_{t+1}$。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 逐步推导②：新凯恩斯菲利普斯曲线（NKPC）</h2>
+      <p>Calvo 价格粘性（每期只有 $1-\theta$ 比例厂商调价）经对数线性化后得到向前看的 NKPC。设实际边际成本为 $mc_t$（相对稳态），稳态加成 $\Lambda=\frac{\theta}{\theta-1}$。原始最优定价条件对数线性化的标准结果为：</p>
+      <div class="formula-block">
+        <div class="formula-label">原始（半简化）形式</div>
+        $$\pi_t = \beta\,E_t\pi_{t+1} + \kappa\,mc_t,\qquad \kappa \equiv \frac{(1-\theta)(1-\beta\theta)}{\theta}\,\Big( \frac{1}{1+\phi} \Big)$$
+      </div>
+      <p>其中 $mc_t$ 已是用对数偏离表示的边际成本。<strong>逐步看它怎么来</strong>：Calvo 厂商的最优价格 $\tilde{P}_t$ 满足</p>
+      <div class="formula-block">
+        $$E_t\sum_{s=0}^{\infty}(\beta\theta)^s \Big[\frac{\tilde{P}_t}{P_{t+s}} - \Lambda\,MC_{t+s}\Big] Y_{t+s}=0$$
+      </div>
+      <p><strong>第一步：</strong>在零通胀稳态 $\pi=1$ 附近展开。记相对价格 $\tilde{P}_t/P_t = 1+\hat{p}_t^\*$，总通胀 $\pi_t=P_t/P_{t-1}=1+\hat{\pi}_t$。由加总价格定律 $1=(1-\theta)(\tilde{P}_t)^{1-\epsilon}+\theta P_{t-1}^{1-\epsilon}$，在稳态展开得</p>
+      <div class="formula-block">
+        $$\hat{\pi}_t = \frac{1-\theta}{\theta}\,\hat{p}_t^\* \quad\Rightarrow\quad \hat{p}_t^\* = \frac{\theta}{1-\theta}\hat{\pi}_t$$
+      </div>
+      <p><strong>第二步：</strong>把最优定价一阶条件写成 $\hat{p}_t^\*=(1-\beta\theta)\,mc_t^\*+\beta\theta E_t[\hat{\pi}_{t+1}+\hat{p}_{t+1}^\*]$，其中 $mc_t^\*$ 是对数偏离的实际边际成本。</p>
+      <p><strong>第三步：</strong>代入 $\hat{p}_t^\* = \frac{\theta}{1-\theta}\hat{\pi}_t$，消去 $\hat{p}^\*$：</p>
+      <div class="formula-block">
+        <div class="formula-label">✅ NKPC 对数线性化结果</div>
+        $$\hat{\pi}_t = \beta\,E_t\hat{\pi}_{t+1} + \underbrace{\frac{(1-\theta)(1-\beta\theta)}{\theta}}_{\kappa_0}\,mc_t^\*$$
+      </div>
+      <p>再用生产函数与劳动供给把 $mc_t^\*$ 换成产出缺口 $\hat{y}_t-\hat{y}_t^f$，就得到常见的 $\hat{\pi}_t=\beta E_t\hat{\pi}_{t+1}+\kappa(\hat{y}_t-\hat{y}_t^f)$。这是一个纯向前看方程，没有滞后项——这也是 NK 模型"通胀取决于预期"的结构性来源。</p>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 逐步推导③：Taylor 规则（货币政策）</h2>
+      <p>央行按 Taylor 规则设定名义利率，带利率平滑（interest rate smoothing）与通胀/产出反应：</p>
+      <div class="formula-block">
+        <div class="formula-label">原始 Taylor 规则（非线性总回报写法）</div>
+        $$\frac{R_t}{R} = \left(\frac{R_{t-1}}{R}\right)^{\rho_R} \left[\left(\frac{\pi_t}{\pi}\right)^{\phi_\pi}\left(\frac{Y_t}{Y}\right)^{\phi_y}\right]^{1-\rho_R} e^{\varepsilon_t^m}$$
+      </div>
+      <p><strong>第一步：</strong>稳态时 $\pi=1$（零通胀稳态）、$R=1/\beta$，所有比值都等于 1。</p>
+      <p><strong>第二步：</strong>两边取对数，$\log(R_t/R)=\widehat{R}_t$，利用 $\log$ 把乘积变和、幂次变倍数：</p>
+      <div class="formula-block">
+        $$\widehat{R}_t = \rho_R \widehat{R}_{t-1} + (1-\rho_R)\big[\phi_\pi \hat{\pi}_t + \phi_y \hat{y}_t\big] + \varepsilon_t^m$$
+      </div>
+      <p><strong>第三步：</strong>定义利率偏离 $\hat{r}_t\equiv \widehat{R}_t$，即得标准形式：</p>
+      <div class="formula-block">
+        <div class="formula-label">✅ Taylor 规则对数线性化结果</div>
+        $$\hat{r}_t = \rho_R \hat{r}_{t-1} + (1-\rho_R)\,\phi_\pi \hat{\pi}_t + (1-\rho_R)\,\phi_y \hat{y}_t + \varepsilon_t^m,\qquad \varepsilon_t^m\sim N(0,\sigma_m^2)$$
+      </div>
+      <p>利率平滑 $\rho_R\in(0,1)$ 让货币政策惯性化；$\phi_\pi>1$（Taylor 原则）保证均衡确定性，这正是下一站讲 Blanchard-Kahn 条件时要用到的关键参数。</p>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 逐步推导④：资源约束与技术过程</h2>
+      <p>封闭经济资源约束 $Y_t=C_t+I_t$（无政府、无资本调整成本的最简 RBC 版），全要素生产率 $A_t$ 服从 AR(1)。</p>
+      <p><strong>资源约束：</strong>稳态 $Y=C$（设无投资）。两边除以 $Y=C$：$\frac{Y_t}{Y}=\frac{C_t}{C}$。取对数即 $\hat{y}_t=\hat{c}_t$。若有投资 $I_t=\delta K_t$，则需写成份额加权：</p>
+      <div class="formula-block">
+        <div class="formula-label">✅ 资源约束对数线性化（含投资）</div>
+        $$\hat{y}_t = \frac{C}{Y}\hat{c}_t + \frac{I}{Y}\hat{i}_t,\qquad \frac{I}{Y}=\delta\frac{K}{Y}$$
+      </div>
+      <p><strong>生产函数</strong> $Y_t=A_t K_t^\alpha N_t^{1-\alpha}$：取对数、稳态约掉，直接得份额加权和：</p>
+      <div class="formula-block">
+        <div class="formula-label">✅ 生产函数对数线性化</div>
+        $$\hat{y}_t = \hat{a}_t + \alpha\,\hat{k}_t + (1-\alpha)\hat{n}_t$$
+      </div>
+      <p><strong>技术冲击过程</strong>本身已是线性（外生 AR(1)）：</p>
+      <div class="formula-block">
+        $$\hat{a}_t = \rho_a \hat{a}_{t-1} + \varepsilon_t^a,\qquad \varepsilon_t^a\sim N(0,\sigma_a^2)$$
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">✅ 口诀总结</div>
+        <p>① 找到稳态；② 方程两边除以稳态等式，约成"比值=常数"；③ 用 $x_t/x\approx 1+\hat{x}_t$ 展开；④ 扔掉常数与交叉二阶项；⑤ 整理成 $\hat{x}$ 的线性方程。熟练后，对 $Y_t=A_t K^\alpha N^{1-\alpha}$ 这类"幂次乘积"一步就能写出 $\hat{y}=\hat{a}+\alpha\hat{k}+(1-\alpha)\hat{n}$。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 线性化后的完整模型系统</h2>
+      <p>把上面四个方程加上资本积累与资本 Euler（q 方程），最简 NK-RBC 模型的线性系统为（变量均为对数偏离）：</p>
+      <div class="formula-block">
+        <div class="formula-label">线性化方程组（6 方程）</div>
+        $$\begin{aligned}
+        \hat{c}_t &= E_t\hat{c}_{t+1} - \tfrac{1}{\sigma}\hat{r}_t \\
+        \hat{\pi}_t &= \beta E_t\hat{\pi}_{t+1} + \kappa\,\hat{mc}_t \\
+        \hat{r}_t &= \rho_R\hat{r}_{t-1} + (1-\rho_R)(\phi_\pi\hat{\pi}_t+\phi_y\hat{y}_t) + \varepsilon_t^m \\
+        \hat{y}_t &= \tfrac{C}{Y}\hat{c}_t + \tfrac{I}{Y}\hat{i}_t \\
+        \hat{y}_t &= \hat{a}_t + \alpha\hat{k}_t + (1-\alpha)\hat{n}_t \\
+        \hat{a}_t &= \rho_a\hat{a}_{t-1} + \varepsilon_t^a
+        \end{aligned}$$
+      </div>
+      <p>注意：这个系统里同时出现了<strong>前瞻变量</strong>（$E_t\hat{c}_{t+1}, E_t\hat{\pi}_{t+1}$）、<strong>滞后变量</strong>（$\hat{r}_{t-1}, \hat{k}_t, \hat{a}_{t-1}$）和<strong>同期变量</strong>（$\hat{y}_t, \hat{mc}_t$）。求解器要做的就是把它化成状态空间形式 $X_t=A X_{t-1}+B\varepsilon_t$。</p>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 矩阵形式与 Dynare 自动线性化</h2>
+      <p>把所有变量堆进一个向量 $X_t$（状态变量 + 前瞻变量），把系统写成 Blanchard-Kahn 的标准形式：</p>
+      <div class="formula-block">
+        <div class="formula-label">Blanchard-Kahn 标准型</div>
+        $$A\,E_t X_{t+1} + B\,X_t + C\,X_{t-1} + D\,\varepsilon_t = 0$$
+      </div>
+      <p>其中 $A,B,C,D$ 是由参数决定的系数矩阵，$\varepsilon_t$ 是结构冲击向量。求解要求：<strong>前瞻变量的个数等于 $A^{-1}B$ 的不稳定特征根个数</strong>，这就是 Blanchard-Kahn 条件（第 06 站详解）。好消息是——<strong>你几乎永远不用手推这个矩阵</strong>。Dynare 会对 model 块里的非线性方程自动求导、自动线性化。下面是手推与 Dynare 的对照：</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Dynare · 手写非线性 vs 自动线性化对照</span><button class="copy-btn">复制</button></div>
+        <pre><code>% ===== 你在 model 块里写的是非线性原始方程 =====
+model;
+  % 家庭 Euler 方程（非线性）
+  c^(-sigma) = beta*c(1)^(-sigma)*(1+r);
+
+  % NKPC（由 Calvo 最优定价隐含，这里直接写其等价简化式）
+  pi = beta*pi(1) + kappa*mc;
+
+  % Taylor 规则
+  (r/r_ss)^rho_r * ((pi/pi_ss)^phi_pi*(y/y_ss)^phi_y)^(1-rho_r) = r/r_ss; % 见下方注释
+  r = r(-1)^rho_r * (pi^phi_pi*y^phi_y)^(1-rho_r) * exp(em);
+
+  % 资源约束 / 生产函数 / 技术
+  y = c + i;
+  y = a*k^alpha*n^(1-alpha);
+  a = rho_a*a(-1) + ea;
+end;
+% Dynare 自动在 steady state 处做一阶泰勒展开，等价于你手推的 hat 变量系统。
+% 手推的 hat{c}_t = E_t hat{c}_{t+1} - (1/sigma) hat{r}_t
+%   就是 Dynare 对上面 Euler 方程自动求导后的结果。</code></pre>
+      </div>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">Step 1 · 写出全部非线性均衡条件</div><div class="step-desc">从第 03 站的一阶条件出发，不做任何近似，原样写进 model 块。</div></div>
+        <div class="step-item"><div class="step-title">Step 2 · 求解稳态并写 steady_state_model</div><div class="step-desc">Dynare 需要稳态才能确定泰勒展开的"展开点"。这一步做不对，线性化结果全错。</div></div>
+        <div class="step-item"><div class="step-title">Step 3 · 令 Dynare 自动线性化</div><div class="step-desc">stoch_simul 默认 order=1，即在稳态处自动一阶展开，得到 $A E_t X_{t+1}+BX_t+CX_{t-1}+D\varepsilon_t=0$。</div></div>
+        <div class="step-item"><div class="step-title">Step 4 · 核验 BK 条件并读政策函数</div><div class="step-desc">Dynare 报告 "Blanchard Kahn conditions are satisfied"，输出 oo_.dr 即政策函数 $X_t=A(\theta)X_{t-1}+B(\theta)\varepsilon_t$。</div></div>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 手推 vs 机推不一致的常见原因</div>
+        <p>① 忘记把利率写成总回报再展开，导致 $\hat{r}$ 系数错一个 $(1+r)$；② 通胀稳态不是 1（如稳态 $\pi=1.02$），NKPC 里多一个 $\pi$ 的常数项没消；③ 资本/消费份额 $C/Y, I/Y$ 用错稳态值；④ 把"对数偏离"当成"水平偏离"，IRF 量级差 100 倍。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 经典论文与参考文献</h2>
+      <div class="paper-card">
+        <span class="paper-type en">English · 教科书级</span>
+        <div class="paper-title">Woodford, M. (2003). Interest and Prices: Foundations of a Theory of Monetary Policy</div>
+        <div class="paper-meta">Princeton University Press · NKPC 与对数线性化的标准教材</div>
+        <div class="paper-desc">第 2-3 章系统给出 Calvo 定价到 $\pi_t=\beta E_t\pi_{t+1}+\kappa x_t$ 的完整对数线性化推导，是本页 NKPC 步骤的原始出处。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 方法论</span>
+        <div class="paper-title">Uhlig, H. (1999). A Toolkit for Analyzing Nonlinear Dynamic Stochastic Models Easily</div>
+        <div class="paper-meta">in Marimon & Scott (eds.), Computational Methods for the Study of Dynamic Economies</div>
+        <div class="paper-desc">提出用"对数线性化 + 待定系数法"把 DSGE 写成矩阵系统的标准 toolkit，是 Dynare 自动线性化的思想源头。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 顶刊</span>
+        <div class="paper-title">刘斌 (2008). 我国DSGE模型的开发及在货币政策分析中的应用</div>
+        <div class="paper-meta">《金融研究》 · 国内较早系统展示 NK 模型对数线性化与政策分析的文献</div>
+        <div class="paper-desc">完整给出一个开放经济 DSGE 的对数线性化方程组，并讨论线性化误差与稳态校准，是中文入门的标准参考。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 顶刊</span>
+        <div class="paper-title">许伟、陈斌开等 · 《经济研究》系列 DSGE 货币政策论文</div>
+        <div class="paper-meta">《经济研究》 · 中国宏观 DSGE 估计的代表作</div>
+        <div class="paper-desc">示范了如何把含金融加速器的模型对数线性化后用贝叶斯方法估计，强调份额参数与稳态校准对线性化精度的影响。</div>
+      </div>
+    </div>
+
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 常见错误与进阶资料</h2>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 1：把对数偏离当水平偏离读 IRF</div>
+        <p>$\hat{y}_t$ 是百分数偏离。IRF 纵轴读数 0.5 表示"产出高于稳态 0.5%"，不是 0.5 单位。报告里要写"percent deviation from steady state"。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 2：在非零通胀稳态线性化 NKPC 却不调整</div>
+        <p>若稳态 $\bar{\pi}\neq 1$，NKPC 里会出现 $\bar{\pi}$ 与时间依赖（time-dependent）项；简单模型一律假设零通胀稳态 $\bar{\pi}=1$。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 3：二阶及以上小项没扔干净</div>
+        <p>$(1-\sigma\hat{c}_{t+1})(1+\hat{r}_t)$ 展开后出现 $\sigma\hat{c}_{t+1}\hat{r}_t$，这是二阶小量，必须扔掉。留着它会破坏线性系统。</p>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">📚 进阶资料</div>
+        <p>① Canova (2007) Methods for Applied Macroeconomic Research，第 3 章；② DeJong & Dave (2011) Structural Macroeconometrics，第 2 章；③ Dynare 官方 manual 的 "The model file" 与 "Linearization" 章节。下一步进入 <strong>第 06 站：Dynare 求解实操</strong>，把这套线性系统交给 Dynare 跑出来。</p>
+      </div>
+    </div>
+
+    <!-- 底部翻页 -->
+    <div class="page-nav">
+      <a href="03-steady-state.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">04 · 稳态求解</div>
+      </a>
+      <a href="05-dynare-solving.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">06 · Dynare求解实操</div>
+      </a>
+    </div>
+
+
+<script>
+// 侧边栏切换
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+
+// 复制代码
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+
+// KaTeX 渲染
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+
+// 高亮当前导航
+(function() {
+  const path = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('href') && item.getAttribute('href').endsWith(path)) {
+      item.classList.add('active');
+    }
+  });
+})();
+</script>
+</body>
+</html>

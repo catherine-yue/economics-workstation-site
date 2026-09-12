@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据清洗 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item active" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">实证论文</a>
+      <span class="sep">/</span>
+      <span>01 数据清洗</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">实证论文 · Empirical · 02</span>
+      <h1>数据清洗：从原始数据到分析样本</h1>
+      <p class="desc">缺失值诊断与处理、异常值识别（箱线图 / 3σ / MAD）、winsorize 缩尾、重复值处理、变量类型转换与标签系统——这是 Table 1 之前的全部工作。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">描述统计基础（均值 / 中位数 / 分位数）、常见概率分布（正态 / 偏态）、缺失数据机制（MCAR / MAR / MNAR）与诊断原理。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">无专门理论要求；建立“数据质量决定结论上限”的实证意识即可。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">Stata 17+（外部命令：<code class="inline">misstable</code>、<code class="inline">mvpatterns</code>、<code class="inline">winsor2</code>、<code class="inline">ipolate</code>；基础 <code class="inline">summarize</code>、<code class="inline">dropmiss</code>）。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body">本页为实证流程<strong>起点</strong>，先浏览 <a href="index.html">实证总览与路线</a>，无前置方法页。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8f3ec;color:#2d7a4f;">入门</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么数据清洗决定论文上限</a></li>
+        <li><a href="#s2">缺失值诊断：misstable 与 mvpatterns</a></li>
+        <li><a href="#s3">缺失值处理：drop / impute / 插值</a></li>
+        <li><a href="#s4">异常值识别：箱线图 / 3σ / MAD</a></li>
+        <li><a href="#s5">winsorize 缩尾：1% 还是 5%</a></li>
+        <li><a href="#s6">重复值处理与变量重命名</a></li>
+        <li><a href="#s7">数据类型转换与标签系统</a></li>
+        <li><a href="#s8">对数变换与变量构造</a></li>
+        <li><a href="#s9">论文案例：数据清洗在顶刊中的角色</a></li>
+        <li><a href="#s10">常见错误与调试</a></li>
+        <li><a href="#s11">进阶学习资料</a></li>
+      </ol>
+    </div>
+
+    <!-- S1 -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么数据清洗决定论文上限</h2>
+      <p>任何从 CSMAR、Wind、中国工业企业数据库（ASIF）下载下来的原始面板，都不会"干净到可以直接跑 reg"。原始数据里常见的问题包括：同一变量在不同年份编码不一致、上市公司股票代码因更名/退市而变化、财务报表口径在 2007 年新会计准则后发生切换、缺失值被写成空字符串或 -999、极端值由录入错误或并表导致。如果不在这一步把它们处理干净，后面无论用多么精巧的识别策略，结论都站不住。</p>
+      <p>经济学上一个朴素的直觉：<strong>测量误差（measurement error）对 OLS 系数的衰减偏误（attenuation bias）</strong>，会把系数向零拉。当因变量 $y$ 含有纯测量误差 $\varepsilon$ 时，$\hat\beta$ 仍是无偏的；但当核心解释变量 $x$ 含有测量误差时，估计系数会被系统性地低估：</p>
+      <div class="formula-block">
+        <div class="formula-label">经典变量误差模型（Classical Measurement Error）</div>
+        $$x^* = x + u, \quad plim(\hat\beta) = \beta \cdot \frac{\sigma_x^2}{\sigma_x^2 + \sigma_u^2} < \beta$$
+      </div>
+      <p>也就是说，脏数据不仅让你的结果不显著，还会让你<strong>错误地推翻一个本来成立的假设</strong>。这就是为什么数据清洗不是"体力活"，而是实证识别的一部分。</p>
+    </div>
+
+    <!-- S2 -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 缺失值诊断：misstable 与 mvpatterns</h2>
+      <p>清洗的第一步永远是<strong>诊断（diagnose）</strong>，而不是直接删。你需要先回答三个问题：每个变量缺多少？缺失是不是集中在某几个变量上？缺失在公司-年份上的分布是什么样？Stata 里有两个命令专门做这件事：<code class="inline">misstable</code> 给出每个变量的缺失计数与占比；<code class="inline">mvpatterns</code> 把"哪几个变量同时缺失"的模式列出来。</p>
+
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 读入数据，先用 sysuse 演示</div>
+          <div class="step-desc">下面这段代码用 Stata 自带的 <code class="inline">nlsw88</code>（1988 年全国青年纵向调查）演示缺失诊断，逻辑可直接套用到你的 CSMAR 面板。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 用 misstable summarize 看连续变量缺失</div>
+          <div class="step-desc">它会列出每个变量的非缺失样本量、缺失样本量，以及"唯一值个数"——用来识别是否把缺失编码成了 -999 之类的哨兵值。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 用 mvpatterns 看缺失模式</div>
+          <div class="step-desc">mvpatterns 会把"哪几个变量同时缺失"的组合按频次排序，帮你识别是否有"整家公司整段年份都没数据"的结构性缺失。</div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 缺失值诊断</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  02-missing-diagnose.do  —— 缺失值诊断
+*--------------------------------------------------------------*
+clear all
+set more off
+
+* 用 Stata 自带的 nlsw88 演示（女性工资面板，含不少缺失）
+sysuse nlsw88, clear
+
+* 1) misstable summarize：看连续变量的缺失计数与占比
+*    输出 Unabbrev. / Obs. / Unique / Mean / Min / Max
+misstable summarize
+
+* 2) misstable patterns：按"哪几个变量同时缺失"分组统计
+*    这一步能告诉你缺失是不是结构性的（成批缺失）
+misstable patterns wage tenure ttl_exp collgrad
+
+* 3) mvpatterns：等价命令，但输出更紧凑
+mvpatterns wage tenure ttl_exp
+
+* 4) 关键检查：是否把缺失写成了哨兵值（如 -999, 9999, 空字符串）
+*    对数值变量，看最小值是否异常地小
+summarize wage tenure ttl_exp, detail
+
+* 5) 把"伪缺失"替换成真正的 .（Stata 缺失值）
+*    假设原始数据里 -999 代表缺失
+* replace wage = . if wage == -999
+* replace tenure = . if tenure == -999
+</code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">Stata 缺失值的 27 种"特殊缺失"</div>
+        <p>Stata 的数值缺失不仅是 <code class="inline">.</code>，还有 <code class="inline">.a .b ... .z</code> 共 27 个，并且它们在数值上"大于任何真实数"（即 <code class="inline">. &gt; 1e300</code>）。这意味着 <code class="inline">sum price if price &gt; 0</code> 会把所有缺失值也包含进来！正确写法是 <code class="inline">sum price if price &gt; 0 &amp; !missing(price)</code>。</p>
+      </div>
+    </div>
+
+    <!-- S3 -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 缺失值处理：drop / impute / 插值</h2>
+      <p>诊断清楚之后，处理缺失值主要有三条路。它们不是"三选一"，而是根据<strong>缺失机制</strong>来选：</p>
+      <ul>
+        <li><strong>MCAR（完全随机缺失）</strong>：缺失与任何变量都无关。这种情况下，直接 drop 损失最小。</li>
+        <li><strong>MAR（条件随机缺失）</strong>：缺失只与观测到的协变量有关。可以用分组均值/中位数插补，或多重插补。</li>
+        <li><strong>MNAR（非随机缺失）</strong>：缺失本身与未观测到的信息有关（例如业绩差的公司不愿披露）。这种情况下，任何插补都会引入偏误，应在论文中讨论并做敏感性分析。</li>
+      </ul>
+
+      <div class="formula-block">
+        <div class="formula-label">插补方法：均值插补 vs. 回归插补</div>
+        $$\text{Mean imputation: } \hat{x}_{i,miss} = \bar{x}; \qquad \text{Regression imputation: } \hat{x}_{i,miss} = \hat\gamma_0 + \hat\gamma_1 z_i$$
+      </div>
+
+      <p>对于公司-年份面板，最常用的"时间序列上的缺失"用 <code class="inline">ipolate</code> 做线性插值（linear interpolation）：把相邻两个真实值之间的空缺用直线连起来。这在财务指标（如中间年份的 R&amp;D 缺失）上非常常见。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 缺失值处理三种策略</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  03-missing-handling.do  —— drop / impute / ipolate
+*--------------------------------------------------------------*
+clear all
+set more off
+
+* 先用 sysuse auto 构造一个含缺失的迷你面板
+sysuse auto, clear
+keep make price mpg weight
+gen year = 1978
+
+* 人为制造一些缺失（演示用）
+replace price = . if _n == 5
+replace price = . if _n == 10
+replace mpg    = . if _n == 3
+
+* ---------- 策略 A：listwise deletion（整行删除） ----------
+* 只要回归所需任一变量缺失，就丢掉这一行。
+* 注意：regress 命令默认就做这件事（listwise deletion）。
+* 显式写法：
+preserve
+    drop if missing(price, mpg, weight)
+    count          // 看一下删完还剩多少
+restore
+
+* ---------- 策略 B：分组均值 / 中位数插补 ----------
+* 按 foreign（是否进口车）分组，用组内中位数填补 price 的缺失
+* 注意：插补会人为压缩方差，建议只在缺失很少时用
+bysort foreign: egen price_med = median(price)
+gen price_imp = price
+replace price_imp = price_med if missing(price)
+
+* ---------- 策略 C：ipolate 线性插值（面板内时间插值） ----------
+* ipolate 适合"同一公司在时间序列上偶尔缺一年"的场景。
+* 下面用一个手工构造的公司-年份序列演示：
+clear
+set obs 10
+gen id = 1
+gen year = 2010 + _n
+gen roe = .
+replace roe = 0.05 in 1
+replace roe = 0.08 in 4
+replace roe = 0.06 in 8
+* 在同一 id 内部，按 year 排序后插值
+bysort id (year): ipolate roe year, gen(roe_ipol)
+list year roe roe_ipol
+
+* ---------- 策略 D：多重插补（MICE 的简单版） ----------
+* Stata 原生 mi 命令族；缺失比例大时更稳健。
+* mi set flong
+* mi register imputed wage tenure ttl_exp
+* mi impute chained (regress) wage tenure = collgrad smsa, add(5)
+</code></pre>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">不要把插补值当真</div>
+        <p>插补得到的 <code class="inline">price_imp</code> 是人造数据，它会人为减小样本方差、夸大系数显著性。论文里应当：(1) 报告原始样本与插补后样本的对比；(2) 主回归用"干净样本"，稳健性检验里用插补样本。</p>
+      </div>
+    </div>
+
+    <!-- S4 -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 异常值识别：箱线图 / 3σ / MAD</h2>
+      <p>异常值（outlier）指那些与主体数据分布严重偏离的观测。它们可能是真实的极端事件（如某公司当年利润暴增 100 倍），也可能是录入错误。识别异常值常用三种规则：</p>
+      <ul>
+        <li><strong>箱线图法则（Tukey's fences）</strong>：低于 $Q_1 - 1.5 \cdot IQR$ 或高于 $Q_3 + 1.5 \cdot IQR$ 即视为异常。IQR = $Q_3 - Q_1$。</li>
+        <li><strong>3σ 法则</strong>：偏离均值 $\bar x$ 超过 $3\sigma$ 即视为异常。前提是数据近似正态，对长尾的财务数据不太适用。</li>
+        <li><strong>MAD（Median Absolute Deviation，中位数绝对偏差）</strong>：$MAD = 1.4826 \cdot \text{median}(|x_i - \tilde{x}|)$，对厚尾分布比 3σ 稳健得多。</li>
+      </ul>
+      <div class="formula-block">
+        <div class="formula-label">三种规则的阈值</div>
+        $$\text{Tukey: } x < Q_1 - 1.5\,IQR \;\lor\; x > Q_3 + 1.5\,IQR$$
+        $$\text{3}\sigma\text{: } |x - \bar{x}| > 3\,\sigma \qquad \text{MAD: } |x - \tilde{x}| > 3 \cdot 1.4826 \cdot \text{median}(|x_i - \tilde{x}|)$$
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 异常值识别</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  04-outlier-detect.do
+*--------------------------------------------------------------*
+sysuse auto, clear
+
+* ---- 方法 1：箱线图法（IQR） ----
+* 用 summarize, detail 拿四分位数
+summarize price, detail
+scalar q1 = r(p25)
+scalar q3 = r(p75)
+scalar iqr = q3 - q1
+scalar lo_box = q1 - 1.5*iqr
+scalar hi_box = q3 + 1.5*iqr
+display "箱线图下界 = " lo_box "  上界 = " hi_box
+
+* 标记异常值
+gen outlier_box = (price < lo_box | price > hi_box) if !missing(price)
+tab outlier_box
+
+* ---- 方法 2：3σ 法则 ----
+summarize price
+scalar mu = r(mean)
+scalar sd = r(sd)
+gen outlier_3sd = (abs(price - mu) > 3*sd) if !missing(price)
+tab outlier_3sd
+
+* ---- 方法 3：MAD（中位数绝对偏差，更稳健） ----
+* 1.4826 是让 MAD 在正态下等价于标准差的常数
+quietly summarize price, detail
+scalar med = r(p50)
+gen abs_dev = abs(price - med)
+quietly summarize abs_dev, detail
+scalar mad = 1.4826 * r(p50)
+gen outlier_mad = (abs(price - med) > 3*mad) if !missing(price)
+tab outlier_mad
+
+* ---- 画箱线图直观检查 ----
+graph box price, over(foreign) ///
+    title("Price 箱线图（按是否进口车分组）") ///
+    ytitle("Price (USD)")
+graph export "output/boxplot_price.png", replace width(1600)
+</code></pre>
+      </div>
+    </div>
+
+    <!-- S5 -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> winsorize 缩尾：1% 还是 5%</h2>
+      <p>识别出异常值之后，<strong>不要直接 drop</strong>——那会损失信息。更常见的做法是 <strong>winsorize（缩尾）</strong>：把超过分位点的观测"压"到分位点上，而不是删掉。比如 1% 双侧缩尾，就是把小于 1% 分位点的值都替换成 1% 分位点、把大于 99% 分位点的值都替换成 99% 分位点。</p>
+      <div class="formula-block">
+        <div class="formula-label">双侧 1% 缩尾的定义</div>
+        $$\tilde{x}_i = \max\big(Q_{0.01},\; \min\big(Q_{0.99},\; x_i\big)\big)$$
+      </div>
+      <p>为什么是 1% 而不是 5%？这是中文顶刊的一个"惯例"：</p>
+      <ul>
+        <li><strong>1% 双侧缩尾</strong>：最常用，适用于绝大多数财务变量。它只处理极端尾部，保留了分布的主体信息。《经济研究》《管理世界》大多数实证论文默认这个口径。</li>
+        <li><strong>5% 双侧缩尾</strong>：当数据噪声极大（如早期 ASIF、手工采集数据）时使用。代价是把中间 10% 的真实波动也压平了。</li>
+        <li><strong>1% 单侧（只缩上尾）</strong>：当变量本身就有下界（如比例类变量、[0,1] 之间）时使用。</li>
+      </ul>
+      <p>Stata 官方没有 <code class="inline">winsorize</code> 命令（只有较新版本的 <code class="inline">winsor2</code> 是外部命令，最常用）。下面给出两种写法。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · winsorize 缩尾</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  05-winsorize.do  —— 缩尾处理
+*--------------------------------------------------------------*
+ssc install winsor2, replace    // 首次运行时安装
+
+sysuse auto, clear
+
+* ---- 写法 A：winsor2（推荐，外部命令）----
+* 1% 双侧缩尾，生成新变量 price_w1
+winsor2 price, cuts(1 99) suffix(_w1)
+* 5% 双侧缩尾
+winsor2 price, cuts(5 95) suffix(_w5)
+
+* 同时对多个变量缩尾
+winsor2 price mpg weight length, cuts(1 99) suffix(_w1)
+
+* 按年份分组缩尾（面板里非常重要！每年单独算分位数）
+* winsor2 roe lev size, cuts(1 99) suffix(_w1) by(year)
+
+* 对比缩尾前后
+summarize price price_w1 price_w5
+
+* ---- 写法 B：纯手工（不依赖外部命令） ----
+* 1% 双侧缩尾
+quietly summarize price, detail
+scalar lo = r(p1)
+scalar hi = r(p99)
+gen price_manual_w1 = price
+replace price_manual_w1 = lo if price < lo & !missing(price)
+replace price_manual_w1 = hi if price > hi & !missing(price)
+</code></pre>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">硬伤：在样本外缩尾</div>
+        <p>常见错误是"先缩尾、后筛样本"。正确顺序是先确定最终分析样本（剔除金融类 ST、剔除资不抵债、保留 2007 年后），再在这个<strong>最终样本</strong>上算分位数并缩尾。否则你会用一个不断变化的样本算分位数，结果不可复现。</p>
+      </div>
+    </div>
+
+    <!-- S6 -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 重复值处理与变量重命名</h2>
+      <p>原始下载数据经常包含重复观测——同一公司同一年出现两行（可能是数据库不同报表版本、合并报表与母公司报表重复）。Stata 里 <code class="inline">duplicates report/list/tag</code> 三件套是标准做法。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 重复值处理</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  06-duplicates.do  —— 重复值处理
+*--------------------------------------------------------------*
+sysuse nlsw88, clear
+
+* 1) 报告按 idcode（员工 ID）的重复情况
+duplicates report idcode
+
+* 2) 列出重复的具体观测
+duplicates list idcode in 1/50
+
+* 3) 给每个重复组打标签
+duplicates tag idcode, gen(dup_flag)
+tab dup_flag      // 0 表示唯一，&gt;0 表示重复
+
+* 4) 标准做法：保留每组中最新的一条
+*    （按某个"优先级变量"排序后 keep 第一条）
+* 假设我们有一个报表版本号 vers，数值大的更新
+* gsort idcode -vers
+* by idcode: keep if _n == 1
+* duplicates report idcode   // 再验证一次
+
+* 5) 如果只是完全重复的行（所有变量都一样），直接 drop
+duplicates drop
+</code></pre>
+      </div>
+
+      <h3>变量重命名：rename 与 rename group</h3>
+      <p>从 CSMAR 导出的变量名常常是 <code class="inline">A001001000</code> 这种无意义编码，必须重命名为 <code class="inline">roe</code>、<code class="inline">lev</code> 这种可读名字。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 重命名与批量操作</span><button class="copy-btn">复制</button></div>
+<pre><code>* 单个重命名
+rename A001001000 roe
+rename B002003000 lev
+
+* 批量重命名：把所有 year 前缀统一
+rename (yr_*) (year_*)   // yr_a -&gt; year_a
+
+* 批量：去掉下划线统一小写
+rename *, lower
+</code></pre>
+      </div>
+    </div>
+
+    <!-- S7 -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 数据类型转换与标签系统</h2>
+      <p>Stata 的变量类型分三类：<code class="inline">byte/int/long/float/double</code>（数值型）、<code class="inline">str1-str244</code>（字符串）、以及带 value label 的分类变量。CSMAR 导出的行业代码常常是字符串"行业代码 1 位 + 4 位数字"，需要先 destring。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 类型转换</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  07-type-convert.do
+*--------------------------------------------------------------*
+* 字符串 -&gt; 数值（去掉非数字字符后转）
+* destring industry, replace ignore(" ")
+
+* 数值 -&gt; 字符串
+tostring year, replace
+
+* 把"四位行业代码"截成"一位大类"（证监会行业分类）
+gen industry1 = real(substr(industry_code, 1, 1))
+
+* 把数值型 id 保留前导零：股票代码在 Stata 里常被吞掉前导 0
+gen stkcd_str = string(stkcd, "%06.0f")   // 1 -&gt; "000001"
+
+* ---------- 标签系统：label variable / label define ----------
+* 这是让 esttab 导出的三线表"看得懂"的关键
+sysuse auto, clear
+
+* 1) 变量标签（出现在 describe / 输出表格里）
+label variable price    "汽车价格 (USD)"
+label variable mpg      "每加仑英里数"
+label variable weight   "整车重量 (lbs)"
+label variable foreign  "是否进口车"
+
+* 2) 值标签（把 0/1 翻译成文字）
+label define foreign_lbl 0 "本土" 1 "进口"
+label values foreign foreign_lbl
+
+* 3) 看效果
+describe
+tab foreign
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">标签是论文工作流的"隐形红利"</div>
+        <p>只要在清洗阶段把 <code class="inline">label variable</code> 全部写好，后续 <code class="inline">esttab</code>、<code class="inline">outreg2</code> 导出的表格会自动用中文标签，省去后期在 Word 里手改表格的痛苦。</p>
+      </div>
+    </div>
+
+    <!-- S8 -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 对数变换与变量构造</h2>
+      <p>经济学中大量变量是<strong>右偏（right-skewed）</strong>的——企业规模、资产、销售额、工资都呈对数正态分布。直接放进 OLS 会被少数巨头主导。标准做法是做对数变换：</p>
+      <div class="formula-block">
+        <div class="formula-label">对数变换与"半弹性"</div>
+        $$\ln(y) = \alpha + \beta \ln(x) + \gamma Z + \varepsilon \;\Rightarrow\; \beta \text{ 是弹性}$$
+        $$\ln(y) = \alpha + \beta\,x + \gamma Z + \varepsilon \;\Rightarrow\; 1 \text{ 单位 } x \text{ 变化约带来 } 100\beta\% \text{ 的 } y \text{ 变化}$$
+      </div>
+      <p>注意：对数不能取非正数。财务数据里经常出现"现金流为负"或"研发支出为 0"，标准处理是 <code class="inline">ln(x+1)</code> 或 <code class="inline">ln(max(x, 0) + 1)</code>，后者在中文论文里被称为 <strong>log(1+x) 变换</strong>。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 对数变换与常用变量构造</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  08-log-transform.do
+*--------------------------------------------------------------*
+sysuse auto, clear
+
+* 1) 标准对数变换（要求 price &gt; 0）
+gen ln_price = ln(price)
+label variable ln_price "ln(价格)"
+
+* 2) 含零/负值时的"稳健对数"：ln(1+x)
+*    常用于 R&amp;D、广告支出这类常有 0 的变量
+gen rd = runiform()*100          // 模拟 R&amp;D 支出
+gen ln_rd = ln(rd + 1)
+label variable ln_rd "ln(1+R&amp;D)"
+
+* 3) 财务实证中常见的核心变量构造（CSMAR 口径）
+* gen size = ln(total_assets)                          // 企业规模
+* gen lev  = total_liab / total_assets                 // 资产负债率
+* gen roa  = net_profit / total_assets                 // 总资产收益率
+* gen roe  = net_profit / total_equity                 // 净资产收益率
+* gen tbq  = (market_cap + total_liab) / total_assets // 托宾 Q
+* gen soe  = (state_owned_share &gt;= 0.3)                // 国企虚拟变量
+
+* 4) 描述一下看分布是否对称
+summarize price ln_price, detail
+</code></pre>
+      </div>
+    </div>
+
+    <!-- S9 -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 论文案例：数据清洗在顶刊中的角色</h2>
+      <div class="paper-card">
+        <span class="paper-type en">English · 经典</span>
+        <div class="paper-title">The Dynamics of Productivity in the Telecommunications Equipment Industry</div>
+        <div class="paper-meta">Sanghamitra Das, Mark Roberts &amp; James Tybout · Econometrica · 1996</div>
+        <div class="paper-desc">用智利制造业面板估计企业生产率，数据清洗部分（剔除负增加值、处理产能利用率、价格平减）直接决定了 Olley-Pakes 估计量的可信度。展示了"数据清洗不是附属工作，而是识别策略的一部分"。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 经典</span>
+        <div class="paper-title">The Growth of Low-Skill Service Jobs and the Polarization of the U.S. Labor Market</div>
+        <div class="paper-meta">David Autor &amp; David Dorn · American Economic Review · 2013</div>
+        <div class="paper-desc">用美国人口普查（Census）与 CPS 数据构造 1950–2005 年的职业-地区面板。其附录中关于"职业代码跨年代对齐（OCG-1950 → OCC-2000）"的代码是数据清洗的范本——本质上就是本章讲的"行业/职业代码匹配 + 重复值处理"。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文顶刊 · 标杆</span>
+        <div class="paper-title">中国企业对外直接投资是否促进了企业创新</div>
+        <div class="paper-meta">毛其淋、许家云 · 《世界经济》 · 2014 年第 8 期</div>
+        <div class="paper-desc">用中国工业企业数据库 + 境外投资企业名录匹配样本。文中明确报告了剔除"工业总产值、增加值、从业人员、固定资产合计为负或缺失"的观测、按 1% 双侧缩尾的标准流程，是中文实证论文数据清洗章节的模板写法。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文顶刊 · 标杆</span>
+        <div class="paper-title">《分析师跟踪、利益冲突与股价同步性》</div>
+        <div class="paper-meta">朱红军、何贤杰、陶川 · 《经济研究》 · 2007 年增刊（及后续朱红军团队系列）</div>
+        <div class="paper-desc">基于 CSMAR 的公司-年份面板。其数据处理部分演示了：剔除金融保险业、剔除 ST/*ST、剔除资不抵债、按 1% 双侧缩尾、对连续变量做对数变换——这几乎是当前《经济研究》《管理世界》实证论文的"标准操作清单"。</div>
+      </div>
+    </div>
+
+    <!-- S10 -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 常见错误与调试</h2>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：忘记 Stata 缺失值"大于任何数"</div>
+        <p>写 <code class="inline">gen pos = price &gt; 0</code> 会把所有缺失值也算进 <code class="inline">pos == 1</code>。正确写法：<code class="inline">gen pos = price &gt; 0 if !missing(price)</code>。调试办法：<code class="inline">count if missing(price)</code>，再对照 <code class="inline">count if price &gt; 0</code> 的差异。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 2：在缩尾之前删样本，或在缩尾之后删样本</div>
+        <p>两种顺序都会让分位数不一致。标准顺序：①确定分析样本（剔除不该出现的观测）→ ②在该样本上算分位数并缩尾 → ③做回归。把每一步的 <code class="inline">count</code> 写在 log 里，方便审稿人复现。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 3：winsor2 不指定 by(year) 跨年度混在一起缩</div>
+        <p>公司-年份面板里，2007 年与 2020 年的价格水平完全不同。如果不按年份分组缩尾，会用 14 年混合分布的分位数去压每一年，把早期小公司误判成"异常值"。正确写法：<code class="inline">winsor2 roe, cuts(1 99) by(year)</code>。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 4：用 listwise deletion 静默丢样本</div>
+        <p>Stata 的 <code class="inline">regress y x1 x2</code> 会自动丢掉任一变量缺失的观测。新手上常在不知道的情况下损失了 30% 的样本。解决：在每个回归前手动 <code class="inline">gen sample = !missing(y,x1,x2)</code>，<code class="inline">tab sample</code> 报告样本量变化。</p>
+      </div>
+    </div>
+
+    <!-- S11 -->
+    <div class="section" id="s11">
+      <h2><span class="sec-num">11</span> 进阶学习资料</h2>
+      <ul>
+        <li><strong>Stata 官方</strong>：<code class="inline">help misstable</code>、<code class="inline">help mvpatterns</code>、<code class="inline">help ipolate</code>、<code class="inline">help duplicates</code>，每条命令的 PDF 手册都有完整例子。</li>
+        <li><strong>外部命令文档</strong>：winsor2 的作者说明在 <a href="https://journals.sagepub.com/doi/10.1177/1536867X1501500408" target="_blank">Stata Journal 文章</a>（同一作者 also 写了 winsor2 的论文）。</li>
+        <li><strong>教材</strong>：陈强《高级计量经济学及 Stata 应用》第 2 章"数据处理"；Cameron &amp; Trivedi, <em>Microeconometrics Using Stata</em>（Rev. ed.）第 3 章。</li>
+        <li><strong>中国数据手册</strong>：杨汝岱（2015）关于中国工业企业数据库的清理指南（《经济学季刊》）；CSMAR 官方"研究数据库使用指南"PDF。</li>
+        <li><strong>课程</strong>：世界银行 <a href="https://dimewiki.worldbank.org/wiki/Stata_Coding_Practices" target="_blank">DME / DIME Wiki 的 Stata Coding Practices</a>，是数据清洗规范的金标准。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="index.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">实证总览与路线</div>
+      </a>
+      <a href="02-data-merge.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">02 数据合并与面板整理</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+(function() {
+  const path = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('href') && item.getAttribute('href').endsWith(path)) {
+      item.classList.add('active');
+    }
+  });
+})();
+</script>
+</body>
+</html>

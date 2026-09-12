@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>动态面板 GMM | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item active" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main"><div class="content-wrap">
+
+  <div class="breadcrumb">
+    <a href="../index.html">首页</a><span class="sep">/</span>
+    <a href="index.html">实证论文</a><span class="sep">/</span>
+    <span>动态面板 GMM</span>
+  </div>
+
+  <div class="page-header">
+    <span class="tag">实证 · 25 · 面板计量</span>
+    <h1>动态面板 GMM：差分 GMM、系统 GMM 与工具变量诊断</h1>
+    <p class="desc">Dynamic Panel GMM 解决的核心痛点是：当因变量的滞后项出现在回归右边（$y_{it}=\rho y_{i,t-1}+\dots$）时，固定效应 OLS 估计量因 Nickell bias 严重不一致。本页讲 Arellano-Bond (1991) 差分 GMM 与 Blundell-Bond (1998) 系统 GMM 的矩条件、工具变量选择、过度识别检验（Hansen/Sargan）、AR(1)/AR(2) 自相关检验，以及 Stata <code class="inline">xtabond2</code> 的完整代码。</p>
+  </div>
+
+  <div class="prereq-box">
+    <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+    <div class="prereq-grid">
+      <div class="prereq-item">
+        <div class="prereq-label">① 数学 / 统计基础</div>
+        <div class="prereq-body">面板数据固定效应、内生性与工具变量（先学 <a href="05-endogeneity-iv.html">05 IV/2SLS</a>）、广义矩估计 GMM 的矩条件与 Hansen J 检验思想。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">② 经济学理论前置</div>
+        <div class="prereq-body">动态经济行为的理论基础：投资的加速数模型（capital adjustment）、消费的持久收入假说、企业融资约束（FHP 1988 投资-现金流敏感性）。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">③ 软件 / 计算前置</div>
+        <div class="prereq-body">Stata 17+（外部命令：<code class="inline">xtabond2</code>、<code class="inline">estabond2</code>、<code class="inline">estout</code>）。Python <code class="inline">linearmodels</code> 包也支持 <code class="inline">panel.GMM</code>。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">④ 站内前置页面</div>
+        <div class="prereq-body"><a href="04-baseline-regression.html">04 基准回归</a>（固定效应）+ <a href="05-endogeneity-iv.html">05 内生性与 IV</a>（2SLS、过度识别）。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">⑤ 难度分级</div>
+        <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#f5ebe0;color:#b87333;">高</span> ｜ 矩条件多、诊断检验多，初学者极易误读 AR(2) / Hansen 结果。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toc-box">
+    <div class="toc-title">本页目录 / CONTENTS</div>
+    <ol>
+      <li><a href="#s1">动态面板与 Nickell 偏误</a></li>
+      <li><a href="#s2">差分 GMM：Arellano-Bond (1991)</a></li>
+      <li><a href="#s3">系统 GMM：Blundell-Bond (1998)</a></li>
+      <li><a href="#s4">三大诊断检验：AR / Hansen / 工具变量个数</a></li>
+      <li><a href="#s5">完整 Stata 代码（xtabond2）</a></li>
+      <li><a href="#s6">论文案例与常见错误</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="s1">
+    <h2><span class="sec-num">01</span> 动态面板与 Nickell 偏误</h2>
+    <p>当经济行为存在"惯性"或"调整成本"时，因变量的滞后项自然出现在回归右边：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 1.1 — 动态面板模型</div>
+      $$ y_{it} = \rho\, y_{i,t-1} + \mathbf{x}_{it}'\boldsymbol{\beta} + \mu_i + \varepsilon_{it}, \quad |\rho| &lt; 1 $$
+    </div>
+    <p>其中 $\mu_i$ 是不可观测的个体固定效应。问题来了：<strong>$y_{i,t-1}$ 与 $\mu_i$ 机械相关</strong>——$y_{i,t-1}$ 包含 $\mu_i$，所以即使 $\varepsilon_{it}$ 完全独立同分布，混合 OLS 或固定效应 OLS 对 $\rho$ 的估计都是不一致的。这就是 <strong>Nickell 偏误（Nickell bias, 1981）</strong>。偏误方向在短面板（$T$ 小、$N$ 大）尤其严重：FE 估计量把 $\rho$ 往负方向拉。</p>
+    <div class="callout info">
+      <div class="callout-title">什么时候需要动态面板 GMM？</div>
+      <p>只要模型里出现 $y_{i,t-1}$ 且 $T$ 不大（典型企业面板 $T=10$–$20$、$N=1000$–$10000$），就必须用 GMM。如果 $T$ 很大（$T&gt;30$），Nickell 偏误可以忽略，FE OLS 就够了。典型应用：投资-现金流敏感性（Fazzari-Hubbard-Petersen 1988）、研发平滑、资本结构动态调整、货币政策反应函数。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s2">
+    <h2><span class="sec-num">02</span> 差分 GMM：Arellano-Bond (1991)</h2>
+    <p>Arellano-Bond (1991) 的思路：<strong>先对模型一阶差分，消掉固定效应 $\mu_i$</strong>：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 2.1 — 差分后模型</div>
+      $$ \Delta y_{it} = \rho\, \Delta y_{i,t-1} + \Delta \mathbf{x}_{it}'\boldsymbol{\beta} + \Delta \varepsilon_{it} $$
+    </div>
+    <p>差分后，$\Delta y_{i,t-1} = y_{i,t-1} - y_{i,t-2}$ 与 $\Delta \varepsilon_{it} = \varepsilon_{it} - \varepsilon_{i,t-1}$ 中的 $\varepsilon_{i,t-1}$ 机械相关。但如果 $\varepsilon_{it}$ 本身不存在序列相关，那么 <strong>$y_{i,t-2}, y_{i,t-3}, \dots$ 都是 $\Delta y_{i,t-1}$ 的有效工具变量</strong>——它们与 $\Delta y_{i,t-1}$ 相关（通过 $y_{i,t-2}$），但与 $\Delta \varepsilon_{it}$ 不相关。这就是差分 GMM 的矩条件：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 2.2 — 差分 GMM 的矩条件</div>
+      $$ E\big[ y_{i,t-s} \cdot \Delta \varepsilon_{it} \big] = 0, \quad t = 3,\dots,T,\ s \ge 2 $$
+    </div>
+    <p>每个时期 $t$ 都有一批工具变量（$y_{i,t-2}, y_{i,t-3}, \dots$），所以差分 GMM 的工具变量个数随 $T$ 二次增长。</p>
+  </div>
+
+  <div class="section" id="s3">
+    <h2><span class="sec-num">03</span> 系统 GMM：Blundell-Bond (1998)</h2>
+    <p>差分 GMM 有一个致命弱点：当 $\rho$ 接近 1（序列很持久）时，$y_{i,t-2}$ 对 $\Delta y_{i,t-1}$ 的工具变量强度很弱——工具变量弱，估计就偏向 OLS 那边。<strong>Blundell-Bond (1998) 系统 GMM</strong> 在差分方程之外，再增加一组<strong>水平方程</strong>的矩条件：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 3.1 — 系统 GMM 新增的水平矩条件</div>
+      $$ E\big[ \Delta y_{i,t-1} \cdot (\mu_i + \varepsilon_{it}) \big] = 0 $$
+    </div>
+    <p>这要求 $\Delta y_{i,t-1}$ 与固定效应 $\mu_i$ 不相关——在 $y_{it}$ 初始条件稳定（stationarity）假设下成立。系统 GMM 同时利用差分和水平两个方程，工具变量强度比差分 GMM 强很多。</p>
+    <div class="callout tip">
+      <div class="callout-title">差分 GMM vs 系统 GMM 怎么选？</div>
+      <p>实务默认用<strong>系统 GMM</strong>。只有当 $y_{it}$ 明显非平稳（如 GDP、人口）或水平矩条件被审稿人质疑时，才退回差分 GMM。判断标准：如果差分 GMM 估计的 $\hat{\rho}$ 明显低于固定效应估计值（甚至为负），说明工具变量太弱，应该用系统 GMM。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s4">
+    <h2><span class="sec-num">04</span> 三大诊断检验：AR / Hansen / 工具变量个数</h2>
+    <p>动态面板 GMM 的输出表里，最关键的三件事：</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>检验</th><th>原假设 H0</th><th>期望结果</th><th>坏结果说明</th></tr></thead>
+        <tbody>
+          <tr><td><strong>AR(1)</strong></td><td>差分残差无一阶自相关</td><td>通常 p&lt;0.05（拒绝）——这是正常的，因为 $\Delta\varepsilon$ 机械 MA(1)</td><td>AR(1) 不显著反而奇怪</td></tr>
+          <tr><td><strong>AR(2)</strong></td><td>差分残差无二阶自相关</td><td>p &gt; 0.10（不拒绝）——说明原始 $\varepsilon_{it}$ 无自相关，工具变量有效</td><td>AR(2) 显著 → 矩条件失效，需额外滞后工具</td></tr>
+          <tr><td><strong>Hansen J</strong></td><td>所有工具变量外生（过度识别约束成立）</td><td>p &gt; 0.10（不拒绝）</td><td>Hansen 显著 → 工具变量有内生，模型设定错</td></tr>
+          <tr><td><strong>Diff-in-Hansen</strong></td><td>系统 GMM 水平矩条件有效</td><td>p &gt; 0.10</td><td>显著 → 系统 GMM 不该用，退回差分 GMM</td></tr>
+          <tr><td><strong>工具变量数 / N</strong></td><td>—</td><td>工具数应 &lt; N（个体数）</td><td>工具数 &gt; N → Hansen 检验功效丧失，p 自动虚高</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">⚠ Roodman (2009) 警告：工具变量太多是 GMM 的头号坑</div>
+      <p>动态面板 GMM 的工具变量个数随 $T$ 二次增长。$T=15$、$N=500$ 时，不加限制地用所有滞后项会产生 100+ 个工具——过度识别约束检验（Hansen）会变得几乎必然接受（p≈1.0），完全失去诊断能力。规范做法：<br>
+      ① <code class="inline">gmmstyle(lag limits)</code> 限制滞后阶数（如最多用 $t-2$ 到 $t-4$，而不是 $t-2$ 到 $t-T$）；<br>
+      ② 用 <code class="inline">collapse</code> 把同一变量不同滞后合并成一个工具；<br>
+      ③ 报告工具变量总数，并保证 <code class="inline">工具数 &lt; N</code>。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s5">
+    <h2><span class="sec-num">05</span> 完整 Stata 代码（xtabond2）</h2>
+    <p>下面这段代码完整演示：(1) 模拟企业动态面板数据（投资依赖滞后投资、现金流、Q）；(2) 混合 OLS / FE / 差分 GMM / 系统 GMM 四种估计量对比；(3) AR / Hansen 诊断。</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · dynamic_panel_gmm.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* ============================================================
+* 动态面板 GMM 完整演示
+* 场景：企业投资 I/K 依赖滞后 I/K、现金流 CF/K、Tobin's Q
+* 数据：N=500 企业 × T=15 年
+* ============================================================
+clear all
+set seed 20240102
+set obs 7500
+gen firm = ceil(_n/15)
+bysort firm: gen year = 2000 + _n
+
+* --- 1. 模拟动态面板 ---
+* 个体固定效应 mu_i
+gen mu_i = rnormal(0, 0.5) in 1/500
+bysort firm: replace mu_i = mu_i[1]
+
+* 严格外生变量：CF/K, Q
+gen cf = rnormal(0.1, 0.05)
+gen q  = rnormal(1.5, 0.5)
+
+* 动态因变量：I/K 依赖滞后 I/K（rho=0.6）+ CF + Q + mu_i + eps
+gen ik = .
+replace ik = 0.1 + mu_i in 1/7500
+forvalues t = 2/15 {
+    bysort firm: replace ik = 0.1 + 0.6*ik[_n-1] + 0.3*cf + 0.05*q + mu_i + rnormal(0,0.1) ///
+        if year == 2000 + `t'
+}
+* 第一期
+bysort firm: replace ik = 0.1 + mu_i + rnormal(0,0.1) if year==2000
+
+xtset firm year
+
+* --- 2. 四种估计量对比 ---
+* (a) 混合 OLS（上偏）
+reg L.ik cf q, robust
+est store OLS
+
+* (b) 固定效应（下偏，Nickell bias）
+xtreg ik L.ik cf q i.year, fe robust
+est store FE
+
+* (c) 差分 GMM（Arellano-Bond 1991）
+* ssc install xtabond2, replace
+xtabond2 ik L.ik cf q i.year, ///
+    gmm(L.ik, lag(2 4))        ///  工具：L.ik 的 t-2 到 t-4 滞后
+    iv(cf q i.year)            ///  严格外生变量作 IV
+    twostep small robust       ///  两步法 + Windmeijer 修正
+    noleveleq                  ///  差分 GMM（不加水平方程）
+est store DIFFGMM
+estat abond                     ///  AR(1) / AR(2) 检验
+estat sargan                    ///  Sargan 检验（同方差下有效）
+
+* (d) 系统 GMM（Blundell-Bond 1998）
+xtabond2 ik L.ik cf q i.year, ///
+    gmm(L.ik, lag(2 4))        ///
+    iv(cf q i.year)            ///
+    twostep small robust       ///
+    h(2)                       ///  水平方程用 lag(2) 起
+est store SYSGMM
+estat abond
+
+* --- 3. 报告工具变量个数 ---
+* 查看 xtabond2 输出底部：
+*   Number of instruments = ??
+*   AR(1) p = 0.000  (应显著)
+*   AR(2) p = 0.2??  (应 &gt; 0.10)
+*   Hansen p = 0.???  (应 &gt; 0.10)
+*   工具数应 &lt; N=500
+
+* --- 4. 汇总对比 ---
+esttab OLS FE DIFFGMM SYSGMM, ///
+    b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) ///
+    mtitles("Pooled OLS" "FE" "Diff GMM" "Sys GMM") ///
+    stats(N N_g inst ar2p hansenp, fmt(0 0 0 3 3)) ///
+    title("动态面板四种估计量对比")
+</code></pre>
+    </div>
+    <div class="callout tip">
+      <div class="callout-title"><code class="inline">xtabond2</code> 关键选项速查</div>
+      <ul>
+        <li><code class="inline">gmm(varname, lag(#1 #2))</code>：把 varname 当作内生变量，用其 $t-#1$ 到 $t-#2$ 滞后作为 GMM 型工具。<code class="inline">lag(2 .)</code> 表示从 $t-2$ 到最早可用期。</li>
+        <li><code class="inline">iv(varlist)</code>：把这些变量当作严格外生，直接作为工具。</li>
+        <li><code class="inline">twostep</code>：两步 GMM（更有效率，但标准误需 Windmeijer 修正）。</li>
+        <li><code class="inline">robust</code>：Windmeijer (2005) 修正标准误（必须配 <code class="inline">twostep</code>）。</li>
+        <li><code class="inline">collapse</code>：把同一变量不同滞后合并成一列工具，大幅减少工具数。</li>
+        <li><code class="inline">noleveleq</code>：只跑差分 GMM；不加则默认系统 GMM。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section" id="s6">
+    <h2><span class="sec-num">06</span> 论文案例与常见错误</h2>
+
+    <h3>论文案例</h3>
+    <div class="paper-card">
+      <span class="paper-type en">English · RES</span>
+      <div class="paper-title">Some Tests of Specification for Panel Data: Monte Carlo Evidence and an Application to Employment Equations</div>
+      <div class="paper-meta">Manuel Arellano &amp; Stephen Bond · Review of Economic Studies, 1991, 58(2): 277–297</div>
+      <div class="paper-desc">差分 GMM 的开山之作。提出用滞后项作为工具变量的矩条件，并用 AR(1)/AR(2) 序列相关检验诊断工具有效性。经典应用：英国企业雇佣方程。本页 s2 的方法学依据。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · JoE</span>
+      <div class="paper-title">Initial Conditions and Moment Restrictions in Dynamic Panel Data Models</div>
+      <div class="paper-meta">Richard Blundell &amp; Stephen Bond · Journal of Econometrics, 1998, 87(1): 115–143</div>
+      <div class="paper-desc">系统 GMM 的原始论文。证明当序列接近单位根时差分 GMM 工具变量极弱，引入水平方程矩条件后估计量大大改善。本页 s3 的方法学依据。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · Stata Journal</span>
+      <div class="paper-title">How to Do Xtabond2: An Introduction to Difference and System GMM in Stata</div>
+      <div class="paper-meta">David Roodman · Stata Journal, 2009, 9(1): 86–136</div>
+      <div class="paper-desc"><code class="inline">xtabond2</code> 命令的官方教程。系统讲解工具变量过多问题、collapse 选项、AR/Hansen 诊断、以及差分 vs 系统 GMM 的选择。中文论文写作 GMM 部分的最佳参考。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · NBER</span>
+      <div class="paper-title">Finance Constraints and Corporate Investment (Fazzari-Hubbard-Petersen 1988 经典应用)</div>
+      <div class="paper-meta">Steven Fazzari, R. Glenn Hubbard &amp; Bruce Petersen · Brookings Papers on Economic Activity, 1988</div>
+      <div class="paper-desc">投资-现金流敏感性与融资约束的经典文献。后续几乎所有企业融资约束研究都用动态面板 GMM 估计投资方程，检验现金流系数在融资约束组与非约束组之间的差异。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 《经济研究》/《管理世界》</span>
+      <div class="paper-title">中国上市公司投资-现金流敏感性 / 研发平滑 / 资本结构动态调整</div>
+      <div class="paper-meta">连玉君、苏治、丁志国 (2008)《统计研究》；曾爱民、魏志华 (2013)《财经研究》；《经济研究》《管理世界》2010–2020 多篇企业金融文章</div>
+      <div class="paper-desc">中文顶刊中 GMM 的标准用法：因变量为投资率 / R&amp;D 强度 / 资产负债率，滞后项 + 解释变量 + 年度固定效应，系统 GMM 估计，报告 AR(2) p&gt;0.10、Hansen p&gt;0.10、工具数 &lt; N。这是中文实证企业金融的"标配输出表"。</div>
+    </div>
+
+    <h3>常见错误</h3>
+    <div class="callout danger">
+      <div class="callout-title">错误 1：工具变量数 &gt; N 还报告 Hansen p≈1.0</div>
+      <p>不加 <code class="inline">lag(2 4)</code> 或 <code class="inline">collapse</code> 限制，工具数轻易突破 200，Hansen p 永远 = 1.0——这不是"工具有效"，而是 Hansen 检验被工具过多废掉了。规范做法：限制工具数到 N 的一半以下，并在表里报告工具数。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 2：把 AR(1) p&gt;0.10 当成"好"</div>
+      <p>差分残差的 AR(1) 是机械存在的（MA(1) 结构），AR(1) 显著才是正常的。真正要看的是 <strong>AR(2)</strong>：AR(2) p&gt;0.10 才说明原始误差无序列相关。初学者常把 AR(1) 不显著当成模型设定正确，方向完全反了。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 3：Hansen 显著但不报告原因</div>
+      <p>Hansen p&lt;0.05 说明工具变量中有内生——可能是把内生变量当成外生了（如把企业规模当成严格外生，但它与投资同时决定）。规范做法：把可疑变量移到 <code class="inline">gmmstyle()</code> 而非 <code class="inline">iv()</code>，让它用自己的滞后作工具。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 4：差分 GMM 估计的 ρ 接近 0 甚至为负，还硬跑差分 GMM</div>
+      <p>如果 FE 估出 ρ=0.8，差分 GMM 估出 ρ=0.2，说明差分工具太弱（Blundell-Bond 1998 的典型弱工具症状）。此时必须用系统 GMM，或报告"差分 GMM 工具弱、系统 GMM 结果为准"。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 5：小样本下用两步 GMM 不做 Windmeijer 修正</div>
+      <p>两步 GMM 的标准误在小样本下严重偏小。必须加 <code class="inline">twostep robust</code>（= Windmeijer 2005 修正）。不加修正，t 值会虚高，显著性全是假的。</p>
+    </div>
+
+    <h3>进阶资料</h3>
+    <ul>
+      <li><strong>Roodman (2009 Stata Journal)</strong> —— 入门 GMM 的最佳中文翻译版教程，必读。</li>
+      <li><strong>Bond (2002)</strong> —— "Dynamic panel data models: a guide to researchers"，区分 OLS/FE/Diff-GMM/Sys-GMM 边界的经典讲义。</li>
+      <li><strong>Windmeijer (2005 JoE)</strong> —— 两步 GMM 标准误修正的原始论文。</li>
+    </ul>
+  </div>
+
+  <div class="page-nav">
+    <a href="24-synthetic-control.html" class="prev">
+      <div class="nav-label">← 上一节</div>
+      <div class="nav-title">合成控制法 SCM</div>
+    </a>
+    <a href="26-spatial-econometrics.html" class="next">
+      <div class="nav-label">下一节 →</div>
+      <div class="nav-title">空间计量入门</div>
+    </a>
+  </div>
+
+</div></div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show')}
+document.querySelectorAll('.copy-btn').forEach(b=>b.onclick=()=>{const c=b.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(c).then(()=>{b.textContent='已复制 ✓';setTimeout(()=>b.textContent='复制',1500)})});
+document.addEventListener('DOMContentLoaded',()=>{if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})}});
+</script>
+</body>
+</html>

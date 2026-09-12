@@ -1,0 +1,6 @@
+{
+  "name": "economics-learning-workstation",
+  "version": "9.3.2",
+  "private": true,
+  "description": "经济学研究学习工作站 - 私有站点 + RAG Agent (Vercel Functions)"
+}

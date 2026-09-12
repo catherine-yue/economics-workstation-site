@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>稳态求解 | DSGE模型 · 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item active" href="03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">DSGE模型</a>
+      <span class="sep">/</span>
+      <span>稳态求解</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">DSGE · 第 4 站</span>
+      <h1>稳态求解：解析推导、fsolve 数值解与 Dynare steady_state_model</h1>
+      <p class="desc">Steady state 是 DSGE 的"锚"。本页先解析求解零通胀稳态（$Y=C=N=1, r=1/\beta-1$），再用 MATLAB fsolve 数值验证，最后写进 Dynare 的 steady_state_model 块。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-head">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-item"><span class="prereq-label">数学 / 统计基础</span>非线性方程组求根、Newton-Raphson 迭代原理、MATLAB fsolve / Python scipy.optimize 的调用与初值敏感性。</div>
+      <div class="prereq-item"><span class="prereq-label">经济学理论前置</span>一个完整 NK/RBC 模型的全部 FOC（去掉时间下标即稳态系统）；理解为何可把 $Y=C=N=1$ 归一。</div>
+      <div class="prereq-item"><span class="prereq-label">软件 / 计算前置</span>MATLAB（fsolve）或 Python（scipy.optimize.fsolve）；Dynare 的 steady / steady_state_model 块。</div>
+      <div class="prereq-item"><span class="prereq-label">站内前置页面</span>先学 02-first-order-conditions：有了 FOC 才能组装稳态方程组。</div>
+      <div class="prereq-item"><span class="prereq-label">难度与路线位置</span><span class="prereq-level lv-inter">进阶</span>数值求解第一道坎，是 04 对数线性化的前置。</div>
+    </div>
+
+    <!-- 基础知识库定位 -->
+    <div class="callout info">
+      <div class="callout-title">📚 基础知识库 · 本页定位</div>
+      <p>本页是 <strong>DSGE 基础知识库</strong>页面。定位：<strong>先单独学会这个工具，再到模型分支里看它怎么用</strong>。不必一次学完所有分支——把"稳态求解"这门工具吃透后，再带着它去具体模型里查阅。</p>
+      <p style="margin-top:8px;margin-bottom:0"><strong>在哪些模型分支中使用：</strong>稳态是所有 DSGE 分支的"锚"——
+        <a href="09-rbc-model.html">RBC 基准模型</a> ·
+        <a href="10-nk-three-equation.html">NK 三方程</a> ·
+        <a href="11-medium-scale-sw.html">中尺度 SW</a> ·
+        <a href="12-small-open-economy.html">小国开放经济</a> ·
+        <a href="07-financial-frictions.html">金融摩擦 BGG/GK</a> ·
+        <a href="13-fiscal-monetary-rules.html">财政与货币规则</a> ·
+        <a href="14-tank.html">TANK两主体</a> · <a href="21-hank.html">HANK</a> ·
+        <a href="16-adaptive-learning.html">适应性学习</a>
+      </p>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">什么是稳态 steady state</a></li>
+        <li><a href="#s2">零通胀稳态：解析推导</a></li>
+        <li><a href="#s3">归一化：为什么 Y=C=N=1</a></li>
+        <li><a href="#s4">数值求解：MATLAB fsolve</a></li>
+        <li><a href="#s5">Dynare steady_state_model 写法</a></li>
+        <li><a href="#s6">稳态初值设定技巧</a></li>
+        <li><a href="#s7">论文案例与常见错误</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 什么是稳态 steady state</h2>
+      <p><strong>Steady state（稳态）</strong>是动态系统在没有任何外生冲击时，所有内生变量保持不变的那个点。正式地说，对一个由 $E_t f(x_{t+1}, x_t, x_{t-1}, \varepsilon_t)=0$ 描述的模型，稳态 $\bar x$ 满足：</p>
+      <div class="formula-block">
+        <div class="formula-label">Steady State 的定义</div>
+        $$f(\bar x, \bar x, \bar x, 0) = 0$$
+      </div>
+      <p>在 DSGE 中稳态之所以重要，原因有三：</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">作用 1：log-linearization 的展开点</div>
+          <div class="step-desc">所有 $\hat x_t\equiv\ln x_t-\ln\bar x$ 都要以 $\bar x$ 为基准。稳态求错了，整个对数线性化系统就是错的。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">作用 2：参数校准的锚</div>
+          <div class="step-desc">许多参数不是"从微观数据估出来"，而是"从稳态反推"。例如 $\beta$ 由稳态实际利率 $\bar r$ 反推：$\beta=1/(1+\bar r)$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">作用 3：Dynare 求解的初值</div>
+          <div class="step-desc">Dynare 跑 <code class="inline">steady;</code> 命令时，从你给的初值 guess 出发迭代求解。初值差太远，牛顿法就不收敛。</div>
+        </div>
+      </div>
+      <p>本工作站 baseline 模型求的是<strong>零通胀稳态（zero-inflation steady state）</strong>：外生技术 $A$ 归一化为 1，通胀 $\pi=0$，所有实际量 $Y,C,N,w$ 都为常数。</p>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 零通胀稳态：解析推导</h2>
+      <p>把上一页推出来的 FOC 全部写下来，然后令 $C_t=C_{t+1}=\bar C$，$N_t=N_{t+1}=\bar N$，$\pi_t=\pi_{t+1}=0$，$A=1$。逐条推。</p>
+
+      <h3>2.1 欧拉方程 → 实际利率</h3>
+      <p>欧拉方程：</p>
+      <div class="formula-block">
+        <div class="formula-label">欧拉方程</div>
+        $$C_t^{-\sigma} = \beta E_t\left[C_{t+1}^{-\sigma}(1+r_t)\right]$$
+      </div>
+      <p>稳态下 $C_t=C_{t+1}=\bar C$，$E_t$ 消失：</p>
+      <div class="formula-block">
+        <div class="formula-label">代入稳态</div>
+        $$\bar C^{-\sigma} = \beta \bar C^{-\sigma}(1+\bar r)$$
+      </div>
+      <p>两边约去 $\bar C^{-\sigma}$（$\bar C>0$）：</p>
+      <div class="formula-block">
+        <div class="formula-label">稳态实际利率</div>
+        $$\boxed{\;1 = \beta(1+\bar r)\quad\Longrightarrow\quad \bar r = \frac{1}{\beta}-1\;}$$
+      </div>
+      <p>季度 $\beta=0.99$ 时，$\bar r\approx 0.0101$（季度），年化约 $4\%$，与 US 长期平均实际利率吻合。</p>
+
+      <h3>2.2 Fisher 方程 → 名义利率</h3>
+      <p>Fisher 方程 $r_t=i_t-E_t\pi_{t+1}$ 在零通胀稳态下 $\pi=0$，故：</p>
+      <div class="formula-block">
+        <div class="formula-label">稳态名义利率</div>
+        $$\bar i = \bar r = \frac{1}{\beta}-1$$
+      </div>
+
+      <h3>2.3 资源约束与生产函数</h3>
+      <p>市场出清 $Y_t=C_t$，稳态下：</p>
+      <div class="formula-block">
+        <div class="formula-label">资源约束</div>
+        $$\bar Y = \bar C$$
+      </div>
+      <p>生产函数 $Y_t=A_t N_t^{1-\alpha}$，稳态 $A=1$：</p>
+      <div class="formula-block">
+        <div class="formula-label">生产函数（稳态）</div>
+        $$\bar Y = \bar N^{1-\alpha}$$
+      </div>
+
+      <h3>2.4 劳动供给方程</h3>
+      <p>上一页推出来的劳动供给 $N_t^\varphi C_t^\sigma = w_t$，稳态：</p>
+      <div class="formula-block">
+        <div class="formula-label">稳态实际工资</div>
+        $$\bar N^{\varphi}\,\bar C^{\sigma} = \bar w$$
+      </div>
+
+      <h3>2.5 实际边际成本与加成</h3>
+      <p>在零通胀稳态，Calvo 摩擦完全消失（每期都有 $1-\theta$ 厂商调价，最终 $P_t^*=P_t$），厂商按弹性价格下的 markup 定价：</p>
+      <div class="formula-block">
+        <div class="formula-label">稳态实际边际成本</div>
+        $$\bar{mc} = \frac{1}{\mathcal{M}} = \frac{\varepsilon-1}{\varepsilon}$$
+      </div>
+      <p>另一方面，从生产函数 $Y=N^{1-\alpha}$ 推出的实际边际成本（上一页 §4.2）：</p>
+      <div class="formula-block">
+        <div class="formula-label">mc 的生产侧表达式</div>
+        $$mc_t = \frac{w_t}{(1-\alpha)A_t N_t^{-\alpha}}$$
+      </div>
+      <p>稳态下 $A=1$，代入 $\bar{mc}=(\varepsilon-1)/\varepsilon$：</p>
+      <div class="formula-block">
+        <div class="formula-label">稳态实际工资（生产侧）</div>
+        $$\bar w = (1-\alpha)\bar{mc}\,\bar N^{-\alpha} = (1-\alpha)\frac{\varepsilon-1}{\varepsilon}\,\bar N^{-\alpha}$$
+      </div>
+
+      <h3>2.6 联立求解 $\bar N$</h3>
+      <p>把"劳动供给侧"和"生产侧"的 $\bar w$ 联立：</p>
+      <div class="formula-block">
+        <div class="formula-label">联立方程</div>
+        $$\bar N^{\varphi}\,\bar C^{\sigma} = (1-\alpha)\frac{\varepsilon-1}{\varepsilon}\,\bar N^{-\alpha}$$
+      </div>
+      <p>用 $\bar C=\bar Y=\bar N^{1-\alpha}$ 把 $\bar C$ 换掉：</p>
+      <div class="formula-block">
+        <div class="formula-label">代入 C = N^{1-alpha}</div>
+        $$\bar N^{\varphi}\cdot \left(\bar N^{1-\alpha}\right)^{\sigma} = (1-\alpha)\frac{\varepsilon-1}{\varepsilon}\,\bar N^{-\alpha}$$
+      </div>
+      <p>左边指数相加：$\varphi + (1-\alpha)\sigma$；把右边 $\bar N^{-\alpha}$ 移到左边：</p>
+      <div class="formula-block">
+        <div class="formula-label">合并指数</div>
+        $$\bar N^{\,\varphi+(1-\alpha)\sigma+\alpha} = (1-\alpha)\frac{\varepsilon-1}{\varepsilon}$$
+      </div>
+      <p>解出 $\bar N$：</p>
+      <div class="formula-block">
+        <div class="formula-label">一般解</div>
+        $$\bar N = \left[(1-\alpha)\frac{\varepsilon-1}{\varepsilon}\right]^{\frac{1}{\varphi+(1-\alpha)\sigma+\alpha}}$$
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 归一化：为什么 $Y=C=N=1$</h2>
+      <p>上面的一般解 $\bar N$ 不是 1。但本工作站要求的零通胀稳态是 $\bar Y=\bar C=\bar N=1$。这是 DSGE 文献里的一个<strong>标准归一化（normalization）</strong>技巧，做法是在效用函数的劳动负效用项里加一个缩放系数 $\chi$：</p>
+      <div class="formula-block">
+        <div class="formula-label">带缩放系数的效用</div>
+        $$U(C_t,N_t)=\frac{C_t^{1-\sigma}}{1-\sigma}-\chi\,\frac{N_t^{1+\varphi}}{1+\varphi}$$
+      </div>
+      <p>此时劳动供给方程变成：</p>
+      <div class="formula-block">
+        <div class="formula-label">修正后的劳动供给</div>
+        $$\chi\,\bar N^{\varphi}\,\bar C^{\sigma} = \bar w$$
+      </div>
+      <p>联立后：</p>
+      <div class="formula-block">
+        <div class="formula-label">含 chi 的解</div>
+        $$\chi\,\bar N^{\varphi+(1-\alpha)\sigma+\alpha} = (1-\alpha)\frac{\varepsilon-1}{\varepsilon}$$
+      </div>
+      <p><strong>选择 $\chi$ 使得 $\bar N=1$</strong>：</p>
+      <div class="formula-block">
+        <div class="formula-label">归一化</div>
+        $$\chi = (1-\alpha)\frac{\varepsilon-1}{\varepsilon}$$
+      </div>
+      <p>代入 $\alpha=0.25, \varepsilon=9$：$\chi = 0.75\times 8/9 = 2/3 \approx 0.667$。这就是 Galí (2015) 在第三章脚注里做的归一化。归一化后稳态解极为干净：</p>
+      <div class="formula-block">
+        <div class="formula-label">零通胀归一化稳态</div>
+        $$\boxed{\;\bar N=1,\qquad \bar Y=\bar C=1,\qquad \bar w=1,\qquad \bar{mc}=\frac{\varepsilon-1}{\varepsilon},\qquad \bar r=\bar i=\frac{1}{\beta}-1,\qquad \bar\pi=0\;}$$
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">为什么要归一化？</div>
+        <p>因为稳态的"水平值"本身没有经济含义——真正有含义的是变量围绕稳态的<strong>偏离</strong> $\hat x_t=\ln x_t-\ln\bar x$。把 $\bar N=1$ 选成 1，对数偏离就是百分比偏离，论文里画图、写系数都方便。这相当于把"工作小时数的单位"选成了"稳态年工时"。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 数值求解：MATLAB fsolve</h2>
+      <p>当模型扩展到含资本、含调整成本、含多种冲击时，解析解往往求不出来。这时用 MATLAB 的 <code class="inline">fsolve</code> 数值求解。下面是 baseline 模型的 fsolve 完整代码。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">matlab · solve_ss.m</span><button class="copy-btn">复制</button></div>
+        <pre><code>% ============================================================
+% solve_ss.m —— 用 fsolve 数值求解 baseline NK 模型稳态
+% 内生变量 x = [Y; C; N; w; mc; r; i; pi]
+% ============================================================
+clear; clc;
+
+% --- 1. 校准参数 ---
+p.beta   = 0.99;
+p.sigma  = 1.0;
+p.phi    = 5.0;
+p.alpha  = 0.25;
+p.eps    = 9.0;
+p.chi    = (1-p.alpha)*(p.eps-1)/p.eps;   % 归一化系数 -> N=1
+
+% --- 2. 定义稳态方程组 ---
+ss_eq = @(x) [
+    x(1) - x(2);                          % (1) Y = C
+    x(1) - x(3)^(1-p.alpha);              % (2) Y = N^(1-alpha), A=1
+    p.chi*x(3)^p.phi * x(2)^p.sigma - x(4);   % (3) 劳动供给: chi*N^phi*C^sigma = w
+    x(4) - (1-p.alpha)*x(5)*x(3)^(-p.alpha);  % (4) mc = w / ((1-alpha)*N^(-alpha))
+    x(5) - (p.eps-1)/p.eps;               % (5) 稳态加成 mc = (eps-1)/eps
+    1/p.beta - (1+x(6));                  % (6) 欧拉: 1 = beta*(1+r)
+    x(7) - x(6) - x(8);                   % (7) Fisher: i = r + pi
+    x(8)                                   % (8) 零通胀稳态 pi = 0
+];
+
+% --- 3. 初值 guess ---
+x0 = [1; 1; 1; 1; (p.eps-1)/p.eps; 1/p.beta-1; 1/p.beta-1; 0];
+
+% --- 4. fsolve 求解 ---
+opts = optimoptions('fsolve','Display','iter','TolFun',1e-10);
+[x, fval, exitflag] = fsolve(ss_eq, x0, opts);
+
+% --- 5. 输出 ---
+fprintf('\n===== 稳态解 =====\n');
+fprintf('Y   = %.6f\n', x(1));
+fprintf('C   = %.6f\n', x(2));
+fprintf('N   = %.6f\n', x(3));
+fprintf('w   = %.6f\n', x(4));
+fprintf('mc  = %.6f\n', x(5));
+fprintf('r   = %.6f (年化 %.4f%%)\n', x(6), 4*x(6)*100);
+fprintf('i   = %.6f\n', x(7));
+fprintf('pi  = %.6f\n', x(8));
+fprintf('残差范数 = %.2e\n', norm(fval));</code></pre>
+      </div>
+      <p>运行结果应该是：$Y=C=N=w=1$，$mc=8/9\approx 0.8889$，$r=i=0.0101$，$\pi=0$，残差接近 $10^{-10}$。如果初值给得离谱（例如 $x_0(3)=100$），fsolve 可能收敛到另一个根或不收敛——这就是为什么需要 §6 的初值技巧。</p>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> Dynare steady_state_model 块写法</h2>
+      <p>Dynare 提供 <code class="inline">steady_state_model;</code> 块让你直接写出稳态变量的解析表达式。它的优点：① Dynare 跑 <code class="inline">steady;</code> 时不用做迭代，直接算；② 与 model 块解耦，改方程时容易同步。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">dynare · baseline_nk_ss.mod（含 steady_state_model）</span><button class="copy-btn">复制</button></div>
+        <pre><code>% ============================================================
+% baseline_nk_ss.mod —— 完整可运行的 baseline NK 模型
+% ============================================================
+
+// ---------- 变量 ----------
+var Y C N w mc r i pi y_gap;
+varexo eps_a eps_m;
+
+// ---------- 参数 ----------
+parameters beta sigma phi alpha eps_p chi kappa rho_a rho_i phi_pi phi_y;
+
+beta=0.99; sigma=1.0; phi=5.0; alpha=0.25;
+eps_p=9.0;
+chi = (1-alpha)*(eps_p-1)/eps_p;     % 归一化 -> N_ss = 1
+kappa = (1-0.75)*(1-beta*0.75)/0.75 * (sigma+phi);  % theta=0.75
+rho_a=0.9; rho_i=0.8; phi_pi=1.5; phi_y=0.125;
+
+// ---------- 模型方程（对数线性化后）----------
+model;
+  y_gap = y_gap(+1) - (1/sigma)*r;
+  r     = i - pi(+1);
+  pi    = beta*pi(+1) + kappa*y_gap;
+  i     = rho_i*i(-1) + (1-rho_i)*(phi_pi*pi + phi_y*y_gap) + eps_m;
+end;
+
+// ---------- 稳态（关键块）----------
+steady_state_model;
+  % --- 零通胀归一化稳态 ---
+  pi   = 0;
+  r    = 1/beta - 1;
+  i    = r;
+  N    = 1;
+  Y    = N^(1-alpha);          % = 1
+  C    = Y;
+  w    = N^phi * C^sigma / chi;   % 注意归一化 chi
+  mc   = (eps_p-1)/eps_p;
+  y_gap = 0;
+end;
+
+// ---------- 冲击 ----------
+shocks;
+var eps_a; stderr 0.01;
+var eps_m; stderr 0.0025;
+end;
+
+// ---------- 求解 ----------
+steady;
+check;
+stoch_simul(irf=20, nograph);</code></pre>
+      </div>
+      <div class="callout info">
+        <div class="callout-title">steady_state_model 块的纪律</div>
+        <p>① 块内每一行是一条<strong>赋值</strong>（=号两边），不是方程；② 必须按因果顺序写：先写外生归一化的（pi=0），再写从它推出的（r=1/beta-1）；③ 所有 <code class="inline">var</code> 声明的变量必须在块内出现一次，否则 Dynare 报警告 "The following variable(s) have no steady state"。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 稳态初值设定技巧</h2>
+      <p>当模型复杂到写不出解析稳态时，Dynare 会调用数值求解器（基于 <code class="inline">steady;</code> 后的 initial guess）。初值 guess 的好坏直接决定能否收敛。下面是经过大量项目验证的技巧：</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">技巧 1：先写解析稳态，再让 Dynare 解</div>
+          <div class="step-desc">即使模型复杂，也尽量在 paper 附录里手推解析稳态。把解析稳态写进 <code class="inline">steady_state_model;</code>，而不是让 Dynare 数值猜。这样每次改参数，稳态可复现、可审计。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">技巧 2：外生过程稳态 = 0</div>
+          <div class="step-desc">AR(1) 过程 $x_t=\rho x_{t-1}+\varepsilon_t$ 的稳态是 $\bar x=0$（因为冲击 $\varepsilon$ 均值为 0）。所以技术水平 $A$ 的稳态设为 1（水平值）或 0（对数偏离），不要设成别的。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">技巧 3：利率类变量从 beta 反推</div>
+          <div class="step-desc">所有"利率"类变量初值：$\bar r=1/\beta-1$，$\bar i=\bar r+\bar\pi$。不要凭感觉写 0.01 或 0.05。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">技巧 4：规模类变量从生产函数反推</div>
+          <div class="step-desc">$Y, C, N, K$ 等规模变量，用 §2 的联立公式写，不要全写 1。例如含资本的模型 $\bar K/\bar Y=\frac{\delta}{\alpha(1/\beta-1+\delta)}$，代入参数直接算。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">技巧 5：不收敛时先检查方程数量</div>
+          <div class="step-desc">Dynare 报 "Impossible to find the steady state" 时，90% 是 model 块方程数量与 var 数量不一致，或某条方程有除零。先把 <code class="inline">options_.debug=1;</code> 打开看残差。</div>
+        </div>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">Dynare 找不到稳态时的诊断顺序</div>
+        <p>① 跑 <code class="inline">steady;</code> 看哪条方程残差最大；② 检查 model 块里是不是把 <code class="inline">A(+1)</code> 写成了 <code class="inline">A(1)</code>；③ 检查有没有变量在 model 块里从没出现（声明了但没用）；④ 把 <code class="inline">qz_zero_threshold</code> 临时调大；⑤ 实在不行，用外部 fsolve 算稳态，再用 <code class="inline">initval;</code> 块把数值喂给 Dynare。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 论文案例与常见错误</h2>
+      <h3>7.1 论文案例（英文经典）</h3>
+      <div class="paper-card">
+        <span class="paper-type en">English · 教材</span>
+        <div class="paper-title">Monetary Policy, Inflation, and the Business Cycle, Ch. 3.5: "The Steady State"</div>
+        <div class="paper-meta">Jordi Galí, Princeton UP, 2015 (2nd ed.)</div>
+        <div class="paper-desc">Galí 教材 §3.5 完整推导出 baseline NK 模型零通胀稳态（eq. 3.20—3.24），并讨论了"为什么把稳态就业率归一化为 1"。本工作站 §2、§3 的推导与其完全对应。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · AER</span>
+        <div class="paper-title">Shocks and Frictions in US Business Cycles: A Bayesian DSGE Approach, Appendix A: "Steady State"</div>
+        <div class="paper-meta">Frank Smets & Rafael Wouters, AER, 2007, 97(3)</div>
+        <div class="paper-desc">SW 模型稳态比 baseline 复杂得多：含资本、habit、wage markup。其附录 A 把稳态解析公式逐条列出，是"复杂模型如何求稳态"的范本。读其附录 A 前两页即可。</div>
+      </div>
+      <h3>7.2 论文案例（中文顶刊）</h3>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 经济研究</span>
+        <div class="paper-title">预期与经济波动——预期冲击是驱动中国经济波动的主要力量吗？</div>
+        <div class="paper-meta">庄子罐、崔小勇、龚六堂、邹恒甫，《经济研究》，2012 年第 8 期</div>
+        <div class="paper-desc">论文第 3.2 节"参数校准"部分，把稳态资本产出比 $\bar K/\bar Y$ 用中国宏观数据校准（约 2.2），再反推折旧率 $\delta$。是"从稳态矩反推参数"的标准做法。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 金融研究</span>
+        <div class="paper-title">我国DSGE模型的开发及在货币政策分析中的应用</div>
+        <div class="paper-meta">刘斌，《金融研究》，2008 年第 10 期</div>
+        <div class="paper-desc">论文表 1 列出了所有参数的校准值与稳态矩的对应关系。读其表 1 与脚注，看中国学者如何把稳态利率、稳态通胀、稳态资本产出比校准到中国数据。</div>
+      </div>
+
+      <h3>7.3 稳态阶段的常见错误（≥3 条）</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：忘记归一化系数 $\chi$</div>
+        <p>按用户给出的效用函数 $U=C^{1-\sigma}/(1-\sigma)-N^{1+\varphi}/(1+\varphi)$ 直接求稳态，得到的 $\bar N$ 不是 1（数值大约是 $(0.75\times 8/9)^{1/(5+0.75+0.25)}\approx 0.93$）。这时如果你硬把 $\bar N=1$ 写进 <code class="inline">steady_state_model;</code>，model 块残差不会为 0。正确做法：要么按本工作站 §3 引入 $\chi$ 归一化，要么按一般解 $\bar N=0.93$ 写进 steady_state_model。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：稳态通胀设错</div>
+        <p>零通胀稳态 $\bar\pi=0$，但很多人误写成 $\bar\pi=1$（因为 price level 增长了 1 倍）。$\pi_t$ 已经是对数通胀 $\ln(P_t/P_{t-1})$，稳态就是 0。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 3：利率没年化换算</div>
+        <p>Dynare 默认模型是季度模型，但论文图表是年化。季度稳态利率 $\bar r=0.01$，年化要乘 4 或写成 $400\times\bar r\%$。在写 <code class="inline">steady_state_model;</code> 时不要混用季度与年化。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 4：Steady state 写了但 initval 块没对应</div>
+        <p>Dynare 4.x+ 中，如果你写了 <code class="inline">steady_state_model;</code>，就不需要再写 <code class="inline">initval;</code>。同时写两块会冲突，Dynare 优先用 initval。建议二选一，新项目统一用 <code class="inline">steady_state_model;</code>。</p>
+      </div>
+
+      <h3>7.4 进阶</h3>
+      <ul>
+        <li>下一步：<a href="04-log-linearization.html" style="color:var(--primary)">05 · log-linearization（对数线性化）</a>，把本页求出来的稳态 $\bar x$ 作为展开点。</li>
+        <li>Dynare 手册 Ch. 4 "The steady state file" 讲复杂模型稳态求解的工程化做法。</li>
+        <li>当模型有多个稳态（multiple steady states）时，需要用 continuation method（同伦法），参阅 Juillard (2006) 的 Dynare technical guide。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="02-first-order-conditions.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">03 · 一阶条件推导</div>
+      </a>
+      <a href="04-log-linearization.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">05 · 对数线性化</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>实证论文总览 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item active" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <span>实证论文 Empirical</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">实证论文 · Empirical Research</span>
+      <h1>实证论文总览：分支 Taxonomy 与学习路线</h1>
+      <p class="desc">应用微观实证研究的完整方法论地图——从数据处理到因果识别，从稳健性到显著性诊断。本页是整个实证模块的"目录"，告诉你这个领域有哪些分支、每个分支下有哪些模型方法、对应哪页教程。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">无特殊公式推导要求——本页是整个实证模块的“地图”，只介绍分支与路线，不展开数学。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">无；只需对“实证研究在做什么”有初步印象，不必先修高级理论课。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">无；建议先装好 Stata 17+，并按本页下方“软件与工具清单”了解外部命令生态。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body">无——本页是实证模块的<strong>入口（起点）</strong>，按下方学习路线从 01 数据清洗开始。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8f3ec;color:#2d7a4f;">入门</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">分支 Taxonomy：五阶段分组（A–E）与全部模型</a></li>
+        <li><a href="#s2">分分支学习路径（前置依赖与分叉）</a></li>
+        <li><a href="#s3">实证论文的典型写作范式</a></li>
+        <li><a href="#s4">软件与工具清单</a></li>
+        <li><a href="#s5">本领域全部页面（按学习顺序）</a></li>
+      </ol>
+    </div>
+
+    <!-- S1: Branch Taxonomy -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 分支 Taxonomy：五阶段分组（A–E）与全部模型</h2>
+      <p>实证论文模块按"论文生产流程"分为五个阶段组：<strong>A 数据准备与描述 → B 基准与因果识别 → C 识别诊断与稳健性 → D 前沿与预测方法 → E 论文工程</strong>。每组下列出该阶段包含的页面、对应教程链接与学习难度。建议按 A→B→C→D→E 的顺序学习，D 组前沿方法可在主流程跑通后按需选学。</p>
+
+      <div class="taxonomy-grid">
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">A. 数据准备与描述</div></div>
+          <div class="bc-en">A · DATA PREPARATION</div>
+          <div class="bc-desc">实证工作 80% 的时间花在数据上。把原始的 CSMAR/Wind/工业企业数据库变成干净的分析样本，再做探索性分析与样本构造，是 Table 1 和所有回归的基础。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="01-data-cleaning.html">数据清洗</a><span class="mi-method">缺失值 / 异常值 / winsor2 缩尾</span></div>
+              <span class="diff b">beginner</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="02-data-merge.html">数据合并与面板</a><span class="mi-method">merge / append / reshape / xtset</span></div>
+              <span class="diff b">beginner</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="03-descriptive-stats.html">描述性统计</a><span class="mi-method">summarize / pwcorr / esttab 导出</span></div>
+              <span class="diff b">beginner</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="14-eda-sample-construction.html">EDA与样本构造</a><span class="mi-method">探索性分析 / 样本筛选与构造</span></div>
+              <span class="diff i">intermediate</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">B. 基准与因果识别</div></div>
+          <div class="bc-en">B · BASELINE & CAUSAL ID</div>
+          <div class="bc-desc">实证的核心：先从 OLS 到双向固定效应跑通"主回归表"，再借助准实验设计讲因果——IV、DID、RDD、合成控制、动态面板、空间计量、聚束设计各有适用场景与假设。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="04-baseline-regression.html">基准回归</a><span class="mi-method">OLS / 双向 FE / reghdfe / 聚类 SE</span></div>
+              <span class="diff b">beginner</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="05-endogeneity-iv.html">内生性与IV</a><span class="mi-method">工具变量 / 2SLS / 弱IV / 过度识别</span></div>
+              <span class="diff i">intermediate</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="06-did.html">DID 双重差分</a><span class="mi-method">平行趋势 / 事件研究 / 交叠 DID</span></div>
+              <span class="diff i">intermediate</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="07-rdd.html">RDD 断点回归</a><span class="mi-method">模糊/精确 RDD / 带宽 / 局部线性</span></div>
+              <span class="diff i">intermediate</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="24-synthetic-control.html">合成控制法 SCM</a><span class="mi-method">donor pool / 权重 / 安慰剂</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="25-dynamic-panel-gmm.html">动态面板 GMM</a><span class="mi-method">系统/差分 GMM / 工具变量矩</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="26-spatial-econometrics.html">空间计量入门</a><span class="mi-method">空间滞后/误差 / 权重矩阵</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="28-bunching-kink.html">Bunching/Kink聚束设计</a><span class="mi-method">聚束估计 / kink / 弹性反推</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">C. 识别诊断与稳健性</div></div>
+          <div class="bc-en">C · DIAGNOSTICS & ROBUSTNESS</div>
+          <div class="bc-desc">主回归跑出来之后，审稿人会要求你证明结果"稳得住"、"讲得通"、"因人而异"，并规范报告显著性。这一组决定了论文能不能过审。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="08-robustness.html">稳健性检验</a><span class="mi-method">替换变量 / 安慰剂 / 换样本 / 换 SE</span></div>
+              <span class="diff i">intermediate</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="09-mechanism.html">机制检验</a><span class="mi-method">中介效应 / 调节效应 / 渠道变量</span></div>
+              <span class="diff i">intermediate</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="10-heterogeneity.html">异质性分析</a><span class="mi-method">分样本 / 交乘项 / 组间差异检验</span></div>
+              <span class="diff i">intermediate</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="11-significance-practice.html">显著性诊断实务</a><span class="mi-method">报告口径 / p值与星号 / 经济显著性</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="23-significance-techniques.html">显著性手法库与规范判别</a><span class="mi-method">常见显著性手法 / 规范判别</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">D. 前沿与预测方法</div></div>
+          <div class="bc-en">D · FRONTIER & FORECASTING</div>
+          <div class="bc-desc">主流程跑通后按需选学：因果推断的潜在结果框架与机器学习结合（DML、因果森林）、宏观大数据预测与即时预测、分位数/尾部、文本与结构突变、非参与贝叶斯推断等前沿工具。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="15-potential-outcomes-dag.html">潜在结果与因果图</a><span class="mi-method">Ruben因果模型 / DAG / 后门前门</span></div>
+              <span class="diff i">intermediate</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="16-dml.html">DML去偏机器学习</a><span class="mi-method">partialling out / Neyman 正交</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="17-causal-forest.html">因果森林与政策学习</a><span class="mi-method">异质性处理效应 / ATE/CTE</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="18-big-data-forecasting.html">大数据宏观预测</a><span class="mi-method">面板大数据 / 降维 / 机器学习预测</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="19-nowcasting-dfm.html">即时预测与DFM</a><span class="mi-method">动态因子模型 / 高频数据</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="20-quantile-gar.html">分位数回归与GaR</a><span class="mi-method">分位数回归 / 风险在险 GDP</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="21-text-analysis.html">文本分析与叙事冲击</a><span class="mi-method">词嵌入 / 主题模型 / 文本度量</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="22-tvp-var.html">TVP-VAR与风险溯源</a><span class="mi-method">时变参数VAR / 随机波动</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="29-nonparametric-semiparametric.html">非参/半参方法</a><span class="mi-method">核估计 / 半参 / 可加模型</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="30-bayesian-empirical.html">贝叶斯实证推断</a><span class="mi-method">MCMC / 先验后验 / 贝叶斯收缩</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">E. 论文工程</div></div>
+          <div class="bc-en">E · PAPER WORKFLOW</div>
+          <div class="bc-desc">把方法变成可发表、可复现的论文：复现流程、五层写作框架与顶刊方法地图，是从"会跑代码"到"会写论文"的工程化环节。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="12-replication-workflow.html">论文复现流程</a><span class="mi-method">main.do / 模块化 / 日志复现</span></div>
+              <span class="diff i">intermediate</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="13-five-layer-framework.html">五层框架</a><span class="mi-method">论文五层结构 / 写作骨架</span></div>
+              <span class="diff i">intermediate</span>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="27-ejd-method-map.html">顶刊方法地图与复现</a><span class="mi-method">顶刊方法谱系 / 复现要点</span></div>
+              <span class="diff a">advanced</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout info">
+        <div class="callout-title">难度标签说明</div>
+        <p><span class="diff beginner">入门</span> 概念直观、代码量小，1-2 天可上手；<span class="diff intermediate">进阶</span> 需要理解识别假设与诊断检验，3-5 天；<span class="diff advanced">前沿</span> 涉及方法论争议与发表规范，需在实操中反复打磨。</p>
+      </div>
+    </div>
+
+    <!-- S2: 分分支学习路径 -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 分分支学习路径（前置依赖与分叉）</h2>
+      <p>实证不是一条线走到底——数据与回归是必修主线，到"因果识别"处分叉为 IV / DID / RDD 三条互斥策略，之后再统一汇入"深化"段。每条路径都标了<strong>起点页、前置依赖、建议顺序与难度</strong>。不要跳步：没有干净的数据，后面所有识别策略都是空中楼阁。</p>
+
+      <div class="bp-list">
+
+        <div class="branch-path">
+          <div class="bp-head"><div class="bp-name">① 数据路径（所有人必修）</div><span class="diff beginner">入门</span></div>
+          <div class="bp-meta"><b>起点：</b>01 数据清洗　<b>前置依赖：</b>无（领域入口）　<b>目标：</b>把原始库变成可回归的分析样本，产出 Table 1。</div>
+          <div class="bp-flow">
+            <span class="step"><span class="num">01</span><a href="01-data-cleaning.html">数据清洗</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">02</span><a href="02-data-merge.html">合并与面板</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">03</span><a href="03-descriptive-stats.html">描述性统计</a></span>
+          </div>
+        </div>
+
+        <div class="branch-path">
+          <div class="bp-head"><div class="bp-name">② 回归主线</div><span class="diff beginner">入门</span></div>
+          <div class="bp-meta"><b>起点：</b>04 基准回归　<b>前置依赖：</b>① 数据路径（01-03）完成　<b>目标：</b>跑通 OLS / 双向固定效应，产出主回归表 Table 2。</div>
+          <div class="bp-flow">
+            <span class="step"><span class="num">04</span><a href="04-baseline-regression.html">基准回归</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">05</span><a href="05-endogeneity-iv.html">内生性与 IV</a></span>
+          </div>
+        </div>
+
+        <div class="branch-path bp-fork">
+          <div class="bp-head"><div class="bp-name">③ 因果推断分叉（按识别场景选一条）</div><span class="diff intermediate">进阶</span></div>
+          <div class="bp-meta"><b>起点：</b>06 DID 或 07 RDD　<b>前置依赖：</b>② 回归主线（04 + 05）。三者不必全学，按你的政策冲击形态选：有明确处理时点→DID；有规则/评分断点→RDD；存在外生变量→IV。</div>
+          <div class="bp-flow">
+            <span class="step"><span class="num">05</span><a href="05-endogeneity-iv.html">IV/2SLS</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">06</span><a href="06-did.html">DID 双重差分</a></span>
+            <span class="or">或</span>
+            <span class="step"><span class="num">07</span><a href="07-rdd.html">RDD 断点回归</a></span>
+          </div>
+        </div>
+
+        <div class="branch-path">
+          <div class="bp-head"><div class="bp-name">④ 深化路径（投稿前必经）</div><span class="diff intermediate">进阶</span></div>
+          <div class="bp-meta"><b>起点：</b>08 稳健性检验　<b>前置依赖：</b>② 主回归 + ③ 选定的识别策略（05/06/07 任一）　<b>目标：</b>把主回归"包装"成一篇能送审的完整论文。</div>
+          <div class="bp-flow">
+            <span class="step"><span class="num">08</span><a href="08-robustness.html">稳健性检验</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">09</span><a href="09-mechanism.html">机制检验</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">10</span><a href="10-heterogeneity.html">异质性分析</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">11</span><a href="11-significance-practice.html">显著性诊断</a></span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">怎么选路径</div>
+        <p>新手按 ①→②→③(选 DID)→④ 顺序走即可上手一篇完整论文。如果你已有干净数据、只补因果识别，可直接从 ③ 切入；已有主回归只想提升投稿规范，则直奔 ④ 的 11 显著性诊断。</p>
+      </div>
+    </div>
+
+    <!-- S3: Paper Writing Paradigm -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 实证论文的典型写作范式</h2>
+      <p>一篇标准的应用微观实证论文，章节结构高度趋同。按下面的范式写，审稿人不会因为"结构不对"挑你。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>章节</th><th>内容</th><th>对应分支</th></tr></thead>
+          <tbody>
+            <tr><td>1. Introduction</td><td>研究问题 + 识别策略一句话 + 主要发现 + 贡献（3 条 bullet）</td><td>全局</td></tr>
+            <tr><td>2. 制度背景 / 文献</td><td>政策冲击的制度细节、文献缺口、本文边际贡献</td><td>分支 3（识别策略铺垫）</td></tr>
+            <tr><td>3. 数据与描述</td><td>数据来源、清洗与合并、Table 1 描述性统计</td><td>分支 1</td></tr>
+            <tr><td>4. 基准回归</td><td>Table 2：OLS → FE → 加控制变量 → 加固定效应，逐步呈现</td><td>分支 2</td></tr>
+            <tr><td>5. 因果识别</td><td>DID 平行趋势 / IV 排他性 / RDD 连续性，核心 Table 3-4</td><td>分支 3</td></tr>
+            <tr><td>6. 稳健性</td><td>替换变量、安慰剂、换样本、换标准误</td><td>分支 4</td></tr>
+            <tr><td>7. 机制与异质性</td><td>打开黑箱讲渠道，按子样本讲谁受益更多</td><td>分支 4</td></tr>
+            <tr><td>8. 结论与政策建议</td><td>总结 + 政策含义 + 局限</td><td>分支 5（叙述规范）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">最常见的写作事故</div>
+        <p>① 数据没清洗就跑回归，Table 1 对不上；② 主回归只报 OLS，不做固定效应；③ DID 不画平行趋势图；④ 稳健性检验只做 1-2 项；⑤ 机制检验用"逐步法"中介而不讲识别。</p>
+      </div>
+    </div>
+
+    <!-- S4: Software & Tools -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 软件与工具清单</h2>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <h4>Stata 17+</h4>
+          <p>本模块主力工具。中文经管实证事实标准，CSMAR/Wind 生态原生支持。必装 reghdfe、estout、winsor2、ftools。</p>
+        </div>
+        <div class="tool-card">
+          <h4>外部命令</h4>
+          <p>reghdfe / ftools（高维固定效应）、estout / outreg2（导出表格）、winsor2（缩尾）、psmatch2（倾向得分）、rdrobust（RDD）。</p>
+        </div>
+        <div class="tool-card">
+          <h4>数据来源</h4>
+          <p>CSMAR、Wind、中国工业企业数据库（ASIF）、CNRDS、CRSM、地级市统计年鉴、企查查/天眼查补充。</p>
+        </div>
+        <div class="tool-card">
+          <h4>文献工具</h4>
+          <p>Zotero / EndNote 管理文献；Stata Journal 与 SSCN 社区找命令；GitHub 搜 replication package。</p>
+        </div>
+        <div class="tool-card">
+          <h4>可视化</h4>
+          <p>coefplot（系数图）、event_plot（事件研究图）、outreg2 / esttab 导出三线表到 Word/LaTeX。</p>
+        </div>
+        <div class="tool-card">
+          <h4>复现规范</h4>
+          <p>每个项目有 main.do 主脚本 + 分模块 do 文件 + log 日志；原始数据只读，清洗后数据单独存。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- S5: Full Page List -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 本领域全部页面（按学习顺序）</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>页面</th><th>所属分支</th><th>难度</th></tr></thead>
+          <tbody>
+            <tr><td>01</td><td><a href="index.html" style="color:var(--primary);">实证总览与学习路线（本页）</a></td><td>总览</td><td>—</td></tr>
+            <tr><td>02</td><td><a href="01-data-cleaning.html" style="color:var(--primary);">数据清洗</a></td><td>A 数据准备</td><td><span class="diff beginner">入门</span></td></tr>
+            <tr><td>03</td><td><a href="02-data-merge.html" style="color:var(--primary);">数据合并与面板整理</a></td><td>A 数据准备</td><td><span class="diff beginner">入门</span></td></tr>
+            <tr><td>04</td><td><a href="03-descriptive-stats.html" style="color:var(--primary);">描述性统计与相关系数</a></td><td>A 数据准备</td><td><span class="diff beginner">入门</span></td></tr>
+            <tr><td>05</td><td><a href="04-baseline-regression.html" style="color:var(--primary);">基准回归（OLS/固定效应）</a></td><td>B 因果识别</td><td><span class="diff beginner">入门</span></td></tr>
+            <tr><td>06</td><td><a href="05-endogeneity-iv.html" style="color:var(--primary);">内生性与 IV / 2SLS</a></td><td>B 因果识别</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>07</td><td><a href="06-did.html" style="color:var(--primary);">DID 双重差分</a></td><td>B 因果识别</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>08</td><td><a href="07-rdd.html" style="color:var(--primary);">RDD 断点回归</a></td><td>B 因果识别</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>09</td><td><a href="08-robustness.html" style="color:var(--primary);">稳健性检验完整清单</a></td><td>C 诊断稳健性</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>10</td><td><a href="09-mechanism.html" style="color:var(--primary);">机制检验（中介/调节）</a></td><td>C 诊断稳健性</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>11</td><td><a href="10-heterogeneity.html" style="color:var(--primary);">异质性分析</a></td><td>C 诊断稳健性</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>12</td><td><a href="11-significance-practice.html" style="color:var(--primary);">显著性诊断实务</a></td><td>C 诊断稳健性</td><td><span class="diff advanced">前沿</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="../index.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">工作站首页</div>
+      </a>
+      <a href="01-data-cleaning.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">01 数据清洗</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+(function(){const path=window.location.pathname.split('/').pop();document.querySelectorAll('.nav-item').forEach(item=>{if(item.getAttribute('href')&&item.getAttribute('href').endsWith(path)){item.classList.add('active');}});})();
+</script>
+</body>
+</html>

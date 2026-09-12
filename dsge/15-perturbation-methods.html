@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>扰动法求解DSGE | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item active" href="15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">DSGE模型</a><span class="sep">/</span>
+      <span>扰动法求解（一阶/二阶）</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">DSGE · 求解方法（跨分支）</span>
+      <h1>扰动法求解 DSGE：一阶、二阶、三阶近似</h1>
+      <p class="desc">为什么一阶线性化够不够？一阶近似里没有"风险"这回事。本页讲扰动法（perturbation）的思想：在稳态附近对决策规则做泰勒展开——一阶（与对数线性化等价）、二阶（捕捉风险溢价与不确定性效应、需 pruning 修剪）、三阶；Dynare 中 order=1/2/3 的使用；并简介全局方法（投影、值函数迭代 VFI、参数化期望 PE），以及何时用扰动法、何时必须上全局法。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-head">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-item"><span class="prereq-label">数学 / 统计基础</span>高阶泰勒展开（二阶/三阶项）、对政策函数与转移函数的扰动、随机稳态与 pruning 所需的矩阵运算；可选随机微积分直觉。</div>
+      <div class="prereq-item"><span class="prereq-label">经济学理论前置</span>一阶线性理性预期系统（04 页）；理解为何一阶是确定性等价、二阶才出现风险修正与预防性储蓄。</div>
+      <div class="prereq-item"><span class="prereq-label">软件 / 计算前置</span>Dynare 的 order=1/2/3 选项与 pruning 关键字；MATLAB 基础即可。</div>
+      <div class="prereq-item"><span class="prereq-label">站内前置页面</span>先学 04-log-linearization（一阶扰动 ≡ 对数线性化），可与 05-dynare-solving 对照。</div>
+      <div class="prereq-item"><span class="prereq-label">难度与路线位置</span><span class="prereq-level lv-frontier">进阶→前沿</span>近似方法的理论上限，连接 05 一阶实操与 HANK/全局法的取舍。</div>
+    </div>
+
+    <!-- 基础知识库定位 -->
+    <div class="callout info">
+      <div class="callout-title">📚 基础知识库 · 本页定位</div>
+      <p>本页是 <strong>DSGE 基础知识库</strong>页面。定位：<strong>先单独学会这个工具，再到模型分支里看它怎么用</strong>。扰动法是 Dynare 背后的求解引擎——一阶近似等价于对数线性化，二阶/三阶才捕捉风险溢价与不确定性效应。吃透 order=1/2/3 与 pruning 后，再去各分支看它如何被调用。</p>
+      <p style="margin-top:8px;margin-bottom:0"><strong>在哪些模型分支中使用：</strong>
+        <a href="09-rbc-model.html">RBC 基准模型</a> ·
+        <a href="10-nk-three-equation.html">NK 三方程</a> ·
+        <a href="11-medium-scale-sw.html">中尺度 SW（二阶 + pruning）</a> ·
+        <a href="12-small-open-economy.html">小国开放经济</a> ·
+        <a href="07-financial-frictions.html">金融摩擦 BGG/GK</a> ·
+        <a href="13-fiscal-monetary-rules.html">财政与货币规则</a> ·
+        <a href="16-adaptive-learning.html">适应性学习</a>
+        <br><span style="color:var(--danger)">⚠ 注意：<a href="14-tank.html">TANK</a> 与 <a href="21-hank.html">HANK</a> 不能只用一阶扰动——异质性主体模型需二阶以上近似或全局法，详见本页高阶章节与 HANK 分支页。</span>
+      </p>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么一阶近似不够</a></li>
+        <li><a href="#s2">扰动法的基本思想</a></li>
+        <li><a href="#s3">一阶扰动：与对数线性化等价</a></li>
+        <li><a href="#s4">二阶扰动：风险修正与 pruning</a></li>
+        <li><a href="#s5">三阶扰动与 Dynare order</a></li>
+        <li><a href="#s6">全局方法简介</a></li>
+        <li><a href="#s7">何时用扰动、何时用全局</a></li>
+        <li><a href="#s8">论文案例</a></li>
+        <li><a href="#s9">常见错误与进阶资料</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么一阶近似不够</h2>
+      <p>前面几页用的都是"对数线性化 + 一阶扰动"。这种方法有一个根本缺陷：<strong>在一阶近似里，不确定性完全不影响决策规则</strong>。原因是线性决策规则对二阶矩（方差）不敏感——把模型在确定性稳态展开到一次项，得到的政策函数只含状态的一次项，任何关于"风险溢价""预防性储蓄""不确定性对稳态的修正"都无法出现。</p>
+      <p>但现实宏观问题恰恰关心这些二阶量：</p>
+      <ul>
+        <li><strong>风险溢价（risk premium）</strong>：股权溢价、期限利差在一阶模型里恒为 0。</li>
+        <li><strong>预防性储蓄</strong>：收入风险越高，家庭储蓄越多——一阶模型里 $\sigma$ 只影响跨期替代，不影响"风险"。</li>
+        <li><strong>不确定性冲击（uncertainty / volatility shock）</strong>： Bloom (2009) 等证明二阶矩冲击本身就是周期驱动力。</li>
+        <li><strong>风险修正稳态（risk-adjusted steady state）</strong>：随机模型的"无条件均值"会偏离确定性稳态，距离大小取决于方差。</li>
+      </ul>
+      <p>要捕捉这些，必须把决策规则展开到<strong>二阶</strong>（甚至三阶）。这就是扰动法高阶近似的动机。</p>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 扰动法的基本思想</h2>
+      <p>扰动法（perturbation method, Judd 1998；Schmitt-Grohé &amp; Uribe 2004, <em>JEDC</em>）把一个含扰动参数 $\sigma$ 的模型族写出来：当 $\sigma=0$ 时是确定性模型（可精确解出稳态与决策规则）；当 $\sigma=1$ 时是真实的随机模型。然后在 $\sigma=0$ 点附近，把政策规则对<strong>状态变量 $x$ 与扰动参数 $\sigma$</strong>做多变量泰勒展开。</p>
+      <div class="formula-block">
+        <div class="formula-label">决策规则的扰动展开（一般形式）</div>
+        $$y_t \approx g(x_t,\sigma) = g(x_{ss},0) + g_x (x_t-x_{ss}) + g_\sigma \sigma + \tfrac{1}{2}g_{xx}(x_t-x_{ss})^2 + g_{x\sigma}(x_t-x_{ss})\sigma + \tfrac{1}{2}g_{\sigma\sigma}\sigma^2 + \cdots$$
+      </div>
+      <p>其中 $x_t$ 是状态变量（资本、滞后产出等），$\sigma$ 控制冲击大小。逐项含义：</p>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">常数项 $g(x_{ss},0)$</div><div class="step-desc">确定性稳态。零阶信息。</div></div>
+        <div class="step-item"><div class="step-title">一阶项 $g_x$</div><div class="step-desc">线性脉冲响应（与对数线性化完全等价）。不含 $\sigma$ 一阶项 $g_\sigma$（在对称冲击下为 0）。</div></div>
+        <div class="step-item"><div class="step-title">二阶项 $g_{xx}, g_{\sigma\sigma}$</div><div class="step-desc">$g_{xx}$ 是政策规则的曲率；$g_{\sigma\sigma}$ 是<strong>风险修正</strong>——决策规则整体平移，捕捉预防性储蓄与风险溢价。这是二阶近似的核心新增。</div></div>
+        <div class="step-item"><div class="step-title">三阶项 $g_{xxx}, g_{xx\sigma}$</div><div class="step-desc">捕捉冲击的偏度（skewness）与时变波动率对决策的影响。讨论 ZLB、金融危机这类"尾部风险"时才需要。</div></div>
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 一阶扰动：与对数线性化等价</h2>
+      <p>一阶扰动只保留 $g_x$ 项，政策规则退化为线性系统：</p>
+      <div class="formula-block">
+        <div class="formula-label">一阶政策规则</div>
+        $$y_t = g(x_{ss},0) + g_x (x_t-x_{ss}),\qquad x_{t+1} = h_x x_t + \sigma\varepsilon_{t+1}$$
+      </div>
+      <p>这与手工对数线性化（见 04 页）得到的状态空间形式<strong>在数学上完全等价</strong>——Dynare 的 <code>order=1</code> 内部就是自动做这件事，免去手推。但一阶近似的局限如前所述：$g_{\sigma\sigma}=0$，随机均值 = 确定性稳态，没有风险溢价。</p>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 二阶扰动：风险修正与 pruning</h2>
+      <h4>二阶近似的一般形式</h4>
+      <div class="formula-block">
+        <div class="formula-label">二阶扰动政策规则</div>
+        $$y_t \approx g_{ss} + g_x \hat x_t + \tfrac{1}{2}g_{xx}\hat x_t^{\otimes 2} + \tfrac{1}{2}g_{\sigma\sigma}\sigma^2$$
+      </div>
+      <p>最后两项是一阶所没有的：<strong>二次项 $\tfrac12 g_{xx}\hat x_t^{\otimes 2}$</strong> 捕捉政策规则的非线性曲率；<strong>$\tfrac12 g_{\sigma\sigma}\sigma^2$</strong> 是与状态无关的常数平移——它把决策规则整体上移/下移，正是"风险修正稳态"。在二阶下，家庭因不确定性而多储蓄，稳态的资本存量、利率都与确定性情形不同。</p>
+      <h4>为什么需要 pruning（修剪）</h4>
+      <p>二阶/三阶近似有一个数值陷阱：把二阶政策规则代入下一期状态 $x_{t+1}$，会自动产生<strong>高阶项的"幂次爆炸"</strong>——比如 $\hat x_t^3$、$\hat x_t^4$ 会在迭代中无界增长，模拟出来的矩发散。这是因为泰勒展开是<strong>局部近似</strong>，反复迭代会把模拟轨迹推出收敛域。</p>
+      <p><strong>pruning（修剪）</strong>解决办法：把状态拆成"一阶分量"与"二阶分量"两层，只保留到目标阶数允许的项，<strong>主动丢弃高阶的交叉积</strong>。Kim-Kim-Schaumburg-Synetos (2008, <em>JEDC</em>) 的 pruning 方案成为标准：Dynare 二阶模拟默认启用 pruning。</p>
+      <div class="callout warning"><div class="callout-title">不 pruning 的后果</div><p>二阶/三阶模型若不做 pruning，长时间模拟时方差会爆炸、模拟 IRF 出现"伪振荡"甚至 NaN。Dynare 高阶求解后，<code>stoch_simul</code> 的模拟与矩计算都基于已 pruning 的表示；做 IRF 时可对照看修剪前后差异。</p></div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 三阶扰动与 Dynare order 选项</h2>
+      <p>三阶近似再加入 $g_{xxx}$ 与 $g_{x\sigma\sigma}$ 项。$g_{x\sigma\sigma}$ 的特别之处：它让<strong>条件波动率</strong>（$\sigma_t$ 的变动）影响决策规则——这正是"波动率冲击 / uncertainty shock"的载体。一阶、二阶近似里时变波动率是哑的，三阶才能让"方差冲击"产生一阶矩（产出）反应。</p>
+      <h4>Dynare 中 order 的使用</h4>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Dynare · order 选项示例</span><button class="copy-btn">复制</button></div>
+<pre><code>% ---- 在 .mod 文件结尾 ----
+% order=1: 一阶(=对数线性化), 快, 无风险效应
+% order=2: 二阶, 捕捉风险溢价/预防性储蓄, 默认 pruning
+% order=3: 三阶, 捕捉时变波动率(不确定性冲击)
+stoch_simul(order=1, irf=40, nograph) y pi i k;
+stoch_simul(order=2, irf=40, nograph) y pi i k;
+stoch_simul(order=3, irf=40, nograph) y pi i k;
+
+% 二阶下查看"风险修正稳态": Dynare 打印的 ys (二阶稳态)
+% 与一阶 ys 的差即 g_{\sigma\sigma} 平移量
+% moments 选项给出二阶/三阶下的无条件矩
+stoch_simul(order=2, periods=10000, drop=100) y pi i k;
+</code></pre>
+      </div>
+      <p>实务建议：日常估计与 IRF 用 <code>order=1</code>；做福利、股权溢价、风险修正稳态、比较确定性与随机均值时用 <code>order=2</code>；研究不确定性冲击、ZLB 附近尾部风险才用 <code>order=3</code>（计算量约为二阶的数倍）。</p>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 全局方法简介</h2>
+      <p>扰动法是<strong>局部</strong>方法：只在确定性稳态附近精确。若要处理强非线性、大状态偏离（如 ZLB 长期持续、极端危机、 occasionally-binding 约束），需要<strong>全局方法（global methods）</strong>，在整个状态空间上近似。三类主流：</p>
+      <div class="table-wrap"><table>
+        <tr><th>方法</th><th>思想</th><th>优点</th><th>缺点</th></tr>
+        <tr><td>投影法 Projection</td><td>用基函数（Chebyshev 多项式）近似政策函数，配残差最小化</td><td>全域精度可控、多项式经济</td><td>高维"维度诅咒"</td></tr>
+        <tr><td>值函数迭代 VFI</td><td>在网格上递归 Bellman 方程直到收敛</td><td>理论透明、强非线性稳</td><td>极慢、需精细网格</td></tr>
+        <tr><td>参数化期望 PE</td><td>把条件期望用多项式近似并迭代</td><td>比 VFI 快，适合随机</td><td>收敛不保证、需好初值</td></tr>
+      </table></div>
+      <p>全局法代表文献：Judd (1998)；Maliar &amp; Maliar 关于栅格与聚类的系列；Hooks &amp; den Haan 用 HJB 方程的连续时间法。</p>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 何时用扰动、何时用全局</h2>
+      <div class="callout info"><div class="callout-title">决策口诀</div>
+      <ul>
+        <li><strong>用扰动法</strong>：模型规模中等、常态波动、关注线性传导与标准 IRF、做贝叶斯估计（维度高、速度优先）、风险溢价/预防性储蓄（二阶够）。</li>
+        <li><strong>用全局法</strong>：ZLB 长期绑定、occasionally-binding 约束、危机式大幅偏离稳态、尾部风险、估值方程类问题（FTPL 极端情形）、需要全域精度的福利计算。</li>
+        <li><strong>混合</strong>：先用扰动法快速验证模型机制，发现关键非线性后，再对小维度核心用全局法做"benchmark 校准"。</li>
+      </ul>
+      </div>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 论文案例</h2>
+      <div class="paper-card"><span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Schmitt-Grohé &amp; Uribe (2004), "Solving Dynamic General Equilibrium Models Using a Second-Order Approximation"</div>
+        <div class="paper-meta">Journal of Economic Dynamics and Control, 28(4): 755–775</div>
+        <div class="paper-desc">扰动法二阶近似的标准参考文献，给出完整算法与稳定性条件，Dynare 高阶求解的理论基础。</div>
+      </div>
+      <div class="paper-card"><span class="paper-type en">EN · pruning</span>
+        <div class="paper-title">Kim, Kim, Schaumburg &amp; Synetos (2008), "Calculating and Using Second-Order Accurate Solutions of Discrete Time Dynamic Equilibrium Models"</div>
+        <div class="paper-meta">Journal of Economic Dynamics and Control, 32(11): 3397–3414</div>
+        <div class="paper-desc">提出 pruning 方案，解决高阶近似模拟发散。做二阶/三阶模拟前必读。</div>
+      </div>
+      <div class="paper-card"><span class="paper-type cn">CN · 中文</span>
+        <div class="paper-title">刘斌 (2008)，《我国 DSGE 模型的开发及在货币政策分析中的应用》</div>
+        <div class="paper-meta">《金融研究》/《经济学(季刊)》</div>
+        <div class="paper-desc">中文 DSGE 早期标杆，对比一阶与二阶近似下的福利与风险修正，是理解高阶近似应用的中文入门。</div>
+      </div>
+      <div class="paper-card"><span class="paper-type cn">CN · 中文</span>
+        <div class="paper-title">许志伟、林仁文等，《不确定性冲击与中国经济波动》</div>
+        <div class="paper-meta">《经济研究》《管理世界》相关三阶/不确定性 DSGE 工作</div>
+        <div class="paper-desc">用三阶扰动刻画时变波动率（不确定性）对中国产出与投资的影响，是中文高阶近似应用的代表。</div>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 常见错误与进阶资料</h2>
+      <h4>常见错误（≥3）</h4>
+      <ol>
+        <li><strong>order=1 却想讨论风险溢价</strong>：一阶近似里股权溢价、预防性储蓄恒为 0，必须 order=2 以上，否则结论无意义。</li>
+        <li><strong>二阶模拟不启用 pruning</strong>：长期模拟方差爆炸、IRF 伪振荡。Dynare 默认已处理，但手写高阶解时必须自己做修剪。</li>
+        <li><strong>拿二阶稳态当确定性稳态做 IRF</strong>：二阶下 ys 已被 $g_{\sigma\sigma}$ 平移，与 order=1 的稳态不同步；跨阶比较 IRF 时要统一基准。</li>
+        <li><strong>用扰动法硬解 ZLB 长期绑定</strong>：扰动在 ZLB 折点附近不收敛，必须上全局法或分段求解。</li>
+        <li><strong>三阶当成银弹</strong>：order=3 计算成本高，且对数值精度敏感；只为"不确定性冲击"用它，别日常滥用。</li>
+      </ol>
+      <h4>进阶资料</h4>
+      <ul>
+        <li>Judd (1998) <em>Numerical Methods in Economics</em>，扰动与全局方法的理论源头。</li>
+        <li>Fernández-Villaverde et al. 关于二阶/三阶近似与时变波动率的综述。</li>
+        <li>Dynare 官方 <code>example1.mod</code>、<code>kinetic_pitman.mod</code>（order=3）。</li>
+        <li>下一页《Dynare 求解实操》配套本页 order 选项做 IRF 与矩对比。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="04-log-linearization.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">对数线性化</div>
+      </a>
+      <a href="05-dynare-solving.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">Dynare求解实操</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

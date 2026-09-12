@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小国开放经济DSGE | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item active" href="12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">DSGE模型</a><span class="sep">/</span>
+      <span>小国开放经济</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">DSGE · 前沿分支 · 全流程</span>
+      <h1>小国开放经济 DSGE：假设→UIP→方程→稳态→Dynare→估计→IRF 全流程</h1>
+      <p class="desc">把封闭经济 NK 模型"打开一条缝"：本国是世界价格接受者，新增名义汇率、贸易条件、实际汇率、国际利率与无抛补利率平价（UIP）。本页讲清 Gali-Monacelli (2005) 小国开放模型的核心方程、UIP 条件、进口价格粘性与汇率不完全传递（exchange rate pass-through）、外部利息债务粘性（Schmitt-Grohe-Uribe 关闭单位根），并在同一页内顺承走完：假设与公式解读 → 一阶条件 → 稳态 → 对数线性化与求解 → 完整可运行 Dynare .mod → 校准 → 脉冲响应（国外冲击传导、汇率传导）→ 论文与常见错误。</p>
+      <div class="callout info" style="margin-top:16px">
+        <div class="callout-title">📐 方程规模总览 / EQUATION COUNT</div>
+        <p style="margin-bottom:6px"><strong>本模型共 24 个核心方程</strong>：CES 消费组合与需求 2、CPI 与贸易条件定义 2、家庭欧拉 1、UIP（含 SGU 风险溢价）1、外债动态 1、市场出清/出口 2、本国品 NKPC 1、CPI 通胀分解 1、进口品 NKPC 1、Taylor 规则 1、实际汇率/ToT 演化 2、国外块 AR(1) 3、贸易余额/净出口定义 1、自然利率定义 1、横截条件 1、风险溢价 AR(1) 1（合计 22 结构+2 边界）。</p>
+        <p style="margin-bottom:0">编号约定：<strong>SOE-x</strong> 为原始非线性方程，<strong>SOE-x̂</strong> 为对数线性化版，<strong>SOE-AR</strong> 为外生过程。</p>
+      </div>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-head">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-item"><span class="prereq-label">数学 / 统计基础</span>跨期欧拉与 UIP 的对数线性化、多国变量的矩阵系统；数学要求与封闭 NK 同级。</div>
+      <div class="prereq-item"><span class="prereq-label">经济学理论前置</span>国际金融（无抛补利率平价 UIP、汇率决定、贸易条件、汇率不完全传递）与开放经济宏观（Gali-Monacelli）。</div>
+      <div class="prereq-item"><span class="prereq-label">软件 / 计算前置</span>MATLAB + Dynare ≥4.6。</div>
+      <div class="prereq-item"><span class="prereq-label">站内前置页面</span>先学 10-nk-three-equation + 05-dynare-solving。</div>
+      <div class="prereq-item"><span class="prereq-label">难度与路线位置</span><span class="prereq-level lv-inter">进阶</span>把 NK 打开到国际维度，适合做汇率/外部冲击类论文。</div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么要做开放经济</a></li>
+        <li><a href="#s2">核心概念：汇率、贸易条件、实际汇率（含假设）</a></li>
+        <li><a href="#s3">UIP 与风险溢价收口（SGU）</a></li>
+        <li><a href="#s4">一阶条件与完整方程体系</a></li>
+        <li><a href="#s5">稳态求解</a></li>
+        <li><a href="#s6">对数线性化与求解方法</a></li>
+        <li><a href="#s7">汇率不完全传递与进口价格粘性</a></li>
+        <li><a href="#s8">校准：开放度、贸易弹性、风险溢价系数</a></li>
+        <li><a href="#s9">估计：数据来源、观测方程与贝叶斯</a></li>
+        <li><a href="#s10">Dynare .mod 逐步撰写（≥70行）</a></li>
+        <li><a href="#s11">脉冲响应：国外冲击与汇率传导</a></li>
+        <li><a href="#s12">论文案例、常见错误与进阶资料</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么要做开放经济：封闭模型缺什么</h2>
+      <p>封闭经济 NK 三方程模型（IS–PC–Taylor）把世界视为真空：本国利率只由本国产出缺口与通胀决定，本国消费只由本国产出支撑。但对绝大多数经济体（尤其小型开放经济体，如新加坡、香港、捷克、挪威，以及作为"大国中的小国"的中国某些行业视角）而言，<strong>国际市场是外生扰动的主要来源</strong>。美联储加息、大宗商品价格飙升、全球风险偏好收缩，都会通过汇率与贸易渠道直接冲击国内。</p>
+      <p>封闭模型无法回答以下问题：</p>
+      <ul>
+        <li>本国加息时，汇率会升值多少？升值又如何通过进口价格影响通胀（汇率传导 pass-through）？</li>
+        <li>外国利率 $i_t^*$ 上升，为什么会迫使本国央行跟随？资本流动的约束在哪里？</li>
+        <li>贸易条件（出口相对进口价格）改善，为什么可能"荷兰病"式地挤出本国制造业？</li>
+        <li>外部冲击（出口需求下降、国外紧缩）如何经过 IS 曲线传导到本国产出与通胀？</li>
+      </ul>
+      <p>小国开放经济（Small Open Economy, SOE）DSGE 的核心思想是：<strong>本国规模足够小，不影响世界价格、世界利率与世界产出；但本国对这些外生变量有完全的暴露</strong>。于是模型在 NK 骨架上新增四类开放元素：（1）名义汇率 $e_t$；（2）贸易条件 $s_t$；（3）实际汇率 $q_t$；（4）国际利率 $i_t^*$ 与资本账户。</p>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 核心概念：汇率、贸易条件、实际汇率（含假设）</h2>
+      <p>先把符号钉死。记 $P_{H,t}$ 为本国生产、本国消费的本币价格指数（Home good），$P_{F,t}$ 为外国生产、本国消费的外币计价进口品价格经汇率换算后的本币价格指数。名义汇率 $e_t$ 采用<strong>直接标价的对数形式</strong>（本币/外币），$e_t$ 上升表示本币贬值。</p>
+      <h3>2.1 贸易条件（Terms of Trade, ToT）的定义与假设</h3>
+      <p><strong>定义假设：</strong>贸易条件是出口品相对进口品的价格。在对数化水平下，Gali-Monacelli 将其定义为进口相对本国品的本币价格之比：</p>
+      <div class="formula-block">
+        <div class="formula-label">贸易条件（对数偏离稳态）</div>
+        $$s_t = p_{F,t} - p_{H,t}$$
+      </div>
+      <p><strong>解读：</strong>$s_t$ 上升意味着进口品相对本国品变贵，即本币实际贬值、贸易条件<strong>恶化</strong>（同样一单位出口换回的进口变少）。由于本国 CPI 是本国品与进口品的加权组合 $p_t = (1-\alpha)p_{H,t} + \alpha p_{F,t}$，其中 $\alpha$ 是进口渗透率，代入得 $p_t - p_{H,t} = \alpha s_t$：CPI 通胀与本国品通胀之间隔着一层贸易条件。$\alpha$ 是本页最关键的"开放度"参数，0 表示完全封闭，1 表示完全进口。</p>
+      <h3>2.2 实际汇率（Real Exchange Rate）</h3>
+      <p>实际汇率把名义汇率用两国价格水平调整。若外国 CPI 为 $p_t^*$，则：</p>
+      <div class="formula-block">
+        <div class="formula-label">实际汇率（对数）</div>
+        $$q_t = e_t + p_t^* - p_t$$
+      </div>
+      <p><strong>解读：</strong>$q_t$ 上升意味着本国商品相对外国变便宜（实际贬值）。在一价定律（Law of One Price, LOP）成立、进口品外币价格等于外国 CPI 的极端假设下，$p_{F,t} = e_t + p_t^*$，于是实际汇率与贸易条件直接挂钩：$q_t = (1-\alpha)s_t$（Gali-Monacelli 附录推导）。这是 SOE 模型能大幅简化的关键。</p>
+      <div class="callout info"><div class="callout-title">直觉</div><p>贸易条件是"商品篮子内部相对价格"，实际汇率是"两国总价格水平经汇率调整后的相对价格"。前者管资源在本国/进口品之间的配置，后者管本国产品在全球的竞争力。</p></div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> UIP 与资本流动：无抛补利率平价 + 风险溢价收口</h2>
+      <h3>3.1 为什么假设 UIP</h3>
+      <p><strong>假设：</strong>本国家庭可同时持有本币债券 $B_t$ 与外币债券 $B_t^*$，一期无风险、无交易成本、资本完全流动。这是"金融一体化"假设的极端形式。本币债券毛收益 $1+i_t$（本币计价），外国债券毛收益为 $(1+i_t^*)$ 外币计价，兑换回本币需乘名义汇率升值率 $E_t(e_{t+1})/e_t$。两类资产无套利：</p>
+      <div class="formula-block">
+        <div class="formula-label">UIP 原始形式（非对数）</div>
+        $$1+i_t = (1+i_t^*) E_t\!\left[\frac{e_{t+1}}{e_t}\right]$$
+      </div>
+      <p><strong>为什么必须有 UIP：</strong>没有 UIP，模型无法把"外国利率"与"本国利率"挂钩，开放经济的利率传导就断了。UIP 是国际金融的"无套利基石"，相当于封闭模型里的消费欧拉——它把跨期选择与跨币种选择统一起来。</p>
+      <p>对两边取对数、在稳态附近做一阶泰勒展开（记 $\log(1+i)\approx i$，小写为对数偏离稳态），稳态时 $\bar e$ 常数、$i=i^*$，得到教科书形式：</p>
+      <div class="formula-block">
+        <div class="formula-label">UIP 对数线性形式（核心方程）</div>
+        $$i_t - i_t^* = E_t\Delta e_{t+1} \equiv E_t e_{t+1} - e_t$$
+      </div>
+      <p>含义：本币利率高于外币利率的部分，必须恰好被市场预期的本币<strong>贬值</strong>所抵消。若本国加息 1% 而外国利率不变，且预期长期汇率不变，则当下本币立即升值（$e_t$ 跳跌），使得之后被预期的贬值 $E_t\Delta e_{t+1}$ 正好补上利差。这就是 Dornbusch (1976) 超调（overshooting）的根源。</p>
+
+      <h3>3.2 为什么标准 UIP 让模型不稳定（SGU 收口）</h3>
+      <p>纯粹的 UIP $i_t - i_t^* = E_t\Delta e_{t+1}$ 配合一个稳态净外国资产 NFA，会使净外债的运动方程带单位根——模型不收敛、模拟出来的贸易余额发散。Schmitt-Grohe &amp; Uribe (2003, <em>JIE</em>) 系统比较了三种"收口"方法，实务中最常用<strong>外债利率风险溢价</strong>：</p>
+      <div class="formula-block">
+        <div class="formula-label">含风险溢价的 UIP（关闭单位根）</div>
+        $$i_t - i_t^* = E_t\Delta e_{t+1} + \psi(b_t) + \varepsilon_t^{rp},\qquad \psi'&gt;0$$
+      </div>
+      <p>其中 $b_t$ 是净外债（相对 GDP），$\psi(b_t)=\psi_b(b_t-\bar b)$。本国借得越多，外国债权人要求的风险溢价越高，从而把外债拉回稳态。这一项把纯 UIP 变成稳定鞍点，是 Dynare 里 SOE 代码的必备补丁。<strong>假设解读：</strong>$\psi_b$ 衡量"外债每偏离稳态 1%，利率要求补偿多少"——它越小，模型越接近纯 UIP（越不稳定）；越大，国内货币政策越独立。</p>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 一阶条件与完整方程体系（IS/NKPC/UIP/Taylor/国外块）</h2>
+      <p>Gali &amp; Monacelli (2005, <em>RES</em>) 的优雅之处在于：开放模型在一阶近似下仍可压缩成"三方程 + 一个 UIP + 外生块"。核心推导链如下。先把家庭同时持有本币/外币债券的优化写成拉格朗日，说明 UIP 不是外生假设而是无套利 FOC。</p>
+
+      <h3>4.0 家庭跨币种优化：UIP 的拉格朗日推导（不跳步）</h3>
+      <p>家庭在消费 $C_t$ 之外，还可持有一期本币债券 $B_t$（本币计价，名义利率 $i_t$）与一期外币债券 $B_t^*$（外币计价，外国利率 $i_t^*$）。名义汇率 $e_t$（直接标价，本币/外币）把外币资产换成本币。家庭的预算约束：</p>
+      <div class="formula-block">
+        <div class="formula-label">开放经济家庭预算约束</div>
+        $$P_t C_t + B_t + e_t B_t^* = (1+i_{t-1})B_{t-1} + e_t(1+i_{t-1}^*)B_{t-1}^* + \text{工资/利润}$$
+      </div>
+      <p><strong>第一步，写拉格朗日：</strong>对预算约束乘消费边际效用 $\lambda_t$：</p>
+      <div class="formula-block">
+        $$\mathcal{L}=E_0\sum_t\beta^t\Big[U(C_t)-\lambda_t\big(P_t C_t + B_t + e_t B_t^* - (1+i_{t-1})B_{t-1}-e_t(1+i_{t-1}^*)B_{t-1}^*\big)\Big]$$
+      </div>
+      <p><strong>第二步，对本币债券 $B_t$ 求 FOC：</strong>$B_t$ 当期成本 $\lambda_t B_t$，下期本息 $\lambda_{t+1}(1+i_t)B_t$ 折现回来：</p>
+      <div class="formula-block">
+        <div class="formula-label">对 $B_t$ 的 FOC</div>
+        $$\lambda_t P_t = \beta(1+i_t)\,E_t[\lambda_{t+1}P_{t+1}] \;\Longleftrightarrow\; \Lambda_t=\beta(1+i_t)E_t\frac{\Lambda_{t+1}}{\Pi_{t+1}}$$
+      </div>
+      <p>这就是开放经济的消费欧拉（$\Pi_{t+1}=P_{t+1}/P_t$）。<strong>第三步，对外币债券 $B_t^*$ 求 FOC：</strong>注意 $e_t B_t^*$ 当期是本币成本，下期本息是 $e_{t+1}(1+i_t^*)B_t^*$，$e_{t+1}$ 是期望变量：</p>
+      <div class="formula-block">
+        <div class="formula-label">对 $B_t^*$ 的 FOC → UIP</div>
+        $$\lambda_t e_t = \beta(1+i_t^*)\,E_t[\lambda_{t+1}e_{t+1}] \;\Longleftrightarrow\; \Lambda_t e_t = \beta(1+i_t^*)E_t[\Lambda_{t+1}e_{t+1}]$$
+      </div>
+      <p><strong>第四步，两式相除消去 $\Lambda_t,\Lambda_{t+1}$（精确展开）：</strong>把对本币债券的 FOC 改写为 $\Lambda_t=\beta(1+i_t)E_t[\Lambda_{t+1}P_{t+1}/P_t]$，对外币债券的 FOC 改写为 $\Lambda_t=\beta(1+i_t^*)E_t[\Lambda_{t+1}e_{t+1}/e_t]$。两式左端同为 $\Lambda_t$，右端相等：</p>
+      <div class="formula-block">
+        <div class="formula-label">UIP 原始形式（两式右端相等，不跳步）</div>
+        $$\beta(1+i_t)\,E_t\!\left[\Lambda_{t+1}\frac{P_{t+1}}{P_t}\right]=\beta(1+i_t^*)\,E_t\!\left[\Lambda_{t+1}\frac{e_{t+1}}{e_t}\right]$$
+      </div>
+      <p><strong>关键一步：</strong>严格地说，两期望不能直接相除（因为 $\Lambda_{t+1}$ 与 $e_{t+1}$ 可能相关）。Gali-Monacelli 的标准做法是引入<strong>完全风险分担/对数线性化近似</strong>：在一阶近似下，随机贴现因子的协方差项为二阶小量可略，且 $\frac{P_{t+1}}{P_t}$ 与 $\frac{e_{t+1}}{e_t}$ 在对称均衡下满足 $\frac{P_{t+1}}{P_t}\big/\frac{e_{t+1}}{e_t}=\frac{P_{H,t+1}/P_{H,t}}{p_{F,t+1}/p_{F,t}}$ 等关系，于是期望算子外的确定性部分可约去：</p>
+      <div class="formula-block">
+        <div class="formula-label">UIP 对数线性形式（核心方程，SOE-UIP）</div>
+        $$1+i_t=(1+i_t^*)\,E_t\!\left[\frac{e_{t+1}}{e_t}\right]\;\xrightarrow{\log,\ \text{稳态 }i=i^*}\; i_t-i_t^*=E_t\Delta e_{t+1}\equiv E_t e_{t+1}-e_t$$
+      </div>
+      <p>对数线性化细节：$\log(1+i_t)\approx i_t$，稳态 $i=i^*$、$\bar e$ 常数，故 $\log E_t[e_{t+1}/e_t]\approx E_t(\log e_{t+1}-\log e_t)=E_t\Delta e_{t+1}$。<strong>结论：UIP 不是外生假设，而是家庭在两类无风险资产间套利的 FOC。</strong>3.2 节加的 $\psi_b b_t$ 风险溢价是为关闭单位根而加的"摩擦修正"，不改变 UIP 的套利内核。</p>
+
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">Step 1 · 消费组合与 CPI（假设：CES 复合）</div><div class="step-desc">本国家庭消费本国品 $C_H$ 与进口品 $C_F$，CES 复合：$C_t=[(1-\alpha)^{1/\eta}C_{H,t}^{(\eta-1)/\eta}+\alpha^{1/\eta}C_{F,t}^{(\eta-1)/\eta}]^{\eta/(\eta-1)}$，$\eta$ 为国内外品替代弹性，$\alpha$ 为进口份额。CPI：$p_t=(1-\alpha)p_{H,t}+\alpha p_{F,t}$。</div></div>
+        <div class="step-item"><div class="step-title">Step 2 · 家庭欧拉（FOC）</div><div class="step-desc">$\beta E_t[(C_{t+1}/C_t)^{-\sigma}(1+i_t)P_t/P_{t+1}]=1$，对数线性化得开放 IS：$c_t=E_t c_{t+1}-\frac{1}{\sigma}(i_t-E_t\pi_{t+1}-\rho)$。但 $c_t$ 不再等于 $y_t$。</div></div>
+        <div class="step-item"><div class="step-title">Step 3 · 市场出清与贸易条件</div><div class="step-desc">本国产出 $y_t=c_{H,t}+$ 出口。在对称均衡与 LOP 下可推出 $y_t-c_t=\alpha\eta s_t$（净出口 = 贸易条件函数），这是开放经济 IS 与封闭经济的本质差异。</div></div>
+        <div class="step-item"><div class="step-title">Step 4 · 开放 NKPC（含进口品通胀）</div><div class="step-desc">本国品通胀 $\pi_{H,t}=\beta E_t\pi_{H,t+1}+\kappa_\alpha x_t$，其中 $x_t\equiv y_t-y_t^n$ 为本国产出缺口，$\kappa_\alpha$ 与封闭情形同构。CPI 通胀 $\pi_t=\pi_{H,t}+\alpha\Delta s_t$——这就是"进口品通胀"进入 CPI 的方式。</div></div>
+        <div class="step-item"><div class="step-title">Step 5 · 货币政策 Taylor 规则（含汇率）</div><div class="step-desc">央行钉住本国品通胀的 Taylor 规则：$i_t=\rho+\phi_\pi\pi_{H,t}+\phi_y x_t+\phi_e\Delta e_t+\varepsilon_t^m$。$\phi_e$ 是汇率干预系数（浮动汇率下通常为 0，管理浮动下为正）。</div></div>
+        <div class="step-item"><div class="step-title">Step 6 · UIP + 汇率与外部块</div><div class="step-desc">UIP $i_t-i_t^*=E_t\Delta e_{t+1}+\psi_b b_t$；贸易条件 $s_t=e_t+p_t^*-p_{H,t}$；国外变量 $y_t^*,i_t^*,\pi_t^*$ 服从外生 AR(1)。</div></div>
+      </div>
+
+      <h3>4.1 CES 消费组合与需求函数（完整推导，不跳步）</h3>
+      <p><strong>结构假设：</strong>本国家庭消费由本国品 $C_{H,t}$ 与进口品 $C_{F,t}$ 经 CES 复合而成：</p>
+      <div class="formula-block">
+        <div class="formula-label">SOE-C1 · CES 消费复合（原始）</div>
+        $$C_t=\left[(1-\alpha)^{1/\eta}C_{H,t}^{(\eta-1)/\eta}+\alpha^{1/\eta}C_{F,t}^{(\eta-1)/\eta}\right]^{\eta/(\eta-1)}$$
+      </div>
+      <p>其中 $\alpha$ 为进口份额（开放度），$\eta$ 为国内外品替代弹性。<strong>成本最小化求需求函数：</strong>给定复合消费量 $C_t$，家庭最小化支出 $P_{H,t}C_{H,t}+P_{F,t}C_{F,t}$。构造拉格朗日 $\mathcal{L}=P_{H,t}C_H+P_{F,t}C_F-\lambda_t[C_t-C(C_H,C_F)]$，对 $C_H,C_F$ 分别求偏导：</p>
+      <div class="formula-block">
+        <div class="formula-label">CES 需求 FOC 展开</div>
+        $$\frac{\partial\mathcal L}{\partial C_H}=P_{H,t}-\lambda_t(1-\alpha)^{1/\eta}C_H^{-1/\eta}C_t^{1/\eta}=0$$
+        $$\frac{\partial\mathcal L}{\partial C_F}=P_{F,t}-\lambda_t\alpha^{1/\eta}C_F^{-1/\eta}C_t^{1/\eta}=0$$
+      </div>
+      <p>两式相除得 $C_F/C_H=\frac{\alpha}{1-\alpha}(P_{H,t}/P_{F,t})^\eta$，代回复合函数解得 CPI 指数与需求函数（SOE-C2、SOE-C3、SOE-C4）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SOE-C2 · CPI 指数 / SOE-C3 · 本国品需求 / SOE-C4 · 进口品需求</div>
+        $$P_t=\left[(1-\alpha)P_{H,t}^{1-\eta}+\alpha P_{F,t}^{1-\eta}\right]^{1/(1-\eta)}$$
+        $$C_{H,t}=(1-\alpha)\left(\frac{P_{H,t}}{P_t}\right)^{-\eta}C_t,\qquad C_{F,t}=\alpha\left(\frac{P_{F,t}}{P_t}\right)^{-\eta}C_t$$
+      </div>
+      <p><strong>定义：</strong>$\alpha$ 进口份额、$\eta$ 替代弹性。<strong>理由：</strong>CES 复合是开放经济的标准做法。<strong>直觉：</strong>本国品相对价格升 1%，需求按 $\eta$ 弹性下降。在一阶对数线性化下，$p_t=(1-\alpha)p_{H,t}+\alpha p_{F,t}$，且 $p_{F,t}-p_{H,t}=s_t$（贸易条件），故 $p_t-p_{H,t}=\alpha s_t$。</p>
+
+      <h3>4.2 市场出清与净出口推导（$y_t-c_t=\alpha\eta s_t$ 的来历）</h3>
+      <p><strong>本国产品市场出清：</strong>本国产出全部供本国消费 $C_{H,t}$ 与外国出口需求 $C_{H,t}^*$。在对称均衡与 LOP 假设下，外国对本国品的需求为 $C_{H,t}^*=\alpha(P_{H,t}/(e_t P_t^*))^{-\eta}C_t^*$。一阶对称近似下，$P_{H,t}/(e_tP_t^*)=1/s_t$（因 LOP $P_{F,t}=e_tP_t^*$）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SOE-M1 · 本国产品市场出清（原始）</div>
+        $$Y_t=C_{H,t}+C_{H,t}^*=(1-\alpha)\left(\frac{P_{H,t}}{P_t}\right)^{-\eta}C_t+\alpha\left(\frac{P_{H,t}}{e_tP_t^*}\right)^{-\eta}C_t^*$$
+      </div>
+      <p><strong>对数线性化展开：</strong>利用 $P_{H,t}/P_t$ 对数偏离为 $\alpha s_t$，$P_{H,t}/(e_tP_t^*)$ 对数偏离为 $-s_t$。在对称稳态 $\bar Y=\bar C=\bar C^*$ 下取对数：</p>
+      <div class="formula-block">
+        <div class="formula-label">市场出清线性化展开</div>
+        $$\hat y_t=(1-\alpha)(\hat c_t+\eta\alpha s_t)+\alpha(\hat c_t^*+\eta s_t)$$
+      </div>
+      <p>整理 $\hat c_t$ 系数 $(1-\alpha)+\alpha=1$，$s_t$ 系数 $\eta\alpha[(1-\alpha)+\alpha]=\alpha\eta$，得：</p>
+      <div class="formula-block">
+        <div class="formula-label">SOE-M1̂ · 开放经济市场出清（线性化）</div>
+        $$\hat y_t=\hat c_t+\alpha\eta s_t+\alpha\hat c_t^*$$
+      </div>
+      <p><strong>直觉：</strong>贸易条件改善（$s_t\downarrow$，本国产出相对变贵）挤出本国消费与出口；国外需求 $\hat c_t^*$ 直接拉动本国产出。这是开放经济与封闭经济的本质差异——$y_t$ 不再等于 $c_t$。</p>
+
+      <h3>4.3 开放 IS 曲线的推导（从欧拉 + 市场出清）</h3>
+      <p><strong>原始消费欧拉（SOE-E1）：</strong>$\Lambda_t=\beta(1+i_t)E_t[\Lambda_{t+1}P_t/P_{t+1}]$，CRRA 下 $\Lambda_t=C_t^{-\sigma}$。对数线性化：</p>
+      <div class="formula-block">
+        <div class="formula-label">欧拉线性化 → 开放 IS</div>
+        $$\hat c_t=E_t\hat c_{t+1}-\frac{1}{\sigma}(\hat i_t-E_t\hat\pi_{t+1})$$
+      </div>
+      <p><strong>代入市场出清：</strong>用 SOE-M1̂ 的 $\hat c_t=\hat y_t-\alpha\eta s_t-\alpha\hat c_t^*$ 替换 $\hat c_t$，并利用 CPI 通胀 $\hat\pi_t=\hat\pi_{H,t}+\alpha\Delta s_t$（SOE-PC2，由 $p_t-p_{H,t}=\alpha s_t$ 差分而来）。定义产出缺口 $x_t\equiv\hat y_t-\hat y_t^n$（自然产出随国外需求变动），整理得开放 IS 曲线（SOE-IS）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SOE-IS · 开放经济 IS 曲线（核心）</div>
+        $$x_t=E_tx_{t+1}-\frac{1}{\sigma_\alpha}(i_t-E_t\pi_{H,t+1}-r_t^n),\qquad \sigma_\alpha\equiv\sigma+(1-\alpha)(\eta\sigma-1)$$
+      </div>
+      <p><strong>自然利率定义（SOE-RN）：</strong>由完全弹性价格下的资源约束与国外需求决定，$r_t^n=\sigma_\alpha(1-\alpha)E_t\Delta y_{t+1}^*$。<strong>直觉：</strong>国外产出预期增长 → 本国自然利率上升（需求外移）；$\sigma_\alpha$ 修正了封闭经济的跨期替代弹性，开放度 $\alpha$ 越大，$\sigma_\alpha$ 越小（利率对产出的影响被贸易渠道稀释）。</p>
+
+      <h3>4.4 外债动态与贸易余额（NFA 运动方程）</h3>
+      <p><strong>非线型外债累积（SOE-NFA）：</strong>本国净外债 $B_t^*$（外币计价）服从存量-流量关系。把家庭预算约束中的 $e_tB_t^*$ 项移项整理：当期新借外债 = 上期末外债本利和 − 当期贸易顺差：</p>
+      <div class="formula-block">
+        <div class="formula-label">SOE-NFA · 净外债运动方程（原始）</div>
+        $$e_t B_t^*=(1+i_{t-1}^*)e_t B_{t-1}^*-P_{H,t}Y_t+P_t C_t$$
+      </div>
+      <p>定义贸易顺差 $NX_t\equiv P_{H,t}Y_t-P_tC_t$（出口收入减进口消费支出），净外债/GDP 比例 $b_t\equiv e_tB_t^*/(P_tY_t)$。一阶对数线性化（稳态 $\bar b=0$、零贸易余额）得：</p>
+      <div class="formula-block">
+        <div class="formula-label">SOE-NFÂ · 净外债线性化 + 贸易余额</div>
+        $$b_t=(1+i^*)b_{t-1}-\frac{nx_t}{Y}+\frac{1}{\sigma_\alpha}(y_t^*-y_t),\qquad nx_t\equiv\alpha\eta s_t-(1-\alpha)(c_t-y_t)$$
+      </div>
+      <p><strong>直觉：</strong>贸易逆差（$nx_t&lt;0$）积累外债；利率 $i^*$ 使外债本利滚动。这就是 SGU 风险溢价 $\psi_b b_t$ 所作用的状态变量——它把单位根拉回稳态。</p>
+      <div class="formula-block">
+        <div class="formula-label">Gali-Monacelli 对数线性化核心方程组（完整）</div>
+        $$\begin{aligned}
+        \text{开放 IS（含国外产出）：}\quad &x_t=E_tx_{t+1}-\frac{1}{\sigma_\alpha}(i_t-E_t\pi_{H,t+1}-r_t^n),\qquad r_t^n=\sigma_\alpha(1-\alpha)E_t\Delta y_{t+1}^*\\
+        \text{NKPC（本国品）：}\quad &\pi_{H,t}=\beta E_t\pi_{H,t+1}+\kappa_\alpha x_t\\
+        \text{CPI 通胀（含进口品通胀）：}\quad &\pi_t=\pi_{H,t}+\alpha\Delta s_t\\
+        \text{Taylor（含汇率）：}\quad &i_t=\phi_\pi\pi_{H,t}+\phi_y x_t+\phi_e\Delta e_t+\varepsilon_t^m\\
+        \text{UIP：}\quad &i_t-i_t^*=E_t\Delta e_{t+1}+\psi_b b_t\\
+        \text{ToT/实际汇率：}\quad &s_t=e_t+p_t^*-p_{H,t},\qquad q_t=(1-\alpha)s_t\\
+        \text{国外冲击过程：}\quad &y_t^*=\rho_{y^*}y_{t-1}^*+\varepsilon_t^{y^*},\quad i_t^*=\rho_{i^*}i_{t-1}^*+\varepsilon_t^{i^*},\quad \pi_t^*=\rho_{\pi^*}\pi_{t-1}^*+\varepsilon_t^{\pi^*}
+        \end{aligned}$$
+      </div>
+      <p>其中 $\sigma_\alpha\equiv\sigma+(1-\alpha)(\eta\sigma-1)$ 是开放经济下"有效跨期替代弹性"的修正，$r_t^n$ 是自然利率，随国外产出与贸易条件变动。注意：<strong>若 $\alpha=0$（完全封闭），方程组退化为标准封闭 NK 三方程</strong>——这是检验 SOE 代码正确性的黄金对照。</p>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 稳态求解（完整方程组 + 逐步求解）</h2>
+      <p>SOE 模型的稳态比封闭模型多几个"国际长期均衡"条件。下面先列全 <strong>8 条稳态方程</strong>，再给求解顺序。</p>
+      <h3>5.0 稳态完整方程组（SS-1 ~ SS-8）</h3>
+      <div class="table-wrap"><table>
+        <tr><th>#</th><th>稳态方程</th><th>来源</th></tr>
+        <tr><td>SS-1</td><td>$\bar i=\bar i^*=\bar r+\bar\pi$，长期利率平价成立</td><td>SOE-UIP 稳态</td></tr>
+        <tr><td>SS-2</td><td>$\psi(\bar b)=0\Rightarrow\bar b=0$（无长期净外债）</td><td>SGU 风险溢价</td></tr>
+        <tr><td>SS-3</td><td>$\overline{NX}=0$（长期贸易余额为零）</td><td>SOE-NFA 稳态</td></tr>
+        <tr><td>SS-4</td><td>$\bar s=0,\;\bar q=0$（对数水平，LOP 与对称）</td><td>SOE-2.1/2.2 定义</td></tr>
+        <tr><td>SS-5</td><td>$\bar C=\bar Y=\bar C^*$（对称稳态）</td><td>市场出清 SOE-M1</td></tr>
+        <tr><td>SS-6</td><td>$\beta(1+\bar r)=1$（家庭欧拉稳态）</td><td>SOE-E1</td></tr>
+        <tr><td>SS-7</td><td>$\bar\pi=\bar\pi_H=\bar\pi^*=\bar\pi^{target}$（央行通胀目标）</td><td>Taylor 规则稳态</td></tr>
+        <tr><td>SS-8</td><td>$\bar e$ 水平 indeterminate（只有差分 $\Delta e$ 被锁定）</td><td>纯 UIP 的水平不确定性</td></tr>
+      </table></div>
+      <h3>5.1 逐步求解</h3>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">Step 1 · 实际利率</div><div class="step-desc">由 SS-6：$\bar r=1/\beta-1\approx0.01$（季度），与封闭经济一致。</div></div>
+        <div class="step-item"><div class="step-title">Step 2 · 名义利率与通胀</div><div class="step-desc">由 SS-7：$\bar\pi=\bar\pi^{target}$（央行目标），故 $\bar i=\bar r+\bar\pi$。由 SS-1：$\bar i^*=\bar i$。</div></div>
+        <div class="step-item"><div class="step-title">Step 3 · 外债与贸易余额</div><div class="step-desc">由 SS-2、SS-3：$\bar b=0,\overline{NX}=0$，贸易长期平衡。</div></div>
+        <div class="step-item"><div class="step-title">Step 4 · 贸易条件与实际汇率</div><div class="step-desc">由 SS-4：$\bar s=0,\bar q=0$；由 SS-8，名义汇率 $\bar e$ 水平 indeterminate，只跟踪差分（本页 .mod 的差分写法即为此设计）。</div></div>
+        <div class="step-item"><div class="step-title">Step 5 · 消费与产出</div><div class="step-desc">由 SS-5：$\bar C=\bar Y=\bar C^*$，对称稳态。</div></div>
+      </div>
+      <p>SOE 模型的稳态比封闭模型多几个"国际长期均衡"条件：</p>
+      <ul>
+        <li><strong>长期利率平价：</strong>稳态 $i=i^*$（本国与世界长期名义利率相等）。这是 UIP 的稳态形式，意味着长期不存在利差。</li>
+        <li><strong>稳态净外债：</strong>由 $\psi(\bar b)=0$ 得 $\bar b=0$（无长期外债）。若允许长期债务，则 $\bar b$ 由资产供给与稳态风险溢价共同决定。</li>
+        <li><strong>稳态贸易余额：</strong>长期贸易余额为零（$\bar{NX}=0$），因为资本账户长期平衡。</li>
+        <li><strong>稳态贸易条件：</strong>由 LOP 与对称性得 $\bar s=0$（对数水平），$\bar q=0$。</li>
+        <li><strong>本国利率：</strong>$\bar i=\bar i^*$，稳态通胀由央行通胀目标 $\bar\pi$ 决定，$\bar r=\bar i-\bar\pi$。</li>
+      </ul>
+      <div class="callout tip">
+        <div class="callout-title">Dynare 稳态</div>
+        <p>对数线性化版本所有变量稳态为 0，<code class="inline">steady;</code> 直接归零。非线性版本需 <code class="inline">initval;</code> 给 $\bar b,\bar s,\bar e$ 初值，并用 <code class="inline">resid;</code> 检查外债运动方程残差是否收敛。<strong>务必确认稳态下 $\psi(\bar b)=0$</strong>，否则 UIP 会带一个常数漂移。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 对数线性化与求解方法</h2>
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库</div>
+        <p style="margin-bottom:0">本节承接 §05 稳态、使用 <strong>对数线性化</strong>与扰动法求解。不熟悉？先学
+          <a href="03-steady-state.html">📚 基础知识库·稳态求解</a> → 与
+          <a href="04-log-linearization.html">📚 基础知识库·对数线性化</a> →。
+        </p>
+      </div>
+      <h3>6.1 对数线性化要点</h3>
+      <p>SOE 模型的对数线性化与封闭模型相同，但要特别注意三类变量：</p>
+      <ul>
+        <li><strong>水平变量（$p_t,p_t^*,e_t$）与增长率变量（$\pi_t,\pi_t^*,\Delta e_t$）分开处理。</strong>若只用通胀而不显式跟踪价格水平，UIP 与实际汇率会出现"汇率 indeterminacy"（单位根）。</li>
+        <li><strong>净外债 $b_t$ 是状态变量</strong>，必须写它的运动方程 $b_t=(1+i^*)b_{t-1}-nx_t$，不能只写 UIP 当期等式。</li>
+        <li><strong>国外变量是外生 AR(1)</strong>，不进入本国内生求解块。</li>
+      </ul>
+      <h3>6.2 求解方法</h3>
+      <p>SOE 模型规模小（10 个左右内生变量），一阶扰动 <code class="inline">order=1</code> 通常足够。但若估计带异方差或做福利分析，建议 <code class="inline">order=2</code>。<strong>关键警告：</strong>纯 UIP 无风险溢价时，Blanchard-Kahn 条件不满足（前瞻变量多于鞍点路径），Dynare 会报"Indeterminacy"。这就是必须加 $\psi_b b_t$ 的原因。</p>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 汇率不完全传递与进口价格粘性</h2>
+      <p>Gali-Monacelli 的基准假设是 LOP + 完全传递：汇率变动 1% 立刻 1:1 传导到进口品本币价格。但实证（Burstein &amp; Gopinath 2014, <em>Handbook of Intl. Econ.</em>）显示，短期汇率对 CPI 的传递率往往只有 10%–30%。原因是<strong>进口价格也存在粘性</strong>，且出口商可能按"当地货币定价"（Local Currency Pricing, LCP）。</p>
+      <p><strong>假设：</strong>把进口品价格 $P_{F,t}$ 也套一层 Calvo。设 $\theta_F$ 为进口商不调价概率，则进口品通胀的 NKPC 为：</p>
+      <div class="formula-block">
+        <div class="formula-label">SOE-FPC · 进口品 NKPC（汇率传递滞后）</div>
+        $$\pi_{F,t}=\beta E_t\pi_{F,t+1}+\lambda_F\,(e_t+p_t^*-p_{F,t})$$
+      </div>
+      <p><strong>完整推导（不跳步）：</strong>进口商是竞争性中间商，从外国按外币价格 $P_t^*$ 购入、按本币价 $P_{F,t}$ 卖给本国。其名义边际成本为 $MC_{F,t}=e_tP_t^*$（一价定律下的"进口边际成本"）。与本国品 Calvo 定价完全对称（见 SW §3.5），能重设价格的进口商选 $P_{F,t}^*$ 满足：</p>
+      <div class="formula-block">
+        <div class="formula-label">进口商最优定价问题 + FOC</div>
+        $$\max_{P_{F,t}^*}\;E_t\sum_{k=0}^{\infty}(\beta\theta_F)^k\frac{\Lambda_{t+k}}{\Lambda_t}\big[P_{F,t}^*-e_{t+k}P_{t+k}^*\big]C_{F,t+k|t}$$
+        $$E_t\sum(\beta\theta_F)^k\frac{\Lambda_{t+k}}{\Lambda_t}C_{F,t+k|t}P_{F,t}^*=\mu_F E_t\sum(\beta\theta_F)^k\frac{\Lambda_{t+k}}{\Lambda_t}C_{F,t+k|t}e_{t+k}P_{t+k}^*$$
+      </div>
+      <p>价格指数加总 $P_{F,t}^{1-\varepsilon_F}=(1-\theta_F)(P_{F,t}^*)^{1-\varepsilon_F}+\theta_F P_{F,t-1}^{1-\varepsilon_F}$。在稳态 $\bar P_F=e\bar P^*$（LOP 成立）处对数线性化，令 $\lambda_F\equiv\frac{(1-\theta_F)(1-\beta\theta_F)}{\theta_F}$，即得上述 SOE-FPC。括号内 $e_t+p_t^*-p_{F,t}$ 是进口品本币价格偏离"一价定律价格"的缺口（LOP gap）。当本币贬值 $e_t\uparrow$，这一缺口扩大，但由于 Calvo 粘性，$\pi_{F,t}$ 只缓慢调整——汇率冲击被进口价格粘性"吸收"，短期 pass-through 下降。此时 CPI 通胀对汇率的反应被平滑，货币政策面临的"通胀—产出"权衡更温和。<strong>解读：</strong>$\theta_F$ 越大，汇率越不传到 CPI，央行对汇率波动越"不敏感"；$\theta_F=0$ 回到完全传递。</p>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 校准：开放度、贸易弹性、风险溢价系数</h2>
+      <p>SOE 模型有三个"开放经济专属"参数需要特别校准，它们决定模型的开放程度与外部稳定性。</p>
+      <div class="table-wrap"><table>
+        <tr><th>参数</th><th>含义</th><th>典型校准值</th><th>校准依据</th></tr>
+        <tr><td>$\alpha$</td><td>进口渗透率（开放度）</td><td>0.40（小型开放经济）</td><td>进口/GDP 比重；新加坡/香港可达 0.5–0.8，大陆经济体约 0.2–0.3</td></tr>
+        <tr><td>$\eta$</td><td>国内外品替代弹性</td><td>1.5</td><td>MacDonald &amp; Bayoumi (1999) 估计 1–2；价格弹性贸易文献常用 1.5</td></tr>
+        <tr><td>$\psi_b$</td><td>外债风险溢价弹性</td><td>0.01–0.05</td><td>SGU(2003) 推荐；太小模型不收敛，太大则国内利率独立性被人为放大</td></tr>
+        <tr><td>$\sigma$</td><td>跨期替代弹性倒数</td><td>1.5</td><td>与封闭 NK 一致</td></tr>
+        <tr><td>$\beta$</td><td>季度贴现因子</td><td>0.99</td><td>稳态年化利率 4%</td></tr>
+        <tr><td>$\theta_H$</td><td>本国品 Calvo 概率</td><td>0.75</td><td>平均 1 年合同</td></tr>
+        <tr><td>$\theta_F$</td><td>进口品 Calvo 概率</td><td>0.5–0.75</td><td>实证 pass-through 约 30%–50%</td></tr>
+        <tr><td>$\phi_\pi$</td><td>Taylor 对通胀反应</td><td>1.5</td><td>Taylor 原理</td></tr>
+        <tr><td>$\phi_e$</td><td>Taylor 对汇率反应</td><td>0（浮动）/ 0.5（管理浮动）</td><td>汇率制度选择</td></tr>
+      </table></div>
+      <div class="callout warning">
+        <div class="callout-title">$\psi_b$ 的校准陷阱</div>
+        <p>$\psi_b$ 太小（如 0.001），模型鞍点条件勉强满足但模拟贸易余额会缓慢发散；太大（如 1.0），外债一有偏离利率就剧烈反应，国内货币政策独立性被人为放大。SGU(2003) 证明一阶近似下三种收口方法等价，但 $\psi_b$ 取 0.01–0.05 是主流实务值。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 估计：数据来源、观测方程与贝叶斯设定</h2>
+      <p>SOE 模型的估计分两块：<strong>(i) 稳态/开放度参数校准</strong>（上节表，由长期矩定，不进似然）；<strong>(ii) 动态参数贝叶斯估计</strong>（把模型当状态空间，用 Kalman 滤波 + MCMC 估计 $\theta_H,\theta_F,\phi_\pi,\psi_b$ 等）。下面把数据来源、观测方程、先验写死。</p>
+
+      <h3>9.1 数据来源（国外块 + 本国产出/CPI/利率/汇率）</h3>
+      <p>SOE 的"小国"体现在国外变量 $y_t^*,i_t^*,\pi_t^*$ 直接取大国（通常美国/全球）外生序列，不进本国估计块。本页以美国为对象/中国本土两套为例：</p>
+      <div class="table-wrap"><table>
+        <tr><th>变量</th><th>美国基准（FRED）</th><th>中国本土</th><th>处理</th></tr>
+        <tr><td>国外产出 $y_t^*$</td><td><code class="inline">GDPC1</code>（美国实际 GDP）</td><td>国家统计局 / Wind：全球或美国 GDP 同比</td><td>对数差分去均值</td></tr>
+        <tr><td>国外利率 $i_t^*$</td><td><code class="inline">FEDFUNDS</code></td><td>Wind：联邦基金利率季度均值</td><td>年化÷4，去均值</td></tr>
+        <tr><td>国外通胀 $\pi_t^*$</td><td><code class="inline">GDPDEF</code> / <code class="inline">CPIAUCSL</code></td><td>CEIC：美国 CPI</td><td>对数差分×400</td></tr>
+        <tr><td>本国产出缺口 $x_t$</td><td><code class="inline">GDPC1</code> 对数 − HP 趋势</td><td>国家统计局：实际 GDP 当季，BP/HP 滤波去趋势</td><td>相对潜在 GDP 缺口</td></tr>
+        <tr><td>本国 CPI 通胀 $\pi_t$</td><td><code class="inline">CPIAUCSL</code> 对数差分</td><td>国家统计局 / Wind：CPI 环比折年</td><td>×400，去均值</td></tr>
+        <tr><td>本国利率 $i_t$</td><td><code class="inline">FEDFUNDS</code></td><td>中国人民银行 / Wind：DR007 或 7 天回购利率</td><td>季度均值÷4</td></tr>
+        <tr><td>名义汇率 $e_t$</td><td><code class="inline">EXUSEU</code> / 贸易加权 NEER</td><td>国家外汇管理局 / Wind：人民币兑美元中间价或 CFETS NEER</td><td>对数差分 Δe，去均值</td></tr>
+        <tr><td>贸易条件 $s_t$</td><td>出口价格指数 ÷ 进口价格指数（BLS）</td><td>海关总署 / CSMAR：出口 FOB 价 ÷ 进口 CIF 价</td><td>对数差分</td></tr>
+      </table></div>
+      <p><strong>样本区间：</strong>美国基准常用 1983Q1–2008Q4（沃尔克后、零利率前）；中国本土常用 1996Q1（或 2001Q1 加入 WTO 后）至最近季度。汇率数据注意直接/间接标价口径全程一致。</p>
+
+      <h3>9.2 观测方程（Kalman 观测方程）</h3>
+      <p>模型是去均值偏差模型，观测方程把数据序列接到模型状态：</p>
+      <div class="formula-block">
+        <div class="formula-label">SOE 观测方程</div>
+        $$x_t^{obs}=x_t+\bar x\qquad\;\;\text{（产出缺口，已去趋势）}$$
+        $$\pi_t^{obs}=\pi_t+\bar\pi\qquad\;\;\text{（CPI 通胀×400）}$$
+        $$i_t^{obs}=i_t+\bar i\qquad\;\;\text{（政策利率÷4）}$$
+        $$\Delta e_t^{obs}=e_t-e_{t-1}\quad\;\text{（汇率对数差分）}$$
+        $$\Delta s_t^{obs}=s_t-s_{t-1}\quad\;\text{（贸易条件对数差分）}$$
+        $$y_t^{*obs}=y_t^*+\bar y^*,\;\; i_t^{*obs}=i_t^*+\bar i^*,\;\; \pi_t^{*obs}=\pi_t^*+\bar\pi^*$$
+      </div>
+      <p>国外三个序列作为<strong>外生观测</strong>同时进观测方程（它们驱动国内自然利率 $r_n$），不能只在 .mod 里设 AR(1) 而不喂数据，否则外部冲击幅度无法识别。</p>
+
+      <h3>9.3 贝叶斯先验（开放经济专属参数）</h3>
+      <p>$\alpha,\eta,\psi_b$ 三参数在校准时已锚定长期矩，估计时给较紧先验；动态参数给常规先验：</p>
+      <div class="table-wrap"><table>
+        <tr><th>参数</th><th>含义</th><th>分布</th><th>先验均值</th><th>先验 Std</th><th>后验典型值</th></tr>
+        <tr><td>$\alpha$</td><td>开放度/进口份额</td><td>Beta</td><td>0.30</td><td>0.05</td><td>0.25–0.45</td></tr>
+        <tr><td>$\eta$</td><td>国内外替代弹性</td><td>Gamma</td><td>1.50</td><td>0.50</td><td>1.0–2.0</td></tr>
+        <tr><td>$\psi_b$</td><td>外债风险溢价弹性</td><td>Gamma</td><td>0.03</td><td>0.02</td><td>0.01–0.05</td></tr>
+        <tr><td>$\theta_H$</td><td>本国品 Calvo</td><td>Beta</td><td>0.75</td><td>0.10</td><td>0.7–0.85</td></tr>
+        <tr><td>$\theta_F$</td><td>进口品 Calvo（传递慢）</td><td>Beta</td><td>0.50</td><td>0.15</td><td>0.4–0.7</td></tr>
+        <tr><td>$\phi_\pi$</td><td>Taylor 通胀反应</td><td>Normal</td><td>1.50</td><td>0.25</td><td>1.5–2.5</td></tr>
+        <tr><td>$\phi_e$</td><td>Taylor 汇率反应</td><td>Normal</td><td>0.00</td><td>0.10</td><td>0–0.5（管理浮动为正）</td></tr>
+        <tr><td>$\rho_{y^*},\rho_{i^*},\rho_{\pi^*}$</td><td>国外 AR 持续性</td><td>Beta</td><td>0.80</td><td>0.10</td><td>0.7–0.95</td></tr>
+      </table></div>
+      <p><strong>估计流程：</strong>同 SW——Kalman 滤波算似然 → <code class="inline">mode_compute=6</code> 找后验众数 → Metropolis-Hastings 两条链、20 万步、$j$ 调到接受率 25%–35% → BGR 收敛。SOE 模型小（~12 变量），计算量远小于 SW，一阶求解即可，但建议二阶 + 不开 pruning 也可（规模小不易发散）。</p>
+
+      <h3>9.4 中国数据落地清单</h3>
+      <div class="table-wrap"><table>
+        <tr><th>模型变量</th><th>国内数据来源</th><th>具体变量</th></tr>
+        <tr><td>本国产出/产出缺口</td><td>国家统计局 / Wind</td><td>实际 GDP 当季值，HP/BP 滤波去趋势得缺口</td></tr>
+        <tr><td>CPI 通胀</td><td>国家统计局 / Wind / CEIC</td><td>居民消费价格指数环比折年率</td></tr>
+        <tr><td>政策利率</td><td>中国人民银行 / Wind</td><td>DR007（7 天银行间质押回购）或一年期 MLF 利率季度均值</td></tr>
+        <tr><td>名义汇率</td><td>外汇交易中心 / Wind / CSMAR</td><td>人民币兑美元中间价，或 CFETS 人民币汇率指数（NEER）</td></tr>
+        <tr><td>贸易条件</td><td>海关总署 / CEIC</td><td>出口价格指数 ÷ 进口价格指数；缺数据时用 PPI/RPI 近似</td></tr>
+        <tr><td>国外块</td><td>FRED / Wind 海外库</td><td>美国 GDPC1、FEDFUNDS、CPIAUCSL 作为 $y^*,i^*,\pi^*$</td></tr>
+        <tr><td>净出口/外债 $b_t$</td><td>国家外汇管理局 / Wind</td><td>国际投资头寸表净外债 / GDP，或贸易差额近似</td></tr>
+      </table></div>
+      <div class="callout info">
+        <div class="callout-title">中国 SOE 的两个本土修正</div>
+        <p>(1) 中国长期是"管理浮动 + 资本账户部分管制"，$\phi_e$ 不应设 0 而应给 0.1–0.3，且需引入资本管制下的 UIP 楔子；(2) 中国出口中加工贸易占比高，$\alpha$ 与 $\eta$ 不能直接照搬小国，应按加工贸易/一般贸易分别估计。梅冬州、龚六堂 (2011) 与刘斌 (2008) 给出了本土化校准。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> Dynare .mod 逐步撰写（≥70 行，中文注释，已修复原占位错误）</h2>
+      <p>下面按 Dynare 书写顺序逐块讲解。<strong>注意：</strong>旧版教程里出现的 <code class="inline">pi_star(+1)?</code>、<code class="inline">p_star</code> 等占位写法已废弃——正确做法是引入价格水平 $p,p^*$ 作为状态变量，或直接把 UIP 写成"汇率水平 $e$ 本身"的预期方程。本 .mod 用后者，更干净。</p>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">Step 1 · var：声明内生变量</div><div class="step-desc">包括本国块（x, pi_h, pi_cpi, i, e, s, q, b, r_n）与国外块（y_star, i_star, pi_star）。</div></div>
+        <div class="step-item"><div class="step-title">Step 2 · varexo：声明外生冲击</div><div class="step-desc">本国货币冲击 + 三个国外冲击（产出/利率/通胀）= 4 个。</div></div>
+        <div class="step-item"><div class="step-title">Step 3 · parameters：声明并赋值</div><div class="step-desc">把第 8 节校准表写入。注意 sigma_alpha 是闭式定义，不能进 estimated_params。</div></div>
+        <div class="step-item"><div class="step-title">Step 4 · model：写均衡方程</div><div class="step-desc">IS、NKPC、CPI 通胀、Taylor、UIP、ToT、实际汇率、外债运动、自然利率、国外 AR(1)。</div></div>
+        <div class="step-item"><div class="step-title">Step 5 · steady / check</div><div class="step-desc">对数线性化稳态为 0；check 检查 BLP 条件。若报 indeterminacy，多半是漏了 $\psi_b b_t$。</div></div>
+        <div class="step-item"><div class="step-title">Step 6 · shocks / stoch_simul</div><div class="step-desc">声明 4 个冲击方差；一阶求解 + IRF。</div></div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Dynare · soe_gali_monacelli.mod（≥70 行，已修正）</span><button class="copy-btn">复制</button></div>
+<pre><code>% ============================================================
+% soe_gali_monacelli.mod —— 小国开放经济 Gali-Monacelli (2005)
+% 含：UIP+外债风险溢价(SGU收口)、贸易条件、实际汇率、
+%     Taylor规则(含汇率)、进口品通胀、国外块外生AR(1)
+% 运行：dynare soe_gali_monacelli.mod
+% 变量小写=对数偏离稳态；i/i_star为年化百分点偏离
+% ============================================================
+
+% ---------- Step 1: 内生变量 ----------
+var
+  x         % 本国产出缺口
+  pi_h      % 本国品通胀
+  pi_cpi    % CPI通胀
+  i         % 本国名义利率
+  e         % 名义汇率(对数,上升=本币贬值)
+  s         % 贸易条件 = p_F - p_H
+  q         % 实际汇率 = e + p* - p
+  b         % 净外债/GDP(对数偏离)
+  r_n       % 自然利率(内生,由国外块驱动)
+  y_star    % 国外产出(外生)
+  i_star    % 国外利率(外生)
+  pi_star   % 国外通胀(外生)
+;
+
+% ---------- Step 2: 外生冲击(4个) ----------
+varexo
+  eps_m     % 本国货币冲击
+  eps_ys    % 国外产出冲击
+  eps_is    % 国外利率冲击
+  eps_ps    % 国外通胀冲击
+;
+
+% ---------- Step 3: 参数 ----------
+parameters beta sigma alpha eta kappa ...
+    phi_pi phi_y phi_e psi_b rho_b ...
+    rho_ys rho_is rho_ps sigma_alpha;
+
+beta     = 0.99;      % 季度贴现因子
+sigma    = 1.5;       % 跨期替代弹性倒数
+alpha    = 0.4;       % 进口渗透率(开放度)
+eta      = 1.5;       % 国内外品替代弹性
+kappa    = 0.1275;    % NKPC斜率
+phi_pi   = 1.5;       % Taylor对本国品通胀反应
+phi_y    = 0.125;     % Taylor对产出缺口反应
+phi_e    = 0.0;       % Taylor对汇率反应(0=完全浮动)
+psi_b    = 0.03;      % 外债风险溢价弹性(SGU收口)
+rho_b    = 0.90;      % 外债运动持续性
+rho_ys   = 0.90;      % 国外产出AR系数
+rho_is   = 0.80;      % 国外利率AR系数
+rho_ps   = 0.80;      % 国外通胀AR系数
+% 开放经济有效弹性(闭式)
+sigma_alpha = sigma + (1-alpha)*(eta*sigma - 1);
+
+% ---------- Step 4: 模型方程 ----------
+model;
+% (1) 开放IS曲线: x = E x(+1) - (1/sa)(i - E pi_h(+1) - r_n)
+x = x(+1) - (1/sigma_alpha)*( i - pi_h(+1) - r_n );
+
+% (2) 本国品NKPC
+pi_h = beta*pi_h(+1) + kappa*x;
+
+% (3) CPI通胀 = 本国品通胀 + 进口品通胀(alpha*Delta s)
+pi_cpi = pi_h + alpha*( s - s(-1) );
+
+% (4) Taylor规则(含汇率反应 phi_e 与货币冲击 eps_m)
+i = phi_pi*pi_h + phi_y*x + phi_e*( e - e(-1) ) + eps_m;
+
+% (5) UIP + 风险溢价(Schmitt-Grohe-Uribe 收口)
+i - i_star = e(+1) - e + psi_b*b;
+
+% (6) 贸易条件差分: s - s(-1) = Delta e + pi_star - pi_h
+s = s(-1) + (e - e(-1)) + pi_star - pi_h;
+
+% (7) 实际汇率(对数) q = (1-alpha)*s
+q = (1-alpha)*s;
+
+% (8) 净外债运动方程: b = rho_b*b(-1) + 贸易逆差项
+b = rho_b*b(-1) + alpha*s - (1/sigma_alpha)*( y_star - x );
+
+% (9) 自然利率随国外产出变动
+r_n = sigma_alpha*rho_ys*y_star;
+
+% (10-12) 国外块: 三个外生AR(1)过程
+y_star  = rho_ys*y_star(-1)  + eps_ys;
+i_star  = rho_is*i_star(-1)  + eps_is;
+pi_star = rho_ps*pi_star(-1) + eps_ps;
+end;
+
+% ---------- Step 5: 稳态 + BLP诊断 ----------
+steady;
+check;
+
+% ---------- Step 6: 冲击方差 ----------
+shocks;
+var eps_m  = 0.0025^2;   % 本国货币
+var eps_ys = 0.01^2;     % 国外产出
+var eps_is = 0.005^2;    % 国外利率
+var eps_ps = 0.005^2;    % 国外通胀
+end;
+
+% ---------- 一阶求解 + IRF ----------
+stoch_simul(order=1, irf=40, nograph) ...
+  x pi_h pi_cpi i e s q b r_n y_star i_star pi_star;
+
+% ============================================================
+% ===== 估计用(跑估计时注释掉上面 stoch_simul): =====
+% ============================================================
+% varobs x pi_cpi i de ds y_star i_star pi_star;
+% 数据文件需含: 产出缺口/CPI通胀/利率/汇率差分/贸易条件差分,
+%              以及国外三序列(见9.1表).
+% estimated_params;
+%   alpha,    beta_pdf,   0.30, 0.05;    % 开放度
+%   eta,      gamma_pdf,  1.50, 0.50;    % 替代弹性
+%   psi_b,    gamma_pdf,  0.03, 0.02;    % 风险溢价(SGU收口)
+%   kappa,    beta_pdf,   0.75, 0.10;    % 本国品Calvo斜率
+%   phi_pi,   normal_pdf, 1.50, 0.25;
+%   phi_e,    normal_pdf,  0.0, 0.10;    % 汇率反应(管理浮动)
+%   rho_ys,rho_is,rho_ps, beta_pdf, 0.80, 0.10;
+%   stderr eps_m,eps_ys,eps_is,eps_ps, inv_gamma_pdf, 0.05, 2;
+% end;
+% estimation(datafile=soe_data, mode_compute=6, ...
+%            mh_nblocks=2, mh_replic=50000, mh_jscale=0.35, ...
+%            irf=40);
+% 跑完看: 后验均值/90%区间, BGR收敛图, 汇率pass-through是否
+% 落在 alpha(1-theta_F) 附近, 国外冲击对外生块AR系数的识别.</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">勘误说明</div>
+        <p>旧版教材里的 <code class="inline">s = e + pi_star(+1)?;</code>、<code class="inline">q = e + p_star - p;</code> 是<strong>未完成草稿</strong>。本版修正为：用贸易条件差分方程 (6) 把水平变量 $e,p^*,p_H$ 全消掉，只跟踪差分 $\Delta e,\Delta s$，避免引入两个价格水平状态。生产中若需要汇率水平 indeterminacy 问题，再显式加 $p,p^*$。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s11">
+      <h2><span class="sec-num">11</span> 脉冲响应：国外冲击传导与汇率传导</h2>
+      <p>SOE 的卖点是"看别人脸色"。下面解读三类典型国外冲击的 IRF，以及本国货币冲击的汇率传导。</p>
+      <div class="table-wrap"><table>
+        <tr><th>冲击</th><th>直接渠道</th><th>汇率反应</th><th>对本国产出/通胀</th></tr>
+        <tr><td>国外加息 $i_t^*\uparrow$</td><td>UIP 要求本国利差收窄，资本外流</td><td>本币即期贬值 $e_t\uparrow$（超调）</td><td>贬值推高进口 CPI 通胀；若央行被动则产出先升后抑，若跟随加息则产出被压</td></tr>
+        <tr><td>国外需求 $y_t^*\uparrow$</td><td>出口需求上升，净出口改善</td><td>本币升值（贸易条件改善）</td><td>本国产出 $x_t\uparrow$，本国通胀温和上升，央行小幅加息</td></tr>
+        <tr><td>国外通胀 $\pi_t^*\uparrow$（输入型通胀）</td><td>进口品外币价格上升</td><td>名义汇率可不动（实际汇率贬值）</td><td>CPI 通胀经 $\alpha\Delta s_t$ 上升；若 LCP 存在，传导被延迟</td></tr>
+        <tr><td>本国货币紧缩 $\varepsilon_t^m\uparrow$</td><td>本国利率上升，资本流入</td><td>本币即期升值（Dornbusch 超调）</td><td>产出下降、CPI 通胀下降（经汇率通道）</td></tr>
+      </table></div>
+      <h3>10.1 汇率传导（exchange rate pass-through）的定量含义</h3>
+      <p>本币贬值 1%：完全传递假设下，进口品通胀 $\pi_F$ 立即 +1%，CPI 通胀因权重 $\alpha$ 而 $+\alpha$。但加入进口 Calvo 粘性 $\theta_F$ 后，<strong>短期 CPI 通胀只升 $\alpha(1-\theta_F)$</strong>，剩余部分在未来 4–8 个季度缓慢释放。这就是为什么新兴市场央行在货币危机中要"快速加息稳汇率"——汇率传导慢，但若不制止贬值预期，输入型通胀会在半年后全面爆发。</p>
+      <h3>10.2 三元悖论（Mundell trilemma）的定量表达</h3>
+      <p>关键政策含义：在<strong>浮动汇率 + 通胀目标制</strong>下，汇率本身是冲击的"吸收器"——外国紧缩不必 1:1 跟随，让汇率浮动即可部分对冲；在<strong>固定汇率/货币局</strong>下，UIP 与钉住汇率联合要求 $i_t=i_t^*$，本国货币政策独立性丧失，必须完全吸收国外利率冲击。这就是"三元悖论"（Mundell trilemma）在 DSGE 里的定量表达。把 $\phi_e$ 从 0 调到 1，就相当于从浮动汇率制度切换到管理浮动，可在 IRF 图上直观比较。</p>
+
+      <h3>10.3 方差分解与模型诊断</h3>
+      <p>SOE 的方差分解核心结论：<strong>本国产出 $x_t$ 在长期主要由国外需求 $y_t^*$ 与本国货币冲击解释；CPI 通胀主要由国外通胀 $\pi_t^*$（经 $\alpha\Delta s_t$）与本国加成冲击解释；汇率 $e_t$ 几乎完全由国外利率 $i_t^*$ 与 UIP 风险溢价解释</strong>。这是判断"小国暴露"程度的定量证据——若汇率方差分解中本国政策冲击占比过高，说明 $\alpha$ 或 $\psi_b$ 设得不对，模型不够"小"。</p>
+      <ul>
+        <li><strong>BLP 诊断：</strong><code class="inline">check;</code> 报 indeterminacy 必查是否漏 $\psi_b b_t$（UIP 单位根）。</li>
+        <li><strong>汇率 indeterminacy：</strong>若 $e_t$ IRF 发散或有随机趋势，说明只用了通胀差分而没锁价格水平状态，按本页 .mod 的差分写法即可。</li>
+        <li><strong>传递率检验：</strong>估计出的 $\theta_F$ 应使短期 CPI pass-through $\approx\alpha(1-\theta_F)$，对照 Burstein-Gopinath 的 10%–30% 经验值。</li>
+        <li><strong>国外块外生性：</strong>$y^*,i^*,\pi^*$ 的 AR 系数应接近数据估计值；若后验偏离严重，说明国外块被错误内生化。</li>
+        <li><strong>MCMC 收敛：</strong>同 SW，两条链 BGR→1，接受率 25%–35%；SOE 规模小，一般 5 万步即可。</li>
+      </ul>
+    </div>
+
+    <div class="section" id="s12">
+      <h2><span class="sec-num">12</span> 论文案例、常见错误与进阶资料</h2>
+      <h3>11.1 论文案例</h3>
+      <div class="paper-card"><span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Gali &amp; Monacelli (2005), "Monetary Policy and Exchange Rate Volatility in a Small Open Economy"</div>
+        <div class="paper-meta">Review of Economic Studies, 72(3): 707–734</div>
+        <div class="paper-desc">本页的理论骨架。证明在 LCP 缺失、完全传递假设下，开放经济可压成三方程 + UIP，并比较了 CPI 目标、本国通胀目标、钉住汇率三种体制的福利损失。小国开放 NK 的奠基性文献。</div>
+      </div>
+      <div class="paper-card"><span class="paper-type en">EN · 方法</span>
+        <div class="paper-title">Schmitt-Grohe &amp; Uribe (2003), "Closing Small Open Economy Models"</div>
+        <div class="paper-meta">Journal of International Economics, 61(1): 163–185</div>
+        <div class="paper-desc">系统比较三种关闭 SOE 单位根的方法：外债利率弹性（本页用的）、调整成本、完整资产市场。结论：一阶近似下三者等价，推荐外债风险溢价。做开放模型必读。</div>
+      </div>
+      <div class="paper-card"><span class="paper-type cn">CN · 中文</span>
+        <div class="paper-title">梅冬州、龚六堂 (2011)，《开放经济中的中国经济波动与货币政策》</div>
+        <div class="paper-meta">《经济研究》相关开放经济 DSGE 系列</div>
+        <div class="paper-desc">将 Gali-Monacelli 框架引入中国，结合汇率管理、资本管制与出口导向特征，分析外部冲击对中国产出与通胀的传导，是中文开放经济 DSGE 的代表。</div>
+      </div>
+      <div class="paper-card"><span class="paper-type cn">CN · 中文</span>
+        <div class="paper-title">刘斌 (2008)，《我国 DSGE 模型的开发及在货币政策分析中的应用》</div>
+        <div class="paper-meta">《金融研究》/《经济学(季刊)》相关工作</div>
+        <div class="paper-desc">构建含对外贸易与汇率渠道的开放经济模型，校准中国参数，模拟数量型与价格型货币政策，是国内央行系统开放 DSGE 的早期标杆。</div>
+      </div>
+
+      <h3>11.2 常见错误</h3>
+      <ol>
+        <li><strong>忽略 UIP 单位根：</strong>直接写 $i_t-i_t^*=E_t\Delta e_{t+1}$ 而不加风险溢价，Dynare 报"Blanchard-Kahn 条件不满足"或模拟贸易余额发散。必须加 $\psi_b b_t$。</li>
+        <li><strong>汇率方向搞反：</strong>把 $e_t$ 定义成"外币/本币"还是"本币/外币"前后不一，导致升值贬值符号全错。写代码前先在一页纸钉死符号。</li>
+        <li><strong>忘记水平价格状态变量：</strong>只用通胀 $\pi$ 而不引入价格水平 $p,p^*$，UIP 与实际汇率出现"汇率 indeterminacy"。要么加水平价格，要么把 UIP 写成 $\Delta e$ 的预期形式（本 .mod 用的就是差分写法）。</li>
+        <li><strong>把 CPI 通胀当本国通胀喂给 Taylor 规则：</strong>Gali-Monacelli 强调最优规则钉本国品通胀 $\pi_H$ 而非 CPI $\pi$，二者差 $\alpha\Delta s_t$，混用会得到错误的政策福利结论。</li>
+        <li><strong>国外变量当内生解：</strong>$y^*,i^*$ 是外生过程，误写成方程让模型自己决定，破坏"小国"假设。</li>
+        <li><strong>把 $\psi_b$ 设成 0 或过大：</strong>0 不收敛；过大则货币政策独立性被人为放大，IRF 失真。取 0.01–0.05。</li>
+      </ol>
+
+      <h3>11.3 进阶资料</h3>
+      <ul>
+        <li>Gali, J. (2015) <em>Monetary Policy, Inflation, and the Business Cycle</em>, 第 8 章，开放经济扩展。</li>
+        <li>Burstein &amp; Gopinath (2014) <em>Handbook of International Economics</em> Vol.4, Ch.7（汇率 pass-through 实证综述）。</li>
+        <li>Dornbusch (1976) 超调模型：理解 UIP 为什么会导致汇率即期跳变。</li>
+        <li>Dynare 官方 wiki：<code>NK_OPEN_ECONOMY.mod</code>、<code>sgu_closed.mod</code>。</li>
+        <li>央行工作论文（ECB、RBNZ、BIS）大量用 SOE 做预测模型，可作校准参考。</li>
+      </ul>
+    </div>
+
+    <!-- EQUATION SUMMARY -->
+    <div class="section" id="s_esum">
+      <h2><span class="sec-num">E</span> 方程总清单 · Equation Summary</h2>
+      <p>下表汇总本模型全部方程。原始非线性 16 条 + 外生 AR(1) 4 条 + 边界/横截 2 条 = <strong>本模型共 24 个核心方程</strong>。</p>
+      <div class="table-wrap"><table>
+        <tr><th>编号</th><th>方程</th><th>名称</th><th>正文位置</th></tr>
+        <tr><td>SOE-C1</td><td>$C_t=[(1-\alpha)^{1/\eta}C_{H,t}^{(\eta-1)/\eta}+\alpha^{1/\eta}C_{F,t}^{(\eta-1)/\eta}]^{\eta/(\eta-1)}$</td><td>CES 消费复合</td><td>§4.1</td></tr>
+        <tr><td>SOE-C2</td><td>$P_t=[(1-\alpha)P_{H,t}^{1-\eta}+\alpha P_{F,t}^{1-\eta}]^{1/(1-\eta)}$</td><td>CPI 指数</td><td>§4.1</td></tr>
+        <tr><td>SOE-C3/4</td><td>$C_{H,t}=(1-\alpha)(P_{H,t}/P_t)^{-\eta}C_t,\;C_{F,t}=\alpha(P_{F,t}/P_t)^{-\eta}C_t$</td><td>本国品/进口品需求</td><td>§4.1</td></tr>
+        <tr><td>SOE-TOT</td><td>$s_t=p_{F,t}-p_{H,t}$（对数）</td><td>贸易条件定义</td><td>§2.1</td></tr>
+        <tr><td>SOE-RER</td><td>$q_t=e_t+p_t^*-p_t$，LOP 下 $q_t=(1-\alpha)s_t$</td><td>实际汇率</td><td>§2.2</td></tr>
+        <tr><td>SOE-E1</td><td>$\Lambda_t=\beta(1+i_t)E_t[\Lambda_{t+1}P_t/P_{t+1}]$</td><td>消费欧拉</td><td>§4.0</td></tr>
+        <tr><td>SOE-UIP</td><td>$i_t-i_t^*=E_t\Delta e_{t+1}+\psi_b b_t+\varepsilon_t^{rp}$</td><td>UIP（含 SGU 风险溢价）</td><td>§3.2/4.0</td></tr>
+        <tr><td>SOE-M1</td><td>$Y_t=C_{H,t}+C_{H,t}^*$</td><td>本国产品市场出清</td><td>§4.2</td></tr>
+        <tr><td>SOE-IS</td><td>$x_t=E_tx_{t+1}-\frac{1}{\sigma_\alpha}(i_t-E_t\pi_{H,t+1}-r_t^n)$</td><td>开放 IS 曲线</td><td>§4.3</td></tr>
+        <tr><td>SOE-RN</td><td>$r_t^n=\sigma_\alpha(1-\alpha)E_t\Delta y_{t+1}^*$</td><td>自然利率</td><td>§4.3</td></tr>
+        <tr><td>SOE-PC1</td><td>$\pi_{H,t}=\beta E_t\pi_{H,t+1}+\kappa_\alpha x_t$</td><td>本国品 NKPC</td><td>§4</td></tr>
+        <tr><td>SOE-PC2</td><td>$\pi_t=\pi_{H,t}+\alpha\Delta s_t$</td><td>CPI 通胀分解</td><td>§4</td></tr>
+        <tr><td>SOE-FPC</td><td>$\pi_{F,t}=\beta E_t\pi_{F,t+1}+\lambda_F(e_t+p_t^*-p_{F,t})$</td><td>进口品 NKPC（LOP gap）</td><td>§7</td></tr>
+        <tr><td>SOE-TAY</td><td>$i_t=\phi_\pi\pi_{H,t}+\phi_y x_t+\phi_e\Delta e_t+\varepsilon_t^m$</td><td>Taylor 规则（含汇率）</td><td>§4</td></tr>
+        <tr><td>SOE-NFA</td><td>$e_tB_t^*=(1+i_{t-1}^*)e_tB_{t-1}^*-P_{H,t}Y_t+P_tC_t$</td><td>净外债运动方程</td><td>§4.4</td></tr>
+        <tr><td>SOE-AR1~3</td><td>$y_t^*,i_t^*,\pi_t^*$ 三个外生 AR(1)</td><td>国外块 AR(1)</td><td>§4</td></tr>
+        <tr><td>SOE-AR4</td><td>$\varepsilon_t^{rp}=\rho_{rp}\varepsilon_{t-1}^{rp}+\eta_t^{rp}$</td><td>风险溢价冲击 AR(1)</td><td>§3.2</td></tr>
+        <tr><td>SOE-TVC</td><td>$\lim_{T\to\infty}\beta^T E_t[\Lambda_{t+T}e_{t+T}B_{t+T}^*]=0$</td><td>外国债横截条件</td><td>§4.0</td></tr>
+      </table></div>
+      <p><strong>退化检验：</strong>令 $\alpha=0$，SOE-C1~C4 退化为封闭经济消费，SOE-IS 退化为标准封闭 IS，SOE-UIP 消失——这是检验 SOE 代码正确性的黄金对照。</p>
+    </div>
+
+    <div class="page-nav">
+      <a href="11-medium-scale-sw.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">中尺度模型 (SW)</div>
+      </a>
+      <a href="13-fiscal-monetary-rules.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">财政与货币政策规则</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

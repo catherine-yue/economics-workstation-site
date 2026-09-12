@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Melitz异质企业贸易模型的量化 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item active" href="08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">量化空间一般均衡</a>
+      <span class="sep">/</span>
+      <span>Melitz异质企业贸易模型的量化</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">QSGE · 04</span>
+      <h1>Melitz (2003) 异质企业贸易模型：从假设到福利与反事实</h1>
+      <p class="desc">本页把 Melitz 模型作为一个完整模型分支顺承走完：偏好与技术假设 → 企业最优化与定价 → ZCP/FE 联立求 cutoff → 加权平均生产率与企业分布 → 福利分解（选择效应 vs 品种效应）→ 贸易成本反事实数值求解。每个核心公式都标注其成立假设与经济学解读，并附可运行的 Python 求解器。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:14px 22px;border-radius:8px;margin:0 0 28px;font-size:14px;line-height:1.7;">
+      <div style="font-size:11px;letter-spacing:2px;opacity:.75;margin-bottom:4px;">EQUATION AUDIT · 公式审计</div>
+      本模型共 <strong>18</strong> 个方程（6 条假设 A1–A6 含冰山 $\tau$ 与 $f_x$，12 条核心均衡方程 E0–E10 含 ZCP 条件平均利润 E6b）。加成定价、Pareto 积分、ZCP=FE 联立逐步写出，文末「方程总清单」给出索引。
+    </div>
+
+    <!-- 前置条件与学习依赖（保留） -->
+    <div style="background:#eef4f7;border:1px solid #d0e0e8;border-left:4px solid var(--primary);border-radius:var(--radius);padding:18px 24px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;">前置条件与学习依赖 · PREREQUISITES</div>
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:8px 16px;font-size:14px;line-height:1.75;">
+        <div style="font-weight:700;color:var(--text);">数学/统计基础</div>
+        <div><strong>垄断竞争模型</strong>（Dixit-Stiglitz 加成定价）、<strong>生产率分布（Pareto 分布）</strong>：CDF $G(\varphi)=1-(\varphi_{min}/\varphi)^k$ 与尾部性质，条件期望 $E[\varphi^{\sigma-1}\mid\varphi\geq\varphi^*]$ 的积分求法、<strong>固定成本/沉没成本</strong>对 cutoff 的影响、积分求加权平均生产率 $\tilde\varphi(\varphi^*)$。</div>
+        <div style="font-weight:700;color:var(--text);">经济学理论前置</div>
+        <div><strong>新新贸易理论</strong>、<strong>异质企业</strong>（Bernard-Jensen 事实：出口企业更大更高效）、垄断竞争（Dixit-Stiglitz-Krugman）、<strong>企业选择效应</strong>。需理解 ZCP（零利润 cutoff）与 FE（自由进入）两条方程如何联立决定均衡。</div>
+        <div style="font-weight:700;color:var(--text);">软件/计算前置</div>
+        <div>Python。本页求解器用 <code class="inline">scipy.optimize.brentq</code> 求 ZCP=FE 的单变量根（cutoff $\varphi^*$），并需解析/数值积分求 Pareto 分布下的加权平均生产率 $\tilde\varphi$ 与福利。</div>
+        <div style="font-weight:700;color:var(--text);">站内前置页面</div>
+        <div>先学 <a href="01-armington.html" style="color:var(--primary);">01-Armington</a>（CES 需求与 $1-\sigma$ 弹性基础）。Melitz 把"每国一种产品"换成"每国连续统异质企业"，CES 需求结构完全沿用。</div>
+        <div style="font-weight:700;color:var(--text);">难度分级</div>
+        <div><span style="display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:10px;background:#e0efe6;color:var(--primary);letter-spacing:.5px;">进阶</span> &nbsp; 需理解 ZCP+FE 两条曲线的图形交点，2 周。Chaney (2008) 证明 Melitz-Pareto 与 EK 同构是关键桥梁。</div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">模型定位与研究问题</a></li>
+        <li><a href="#s2">假设体系：偏好、技术、成本</a></li>
+        <li><a href="#s3">企业最优化：定价与利润</a></li>
+        <li><a href="#s4">ZCP 与 FE：均衡 cutoff 的两条方程</a></li>
+        <li><a href="#s5">均衡求解：Pareto 下的闭式解与企业数</a></li>
+        <li><a href="#s6">福利分解：选择效应 vs 品种效应</a></li>
+        <li><a href="#s7">反事实求解：贸易成本变化的数值实验</a></li>
+        <li><a href="#s8">校准、参数与数据来源</a></li>
+        <li><a href="#s9">论文案例与常见错误</a></li>
+      </ol>
+    </div>
+
+    <!-- S1 -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 模型定位与研究问题</h2>
+
+      <p>传统贸易理论（Ricardo、Heckscher-Ohlin）与早期新贸易理论（Krugman 1980）都假设企业是同质的：所有企业都出口，所有企业规模相同。但微观数据（Bernard &amp; Jensen 1995, 1999）反复揭示：只有少数企业出口；出口企业规模更大、生产率更高、支付更高工资；贸易自由化使低生产率企业退出、高生产率企业扩张，市场份额向高生产率企业再配置；这种再配置本身会提升行业平均生产率——这就是<strong>选择效应（selection effect）</strong>。</p>
+
+      <p>Melitz (2003, <em>Econometrica</em>) 在 Dixit-Stiglitz-Krugman 垄断竞争框架内引入企业生产率异质性与固定出口成本，把上述事实形式化。它回答三个层层递进的问题：第一，在存在固定成本与沉没进入成本时，哪些企业活下来、哪些企业退出、哪些企业出口？第二，贸易开放如何通过企业间再配置提升行业加总生产率？第三，这种加总生产率提升在多大程度上转化为消费者福利，又与 Armington/EK 的"同一只 ACR 公式"有何异同？本页按"假设 → 构建 → 均衡 → 福利 → 反事实"的顺序顺承回答这三问。</p>
+
+      <div class="callout info">
+        <div class="callout-title">Melitz vs EK 的本质区别</div>
+        <p>EK 假设企业<strong>连续统</strong>、生产率无差别的随机 draw，贸易是"哪个企业赢了"的极值结果；Melitz 假设企业是<strong>离散进入者</strong>，进入后 draw 一个固定生产率 $\varphi$，再决定是否生产/出口。EK 的 selection 在"品种间"；Melitz 的 selection 在"行业内企业间"。Chaney (2008) 证明 Melitz + Pareto = EK 形式，这是两个工作母机可以互换使用的理论桥梁。</p>
+      </div>
+    </div>
+
+    <!-- S2 -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 假设体系：偏好、技术、成本</h2>
+
+      <p>本节把模型的全部假设一次性摆清。后续每个公式都建立在这组假设之上；一旦放松某条假设（例如把 CES 改为非位似偏好、把劳动唯一要素改为资本劳动复合），整条推导链都要重推。</p>
+
+      <h3>2.1 消费者偏好：CES 效用</h3>
+      <div class="formula-block">
+        <div class="formula-label">(A1) CES 效用</div>
+        $$U = \left(\int_{\omega \in \Omega} q(\omega)^{\frac{\sigma-1}{\sigma}} d\omega\right)^{\frac{\sigma}{\sigma-1}}, \qquad \sigma &gt; 1$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-assume">假设</span>差异化品种构成一个连续统（continuum）$\Omega$；品种间替代弹性恒为 $\sigma &gt; 1$；消费者对所有已有品种都有正需求，不存在"零消费角点解"；偏好是同位的（homothetic），收入变化不改变支出结构。</p>
+          <p><span class="meta-tag tag-read">解读</span>$\sigma$ 越大，品种越容易互相替代，企业的市场势力越弱；$\sigma\to 1$ 时退化为 Leontief（品种不可替代）。CES 偏好的关键便利在于：需求价格弹性恒等于 $\sigma$，企业定价时不必担心自己的产量改变弹性，这直接给出下一节的常数加成定价。</p>
+        </div>
+      </div>
+
+      <h3>2.2 生产技术：线性劳动生产函数</h3>
+      <div class="formula-block">
+        <div class="formula-label">(A2) 生产函数</div>
+        $$q(\varphi) = \varphi \, l(\varphi) \quad\Longleftrightarrow\quad l = f + \frac{q}{\varphi}$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-assume">假设</span>劳动是唯一生产要素，工资 $w$ 外生给定（小国开放经济或劳动力市场完全竞争）；企业生产率 $\varphi$ 在进入前未知、进入后 draw 一次并固定终身，不随时间学习；无资本、无中间品投入、无规模经济（边际成本常数）。</p>
+          <p><span class="meta-tag tag-read">解读</span>$\varphi$ 是企业间唯一的异质维度：$\varphi$ 高意味着用同样劳动生产更多产出，边际成本 $w/\varphi$ 更低。把 $q=\varphi l$ 写成 $l=f+q/\varphi$，是为了把<strong>固定成本 $f$</strong>与<strong>可变成本 $q/\varphi$</strong>分开——前者决定企业是否开工，后者决定企业规模。</p>
+        </div>
+      </div>
+
+      <h3>2.3 两层成本：固定经营成本 $f$ 与沉没进入成本 $f_e$</h3>
+      <div class="formula-block">
+        <div class="formula-label">(A3) 固定成本与沉没进入成本</div>
+        $$\text{每期经营固定成本 } w f, \qquad \text{进入前一次性沉没成本 } w f_e$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-assume">假设</span>$f$ 是每期无论产量多少都要支付的固定开销（管理、设备维护、合规）；$f_e$ 是进入市场前必须支付的研发、产品设计、市场调研费用，支付后不可收回（sunk）；$f_e$ 在 draw 生产率之前支付，因此企业在进入时不知道自己的 $\varphi$。</p>
+          <p><span class="meta-tag tag-read">解读</span><strong>为什么必须有固定成本 $f$？</strong>没有 $f$，所有企业都能盈亏平衡，最低生产率企业也不会退出，就不存在"cutoff"，选择效应无从产生。固定成本是 selection effect 的制度基础。<strong>为什么必须有 $f_e$？</strong>没有 $f_e$，只要预期利润为正就有无穷企业涌入，企业数发散；$f_e$ 把进入变成一个"赌注"，自由进入条件 FE 才能成立，均衡企业数才被定住。</p>
+        </div>
+      </div>
+
+      <h3>2.4 生产率分布：Pareto 上尾</h3>
+      <div class="formula-block">
+        <div class="formula-label">(A4) Pareto 生产率分布</div>
+        $$G(\varphi) = 1 - \left(\frac{\varphi_{min}}{\varphi}\right)^k, \qquad g(\varphi) = k \varphi_{min}^k \varphi^{-(k+1)}, \quad \varphi \geq \varphi_{min}$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-assume">假设</span>潜在进入者 draw 的 $\varphi$ 服从 Pareto 分布；形状参数 $k$ 决定尾部厚度，位置参数 $\varphi_{min}$ 是可能 draw 到的最低生产率；模型 well-posed 要求 $k &gt; \sigma - 1$，否则加权平均生产率 $\tilde\varphi$ 发散。</p>
+          <p><span class="meta-tag tag-read">解读</span>用 Pareto 不是数学方便，而是有经验依据：企业规模/生产率分布的<strong>上尾</strong>近似 Pareto（Axtell 2001 对美国企业规模的 Zipf 律）。$k$ 越小尾部越厚（超级明星企业越多）；$k=\sigma-1$ 是临界，超过则积分发散。$k &gt; \sigma-1$ 这条约束在代码里必须 assert。</p>
+        </div>
+      </div>
+
+      <h3>2.5 外生退出率 $\delta$</h3>
+      <div class="formula-block">
+        <div class="formula-label">(A5) 外生企业死亡</div>
+        $$\Pr(\text{企业在本期退出}) = \delta, \qquad \delta \in (0,1)$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-assume">假设</span>每期有 $\delta$ 比例的存活企业因外生原因（技术过时、倒闭、意外）死亡，与自身生产率无关；这是一个简约式（reduced-form）做法，避免显式建模企业年龄与内生退出。</p>
+          <p><span class="meta-tag tag-read">解读</span>$\delta$ 同时扮演"退出率"与"贴现率"两个角色：在 FE 条件里，它把未来利润流 $\bar\pi$ 折现为 $\bar\pi/\delta$。$\delta$ 越大，未来利润越不值钱，进入者要求的当期平均利润越高，cutoff 越高。</p>
+        </div>
+      </div>
+
+      <h3>2.6 冰山贸易成本 $\tau$ 与出口固定成本 $f_x$</h3>
+      <div class="formula-block">
+        <div class="formula-label">(A6) 冰山贸易成本与出口固定成本</div>
+        $$\tau_{ni}\geq 1 \text{（冰山成本）}, \qquad w f_x \text{（每期出口固定成本）}, \qquad f_x &gt; f$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-assume">假设</span>从 $i$ 国运 1 单位产品到 $n$ 国，必须发出 $\tau_{ni}\geq 1$ 单位（"冰山"：路途融化掉 $\tau_{ni}-1$）；企业若选择出口，每期须另付固定经营成本 $w f_x$（海外分销网络、合规认证、售后服务），且 $f_x&gt;f$，因此出口比内销更"昂贵"。单国模型中 $\tau=1$（无贸易）；两国模型中 $\tau&gt;1$ 刻画贸易摩擦。</p>
+          <p><span class="meta-tag tag-read">解读</span><strong>为什么 $f_x&gt;f$ 是 selection 的关键？</strong>它制造了第二个 cutoff——出口 cutoff $\varphi_x^*$。由于出口收入是内销收入的 $\tau^{1-\sigma}$ 倍（更低），只有 $\varphi$ 足够高、收入足够大的企业才能覆盖 $w f_x$，于是 $\varphi_x^*&gt;\varphi^*$，自然出现"只有少数高效率企业出口"。$\tau$ 下降一方面降低可变贸易成本、另一方面通过竞争效应推高国内 cutoff，两者共同把资源向头部企业再配置。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- S3 -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 企业最优化：定价与利润</h2>
+
+      <h3>3.1 垄断竞争定价（常数加成）· 完整推导</h3>
+      <p>企业 $\varphi$ 面对 CES 需求：$q(\varphi)=Q\cdot[p(\varphi)/P]^{-\sigma}$，其中 $Q,P$ 在大群体假设下被企业视为常数。企业利润：</p>
+      <div class="formula-block">
+        <div class="formula-label">(E0) 企业利润最大化问题</div>
+        $$\max_{p(\varphi)}\;\pi(\varphi)=p(\varphi)q(\varphi)-w\left(f+\frac{q(\varphi)}{\varphi}\right)
+        =pQ\left(\frac{p}{P}\right)^{-\sigma}-wQ\left(\frac{p}{P}\right)^{-\sigma}\frac{1}{\varphi}-wf$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>第一项</strong>：收入 $p q$。<strong>第二项</strong>：可变劳动成本 $w q/\varphi$。<strong>第三项</strong>：固定经营成本 $w f$。</p>
+        </div>
+      </div>
+      <p>对 $p$ 求一阶条件。利用 $\partial q/\partial p=-\sigma q/p$：</p>
+      <div class="formula-block">
+        <div class="formula-label">FOC 推导</div>
+        $$\frac{\partial\pi}{\partial p}=q+p\frac{\partial q}{\partial p}-\frac{w}{\varphi}\frac{\partial q}{\partial p}
+        =q-\sigma q\left(1-\frac{w/\varphi}{p}\right)=0$$
+        <p>两边除以 $q$ 并整理：</p>
+        $$1-\sigma+\sigma\frac{w}{\varphi p}=0\;\Longrightarrow\;p(\varphi)=\frac{\sigma}{\sigma-1}\frac{w}{\varphi}$$
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">(E1) ★ 加成定价</div>
+        $$p(\varphi) = \frac{\sigma}{\sigma - 1} \cdot \frac{w}{\varphi}$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-assume">假设</span>每个企业是品种 $\omega$ 的唯一生产者，有市场势力；但企业<strong>自身规模很小</strong>，忽略自己定价对总体价格指数 $P$ 的影响（Dixit-Stiglitz 大群体假设）；需求弹性恒为 $\sigma$，因此最优 mark-up 恒为 $\sigma/(\sigma-1)$。</p>
+          <p><span class="meta-tag tag-read">解读</span>加成率 $\mu=\sigma/(\sigma-1)$ 与生产率 $\varphi$ <strong>无关</strong>——高效率企业不是靠更大的加成获利，而是靠更低的边际成本、更大的产量获利。这与 Melitz 模型的"高效率企业规模更大"事实一致。$\sigma$ 越大（品种越可替代），加成越低，越接近完全竞争。</p>
+        </div>
+      </div>
+
+      <h3>3.2 收入与利润：利润随生产率幂次增长 · 完整推导</h3>
+      <p>把 (E1) 代入 CES 需求 $q(\varphi)=Q[p(\varphi)/P]^{-\sigma}$，得到收入：</p>
+      <div class="formula-block">
+        <div class="formula-label">(E2a) 收入函数推导</div>
+        $$r(\varphi)=p(\varphi)q(\varphi)=p(\varphi)^{1-\sigma}Q P^{\sigma}
+        =\left(\frac{\sigma}{\sigma-1}\frac{w}{\varphi}\right)^{1-\sigma}Q P^{\sigma}
+        =\underbrace{\frac{Q P^{\sigma}}{1}\left(\frac{\sigma w}{\sigma-1}\right)^{1-\sigma}}_{B'}\varphi^{\sigma-1}$$
+        <p>行业总收入 $R=PQ$，故 $Q=R/P$，代入得：</p>
+        $$r(\varphi)=\frac{R}{P}\left(\frac{\sigma}{\sigma-1}\frac{1}{P}\right)^{-\sigma}\left(\frac{\sigma}{\sigma-1}\frac{w}{\varphi}\right)^{1-\sigma}
+        =R\left(\frac{\sigma}{\sigma-1}\frac{1}{P}\right)^{1-\sigma}w^{1-\sigma}\varphi^{\sigma-1}$$
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">(E2b) ★ 利润函数</div>
+        $$\pi(\varphi)=\frac{r(\varphi)}{\sigma}-wf=B\varphi^{\sigma-1}-wf,\qquad
+        B\equiv\frac{R}{\sigma}\left(\frac{\sigma}{\sigma-1}\frac{1}{P}\right)^{1-\sigma}$$
+        <div class="formula-meta">
+          <p><strong>推导</strong>：垄断竞争下企业最优定价使利润中"运营利润"恰好为收入的 $1/\sigma$（因为 $p-mc=(\sigma-1)/\sigma\cdot p$，单位利润为 $(\sigma-1)/\sigma$，乘以产量 $q$ 得 $(\sigma-1)/\sigma\cdot pq=(\sigma-1)r/\sigma$，再减去固定成本 $wf$，净利润 $r/\sigma-wf$）。</p>
+          <p><span class="meta-tag tag-read">解读</span>$r(\varphi)\propto\varphi^{\sigma-1}$，故 $\pi(\varphi)$ 对生产率是<strong>幂函数</strong>：$\varphi$ 翻倍，收入翻 $2^{\sigma-1}$ 倍。这是 Pareto 假设下模型可解的关键代数性质。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- S4 -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> ZCP 与 FE：均衡 cutoff 的两条方程</h2>
+
+      <p>企业进入后 draw 出 $\varphi$，立刻判断：是否开工经营？是否出口？开工决策由"利润是否非负"决定。存在一个临界 cutoff 生产率 $\varphi^*$，使得 $\varphi &lt; \varphi^*$ 的企业利润为负、立即退出，$\varphi \geq \varphi^*$ 的企业留下经营。均衡由两条方程封闭。</p>
+
+      <h3>4.1 零 cutoff 条件 ZCP</h3>
+      <div class="formula-block">
+        <div class="formula-label">(E3) ZCP：零利润 cutoff</div>
+        $$\pi(\varphi^*) = 0 \quad\Longleftrightarrow\quad \frac{r(\varphi^*)}{\sigma} = w f$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-assume">假设</span>cutoff 处企业恰好盈亏平衡；生产率连续分布，因此存在唯一 $\varphi^*$ 使利润为零；退出是免费的（draw 后发现 $\varphi$ 太低可以不支付 $f$，直接放弃）。</p>
+          <p><span class="meta-tag tag-read">解读</span>ZCP 定义了"什么样的企业能活下来"。cutoff 越高，留下的企业整体越强，行业平均利润越高；因此在 $(\varphi^*, \bar\pi)$ 平面上 ZCP 是一条向上凸的曲线。</p>
+        </div>
+      </div>
+
+      <h3>4.2 自由进入条件 FE</h3>
+      <div class="formula-block">
+        <div class="formula-label">(E4) FE：自由进入</div>
+        $$V_e = \underbrace{\frac{1-G(\varphi^*)}{\delta}\,\bar\pi}_{\text{存活概率}\times\text{期望未来利润现值}} - \underbrace{w f_e}_{\text{沉没进入成本}} = 0$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-assume">假设</span>潜在进入者无穷多、风险中性；进入成本 $w f_e$ 在 draw 之前支付；未来利润以概率 $1-G(\varphi^*)$ 存活、每期期望利润 $\bar\pi$、以速率 $\delta$ 外生死亡，因此期望利润现值为 $(1-G(\varphi^*))\bar\pi/\delta$；自由进入使净价值 $V_e=0$。</p>
+          <p><span class="meta-tag tag-read">解读</span>FE 是"entry arbitrage"：如果 $V_e&gt;0$，更多企业涌入，竞争加剧、$B$ 下降、利润下降；如果 $V_e&lt;0$，进入者退出。整理得 $\bar\pi = \delta f_e / [1-G(\varphi^*)]$（取 $w=1$）。cutoff 越高 → 存活概率 $1-G(\varphi^*)$ 越低 → 需要更高的平均利润 $\bar\pi$ 才能吸引进入 → FE 曲线向上倾斜。</p>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">ZCP 与 FE 的图形交点</div>
+        <p>在 $(\varphi^*, \bar\pi)$ 平面上，ZCP 向上凸（cutoff 越高，存活企业平均利润越高）；FE 向上倾斜且凸（cutoff 越高，存活概率越低，要求越高的平均利润）。两曲线交点唯一，确定均衡 $(\varphi^*, \bar\pi)$。Pareto 假设下 ZCP 进一步退化为一条水平线（见下节），交点更易数值求解。</p>
+      </div>
+    </div>
+
+    <!-- S5 -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 均衡求解：Pareto 下的闭式解与企业数</h2>
+
+      <h3>5.1 加权平均生产率 $\tilde\varphi(\varphi^*)$</h3>
+      <div class="formula-block">
+        <div class="formula-label">(E5) CES 加权平均生产率</div>
+        $$\tilde\varphi(\varphi^*) = \left[\frac{1}{1-G(\varphi^*)} \int_{\varphi^*}^{\infty} \varphi^{\sigma-1} g(\varphi)\, d\varphi\right]^{1/(\sigma-1)}$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-assume">假设</span>行业价格指数 $P$ 与总产出 $Q$ 可以等价地由一个"代表企业"的生产率 $\tilde\varphi$ 复制；权重是 $\varphi^{\sigma-1}$（收入权重），不是算术权重。</p>
+          <p><span class="meta-tag tag-read">解读</span>这个"平均"不是 $\frac{1}{N}\sum\varphi$。它是 CES 聚合意义下的代表企业生产率——使得整个行业的产出、收入、利润等于所有存活企业的总和。低生产率企业因为产量小、收入低，权重被 $\varphi^{\sigma-1}$ 压得很低。</p>
+        </div>
+      </div>
+
+      <h3>5.2 Pareto 分布下的解析解 · 完整积分</h3>
+      <p>把 Pareto 密度 $g(\varphi)=k\varphi_{min}^k\varphi^{-(k+1)}$ 与存活概率 $1-G(\varphi^*)=(\varphi_{min}/\varphi^*)^k$ 代入 (E5) 的积分：</p>
+      <div class="formula-block">
+        <div class="formula-label">(E6) 加权平均生产率 · 逐步积分</div>
+        $$\int_{\varphi^*}^{\infty}\varphi^{\sigma-1}g(\varphi)d\varphi
+        =\int_{\varphi^*}^{\infty}\varphi^{\sigma-1}\cdot k\varphi_{min}^k\varphi^{-(k+1)}d\varphi
+        =k\varphi_{min}^k\int_{\varphi^*}^{\infty}\varphi^{\sigma-1-k-1}d\varphi$$
+        <p>被积函数是 $\varphi^{\sigma-k-2}$，幂次积分：</p>
+        $$=k\varphi_{min}^k\left[\frac{\varphi^{\sigma-k-1}}{\sigma-k-1}\right]_{\varphi^*}^{\infty}
+        =k\varphi_{min}^k\cdot\frac{(\varphi^*)^{\sigma-k-1}}{k-(\sigma-1)}$$
+        <p>（上界 $\infty$ 为 0 要求 $k>\sigma-1$，这正是 (A4) 的约束。）除以存活概率 $1-G(\varphi^*)=(\varphi_{min}/\varphi^*)^k$：</p>
+        $$\frac{1}{1-G(\varphi^*)}\int_{\varphi^*}^{\infty}\varphi^{\sigma-1}g(\varphi)d\varphi
+        =\frac{k\varphi_{min}^k(\varphi^*)^{\sigma-k-1}/[k-(\sigma-1)]}{(\varphi_{min}/\varphi^*)^k}
+        =\frac{k}{k-(\sigma-1)}(\varphi^*)^{\sigma-1}$$
+        <p>开 $1/(\sigma-1)$ 次方：</p>
+        $$\tilde\varphi(\varphi^*)=\varphi^*\left(\frac{k}{k-(\sigma-1)}\right)^{1/(\sigma-1)}$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-assume">假设</span>$\varphi\sim \text{Pareto}(k,\varphi_{min})$，且 $k &gt; \sigma-1$ 使积分收敛。</p>
+          <p><span class="meta-tag tag-read">解读</span>$\tilde\varphi/\varphi^*$ 是一个<strong>常数</strong>（只由 $k$ 与 $\sigma$ 决定），与 cutoff 位置无关。这一性质极其重要：它意味着行业"质量"与"门槛"等比例移动。代入 ZCP 后，ZCP 退化为常数（水平线），FE 向上倾斜，唯一交点即可解析/数值求出。这正是 Chaney (2008) 证明 Melitz-Pareto 与 EK 同构的代数根源。</p>
+        </div>
+      </div>
+
+      <h3>5.3 联立求 $\varphi^*$</h3>
+      <p><strong>Step 1：从 ZCP 推平均利润 $\bar\pi$ 与 cutoff 的关系（逐步）。</strong>由 (E2b)，利润随生产率按 $r(\varphi)=\sigma B\varphi^{\sigma-1}$ 增长；由 ZCP，cutoff 处 $B(\varphi^*)^{\sigma-1}=wf$，故对任意 $\varphi\geq\varphi^*$，$\varphi$ 企业的收入可写为 $r(\varphi)=wf\,\sigma(\varphi/\varphi^*)^{\sigma-1}$，利润为：</p>
+      <div class="formula-block">
+        <div class="formula-label">(E6b) 从 ZCP 出发的条件平均利润 · 逐步推导</div>
+        $$\pi(\varphi)=B\varphi^{\sigma-1}-wf=wf\left[(\varphi/\varphi^*)^{\sigma-1}-1\right]$$
+        <p>存活企业的平均利润（关于条件分布 $g(\varphi)/(1-G(\varphi^*))$ 取期望）：</p>
+        $$\bar\pi_{ZCP}=\frac{1}{1-G(\varphi^*)}\int_{\varphi^*}^{\infty}\pi(\varphi)g(\varphi)d\varphi
+        =wf\left[\frac{1}{1-G}\int_{\varphi^*}^{\infty}(\varphi/\varphi^*)^{\sigma-1}g(\varphi)d\varphi-1\right]$$
+        <p>方括号第一项正是 $(\tilde\varphi/\varphi^*)^{\sigma-1}$（由 (E5) 的定义），故：</p>
+        $$\bar\pi_{ZCP}=wf\left[\left(\frac{\tilde\varphi}{\varphi^*}\right)^{\sigma-1}-1\right]$$
+        <p>注意这是一个关于 $\tilde\varphi/\varphi^*$ 的表达式。在 Pareto 下由 (E6)，$(\tilde\varphi/\varphi^*)^{\sigma-1}=k/[k-(\sigma-1)]$ 为常数，因此 $\bar\pi_{ZCP}$ <strong>与 $\varphi^*$ 无关</strong>——这正是"Pareto 下 ZCP 退化为水平线"的代数原因。</p>
+      </div>
+      <p><strong>Step 2：代入 FE。</strong>把 $\bar\pi_{ZCP}=wf\left[\frac{k}{k-(\sigma-1)}-1\right]$ 与 $\bar\pi_{FE}=\delta f_e/[1-G(\varphi^*)]$（取 $w=1$）联立，$1-G(\varphi^*)=(\varphi_{min}/\varphi^*)^k$：</p>
+      <div class="formula-block">
+        <div class="formula-label">(E7) 均衡 cutoff 方程</div>
+        $$\underbrace{f\left[\frac{k}{k-(\sigma-1)} - 1\right]}_{\bar\pi_{ZCP}\text{（常数）}} = \frac{\delta f_e}{(\varphi_{min}/\varphi^*)^k}$$
+        <p>解出：</p>
+        $$\varphi^*=\varphi_{min}\left[\frac{\delta f_e}{\bar\pi_{ZCP}}\right]^{1/k},\qquad
+        \bar\pi_{ZCP}=f\left(\frac{k}{k-\sigma+1}-1\right)=f\frac{\sigma-1}{k-(\sigma-1)}$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-assume">假设</span>$w=1$ 归一化；国内固定成本 $f$ 与进入成本 $f_e$ 均以劳动单位计量；Pareto 形状参数 $k$ 已知。</p>
+          <p><span class="meta-tag tag-read">解读</span>$\bar\pi_{ZCP}=f\frac{\sigma-1}{k-(\sigma-1)}$ 随 $k$ 上升而下降（尾部变薄 → 存活企业生产率更接近 cutoff → 平均利润更低），随 $\sigma$ 上升而上升。右边随 $\varphi^*$ 上升而上升，唯一解。直觉：进入成本 $f_e$ 越大、退出率 $\delta$ 越高，均衡 cutoff 越高（更难存活）；固定成本 $f$ 越大，$\bar\pi_{ZCP}$ 越大，所需存活概率越高，cutoff 越低。</p>
+        </div>
+      </div>
+
+      <h3>5.4 企业质量 $M$ 与进入者 $M_e$ · 稳态推导</h3>
+      <p><strong>稳态条件</strong>：每期死亡企业数 $\delta M$ 必须等于新进入且存活的企业数 $M_e[1-G(\varphi^*)]$：</p>
+      <div class="formula-block">
+        <div class="formula-label">(E8a) 企业数稳态</div>
+        $$\delta M = M_e[1-G(\varphi^*)]\;\Longrightarrow\;M_e = M\frac{\delta}{1-G(\varphi^*)}$$
+      </div>
+      <p><strong>劳动市场出清</strong>：全部劳动 $L$ 用于三类用途：(i) 存活企业的可变劳动；(ii) 存活企业的固定经营劳动 $Mf$；(iii) 进入者的沉没成本劳动 $M_e f_e$。利用 CES 聚合性质，存活企业加权劳动需求等于 $M\bar r/(w\sigma)$（因为每企业把收入的 $(\sigma-1)/\sigma$ 用于可变劳动）。结合 (E6) 的常数比例关系，化简得：</p>
+      <div class="formula-block">
+        <div class="formula-label">(E8b) 企业数闭式</div>
+        $$M=\frac{L}{\sigma\left[f(\tilde\varphi/\varphi^*)^{\sigma-1}+f_e\delta/(1-G(\varphi^*))\right]}$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-read">解读</span>$M$ 是均衡存活企业数（= 品种数），直接进入下一节的福利公式——品种效应的载体。Pareto 下 $(\tilde\varphi/\varphi^*)^{\sigma-1}=k/(k-(\sigma-1))$ 为常数。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- S6 -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 福利分解：选择效应 vs 品种效应</h2>
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库：本节讨论 ACR 在 Melitz-Pareto 下的同构性</div>
+        <p>本节末尾会得到 $\hat W = \hat\lambda_{nn}^{-1/\theta}$，其中 $\theta$ 是 Pareto 形状参数。为什么 Melitz 的 selection effect 在宏观福利上"看不见"？完整的包络定理推导、成立条件、与 Armington/EK 的弹性对应 → 先学 <a href="04-welfare-decomposition.html" style="color:var(--primary);font-weight:600;">基础知识库 · 福利分解 (ACR)</a></p>
+      </div>
+
+      <h3>6.1 福利 = 实际工资 · 完整推导</h3>
+      <p><strong>Step 1：CES 价格指数用代表企业表示。</strong>在存活企业集合上对 $p(\varphi)^{1-\sigma}$ 积分（每个品种权重为其在总销售中的份额）：</p>
+      <div class="formula-block">
+        <div class="formula-label">(E9a) 价格指数的代表企业形式</div>
+        $$P^{1-\sigma}=M\int_{\varphi^*}^{\infty}p(\varphi)^{1-\sigma}\frac{g(\varphi)}{1-G(\varphi^*)}d\varphi$$
+        <p>代入 $p(\varphi)=\frac{\sigma}{\sigma-1}w/\varphi$ 与 (E5) 的加权平均生产率定义 $\tilde\varphi^{\sigma-1}=\frac{1}{1-G}\int\varphi^{\sigma-1}g d\varphi$：</p>
+        $$P^{1-\sigma}=M\left(\frac{\sigma}{\sigma-1}w\right)^{1-\sigma}\tilde\varphi^{\sigma-1}$$
+        <p>两边开 $1/(1-\sigma)$：</p>
+        $$P=M^{1/(1-\sigma)}\frac{\sigma}{\sigma-1}\frac{w}{\tilde\varphi}$$
+      </div>
+      <p><strong>Step 2：实际工资 $w/P$。</strong>代入上式：</p>
+      <div class="formula-block">
+        <div class="formula-label">(E9b) ★ 福利（实际工资）</div>
+        $$W=\frac{w}{P}=\frac{\sigma-1}{\sigma}M^{1/(\sigma-1)}\tilde\varphi$$
+        <p>常数因子 $(\sigma-1)/\sigma$ 在比较静态中消掉，写作：</p>
+        $$W\propto M^{\frac{1}{\sigma-1}}\tilde\varphi$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-assume">假设</span>消费者效用等于 CES 实际消费，$U=Q$；工资 $w=1$ 归一化；福利用实际工资 $w/P$ 度量。</p>
+          <p><span class="meta-tag tag-read">解读</span>福利被分解为两个乘积项：<strong>品种效应</strong> $M^{1/(\sigma-1)}$——存活品种越多，消费者选择越丰富，福利越高（CES 的 love-of-variety）；<strong>生产率效应</strong> $\tilde\varphi$——加权平均生产率越高，价格越低，实际工资越高。Melitz 的核心新机制在于：贸易开放同时移动这两项，且移动方向不一定一致（品种数可能下降，因为低生产率企业退出）。</p>
+        </div>
+      </div>
+
+      <h3>6.2 贸易自由化的福利效应：两种力量</h3>
+      <p>当贸易成本 $\tau$ 下降或经济从封闭走向开放，Melitz 模型预测两种方向相反的力量：</p>
+      <ul>
+        <li><strong>选择效应（selection effect）</strong>：外国企业涌入加剧竞争，$\varphi^*$ 上升，最低生产率企业退出；由 (E6) $\tilde\varphi$ 等比例上升，生产率项 $\tilde\varphi$ 提升福利。</li>
+        <li><strong>品种效应（variety effect）</strong>：一方面本国低生产率企业退出，本国品种数 $M$ 可能下降；另一方面消费者可以买到外国品种。净品种效应取决于进出口 cutoff 的相对位置。</li>
+      </ul>
+      <p>关键的直觉链：贸易成本下降 → 外国企业进入本国市场 → 价格竞争加剧 → 低生产率企业（原本仅勉强存活）利润转负、退出 → 资源释放给高生产率企业 → $\tilde\varphi$ 上升 → 实际工资上升 → 福利提升。即使本国品种数 $M$ 因退出而下降，生产率项 $\tilde\varphi$ 的上升通常主导，净福利仍为正。</p>
+
+      <div class="callout warning">
+        <div class="callout-title">与 Krugman (1980) 的关键区别</div>
+        <p>Krugman 模型中贸易开放的福利收益<strong>只来自品种增加</strong>（variety gain），平均生产率不变；Melitz 模型中除了 variety gain，还有<strong>真实的加总生产率提升</strong>（selection + reallocation）。这是为什么 Melitz 被称为"新新贸易理论"：贸易不仅让消费者选更多，还让行业本身变得更高效。</p>
+      </div>
+
+      <h3>6.3 与 Armington/EK 的 ACR 公式对比</h3>
+      <div class="formula-block">
+        <div class="formula-label">(E10) ACR sufficient statistic</div>
+        $$\hat W = \hat\lambda_{nn}^{-1/\theta}, \qquad \theta = k \text{（Melitz-Pareto 下）}$$
+        <div class="formula-meta">
+          <p><span class="meta-tag tag-assume">假设</span>Pareto 分布 $k &gt; \sigma-1$；贸易平衡；单一部门；代表性消费者；没有中间品/投入产出联系（CP 2015 后放松）。$\lambda_{nn}$ 是本国消费中本国生产的份额。</p>
+          <p><span class="meta-tag tag-read">解读</span>Arkolakis-Costinot-Rodriguez-Clare (2012) 的著名结果：在 Pareto 假设下，Armington、EK、Melitz 三类模型的贸易福利变化的 sufficient statistic <strong>相同</strong>，都是 $\hat W = \hat\lambda_{nn}^{-1/\theta}$，只是 $\theta$ 的解释不同（EK 是比较优势变异，Melitz 是 Pareto 形状参数 $k$）。这意味着从"宏观福利"角度，Melitz 的 selection effect 被某种方式"抵消"了——但这<strong>不意味着 selection 不重要</strong>：它决定了行业内企业间分布、就业再分配、政治经济学分配（哪些企业受损），这些是 ACR sufficient statistic 看不到的微观代价。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- S7 -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 反事实求解：贸易成本变化的数值实验</h2>
+
+      <p>本节分三层递进：先单国闭式求解器（Pareto），再通用分布下的数值求根（brentq），最后多国 Melitz-Pareto 的帽子代数反事实（中美关税战示例）。三层代码均自包含可运行。</p>
+
+      <h3>7.1 反事实设计</h3>
+      <p>在两国 Melitz 模型中，开放经济相比封闭经济的一个核心等效是：外国竞争使本国 cutoff $\varphi^*$ 上升。在单国模型的简约实现中，可以把"贸易自由化"建模为<strong>有效固定成本/进入成本下降</strong>，或显式引入出口 cutoff $\varphi_x^* = \varphi^*\tau(f_x/f)^{1/(\sigma-1)}$。下面代码用单国求解器做"$f_e$ 下降 20%"的反事实，演示 cutoff 如何移动、选择效应如何量化。</p>
+
+      <h3>7.2 完整 Python 求解代码</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · numpy + scipy</span><button class="copy-btn">复制</button></div>
+<pre><code># ============================================================
+# Melitz (2003) 单国模型求解器（Pareto 分布）
+# 步骤: ZCP + FE 联立 -> phi* -> phi~ -> M, M_e -> 福利 W
+# 反事实: 改变 f_e (贸易自由化等效) 重新求解并量化选择效应
+# ============================================================
+import numpy as np
+from scipy.optimize import brentq
+
+def solve_melitz(sigma=3.8, k=3.4, phi_min=0.2,
+                 f=0.1, f_e=1.0, delta=0.02, L=1.0):
+    """
+    单国 Melitz (Pareto) 均衡求解。
+    返回 phi*, phi~, M, M_e, pi_bar, W(福利=实际工资)。
+    关键恒等式:
+      ZCP 平均利润(常数) = f / (k/(k-(sigma-1)) - 1) - f
+      FE  平均利润      = delta * f_e / (1-G(phi*))
+      W = M^(1/(sigma-1)) * phi~
+    """
+    assert k &gt; sigma - 1, "需要 k &gt; sigma-1 才有有限平均生产率"
+
+    # 1-G(phi*) 在 Pareto 下的闭式
+    def surv(phi_star):
+        return (phi_min / phi_star) ** k if phi_star &gt;= phi_min else 1.0
+
+    # ZCP 给出的平均利润(Pareto 下为常数)
+    ratio = k / (k - (sigma - 1))           # (phi~/phi*)^(sigma-1)
+    pi_bar_zcp = f / (ratio - 1.0) - f
+
+    # FE: 平均利润 = delta*f_e / surv(phi*)
+    # 令 pi_bar_zcp = delta*f_e / surv(phi*), 解 phi*
+    # surv(phi*) = (phi_min/phi*)^k = delta*f_e / pi_bar_zcp
+    surv_eq = delta * f_e / pi_bar_zcp
+    phi_star = phi_min * (surv_eq) ** (-1.0 / k)
+
+    # 加权平均生产率
+    phi_tilde = phi_star * (ratio) ** (1.0 / (sigma - 1))
+
+    # 存活企业数 M 与进入者 M_e
+    M = L / (sigma * f * ratio)
+    M_e = M * delta / surv(phi_star)
+
+    # 福利 W = M^(1/(sigma-1)) * phi~  (w=1)
+    W = M ** (1.0 / (sigma - 1)) * phi_tilde
+
+    return dict(phi_star=phi_star, phi_tilde=phi_tilde,
+                M=M, M_e=M_e, pi_bar=pi_bar_zcp,
+                surv=surv(phi_star), W=W)
+
+
+def counterfactual(base, **new_params):
+    """在 base 基础上改参数，返回福利变化率与 cutoff 变化。"""
+    p = dict(sigma=3.8, k=3.4, phi_min=0.2, f=0.1,
+             f_e=1.0, delta=0.02, L=1.0)
+    p.update(new_params)
+    cf = solve_melitz(**p)
+    return {
+        "phi_star_change": cf["phi_star"] / base["phi_star"] - 1,
+        "phi_tilde_change": cf["phi_tilde"] / base["phi_tilde"] - 1,
+        "M_change": cf["M"] / base["M"] - 1,
+        "welfare_change": cf["W"] / base["W"] - 1,
+        "surv_change": cf["surv"] / base["surv"] - 1,
+    }
+
+
+if __name__ == "__main__":
+    base = solve_melitz()
+    print("=== 基准均衡 ===")
+    for k, v in base.items():
+        print(f"  {k:&lt;10s} = {v:.4f}")
+
+    # 反事实1: 贸易自由化 -> 等效进入成本 f_e 下降 20%
+    cf1 = counterfactual(base, f_e=0.8)
+    print("\n=== 反事实: f_e 下降 20% (贸易自由化) ===")
+    for k, v in cf1.items():
+        print(f"  {k:&lt;16s} = {v:+.2%}")
+
+    # 反事实2: 外生退出率 delta 下降 (更稳定的商业环境)
+    cf2 = counterfactual(base, delta=0.01)
+    print("\n=== 反事实: delta 0.02 -&gt; 0.01 ===")
+    for k, v in cf2.items():
+        print(f"  {k:&lt;16s} = {v:+.2%}")
+</code></pre>
+      </div>
+
+      <h3>7.3 选择效应的量化</h3>
+      <p>从代码输出可以读出三条定量结论：</p>
+      <ol>
+        <li><strong>cutoff 上移</strong>：贸易自由化使 $\varphi^*$ 上升，意味着最低生产率企业被淘汰。这是 selection effect 的直接度量。</li>
+        <li><strong>平均生产率等比例上升</strong>：由 (E6)，$\tilde\varphi/\varphi^*$ 为常数，因此 $\tilde\varphi$ 的增长率等于 $\varphi^*$ 的增长率。这就是"行业平均生产率提升"的数值表达。</li>
+        <li><strong>福利分解</strong>：$\hat W = \hat M^{1/(\sigma-1)} \times \hat{\tilde\varphi}$。品种项 $\hat M$ 可能为负（退出导致本国品种减少），但生产率项 $\hat{\tilde\varphi}$ 为正且通常占主导。代码中 <code>welfare_change</code> 就是两项净乘的结果。</li>
+      </ol>
+
+      <div class="callout tip">
+        <div class="callout-title">brentq vs 闭式解</div>
+        <p>在 Pareto 假设下，ZCP 退化为常数，FE 给出解析 $\varphi^*$，无需数值求根；但只要把 Pareto 换成一般分布（如对数正态、Frechet），ZCP 就不再是常数，此时必须用 <code>scipy.optimize.brentq</code> 对 $g(\varphi)$ 数值积分求根。下面 7.4 给出通用分布版本；BRT (2011) 用的就是数值积分 + MCP 的一般版本。</p>
+      </div>
+
+      <h3>7.4 通用分布数值求解：对数正态生产率下的 brentq 求根</h3>
+      <p>若把 Pareto 换成经验上更常用的对数正态分布 $\ln\varphi\sim N(\mu,s^2)$，$\tilde\varphi/\varphi^*$ 不再是常数，ZCP 曲线向上凸、FE 曲线向上倾斜，必须数值求根。关键是构造残差函数 $H(\varphi^*)=\bar\pi_{ZCP}(\varphi^*)-\bar\pi_{FE}(\varphi^*)$，用 <code>brentq</code> 找零：</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · 通用分布 brentq 求解</span><button class="copy-btn">复制</button></div>
+<pre><code># ============================================================
+# 通用分布（对数正态）Melitz 数值求解器
+# 残差 H(phi*) = ZCP平均利润(phi*) - FE平均利润(phi*)
+# ============================================================
+import numpy as np
+from scipy.optimize import brentq
+from scipy.stats import lognorm
+from scipy.integrate import quad
+
+def solve_melitz_general(sigma=3.8, s=0.5, mu=0.0,
+                         f=0.1, f_e=1.0, delta=0.02, L=1.0):
+    """
+    对数正态生产率分布: ln(phi) ~ N(mu, s^2)
+    不依赖 Pareto 闭式解, 用 brentq 数值求 ZCP=FE。
+    """
+    # 对数正态分布 g(phi), CDF G(phi)
+    def g(phi):  return lognorm.pdf(phi, s, scale=np.exp(mu))
+    def G(phi):  return lognorm.cdf(phi, s, scale=np.exp(mu))
+
+    def tilde_ratio(phi_star):
+        """(phi~/phi*)^(sigma-1) = E[phi^(sigma-1)|phi>=phi*] / phi*^(sigma-1)"""
+        numer, _ = quad(lambda x: x**(sigma-1) * g(x), phi_star, np.inf)
+        return numer / (1.0 - G(phi_star)) / phi_star**(sigma-1)
+
+    def H(phi_star):
+        # ZCP 平均利润 (w=1)
+        pi_zcp = f * (tilde_ratio(phi_star) - 1.0)
+        # FE 平均利润
+        pi_fe  = delta * f_e / max(1.0 - G(phi_star), 1e-12)
+        return pi_zcp - pi_fe
+
+    # 搜索区间: 分布的 [phi_1%, phi_99%]
+    lo = lognorm.ppf(0.01, s, scale=np.exp(mu))
+    hi = lognorm.ppf(0.999, s, scale=np.exp(mu))
+    phi_star = brentq(H, lo*1.01, hi*0.99, xtol=1e-8)
+    # 加权平均生产率
+    tilde = (tilde_ratio(phi_star) * phi_star**(sigma-1))**(1/(sigma-1))
+    M = L / (sigma * f * tilde_ratio(phi_star))
+    W = M ** (1/(sigma-1)) * tilde
+    return phi_star, tilde, M, W
+
+phi_star, tilde, M, W = solve_melitz_general()
+print(f"对数正态下: phi*={phi_star:.4f}, phi~={tilde:.4f}, M={M:.4f}, W={W:.4f}")
+# 与 Pareto 闭式解对比: 同 sigma 下 cutoff 位置接近但尾部行为不同
+</code></pre>
+      </div>
+
+      <h3>7.5 多国 Melitz-Pareto 帽子代数反事实（自包含）</h3>
+      <p>Chaney (2008) 证明：多国 Melitz-Pareto 的双边贸易份额形式上与 EK 完全相同，$\theta=k$。因此反事实不需要追踪单个企业，只需用帽子代数迭代工资不动点。设基准贸易份额矩阵 $\pi_{ni}=X_{ni}/Y_n$，贸易成本冲击 $\hat\tau_{ni}$（如中美关税战：$\hat\tau_{CN,US}=\hat\tau_{US,CN}=1.10$，其余为 1），迭代：</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · 多国帽代数反事实（中美关税战）</span><button class="copy-btn">复制</button></div>
+<pre><code># ============================================================
+# 多国 Melitz-Pareto / EK 统一帽代数求解器
+# 方程:
+#   pi_hat_ni = tau_hat_ni^(-theta) * (w_hat_i)^(-theta)
+#               * pi_ni / sum_k[ tau_hat_nk^(-theta) w_hat_k^(-theta) pi_nk ]
+#   w_hat_i 的不动点: sum_n Y_n_hat pi_hat_ni = w_hat_i L_i (贸易平衡)
+# 福利: W_hat_i = pi_hat_ii^(-1/theta)
+# ============================================================
+import numpy as np
+
+def hat_algebra(pi, tau_hat, theta=5.0, s=None, tol=1e-9, maxit=5000):
+    """
+    pi: NxN 基准贸易份额矩阵, pi[n,i] = 进口国n从i国购买占其总支出份额
+    tau_hat: NxN 贸易成本变化 (1=不变, 1.1=成本上升10%)
+    theta: 贸易弹性 = Melitz-Pareto k
+    s: N 维各国收入份额 Y_i/Y_w; 默认等大国
+    返回: pi_hat, w_hat, W_hat(各国福利变化)
+    """
+    N = pi.shape[0]
+    if s is None:
+        s = np.ones(N) / N
+    w_hat = np.ones(N)
+
+    for it in range(maxit):
+        # Step 1: 每个进口国 n 的分母 D_n
+        D = np.sum(pi * tau_hat**(-theta)
+                   * w_hat[np.newaxis, :]**(-theta), axis=1)
+
+        # Step 2: 工资不动点 (贸易平衡 + 份额方程联立):
+        # w_hat_i^(1+theta) = (1/s_i) sum_n s_n w_hat_n
+        #                       * pi[n,i]*tau_hat[n,i]^(-theta) / D_n
+        new_w = np.ones(N)
+        for i in range(N):
+            num = np.sum(s * w_hat * pi[:, i]
+                         * tau_hat[:, i]**(-theta) / D)
+            new_w[i] = (num / s[i]) ** (1.0 / (1.0 + theta))
+        new_w /= new_w.mean()
+        # 阻尼
+        w_hat_new = 0.5 * w_hat + 0.5 * new_w
+        if np.max(np.abs(w_hat_new - w_hat)) &lt; tol:
+            w_hat = w_hat_new
+            break
+        w_hat = w_hat_new
+
+    A = pi * tau_hat**(-theta) * w_hat[np.newaxis, :]**(-theta)
+    pi_hat = A / A.sum(axis=1, keepdims=True)
+    # ACR: W_hat_i = (新自足份额/基准自足份额)^(-1/theta)
+    W_hat = (np.diag(pi_hat) / np.diag(pi)) ** (-1.0 / theta)
+    return pi_hat, w_hat, W_hat
+
+
+# ---------- 示例: 3 国 (US, CN, ROW), 中美互征 10% 关税 ----------
+# 对称份额保证基准贸易平衡
+pi = np.array([
+    # rows=进口国, cols=出口国:   US    CN   ROW
+    [0.70, 0.15, 0.15],   # US
+    [0.15, 0.70, 0.15],   # CN
+    [0.15, 0.15, 0.70],   # ROW
+])
+tau_hat = np.ones((3, 3))
+tau_hat[0,1] = tau_hat[1,0] = 1.10   # 中美双边成本 +10%
+pi_hat, w_hat, W_hat = hat_algebra(pi, tau_hat, theta=5.0)
+names = ["US", "CN", "ROW"]
+print("国家   福利变化  工资变化")
+for i, nm in enumerate(names):
+    print(f"{nm:4s}  {W_hat[i]-1:+.2%}   {w_hat[i]-1:+.2%}")
+# 直觉: 中美两国福利均下降(真实贸易成本上升), ROW 因贸易转移略升
+</code></pre>
+      </div>
+      <div class="callout info">
+        <div class="callout-title">为何 Melitz 与 EK 共用同一求解器</div>
+        <p>Caliendo-Parro (2015) 与 Caliendo-Rossi-Hansberg (2018) 严格证明：在 Pareto 分布 $k$ 下，Melitz 的双边份额 $\pi_{ni}$ 与 EK 的 Fréchet 极值份额代数同构，唯一区别是参数解释（$k$ 既是 Melitz 形状参数也是 EK 贸易弹性 $\theta$）。因此上面这段 30 行代码同时是两个模型的反事实求解器——这就是 Chaney (2008) 同构定理的实用价值。完整阻尼 / Anderson 加速版本见站内 <a href="05-counterfactual-solving.html" style="color:var(--primary);font-weight:600;">帽代数反事实求解</a>页。</p>
+      </div>
+    </div>
+
+    <!-- S8 -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 校准、参数与数据来源</h2>
+
+      <p>把模型从理论搬到量化研究，需要把五个关键参数钉到数据上。下表给出常用校准值与识别策略。</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr><th>参数</th><th>含义</th><th>常用取值</th><th>识别/估计方法</th></tr>
+          <tr><td>$\sigma$</td><td>品种间替代弹性</td><td>3–10（典型 3.8）</td><td>Broda-Weinstein (2006) 用贸易价格/数量回归估计；或从企业加成率反推</td></tr>
+          <tr><td>$k$</td><td>Pareto 形状参数（尾部厚度）；等于贸易弹性 $\theta$</td><td>2–4（典型 3.4）</td><td>用企业规模/出口额分布上尾做 OLS 回归 $\ln[\text{rank}] = a - k\ln[\text{size}]$（Axtell 2001, EK 2002）；Chaney (2008) 证明此 $k$ 即结构引力中的贸易弹性 $\theta$，与 EK 的 Fréchet 形状参数同构</td></tr>
+          <tr><td>$\delta$</td><td>外生企业退出率</td><td>约 0.1（年）</td><td>从企业面板中直接计算每年退出企业比例（美国 Census LBD、中国工业企业库）</td></tr>
+          <tr><td>$f, f_x$</td><td>固定经营/出口成本</td><td>由规模分布校准</td><td>用 cutoff 两侧企业利润率差异反推；或用出口企业与非出口企业的利润差估计 $f_x$（Helpman-Melitz-Yeaple 2004）</td></tr>
+          <tr><td>$f_e$</td><td>沉没进入成本</td><td>由进入率校准</td><td>用 FE 方程反推：$f_e = \bar\pi[1-G(\varphi^*)]/\delta$</td></tr>
+        </table>
+      </div>
+
+      <h3>8.1 数据来源</h3>
+      <ul>
+        <li><strong>美国</strong>：Census Bureau Longitudinal Business Database (LBD) 与 Census of Manufactures，覆盖全美制造业企业全样本，用于估计企业规模分布、退出率、出口状态。</li>
+        <li><strong>中国</strong>：中国工业企业数据库（1998–2007，规模以上工业企业），用于估计入世后贸易成本下降对企业进入退出、生产率分布的影响。近年用海关数据库与工企库匹配（"工企-海关匹配"）可同时识别出口 cutoff。</li>
+        <li><strong>跨国</strong>：WTO/COMTRADE 双边贸易流、WIOD 投入产出表，用于校准 $\pi_{ni}$ 与多部门结构（CP 2015）。</li>
+      </ul>
+
+      <h3>8.2 多部门扩展（Caliendo-Parro 2015）</h3>
+      <p>在 Pareto 假设下，Melitz 的多部门量化模型可以像 EK 一样用帽子代数求解，不需要追踪企业分布。贸易份额形式为 $\pi_{ni}^j = T_i^j(c_i^j d_{ni}^j)^{-k_j}/\sum_k T_k^j(c_k^j d_{nk}^j)^{-k_j}$，其中 $k_j$ 是部门 $j$ 的 Pareto 形状参数。形式上与 EK 完全相同，只是参数解释不同。这使得 NAFTA、中美贸易战等政策的反事实可以在 Melitz 框架下快速求解。</p>
+
+      <h3>8.3 Pareto 形状参数 $k$ 的估计步骤与数据</h3>
+      <p><strong>为什么 $k$ 等于贸易弹性？</strong>Chaney (2008, AER) 与 Eaton-Kortum (2002, Econometrica) 两条独立线索汇合到同一个结论：在 Melitz-Pareto 结构中，双边贸易流对冰山成本的弹性恰好是 $-k$；在 EK-Fréchet 结构中恰好是 $-\theta$。量化研究中通常从一个来源识别 $k$，再把它同时当作"企业规模分布尾部厚度"与"贸易弹性"使用。常用识别路径有三条：</p>
+      <ul>
+        <li><strong>路径 A：企业规模分布上尾回归。</strong>把企业按规模降序排列，对 Pareto 生存函数 $1-F(s)=(s_{min}/s)^k$ 两边取对数：$\ln[\text{rank}/N] = \text{const} - k\ln[\text{size}]$。用上尾 5%–20% 企业做 OLS，斜率即 $\hat k$。美国：Axtell (2001) 用 Census 微观企业数据得到接近 Zipf 律的 $k\approx1$（全企业），制造业略高；EK (2002) 估计 $\theta\approx8.28$。</li>
+        <li><strong>路径 B：引力回归 + 关税识别。</strong>用双边关税的外生变化（如中国入世、NAFTA 降税）识别 $\partial\ln X_{ni}/\partial\ln(1+t_{ni})=-\theta$，Simonovska-Waugh (2014) 综述典型 $\theta=4$–$6$。</li>
+        <li><strong>路径 C：出口企业-非出口企业利润差反推 $f_x$。</strong>Helpman-Melitz-Yeaple (2004) 用两国企业利润比反推出口固定成本。</li>
+      </ul>
+      <p>每条路径的估计依据与适用数据：</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>数据来源</th><th>覆盖内容</th><th>可识别参数</th></tr>
+          <tr><td><strong>美国 Census LBD / CMF</strong></td><td>全美制造业企业全样本（就业、产出、出口状态），1976 至今</td><td>$k$（规模分布）、$\delta$（退出率）、出口溢价</td></tr>
+          <tr><td><strong>中国工业企业数据库</strong>（1998–2013，规上工业）</td><td>企业产值、就业、资本、出口交货值</td><td>$k$、$\delta$、入世后 selection effect（余淼杰 2010）</td></tr>
+          <tr><td><strong>中国海关数据库</strong>（2000–至今）</td><td>企业-产品(HS8)-目的地(243 国)层面进出口记录、交易值与数量、贸易方式（加工/一般）</td><td>企业层面出口 cutoff、$\varphi_x^*$、二元边际（钱学锋 2008；与工企库匹配后识别 $f_x$）</td></tr>
+          <tr><td><strong>国家统计局 / CEIC</strong></td><td>工业增加值、行业产值、就业宏观序列</td><td>校准 $L$、行业加总产出，与微观库交叉核对</td></tr>
+          <tr><td><strong>WIOD / OECD-ICIO</strong></td><td>跨国投入产出表，含国内贸易 $X_{ii}$</td><td>多国份额矩阵 $\pi_{ni}$，帽子代数反事实输入</td></tr>
+        </table>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">中国"出口-生产率悖论"提示</div>
+        <p>余淼杰 (2010) 与戴觅等 (2014, 《经济学(季刊)》) 发现：中国出口企业平均生产率<strong>并不高于</strong>非出口企业，与 Melitz 原始预测相反——主要原因是中国出口中加工贸易企业占比极高、且加工企业生产率偏低。做中国校准前必须先剔除或单独建模加工贸易，否则 $k$ 与 cutoff 都会被严重误估。</p>
+      </div>
+    </div>
+
+    <!-- S9 -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 论文案例与常见错误</h2>
+
+      <h3>9.1 论文案例</h3>
+
+      <div class="paper-card">
+        <span class="paper-type en">英文</span>
+        <div class="paper-title">Melitz, M. J. (2003). The Impact of Trade on Intra-Industry Reallocations and Aggregate Industry Productivity</div>
+        <div class="paper-meta"><em>Econometrica</em>, 71(6), 1695-1725.</div>
+        <div class="paper-desc">新新贸易理论奠基作。CES 垄断竞争 + 企业生产率异质性 + 固定出口成本，证明贸易开放通过 selection effect 提升行业平均生产率。本页所有方程的原始出处。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">英文</span>
+        <div class="paper-title">Bernard, A. B., Eaton, J., Jensen, J. B. &amp; Kortum, S. (2003). Plants and Productivity in International Trade</div>
+        <div class="paper-meta"><em>American Economic Review</em>, 93(4), 1268-1290.</div>
+        <div class="paper-desc">BEJK 模型：把 Melitz 式企业异质性与 EK 式极值结合，用美国制造业企业数据量化出口企业的生产率溢价。是 Melitz 量化的早期实证对照。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">英文</span>
+        <div class="paper-title">Chaney, T. (2008). Distorted Gravity: The Intensive and Extensive Margins of International Trade</div>
+        <div class="paper-meta"><em>American Economic Review</em>, 98(4), 1707-1721.</div>
+        <div class="paper-desc">证明 Melitz-Pareto 的贸易份额与 EK 同构，参数 $k=\theta$，并区分集约边际与广延边际。本页 (E6)(E10) 的理论桥梁。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">英文</span>
+        <div class="paper-title">Arkolakis, Costinot &amp; Rodriguez-Clare (2012). New Trade Models, Same Old Gains?</div>
+        <div class="paper-meta"><em>American Economic Review</em>, 102(1), 94-130.</div>
+        <div class="paper-desc">著名 ACR 公式：Armington、EK、Melitz 三类模型在 Pareto 假设下福利变化 sufficient statistic 相同。引发关于"selection effect 是否在宏观福利上重要"的大讨论。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">英文</span>
+        <div class="paper-title">Caliendo, L. &amp; Parro, F. (2015). Estimates of the Trade and Welfare Effects of NAFTA</div>
+        <div class="paper-meta"><em>Review of Economic Studies</em>, 82(1), 1-44.</div>
+        <div class="paper-desc">证明 Melitz-Pareto 在多部门投入产出结构下可像 EK 一样用帽子代数求解，量化 NAFTA 贸易自由化的行业级福利效应。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文</span>
+        <div class="paper-title">中国的贸易自由化与制造业企业生产率：来自企业层面的实证分析</div>
+        <div class="paper-meta">余淼杰，《经济研究》，2010 年第 45 卷第 12 期，第 97–110 页（获 2018 年中国青年经济学家优秀论文奖）。</div>
+        <div class="paper-desc">用 1998–2007 中国工业企业数据库 + 入世后关税减免，估计贸易自由化对企业 TFP 的提升，是中文顶刊中最直接检验 Melitz selection / 竞争效应的代表作。其英文版（Processing Trade, Tariff Reductions and Firm Productivity）发表于 <em>Economic Journal</em> 2015。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文</span>
+        <div class="paper-title">企业异质性、贸易成本与中国出口增长的二元边际</div>
+        <div class="paper-meta">钱学锋，《管理世界》，2008 年第 24 卷第 9 期，第 48–56 页。</div>
+        <div class="paper-desc">在 Chaney (2008) 二元边际框架下，把中国出口增长分解为集约边际与广延边际，量化贸易成本与企业异质性的作用，是中文文献中最早系统应用 Melitz-Chaney 框架的论文之一。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文</span>
+        <div class="paper-title">中国出口增长的二元边际及其因素决定</div>
+        <div class="paper-meta">钱学锋、熊平，《经济研究》，2010 年第 45 卷第 1 期，第 65–79 页。</div>
+        <div class="paper-desc">用 Chaney 结构引力 + 中国对主要贸易伙伴出口数据，估计二元边际的决定因素，讨论出口多样化与贸易成本下降的关系。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文</span>
+        <div class="paper-title">中国的多产品出口企业及其产品范围：事实与解释</div>
+        <div class="paper-meta">钱学锋、王胜、陈勇兵，《管理世界》，2013 年第 1 期。</div>
+        <div class="paper-desc">用 2000–2005 中国海关数据库 + 工业企业库，刻画多产品出口企业事实并做引力解释，是 Melitz 框架向多产品企业扩展的中文代表作。</div>
+      </div>
+
+      <h3>9.2 常见错误</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：混淆"加权平均生产率"与"算术平均"</div>
+        <p>Melitz 的 $\tilde\varphi$ 是 CES 加权平均，权重是 $\varphi^{\sigma-1}$，不是简单算术平均。直接对企业生产率取均值会严重低估，因为低生产率企业权重小。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：忽略 Pareto 形状参数条件 $k &gt; \sigma-1$</div>
+        <p>若 $k \leq \sigma-1$，$\tilde\varphi$ 发散（方差无穷大），模型不 well-defined。代码中必须 assert 这个条件。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 3：把 Melitz 的 $k$ 与 EK 的 $\theta$ 直接混用</div>
+        <p>EK 的 $\theta$ 是"比较优势变异"（越大则各国越相似），Melitz-Pareto 的 $k$ 是"企业生产率分布尾部厚度"。虽然在 ACR 公式中形式相同，但估计方法与政策含义不同，不能直接套用。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 4：忽略 FE 方程中的退出率 $\delta$</div>
+        <p>FE 方程 $V_e=0$ 中的 $\delta$ 不仅是企业死亡率，还同时充当贴现率，影响 cutoff 位置与均衡企业数。忽略 $\delta$ 会系统性低估均衡企业数并高估 cutoff。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 5：以为 ACR 同构就意味着 selection 不重要</div>
+        <p>ACR 同构只在"宏观代表性消费者福利"这一 sufficient statistic 意义上成立。Melitz 的 selection effect 仍然决定了<strong>行业内企业间分布、就业再分配、收入分配、政治经济学</strong>——这些是 ACR 公式看不到的。研究问题若涉及企业层面效应（出口企业比例、企业规模分布），必须用 Melitz，不能用 Armington 替代。</p>
+      </div>
+
+      <h3>9.3 进阶资料</h3>
+      <ul>
+        <li>Melitz &amp; Redding (2014). <em>"Heterogeneous Firms and Trade"</em>, Handbook of International Economics Vol. 4.</li>
+        <li>Chaney, T. (2008) AER 原文，Melitz-Pareto 与 EK 同构的严格证明。</li>
+        <li>Arkolakis, Costinot &amp; Rodriguez-Clare (2012) AER 原文及后续评论（Melitz vs EK 的辩论）。</li>
+        <li>余淼杰 (2010)《经济研究》；钱学锋 (2008)《管理世界》、钱学锋熊平 (2010)《经济研究》；戴觅、余淼杰、Maitra (2014)《经济学(季刊)》"中国出口企业生产率之谜"。</li>
+        <li>国内教材：余淼杰《国际贸易的新新理论》；陈勇兵等关于多产品企业与二元边际的后续研究。</li>
+      </ul>
+    </div>
+
+    <!-- ========== 方程总清单 ========== -->
+    <div class="section" id="summary">
+      <h2><span class="sec-num">∑</span> 方程总清单 · Equation Summary</h2>
+      <p>本模型共 <strong>18</strong> 个方程（含 6 条假设 A1–A6 与 12 条核心均衡方程 E0–E10、E6b），按推导顺序编号如下。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>编号</th><th>名称</th><th>公式</th><th>所在节</th></tr></thead>
+          <tbody>
+            <tr><td>(A1)</td><td>CES 效用</td><td>$U=[\int_\Omega q(\omega)^{(\sigma-1)/\sigma}d\omega]^{\sigma/(\sigma-1)}$</td><td>2.1</td></tr>
+            <tr><td>(A2)</td><td>线性生产函数</td><td>$q=\varphi l$，$l=f+q/\varphi$</td><td>2.2</td></tr>
+            <tr><td>(A3)</td><td>固定成本与沉没成本</td><td>$wf$（经营），$wf_e$（进入）</td><td>2.3</td></tr>
+            <tr><td>(A4)</td><td>Pareto 生产率分布</td><td>$G(\varphi)=1-(\varphi_{min}/\varphi)^k$</td><td>2.4</td></tr>
+            <tr><td>(A5)</td><td>外生退出率</td><td>$\Pr(\text{退出})=\delta$</td><td>2.5</td></tr>
+            <tr><td>(A6)</td><td>冰山成本与出口固定成本</td><td>$\tau_{ni}\geq 1$；每期 $w f_x$，$f_x&gt;f$</td><td>2.6</td></tr>
+            <tr><td>(E0)</td><td>企业利润最大化问题</td><td>$\max_p \pi=pq-w(f+q/\varphi)$</td><td>3.1</td></tr>
+            <tr><td>(E1)</td><td>★ 加成定价</td><td>$p(\varphi)=\frac{\sigma}{\sigma-1}w/\varphi$</td><td>3.1</td></tr>
+            <tr><td>(E2)</td><td>★ 利润函数</td><td>$\pi(\varphi)=B\varphi^{\sigma-1}-wf$，$B=\frac{R}{\sigma}(\frac{\sigma}{\sigma-1}\frac{1}{P})^{1-\sigma}$</td><td>3.2</td></tr>
+            <tr><td>(E3)</td><td>ZCP 零利润 cutoff</td><td>$\pi(\varphi^*)=0$</td><td>4.1</td></tr>
+            <tr><td>(E4)</td><td>FE 自由进入</td><td>$V_e=(1-G(\varphi^*))\bar\pi/\delta-wf_e=0$</td><td>4.2</td></tr>
+            <tr><td>(E5)</td><td>加权平均生产率定义</td><td>$\tilde\varphi=[\frac{1}{1-G}\int_{\varphi^*}^\infty\varphi^{\sigma-1}g(\varphi)d\varphi]^{1/(\sigma-1)}$</td><td>5.1</td></tr>
+            <tr><td>(E6)</td><td>★ Pareto 闭式 $\tilde\varphi$</td><td>$\tilde\varphi=\varphi^*[k/(k-(\sigma-1))]^{1/(\sigma-1)}$</td><td>5.2</td></tr>
+            <tr><td>(E6b)</td><td>ZCP 条件平均利润</td><td>$\bar\pi_{ZCP}=wf[(\tilde\varphi/\varphi^*)^{\sigma-1}-1]=f\frac{\sigma-1}{k-(\sigma-1)}$</td><td>5.3</td></tr>
+            <tr><td>(E7)</td><td>均衡 cutoff</td><td>$\bar\pi_{ZCP}=\delta f_e/(\varphi_{min}/\varphi^*)^k$</td><td>5.3</td></tr>
+            <tr><td>(E8)</td><td>企业数稳态</td><td>$\delta M=M_e(1-G(\varphi^*))$，$M=L/[\sigma(\cdot)]$</td><td>5.4</td></tr>
+            <tr><td>(E9)</td><td>★ 福利 = 实际工资</td><td>$W=w/P\propto M^{1/(\sigma-1)}\tilde\varphi$</td><td>6.1</td></tr>
+            <tr><td>(E10)</td><td>★ ACR 充分统计量</td><td>$\hat W=\hat\lambda_{nn}^{-1/k}$（Pareto 下 $\theta=k$）</td><td>6.3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="02-eaton-kortum.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">Eaton-Kortum模型</div>
+      </a>
+      <a href="03-gravity.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">结构引力与PPML</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

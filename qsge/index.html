@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>量化空间一般均衡总览 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item active" href="index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <span>量化空间一般均衡 QSGE</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">QSGE · Quantitative Spatial General Equilibrium</span>
+      <h1>量化空间一般均衡总览：模型类型分支清单与学习路线</h1>
+      <p class="desc">贸易与空间经济学的量化工具箱。本页以"模型类型"为主轴：6 个模型分支（Armington → Eaton-Kortum → 结构引力 → Melitz → RRH → 贸易+迁移+土地）各成一页、覆盖完整流程；福利分解 ACR 与帽子代数反事实作为跨分支方法参考放在最后。</p>
+    </div>
+
+    <!-- 前置条件与学习依赖 -->
+    <div style="background:#ecf5ef;border:1px solid #c8e0d4;border-left:4px solid var(--primary);border-radius:var(--radius);padding:18px 24px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;">前置条件与学习依赖 · PREREQUISITES</div>
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:8px 16px;font-size:14px;line-height:1.75;">
+        <div style="font-weight:700;color:var(--text);">数学/统计基础</div>
+        <div>基础微积分与偏导数、矩阵代数（向量/矩阵乘法、归一化）、概率与统计入门（CDF/PDF、期望）。能读懂 CES 效用函数的一阶条件即可，无需高级测度论。</div>
+        <div style="font-weight:700;color:var(--text);">经济学理论前置</div>
+        <div>中级微观经济学（消费者最优化、一般均衡直觉）、国际贸易理论入门（比较优势、贸易成本概念）。学过 Krugman 新贸易理论或城市经济学者优先。</div>
+        <div style="font-weight:700;color:var(--text);">软件/计算前置</div>
+        <div>Python 基础（<code class="inline">numpy</code> 矩阵运算）或 MATLAB 基础。引力实证部分需 Stata；空间 GE 部分需能跑 <code class="inline">scipy.optimize</code>。</div>
+        <div style="font-weight:700;color:var(--text);">站内前置页面</div>
+        <div>本页是 QSGE 模块入口，无前置页面。建议按 <a href="#s2" style="color:var(--primary);">s2 学习路线</a> 从 01-Armington 开始顺序学习。</div>
+        <div style="font-weight:700;color:var(--text);">难度分级</div>
+        <div><span style="display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:10px;background:#e3f0e8;color:var(--success);letter-spacing:.5px;">总览</span> &nbsp; 导航页，不涉及推导；后续页面按 入门→进阶→前沿 递进。</div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#sk">估计与反事实方法 Methods</a></li>
+        <li><a href="#s1">模型分支 Branches（14 个模型）</a></li>
+        <li><a href="#s2">分分支学习路径（前置依赖与分叉）</a></li>
+        <li><a href="#s3">QSGE 论文的典型写作范式</a></li>
+        <li><a href="#s4">软件与工具清单</a></li>
+        <li><a href="#s5">本领域全部页面（按学习顺序）</a></li>
+      </ol>
+    </div>
+
+    <!-- ============ QSGE 必备基础知识 ============ -->
+    <div class="section" id="sk">
+      <h2><span class="sec-num">★</span> 估计与反事实方法 Methods</h2>
+      <div class="callout tip">
+        <div class="callout-title">为什么先学这三件</div>
+        <p>QSGE 的 6 个模型分支看起来不同（Armington / EK / Melitz / RRH / 贸易+迁移+土地），但它们在"<strong>做福利分析</strong>"和"<strong>做反事实</strong>"时用的是同一套工具。下面三件基础知识就是这套工具的"普通话"。<strong>先把这三件学完，再进入任何一个模型分支</strong>，你会发现每个分支的"福利"和"反事实"章节只是把同一个公式换了个参数代入。</p>
+      </div>
+      <div class="ref-grid">
+        <div class="ref-card">
+          <div class="rc-head">
+            <div class="rc-name"><a href="05-counterfactual-solving.html">① 帽代数反事实求解</a></div>
+            <span class="rc-note">难度：进阶</span>
+          </div>
+          <p style="margin-bottom:8px;"><strong>是什么：</strong>Dekle-Eaton-Kortum (2007) 的 exact hat algebra。用 $\hat x = x'/x$ 把均衡方程重写为"变化率"形式，只用观测到的基准贸易份额 $\lambda_{ni}$ 和外生冲击 $\hat\tau_{ni}$，就能迭代出反事实均衡，<strong>不需要知道 $T_i, w_i$ 的水平值</strong>。</p>
+          <p style="margin-bottom:8px;"><strong>在哪些分支中使用：</strong>Armington（CES 份额）、EK（Fréchet 份额）、Melitz-Pareto（Pareto 门槛份额）、RRH（嵌套：通勤+贸易）、贸易+迁移+土地（三市场帽子）——所有反事实求解都用精确帽子代数。</p>
+          <p style="margin:0;"><a href="05-counterfactual-solving.html" style="color:var(--primary);font-weight:600;">进入基础知识库 · 帽代数 →</a></p>
+        </div>
+        <div class="ref-card">
+          <div class="rc-head">
+            <div class="rc-name"><a href="04-welfare-decomposition.html">② 福利分解 (ACR)</a></div>
+            <span class="rc-note">难度：进阶</span>
+          </div>
+          <p style="margin-bottom:8px;"><strong>是什么：</strong>Arkolakis-Costinot-Rodriguez-Clare (2012) 的充分统计量公式 $\hat W_n = \hat\lambda_{nn}^{-1/\varepsilon}$。无论模型是 Armington、EK 还是 Melitz-Pareto，只要满足 CES + 单一要素 + 贸易平衡，福利变化只取决于国内份额变化和贸易弹性 $\varepsilon$ 两个统计量。</p>
+          <p style="margin-bottom:8px;"><strong>在哪些分支中使用：</strong>Armington（$\varepsilon=\sigma-1$）、EK（$\varepsilon=\theta$）、Melitz（$\varepsilon=\theta$，Pareto 形状）、RRH（土地/通勤扩展）、贸易+迁移+土地（福利分解扩展）——所有 QSGE 分支的福利分析都用 ACR 框架。</p>
+          <p style="margin:0;"><a href="04-welfare-decomposition.html" style="color:var(--primary);font-weight:600;">进入基础知识库 · 福利分解 →</a></p>
+        </div>
+        <div class="ref-card">
+          <div class="rc-head">
+            <div class="rc-name"><a href="03-gravity.html">③ 结构引力估计 (PPML)</a></div>
+            <span class="rc-note">难度：进阶</span>
+          </div>
+          <p style="margin-bottom:8px;"><strong>是什么：</strong>Anderson-van Wincoop (2003) 把引力方程从回归工具升级为结构模型；PPML + 双向固定效应处理零贸易流与多边阻力。估出的贸易弹性 $\theta$ 是 ACR 福利公式和帽代数反事实的"输入参数"。</p>
+          <p style="margin-bottom:8px;"><strong>在哪些分支中使用：</strong>所有需要校准贸易弹性的分支（Armington / EK / Melitz / RRH / 贸易+迁移+土地）；结构引力页本身就是估计方法分支。</p>
+          <p style="margin:0;"><a href="03-gravity.html" style="color:var(--primary);font-weight:600;">进入结构引力与 PPML →</a></p>
+        </div>
+      </div>
+      <div class="callout warning" style="margin-top:16px;">
+        <div class="callout-title">学习建议</div>
+        <p>推荐顺序：<strong>③ 引力估出 $\theta$ → ② ACR 公式把 $\theta$ 变成福利 → ① 帽代数把 $\theta$ 变成反事实 $\hat\lambda_{nn}$</strong>。三件工具合起来就是 QSGE 论文的"实证 → 福利 → 反事实"标准三段。学完这三件再去看任何模型分支，都能在它的"福利 / 反事实"章节看到这三件工具的影子。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 模型分支 Branches（14 个模型）</h2>
+      <p>QSGE 模块以"<strong>模型类型</strong>"为主轴组织：每个分支对应一个可独立学完的量化模型（单页），从<strong>假设 → 构建 → 求解 → 福利 → 反事实 → 估计</strong>六个环节标注覆盖情况。难度按 入门→进阶→前沿 递进，前置依赖标明了正确学习顺序。福利分解、帽子代数与贸易成本估计已上移为本页 §★ 的"估计与反事实方法 Methods"组，不再单独成支。</p>
+
+      <div class="taxonomy-grid">
+
+        <!-- 1. Armington -->
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">1. Armington 模型</div><span class="diff beginner">入门</span></div>
+          <div class="bc-en">ARMINGTON MODEL</div>
+          <div class="bc-pages">单页 · 01-armington.html</div>
+          <div class="bc-desc">QSGE 的入口。CES 偏好差异下的需求结构：CES 需求 → 贸易份额 → 帽子代数 → 福利 ACR → 反事实，一条线跑通全流程。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov on">构建 ✓</span><span class="cov on">求解 ✓</span><span class="cov on">福利 ✓</span><span class="cov on">反事实 ✓</span><span class="cov off">估计</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>无（领域入口）</div>
+          <div class="bc-enter"><a href="01-armington.html">进入分支 → 01 Armington</a></div>
+        </div>
+
+        <!-- 2. Eaton-Kortum -->
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">2. Eaton-Kortum 模型</div><span class="diff intermediate">进阶</span></div>
+          <div class="bc-en">EATON-KORTUM (EK) MODEL</div>
+          <div class="bc-pages">单页 · 02-eaton-kortum.html</div>
+          <div class="bc-desc">Fréchet 生产率分布引入 Ricardian 技术差异。贸易份额推导 → 工资均衡 → 福利 ACR → 反事实，是空间 GE 的地基。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov on">构建 ✓</span><span class="cov on">求解 ✓</span><span class="cov on">福利 ✓</span><span class="cov on">反事实 ✓</span><span class="cov off">估计</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>Armington（分支 1）</div>
+          <div class="bc-enter"><a href="02-eaton-kortum.html">进入分支 → 02 Eaton-Kortum</a></div>
+        </div>
+
+        <!-- 3. 结构引力估计 -->
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">3. 结构引力估计</div><span class="diff intermediate">进阶</span></div>
+          <div class="bc-en">STRUCTURAL GRAVITY ESTIMATION</div>
+          <div class="bc-pages">单页 · 03-gravity.html</div>
+          <div class="bc-desc">把引力方程从回归工具升级为结构模型。多边阻力、PPML、固定效应、贸易弹性估计——为 GE 校准提供参数。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov on">构建 ✓</span><span class="cov off">求解</span><span class="cov off">福利</span><span class="cov off">反事实</span><span class="cov on">估计 ✓</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>Armington（分支 1）</div>
+          <div class="bc-enter"><a href="03-gravity.html">进入分支 → 03 结构引力与 PPML</a></div>
+        </div>
+
+        <!-- 4. Melitz -->
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">4. Melitz 异质企业</div><span class="diff intermediate">进阶</span></div>
+          <div class="bc-en">MELITZ HETEROGENEOUS FIRMS</div>
+          <div class="bc-pages">单页 · 08-melitz-model.html</div>
+          <div class="bc-desc">垄断竞争 + ZCP-FE + Pareto 生产率分布。贸易自由化的进入/退出选择效应与福利重新分配。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov on">构建 ✓</span><span class="cov on">求解 ✓</span><span class="cov on">福利 ✓</span><span class="cov on">反事实 ✓</span><span class="cov off">估计</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>Armington（分支 1）</div>
+          <div class="bc-enter"><a href="08-melitz-model.html">进入分支 → 08 Melitz</a></div>
+        </div>
+
+        <!-- 5. RRH -->
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">5. RRH 空间一般均衡</div><span class="diff advanced">前沿</span></div>
+          <div class="bc-en">REDDING-ROSSI-HANSBERG SPATIAL GE</div>
+          <div class="bc-pages">单页 · 06-rrh-spatial.html</div>
+          <div class="bc-desc">Fréchet 通勤把劳动迁移嵌入贸易框架。空间均衡 + 嵌套迭代求解 + 福利分解，空间经济学"量化转向"代表作。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov on">构建 ✓</span><span class="cov on">求解 ✓</span><span class="cov on">福利 ✓</span><span class="cov off">反事实</span><span class="cov off">估计</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>Eaton-Kortum（分支 2）</div>
+          <div class="bc-enter"><a href="06-rrh-spatial.html">进入分支 → 06 RRH 空间 GE</a></div>
+        </div>
+
+        <!-- 6. 贸易+迁移+土地 -->
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">6. 贸易 + 迁移 + 土地</div><span class="diff advanced">前沿</span></div>
+          <div class="bc-en">TRADE + MIGRATION + LAND</div>
+          <div class="bc-pages">单页 · 07-trade-migration-land.html</div>
+          <div class="bc-desc">贸易、动态迁移、土地/住房市场整合到一个可计算 GE。帽子代数扩展 + 多市场均衡 + 反事实，研究中国区域发展的核心工具。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov on">构建 ✓</span><span class="cov on">求解 ✓</span><span class="cov off">福利</span><span class="cov on">反事实 ✓</span><span class="cov off">估计</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>RRH 空间 GE（分支 5）</div>
+          <div class="bc-enter"><a href="07-trade-migration-land.html">进入分支 → 07 贸易+迁移+土地</a></div>
+        </div>
+
+        <!-- 7. 动态空间 -->
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">7. 动态空间模型</div><span class="diff advanced">前沿</span></div>
+          <div class="bc-en">DYNAMIC SPATIAL GENERAL EQUILIBRIUM</div>
+          <div class="bc-pages">单页 · 09-dynamic-spatial.html</div>
+          <div class="bc-desc">跨期迁移决策与资本积累的动态空间 GE：迁移 Bellman、值函数迭代与转移动态，刻画空间均衡的长期调整路径。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov on">构建 ✓</span><span class="cov on">求解 ✓</span><span class="cov on">福利 ✓</span><span class="cov on">反事实 ✓</span><span class="cov off">估计</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>RRH 空间 GE（分支 5）</div>
+          <div class="bc-enter"><a href="09-dynamic-spatial.html">进入分支 → 09 动态空间</a></div>
+        </div>
+
+        <!-- 8. 贸易成本结构估计 -->
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">8. 贸易成本结构估计</div><span class="diff intermediate">进阶</span></div>
+          <div class="bc-en">STRUCTURAL TRADE COST ESTIMATION</div>
+          <div class="bc-pages">单页 · 10-trade-cost-estimation.html</div>
+          <div class="bc-desc">引力方程的贸易成本分解与边界效应识别：Head-Ries 间接测度指数与 EK 反演，从双边贸易流反推非关税与距离成本。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov off">构建</span><span class="cov off">求解</span><span class="cov off">福利</span><span class="cov off">反事实</span><span class="cov on">估计 ✓</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>结构引力估计（分支 3）</div>
+          <div class="bc-enter"><a href="10-trade-cost-estimation.html">进入分支 → 10 贸易成本估计</a></div>
+        </div>
+
+        <!-- 9. GVC / 增加值贸易 -->
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">9. 全球价值链 / 增加值贸易</div><span class="diff advanced">前沿</span></div>
+          <div class="bc-en">GVC / VALUE-ADDED TRADE</div>
+          <div class="bc-pages">单页 · 11-gvc-value-added.html</div>
+          <div class="bc-desc">增加值贸易核算与全球生产分割：多区域投入产出、Leontief 逆矩阵与 KWW 分解，追溯贸易价值的来源国与最终目的地。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov on">构建 ✓</span><span class="cov off">求解</span><span class="cov off">福利</span><span class="cov on">反事实 ✓</span><span class="cov on">估计 ✓</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>结构引力估计（分支 3）</div>
+          <div class="bc-enter"><a href="11-gvc-value-added.html">进入分支 → 11 GVC 增加值</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">10. 多部门 EK 量化贸易</div><span class="diff advanced">前沿</span></div>
+          <div class="bc-en">MULTI-SECTOR QUANTITATIVE TRADE · CALIENDO-PARRO</div>
+          <div class="bc-pages">单页 · 12-caliendo-parro-multisector.html</div>
+          <div class="bc-desc">把 EK 推广到多部门：部门间投入产出联系、关税冲击的一般均衡传导与福利分解，量化贸易政策在部门网络中的放大效应。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov on">构建 ✓</span><span class="cov on">求解 ✓</span><span class="cov on">福利 ✓</span><span class="cov on">反事实 ✓</span><span class="cov on">估计 ✓</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>Eaton-Kortum（分支 2）+ GVC（分支 9）</div>
+          <div class="bc-enter"><a href="12-caliendo-parro-multisector.html">进入分支 → 12 多部门 EK</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">11. 城市通勤空间均衡</div><span class="diff advanced">前沿</span></div>
+          <div class="bc-en">CITY COMMUTING SPATIAL EQ. · AHLFELDT ET AL.</div>
+          <div class="bc-pages">单页 · 13-ahlfeldt-city-commute.html</div>
+          <div class="bc-desc">单城市内的通勤选择与生产力外溢：通勤矩阵、就业—居住区位与房价梯度的结构化估计，量化交通与隔离政策的城市均衡效应。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov on">构建 ✓</span><span class="cov on">求解 ✓</span><span class="cov on">福利 ✓</span><span class="cov on">反事实 ✓</span><span class="cov on">估计 ✓</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>RRH 空间一般均衡（分支 5）</div>
+          <div class="bc-enter"><a href="13-ahlfeldt-city-commute.html">进入分支 → 13 城市通勤均衡</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">12. 空间经济统一框架</div><span class="diff advanced">前沿</span></div>
+          <div class="bc-en">UNIFIED SPATIAL ECONOMICS · ARKOLAKIS-REDDING-STURM-TOSSETTTO / ALLEN</div>
+          <div class="bc-pages">单页 · 14-allen-arkolakis-unified.html</div>
+          <div class="bc-desc">把贸易、迁移、要素流动纳入单一空间均衡结构：空间不变量（spatial invariances）与充分统计量，统一解释集聚、分散与区域政策。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov on">构建 ✓</span><span class="cov on">求解 ✓</span><span class="cov on">福利 ✓</span><span class="cov on">反事实 ✓</span><span class="cov off">估计</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>RRH（分支 5）+ 贸易+迁移+土地（分支 6）</div>
+          <div class="bc-enter"><a href="14-allen-arkolakis-unified.html">进入分支 → 14 统一空间框架</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">13. 单中心城市土地利用</div><span class="diff intermediate">进阶</span></div>
+          <div class="bc-en">MONOCENTRIC CITY · ALONSO-MUTH-MILLS</div>
+          <div class="bc-pages">单页 · 15-alonso-muth-mills.html</div>
+          <div class="bc-desc">Alonso-Muth-Mills 单中心城市模型：bid-rent 曲线、土地密度与到 CBD 距离的结构化关系，解释城市形态、房价梯度与通勤成本。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov on">构建 ✓</span><span class="cov on">求解 ✓</span><span class="cov on">福利 ✓</span><span class="cov off">反事实</span><span class="cov on">估计 ✓</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>RRH（分支 5）</div>
+          <div class="bc-enter"><a href="15-alonso-muth-mills.html">进入分支 → 15 单中心城市</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">14. 定量 HOV 要素禀赋</div><span class="diff advanced">前沿</span></div>
+          <div class="bc-en">QUANTITATIVE HECKSCHER-OHLIN-VANEK</div>
+          <div class="bc-pages">单页 · 16-quantitative-heckscher-ohlin.html</div>
+          <div class="bc-desc">把 HOV 要素禀赋理论量化：要素含量贸易、贸易成本与非位似偏好下的结构估计，检验比较优势对贸易格局与收入分配的解释力。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov on">构建 ✓</span><span class="cov on">求解 ✓</span><span class="cov on">福利 ✓</span><span class="cov on">反事实 ✓</span><span class="cov on">估计 ✓</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>结构引力（分支 3）+ 多部门 EK（分支 10）</div>
+          <div class="bc-enter"><a href="16-quantitative-heckscher-ohlin.html">进入分支 → 16 定量 HOV</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-name">15. 通勤—贸易一体化</div><span class="diff advanced">前沿</span></div>
+          <div class="bc-en">COMMUTING &amp; TRADE INTEGRATION · MONTE-REDDING-RH</div>
+          <div class="bc-pages">单页 · 17-monte-redding-rh.html</div>
+          <div class="bc-desc">Monte-Redding-Rossi-Hansberg：商品贸易与工人通勤同时内生化，量化区域一体化对名义收入、实际工资与福利的空间再分配效应。</div>
+          <div class="cov-row">
+            <span class="cov on">假设 ✓</span><span class="cov on">构建 ✓</span><span class="cov on">求解 ✓</span><span class="cov on">福利 ✓</span><span class="cov on">反事实 ✓</span><span class="cov on">估计 ✓</span>
+          </div>
+          <div class="bc-prereq"><b>前置依赖：</b>城市通勤均衡（分支 11）+ 统一空间框架（分支 12）</div>
+          <div class="bc-enter"><a href="17-monte-redding-rh.html">进入分支 → 17 通勤贸易一体化</a></div>
+        </div>
+
+      </div>
+
+      <!-- 方法参考区 -->
+      <div class="ref-section">
+        <h3>方法参考（跨分支 · 已并入各模型分支）</h3>
+        <p style="font-size:13.5px;color:#666;">下列两个方法页不再单独成支，其内容已嵌入对应模型分支的"福利 / 反事实"环节。此处保留独立入口，供跨分支查阅。</p>
+        <div class="ref-grid">
+          <div class="ref-card">
+            <div class="rc-head"><div class="rc-name"><a href="04-welfare-decomposition.html">空间福利分解 (ACR)</a></div><span class="rc-note">跨分支参考 · 已并入</span></div>
+            <p>Arkolakis-Costinot-Rodriguez-Clare 福利充分统计量：用贸易份额变化一句话分解贸易政策的福利效应。已并入 Armington / EK / Melitz 各分支的"福利"环节。</p>
+          </div>
+          <div class="ref-card">
+            <div class="rc-head"><div class="rc-name"><a href="05-counterfactual-solving.html">帽子代数反事实求解</a></div><span class="rc-note">跨分支参考 · 已并入</span></div>
+            <p>Dekle-Eaton-Kortum hat algebra：用"变化量（hat）"而非水平量重算均衡，避免重新校准。已并入各模型分支的"反事实"环节。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-title">难度标签与覆盖环节说明</div>
+        <p><span class="diff beginner">入门</span> 模型简洁、直觉清晰，1 周可跑通；<span class="diff intermediate">进阶</span> 需推导 GE 求解与福利表达式，2 周；<span class="diff advanced">前沿</span> 涉及多区域数值计算与迁移均衡，3-4 周。<span class="cov on">假设</span>/<span class="cov on">构建</span>/<span class="cov on">求解</span>/<span class="cov on">福利</span>/<span class="cov on">反事实</span>/<span class="cov on">估计</span> 六色标签标记该分支在 QSGE 全流程中覆盖的环节；灰显环节表示该分支不涉及。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 分分支学习路径（前置依赖与分叉）</h2>
+      <p>QSGE 以 <strong>Armington→EK→引力</strong>为共同地基，过了地基后按兴趣分叉为"<strong>空间扩展</strong>"与"<strong>企业异质</strong>"两条线，最终都汇入"福利分解+帽子代数反事实"。每条路径都标了起点页、前置依赖、建议顺序与难度。</p>
+
+      <div class="bp-list">
+
+        <div class="branch-path">
+          <div class="bp-head"><div class="bp-name">① 贸易基准主线（必修）</div><span class="diff intermediate">进阶</span></div>
+          <div class="bp-meta"><b>起点：</b>01 Armington　<b>前置依赖：</b>无（领域入口）　<b>目标：</b>写出需求与价格指数，理解 ACR 福利充分统计量，并用帽子代数求解反事实。</div>
+          <div class="bp-flow">
+            <span class="step"><span class="num">01</span><a href="01-armington.html">Armington</a></span><span class="ar">→</span>
+            <span class="step"><span class="num">02</span><a href="02-eaton-kortum.html">Eaton-Kortum</a></span><span class="ar">→</span>
+            <span class="step"><span class="num">03</span><a href="03-gravity.html">结构引力 / PPML</a></span><span class="ar">→</span>
+            <span class="step"><span class="num">04</span><a href="04-welfare-decomposition.html">福利分解 ACR</a></span><span class="ar">→</span>
+            <span class="step"><span class="num">05</span><a href="05-counterfactual-solving.html">帽子代数反事实</a></span>
+          </div>
+        </div>
+
+        <div class="branch-path bp-fork">
+          <div class="bp-head"><div class="bp-name">② 空间扩展路径</div><span class="diff advanced">前沿</span></div>
+          <div class="bp-meta"><b>起点：</b>06 RRH 空间 GE　<b>前置依赖：</b>① EK（02）+ 引力（03）　<b>目标：</b>把劳动迁移与空间均衡嵌入贸易框架，做多区域量化空间分析。</div>
+          <div class="bp-flow">
+            <span class="step"><span class="num">02</span><a href="02-eaton-kortum.html">EK</a></span><span class="ar">→</span>
+            <span class="step"><span class="num">06</span><a href="06-rrh-spatial.html">RRH 空间 GE</a></span><span class="ar">→</span>
+            <span class="step"><span class="num">07</span><a href="07-trade-migration-land.html">贸易+迁移+土地</a></span>
+          </div>
+        </div>
+
+        <div class="branch-path bp-fork">
+          <div class="bp-head"><div class="bp-name">③ 企业异质路径</div><span class="diff intermediate">进阶</span></div>
+          <div class="bp-meta"><b>起点：</b>08 Melitz　<b>前置依赖：</b>① Armington（01）；EK（02）可选，帮助理解 selection 效应　<b>目标：</b>把企业生产率异质性与贸易自由化的选择效应纳入模型。</div>
+          <div class="bp-flow">
+            <span class="step"><span class="num">01</span><a href="01-armington.html">Armington</a></span><span class="ar">→</span>
+            <span class="step"><span class="num">08</span><a href="08-melitz-model.html">Melitz 异质企业</a></span><span class="ar">→</span>
+            <span class="step"><span class="num">04</span><a href="04-welfare-decomposition.html">福利分解</a></span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">怎么选路径</div>
+        <p>新手先把 ① 走到底（含 ACR 与帽子代数反事实），这是 QSGE 的通用语言。研究区域/城市/迁移问题走 ②；研究出口企业、贸易自由化走 ③。两条分叉最终都要回到 04 福利分解与 05 反事实求解来回答政策问题。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> QSGE 论文的典型写作范式</h2>
+      <p>QSGE 论文的结构介于纯理论与纯实证之间：先写模型，再校准/估计参数，最后做反事实。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>章节</th><th>内容</th><th>对应分支</th></tr></thead>
+          <tbody>
+            <tr><td>1. Introduction</td><td>政策问题 + 模型一句话 + 主要量化发现</td><td>全局</td></tr>
+            <tr><td>2. Model</td><td>偏好、技术、贸易成本、均衡条件（必须完整写出）</td><td>对应模型分支（1-6）</td></tr>
+            <tr><td>3. Calibration / Estimation</td><td>参数来源、贸易弹性估计、矩匹配、数据描述</td><td>分支 3（引力估计）+ 各分支校准</td></tr>
+            <tr><td>4. Welfare Decomposition</td><td>ACR 公式、福利变化分解到各 margin</td><td>方法参考 · ACR（并入各分支）</td></tr>
+            <tr><td>5. Counterfactual</td><td>帽子代数求解：改变贸易成本/迁移成本，重算均衡</td><td>方法参考 · 帽子代数（并入各分支）</td></tr>
+            <tr><td>6. Robustness</td><td>换贸易弹性、换模型设定、换数据</td><td>对应模型分支</td></tr>
+            <tr><td>7. Conclusion</td><td>政策含义 + 模型局限</td><td>全局</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">QSGE 论文最常见的写作事故</div>
+        <p>① 模型章节跳步，直接从效用跳到数值结果；② 贸易弹性（trade elasticity）不引用估计来源；③ 反事实求解不报告帽子代数的迭代收敛；④ 福利分解只报总量不报 margin；⑤ 不做 model fit 就宣称"模型解释了 X%"。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 软件与工具清单</h2>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <h4>MATLAB</h4>
+          <p>QSGE 主力。帽子代数的矩阵运算、多区域 GE 求解、Dekle-Eaton-Kortum 迭代。经典代码（DKK 2007）均为 MATLAB。</p>
+        </div>
+        <div class="tool-card">
+          <h4>Python</h4>
+          <p>numpy/pandas 做贸易数据整理；scipy.optimize 做均衡求解；空间经济学 Python 工具链越来越成熟。</p>
+        </div>
+        <div class="tool-card">
+          <h4>Stata（实证部分）</h4>
+          <p>引力方程的 PPML 估计用 Stata 的 ppmlhdfe 命令；贸易数据清洗用 Stata。</p>
+        </div>
+        <div class="tool-card">
+          <h4>数值方法</h4>
+          <p>定点迭代（fixed point iteration）、帽子代数 hat algebra、Dekle-Eaton-Kortum 反事实算法。</p>
+        </div>
+        <div class="tool-card">
+          <h4>数据来源</h4>
+          <p>Comtrade / CEPII BACI（双边贸易）、GTAP（投入产出）、世界银行 WDI、中国海关数据库、城市统计年鉴。</p>
+        </div>
+        <div class="tool-card">
+          <h4>经典代码库</h4>
+          <p>RIH 主页（Redding）；Macroeconomics 空间工具包；GitHub 搜 "quantitative spatial"；ACR (2012) replication。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 本领域全部页面（按学习顺序）</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>页面</th><th>所属分支</th><th>难度</th></tr></thead>
+          <tbody>
+            <tr><td>01</td><td><a href="index.html" style="color:var(--primary);">QSGE 总览与学习路线（本页）</a></td><td>总览</td><td>—</td></tr>
+            <tr><td>02</td><td><a href="01-armington.html" style="color:var(--primary);">Armington 模型</a></td><td>模型分支 Branches</td><td><span class="diff beginner">入门</span></td></tr>
+            <tr><td>03</td><td><a href="02-eaton-kortum.html" style="color:var(--primary);">Eaton-Kortum 模型</a></td><td>模型分支 Branches</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>04</td><td><a href="08-melitz-model.html" style="color:var(--primary);">Melitz 异质企业模型</a></td><td>模型分支 Branches</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>05</td><td><a href="03-gravity.html" style="color:var(--primary);">结构引力与 PPML</a></td><td>模型分支 Branches</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>06</td><td><a href="06-rrh-spatial.html" style="color:var(--primary);">RRH 空间一般均衡</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>07</td><td><a href="07-trade-migration-land.html" style="color:var(--primary);">贸易 + 迁移 + 土地</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>08</td><td><a href="04-welfare-decomposition.html" style="color:var(--primary);">空间福利分解 (ACR)</a></td><td>估计与反事实方法 Methods</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>09</td><td><a href="05-counterfactual-solving.html" style="color:var(--primary);">帽子代数反事实求解</a></td><td>估计与反事实方法 Methods</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>10</td><td><a href="09-dynamic-spatial.html" style="color:var(--primary);">动态空间一般均衡</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>11</td><td><a href="10-trade-cost-estimation.html" style="color:var(--primary);">贸易成本结构估计</a></td><td>估计与反事实方法 Methods</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>12</td><td><a href="11-gvc-value-added.html" style="color:var(--primary);">全球价值链 / 增加值贸易</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>13</td><td><a href="12-caliendo-parro-multisector.html" style="color:var(--primary);">多部门 EK 量化贸易（Caliendo-Parro）</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>14</td><td><a href="13-ahlfeldt-city-commute.html" style="color:var(--primary);">城市通勤空间均衡（Ahlfeldt）</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>15</td><td><a href="14-allen-arkolakis-unified.html" style="color:var(--primary);">空间经济统一框架（ARK/Allen）</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>16</td><td><a href="15-alonso-muth-mills.html" style="color:var(--primary);">单中心城市土地利用（Alonso-Muth-Mills）</a></td><td>模型分支 Branches</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>17</td><td><a href="16-quantitative-heckscher-ohlin.html" style="color:var(--primary);">定量 HOV 要素禀赋</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>18</td><td><a href="17-monte-redding-rh.html" style="color:var(--primary);">通勤—贸易一体化（Monte-Redding-RH）</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="../index.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">工作站首页</div>
+      </a>
+      <a href="01-armington.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">02 · Armington 模型</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+(function(){const path=window.location.pathname.split('/').pop();document.querySelectorAll('.nav-item').forEach(item=>{if(item.getAttribute('href')&&item.getAttribute('href').endsWith(path)){item.classList.add('active');}});})();
+</script>
+</body>
+</html>

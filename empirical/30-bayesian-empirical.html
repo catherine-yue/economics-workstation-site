@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贝叶斯实证推断 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item active" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main"><div class="content-wrap">
+
+  <div class="breadcrumb">
+    <a href="../index.html">首页</a><span class="sep">/</span>
+    <a href="index.html">实证论文</a><span class="sep">/</span>
+    <span>贝叶斯实证推断</span>
+  </div>
+
+  <div class="page-header">
+    <span class="tag">实证 · 30</span>
+    <h1>贝叶斯实证推断：先验、似然、后验与 MCMC</h1>
+    <p class="desc">频率派把参数 $\theta$ 当作未知常数，把数据当作随机样本；贝叶斯派把参数本身也当作随机变量，用先验分布 $p(\theta)$ 表达你在看到数据之前的信念，用似然 $p(Y|\theta)$ 更新成后验 $p(\theta|Y)$。当样本小、模型复杂（DSGE、随机效应、高维）时，贝叶斯推断比频率派更自然；后验概率 $P(\theta&gt;0|Y)$ 也比 p 值更贴近"政策讨论"的语言。本页讲清 Bayes 定理、共轭先验下的解析解、MCMC 三大算法（MH/Gibbs/NUTS）、收敛诊断（R-hat、trace plot），以及 Stata <code class="inline">bayesmh</code> 与 Python PyMC 的完整实现。</p>
+  </div>
+
+  <div class="prereq-box">
+    <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+    <div class="prereq-grid">
+      <div class="prereq-item">
+        <div class="prereq-label">① 数学 / 统计基础</div>
+        <div class="prereq-body">Bayes 定理、共轭分布族（Normal–Inverse-Gamma、Beta–Binomial）、马尔可夫链平稳分布、Metropolis–Hastings 接受率。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">② 经济学理论前置</div>
+        <div class="prereq-body">先验如何反映经济理论（DSGE 里先验均值锚定校准值）；后验预测分布用于模型比较。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">③ 软件 / 计算前置</div>
+        <div class="prereq-body">Stata 16+（<code class="inline">bayesmh</code>、<code class="inline">bayes</code>）；Python（<code class="inline">pymc</code>、<code class="inline">arviz</code>）。GPU 非必需。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">④ 站内前置页面</div>
+        <div class="prereq-body">与 <a href="../dsge/06-bayesian-estimation.html">DSGE 贝叶斯估计（05）</a>、<a href="11-significance-practice.html">11 显著性诊断实务</a>、<a href="04-baseline-regression.html">04 基准回归</a>互链。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">⑤ 难度分级</div>
+        <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">进阶 · 计算密集</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toc-box">
+    <div class="toc-title">本页目录 / CONTENTS</div>
+    <ol>
+      <li><a href="#s1">是什么：贝叶斯推断 vs 频率派</a></li>
+      <li><a href="#s2">假设与原理：Bayes 定理与 MCMC</a></li>
+      <li><a href="#s3">完整推导：线性模型共轭先验与 Probit 数据增广</a></li>
+      <li><a href="#s4">逐步操作流程</a></li>
+      <li><a href="#s5">完整 Stata + Python 代码（含收敛诊断）</a></li>
+      <li><a href="#s6">论文案例：Gelman、McElreath、Albert–Chib、Imbens–Rubin</a></li>
+      <li><a href="#s7">常见错误</a></li>
+      <li><a href="#s8">交叉链接</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="s1">
+    <h2><span class="sec-num">01</span> 是什么：贝叶斯推断 vs 频率派</h2>
+    <p>频率派的世界观：参数 $\theta$ 是固定未知常数；数据 $Y$ 是随机的；我们用 $\hat\theta$（MLE 或 OLS）估计它，用置信区间表达"重复抽样 100 次、有 95 次会覆盖真实 $\theta$"。<strong>贝叶斯派</strong>的世界观：参数 $\theta$ 也是随机变量；在看到数据之前，你对它有先验信念 $p(\theta)$；看到数据后，用 Bayes 定理把先验更新成后验 $p(\theta|Y)$。后验是一个完整分布，你可以读它的均值、中位数、95% 可信区间（credible interval）、以及"$\theta&gt;0$ 的概率"。对政策讨论而言，"参数大于零的后验概率"比"p 值等于 0.03"更贴近决策者真正想问的问题。</p>
+    <p>在实证经济学里，贝叶斯推断最常见的三种用途：</p>
+    <ol>
+      <li><strong>DSGE / 结构模型估计</strong>：样本短、参数多、似然面崎岖。先验把经济理论锚进来，后验用 MCMC 采样。本知识库 <a href="../dsge/06-bayesian-estimation.html">DSGE 贝叶斯估计页</a>有完整讲解。</li>
+      <li><strong>贝叶斯 VAR / BVAR</strong>：宏观变量维度高，VAR 容易过拟合；明尼苏达先验收缩系数，后验更稳。</li>
+      <li><strong>小样本 / 随机效应 / 因果推断</strong>：Imbens & Rubin (2015) 把潜在结果框架贝叶斯化，对处理效应做后验推断。</li>
+    </ol>
+    <h3>贝叶斯 vs 频率派速查表</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>维度</th><th>频率派（MLE/OLS）</th><th>贝叶斯</th></tr></thead>
+        <tbody>
+          <tr><td>参数性质</td><td>未知常数</td><td>随机变量，有分布</td></tr>
+          <tr><td>不确定性来源</td><td>数据重复抽样</td><td>参数本身不确定</td></tr>
+          <tr><td>输出</td><td>点估计 + 置信区间</td><td>完整后验分布</td></tr>
+          <tr><td>小样本</td><td>依赖渐近近似</td><td>后验精确（有限样本）</td></tr>
+          <tr><td>先验信息</td><td>不能正式纳入</td><td>先验分布显式表达</td></tr>
+          <tr><td>概率语言</td><td>"95% 重复抽样覆盖"</td><td>"$\theta$ 有 95% 概率在区间内"</td></tr>
+          <tr><td>大样本</td><td colspan="2" style="text-align:center">无信息先验下两者趋同（Bernstein–von Mises 定理）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>关键直觉：<strong>大样本下贝叶斯与频率派渐近等价</strong>（Bernstein–von Mises 定理）；贝叶斯的真正优势在小样本、高维、结构模型——此时频率派的渐近近似本身就不可靠。</p>
+  </div>
+
+  <div class="section" id="s2">
+    <h2><span class="sec-num">02</span> 假设与原理：Bayes 定理与 MCMC</h2>
+    <p>核心公式只有一行：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 2.1 — Bayes 定理</div>
+      $$ p(\theta|Y) = \frac{p(Y|\theta)\, p(\theta)}{p(Y)} = \frac{p(Y|\theta)\, p(\theta)}{\int p(Y|\theta)\,p(\theta)\,d\theta} $$
+    </div>
+    <p>分子 = 似然 × 先验；分母 = 证据 marginal likelihood，归一化用。实务中我们只关心分子的形状（后验正比于似然×先验），因为归一化常数往往没有解析解。用文字复述：<strong>后验 ∝ 似然 × 先验</strong>——数据告诉你的似然形状，与你事前的信念先验，按精度加权融合成后验。</p>
+    <h3>先验的选择</h3>
+    <ul>
+      <li><strong>无信息先验（Jeffreys / flat prior）</strong>：让数据自己说话，先验在参数空间上近似均匀。小样本下不稳定。</li>
+      <li><strong>共轭先验（conjugate prior）</strong>：先验与似然同分布族，后验有解析解。例如正态似然 + 正态先验 ⇒ 后验仍是正态。</li>
+      <li><strong>层次先验（hierarchical prior）</strong>：随机效应 $\alpha_i \sim N(\mu, \sigma_\alpha^2)$，$\mu,\sigma_\alpha$ 再有超先验。多层数据标配。</li>
+    </ul>
+    <h3>MCMC 三大算法</h3>
+    <p>当后验没有解析解时，用 MCMC（Markov Chain Monte Carlo）从 $p(\theta|Y)$ 采样：</p>
+    <ul>
+      <li><strong>Metropolis–Hastings (MH)</strong>：提议 $\theta' \sim q(\theta'|\theta)$，按接受率 $\alpha = \min\big(1, \frac{p(\theta'|Y)q(\theta|\theta')}{p(\theta|Y)q(\theta'|\theta)}\big)$ 接受。最通用，但高维效率低。</li>
+      <li><strong>Gibbs 采样</strong>：每次只更新一个参数，条件后验 $p(\theta_j|\theta_{-j}, Y)$。当条件后验是共轭族时极快。</li>
+      <li><strong>NUTS (No-U-Turn Sampler)</strong>：HMC 的自动版本，PyMC 与 Stan 默认。能自适应步长，高维收敛快。</li>
+    </ul>
+    <p>实际选择：<strong>PyMC / Stan 默认 NUTS 即可</strong>，不要自己写 MH。Stata <code class="inline">bayesmh</code> 内部也是 MH/Gibbs 混合，但对用户屏蔽。判断采样质量的核心指标：</p>
+    <ul>
+      <li><strong>R-hat（Gelman–Rubin 统计量）</strong>：比较四条链的组间方差与组内方差。$R-hat &lt; 1.01$ 才算收敛。</li>
+      <li><strong>Trace plot</strong>：四条链应混在一起、无明显趋势或周期性。</li>
+      <li><strong>Effective Sample Size (ESS)</strong>：扣除自相关后的有效样本量。$ESS &gt; 400$ 才能算后验均值的标准误。</li>
+      <li><strong>Monte Carlo standard error (MCSE)</strong>：采样本身带来的误差，应远小于后验标准差。</li>
+    </ul>
+  </div>
+
+  <div class="section" id="s3">
+    <h2><span class="sec-num">03</span> 完整推导：线性模型共轭先验与 Probit 数据增广</h2>
+    <h3>正态线性模型：共轭后验解析解</h3>
+    <p>模型：$Y_i = x_i^\top\beta + \varepsilon_i$，$\varepsilon_i \sim N(0, \sigma^2)$。给定 $\sigma^2$，对 $\beta$ 取正态先验 $\beta \sim N(\beta_0, \Sigma_0)$，则后验：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 3.1 — 正态似然 + 正态先验 ⇒ 正态后验</div>
+      $$ \beta|Y,\sigma^2 \sim N\big( m_n, V_n \big), \qquad V_n = (\Sigma_0^{-1} + \sigma^{-2} X^\top X)^{-1}, \;\; m_n = V_n(\Sigma_0^{-1}\beta_0 + \sigma^{-2}X^\top Y) $$
+    </div>
+    <p>注意 $m_n$ 是先验均值与 OLS 估计的<strong>精度加权平均</strong>。当先验方差 $\Sigma_0 \to \infty$（无信息），$m_n \to \hat\beta_{OLS}$，后验方差 $V_n \to \sigma^2(X^\top X)^{-1}$——贝叶斯退化为频率派。</p>
+    <h3>Probit 模型：Albert–Chib (1993) 数据增广</h3>
+    <p>Probit：$Y_i^* = x_i^\top\beta + \varepsilon_i$，$\varepsilon_i \sim N(0,1)$，观测到 $Y_i = 1(Y_i^*&gt;0)$。Probit 的似然是 $\Phi(x_i^\top\beta)^{y_i}(1-\Phi(x_i^\top\beta))^{1-y_i}$，没有共轭先验。<strong>数据增广（data augmentation）</strong>技巧：把潜变量 $Y_i^*$ 也当作待估参数，Gibbs 交替采样：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 3.2 — Albert–Chib 1993 两步 Gibbs</div>
+      $$ \beta | Y^*, X \sim N(m_n, V_n) \;\;\text{（共轭）},\qquad Y_i^* | \beta, Y_i \sim \text{TruncNormal}(x_i^\top\beta, 1, \text{lower}=0\text{ if }Y_i=1,\text{upper}=0\text{ if }Y_i=0) $$
+    </div>
+    <p>把一个没有解析解的 Probit 估计，变成两步交替采样——每一步都是共轭/截断正态，极快。这是贝叶斯离散选择模型的基石。</p>
+    <h3>层次模型（随机效应）</h3>
+    <p>$y_{ij} = \alpha_j + x_{ij}^\top\beta + \varepsilon_{ij}$，$\alpha_j \sim N(\mu_\alpha, \sigma_\alpha^2)$。$\alpha_j$ 是"组级随机效应"，$\mu_\alpha, \sigma_\alpha$ 是超参数。Gibbs 交替更新：$\alpha_j|\cdot$、$\beta|\cdot$、$\mu_\alpha|\cdot$、$\sigma_\alpha|\cdot$。比频率派 REML 更灵活，因为后验完整分布可用于预测。</p>
+  </div>
+
+  <div class="section" id="s4">
+    <h2><span class="sec-num">04</span> 逐步操作流程</h2>
+    <div class="step-flow">
+      <div class="step-item">
+        <div class="step-title">① 设定先验</div>
+        <div class="step-desc">无信息先验 $N(0, 10^2)$ 作 baseline；再试一组有信息先验（均值锚定文献估计值），比较后验是否稳定。论文必须报告先验选择。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">② 选择 MCMC 方法</div>
+        <div class="step-desc">简单模型用 MH/Gibbs；PyMC/Stata 默认 NUTS 即可。跑 4 条链，每条 2000 迭代，前 1000 作 warmup。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">③ 运行采样</div>
+        <div class="step-desc">用 PyMC 或 Stata bayesmh 跑。注意收敛前 warmup 样本不要用。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">④ 收敛诊断（必做）</div>
+        <div class="step-desc">R-hat &lt; 1.01（Gelman–Rubin）；trace plot 四条链混在一起、无明显趋势；effective sample size (ESS) &gt; 400；不能有极端自相关。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">⑤ 后验推断</div>
+        <div class="step-desc">报告后验均值/中位数、95% 可信区间、$P(\theta&gt;0|Y)$。用后验预测检验（posterior predictive check）画 replicate data 与真实数据对比。</div>
+      </div>
+    </div>
+    <h3>后验预测检验（Posterior Predictive Check, PPC）</h3>
+    <p>后验推断做完后，标准动作是<strong>后验预测检验</strong>：从 $p(\theta|Y)$ 抽 $\theta^{(s)}$，再从似然 $p(Y^{rep}|\theta^{(s)})$ 生成复制数据 $Y^{rep}$。把 $Y^{rep}$ 的分布与真实 $Y$ 画在一起——如果模型对，$Y^{rep}$ 应该能"覆盖" $Y$；如果模型系统性偏（例如尾部太轻），PPC 图一眼可见。这是贝叶斯模型诊断的核心工具，比频率派的残差分析更直接。</p>
+    <h3>模型比较：DIC / WAIC / LOO</h3>
+    <p>贝叶斯模型比较不靠 p 值，而靠信息准则：<strong>DIC</strong>（Deviance Information Criterion）、<strong>WAIC</strong>（Widely Applicable IC）、<strong>LOO</strong>（留一交叉验证）。数值越小模型越好。ArviZ 的 <code class="inline">az.loo()</code>、<code class="inline">az.waic()</code> 直接出结果。报告时与"只用先验"的空模型对比，看模型是否真的提供了增量信息。</p>
+  </div>
+
+  <div class="section" id="s5">
+    <h2><span class="sec-num">05</span> 完整代码（Stata + Python，含收敛诊断）</h2>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · bayes_ols_probit.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* 贝叶斯 OLS + 贝叶斯 Probit：bayesmh 完整流程 + 收敛诊断
+*==============================================================*
+clear all
+set more off
+set seed 20260911
+
+* --- 1. 模拟数据：Y = 1 + 0.5*X + eps ---
+set obs 500
+gen X = rnormal()
+gen eps = rnormal()
+gen Y = 1 + 0.5*X + eps
+gen D = (1 + 0.5*X + eps > 0)        // Probit 的二值结果
+
+* --- 2. 贝叶斯 OLS：bayesmh ---
+* 语法：bayesmh 似然, likelihood(...) prior(...)
+* 无信息正态先验 beta ~ N(0, 100)；sigma ~ Half-Normal
+bayesmh Y, likelihood(regress({y} {beta:X _cons}, var({var}))) ///
+    prior({beta:X _cons}:, flat)            ///  无信息先验
+    prior({var}:, igamma(1e-3,1e-3))        ///  方差逆伽马
+    chains(4)                                ///  4 条链
+    montecarlo(saving("bayes_ols.ster", replace) seed(20260911)) ///
+    nchains(4) burnin(1000) mcmcsize(2000)
+* 收敛诊断：bayesstats 内置
+bayesstats summary {beta:X _cons}
+bayesstats ic                            // DIC / WAIC 模型比较
+* trace plot
+bayesgraph diagnostics {beta:X}
+
+* --- 3. 贝叶斯 Probit：Albert-Chib 数据增广 ---
+* bayesmh 自动处理 probit 似然
+bayesmh D, likelihood(probit({y} {b:X _cons})) ///
+    prior({b:X _cons}:, flat) ///
+    chains(4) burnin(1000) mcmcsize(2000)
+bayesstats summary {b:X}
+* 解释：后验 P(b_X > 0 | data) 直接可读，无需 p 值
+
+* --- 4. 收敛诊断（必做） ---
+* R-hat < 1.01；ESS > 400；trace plot 平稳
+* bayesstats ess  输出 effective sample size
+* bayesstats grubin  Gelman-Rubin R-hat
+bayesstats ess {beta:X _cons}
+bayesstats grubin, estimates("bayes_ols.ster")
+</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">python · bayes_probit.py（PyMC + ArviZ）</span><button class="copy-btn">复制</button></div>
+<pre><code># ==============================================================
+# 贝叶斯 Probit：PyMC + NUTS + ArviZ 收敛诊断
+# ==============================================================
+import numpy as np
+import pymc as pm
+import arviz as az
+import matplotlib.pyplot as plt
+
+rng = np.random.default_rng(20260911)
+
+# --- 1. 模拟数据：与 Stata 一致 ---
+n = 500
+X = rng.normal(size=n)
+eps = rng.normal(size=n)
+Y_latent = 1 + 0.5*X + eps
+D = (Y_latent > 0).astype(int)
+
+# --- 2. 定义贝叶斯 Probit 模型 ---
+with pm.Model() as probit_model:
+    # 先验：无信息正态
+    beta_0 = pm.Normal('beta_0', mu=0, sigma=10)
+    beta_X = pm.Normal('beta_X', mu=0, sigma=10)
+    # 潜变量与观测（PyMC 内置 Bernoulli + probit link）
+    p = pm.math.invprobit(beta_0 + beta_X*X)
+    Y_obs = pm.Bernoulli('Y_obs', p=p, observed=D)
+
+# --- 3. NUTS 采样：4 链，2000 迭代，1000 warmup ---
+with probit_model:
+    trace = pm.sample(draws=2000, tune=1000, chains=4,
+                      random_seed=20260911, target_accept=0.9)
+
+# --- 4. 收敛诊断 ---
+print(az.summary(trace, var_names=['beta_0', 'beta_X']))
+# 关键指标：
+#   r_hat < 1.01  ✓
+#   ess_bulk > 400 ✓
+#   ess_tail > 400 ✓
+az.plot_trace(trace, var_names=['beta_0', 'beta_X']); plt.tight_layout()
+az.plot_posterior(trace, var_names=['beta_X'], ref_val=0); plt.show()
+
+# --- 5. 后验推断：P(beta_X > 0 | data) ---
+post_beta_X = trace.posterior['beta_X'].values.flatten()
+p_positive = (post_beta_X > 0).mean()
+print(f"P(beta_X > 0 | data) = {p_positive:.3f}  (true = 0.5)")
+print(f"95% 可信区间: {np.percentile(post_beta_X, [2.5, 97.5])}")
+</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">python · bayes_hierarchical.py（层次模型 / 随机效应）</span><button class="copy-btn">复制</button></div>
+<pre><code># ==============================================================
+# 贝叶斯层次模型：组级随机效应
+# ==============================================================
+import numpy as np, pymc as pm, arviz as az
+rng = np.random.default_rng(20260911)
+
+J, n_j = 8, 50
+alpha_true = rng.normal(0, 1.5, J)                # 组级截距
+X = rng.normal(size=J*n_j)
+group = np.repeat(np.arange(J), n_j)
+Y = alpha_true[group] + 0.5*X + rng.normal(scale=0.5, size=J*n_j)
+
+with pm.Model() as hier:
+    mu_a   = pm.Normal('mu_a', 0, 5)
+    sigma_a = pm.HalfNormal('sigma_a', 1)
+    alpha_j = pm.Normal('alpha_j', mu=mu_a, sigma=sigma_a, shape=J)
+    beta   = pm.Normal('beta', 0, 5)
+    sigma  = pm.HalfNormal('sigma', 1)
+    pm.Normal('Y_obs', mu=alpha_j[group] + beta*X, sigma=sigma, observed=Y)
+
+with hier:
+    trace_h = pm.sample(draws=2000, tune=1000, chains=4,
+                        random_seed=20260911, target_accept=0.9)
+print(az.summary(trace_h, var_names=['mu_a','sigma_a','beta']))
+</code></pre>
+    </div>
+  </div>
+
+  <div class="section" id="s6">
+    <h2><span class="sec-num">06</span> 论文案例</h2>
+    <div class="paper-card">
+      <span class="paper-type en">English · 专著</span>
+      <div class="paper-title">Bayesian Data Analysis (BDA3)</div>
+      <div class="paper-meta">Andrew Gelman, John Carlin, Hal Stern, David Dunson, Aki Vehtari, Donald Rubin · CRC Press, 3rd ed. 2014</div>
+      <div class="paper-desc">贝叶斯统计的圣经。从"为什么贝叶斯"讲到层次模型、MCMC、模型比较。任何做贝叶斯实证的学者必读。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · 专著</span>
+      <div class="paper-title">Statistical Rethinking: A Bayesian Course with Examples in R and Stan</div>
+      <div class="paper-meta">Richard McElreath · CRC Press, 2nd ed. 2020</div>
+      <div class="paper-desc">最友好的贝叶斯入门书。用生动例子讲清先验、后验、多层模型、HMC。配套视频课免费。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · JASA</span>
+      <div class="paper-title">Bayesian Analysis of Binary and Polychotomous Response Data</div>
+      <div class="paper-meta">James H. Albert & Siddhartha Chib · JASA, 1993</div>
+      <div class="paper-desc">Probit 数据增广（data augmentation）的开山之作。把离散选择模型变成两步 Gibbs，是贝叶斯微观计量的基石。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · 专著</span>
+      <div class="paper-title">Causal Inference for Statistics, Social, and Biomedical Sciences</div>
+      <div class="paper-meta">Guido W. Imbens & Donald B. Rubin · Cambridge UP, 2015</div>
+      <div class="paper-desc">把潜在结果框架贝叶斯化。对处理效应、IV、RDD 给出后验推断视角，是因果推断与贝叶斯结合的标准引用。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 《金融研究》</span>
+      <div class="paper-title">基于混频向量自回归模型的宏观经济预测（MF-BVAR）</div>
+      <div class="paper-meta">《金融研究》系列论文</div>
+      <div class="paper-desc">用贝叶斯估计的混合频率 VAR（MF-BVAR）对中国 CPI、RPI、GDP 等核心宏观指标做预测，证明贝叶斯收缩先验能在多变量、不同频数据共存时提升预测精度。是中文顶刊里贝叶斯 VAR 的代表应用。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 贝叶斯结构估计</span>
+      <div class="paper-title">中国货币政策冲击预期效应的实证研究——基于贝叶斯推断的 BVAR、BSVAR、BVECM 与 BDSGE 模型</div>
+      <div class="paper-meta">厦门大学系列工作论文 / 中文核心期刊</div>
+      <div class="paper-desc">系统用贝叶斯推断下的 VAR、SVAR、VECM、DSGE 模型估计中国货币政策冲击的预期效应，结论包括：货币供应量传导滞后 6–15 个月、利率传导几乎无滞后。是中文宏观贝叶斯应用的范式。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · DSGE 贝叶斯</span>
+      <div class="paper-title">中国新房总量生产函数与土地供给政策变化效应 / 中国环境污染的波动性研究（基于 RBC 模型的贝叶斯估计）</div>
+      <div class="paper-meta">《财经研究》2020；《北京理工大学学报（社会科学版）》2021</div>
+      <div class="paper-desc">中文期刊里用贝叶斯估计 DSGE/RBC 结构参数的代表：先验均值锚定校准值，用季度数据估计政策与污染波动参数，报告后验均值与 90% 区间。与本知识库 <a href="../dsge/06-bayesian-estimation.html">DSGE 贝叶斯估计页</a> 互链。</div>
+    </div>
+  </div>
+
+  <div class="section" id="s7">
+    <h2><span class="sec-num">07</span> 常见错误</h2>
+    <div class="callout danger">
+      <div class="callout-title">错误 1：先验敏感不报告</div>
+      <p>贝叶斯结论对先验可能高度敏感。必须报告"无信息先验 vs 有信息先验"两组后验；如果两组后验天差地别，说明数据信息量不足，结论不可信。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 2：MCMC 不收敛就报结果</div>
+      <p>R-hat &gt; 1.01、trace plot 有趋势、ESS &lt; 400，都说明采样没收敛。此时后验均值/区间毫无意义。必须延长 warmup、增加链长、或换 NUTS。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 3：把可信区间当置信区间解释</div>
+      <p>95% 可信区间的意思是"参数落在这个区间的后验概率是 95%"——这是频率派置信区间给不了的解释。但反过来，也不要把它等同于"参数以 95% 概率在区间内"的频率派语言——两者的概率对象不同。写论文时用"后验概率"语言。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 4：多重比较不校正</div>
+      <p>贝叶斯做几百个后验检验，"P(θ_j &gt; 0 | data) &gt; 0.95"的个数会膨胀。应使用层次收缩先验（partial pooling）或明确报告探索性分析。</p>
+    </div>
+    <div class="callout info">
+      <div class="callout-title">错误 5：把先验均值当结论</div>
+      <p>如果后验均值与先验均值几乎相同，说明数据没有更新信念——结论不是来自数据，是来自你自己的先验。要画 prior vs posterior 对比图。</p>
+    </div>
+    <div class="callout info">
+      <div class="callout-title">错误 6：忽略 warmup 样本</div>
+      <p>NUTS 前 1000 步是自适应调参，不是平稳分布。报告时只用 tune 之后的样本；trace plot 也要看完整链，不要截短。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s8">
+    <h2><span class="sec-num">08</span> 交叉链接</h2>
+    <ul>
+      <li><strong>与 <a href="../dsge/06-bayesian-estimation.html">DSGE 贝叶斯估计（05）</a></strong>：DSGE 是贝叶斯推断在宏观结构模型中的主战场。本页讲一般原理，DSGE 页讲具体模型实现（Dynare 的先验、MCMC、IRF）。</li>
+      <li><strong>与 <a href="11-significance-practice.html">11 显著性诊断实务</a></strong>：贝叶斯后验概率 $P(\theta&gt;0|Y)$ 是 p 值的贝叶斯替代。读那一页的 p 值批判部分，再回到本页看贝叶斯如何解决同一问题。</li>
+      <li><strong>与 <a href="04-baseline-regression.html">04 基准回归</a>、<a href="05-endogeneity-iv.html">05 IV</a></strong>：贝叶斯 OLS 在无信息先验下退化为频率 OLS，是贝叶斯与频率派的"桥梁"。</li>
+      <li><strong>与 <a href="15-potential-outcomes-dag.html">15 潜在结果与因果图</a></strong>：Imbens–Rubin (2015) 把因果推断贝叶斯化，与潜在结果框架天然衔接。</li>
+    </ul>
+    <p>实务建议：如果你的研究<strong>样本量超过 1000、模型是标准 OLS/IV/DID</strong>，不必上贝叶斯——频率派方法已经足够，贝叶斯只会增加审稿人对"先验选择"的质询。贝叶斯真正适合三类场景：① <strong>小样本结构模型</strong>（DSGE、RBC 用 100–200 个季度数据估 30+ 参数）；② <strong>层次/多层数据</strong>（跨学校、跨地区随机效应，频率派 REML 不报告分布）；③ <strong>需要完整不确定性表达的政策分析</strong>（后验分布直接喂给福利计算）。中文顶刊里，贝叶斯推断目前主要出现在宏观（BVAR、DSGE）与金融（随机波动率、信用风险）领域；微观实证论文用得少。如果你是微观实证方向，把本页当作"理解 BVAR/DSGE 论文"的工具即可。</p>
+  </div>
+
+  <div class="page-nav">
+    <a href="29-nonparametric-semiparametric.html" class="prev">
+      <div class="nav-label">← 上一节</div>
+      <div class="nav-title">非参/半参方法</div>
+    </a>
+    <a href="index.html" class="next">
+      <div class="nav-label">回到实证总览 →</div>
+      <div class="nav-title">实证总览与路线</div>
+    </a>
+  </div>
+
+</div></div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show')}
+document.querySelectorAll('.copy-btn').forEach(b=>b.onclick=()=>{const c=b.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(c).then(()=>{b.textContent='已复制 ✓';setTimeout(()=>b.textContent='复制',1500)})});
+document.addEventListener('DOMContentLoaded',()=>{if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})}});
+</script>
+</body>
+</html>

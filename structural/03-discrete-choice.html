@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散选择模型 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item active" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main"><div class="content-wrap">
+  <div class="breadcrumb">
+    <a href="../index.html">首页</a><span class="sep">/</span>
+    <a href="index.html">结构估计 Structural Estimation</a><span class="sep">/</span>
+    <span>离散选择模型</span>
+  </div>
+
+  <div class="page-header">
+    <span class="tag">04 · DISCRETE CHOICE / RUM</span>
+    <h1>离散选择模型：从 RUM 到 Nested Logit</h1>
+    <p class="desc">随机效用模型（random utility model）框架、Logit 的 IIA 性质、Probit 与 Multinomial Logit、放松 IIA 的 Nested Logit（inclusive value），以及 MLE 估计、边际效应计算与完整代码。</p>
+  </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:10px 20px;border-radius:8px;margin:0 0 24px;font-size:14px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:18px;">&#128221;</span>
+      <span><strong>本模型共 14 个方程</strong>（含效用设定、选择概率解析推导、IIA、似然、得分/Hessian、边际效应与识别条件）· 文末附「方程总清单 Equation Summary」</span>
+    </div>
+
+  
+
+    <!-- ========== 前置条件与学习依赖 ========== -->
+    <div class="precond-box" style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>随机效用模型（RUM）框架；Type-I 极值分布（Gumbel）的 CDF/PMF 及其差性质；logit 选择概率的解析推导；IIA 性质的形式化。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>微观经济学：消费者选择理论、效用最大化、离散选项（买/不买、上班方式）的建模直觉。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件/计算前置：</span>Stata（<code class="inline">logit</code>、<code class="inline">asclogit</code>）或 Python（<code class="inline">statsmodels.discrete</code>）。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置页面：</span>先学 <a href="01-mle.html">01 极大似然估计 MLE</a>，离散选择本质上是 MLE 的一类应用。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;">入门</span></div>
+      </div>
+    </div>
+
+<div class="toc-box">
+    <div class="toc-title">本页目录 / CONTENTS</div>
+    <ol>
+      <li><a href="#s1">随机效用模型 RUM 框架</a></li>
+      <li><a href="#s2">Logit 推导与 IIA 性质</a></li>
+      <li><a href="#s3">Probit 与 Multinomial Logit</a></li>
+      <li><a href="#s4">Nested Logit：放松 IIA</a></li>
+      <li><a href="#s5">MLE 估计与边际效应</a></li>
+      <li><a href="#s6">代码：MNL / Nested Logit 完整实现</a></li>
+      <li><a href="#s7">论文案例</a></li>
+      <li><a href="#s8">常见错误与进阶资料</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="s1">
+    <h2><span class="sec-num">01</span> 随机效用模型 RUM 框架</h2>
+    <p>离散选择模型研究的是：个体 $i$ 从 $J$ 个互斥选项 $j=1,\dots,J$ 中选一个。McFadden 的随机效用模型（random utility model, RUM）假设每个选项给个体带来一个<strong>效用</strong>，个体选效用最大的那个：</p>
+    <div class="formula-block">
+      <div class="formula-label">随机效用 random utility</div>
+      $$U_{ij}=V_{ij}+\varepsilon_{ij}=X_{ij}'\beta+\varepsilon_{ij}$$
+    </div>
+    <p>其中 $V_{ij}=X_{ij}'\beta$ 是<strong>研究者可观测</strong>的"代表性效用"（systematic utility），$X_{ij}$ 是选项 $j$ 对个体 $i$ 的属性（如价格、时间、品牌）；$\varepsilon_{ij}$ 是<strong>研究者观测不到</strong>的偏好扰动。个体选 $j$ 当且仅当 $U_{ij}\ge U_{ik}\;\forall k$。</p>
+    <p>研究者看不到 $\varepsilon$，只能预测"<strong>个体 $i$ 选 $j$ 的概率</strong>"：</p>
+    <div class="formula-block">
+      <div class="formula-label">选择概率（由 $\varepsilon$ 分布导出）</div>
+      $$P_{ij}=\Pr\big(U_{ij}\ge U_{ik}\;\forall k\big)=\int_{-\infty}^{V_{ij}}\prod_{k\ne j}F_{\varepsilon_k}(V_{ij}-V_{ik}+\varepsilon)f_{\varepsilon}(\varepsilon)d\varepsilon$$
+    </div>
+    <p>这是一个积分：只要对 $\varepsilon=(\varepsilon_{i1},\dots,\varepsilon_{iJ})$ 的联合分布做假设，就能"算出" $P_{ij}$。<strong>不同的分布假设 → 不同的模型</strong>：$\varepsilon_{ij}$ i.i.d. 极值型（Gumbel）→ Logit；$\varepsilon_{ij}$ 多元正态 → Probit；同类选项误差相关 → Nested Logit。</p>
+  </div>
+
+  <div class="section" id="s2">
+    <h2><span class="sec-num">02</span> Logit 推导与 IIA 性质</h2>
+    <p>假设每个 $\varepsilon_{ij}$ 独立同分布服从<strong>标准 Gumbel（极值 I 型）</strong>分布，累积分布 $F(\varepsilon)=e^{-e^{-\varepsilon}}$。McFadden 证明：在这个假设下，最大效用差的积分可以<strong>解析地</strong>算出来，得到 Logit 选择概率：</p>
+    <div class="formula-block">
+      <div class="formula-label">Logit 选择概率 conditional logit</div>
+      $$P_{ij}=\frac{\exp(V_{ij})}{\sum_{k=1}^{J}\exp(V_{ik})}=\frac{e^{X_{ij}'\beta}}{\sum_{k=1}^{J}e^{X_{ik}'\beta}}$$
+    </div>
+    <p>推导关键一步：Gumbel 分布的"可加性"——若 $\varepsilon_{ij}$ i.i.d. Gumbel，则 $\max_k(V_{ik}+\varepsilon_{ik})$ 减去 $\varepsilon_{ij}$ 的累积分布恰好是标准 Logistic。这把本来高维的积分化简为指数比。</p>
+
+    <h3>2.1 Logit 选择概率的逐步推导（不跳步）</h3>
+    <p><strong>设定：</strong>$J$ 个选项，$\varepsilon_{ij}\overset{iid}{\sim}\text{Gumbel}(0,1)$，CDF 与密度分别为 $F_\varepsilon(\varepsilon)=e^{-e^{-\varepsilon}}$、$f_\varepsilon(\varepsilon)=e^{-\varepsilon}e^{-e^{-\varepsilon}}$。代表性效用 $V_{ij}=X_{ij}'\beta$。</p>
+    <p><strong>第 1 步（写出选 $j$ 的事件）：</strong>$i$ 选 $j$ 当且仅当 $U_{ij}\ge U_{ik}\;\forall k\ne j$，即 $\varepsilon_{ij}\ge (V_{ik}-V_{ij})+\varepsilon_{ik}$ 对所有 $k\ne j$。</p>
+    <p><strong>第 2 步（对 $\varepsilon_{ij}$ 积分）：</strong>把 $P_{ij}$ 写成对 $\varepsilon_{ij}$ 取值 $e$ 的积分，条件化后其余 $\varepsilon_{ik}$ 须落在 $(-\infty,\,e+V_{ij}-V_{ik}]$：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq.03-11 — 选 $j$ 的概率（条件积分形式）</div>
+      $$P_{ij}=\int_{-\infty}^{\infty} f_\varepsilon(e)\prod_{k\ne j}F_\varepsilon\!\big(e+V_{ij}-V_{ik}\big)\,de$$
+      <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$f_\varepsilon(\cdot)$ 为 Gumbel 密度；$F_\varepsilon(\cdot)$ 为 Gumbel CDF。这一步把高维联合积分"降维"为对单个 $\varepsilon_{ij}$ 的一维积分——条件化后各 $\varepsilon_{ik}$ 相互独立，故乘积可拆。</p>
+    </div>
+    <p><strong>第 3 步（代入 Gumbel CDF）：</strong>令 $y=e^{-(e+V_{ij})}$，则 $e=-V_{ij}-\ln y$，$de=-dy/y$。代入 $F_\varepsilon(e+V_{ij}-V_{ik})=\exp[-e^{-(e+V_{ij}-V_{ik})}]=\exp[-e^{V_{ik}-V_{ij}}\,y]$，连乘得 $\prod_{k\ne j}e^{-e^{V_{ik}-V_{ij}}y}=\exp\!\big[-y\sum_{k\ne j}e^{V_{ik}-V_{ij}}\big]$。</p>
+    <p><strong>第 4 步（补入 $k=j$ 项）：</strong>注意 $e^{V_{j}-V_{j}}=1$，故 $\sum_{k\ne j}e^{V_{ik}-V_{ij}}+1=\sum_{k=1}^{J}e^{V_{ik}-V_{ij}}$。积分化为标准 Gamma 积分：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq.03-12 — Gamma 积分化简（关键中间步，禁止省略）</div>
+      $$P_{ij}=\int_{0}^{\infty}\exp\!\Big[-y\sum_{k=1}^{J}e^{V_{ik}-V_{ij}}\Big]\,dy=\frac{1}{\sum_{k=1}^{J}e^{V_{ik}-V_{ij}}}=\frac{e^{V_{ij}}}{\sum_{k=1}^{J}e^{V_{ik}}}$$
+      <p style="margin-top:8px;font-size:13px;color:var(--text-light);">用到 $\int_0^\infty e^{-ay}dy=1/a$（$a>0$）。分子分母同乘 $e^{V_{ij}}$ 即得 Logit 比。<strong>经济直觉</strong>：Gumbel 的"独立最大值仍为 Gumbel"性质使高维积分可解析，这是 Logit 可估计的数学根源。</p>
+    </div>
+
+    <h3>IIA 性质（Independence of Irrelevant Alternatives）</h3>
+    <p>把任意两个选项 $j$ 和 $l$ 的概率比取出来：</p>
+    <div class="formula-block">
+      <div class="formula-label">IIA：相对概率与其他选项无关</div>
+      $$\frac{P_{ij}}{P_{il}}=\frac{\exp(V_{ij})}{\exp(V_{il})}$$
+    </div>
+    <p>比值<strong>只依赖 $j$ 和 $l$ 的代表性效用</strong>，跟第三个选项 $k$ 是否存在、属性如何都无关。这就是 IIA（无关选项独立性）。它是 Logit 最有用、也最常被诟病的性质。</p>
+    <div class="callout danger">
+      <div class="callout-title">红巴士 / 蓝巴士悖论（Red Bus / Blue Bus）</div>
+      <p>经典反例：人在"开车"和"坐红巴士"之间各 50% 概率。IIA 说加入一个"蓝巴士"（与红巴士几乎完全替代）后，开车:红巴士:蓝巴士应保持 1:1 的相对比例——变成 1/3, 1/3, 1/3。但常识是：蓝巴士只是分走红巴士的份额，开车概率应仍为 50%。IIA 在"近似替代品"之间失效，这正是 Nested Logit 要修复的。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s3">
+    <h2><span class="sec-num">03</span> Probit 与 Multinomial Logit</h2>
+    <h3>二元 Probit</h3>
+    <p>把 $\varepsilon_{ij}$ 改成标准正态，潜变量设定为 $y_i^*=X_i'\beta+u_i,\;u_i\sim N(0,1)$，观测 $y_i=1\{y_i^*>0\}$，则：</p>
+    <div class="formula-block">
+      <div class="formula-label">Probit 选择概率</div>
+      $$P(y_i=1\mid X_i)=\Phi(X_i'\beta)$$
+    </div>
+    <p>Probit 没有封闭形式的"Logit 式"闭式解，但可以数值积分/用 $\Phi(\cdot)$ 直接算，是 01-mle 页的标准应用。</p>
+    <h3>Multinomial Logit（MNL）</h3>
+    <p>当选项之间的属性<strong>因人而异、随选项变</strong>（alternative-specific），就用上面的 conditional/multinomial logit：$P_{ij}=e^{X_{ij}'\beta}/\sum_k e^{X_{ik}'\beta}$。若协变量只随人变（不随选项变），则需引入 alternative-specific 常数 $\alpha_j$：</p>
+    <div class="formula-block">
+      <div class="formula-label">MNL（含 alternative-specific 常数）</div>
+      $$P_{ij}=\frac{\exp(\alpha_j+Z_i'\beta_j)}{\sum_k\exp(\alpha_k+Z_i'\beta_k)},\qquad \alpha_1\equiv 0\text{（基准选项）}$$
+    </div>
+    <p>注意 $\beta_j$ 现在随选项变，这正是 MNL 与 conditional logit 的区别：人层变量对"选哪一个"的影响可以不同。</p>
+  </div>
+
+  <div class="section" id="s4">
+    <h2><span class="sec-num">04</span> Nested Logit：放松 IIA</h2>
+    <p>Nested Logit 把选项按"相似性"分成若干巢（nest）$B_m$，让<strong>同一巢内</strong>选项的误差相关、<strong>跨巢</strong>误差仍独立。它通过一个"巢内相关参数" $\lambda_m\in(0,1]$ 放松 IIA。</p>
+    <p>代表性效用仍写为 $V_{ij}=X_{ij}'\beta$。对巢 $B_m$，定义<strong>包含值（inclusive value，又叫 log-sum）</strong>：</p>
+    <div class="formula-block">
+      <div class="formula-label">包含值 inclusive value / log-sum</div>
+      $$I_{im}=\lambda_m\ln\!\Big(\sum_{j\in B_m}\exp(V_{ij}/\lambda_m)\Big)$$
+    </div>
+    <p>选择概率分解为"选巢 $m$ 的概率"乘以"巢 $m$ 内选 $j$ 的条件概率"：</p>
+    <div class="formula-block">
+      <div class="formula-label">Nested Logit 选择概率</div>
+      $$P_{ij}=\underbrace{\frac{\exp(I_{im})}{\sum_l \exp(I_{il})}}_{\text{选巢 }m}\;\underbrace{\frac{\exp(V_{ij}/\lambda_m)}{\sum_{k\in B_m}\exp(V_{ik}/\lambda_m)}}_{\text{巢内选 }j}$$
+    </div>
+    <p>当所有 $\lambda_m=1$，Nested Logit 退化成普通 MNL（IIA 恢复）；$\lambda_m<1$ 表示巢内选项误差正相关（"红巴士/蓝巴士"被放进同一巢，IIA 在巢内被放松）。</p>
+    <div class="callout tip">
+      <div class="callout-title">怎么读 inclusive value</div>
+      <p>$I_{im}$ 可理解为"巢 $m$ 整体的'吸引力'对数总和"——巢里选项越多、效用越高，$I_{im}$ 越大，选这个巢的概率就越大。估计出 $\hat\lambda_m$ 后，若它显著小于 1，说明"巢内误差相关"被数据支持，MNL 是错的。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s5">
+    <h2><span class="sec-num">05</span> MLE 估计与边际效应</h2>
+
+    <div class="callout info">
+      <div class="callout-title">💡 基础知识库：本节用 MLE 估计离散选择</div>
+      <p>离散选择模型的核心估计量就是极大似然。不熟悉似然构造、得分函数、三种标准误与边际效应？先学 <a href="01-mle.html">基础知识库·MLE →</a></p>
+    </div>
+
+    <p>给定选择数据 $\{i,j_i^*\}$（$j_i^*$ 为个体 $i$ 实际选的选项），似然就是每个观测概率的乘积：</p>
+    <div class="formula-block">
+      <div class="formula-label">离散选择对数似然</div>
+      $$\ell(\beta)=\sum_{i=1}^{n}\log P_{i,j_i^*}(\beta)$$
+    </div>
+    <p>对 MNL，得分函数可由对数似然逐一对 $\beta$ 求导写出。定义指示变量 $d_{ij}=\mathbf{1}\{i\text{ 实际选 }j\}$（$\sum_j d_{ij}=1$），则对数似然 $\ell(\beta)=\sum_i\sum_j d_{ij}\log P_{ij}$。</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq.03-13 — MNL 得分函数（score vector）</div>
+      $$s(\beta)=\frac{\partial\ell}{\partial\beta}=\sum_{i=1}^{n}\sum_{j=1}^{J}(d_{ij}-P_{ij})\,X_{ij}=\sum_{i=1}^{n}\Big(X_{i,j_i^*}-\sum_{j=1}^{J}P_{ij}X_{ij}\Big)$$
+      <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$d_{ij}$ 为选择指示；$P_{ij}$ 为模型预测概率；$X_{ij}$ 为选项属性矩阵。一阶条件 $s(\hat\beta)=0$ 是 $J$ 个一阶条件。<strong>设定理由</strong>：MLE 的渐近性质由得分决定，$E[s(\beta_0)]=0$ 是正交性条件。</p>
+    </div>
+    <div class="formula-block">
+      <div class="formula-label">Eq.03-14 — Hessian 与 BHHH 信息矩阵</div>
+      $$H(\beta)=\frac{\partial^2\ell}{\partial\beta\partial\beta'}=-\sum_i\sum_j P_{ij}X_{ij}X_{ij}'\;+\;\Big(\sum_j P_{ij}X_{ij}\Big)\Big(\sum_j P_{ij}X_{ij}\Big)'$$
+      <p style="margin-top:8px;font-size:13px;color:var(--text-light);">BHHH 近似用外积得分 $I=\sum_i s_i s_i'$ 替代 Hessian（信息矩阵等式 $-E[H]=E[ss']$），数值更稳。渐近分布：$\sqrt{n}(\hat\beta-\beta_0)\xrightarrow{d}N(0,I(\beta_0)^{-1})$，标准误由 $[-H(\hat\beta)]^{-1}$ 对角元平方根给出。</p>
+    </div>
+    <p>优化用 Newton/BHHH/L-BFGS 即可，海森负定（对数似然全局凹）保证唯一极大。</p>
+    <h3>边际效应（marginal effect）</h3>
+    <p>系数 $\beta$ 不是"概率的变化"，要转换成边际效应。对连续变量 $x_{ij}^{(r)}$：</p>
+    <div class="formula-block">
+      <div class="formula-label">MNL 边际效应</div>
+      $$\frac{\partial P_{ij}}{\partial x_{ij}^{(r)}}=P_{ij}\big(\beta_r-\sum_k P_{ik}\beta_r\big)=P_{ij}(1-P_{ij})\beta_r$$
+    </div>
+    <p>实务中通常报告<strong>在样本平均（或代表性个体）处</strong>的边际效应，而非 $\beta$ 本身，因为 $\beta$ 的符号虽直观，量级却难解释。</p>
+  </div>
+
+  <div class="section" id="s6">
+    <h2><span class="sec-num">06</span> 代码：MNL / Nested Logit 完整实现</h2>
+    <p>下面用模拟数据演示交通方式选择：个体在"汽车 / 巴士 / 轻轨"三种方式中选一种。属性含"成本"与"时间"，二者系数相同（alternative-invariant），故用 conditional logit；再演示如何估计 $\lambda$。</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div>
+<pre>
+import numpy as np
+from scipy.optimize import minimize
+from scipy.stats import norm
+
+# ---------- 1. 造模拟数据：n=1000 个出行者, J=3 种交通方式 ----------
+np.random.seed(42)
+n, J = 1000, 3
+beta_true = np.array([-0.05, -0.10])     # [成本系数, 时间系数]（应为负）
+
+# X[i, j, 0]=成本, X[i, j, 1]=时间
+cost = np.random.uniform(5, 30, size=(n, J))
+time = np.random.uniform(10, 60, size=(n, J))
+X = np.stack([cost, time], axis=2)        # shape (n, J, 2)
+
+# 真实代表性效用 V[i,j] = X[i,j] @ beta + Gumbel 扰动
+V = X @ beta_true
+eps = np.random.gumbel(size=(n, J))       # i.i.d. Gumbel -> MNL
+U = V + eps
+choice = U.argmax(axis=1)                 # 实际选择
+
+# ---------- 2. MNL 对数似然 ----------
+def mnl_probs(beta, X):
+    V = X @ beta                          # (n, J)
+    V = V - V.max(axis=1, keepdims=True)  # 数值稳定
+    ev = np.exp(V)
+    return ev / ev.sum(axis=1, keepdims=True)
+
+def neg_ll_mnl(beta, X, choice):
+    P = mnl_probs(beta, X)
+    p_choice = P[np.arange(len(choice)), choice]
+    return -np.sum(np.log(np.clip(p_choice, 1e-12, 1.0)))
+
+# ---------- 3. MLE 估计 ----------
+res = minimize(neg_ll_mnl, np.zeros(2), args=(X, choice),
+               method='BFGS', options={'disp': True})
+beta_hat = res.x
+print("MNL beta_hat :", np.round(beta_hat, 4))
+print("MNL beta_true:", beta_true)
+
+# ---------- 4. 边际效应（样本平均处） ----------
+P = mnl_probs(beta_hat, X)
+# dP_j/dx_r = P_j(1-P_j) beta_r  （对 alternative-specific x）
+me_cost = (P * (1 - P) * beta_hat[0]).mean(axis=0)
+me_time = (P * (1 - P) * beta_hat[1]).mean(axis=0)
+print("平均边际效应（成本，三种方式）:", np.round(me_cost, 5))
+print("平均边际效应（时间，三种方式）:", np.round(me_time, 5))
+
+# ---------- 5. Nested Logit 估计（演示：巴士+轻轨同巢，汽车独立巢） ----------
+# 巢结构：{巴士=1, 轻轨=2} 在同一巢; {汽车=0} 独立巢
+nest_of = {0: 0, 1: 1, 2: 1}            # 选项 -> 巢编号
+# 待估参数：beta(2) + lambda_1(1), lambda_0 固定=1
+def neg_ll_nested(theta, X, choice):
+    b = theta[:2]
+    lam1 = np.clip(theta[2], 1e-3, 1.0)
+    lam = {0: 1.0, 1: lam1}
+    V = X @ b                              # (n, J)
+    # 巢内条件概率
+    P_in = np.zeros((n, J))
+    I = {m: np.zeros(n) for m in [0, 1]}
+    for m in [0, 1]:
+        members = [j for j in range(J) if nest_of[j] == m]
+        Vm = V[:, members] / lam[m]
+        Vm = Vm - Vm.max(axis=1, keepdims=True)
+        evm = np.exp(Vm)
+        P_in[:, members] = evm / evm.sum(axis=1, keepdims=True)
+        I[m] = lam[m] * np.log(evm.sum(axis=1))
+    # 选巢概率
+    Iarr = np.column_stack([I[0], I[1]])
+    Iarr = Iarr - Iarr.max(axis=1, keepdims=True)
+    P_nest = np.exp(Iarr) / np.exp(Iarr).sum(axis=1, keepdims=True)
+    # 边缘概率 P_ij = P_nest(i,m)*P_in(i,j)
+    P = np.zeros((n, J))
+    for m in [0, 1]:
+        members = [j for j in range(J) if nest_of[j] == m]
+        P[:, members] = P_in[:, members] * P_nest[:, m:m+1]
+    p_choice = P[np.arange(n), choice]
+    return -np.sum(np.log(np.clip(p_choice, 1e-12, 1.0)))
+
+resN = minimize(neg_ll_nested, np.append(beta_hat, 0.7), args=(X, choice),
+                method='BFGS', options={'disp': True})
+print("Nested beta:", np.round(resN.x[:2], 4),
+      " lambda_hat =", round(resN.x[2], 3))
+</pre>
+    </div>
+    <div class="callout tip">
+      <div class="callout-title">预期输出</div>
+      <p><code class="inline">MNL beta_hat</code> 应接近 $[-0.05,-0.10]$，成本/时间系数显著为负。Nested Logit 的 $\hat\lambda_1$ 接近 1（因为数据是用 MNL 生成的），说明没有强证据拒绝 IIA；若用真实数据 $\hat\lambda$ 显著小于 1，则 Nested Logit 优于 MNL。</p>
+    </div>
+  </div>
+
+  <!-- ========== 数据来源对照表 ========== -->
+  <div class="section" id="s-dat">
+    <h2><span class="sec-num">06+</span> 数据来源对照表（离散选择常用数据集）</h2>
+    <p>离散选择模型需要"个体 i 在备选 j 之间做选择"的数据——要么是<strong>个体级 micro 数据</strong>（每人一行，记录选了哪个），要么是<strong>市场级 aggregate 份额</strong>（每市场×产品一行，记录份额）。下表把英文经典与中国常用数据集对照列出，写作时直接取用：</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>数据集</th><th>国家/地区</th><th>典型因变量（选择）</th><th>典型自变量</th><th>获取</th></tr></thead>
+        <tbody>
+          <tr><td><strong>NLS / NLSY</strong></td><td>美国</td><td>工会参与、职业、教育、就业</td><td>工资、年龄、教育、经验</td><td>NLSY79 公网免费下载</td></tr>
+          <tr><td><strong>PSID</strong></td><td>美国</td><td>劳动参与、迁移、婚姻</td><td>家庭收入、健康、孩子数</td><td>PSID 官网注册免费</td></tr>
+          <tr><td><strong>CPS</strong></td><td>美国</td><td>行业/职业选择、就业状态</td><td>工资、教育、人口统计</td><td>FRED/IPUMS CPS 免费</td></tr>
+          <tr><td><strong>SCF</strong></td><td>美国</td><td>风险资产持有、信用卡选择</td><td>财富、收入、风险态度</td><td>美联储 SCF 免费</td></tr>
+          <tr><td><strong>CHIP</strong></td><td>中国</td><td>就业选择、行业进入</td><td>工资、教育、地区、户口</td><td>中国家庭收入调查（北大方毅夫团队）</td></tr>
+          <tr><td><strong>CHFS</strong></td><td>中国</td><td>股市参与、风险资产选择</td><td>家庭财富、收入、金融素养</td><td>中国家庭金融调查（西南财大）</td></tr>
+          <tr><td><strong>CFPS</strong></td><td>中国</td><td>教育、职业、养老选择</td><td>家庭背景、收入、健康</td><td>中国家庭追踪调查（北大数据中心）</td></tr>
+          <tr><td><strong>CHARLS</strong></td><td>中国</td><td>退休、健康险选择</td><td>年龄、财富、健康、养老金</td><td>中国健康与养老追踪调查（北大）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout info">
+      <div class="callout-title">怎么选数据</div>
+      <p>做"二值选择"用 NLS/PSID/CHFS；做"多项选择"（职业、交通方式、品牌）用 NLSY/CFPS；做"有序选择"（教育档次、健康自评）用 CHARLS/CFPS。美国数据用 NLSY/CPS 起步最容易复现；中国选题用 CFPS/CHFS 最对口。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s7">
+    <h2><span class="sec-num">07</span> 论文案例</h2>
+    <div class="paper-card">
+      <span class="paper-type en">英文 · 奠基（诺奖工作）</span>
+      <div class="paper-title">Conditional Logit Analysis of Qualitative Choice Behavior</div>
+      <div class="paper-meta">D. McFadden, in P. Zarembka (ed.), <em>Frontiers in Econometrics</em>, Academic Press, 1974: 105–142.</div>
+      <div class="paper-desc">从 RUM 出发首次推导出 conditional logit，并用旧金山湾区交通方式选择数据估计，是离散选择模型的开山之作，McFadden 因此获 2000 年诺贝尔经济学奖。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">英文 · 教材</span>
+      <div class="paper-title">Discrete Choice Methods with Simulation (2nd ed.)</div>
+      <div class="paper-meta">K. Train, Cambridge University Press, 2009.</div>
+      <div class="paper-desc">Logit/Probit/Nested/Mixed Logit 一章一个例子，从 RUM 推导到模拟估计，是离散选择领域最实用的教材，配套 Statalist 代码可复现。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 结构/半结构估计应用</span>
+      <div class="paper-title">中国工业企业全要素生产率估计：1999—2007</div>
+      <div class="paper-meta">鲁晓东、连玉君，《经济学（季刊）》，2012，11(2): 541–558.</div>
+      <div class="paper-desc">其方法论部分对比了 OLS、FE、OP、LP，本质上是"结构参数 + MLE/矩识别"在中国企业数据上的落地，与本页离散选择的 MLE 框架同源。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 结构估计应用</span>
+      <div class="paper-title">中国制造业企业全要素生产率研究</div>
+      <div class="paper-meta">杨汝岱，《经济研究》，2015，50(2): 61–74.</div>
+      <div class="paper-desc">系统使用 OP/LP/ACF 等结构估计方法，是《经济研究》中结构估计范式的代表；其估计与反事实思路，可与本页离散选择模型的"参数→概率→政策反事实"链条对照阅读。</div>
+    </div>
+  </div>
+
+  <div class="section" id="s8">
+    <h2><span class="sec-num">08</span> 常见错误与进阶资料</h2>
+    <div class="callout danger">
+      <div class="callout-title">错误 1：忽略 IIA，直接用 MNL 做政策模拟</div>
+      <p>加入/移除选项时 MNL 会按 IIA 重新分配份额，常给出荒谬的替代矩阵。做政策预测前必须做 IIA 检验（如 Small-Hsman 检验），必要时换 Nested/Mixed Logit。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 2：直接报告 $\beta$ 当"边际效应"</div>
+      <p>MNL 的 $\beta$ 是"代表性效用"的系数，不是概率变化。报告样本平均边际效应 $\partial P_j/\partial x$，或在代表性个体处计算。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 3：$\lambda>1$ 或 $\lambda<0$</div>
+      <p>Nested Logit 的 $\lambda_m$ 必须在 $(0,1]$ 内才有意义；若估计出 $\hat\lambda>1$，说明巢结构设定错了，重新分组或换 Mixed Logit。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 4：选项数太多还用普通 MNL</div>
+      <p>当 $J$ 很大（如选学校、选医院），MNL 的 IIA 几乎必然被违反。用 Mixed Logit（随机参数 logit）或 Nested Logit，并在估计中加入面板固定效应。</p>
+    </div>
+    <h3>进阶资料</h3>
+    <ul>
+      <li>McFadden &amp; Train (2000), "Mixed MNL Models for Discrete Response", <em>JBES</em> —— Mixed Logit 把 IIA 完全放松，是现代 IO/营销的主力模型。</li>
+      <li>Ben-Akiva &amp; Lerman, <em>Discrete Choice Analysis</em>, 1985 —— Nested Logit 与包容值的经典教材。</li>
+      <li>Berry, Levinsohn &amp; Pakes (1995), "Automobile Prices in Market Equilibrium", <em>Econometrica</em> —— 把离散选择推广到产品市场数据，是下一页 BLP 的内容。</li>
+      <li>软件：Python <code class="inline">logit</code>/<code class="inline">xlogit</code>；R <code class="inline">mlogit</code>；Stata <code class="inline">clogit/nlogit</code>。</li>
+    </ul>
+  </div>
+
+  <!-- ========== 方程总清单 ========== -->
+  <div class="section" id="eq-summary">
+    <h2>方程总清单 / Equation Summary</h2>
+    <p>本页全部方程按出现顺序汇总如下，共 <strong>14 个</strong>。每个方程均可在正文中找到对应的变量定义、设定理由与经济直觉。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>编号</th><th>方程名称</th><th>核心公式</th><th>所在节</th></tr></thead>
+        <tbody>
+          <tr><td>Eq.03-01</td><td>随机效用设定</td><td>$U_{ij}=X_{ij}'\beta+\varepsilon_{ij}$</td><td>01</td></tr>
+          <tr><td>Eq.03-02</td><td>选择概率（一般积分）</td><td>$P_{ij}=\int \prod_{k\ne j}F_{\varepsilon_k}(\cdot)f_\varepsilon(\varepsilon)d\varepsilon$</td><td>01</td></tr>
+          <tr><td>Eq.03-03</td><td>Logit 选择概率</td><td>$P_{ij}=e^{V_{ij}}/\sum_k e^{V_{ik}}$</td><td>02</td></tr>
+          <tr><td>Eq.03-04</td><td>IIA 相对概率</td><td>$P_{ij}/P_{il}=e^{V_{ij}}/e^{V_{il}}$</td><td>02</td></tr>
+          <tr><td>Eq.03-05</td><td>选 $j$ 概率（条件积分）</td><td>$P_{ij}=\int f_\varepsilon(e)\prod_{k\ne j}F_\varepsilon(e+V_{ij}-V_{ik})de$</td><td>02.1（补全）</td></tr>
+          <tr><td>Eq.03-06</td><td>Gamma 积分化简</td><td>$P_{ij}=1/\sum_k e^{V_{ik}-V_{ij}}$</td><td>02.1（补全）</td></tr>
+          <tr><td>Eq.03-07</td><td>二元 Probit 概率</td><td>$P(y_i=1\mid X_i)=\Phi(X_i'\beta)$</td><td>03</td></tr>
+          <tr><td>Eq.03-08</td><td>MNL（含 alternative 常数）</td><td>$P_{ij}=e^{\alpha_j+Z_i'\beta_j}/\sum_k e^{\alpha_k+Z_i'\beta_k}$</td><td>03</td></tr>
+          <tr><td>Eq.03-09</td><td>包含值 inclusive value</td><td>$I_{im}=\lambda_m\ln\sum_{j\in B_m}e^{V_{ij}/\lambda_m}$</td><td>04</td></tr>
+          <tr><td>Eq.03-10</td><td>Nested Logit 选择概率</td><td>$P_{ij}=P(\text{选巢 }m)\times P(\text{巢内选 }j)$</td><td>04</td></tr>
+          <tr><td>Eq.03-11</td><td>对数似然</td><td>$\ell(\beta)=\sum_i\log P_{i,j_i^*}(\beta)$</td><td>05</td></tr>
+          <tr><td>Eq.03-12</td><td>MNL 得分函数</td><td>$s(\beta)=\sum_i(X_{i,j_i^*}-\sum_j P_{ij}X_{ij})$</td><td>05（补全）</td></tr>
+          <tr><td>Eq.03-13</td><td>Hessian / BHHH 信息矩阵</td><td>$H=-\sum_i\sum_j P_{ij}X_{ij}X_{ij}'+\cdots$</td><td>05（补全）</td></tr>
+          <tr><td>Eq.03-14</td><td>MNL 边际效应</td><td>$\partial P_{ij}/\partial x_{ij}^{(r)}=P_{ij}(1-P_{ij})\beta_r$</td><td>05</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <a href="02-gmm.html" class="prev"><div class="nav-label">← 上一节</div><div class="nav-title">广义矩估计 GMM</div></a>
+    <a href="04-blp.html" class="next"><div class="nav-label">下一节 →</div><div class="nav-title">BLP 随机系数需求</div></a>
+  </div>
+</div></div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

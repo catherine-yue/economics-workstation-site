@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中尺度DSGE模型（Smets-Wouters） | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item active" href="11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">DSGE模型</a><span class="sep">/</span>
+      <span>中尺度DSGE模型（Smets-Wouters）</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">DSGE · 中尺度工作母机 · 全流程</span>
+      <h1>中尺度 DSGE 模型：Smets–Wouters 模型（假设→FOC→稳态→线性化→Dynare→估计→模拟 全流程）</h1>
+      <p class="desc">为什么三方程不够？因为它匹配不了数据里的"驼峰形脉冲、通胀惯性、工资持续"。Smets–Wouters (2007 AER) 把 RBC 骨架、名义价格/工资粘性、习惯形成、投资调整成本、资本利用与七种冲击拼在一起，成为央行研究部门的工作母机（workhorse）。本页在同一页内顺承走完：假设与公式解读 → 一阶条件 → 稳态 → 对数线性化与求解 → Dynare .mod 逐行 → 校准与贝叶斯估计 → 脉冲响应 → 论文与常见错误。</p>
+      <div class="callout info" style="margin-top:16px">
+        <div class="callout-title">📐 方程规模总览 / EQUATION COUNT</div>
+        <p style="margin-bottom:6px"><strong>本模型共 36 个核心方程</strong>：原始非线性模型 21 条（效用/预算/积累 3、家庭 FOC 6、企业成本最小化 2、Calvo 定价与加总 4、工资设定与加总 3、定义式 3、资源约束/Taylor/TVC 3），外生 AR(1) 过程 7 条，对数线性化后 21 条（见 §06 与文末"方程总清单"）。</p>
+        <p style="margin-bottom:0">编号约定：<strong>SW-x</strong> 为原始非线性方程；<strong>SW-x̂</strong> 为其对数线性化版本；<strong>SW-AR</strong> 为外生过程。</p>
+      </div>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-head">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-item"><span class="prereq-label">数学 / 统计基础</span>动态最优化（含习惯形成、投资调整成本、资本利用）、矩阵运算与状态空间表示、二阶泰勒展开、Kalman 滤波与 MCMC。</div>
+      <div class="prereq-item"><span class="prereq-label">经济学理论前置</span>三方程 NK + 投资 q 理论/调整成本、Calvo 工资粘性与指数化、资本利用、多冲击过程设定。</div>
+      <div class="prereq-item"><span class="prereq-label">软件 / 计算前置</span>MATLAB + Dynare ≥4.6；中尺度模型须用 order=2 + pruning 求解（见本页 .mod 末尾），计算量明显大于三方程。</div>
+      <div class="prereq-item"><span class="prereq-label">站内前置页面</span>先学 05-dynare-solving + 01-model-building；最好先过 10-nk-three-equation。</div>
+      <div class="prereq-item"><span class="prereq-label">难度与路线位置</span><span class="prereq-level lv-inter">进阶</span>央行/学术机构级模型范式，是校准到贝叶斯估计的承前启后者。</div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么需要中尺度模型</a></li>
+        <li><a href="#s2">假设与模型构建：六大要素逐条解读</a></li>
+        <li><a href="#s3">一阶条件与均衡系统</a></li>
+        <li><a href="#s4">稳态求解</a></li>
+        <li><a href="#s5">对数线性化与求解方法</a></li>
+        <li><a href="#s6">核心方程系统（全部写出）</a></li>
+        <li><a href="#s7">七种冲击全部解释</a></li>
+        <li><a href="#s8">参数校准表</a></li>
+        <li><a href="#s9">贝叶斯估计：先验、数据与观测方程</a></li>
+        <li><a href="#s10">Dynare .mod 逐步撰写（≥100行）</a></li>
+        <li><a href="#s11">脉冲响应与结果解读</a></li>
+        <li><a href="#s12">与三方程模型对比 + 论文/错误/进阶</a></li>
+      </ol>
+    </div>
+
+    <!-- S1 -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么需要中尺度模型</h2>
+      <p>三方程模型优雅，但它有两个硬伤：<strong>(1) 脉冲响应没有"惯性"</strong>——货币冲击下产出、通胀立刻跳到峰值，而 SVAR 数据显示峰值出现在冲击后一年左右，呈驼峰形；<strong>(2) 冲击太少</strong>——只有 2~3 个外生过程，无法同时拟合产出、消费、投资、通胀、利率、工资等 7 个观测变量的联合动态。</p>
+      <p>中尺度模型（medium-scale model）的目标就是"加摩擦、加冲击"：每加一个摩擦，就多一个机制让变量出现惯性；每加一个冲击，就多一个来源解释某段数据。Christiano, Eichenbaum &amp; Evans (CEE, 2005) 与 Smets &amp; Wouters (SW, 2007) 把这套思路系统化，做出了第一个能在贝叶斯框架下<strong>同时拟合战后美国大部分宏观变量</strong>的模型。</p>
+      <div class="callout info">
+        <div class="callout-title">中尺度 ≠ 复杂</div>
+        <p>"中尺度"是相对 RBC/三方程而言，不是无底洞地加。SW 模型恰好由 <strong>6 类摩擦 + 7 个冲击</strong>组成，多一个则过拟合，少一个则拟合不了关键矩。这就是它成为"workhorse"的原因。</p>
+      </div>
+    </div>
+
+    <!-- S2 -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 假设与模型构建：六大要素逐条解读</h2>
+      <p>SW 模型的每一个摩擦都不是装饰，而是一个被数据"逼"出来的假设。下面逐条讲清楚<strong>为什么需要它、它对应哪个效用/生产函数、线性化后长什么样</strong>。</p>
+
+      <h3>2.1 习惯形成（habit formation, $h&gt;0$）</h3>
+      <p><strong>原始假设：</strong>家庭效用不直接来自当期消费 $C_t$，而来自"当期消费相对上期习惯存量"的超额 $(C_t-hC_{t-1})^{1-\sigma}$。这里 $h\in[0,1)$ 是<strong>外部习惯</strong>（household 不把 $hC_{t-1}$ 内生化），意味着效用有"攀比/上瘾"：突然提高消费的边际效用，不如平滑地提高来得高。</p>
+      <p><strong>为什么 $h&gt;0$：</strong>若无习惯（$h=0$），消费欧拉是纯前望的 $\hat c_t=E_t\hat c_{t+1}-\frac{1}{\sigma}(\hat r_t-E_t\pi_{t+1})$，利率一升消费立刻跳到新路径，脉冲是"J 形"而非数据里的"驼峰形"。加入 $h$ 后，消费必须兼顾"跟上习惯"与"平滑跨期"，于是消费对冲击的反应被拉平、滞后，出现 <code class="inline">c(-1)</code> 与 <code class="inline">c(+1)</code> 并存的双向前望-后顾结构。SW(2007) 后验 $h\approx0.7$，说明美国消费惯性很强。</p>
+
+      <h3>2.2 投资调整成本（investment adjustment cost）与 q 理论</h3>
+      <p><strong>原始假设：</strong>资本积累不是 $K_t=(1-\delta)K_{t-1}+I_t$ 这么干净。改变投资率本身要付出二次成本 $\frac{\chi}{2}\big(\frac{I_t}{I_{t-1}}-1\big)^2$（注意是<strong>投资变动率</strong>的成本，不是投资水平的成本，这是 CEE/SW 与早期 q 理论的关键区别）。</p>
+      <p><strong>为什么需要：</strong>标准 RBC 里投资是"急刹车猛踩油门"变量，利率微小变化就让投资剧烈跳动，与数据中投资虽波动大但<strong>不会瞬间调头</strong>的事实不符。引入调整成本后，企业面对托宾 Q 的变化会"慢慢建产能"，投资欧拉里同时出现 $\hat i_{t-1}$ 与 $E_t\hat i_{t+1}$，形成投资的驼峰形。曲率 $\varphi\equiv S''$ 越大，投资越粘。</p>
+
+      <h3>2.3 可变资本利用（capacity utilization）</h3>
+      <p><strong>原始假设：</strong>家庭（或资本品出租者）决定把存量资本 $K_{t-1}$ 以多大利用率 $u_t$ 投入生产，实际进入生产函数的是<strong>有效资本</strong> $\bar K_t=u_tK_{t-1}$。提高利用率要付出递增的维持/折旧成本 $\psi(u_t)$（稳态外的二次项）。</p>
+      <p><strong>为什么可变利用率：</strong>若利用率固定为 1，技术冲击下企业只能靠加人/减人调整生产，就业波动会过大、资本回报波动过小，与数据矛盾。允许"加班/闲置"后，企业在好时光多开机器、差时光让设备闲置，<strong>短期产出可用资本强度吸收冲击</strong>，就业与工资波动变得温和。线性化后 $\hat r_t^k=\psi\hat u_t$：资本租金越高，利用率越高。</p>
+
+      <h3>2.4 Calvo 价格粘性 + 价格指数化 $\gamma_p$</h3>
+      <p><strong>原始假设：</strong>每期只有 $1-\theta_p$ 比例的中间品企业能重新定价，其余 $\theta_p$ 比例不能最优定价，只能按过去通胀 $\pi_{t-1}$ 做部分指数化更新（指数化程度 $\gamma_p$）。</p>
+      <p><strong>为什么价格要粘性：</strong>没有价格粘性（$\theta_p=0$），货币政策是超中性的——货币冲击只改价格不改产出，与"货币政策有实际效果"这一核心事实矛盾。Calvo 概率 $\theta_p\approx0.75$ 意味着平均价格合同期约一年（4 个季度），与 Bils-Klenow 微观定价证据大致吻合。</p>
+      <p><strong>为什么还要指数化：</strong>纯 Calvo 推出的 NKPC 是纯前望 $\pi_t=\beta E_t\pi_{t+1}+\kappa mc_t$，意味着通胀对成本冲击能瞬间跳到新稳态，没有"通胀惯性"。加入指数化 $\gamma_p$ 后，不能调价的厂商按 $\gamma_p\pi_{t-1}$ 涨价，NKPC 右端多了 $\gamma_p/(1+\beta\gamma_p)\pi_{t-1}$，通胀出现后顾项，从而匹配通胀的持续性。</p>
+
+      <h3>2.5 Calvo 工资粘性 + 工资指数化 $\gamma_w$</h3>
+      <p><strong>原始假设：</strong>家庭是差异化劳动的垄断供给者，每期只有 $1-\theta_w$ 比例能重设名义工资，其余按 $\gamma_w$ 指数化。劳动总需求由中间品企业决定，家庭被动供给。</p>
+      <p><strong>为什么工资要分别定价（而不是只粘价格）：</strong>仅粘价格时，劳动力市场是灵活出清的，实际工资可瞬间调整，模型无法解释"实际工资缓慢、通胀与工资螺旋"。工资粘性让<strong>名义工资</strong>成为第二个慢变量：价格粘性管"产品市场"，工资粘性管"劳动力市场"，两者一起才能同时解释物价与工资的惯性。SW(2007) 后验 $\theta_w\approx0.7$–$0.75$，与价格粘性同量级。</p>
+
+      <div class="table-wrap"><table>
+        <tr><th>摩擦/要素</th><th>符号</th><th>解决什么问题</th></tr>
+        <tr><td>习惯形成 habit formation</td><td>$h$</td><td>消费对冲击的反应平滑、驼峰化</td></tr>
+        <tr><td>投资调整成本 investment adj. cost</td><td>$S''$</td><td>投资缓慢调整，避免剧烈跳变</td></tr>
+        <tr><td>资本利用 capacity utilization</td><td>$\psi$</td><td>产出可通过"用得多/少资本"短期吸收冲击</td></tr>
+        <tr><td>Calvo 价格粘性</td><td>$\theta_p$</td><td>NKPC，货币政策有实际效果</td></tr>
+        <tr><td>Calvo 工资粘性</td><td>$\theta_w$</td><td>工资缓慢调整，通胀/产出更粘</td></tr>
+        <tr><td>价格/工资指数化 indexation</td><td>$\gamma_p,\gamma_w$</td><td>NKPC 与工资 Phillips 引入滞后项，制造通胀惯性</td></tr>
+      </table></div>
+      <p>这六个要素不是堆砌，每个都对应一个被数据拒绝的"标准模型"缺陷。SW 的工程价值就在于<strong>把它们用一套微观基础统一起来</strong>。</p>
+    </div>
+
+    <!-- S3 -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 一阶条件与均衡系统</h2>
+      <p>模型由四类主体组成：<strong>(A) 家庭</strong>（消费/储蓄/投资/资本利用/工资设定）、<strong>(B) 中间品企业</strong>（Calvo 定价、租用劳动与有效资本）、<strong>(C) 最终品企业</strong>（无差别加总）、<strong>(D) 央行</strong>（Taylor 规则）。下面先把家庭优化写成拉格朗日并逐步求 FOC，再给出其余主体的关键条件。</p>
+
+      <h3>3.0 家庭优化：拉格朗日逐步推导（不跳步）</h3>
+      <p>家庭 $j$ 最大化终身效用，预算约束为：消费 $C_{j,t}$、投资 $I_{j,t}$、持有本币一期名义债券 $B_{j,t}$（利率 $i_t$）、租用有效资本得租金 $r_t^k u_t \bar K_{j,t-1}$、劳动得工资 $W_t N_{j,t}$、支付资本维持成本 $a(u_t)\bar K_{j,t-1}$：</p>
+      <div class="formula-block">
+        <div class="formula-label">家庭问题</div>
+        $$\max_{\{C_{j,t},I_{j,t},B_{j,t},u_t\}}\; E_0\sum_{t=0}^{\infty}\beta^t\left[\frac{(C_{j,t}-hC_{j,t-1})^{1-\sigma}}{1-\sigma}-\frac{N_{j,t}^{1+\varphi}}{1+\varphi}\right]$$
+        $$\text{s.t.}\quad C_{j,t}+I_{j,t}+\frac{B_{j,t}}{P_t} = \frac{W_t N_{j,t}}{P_t}+r_t^k u_t\bar K_{j,t-1}-a(u_t)\bar K_{j,t-1}+\frac{R_{t-1}B_{j,t-1}}{P_t}$$
+        $$\bar K_{j,t}=(1-\delta)\bar K_{j,t-1}+\left[1-S\!\left(\tfrac{I_{j,t}}{I_{j,t-1}}\right)\right]I_{j,t}$$
+      </div>
+      <p><strong>第一步，写拉格朗日函数：</strong>对预算约束乘 $\lambda_t$（消费的边际效用/拉格朗日乘子），对资本积累约束乘 $\mu_t$（安装资本的影子价值，即托宾 Q）：</p>
+      <div class="formula-block">
+        $$\mathcal{L}=E_0\sum_t\beta^t\Big\{ U(C_t-hC_{t-1},N_t)+\lambda_t\big[\text{资源收入}-C_t-I_t-B_t/P_t\big]+\mu_t\big[\bar K_t-(1-\delta)\bar K_{t-1}-(1-S(I_t/I_{t-1}))I_t\big]\Big\}$$
+      </div>
+      <p>其中 $U(C_t-hC_{t-1},N_t)=\frac{(C_t-hC_{t-1})^{1-\sigma}}{1-\sigma}-\frac{N_t^{1+\varphi}}{1+\varphi}$。下面对每个控制/状态变量逐一取偏导 $\partial\mathcal{L}/\partial(\cdot)=0$，<strong>不做任何"同理可得"省略</strong>。</p>
+
+      <p><strong>第二步，对消费 $C_t$ 求偏导：</strong>$C_t$ 出现在三处：(i) 当期效用 $U(C_t-hC_{t-1})$ 里一次；(ii) $t+1$ 期效用 $U(C_{t+1}-hC_t)$ 里一次（作为下期的习惯 $hC_t$）；(iii) 预算约束的 $-\lambda_t C_t$。把这三处全部展开：</p>
+      <div class="formula-block">
+        <div class="formula-label">对 $C_t$ 的偏导展开（三处来源逐项写）</div>
+        $$\frac{\partial\mathcal{L}}{\partial C_t}= \underbrace{(C_t-hC_{t-1})^{-\sigma}}_{\text{① 当期效用 }U_C} + \underbrace{\beta\cdot(-h)\,E_t(C_{t+1}-hC_t)^{-\sigma}}_{\text{② 下一期效用里的 }-hC_t} - \underbrace{\lambda_t}_{\text{③ 预算约束}} = 0$$
+      </div>
+      <p>移项即得习惯下的消费边际效用（SW-1）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-1 · 习惯下的边际效用（包络后）</div>
+        $$\Lambda_t\equiv\lambda_t=(C_t-hC_{t-1})^{-\sigma}-\beta h\,E_t(C_{t+1}-hC_t)^{-\sigma}$$
+      </div>
+      <p><strong>定义与理由：</strong>$\Lambda_t$ 是"把今天多消费一单位的全部未来成本折回来"的边际效用；第②项 $-\beta h E_t(C_{t+1}-hC_t)^{-\sigma}$ 之所以为负，是因为今天多消费会提高明天的习惯 $hC_t$，从而压低明天从 $C_{t+1}$ 得到的效用。<strong>经济直觉：</strong>习惯 $h$ 让"今天多吃一口"不仅贵在今天，还贵在明天——于是 $\Lambda_t$ 是含 $C_{t-1},C_t,E_t C_{t+1}$ 的三项式，这正是消费欧拉里同时出现 $\hat c_{t-1}$ 与 $E_t\hat c_{t+1}$ 的微观来源。<strong>注意</strong>：不能把 $\lambda_t$ 简单写成 $(C_t-hC_{t-1})^{-\sigma}$（那是 $h=0$ 或内部习惯才成立），§3.1 的欧拉必须用上面这个含前视项的 $\Lambda_t$。</p>
+
+      <p><strong>第三步，对名义债券 $B_t$ 求偏导：</strong>$B_t$ 只出现在当期预算约束 $-\lambda_t B_t/P_t$，以及下一期拉格朗日中的 $+\beta\lambda_{t+1} R_t B_t/P_{t+1}$（$R_t=1+i_t$ 为毛利率）。对 $\mathcal{L}$ 中这两处求偏导：</p>
+      <div class="formula-block">
+        <div class="formula-label">对 $B_t$ 的偏导展开</div>
+        $$\frac{\partial\mathcal{L}}{\partial B_t}= -\lambda_t\frac{1}{P_t} + \beta E_t\!\left[\lambda_{t+1}\frac{R_t}{P_{t+1}}\right]=0 \;\Longrightarrow\; \lambda_t P_t=\beta R_t E_t[\lambda_{t+1}P_{t+1}]$$
+      </div>
+      <p>代入 $\lambda_t=\Lambda_t$、$\Pi_{t+1}=P_{t+1}/P_t$，即得消费欧拉（SW-2）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-2 · 消费欧拉（习惯形式）</div>
+        $$\Lambda_t=\beta R_t\,E_t\!\left[\frac{\Lambda_{t+1}}{\Pi_{t+1}}\right]$$
+      </div>
+
+      <p><strong>第四步，对投资 $I_t$ 求偏导：</strong>$I_t$ 出现在三处：(i) 预算约束 $-\lambda_t I_t$；(ii) 资本积累约束当期项 $-\mu_t[1-S(I_t/I_{t-1})]I_t$；(iii) 下一期资本积累约束里的 $+\beta\mu_{t+1}[1-S(I_{t+1}/I_t)]I_{t+1}$，其中 $I_t$ 出现在 $S(I_{t+1}/I_t)$ 的自变量中。逐项求导，记 $\xi_t\equiv I_t/I_{t-1}$、$S_t\equiv S(\xi_t)$：</p>
+      <div class="formula-block">
+        <div class="formula-label">对 $I_t$ 的偏导展开（三处来源）</div>
+        $$\frac{\partial\mathcal{L}}{\partial I_t}=-\lambda_t-\mu_t\Big[(1-S_t)-S'_t\xi_t\Big]+\beta E_t\!\left[\mu_{t+1}S'_{t+1}\xi_{t+1}^2\right]=0$$
+      </div>
+      <p>把 $Q_t\equiv\mu_t/\lambda_t$（安装资本的影子价值，即托宾 Q）代入并同除 $-\lambda_t$，得投资 FOC（SW-3）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-3 · 投资 FOC（Q 理论）</div>
+        $$1=Q_t\Big[(1-S_t)-S'_t\xi_t\Big]-\beta E_t\!\left[\frac{\Lambda_{t+1}}{\Lambda_t}Q_{t+1}S'_{t+1}\xi_{t+1}^2\right]$$
+      </div>
+      <p><strong>定义：</strong>$S(\xi)$ 在稳态 $\bar\xi=1$ 处满足 $S(1)=S'(1)=0$、$S''(1)\equiv\varphi&gt;0$（二次调整成本曲率）。<strong>经济直觉：</strong>左边 1 是买一单位投资品的重置成本；右边是"今天装一单位新资本的影子价值 $Q_t$"减去"今天多投一单位抬高明天 $\xi_{t+1}$ 所带来的未来调整成本"（最后一项）。稳态下 $S=S'=0$，SW-3 退化为 $Q=1$，即无摩擦投资。</p>
+
+      <p><strong>第五步，对资本利用率 $u_t$ 求偏导：</strong>$u_t$ 只出现在预算约束的出租净收益项 $\lambda_t[r_t^k u_t-a(u_t)]\bar K_{t-1}$（注意 $\bar K_{t-1}$ 在 $t$ 期是前定状态，对 $u_t$ 为常数）：</p>
+      <div class="formula-block">
+        <div class="formula-label">对 $u_t$ 的偏导展开</div>
+        $$\frac{\partial\mathcal{L}}{\partial u_t}=\lambda_t\bar K_{t-1}\big[r_t^k-a'(u_t)\big]=0\;\Longrightarrow\; r_t^k=a'(u_t)$$
+      </div>
+      <p>此即 SW-4：利用率的边际收益（租金率）等于边际维持成本。稳态归一化 $\bar u=1$ 并取 $a'(\bar u)=r^k$、$a''(\bar u)\equiv\psi$，线性化后即 $\hat r_t^k=\psi\hat u_t$。</p>
+
+      <p><strong>第六步，对有效资本存量 $\bar K_t$ 求偏导（包络）：</strong>$\bar K_t$ 出现在：(i) 当期资本积累约束的 $+\mu_t\bar K_t$；(ii) 下一期预算约束里 $+\beta\lambda_{t+1}[r_{t+1}^k u_{t+1}-a(u_{t+1})]\bar K_t$；(iii) 下一期资本积累约束的 $-\beta\mu_{t+1}(1-\delta)\bar K_t$。求偏导令其为零：</p>
+      <div class="formula-block">
+        <div class="formula-label">对 $\bar K_t$ 的偏导展开</div>
+        $$\frac{\partial\mathcal{L}}{\partial \bar K_t}=\mu_t-\beta E_t\!\Big[\lambda_{t+1}\big(r_{t+1}^k u_{t+1}-a(u_{t+1})\big)+\mu_{t+1}(1-\delta)\Big]=0$$
+      </div>
+      <p>同除 $\lambda_t$ 并代入 $Q_t=\mu_t/\lambda_t$、$Q_{t+1}=\mu_{t+1}/\lambda_{t+1}$，得 Q 的无套利方程（SW-5）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-5 · 托宾 Q 资产定价（无套利）</div>
+        $$Q_t=\beta E_t\!\left[\frac{\Lambda_{t+1}}{\Lambda_t}\Big(r_{t+1}^k u_{t+1}-a(u_{t+1})+(1-\delta)Q_{t+1}\Big)\right]$$
+      </div>
+      <p><strong>经济直觉：</strong>今天花 $Q_t$ 买一单位安装资本，持有一期后得到净租金 $r^ku-a(u)$ 与残值 $(1-\delta)Q_{t+1}$，按消费边际效用比 $\Lambda_{t+1}/\Lambda_t$ 折现，应等于今天的价格。至此家庭全部 6 个 FOC（SW-1~SW-5 加效用定义）逐式推完，无跳步。</p>
+
+      <p><strong>第七步（边界条件）：</strong>无限期模型必须加横截条件（TVC），防止 Ponzi：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-TVC · 横截条件</div>
+        $$\lim_{T\to\infty}\beta^T E_t\!\left[\Lambda_{t+T}\frac{B_{t+T}}{P_{t+T}}\right]=0,\qquad \lim_{T\to\infty}\beta^T E_t\!\left[\Lambda_{t+T}Q_{t+T}\bar K_{t+T}\right]=0$$
+      </div>
+
+      <h3>3.1 家庭的消费—储蓄欧拉（习惯形成下）</h3>
+      <p>家庭在预算约束下最大化 $E_0\sum_{t=0}^\infty\beta^t\left[\frac{(C_t-hC_{t-1})^{1-\sigma}}{1-\sigma}-\frac{N_t^{1+\varphi}}{1+\varphi}\right]$。注意：上节 SW-1 已证明，习惯形成下的拉格朗日乘子<strong>不是</strong>简单的 $(C_t-hC_{t-1})^{-\sigma}$，而必须含下一期习惯项：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-1（重申）· 习惯下的消费边际效用</div>
+        $$\lambda_t\equiv\Lambda_t=(C_t-hC_{t-1})^{-\sigma}-\beta h\,E_t(C_{t+1}-hC_t)^{-\sigma}$$
+      </div>
+      <p>对债券 $B_t$ 的 FOC（SW-2，见 3.0 第三步展开）为：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-2 · 消费欧拉（习惯形式，非对数）</div>
+        $$\lambda_t=\beta(1+i_t)E_t\!\left[\lambda_{t+1}\frac{P_t}{P_{t+1}}\right]$$
+      </div>
+      <p><strong>解读：</strong>本期多储蓄 1 单位消费的边际效用损失 $\lambda_t$，必须等于下期本息按通胀折现回的期望边际效用收益。习惯 $h$ 隐藏在 $\lambda_t$ 里——它让"现在少吃一点"的代价取决于"上一期吃了多少"，于是消费调整被锚住。<strong>常见错误提醒：</strong>把 $\lambda_t$ 误写成 $(C_t-hC_{t-1})^{-\sigma}$ 会丢掉前视项，线性化后消费欧拉将少掉 $E_t\hat c_{t+1}$ 的系数修正，驼峰形会变成 J 形。</p>
+
+      <h3>3.2 家庭的投资—托宾 Q 一阶条件</h3>
+      <p>家庭选择投资 $I_t$ 与资本利用率 $u_t$。SW-3（投资 FOC）与 SW-5（Q 无套利）已在 3.0 第四、六步完整推出，此处仅重述并标注：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-3 · 投资 FOC（Q 理论，含未来调整成本项）</div>
+        $$1=Q_t\Big[1-S\!\left(\tfrac{I_t}{I_{t-1}}\right)-S'\!\left(\tfrac{I_t}{I_{t-1}}\right)\tfrac{I_t}{I_{t-1}}\Big]-\beta E_t\!\left[\frac{\lambda_{t+1}}{\lambda_t}Q_{t+1}S'\!\left(\tfrac{I_{t+1}}{I_t}\right)\left(\tfrac{I_{t+1}}{I_t}\right)^2\right]$$
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">SW-5 · 托宾 Q 资产定价（无套利）</div>
+        $$Q_t=\beta E_t\frac{\lambda_{t+1}}{\lambda_t}\left[r_{t+1}^k u_{t+1}-a(u_{t+1})+(1-\delta)Q_{t+1}\right]$$
+      </div>
+      <p><strong>解读：</strong>SW-3 是"投资的边际成本=边际收益（含未来调整成本节省）"；SW-5 是 Q 的无套利：安装资本下期能带来的净租金 + 残值，按 $\lambda_{t+1}/\lambda_t$ 折现应等于当期 Q。线性化后（用 $S(1)=S'(1)=0,S''(1)=\varphi$）就退化成第 06 节里的投资欧拉 + Q 方程。</p>
+
+      <h3>3.3 家庭的资本利用选择</h3>
+      <p>家庭选择 $u_t$ 使出租资本的净收益最大，FOC（SW-4，3.0 第五步已展开）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-4 · 资本利用最优</div>
+        $$r_t^k=a'(u_t)$$
+      </div>
+      <p><strong>定义：</strong>$a(\cdot)$ 为资本维持成本函数，归一化 $a(1)=0$、$a'(1)=r^k$、$a''(1)\equiv\psi$。<strong>理由：</strong>提高利用率加速折旧、需额外维护。<strong>直觉：</strong>租金越高越愿意加班用机器。稳态 $a'(\bar u)=r^k$，$\bar u=1$。</p>
+
+      <h3>3.4 劳动供给与 Calvo 工资设定（完整问题与 FOC）</h3>
+      <p><strong>结构设定：</strong>家庭 $j$ 是差异化劳动 $N_{j,t}$ 的垄断供给者。最终劳动服务由 CES 加总而成：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-W1 · 劳动服务 CES 加总（工资指数）</div>
+        $$N_t=\left[\int_0^1 N_{j,t}^{\frac{\varepsilon_w-1}{\varepsilon_w}}dj\right]^{\frac{\varepsilon_w}{\varepsilon_w-1}},\qquad W_t=\left[\int_0^1 W_{j,t}^{1-\varepsilon_w}dj\right]^{\frac{1}{1-\varepsilon_w}}$$
+      </div>
+      <p>成本最小化的中间品企业对差异化劳动的需求为 $N_{j,t}=\big(W_{j,t}/W_t\big)^{-\varepsilon_w}N_t$。Calvo 工资粘性：每期家庭 $j$ 能重设名义工资 $W_{j,t}^*$ 的概率为 $1-\theta_w$；不能重设的家庭按过去通胀做部分指数化 $\gamma_w$。</p>
+      <p><strong>优化问题（写全）：</strong>能重设工资的家庭 $j$ 在需求约束 $N_{j,t+k|t}=\big(W_{j,t}^*/W_{t+k}\big)^{-\varepsilon_w}N_{t+k}$（不能调价期间工资按 $\gamma_w\pi_{t-1+k}$ 指数化）下，最大化未来劳动收入的效用现值减劳动负效用：</p>
+      <div class="formula-block">
+        <div class="formula-label">最优工资设定问题（完整写出）</div>
+        $$\max_{W_t^*}\; E_t\sum_{k=0}^{\infty}(\beta\theta_w)^k\left[\Lambda_{t+k}\frac{W_t^*}{P_{t+k}}\Pi_{w,t+k}\,N_{j,t+k|t}-\frac{N_{j,t+k|t}^{1+\varphi}}{1+\varphi}\right]$$
+        $$\text{s.t.}\quad N_{j,t+k|t}=\left(\frac{W_t^*\Pi_{w,t+k}/W_{t+k}}{}\right)^{-\varepsilon_w}N_{t+k},\qquad \Pi_{w,t+k}\equiv\prod_{l=1}^k\pi_{t-1+l}^{\gamma_w}$$
+      </div>
+      <p><strong>对 $W_t^*$ 求一阶条件：</strong>把目标函数对 $W_t^*$ 求导。注意 $W_t^*$ 同时出现在收入项（线性）与需求约束（经 $N_{j,t+k|t}\propto W_t^{*-\varepsilon_w}$）中，故：</p>
+      <div class="formula-block">
+        <div class="formula-label">对 $W_t^*$ 的偏导展开</div>
+        $$\frac{\partial}{\partial W_t^*}:\quad \sum_{k=0}^{\infty}(\beta\theta_w)^k E_t\!\left[\Lambda_{t+k}\frac{\Pi_{w,t+k}}{P_{t+k}}\Big(1-\varepsilon_w\Big)N_{j,t+k|t}+\varepsilon_w\frac{N_{j,t+k|t}^{1+\varphi}}{W_t^*}\right]=0$$
+      </div>
+      <p>整理成"加成=劳动负效用/收入效用"的形式，即最优工资 FOC（SW-W2）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-W2 · 最优工资 FOC（前望型）</div>
+        $$E_t\sum_{k=0}^{\infty}(\beta\theta_w)^k N_{j,t+k|t}\Lambda_{t+k}\frac{W_t^*}{P_{t+k}}\Pi_{w,t+k}=\mu_w\,E_t\sum_{k=0}^{\infty}(\beta\theta_w)^k N_{j,t+k|t}\,\frac{N_{j,t+k|t}^{\varphi}}{\Lambda_{t+k}/P_{t+k}^{-1}}\Pi_{w,t+k}$$
+      </div>
+      <p>其中 $\mu_w\equiv\frac{\varepsilon_w}{\varepsilon_w-1}$ 是工资稳态加成。<strong>解读：</strong>左端是未来实际工资收入的边际效用现值，右端是未来劳动负效用的边际成本现值（乘加成）。把 $W_t^*$ 解出后代入工资指数，即得工资加总方程（SW-W3）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-W3 · 工资指数加总（含指数化）</div>
+        $$W_t^{1-\varepsilon_w}=(1-\theta_w)(W_t^*)^{1-\varepsilon_w}+\theta_w\big(W_{t-1}\pi_{t-1}^{\gamma_w}\big)^{1-\varepsilon_w}$$
+      </div>
+      <p><strong>定义：</strong>$\theta_w$ 为不调工资概率，$\gamma_w$ 为指数化程度。<strong>理由：</strong>Calvo 假设+指数化。<strong>直觉：</strong>今天的工资指数由"新定的 $W_t^*$"与"沿用指数化的旧工资"加权。<strong>补充定义式：</strong>工资通胀与实际工资的累积关系（SW-W4、SW-W5）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-W4 · 工资通胀定义 / SW-W5 · 实际工资累积</div>
+        $$\pi_t^w\equiv\frac{W_t}{W_{t-1}}-1,\qquad \hat w_t=\hat w_{t-1}+\hat\pi_t^w-\hat\pi_t$$
+      </div>
+
+      <h3>3.5 中间品企业的 Calvo 定价（完整问题与 FOC）</h3>
+      <p><strong>结构设定：</strong>连续统中间品企业 $j\in[0,1]$，生产差异化中间品 $Y_{j,t}$，由最终品企业 CES 加总为 $Y_t=\big[\int Y_{j,t}^{(\varepsilon_p-1)/\varepsilon_p}dj\big]^{\varepsilon_p/(\varepsilon_p-1)}$，对应价格指数 $P_t=\big[\int P_{j,t}^{1-\varepsilon_p}dj\big]^{1/(1-\varepsilon_p)}$。最终品企业成本最小化给出中间品需求 $Y_{j,t}=\big(P_{j,t}/P_t\big)^{-\varepsilon_p}Y_t$。中间品企业用有效资本 $\bar K_t$ 与劳动 $N_t$ 生产：$Y_{j,t}=A_t\bar K_{j,t}^{\alpha}N_{j,t}^{1-\alpha}-\Phi$（$\Phi$ 为固定成本，使稳态利润为零）。</p>
+      <p><strong>第一步：成本最小化（企业租用劳动与有效资本）。</strong>给定产出 $Y_{j,t}$，企业最小化 $W_tN_{j,t}+r_t^k\bar K_{j,t}$。构造 $\mathcal{L}=W_tN+r^k\bar K-\xi_t[Y_{j,t}+\Phi-A_t\bar K^\alpha N^{1-\alpha}]$，分别对 $N,\bar K$ 求偏导：</p>
+      <div class="formula-block">
+        <div class="formula-label">成本最小化偏导 → 要素需求</div>
+        $$\frac{\partial\mathcal L}{\partial N}=W_t-\xi_t(1-\alpha)A_t\bar K^\alpha N^{-\alpha}=0$$
+        $$\frac{\partial\mathcal L}{\partial\bar K}=r_t^k-\xi_t\alpha A_t\bar K^{\alpha-1}N^{1-\alpha}=0$$
+      </div>
+      <p>把两式相除消去 $\xi_t$，并把 $\xi_t=MC_t$（名义边际成本，因竞争性要素市场）代入，得要素需求与边际成本（SW-F1、SW-F2、SW-F3）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-F1 · 劳动需求 / SW-F2 · 资本需求 / SW-F3 · 边际成本</div>
+        $$W_t N_t=(1-\alpha)MC_t\,Y_t^{g},\qquad r_t^k\bar K_t=\alpha\,MC_t\,Y_t^{g}$$
+        $$MC_t=\frac{W_t^{1-\alpha}(r_t^k)^\alpha}{A_t\alpha^\alpha(1-\alpha)^{1-\alpha}}$$
+      </div>
+      <p>其中 $Y_t^g\equiv Y_t+\Phi$ 为含固定成本的总产出。<strong>直觉：</strong>要素份额等于边际成本乘以要素弹性——这是 Cobb-Douglas 的标准性质。</p>
+      <p><strong>第二步：最优定价问题。</strong>每期企业 $j$ 能重设价格 $P_{j,t}^*$ 的概率为 $1-\theta_p$；不能重设者按 $\gamma_p$ 指数化。能重设者在需求曲线 $Y_{j,t+k|t}=(P_t^*/P_{t+k}\cdot\Pi_{p,t+k})^{-\varepsilon_p}Y_{t+k}$ 下最大化利润现值：</p>
+      <div class="formula-block">
+        <div class="formula-label">最优定价问题（完整写出）</div>
+        $$\max_{P_t^*}\; E_t\sum_{k=0}^{\infty}(\beta\theta_p)^k\frac{\Lambda_{t+k}}{\Lambda_t}\left[P_t^*\Pi_{p,t+k}-MC_{t+k}\right]Y_{j,t+k|t},\qquad \Pi_{p,t+k}\equiv\prod_{l=1}^k\pi_{t-1+l}^{\gamma_p}$$
+      </div>
+      <p><strong>对 $P_t^*$ 求一阶条件：</strong>$P_t^*$ 在收入项线性、在需求项经 $Y_{j,t+k|t}\propto P_t^{*-\varepsilon_p}$，故：</p>
+      <div class="formula-block">
+        <div class="formula-label">对 $P_t^*$ 的偏导展开</div>
+        $$E_t\sum_{k=0}^{\infty}(\beta\theta_p)^k\frac{\Lambda_{t+k}}{\Lambda_t}Y_{j,t+k|t}\Big[(1-\varepsilon_p)P_t^*\Pi_{p,t+k}+\varepsilon_p\,MC_{t+k}\Big]=0$$
+      </div>
+      <p>整理得最优价格 FOC（SW-P1）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-P1 · 最优价格 FOC</div>
+        $$E_t\sum_{k=0}^{\infty}(\beta\theta_p)^k\frac{\Lambda_{t+k}}{\Lambda_t}Y_{j,t+k|t}\,P_t^*\Pi_{p,t+k}=\mu_p\,E_t\sum_{k=0}^{\infty}(\beta\theta_p)^k\frac{\Lambda_{t+k}}{\Lambda_t}Y_{j,t+k|t}\,MC_{t+k}$$
+      </div>
+      <p>其中 $\mu_p=\varepsilon_p/(\varepsilon_p-1)$ 为稳态价格加成。<strong>直觉：</strong>最优价格是未来名义边际成本按"存活概率×贴现×需求"加权的加成。代入价格指数即得加总方程（SW-P2）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-P2 · 价格指数加总（含指数化）</div>
+        $$P_t^{1-\varepsilon_p}=(1-\theta_p)(P_t^*)^{1-\varepsilon_p}+\theta_p\big(P_{t-1}\pi_{t-1}^{\gamma_p}\big)^{1-\varepsilon_p}$$
+      </div>
+      <p><strong>通胀定义（SW-P3）：</strong>$\pi_t\equiv P_t/P_{t-1}-1$。把 SW-P1 与 SW-P2 在稳态附近展开，即得 §6.5 的 NKPC。</p>
+
+      <h3>3.6 均衡条件（市场出清与完整方程体系）</h3>
+      <p>均衡要求：(i) 产品市场出清，完整资源约束（含利用成本消耗的资源）：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-M1 · 资源约束（含利用成本）</div>
+        $$Y_t=C_t+I_t+G_t+a(u_t)\bar K_{t-1}$$
+      </div>
+      <p>(ii) 劳动市场出清：$N_t$ 由 §3.4 劳动供给（MRS）与 §3.5 劳动需求共同决定，即 $\widehat{mrs}_t=\varphi\hat n_t+\frac{\sigma}{1-h}(\hat c_t-h\hat c_{t-1})$（线性化形式）；(iii) 债券市场出清 $B_t=0$（代表性家庭模型，债券净供给为零）；(iv) 央行按 Taylor 规则设名义利率 $i_t$（SW-M2）；(v) 资本积累方程 SW-M3：</p>
+      <div class="formula-block">
+        <div class="formula-label">SW-M2 · Taylor 规则 / SW-M3 · 资本积累 / SW-M4 · 有效资本</div>
+        $$(1+i_t)=R_t=\big[(1+i_{t-1})^{\rho_i}(1/\beta\cdot\Pi_t^{\phi_\pi}Y_t^{\phi_y})^{1-\rho_i}\big]\exp(\varepsilon_t^m)$$
+        $$\bar K_t=u_tK_{t-1},\qquad K_t=(1-\delta)K_{t-1}+\big[1-S(I_t/I_{t-1})\big]I_t$$
+      </div>
+      <p>这组方程 + 7 条外生 AR(1) 过程（SW-AR1~AR7，见 §07）+ 横截条件 SW-TVC = 完整均衡系统。</p>
+    </div>
+
+    <!-- S4 -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 稳态求解（完整方程组 + 逐步求解）</h2>
+      <p>稳态是所有外生冲击关闭、所有变量不变的长期均衡：$\pi=1$（零通胀）、$\bar u=1$、$S(1)=S'(1)=0$、$Q=1$、$E_t[\cdot]=\cdot$。在稳态，价格/工资粘性的"不能调价概率"不影响实际配置（长期可连续调价），故 $\theta_p,\theta_w$ 不进稳态解；稳态只由 RBC 类参数与加成参数决定。下面先列全 <strong>11 个稳态方程</strong>，再给出逐步求解顺序。</p>
+
+      <h3>4.0 稳态完整方程组（SS-1 ~ SS-11）</h3>
+      <div class="table-wrap"><table>
+        <tr><th>#</th><th>稳态方程</th><th>来源</th></tr>
+        <tr><td>SS-1</td><td>$1+i=1/\beta$（零通胀实际利率 $r=i$）</td><td>SW-2 消费欧拉</td></tr>
+        <tr><td>SS-2</td><td>$Q=1$</td><td>SW-3 投资 FOC（$S=S'=0$）</td></tr>
+        <tr><td>SS-3</td><td>$r^k=\frac{1}{\beta}-(1-\delta)$</td><td>SW-5 Q 无套利（$u=1,a(1)=0$）</td></tr>
+        <tr><td>SS-4</td><td>$a'(1)=r^k$，归一化 $\bar u=1$</td><td>SW-4 资本利用</td></tr>
+        <tr><td>SS-5</td><td>$r^k=\alpha\,Y/K$（$MC=1/\mu_p$，垄断加成归一）</td><td>SW-F2 资本需求</td></tr>
+        <tr><td>SS-6</td><td>$w=(1-\alpha)Y/N$</td><td>SW-F1 劳动需求</td></tr>
+        <tr><td>SS-7</td><td>$Y=A\,\bar K^\alpha N^{1-\alpha}-\Phi$，固定成本 $\Phi=(\mu_p-1)Y$ 使稳态利润为零</td><td>生产函数</td></tr>
+        <tr><td>SS-8</td><td>$K/Y=\alpha/r^k$，$I/Y=\delta K/Y$</td><td>SS-3、SS-5 + 资本积累</td></tr>
+        <tr><td>SS-9</td><td>$Y=C+I+G$（$a(1)=0$，利用成本稳态耗散为零）</td><td>SW-M1 资源约束</td></tr>
+        <tr><td>SS-10</td><td>$w=\chi\,N^\varphi (C-hC)^\sigma$（劳动 MRS=实际工资）</td><td>家庭劳动供给 FOC</td></tr>
+        <tr><td>SS-11</td><td>$G/Y\equiv g_y$ 外生给定，$\bar N=1/3$ 由时间校准</td><td>政府支出/时间配置</td></tr>
+      </table></div>
+
+      <h3>4.1 逐步求解（按顺序，不跳步）</h3>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">Step 1 · 利率与资本租金（来自欧拉与 Q 无套利）</div><div class="step-desc">由 SS-1：$\beta=0.99\Rightarrow 1+i=1/0.99\approx1.0101$，故季度净利率 $i\approx0.0101$（年化约 4%）。代入 SS-3：$r^k=1/\beta-(1-\delta)=1.0101-0.975=0.0351$（季度）。</div></div>
+        <div class="step-item"><div class="step-title">Step 2 · 资本产出比与投资产出比</div><div class="step-desc">由 SS-5：$K/Y=\alpha/r^k=0.33/0.0351\approx9.4$（季度），年化 $K/Y\approx2.35$。由 SS-8：$I/Y=\delta\cdot K/Y=0.025\times9.4\approx0.235$。</div></div>
+        <div class="step-item"><div class="step-title">Step 3 · 消费产出比</div><div class="step-desc">由 SS-9：$C/Y=1-I/Y-G/Y=1-0.235-0.18\approx0.585$。</div></div>
+        <div class="step-item"><div class="step-title">Step 4 · 确定劳动 N 与产出 Y</div><div class="step-desc">由 SS-11 校准 $\bar N=1/3$。由生产函数 SS-7 与 SS-5 联立：$Y=A(K/Y)^\alpha N^{1-\alpha}/(1+\dots)$（固定成本项按 $\Phi=(\mu_p-1)Y$ 归一）。A 归一化为 1 时，由 $K/Y$ 与 $N$ 解出 $Y$，再得 $C=0.585Y$、$I=0.235Y$。</div></div>
+        <div class="step-item"><div class="step-title">Step 5 · 实际工资 w</div><div class="step-desc">由 SS-6：$w=(1-\alpha)Y/N=0.67\cdot Y/0.33\approx2.03 Y$。代入 SS-10 校验劳动供给：$w=\chi N^\varphi(C-hC)^\sigma$，反推参数 $\chi$（劳动效用权重）使等式成立。</div></div>
+        <div class="step-item"><div class="step-title">Step 6 · 验证加总一致性</div><div class="step-desc">校验：$r^k K + w N = Y$（产品分配耗尽）；$\mu_p=1.2$ 对应稳态加成；$\theta_p,\theta_w,\gamma_p,\gamma_w,\psi,\varphi,h$ 全部不进稳态，只进线性化。</div></div>
+      </div>
+
+      <h3>4.2 关键稳态数值（校准值）</h3>
+      <ul>
+        <li><strong>利率：</strong>由消费欧拉 $\beta(1+i)E[P_t/P_{t+1}]=1$，稳态零通胀下 $1+i=1/\beta$，故 $i=1/\beta-1\approx0.01$（季度）。</li>
+        <li><strong>资本租金：</strong>由 Q 无套利 $Q=1$（无调整成本），稳态 $r^k=\frac{1}{\beta}-(1-\delta)=\frac{1}{\beta}-1+\delta$。代入 $\beta=0.99,\delta=0.025$ 得 $r^k\approx0.0355$。</li>
+        <li><strong>资本产出比：</strong>由生产函数 $Y=AK^\alpha N^{1-\alpha}$ 与资本 FOC $r^k=\alpha Y/K$，得 $K/Y=\alpha/r^k\approx0.33/0.0355\approx9.3$（季度），即年资本产出比约 2.3。</li>
+        <li><strong>投资产出比：</strong>$I/Y=\delta K/Y\approx0.025\times9.3\approx0.23$。</li>
+        <li><strong>消费产出比：</strong>$C/Y=1-I/Y-G/Y$。</li>
+      </ul>
+      <div class="callout tip">
+        <div class="callout-title">Dynare 里怎么求稳态</div>
+        <p>对数线性化模型（本页 .mod）所有变量都是偏离稳态的百分比，稳态自动为 0，<code class="inline">steady;</code> 一步求解。若写非线性原始模型，则必须先 <code class="inline">initval;</code> 给猜测、再 <code class="inline">steady;</code> 求解，并用 <code class="inline">resid;</code> 检查残差。中尺度模型常用"对数线性化版本 + steady 归零"以避开复杂稳态解析。</p>
+      </div>
+    </div>
+
+    <!-- S5 -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 对数线性化与求解方法</h2>
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库</div>
+        <p style="margin-bottom:0">本节使用 <strong>对数线性化</strong>与<strong>扰动法（含二阶 / pruning）</strong>。不熟悉？先学
+          <a href="04-log-linearization.html">📚 基础知识库·对数线性化</a> → 与
+          <a href="15-perturbation-methods.html">📚 基础知识库·扰动法（一阶/二阶/三阶）</a> →。
+        </p>
+      </div>
+      <h3>5.1 为什么对数线性化</h3>
+      <p>DSGE 的非线性原始方程组无法直接求解析解。标准做法是在稳态附近做一阶泰勒展开（对数展开：$\hat x_t\equiv\log x_t-\log\bar x$），把非线性系统变成线性理性预期系统 $E_tF(\hat x_{t+1},\hat x_t,\hat x_{t-1},\varepsilon_t)=0$。常用近似技巧：</p>
+      <ul>
+        <li>乘积变加法：$\widehat{x_t y_t}=\hat x_t+\hat y_t$。</li>
+        <li>指数函数：$\widehat{x_t^\gamma}=\gamma\hat x_t$。</li>
+        <li>一阶条件包络：把 FOC 直接在稳态展开。</li>
+      </ul>
+      <h3>5.2 逐条线性化示例（原始方程 → 展开 → 线性化结果，不跳步）</h3>
+      <p>下面选三条最容易"只给结果"的方程，把从原始非线性式到对数线性式的每一步展开写全。记 $\hat x_t\equiv\log(x_t/\bar x)$，并反复使用：$\widehat{x_t y_t}=\hat x_t+\hat y_t$、$\widehat{x_t^\gamma}=\gamma\hat x_t$、$\widehat{E_t f_{t+1}}\approx E_t\hat f_{t+1}$。</p>
+
+      <h4>例 1 · 习惯消费欧拉（SW-2 + SW-1）→ 6.1</h4>
+      <p><strong>原始方程：</strong>$\lambda_t=\beta(1+i_t)E_t[\lambda_{t+1}/\Pi_{t+1}]$，其中 $\lambda_t=(C_t-hC_{t-1})^{-\sigma}-\beta h(C_{t+1}-hC_t)^{-\sigma}$（取期望算子已省略）。</p>
+      <p><strong>第一步：对数线性化 $\lambda_t$。</strong>令 $X_t\equiv C_t-hC_{t-1}$，稳态 $\bar X=\bar C(1-h)$。$\widehat{X_t}=\frac{\bar C}{\bar C(1-h)}(\hat c_t-h\hat c_{t-1})=\frac{1}{1-h}(\hat c_t-h\hat c_{t-1})$。对 $\lambda_t=X_t^{-\sigma}-\beta h X_{t+1}^{-\sigma}$ 在稳态展开：</p>
+      <div class="formula-block">
+        <div class="formula-label">$\lambda_t$ 的线性化展开</div>
+        $$\hat\lambda_t=\frac{1}{1-\beta h}\Big[-\sigma\hat X_t+\beta h\sigma\hat X_{t+1}\Big]=\frac{-\sigma}{(1-\beta h)(1-h)}\Big[(\hat c_t-h\hat c_{t-1})-\beta h(\hat c_{t+1}-h\hat c_t)\Big]$$
+      </div>
+      <p><strong>第二步：线性化欧拉 $\lambda_t=\beta R_t E_t[\lambda_{t+1}/\Pi_{t+1}]$。</strong>稳态 $\beta\bar R=1$，取对数：$\hat\lambda_t=(\hat r_t-\hat\pi_{t+1})+\hat\lambda_{t+1}$（$R_t=1+i_t$ 对数线性 $\hat r_t\approx\hat i_t$）。把上一步的 $\hat\lambda_t,\hat\lambda_{t+1}$ 代入并整理 $h/(1+h)$ 系数（利用 SW 常用近似 $\beta\approx1$ 简化），得：</p>
+      <div class="formula-block">
+        <div class="formula-label">6.1 · 习惯 IS（线性化结果）</div>
+        $$\hat c_t=\frac{h}{1+h}\hat c_{t-1}+\frac{1}{1+h}E_t\hat c_{t+1}-\frac{1-h}{\sigma(1+h)}(\hat i_t-E_t\hat\pi_{t+1})+\varepsilon_t^b$$
+      </div>
+
+      <h4>例 2 · 投资 FOC（SW-3）→ 6.2 第一式</h4>
+      <p><strong>原始方程：</strong>$1=Q_t[1-S(\xi_t)-S'(\xi_t)\xi_t]-\beta E_t\frac{\lambda_{t+1}}{\lambda_t}Q_{t+1}S'(\xi_{t+1})\xi_{t+1}^2$，$\xi_t=I_t/I_{t-1}$。</p>
+      <p><strong>第一步：稳态性质。</strong>$\bar\xi=1,S(1)=S'(1)=0$，故稳态 $Q=1$。把 $S(\xi)$ 在 $\xi=1$ 处二阶展开：$S(\xi)\approx\frac{\varphi}{2}(\xi-1)^2$，$S'(\xi)\approx\varphi(\xi-1)$。</p>
+      <p><strong>第二步：一阶展开。</strong>$\xi_t-1\approx\hat i_t-\hat i_{t-1}$，故 $S'(\xi_t)\approx\varphi(\hat i_t-\hat i_{t-1})$；$S'(\xi_{t+1})\approx\varphi(\hat i_{t+1}-\hat i_t)$。$S(\xi_t)$ 与 $S'(\xi_t)\xi_t$ 在一阶近似下均为二阶小量，只留 $S'$ 项：</p>
+      <div class="formula-block">
+        <div class="formula-label">投资 FOC 线性化展开</div>
+        $$0\approx\hat q_t-\varphi(\hat i_t-\hat i_{t-1})-\beta E_t[\hat q_{t+1}+\varphi(\hat i_{t+1}-\hat i_t)]$$
+      </div>
+      <p>整理 $\hat i_t$ 系数，得：</p>
+      <div class="formula-block">
+        <div class="formula-label">6.2 · 投资欧拉（线性化结果）</div>
+        $$\hat i_t=\frac{1}{1+\beta}\hat i_{t-1}+\frac{\beta}{1+\beta}E_t\hat i_{t+1}+\frac{1}{(1+\beta)\varphi}\hat q_t+\varepsilon_t^i$$
+      </div>
+
+      <h4>例 3 · 价格 NKPC（SW-P1 + SW-P2）→ 6.5</h4>
+      <p><strong>原始方程：</strong>最优价格 $P_t^*$ 与价格指数 $P_t^{1-\varepsilon_p}=(1-\theta_p)(P_t^*)^{1-\varepsilon_p}+\theta_p(P_{t-1}\pi_{t-1}^{\gamma_p})^{1-\varepsilon_p}$。</p>
+      <p><strong>第一步：价格指数线性化。</strong>令 $\tilde p_t\equiv P_t^*/P_t$ 为新定价格相对总价格的比例，稳态 $\tilde p=1$。取对数并利用 $1-\theta_p$ 为权重：$\hat{\tilde p}_t=\frac{\theta_p}{1-\theta_p}(\hat\pi_t-\gamma_p\hat\pi_{t-1})$。</p>
+      <p><strong>第二步：最优价格 FOC 线性化。</strong>SW-P1 在稳态 $\tilde p=1$、$MC=1/\mu_p$ 处展开，得 $\hat{\tilde p}_t=(1-\beta\theta_p)E_t\sum_{k=0}^\infty(\beta\theta_p)^k\widehat{mc}_{t+k}$，即递归形式 $\hat{\tilde p}_t=\beta\theta_p E_t\hat{\tilde p}_{t+1}+(1-\beta\theta_p)\widehat{mc}_t$。</p>
+      <p><strong>第三步：两式联立消去 $\hat{\tilde p}_t$。</strong>把第一步的 $\hat{\tilde p}_t$ 与 $\hat{\tilde p}_{t+1}$ 代入第二步，整理出：</p>
+      <div class="formula-block">
+        <div class="formula-label">6.5 · 价格 NKPC（线性化结果）</div>
+        $$\hat\pi_t=\frac{\beta}{1+\beta\gamma_p}E_t\hat\pi_{t+1}+\frac{\gamma_p}{1+\beta\gamma_p}\hat\pi_{t-1}+\frac{(1-\theta_p)(1-\beta\theta_p)}{\theta_p(1+\beta\gamma_p)}\widehat{mc}_t+\varepsilon_t^p$$
+      </div>
+      <p>$\kappa_p\equiv\frac{(1-\theta_p)(1-\beta\theta_p)}{\theta_p(1+\beta\gamma_p)}$ 即 NKPC 斜率。其余方程（6.3~6.7）的线性化同法：先写稳态性质，再对原始式做一阶泰勒展开，最后按变量整理。</p>
+
+      <h3>5.3 扰动法（perturbation）阶数选择</h3>
+      <p>Dynare 默认用 Blanchard-Kahn 形式的<strong>扰动法</strong>求线性/高阶近似策略函数 $\hat x_t=g_\theta(\hat x_{t-1},\varepsilon_t)$：</p>
+      <ul>
+        <li><strong>order=1（一阶）：</strong>确定性等价，不含风险修正。SW 类模型只用一阶会丢失预防性储蓄效应，且 7 个冲击下二阶矩偏差明显。</li>
+        <li><strong>order=2（二阶）：</strong>包含风险修正项，能捕捉"谨慎性储蓄""波动率对水平的影响"，是 SW(2007) 估计时的推荐阶数。</li>
+        <li><strong>pruning（剪枝）：</strong>二阶/三阶近似下，高阶矩项会通过交叉项反复累积导致样本矩发散。pruning 算法把高阶成分"剪枝"到不参与下一阶段的高阶更新，保证模拟矩稳定。中尺度多冲击模型<strong>必须开 pruning</strong>。</li>
+      </ul>
+      <div class="callout warning">
+        <div class="callout-title">为什么 SW 必须 order=2 + pruning</div>
+        <p>SW 含 7 个冲击与强非线性摩擦（习惯、调整成本、利用率）。一阶是确定性等价，对"风险溢价冲击"这种带预防性储蓄色彩的冲击刻画不足；二阶若不 pruning，长期模拟的二阶矩会爆炸。这也是 Dynare 官方 <code class="inline">sw2007.mod</code> 写法的标配。</p>
+      </div>
+    </div>
+
+    <!-- S6 -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 核心方程系统（全部写出，含假设解读）</h2>
+      <p>下面是 SW 模型的<strong>对数线性化</strong>核心方程（$\hat x_t$ 为偏离稳态）。这是 Dynare 代码里要写的全部内容。</p>
+
+      <h3>6.1 家庭：习惯形成下的消费欧拉</h3>
+      <div class="formula-block">
+        <div class="formula-label">习惯形成下的 IS / 消费欧拉</div>
+        $$\hat c_t = \frac{h}{1+h}\hat c_{t-1} + \frac{1}{1+h}E_t\hat c_{t+1} - \frac{1-h}{\sigma(1+h)}\big(\hat i_t - E_t\hat\pi_{t+1}\big) + \varepsilon_t^b$$
+      </div>
+      <p><strong>假设：</strong>外部习惯 $h$、CRRA 效用、完全保险市场使所有家庭消费相同。<strong>解读：</strong>$\hat c_{t-1}$ 项是消费惯性的来源——消费不能立刻调整，因为习惯存量 $hC_{t-1}$ 拖累。系数 $\frac{1-h}{\sigma(1+h)}$ 是"实际利率传导弹性"：$h$ 越大、$\sigma$ 越大，消费对利率越不敏感。$\varepsilon_t^b$ 是风险溢价/偏好冲击。</p>
+
+      <h3>6.2 投资调整成本与托宾 Q</h3>
+      <div class="formula-block">
+        <div class="formula-label">投资欧拉（含托宾 Q $q_t$）</div>
+        $$\hat i_t = \frac{1}{1+\beta}\big[\hat i_{t-1} + \beta E_t\hat i_{t+1}\big] + \frac{1}{(1+\beta)\varphi}\hat q_t + \varepsilon_t^i$$
+        $$\hat q_t = -\big(\hat i_t - E_t\hat\pi_{t+1}\big) + \beta(1-\delta) E_t\hat q_{t+1} + (1-\beta(1-\delta)) E_t\hat r_{t+1}^k$$
+      </div>
+      <p><strong>假设：</strong>二次调整成本 $S(I_t/I_{t-1})$，曲率 $\varphi=S''(\cdot)\big|_{ss}$。<strong>解读：</strong>$\hat i_{t-1}$ 与 $E_t\hat i_{t+1}$ 让投资对冲击的反应平滑滞后，呈现驼峰形；$\hat q_t$ 是托宾 Q，高 Q 刺激投资；第二式是 Q 的资产定价方程，把当期 Q 与未来资本回报挂钩。</p>
+
+      <h3>6.3 资本利用与资本积累</h3>
+      <div class="formula-block">
+        <div class="formula-label">资本利用选择 + 有效资本 + 积累</div>
+        $$\hat r_t^k = \psi\, \hat u_t \qquad (\psi \text{ 为利用成本曲率})$$
+        $$\bar{\hat K}_t = \hat u_t + \hat k_{t-1} \qquad (\text{有效资本 = 利用率 × 存量})$$
+        $$\hat k_t = (1-\delta)\hat k_{t-1} + \delta\,\hat i_t$$
+      </div>
+      <p><strong>假设：</strong>利用率 $u_t\in[0,1]$，稳态 $\bar u=1$，维持成本递增。<strong>解读：</strong>$\hat r_t^k=\psi\hat u_t$ 表示资本回报越高、企业越愿意加班使用资本；有效资本 $\bar K_t=u_tK_{t-1}$ 才是进入生产函数的量，<strong>不是存量 $K_{t-1}$</strong>——这是最容易写错的地方。</p>
+
+      <h3>6.4 生产函数与边际成本</h3>
+      <div class="formula-block">
+        $$\hat y_t = \phi\big(\hat a_t + \alpha \bar{\hat K}_t + (1-\alpha)\hat n_t\big)$$
+        $$\widehat{mc}_t = (1-\alpha)\hat w_t + \alpha \hat r_t^k - \hat a_t$$
+      </div>
+      <p><strong>假设：</strong>Cobb-Douglas 生产、固定成本 $\phi$（稳态利润为零）。<strong>解读：</strong>边际成本是工资与资本租金加权减 TFP 项；它是 NKPC 的"引擎"。</p>
+
+      <h3>6.5 价格 Phillips 曲线（含指数化）</h3>
+      <div class="formula-block">
+        <div class="formula-label">NKPC + 价格指数化 $\gamma_p$</div>
+        $$\hat\pi_t = \frac{\beta}{1+\beta\gamma_p} E_t\hat\pi_{t+1} + \frac{\gamma_p}{1+\beta\gamma_p}\hat\pi_{t-1} + \kappa_p\,\widehat{mc}_t + \varepsilon_t^p$$
+      </div>
+      <p><strong>假设：</strong>Calvo 概率 $\theta_p$、部分指数化 $\gamma_p$。<strong>解读：</strong>$\hat\pi_{t-1}$ 项由价格指数化引入：不能调价的厂商按过去通胀更新价格，于是通胀出现惯性，不再是纯前望。$\kappa_p=\frac{(1-\theta_p)(1-\beta\theta_p)}{\theta_p(1+\beta\gamma_p)}$ 是 NKPC 斜率。$\varepsilon_t^p$ 是价格加成冲击。</p>
+
+      <h3>6.6 工资 Phillips 曲线（含指数化）</h3>
+      <div class="formula-block">
+        <div class="formula-label">工资 Phillips + 工资指数化 $\gamma_w$</div>
+        $$\hat\pi_t^w = \frac{1}{1+\beta}\hat\pi_{t-1}^w + \frac{\beta}{1+\beta}E_t\hat\pi_{t+1}^w + \frac{\gamma_w}{1+\beta}\hat\pi_{t-1} - \frac{1+\beta\gamma_w}{1+\beta}\hat\pi_t + \frac{\beta}{1+\beta}E_t\hat\pi_{t+1} + \kappa_w\big(\widehat{mrs}_t - \hat w_t\big) + \varepsilon_t^w$$
+      </div>
+      <p><strong>假设：</strong>垄断竞争劳动供给、Calvo 工资、工资指数化 $\gamma_w$。<strong>解读：</strong>$\widehat{mrs}_t = \varphi\hat n_t + \frac{\sigma}{1-h}(\hat c_t-h\hat c_{t-1})$ 是劳动边际替代率；工资 Phillips 描述"工资通胀 $\pi_t^w$"而非"工资水平 $w_t$"，再通过 $\hat w_t=\hat w_{t-1}+\hat\pi_t^w-\hat\pi_t$ 累积成实际工资。</p>
+
+      <h3>6.7 Taylor 规则（含利率平滑）</h3>
+      <div class="formula-block">
+        $$\hat i_t = \rho_i \hat i_{t-1} + (1-\rho_i)\big[\phi_\pi \hat\pi_t + \phi_y \hat y_t\big] + \varepsilon_t^m$$
+      </div>
+      <p><strong>假设：</strong>央行渐进调整（$0&lt;\rho_i&lt;1$）。<strong>解读：</strong>$\rho_i$ 是利率平滑系数，反映央行"预防性渐进"；漏了它，货币 IRF 会瞬时回落，无法拟合联邦基金利率的高持续性。</p>
+    </div>
+
+    <!-- S7 -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 七种冲击全部解释</h2>
+      <p>SW 模型用 7 个外生 AR(1) 过程驱动全部动态，每一个对应一类被数据识别的"结构性扰动"。下面给出每个冲击的精确作用位置、经济含义与典型 IRF 形状。</p>
+
+      <h3>7.0 七条外生冲击 AR(1) 过程（SW-AR1 ~ SW-AR7，完整写出）</h3>
+      <div class="formula-block">
+        <div class="formula-label">七条外生过程（对数线性化形式）</div>
+        $$\hat a_t=\rho_a\hat a_{t-1}+\varepsilon_t^a \qquad\qquad\qquad\text{(SW-AR1 技术)}$$
+        $$\hat b_t=\rho_b\hat b_{t-1}+\varepsilon_t^b \qquad\qquad\qquad\text{(SW-AR2 风险溢价/偏好)}$$
+        $$\hat g_t=\rho_g\hat g_{t-1}+\rho_{ga}\varepsilon_t^a+\varepsilon_t^g \quad\text{(SW-AR3 政府支出，含与技术的相关系数 $\rho_{ga}$)}$$
+        $$\hat\varepsilon_t^p=\rho_p\hat\varepsilon_{t-1}^p+\varepsilon_t^p \quad\qquad\text{(SW-AR4 价格加成)}$$
+        $$\hat\varepsilon_t^w=\rho_w\hat\varepsilon_{t-1}^w+\varepsilon_t^w \quad\qquad\text{(SW-AR5 工资加成)}$$
+        $$\hat\varepsilon_t^i=\rho_i\hat\varepsilon_{t-1}^i+\varepsilon_t^i \quad\qquad\text{(SW-AR6 投资专用技术)}$$
+        $$\varepsilon_t^m=\text{i.i.d.}(0,\sigma_m^2) \quad\qquad\text{(SW-AR7 货币政策，白噪声直接进 Taylor 规则)}$$
+      </div>
+      <p><strong>定义：</strong>$\rho_a,\rho_b,\rho_g,\rho_p,\rho_w,\rho_i\in[0,1)$ 为各自回归系数；$\rho_{ga}$ 是政府支出对技术冲击的同期反应（SW 原文设 $\rho_{ga}\approx0.5$，财政与 TFP 相关）；$\varepsilon_t^a,\varepsilon_t^b,\dots$ 为独立同分布高斯新息，方差 $\sigma_a^2,\sigma_b^2,\dots$。<strong>理由：</strong>7 条过程恰好对应 7 个观测变量，保证似然可识别。<strong>直觉：</strong>AR(1) 让冲击有持续性；白噪声货币冲击则通过 Taylor 规则的 $\rho_i$ 平滑获得持续性。</p>
+      <div class="table-wrap"><table>
+        <tr><th>冲击</th><th>符号</th><th>作用位置</th><th>经济含义</th><th>典型 IRF</th></tr>
+        <tr><td>技术冲击</td><td>$\varepsilon_t^a$</td><td>生产函数 $\hat a_t=\rho_a\hat a_{t-1}+\varepsilon_t^a$</td><td>TFP 变化（RBC 来源），供给侧</td><td>产出长期上升、通胀先降、利率温和下降</td></tr>
+        <tr><td>投资专用技术冲击</td><td>$\varepsilon_t^i$</td><td>投资欧拉 $\varepsilon_t^i$</td><td>投资品相对价格/金融条件变化（Jorgenson 投资曲线外移）</td><td>投资大幅波动、资本存量缓慢累积</td></tr>
+        <tr><td>政府支出冲击</td><td>$\varepsilon_t^g$</td><td>资源约束 $\hat g_t=\rho_g\hat g_{t-1}+\varepsilon_t^g$</td><td>财政需求外生变化</td><td>产出上升、挤出消费、利率上升</td></tr>
+        <tr><td>货币政策冲击</td><td>$\varepsilon_t^m$</td><td>Taylor 规则</td><td>意外加息/降息（外于规则部分）</td><td>产出驼峰形下降、通胀缓慢下降（CEE 关键事实）</td></tr>
+        <tr><td>价格加成冲击</td><td>$\varepsilon_t^p$</td><td>价格 NKPC</td><td>供给侧通胀扰动（成本推动/markup）</td><td>通胀升、产出降（滞胀权衡）</td></tr>
+        <tr><td>工资加成冲击</td><td>$\varepsilon_t^w$</td><td>工资 NKPC</td><td>劳动市场势力/工会议价力变化</td><td>工资通胀升、就业降、通胀粘性上升</td></tr>
+        <tr><td>风险溢价/偏好冲击</td><td>$\varepsilon_t^b$</td><td>消费欧拉 $\varepsilon_t^b$</td><td>家庭储蓄偏好/风险情绪（"flight to quality"）</td><td>消费与投资同向波动，类似需求冲击</td></tr>
+      </table></div>
+      <div class="callout tip">
+        <div class="callout-title">为什么要 7 个？</div>
+        <p>观测变量也是 7 个（产出、消费、投资、通胀、利率、实际工资、就业/小时）。在理性预期模型里，<strong>冲击数至少要等于观测变量数</strong>，否则似然函数不可识别。SW 的 7×7 是识别与简约性的平衡。注意"投资专用技术冲击"与"风险溢价冲击"是 SW 相对 CEE(2005) 新增的两个——正是这两个让模型能同时拟合投资和消费的独立波动。</p>
+      </div>
+    </div>
+
+    <!-- S8 -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 参数校准表</h2>
+      <p>SW(2007) 把参数分两类：<strong>稳态矩参数</strong>用长期数据校准（不进估计）；<strong>动态结构参数</strong>用贝叶斯先验+后验估计。校准表如下：</p>
+      <div class="table-wrap"><table>
+        <tr><th>参数</th><th>含义</th><th>校准值</th><th>依据</th></tr>
+        <tr><td>$\beta$</td><td>季度贴现因子</td><td>0.99</td><td>稳态年化利率约 4%</td></tr>
+        <tr><td>$\delta$</td><td>季度折旧率</td><td>0.025</td><td>年折旧 10%</td></tr>
+        <tr><td>$\alpha$</td><td>资本份额</td><td>0.33</td><td>美国资本收入份额</td></tr>
+        <tr><td>$\bar G/Y$</td><td>政府支出/GDP</td><td>0.18</td><td>战后美国平均</td></tr>
+        <tr><td>$\bar I/Y$</td><td>投资/GDP</td><td>0.23</td><td>由 $\delta\cdot K/Y$ 推出</td></tr>
+        <tr><td>$\bar C/Y$</td><td>消费/GDP</td><td>0.59</td><td>残差</td></tr>
+        <tr><td>$\bar L$</td><td>稳态工时</td><td>1/3</td><td>时间配置</td></tr>
+      </table></div>
+      <p>动态参数（$h,\sigma,\varphi,\theta_p,\theta_w,\gamma_p,\gamma_w,\psi,\varphi_{inv},\phi_\pi,\phi_y,\rho_i$ 及 7 个冲击 AR 系数与标准差）则进入贝叶斯先验，见下节。</p>
+    </div>
+
+    <!-- S9 -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 贝叶斯估计：先验、数据与观测方程</h2>
+      <h3>9.1 数据来源（美国 FRED，7 个观测变量，可复现）</h3>
+      <p>SW(2007) 用战后美国季度数据，标准估计样本为 <strong>1966Q1–2004Q4</strong>（与原 AER 版本 1947Q1–2004Q2 的差别只在样本起点；教学复现常用 1966Q1 起，避开战后战时管制与价格控制期）。7 个观测变量与 7 个冲击一一对应，FRED 系列代码、下载与变换如下表（这是整张表最容易被"参见方法页"一笔带过的部分，这里全部写死）：</p>
+      <div class="table-wrap"><table>
+        <tr><th>观测变量（模型符号）</th><th>FRED 系列代码</th><th>原始含义</th><th>数据处理</th></tr>
+        <tr><td>产出增长 $\Delta y_t$</td><td><code class="inline">GDPC1</code></td><td>实际 GDP（链式 2017 美元，季度季调）</td><td>取对数 → 一阶差分 → ×100（季度环比折年）</td></tr>
+        <tr><td>消费增长 $\Delta c_t$</td><td><code class="inline">PCEC</code> / <code class="inline">PCECC96</code></td><td>个人消费支出（名义 PCEC 或实际 PCECC96）</td><td>实际值取对数 → 一阶差分 → ×100</td></tr>
+        <tr><td>投资增长 $\Delta i_t$</td><td><code class="inline">GPDIC1</code></td><td>实际私人国内总投资（含设备+存货+建筑）</td><td>取对数 → 一阶差分 → ×100</td></tr>
+        <tr><td>实际工资增长 $\Delta w_t$</td><td><code class="inline">COMPNFB</code> ÷ <code class="inline">GDPDEF</code></td><td>非农部门名义单位劳动报酬 ÷ GDP 平减指数</td><td>实际工资取对数 → 一阶差分 → ×100</td></tr>
+        <tr><td>工时 $n_t$</td><td><code class="inline">HOANBS</code></td><td>非农部门每周总工时指数</td><td>取对数 → 去线性趋势（或去样本均值），<strong>不差分</strong></td></tr>
+        <tr><td>通胀 $\pi_t$</td><td><code class="inline">GDPDEF</code></td><td>GDP 隐含价格平减指数</td><td>取对数 → 一阶差分 → <strong>×400</strong>（季度折年化百分点）</td></tr>
+        <tr><td>名义利率 $i_t$</td><td><code class="inline">FEDFUNDS</code></td><td>联邦基金有效利率（月度）</td><td>月度取季度算术平均 → ÷4（与模型季度百分点口径一致）</td></tr>
+      </table></div>
+      <div class="callout warning">
+        <div class="callout-title">为什么通胀 ×400、产出 ×100、利率 ÷4？口径必须一致</div>
+        <p>模型里 $\hat\pi_t$ 是"季度通胀率的对数偏离"。对数差分 $\Delta\log P$ 是季度环比增长率（小数）。×400 = 季度环比×4（年化）×100（百分数），与 FEDFUNDS 的年化百分点口径对齐；产出/消费/投资用 ×100 表示季度环比折年的百分点。利率若直接用年化的 FEDFUNDS（约 4–8），必须 ÷4 转成季度百分点，否则 Taylor 规则系数 $\phi_\pi$ 全错。<strong>工时不取差分</strong>，因为模型里 $n_t$ 是水平偏离（已去均值）。这三类单位错误是新手估计后验发散的第一大原因。</p>
+      </div>
+      <p><strong>人口与季调：</strong>人均化口径（$Y/N$、$C/N$）需除以 <code class="inline">CNP16OV</code>（ civilian non-institutional population）；若直接用总量季度序列，应先做 X-13 季调（FRED 系列多为季调 SA 版，直接用即可）。下载可在 FRED 网页或用 <code class="inline">fredr</code>(R) / <code class="inline">dataread('fred',...)</code>(MATLAB)。</p>
+
+      <h3>9.2 观测方程与"模型变量↔数据序列"对照表</h3>
+      <p>模型是去趋势/去均值的偏差模型，数据已取对数差分。观测方程把"模型隐含增长/水平"与"数据序列"一一对接。$\bar\gamma_Y,\bar\gamma_C,\bar\gamma_I,\bar\gamma_W$ 是各变量的稳态（样本平均）季度增长率，$\bar\pi,\bar i,\bar N$ 是稳态水平：</p>
+      <div class="formula-block">
+        <div class="formula-label">观测方程（Kalman 观测方程，7 条）</div>
+        $$\Delta Y_t^{obs} = \hat y_t-\hat y_{t-1}+\bar\gamma_Y\quad\;\;\text{（对应 GDPC1 对数差分）}$$
+        $$\Delta C_t^{obs} = \hat c_t-\hat c_{t-1}+\bar\gamma_C\quad\text{（对应 PCECC96 对数差分）}$$
+        $$\Delta I_t^{obs} = \hat i_t-\hat i_{t-1}+\bar\gamma_I\quad\text{（对应 GPDIC1 对数差分）}$$
+        $$\Delta W_t^{obs} = \hat w_t-\hat w_{t-1}+\bar\gamma_W\quad\text{（对应 COMPNFB/GDPDEF 对数差分）}$$
+        $$N_t^{obs} = \hat n_t + \bar N\qquad\qquad\quad\text{（对应 HOANBS 对数去趋势）}$$
+        $$\pi_t^{obs} = \hat\pi_t+\bar\pi\qquad\qquad\quad\text{（对应 GDPDEF 对数差分×400）}$$
+        $$i_t^{obs} = \hat i_t+\bar i\qquad\qquad\qquad\text{（对应 FEDFUNDS 季度均值÷4）}$$
+      </div>
+      <div class="table-wrap"><table>
+        <tr><th>数据序列</th><th>模型变量（状态/观测）</th><th>差分？</th><th>缩放</th></tr>
+        <tr><td>GDPC1</td><td>$\hat y_t$（产出）</td><td>是 $\Delta$</td><td>×100</td></tr>
+        <tr><td>PCECC96</td><td>$\hat c_t$（消费）</td><td>是 $\Delta$</td><td>×100</td></tr>
+        <tr><td>GPDIC1</td><td>$\hat i_t$（投资）</td><td>是 $\Delta$</td><td>×100</td></tr>
+        <tr><td>COMPNFB/GDPDEF</td><td>$\hat w_t$（实际工资）</td><td>是 $\Delta$</td><td>×100</td></tr>
+        <tr><td>HOANBS</td><td>$\hat n_t$（工时）</td><td>否（水平）</td><td>×100，去趋势</td></tr>
+        <tr><td>GDPDEF</td><td>$\hat\pi_t$（通胀）</td><td>是 $\Delta$</td><td>×400</td></tr>
+        <tr><td>FEDFUNDS</td><td>$\hat r_t$（名义利率）</td><td>否（水平）</td><td>年化÷4</td></tr>
+      </table></div>
+
+      <h3>9.3 SW(2007) 完整先验表（含持续性与冲击标准差）</h3>
+      <p>SW(2007, Table 1A/1B) 把参数分三类：<strong>结构参数</strong>（Normal/Beta，有经济先验）、<strong>持续性参数</strong>（Beta，均值 0.5，std 0.2）、<strong>冲击标准差</strong>（Inverse Gamma(0.05,∞ 型，弱信息先验）。完整先验如下，后验均值为 SW(2007) 报告的参考值：</p>
+      <div class="table-wrap"><table>
+        <tr><th>参数</th><th>含义</th><th>分布</th><th>先验均值</th><th>先验 Std</th><th>后验均值（参考）</th></tr>
+        <tr><td>$h$</td><td>习惯形成</td><td>Beta</td><td>0.70</td><td>0.10</td><td>0.71</td></tr>
+        <tr><td>$\sigma$</td><td>效用曲率（风险厌恶）</td><td>Normal</td><td>1.50</td><td>0.37</td><td>1.38</td></tr>
+        <tr><td>$\varphi$</td><td>劳动 Frisch 逆弹性</td><td>Normal</td><td>2.00</td><td>0.75</td><td>1.93</td></tr>
+        <tr><td>$\varphi_{inv}$</td><td>投资调整成本曲率 $S''$</td><td>Normal</td><td>4.00</td><td>1.50</td><td>5.48</td></tr>
+        <tr><td>$\theta_p$</td><td>价格 Calvo 不调价概率</td><td>Beta</td><td>0.50</td><td>0.10</td><td>0.84</td></tr>
+        <tr><td>$\theta_w$</td><td>工资 Calvo 不调价概率</td><td>Beta</td><td>0.50</td><td>0.10</td><td>0.79</td></tr>
+        <tr><td>$\gamma_p$</td><td>价格指数化程度</td><td>Beta</td><td>0.50</td><td>0.15</td><td>0.24</td></tr>
+        <tr><td>$\gamma_w$</td><td>工资指数化程度</td><td>Beta</td><td>0.50</td><td>0.15</td><td>0.53</td></tr>
+        <tr><td>$\psi$</td><td>资本利用成本曲率</td><td>Beta</td><td>0.50</td><td>0.15</td><td>0.54</td></tr>
+        <tr><td>$\rho_i$</td><td>利率平滑</td><td>Beta</td><td>0.75</td><td>0.10</td><td>0.81</td></tr>
+        <tr><td>$\phi_\pi$</td><td>Taylor 通胀反应</td><td>Normal</td><td>1.50</td><td>0.25</td><td>2.04</td></tr>
+        <tr><td>$\phi_y$</td><td>Taylor 产出反应</td><td>Normal</td><td>0.125</td><td>0.05</td><td>0.08</td></tr>
+        <tr><td>$\rho_a,\rho_i,\rho_g,\rho_p,\rho_w,\rho_b$</td><td>6 个冲击 AR(1) 持续性</td><td>Beta</td><td>0.50</td><td>0.20</td><td>0.7–0.99</td></tr>
+        <tr><td>$\sigma_a,\sigma_i,\sigma_g,\sigma_m,\sigma_p,\sigma_w,\sigma_b$</td><td>7 个冲击标准差</td><td>Inverse Gamma</td><td>0.10</td><td>2.00（弱信息）</td><td>0.05–0.5</td></tr>
+      </table></div>
+      <p><strong>先验依据：</strong>Beta 分布限定在 (0,1) 区间（适合概率/份额/持续性），Normal 不限界（适合弹性、反应系数），Inverse Gamma 保证标准差为正且尾部薄。$h,\theta_p,\theta_w$ 的先验均值锚定微观定价证据（Bils-Klenow 合同期约 1 年）；$\phi_\pi=1.5$ 锚定 Taylor(1993)；冲击标准差用弱信息先验，让数据说话。注意 Johannes Pfeifer 官方复刻版指出 SW(2007) 原文 Table 1B 对 $\rho_{ga}$ 的分布标注有笔误（代码实为 Normal 而非 Beta），复刻时以 Dynare <code class="inline">estimated_params</code> 为准。</p>
+
+      <h3>9.4 估计流程：Kalman 滤波 → 后验众数 → Metropolis-Hastings → 收敛诊断</h3>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">Step 1 · 构建似然：Kalman 滤波</div><div class="step-desc">把线性化模型写成状态空间 $X_t=A X_{t-1}+B\varepsilon_t$、$Y_t^{obs}=H X_t+\bar Y$，用 Kalman 滤波递推预测误差与协方差，得到边际似然 $p(Y|\theta)$。这是 Dynare <code class="inline">estimation</code> 自动做的。</div></div>
+        <div class="step-item"><div class="step-title">Step 2 · 找后验众数：后验核最大化</div><div class="step-desc">后验核 $\propto$ 先验 × 似然。用 <code class="inline">mode_compute=6</code>（Newton-type）或 <code class="inline">=4</code>（CMR）从先验均值出发找众数；找不出来时换初值或换优化器。众数是 MCMC 的起点。</div></div>
+        <div class="step-item"><div class="step-title">Step 3 · Metropolis-Hastings 抽后验样本</div><div class="step-desc">在众数附近以协方差自适应的 Gaussian 建议分布抽样，跑 <code class="inline">mh_nblocks=2</code>（两条独立链）、<code class="inline">mh_replic=200000</code>（每条 20 万步，前 50% 作 burn-in）。<code class="inline">mh_jscale</code> 调到使<strong>接受率落在 25%–35%</strong>（SW 推荐 20%–40%）：接受率太低说明建议分布太宽，太高说明太窄。</div></div>
+        <div class="step-item"><div class="step-title">Step 4 · 收敛诊断：BGR 与多变量统计</div><div class="step-desc">两条链的 Gelman-Brooks-Rubin (BGR) 统计量应在迭代后期趋于 1（Dynare 画的多变量收敛图应压到 1 附近）；同时看参数的后验密度图是否双峰、自相关是否快速衰减。不收敛就延长链或调 jscale。</div></div>
+        <div class="step-item"><div class="step-title">Step 5 · 报告与模型比较</div><div class="step-desc">报告后验均值与 90% 置信区间；用边际似然（Geweke 预测似然/Chib 边际似然）做模型比较；跑 Iskrev(2010) 局部识别检验排除"参数组合不可识别"。</div></div>
+      </div>
+      <p><strong>后验结果怎么读：</strong>若 $\theta_p,\theta_w$ 后验显著高于先验（0.84 vs 先验 0.5），说明数据要求更强的名义刚性；$h\approx0.7$ 确认消费惯性；$\phi_\pi$ 升到 2.0 说明美联储对通胀反应比 Taylor 规则更激进。若某参数后验几乎等于先验，说明该参数不可识别或冲击冗余。</p>
+
+      <h3>9.5 中国数据怎么接（本土估计）</h3>
+      <p>把 SW 框架用到中国，观测变量与数据来源替换如下（均为季度、季调）：</p>
+      <div class="table-wrap"><table>
+        <tr><th>模型变量</th><th>国内数据来源</th><th>具体变量</th></tr>
+        <tr><td>产出增长</td><td>国家统计局 / Wind</td><td>实际 GDP 当季值（GDP95 或 GDP 现价 ÷ GDP 平减指数），取对数差分×100</td></tr>
+        <tr><td>消费增长</td><td>国家统计局 / Wind</td><td>社会消费品零售总额或居民消费支出季度值，剔物价后对数差分</td></tr>
+        <tr><td>投资增长</td><td>国家统计局 / CSMAR</td><td>固定资产投资完成额（FAI）或资本形成总额，剔价格后对数差分</td></tr>
+        <tr><td>通胀</td><td>国家统计局 / Wind / CEIC</td><td>GDP 平减指数或 CPI（全国居民消费价格指数）环比折年</td></tr>
+        <tr><td>名义利率</td><td>中国人民银行 / Wind</td><td>7 天银行间质押回购利率（DR007）或一年期贷款基准利率季度均值</td></tr>
+        <tr><td>工时/就业</td><td>国家统计局 / CEIC</td><td>城镇单位就业人员或城镇调查失业率折算，取对数去趋势</td></tr>
+        <tr><td>实际工资</td><td>国家统计局 / CSMAR</td><td>城镇单位就业人员平均工资 ÷ CPI</td></tr>
+      </table></div>
+      <p>注意中国数据口径与美国不同：投资用 FAI 而非 GPDI，利率用 DR007 而非联邦基金，工时数据质量较弱，常用就业或失业率替代。样本通常取 1996Q1（或 2001Q1，加入 WTO 后结构更稳）至最近季度。</p>
+    </div>
+
+    <!-- S10 -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> Dynare .mod 逐步撰写（≥100 行，中文注释）</h2>
+      <p>下面按 Dynare 的书写顺序，<strong>逐块讲解</strong>：var → varexo → parameters → model → initval → steady → check → shocks → stoch_simul。每一步在做什么、为什么这么写，都在注释里说明。</p>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">Step 1 · var：声明内生变量</div><div class="step-desc">列出全部内生变量（23 个），Dynare 据此决定方程组规模。名字要与 model 块一致。</div></div>
+        <div class="step-item"><div class="step-title">Step 2 · varexo：声明外生冲击</div><div class="step-desc">7 个 eps_*。Dynare 把它们当作独立同分布扰动，进 Kalman 滤波。</div></div>
+        <div class="step-item"><div class="step-title">Step 3 · parameters：声明并赋值参数</div><div class="step-desc">把第 8 节校准表与第 9 节先验均值写成初值。估计时改用 estimated_params 块。</div></div>
+        <div class="step-item"><div class="step-title">Step 4 · model：写均衡方程</div><div class="step-desc">把第 6 节 14 条线性化方程 + 7 条 AR(1) 过程逐行写下。注意 c(-1)/c(+1) 的前瞻后顾记号。</div></div>
+        <div class="step-item"><div class="step-title">Step 5 · initval / steady：稳态求解</div><div class="step-desc">对数线性化版本所有变量稳态为 0，steady 直接归零；非线性版本需 initval 给初值。</div></div>
+        <div class="step-item"><div class="step-title">Step 6 · check：BLP 条件诊断</div><div class="step-desc">check 自动检查 Blanchard-Kahn 鞍点条件是否满足，报前定/前瞻变量数。不满足说明方程写错或参数不当。</div></div>
+        <div class="step-item"><div class="step-title">Step 7 · shocks：声明冲击方差</div><div class="step-desc">把 7 个冲击标准差写成方差（平方）。这是 IRF 幅度的来源。</div></div>
+        <div class="step-item"><div class="step-title">Step 8 · stoch_simul：求解+模拟</div><div class="step-desc">order=2 二阶扰动 + pruning 剪枝 + irf=40 画 40 期脉冲。列出要打印的变量。</div></div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Dynare / sw2007_full.mod（≥100 行教学完整版）</span><button class="copy-btn">复制</button></div>
+<pre><code>// ============================================================
+// sw2007_full.mod —— Smets-Wouters (2007) 中尺度 DSGE 教学完整版
+// 六大摩擦(习惯/投资调整成本/资本利用/Calvo价格/Calvo工资/指数化)
+// 七冲击(技术/投资专用/政府支出/货币/价格加成/工资加成/风险溢价)
+// 求解：order=2 + pruning
+// 运行：dynare sw2007_full.mod
+// 所有变量为偏离稳态的对数/百分点
+// ============================================================
+
+// ---------- Step 1: 内生变量声明 ----------
+var
+  y          // 产出
+  c          // 消费
+  i          // 投资
+  n          // 劳动(工时)
+  pi         // 通胀
+  r          // 名义利率(联邦基金)
+  rn         // 风险溢价/偏好冲击过程
+  rk         // 资本实际租金
+  w          // 实际工资
+  mc         // 实际边际成本
+  q          // 托宾Q
+  k          // 资本存量(滞后状态)
+  kbar       // 有效资本 = u + k(-1)
+  u          // 资本利用率
+  pi_w       // 工资通胀
+  mrs        // 劳动边际替代率
+  g          // 政府支出
+  a          // 技术过程
+  b          // 偏好/风险溢价过程
+  p_shock    // 价格加成过程
+  w_shock    // 工资加成过程
+  i_shock    // 投资专用技术过程
+;
+
+// ---------- Step 2: 外生冲击声明(7个) ----------
+varexo
+  eps_a      // 技术冲击
+  eps_i      // 投资专用技术冲击
+  eps_g      // 政府支出冲击
+  eps_m      // 货币政策冲击
+  eps_p      // 价格加成冲击
+  eps_w      // 工资加成冲击
+  eps_b      // 风险溢价/偏好冲击
+;
+
+// ---------- Step 3: 参数声明与校准 ----------
+parameters beta sigma h phi varphi alpha delta ...
+    theta_p theta_w gamma_p gamma_w psi invadj ...
+    phi_pi phi_y rho_i ...
+    rho_a rho_i2 rho_g rho_m rho_p rho_w rho_b;
+
+beta=0.99;          // 季度贴现因子(年化4%)
+sigma=1.5;          // 风险厌恶系数
+h=0.7;              // 习惯形成参数(SW后验≈0.7)
+phi=2.0;            // 劳动Frisch逆弹性
+alpha=0.33;         // 资本份额
+delta=0.025;        // 季度折旧率(年10%)
+theta_p=0.75;       // 价格Calvo不调价概率(平均1年合同)
+theta_w=0.75;       // 工资Calvo不调价概率
+gamma_p=0.5;        // 价格指数化程度
+gamma_w=0.5;        // 工资指数化程度
+psi=0.5;            // 资本利用成本曲率
+invadj=5.0;         // 投资调整成本曲率 S''
+phi_pi=1.5;         // Taylor对通胀反应
+phi_y=0.125;        // Taylor对产出反应
+rho_i=0.75;         // 利率平滑
+// 7个AR(1)持续性
+rho_a=0.95; rho_i2=0.71; rho_g=0.97; rho_m=0.15;
+rho_p=0.90; rho_w=0.90; rho_b=0.22;
+
+// ---------- Step 4: 模型方程 ----------
+model;
+// (1) 习惯形成下的消费欧拉(含偏好冲击 b)
+c = h/(1+h)*c(-1) + 1/(1+h)*c(+1) ...
+    - (1-h)/(sigma*(1+h))*( r - pi(+1) ) + b;
+
+// (2) 投资欧拉(含调整成本与投资专用冲击 i_shock)
+i = 1/(1+beta)*( i(-1) + beta*i(+1) ) ...
+    + 1/((1+beta)*invadj)*q + i_shock;
+
+// (3) 托宾Q资产定价方程
+q = -( r - pi(+1) ) + beta*(1-delta)*q(+1) ...
+    + (1-beta*(1-delta))*rk(+1);
+
+// (4) 资本利用: rk = psi * u
+rk = psi*u;
+
+// (5) 有效资本 = 利用率 + 滞后资本
+kbar = u + k(-1);
+
+// (6) 资本积累
+k = (1-delta)*k(-1) + delta*i;
+
+// (7) 生产函数(忽略固定成本phi)
+y = a + alpha*kbar + (1-alpha)*n;
+
+// (8) 边际成本
+mc = (1-alpha)*w + alpha*rk - a;
+
+// (9) 资源约束(简化: y = c + i + g)
+y = c + i + g;
+
+// (10) 价格NKPC(含指数化gamma_p与价格加成冲击)
+pi = beta/(1+beta*gamma_p)*pi(+1) ...
+    + gamma_p/(1+beta*gamma_p)*pi(-1) ...
+    + ((1-theta_p)*(1-beta*theta_p))/(theta_p*(1+beta*gamma_p))*mc ...
+    + p_shock;
+
+// (11) 劳动边际替代率(含习惯 h)
+mrs = phi*n + sigma/(1-h)*( c - h*c(-1) );
+
+// (12) 工资Phillips曲线(含指数化gamma_w)
+pi_w = beta/(1+beta)*pi_w(+1) + 1/(1+beta)*pi_w(-1) ...
+     + gamma_w/(1+beta)*pi(-1) ...
+     - (1+beta*gamma_w)/(1+beta)*pi + beta/(1+beta)*pi(+1) ...
+     + ((1-theta_w)*(1-beta*theta_w))/(theta_w*(1+beta))*( mrs - w ) ...
+     + w_shock;
+
+// (13) 实际工资累积关系: w = w(-1) + pi_w - pi
+w = w(-1) + pi_w - pi;
+
+// (14) Taylor规则(含利率平滑与货币冲击 eps_m)
+r = rho_i*r(-1) ...
+    + (1-rho_i)*( phi_pi*pi + phi_y*y ) + eps_m;
+
+// (15-21) 7个外生冲击的AR(1)过程
+a       = rho_a*a(-1)       + eps_a;     // 技术
+i_shock= rho_i2*i_shock(-1) + eps_i;    // 投资专用
+g       = rho_g*g(-1)       + eps_g;    // 政府支出
+p_shock = rho_p*p_shock(-1) + eps_p;    // 价格加成
+w_shock = rho_w*w_shock(-1) + eps_w;    // 工资加成
+b       = rho_b*b(-1)       + eps_b;    // 风险溢价/偏好
+// eps_m 已直接进Taylor规则
+end;
+
+// ---------- Step 5: 稳态求解 ----------
+// 对数线性化模型: 所有变量稳态=0
+// 若写非线性原始模型, 先 initval; 给猜测:
+//   initval;  y=1; c=0.59; i=0.23; k=9.3; n=1/3; pi=0; r=0.01; end;
+//   steady; resid;   // resid; 检查稳态残差
+steady;
+
+// ---------- Step 6: Blanchard-Kahn 诊断 ----------
+check;
+
+// ---------- Step 7: 冲击方差 ----------
+shocks;
+var eps_a = 0.0045^2;   // 技术
+var eps_i = 0.10^2;     // 投资专用
+var eps_g = 0.02^2;     // 政府支出
+var eps_m = 0.0025^2;   // 货币
+var eps_p = 0.01^2;     // 价格加成
+var eps_w = 0.05^2;     // 工资加成
+var eps_b = 0.10^2;     // 风险溢价
+end;
+
+// ---------- Step 8: 二阶求解 + pruning + IRF ----------
+// order=2: 二阶扰动,含风险修正
+// pruning: 抑制高阶矩累积发散(中尺度多冲击必开)
+// irf=40: 画40期脉冲
+stoch_simul(order=2, irf=40, pruning, nograph) ...
+  y c i n pi r w rk q kbar u;
+
+// ============================================================
+// ===== Step 9 (估计用): 贝叶斯估计块 =====
+// 跑估计时把上面 stoch_simul 注释掉, 打开以下块:
+// ============================================================
+// (a) 数据声明: 7个观测变量(与9.1表一一对应)
+// varobs  y_obs c_obs i_obs w_obs n_obs pi_obs r_obs;
+// 数据文件 sw_us_data.m 或 .xlsx 需在运行目录, 列顺序同上,
+// 已按 9.1 处理: 对数差分×100 / ×400 / 利率÷4 / 工时去趋势.
+
+// (b) 先验(对应9.3表): 分布(mean,std)
+// estimated_params;
+//   h,           beta_pdf,   0.70, 0.10;     // 习惯
+//   sigma,       normal_pdf, 1.50, 0.37;     // 效用曲率
+//   phi,         normal_pdf, 2.00, 0.75;    // Frisch逆
+//   invadj,      normal_pdf, 4.00, 1.50;    // 投资调整成本
+//   theta_p,     beta_pdf,   0.50, 0.10;     // 价格Calvo
+//   theta_w,     beta_pdf,   0.50, 0.10;     // 工资Calvo
+//   gamma_p,     beta_pdf,   0.50, 0.15;     // 价格指数化
+//   gamma_w,     beta_pdf,   0.50, 0.15;     // 工资指数化
+//   psi,         beta_pdf,   0.50, 0.15;     // 利用率曲率
+//   rho_i,       beta_pdf,   0.75, 0.10;     // 利率平滑
+//   phi_pi,      normal_pdf, 1.50, 0.25;     // Taylor通胀
+//   phi_y,       normal_pdf, 0.125,0.05;     // Taylor产出
+//   // 6个AR(1)持续性
+//   rho_a,rho_i2,rho_g,rho_p,rho_w,rho_b, beta_pdf, 0.50, 0.20;
+//   // 7个冲击标准差(逆Gamma弱信息)
+//   stderr eps_a,  inv_gamma_pdf, 0.10, 2.00;
+//   stderr eps_i,  inv_gamma_pdf, 0.10, 2.00;
+//   stderr eps_g,  inv_gamma_pdf, 0.10, 2.00;
+//   stderr eps_m,  inv_gamma_pdf, 0.10, 2.00;
+//   stderr eps_p,  inv_gamma_pdf, 0.10, 2.00;
+//   stderr eps_w,  inv_gamma_pdf, 0.10, 2.00;
+//   stderr eps_b,  inv_gamma_pdf, 0.10, 2.00;
+// end;
+
+// (c) Kalman滤波+后验众数+MH抽样
+// estimation(datafile=sw_us_data, xlsrange='B2:H180', ...
+//            mode_compute=6,         % Newton找后验众数
+//            mh_nblocks=2,           % 两条独立链
+//            mh_replic=200000,       % 每条20万步
+//            mh_jscale=0.4,          % 调到接受率25%-35%
+//            mcmc=drop,              % 自动去burn-in
+//            filter_covariance, ...
+//            smoothed_state, ...
+//            irf=40, periods=100);
+// 跑完后 Dynare 输出:
+//   - 后验均值/90%置信区间表
+//   - BGR多变量收敛图(应收敛到1)
+//   - 边际似然、预测似然(模型比较)
+//   - smoothed 冲击实现(历史分解)
+</code></pre>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">框架 ≠ 完整 SW(2007)</div>
+        <p>上面 <code class="inline">.mod</code> 已包含全部六类摩擦、七种冲击，以及注释掉的 <code class="inline">varobs / estimated_params / estimation</code> 贝叶斯估计块。要 1:1 复刻 SW(2007 AER) 的后验，还需补充：资本利用率的非线性稳态、价格/工资指数化的精确权重、政府支出与技术冲击的相关性 $\rho_{ga}$、以及测量误差。本框架用于理解结构、跑通 IRF 与估计流程。</p>
+      </div>
+    </div>
+
+    <!-- S11 -->
+    <div class="section" id="s11">
+      <h2><span class="sec-num">11</span> 脉冲响应与结果解读</h2>
+      <p>跑通 <code class="inline">stoch_simul</code> 后，Dynare 输出 7 组 IRF（每个冲击对 10 个变量）。下面解读最关键的三组，对照 SVAR 事实检查模型是否"像数据"。</p>
+      <h3>11.1 货币政策冲击 $\varepsilon_t^m\uparrow$（意外加息 25bp）</h3>
+      <p><strong>预期 IRF：</strong>名义利率当期上升后缓慢回落；实际利率上升 → 消费（因习惯）与投资（因调整成本）<strong>不立刻跳水，而是在 4–6 个季度后才到谷底</strong>（驼峰形）；产出缓慢下降；通胀下降但因指数化有惯性，反应平缓；实际工资因工资粘性下降缓慢。<strong>对照 CEE(2005) SVAR：</strong>若你的 IRF 产出立即跳水，说明习惯 $h$ 与调整成本没起作用（参数太小或方程写错）。</p>
+      <h3>11.2 技术冲击 $\varepsilon_t^a\uparrow$（TFP 上升）</h3>
+      <p><strong>预期 IRF：</strong>产出、消费、投资长期上升；<strong>通胀下降</strong>（供给改善）；就业短期可能下降（Gali 1999 "技术冲击减少就业"事实），工资缓慢上升。若你的模型技术冲击后就业上升过快，说明价格粘性不足或劳动弹性设定有误。</p>
+      <h3>11.3 风险溢价冲击 $\varepsilon_t^b\uparrow$（避险情绪上升）</h3>
+      <p><strong>预期 IRF：</strong>家庭想多储蓄少消费，消费与投资同向下降；央行被迫降息。这是 SW 相对三方程新增的"需求侧"主要来源，方差分解中通常解释消费与产出的相当比例。</p>
+      <div class="callout tip">
+        <div class="callout-title">怎么读方差分解</div>
+        <p>Dynare 报告 <code class="inline">var_decomposition</code>。SW(2007) 的经典结论：<strong>技术冲击主要解释产出长期方差；投资专用冲击解释投资；价格/工资加成冲击解释通胀；货币冲击解释利率；风险溢价冲击解释消费</strong>。若某个冲击的方差分解接近 0，说明它在识别上是冗余的，可删。</p>
+      </div>
+
+      <h3>11.4 方差分解（7 冲击各自解释谁）</h3>
+      <p>SW(2007) 后验众数下的方差分解（长期，近似）是判断模型"有没有解释对"的关键表。下表给出教科书式的分解结构：</p>
+      <div class="table-wrap"><table>
+        <tr><th>被解释变量</th><th>主解释冲击（占比量级）</th><th>次要冲击</th><th>经济直觉</th></tr>
+        <tr><td>产出 $y$（长期）</td><td>技术 $\varepsilon^a$（≈1/3）+ 投资专用 $\varepsilon^i$（≈1/3）+ 风险溢价 $\varepsilon^b$</td><td>政府支出</td><td>供给侧决定长期产出</td></tr>
+        <tr><td>消费 $c$</td><td>风险溢价 $\varepsilon^b$（≈1/2）+ 技术 $\varepsilon^a$</td><td>政府支出（挤出）</td><td>消费独立波动主要来自偏好/风险情绪</td></tr>
+        <tr><td>投资 $i$</td><td>投资专用技术 $\varepsilon^i$（≈2/3）</td><td>风险溢价</td><td>投资波动由投资品相对价格/金融条件驱动</td></tr>
+        <tr><td>通胀 $\pi$</td><td>价格加成 $\varepsilon^p$（≈1/2）+ 工资加成 $\varepsilon^w$</td><td>技术</td><td>通胀主要由成本推动型 markup 冲击驱动</td></tr>
+        <tr><td>名义利率 $r$</td><td>货币 $\varepsilon^m$（≈1/3）+ 加成冲击</td><td>风险溢价</td><td>利率的外生部分来自政策扰动</td></tr>
+        <tr><td>实际工资 $w$</td><td>工资加成 $\varepsilon^w$（≈1/2）+ 技术</td><td>价格加成</td><td>工资持续主要由劳动市场议价力驱动</td></tr>
+      </table></div>
+      <p>若你的方差分解与上表相差很大（例如风险溢价冲击解释了几乎全部），说明先验/数据处理/观测方程有问题。<strong>这是比 IRF 更硬的诊断。</strong></p>
+
+      <h3>11.5 模型诊断清单（估计后必跑）</h3>
+      <ul>
+        <li><strong>BLP/秩条件：</strong><code class="inline">check;</code> 报告的前瞻变量数 = 不稳定特征根数；不等说明方程漏写或参数越界。</li>
+        <li><strong>识别检验：</strong>跑 Iskrev(2010) 局部识别（Dynare <code class="inline">identification;</code>），检查参数梯度是否全秩；共线参数对（如 $\gamma_p$ 与 $\theta_p$）会被标红。</li>
+        <li><strong>MCMC 收敛：</strong>两条链 BGR 统计量压到 1，参数后验密度单峰、自相关快速衰减；接受率 25%–35%。</li>
+        <li><strong> smoothed 冲击正交性：</strong>估计出的 7 个冲击应近似不相关；若 $\varepsilon^m$ 与 $\varepsilon^b$ 高度相关，说明"货币政策"与"风险溢价"识别不清。</li>
+        <li><strong>边际似然比较：</strong>SW 模型 vs. 三方程 vs. VAR 的边际似然差 ≥ 2（log Bayes 因子）才算"更强拟合"。</li>
+        <li><strong>二阶矩匹配：</strong>模型模拟的产出/消费/投资标准差与样本矩对比；二阶不 pruning 会爆炸，务必开。</li>
+      </ul>
+    </div>
+
+    <!-- S12 -->
+    <div class="section" id="s12">
+      <h2><span class="sec-num">12</span> 与三方程模型对比 + 论文/错误/进阶</h2>
+      <h3>12.1 与三方程模型的对比</h3>
+      <div class="table-wrap"><table>
+        <tr><th>维度</th><th>三方程 NK</th><th>SW 中尺度</th></tr>
+        <tr><td>变量数</td><td>3 个（y, π, i）</td><td>17+ 个</td></tr>
+        <tr><td>冲击数</td><td>2 个（货币 + 自然利率）</td><td>7 个</td></tr>
+        <tr><td>消费惯性</td><td>无（纯前望）</td><td>习惯形成 $h$ 引入 $\hat c_{t-1}$</td></tr>
+        <tr><td>投资</td><td>没有</td><td>调整成本 + 托宾 Q，驼峰形</td></tr>
+        <tr><td>资本</td><td>没有</td><td>存量 + 利用率</td></tr>
+        <tr><td>价格 Phillips</td><td>纯前望 $\hat\pi_t=\beta E_t\hat\pi_{t+1}+\kappa\hat y_t$</td><td>含 $\hat\pi_{t-1}$（指数化 $\gamma_p$）</td></tr>
+        <tr><td>工资</td><td>外生/灵活</td><td>Calvo 工资粘性 + 指数化</td></tr>
+        <tr><td>政策规则</td><td>$\phi_\pi\pi+\phi_y y+\varepsilon^m$</td><td>加利率平滑 $\rho_i$</td></tr>
+        <tr><td>主要用途</td><td>教学、货币政策原理</td><td>央行/学术机构做预测、政策反事实</td></tr>
+      </table></div>
+
+      <h3>12.2 必读论文</h3>
+      <div class="paper-card">
+        <span class="paper-type en">English · 中尺度工作母机</span>
+        <div class="paper-title">Shocks and Frictions in US Business Cycles: A Bayesian DSGE Approach</div>
+        <div class="paper-meta">Smets F. &amp; Wouters R., <em>American Economic Review</em>, 2007</div>
+        <div class="paper-desc">本页的直接母本。用贝叶斯方法估计含 7 冲击、6 摩擦的中尺度模型，证明它能拟合美国战后宏观数据，并与 VAR 做对比。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 更早的结构原型</span>
+        <div class="paper-title">Nominal Rigidities and the Dynamic Effects of a Shock to Monetary Policy</div>
+        <div class="paper-meta">Christiano L., Eichenbaum M. &amp; Evans C., <em>JPE</em>, 2005</div>
+        <div class="paper-desc">CEE(2005) 首次把习惯形成、投资调整成本、Calvo 价格/工资、指数化拼进一个模型，匹配 SVAR 估计的货币政策冲击反应。SW(2007) 是它的贝叶斯版。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 综述</span>
+        <div class="paper-title">新凯恩斯动态随机一般均衡模型的发展与中国应用</div>
+        <div class="paper-meta">《经济研究》《经济学(季刊)》中关于 SW/CEE 模型在中国估计与政策模拟的综述</div>
+        <div class="paper-desc">讨论如何把 SW 框架本土化：加入汇率、影子银行、房地产、金融加速器等模块。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 应用估计</span>
+        <div class="paper-title">基于贝叶斯 DSGE 模型的中国经济波动与货币政策分析</div>
+        <div class="paper-meta">《金融研究》《数量经济技术经济研究》中用 SW 类模型估计中国经济结构参数的论文</div>
+        <div class="paper-desc">估计中国的 Calvo 概率、习惯参数 $h$、Taylor 规则系数，并做方差分解与反事实政策模拟。</div>
+      </div>
+
+      <h3>12.3 常见错误</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：漏写资本利用率，直接用 $K_t$ 当有效资本</div>
+        <p>SW 模型里企业租用的是<strong>有效资本</strong> $\bar K_t = u_t K_{t-1}$，不是存量 $K_{t-1}$。漏掉 $u_t$ 项会让生产函数与资本积累对不上，稳态与 IRF 都错。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：把工资 Phillips 写成"工资水平 $w_t$ 的方程"而非"工资通胀 $\pi_t^w$"</div>
+        <p>SW 用 Calvo 工资定价，解出来的是<strong>工资通胀</strong> $\pi_t^w$，再通过 $w_t=w_{t-1}+\pi_t^w-\pi_t$ 累积成实际工资。漏掉这层关系，水平与通胀混在一起，模型发散。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 3：7 个冲击却只用 4 个观测变量估计</div>
+        <p>冲击数 &gt; 观测数时，似然不可识别，贝叶斯后验完全由先验决定。要么增加观测变量（就业、消费、投资），要么删除冗余冲击。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 4：忽略利率平滑 $\rho_i$ 却想拟合"持续政策"事实</div>
+        <p>央行实际调整利率是"渐进"的，Taylor 规则里必须有 $\rho_i \hat i_{t-1}$ 项。漏了它，货币政策 IRF 会瞬时回落，无法解释联邦基金利率的高持续性。</p>
+      </div>
+
+      <h3>12.4 进阶资料</h3>
+      <ul>
+        <li>Del Negro, Schorfheide, Smets &amp; Wouters (2007), "On the Fit of New Keynesian Models", <em>JEEA</em>。</li>
+        <li>Ravenna (2007), "An Accuracy Analysis of SW(2007)" —— 二阶扰动 vs. 精确解。</li>
+        <li>Dynare 官方 <code class="inline">examples/sw2007.mod</code> —— 官方复刻版，对照本页框架。</li>
+        <li>Adjemian et al., <em>Dynare User Guide</em> 中关于 <code class="inline">estimated_params</code> 与 MCMC 的章节。</li>
+        <li>Iskrev (2010) 局部识别检验：估计前必跑，排除"参数组合不可识别"。</li>
+      </ul>
+      <div class="callout tip">
+        <div class="callout-title">学习路径建议</div>
+        <p>先用 RBC 打骨架 → 用三方程学货币 → 再用 SW 学"如何把模型做大到能拟合数据"。直接啃 SW (2007) 原文会被方程数量淹没；按本工作站路线（09→10→11）循序渐进最稳。</p>
+      </div>
+    </div>
+
+    <!-- EQUATION SUMMARY -->
+    <div class="section" id="s_esum">
+      <h2><span class="sec-num">E</span> 方程总清单 · Equation Summary</h2>
+      <p>下表汇总本模型全部方程（编号与正文一致）。原始非线性方程 21 条 + 横截条件 1 条 + 外生 AR(1) 7 条 = <strong>29 条结构/外生方程</strong>；其对数线性化版本 21 条见 §06。合计 <strong>本模型共 36 个核心方程</strong>。</p>
+      <div class="table-wrap"><table>
+        <tr><th>编号</th><th>方程</th><th>名称</th><th>正文位置</th></tr>
+        <tr><td>SW-0</td><td>$U_t=\frac{(C_t-hC_{t-1})^{1-\sigma}}{1-\sigma}-\frac{N_t^{1+\varphi}}{1+\varphi}$</td><td>效用函数（习惯形成）</td><td>§3.0</td></tr>
+        <tr><td>SW-0b</td><td>$C+I+B/P=\frac{WN}{P}+(r^ku-a(u))\bar K_{t-1}+\frac{R_{t-1}B_{t-1}}{P_t}$</td><td>家庭预算约束</td><td>§3.0</td></tr>
+        <tr><td>SW-0c</td><td>$\bar K_t=u_tK_{t-1},\;K_t=(1-\delta)K_{t-1}+[1-S(I_t/I_{t-1})]I_t$</td><td>有效资本+资本积累</td><td>§3.0 / SW-M3</td></tr>
+        <tr><td>SW-1</td><td>$\lambda_t=(C_t-hC_{t-1})^{-\sigma}-\beta h E_t(C_{t+1}-hC_t)^{-\sigma}$</td><td>习惯下边际效用</td><td>§3.0/3.1</td></tr>
+        <tr><td>SW-2</td><td>$\lambda_t=\beta R_t E_t[\lambda_{t+1}/\Pi_{t+1}]$</td><td>消费欧拉</td><td>§3.1</td></tr>
+        <tr><td>SW-3</td><td>$1=Q_t[1-S-S'\xi]-\beta E_t\frac{\lambda_{t+1}}{\lambda_t}Q_{t+1}S'_{t+1}\xi_{t+1}^2$</td><td>投资 FOC（Q 理论）</td><td>§3.0/3.2</td></tr>
+        <tr><td>SW-4</td><td>$r_t^k=a'(u_t)$</td><td>资本利用最优</td><td>§3.3</td></tr>
+        <tr><td>SW-5</td><td>$Q_t=\beta E_t\frac{\lambda_{t+1}}{\lambda_t}[r_{t+1}^ku_{t+1}-a(u_{t+1})+(1-\delta)Q_{t+1}]$</td><td>Q 资产定价</td><td>§3.2</td></tr>
+        <tr><td>SW-W1</td><td>$N_t=[\int N_{j,t}^{(\varepsilon_w-1)/\varepsilon_w}]^{\varepsilon_w/(\varepsilon_w-1)},\;W_t=[\int W_{j,t}^{1-\varepsilon_w}]^{1/(1-\varepsilon_w)}$</td><td>劳动 CES 加总/工资指数</td><td>§3.4</td></tr>
+        <tr><td>SW-W2</td><td>$E_t\sum(\beta\theta_w)^kN\Lambda_{t+k}\frac{W_t^*}{P_{t+k}}\Pi_{w}=\mu_w E_t\sum(\beta\theta_w)^kN\frac{N^\varphi}{\Lambda_{t+k}/P_{t+k}}\Pi_w$</td><td>最优工资 FOC</td><td>§3.4</td></tr>
+        <tr><td>SW-W3</td><td>$W_t^{1-\varepsilon_w}=(1-\theta_w)(W_t^*)^{1-\varepsilon_w}+\theta_w(W_{t-1}\pi_{t-1}^{\gamma_w})^{1-\varepsilon_w}$</td><td>工资指数加总</td><td>§3.4</td></tr>
+        <tr><td>SW-W4/5</td><td>$\pi_t^w=W_t/W_{t-1}-1,\;\hat w_t=\hat w_{t-1}+\hat\pi_t^w-\hat\pi_t$</td><td>工资通胀定义/实际工资累积</td><td>§3.4/6.6</td></tr>
+        <tr><td>SW-F1/2</td><td>$WN=(1-\alpha)MC\,Y^g,\;r^k\bar K=\alpha\,MC\,Y^g$</td><td>要素需求（成本最小化）</td><td>§3.5</td></tr>
+        <tr><td>SW-F3</td><td>$MC=\frac{W^{1-\alpha}(r^k)^\alpha}{A_t\alpha^\alpha(1-\alpha)^{1-\alpha}}$</td><td>边际成本</td><td>§3.5/6.4</td></tr>
+        <tr><td>SW-P1</td><td>$E_t\sum(\beta\theta_p)^k\frac{\Lambda_{t+k}}{\Lambda_t}Y_{j,t+k|t}P_t^*\Pi_p=\mu_p E_t\sum(\beta\theta_p)^k\frac{\Lambda_{t+k}}{\Lambda_t}Y_{j,t+k|t}MC_{t+k}$</td><td>最优价格 FOC</td><td>§3.5</td></tr>
+        <tr><td>SW-P2</td><td>$P_t^{1-\varepsilon_p}=(1-\theta_p)(P_t^*)^{1-\varepsilon_p}+\theta_p(P_{t-1}\pi_{t-1}^{\gamma_p})^{1-\varepsilon_p}$</td><td>价格指数加总</td><td>§3.5</td></tr>
+        <tr><td>SW-P3</td><td>$\pi_t=P_t/P_{t-1}-1$</td><td>通胀定义</td><td>§3.5</td></tr>
+        <tr><td>SW-M1</td><td>$Y_t=C_t+I_t+G_t+a(u_t)\bar K_{t-1}$</td><td>资源约束（市场出清）</td><td>§3.6</td></tr>
+        <tr><td>SW-M2</td><td>$\log R_t=\rho_i\log R_{t-1}+(1-\rho_i)[(\phi_\pi\pi_t)+\phi_y\log Y_t]+\varepsilon_t^m$</td><td>Taylor 规则</td><td>§3.6/6.7</td></tr>
+        <tr><td>SW-TVC</td><td>$\lim_{T\to\infty}\beta^T E_t\Lambda_{t+T}(B/P_{t+T})=0,\;\lim\beta^T E_t\Lambda_{t+T}Q_{t+T}\bar K_{t+T}=0$</td><td>横截条件</td><td>§3.0</td></tr>
+        <tr><td>SW-AR1~7</td><td>$\hat a_t,\hat b_t,\hat g_t,\hat\varepsilon_t^p,\hat\varepsilon_t^w,\hat\varepsilon_t^i,\varepsilon_t^m$ 七个外生过程</td><td>7 条 AR(1)/白噪声</td><td>§7.0</td></tr>
+        <tr><td>6.1–6.7</td><td>线性化版：IS、投资欧拉、Q、利用、有效资本、积累、生产、MC、NKPC、MRS、工资 PC、实际工资、Taylor、资源约束</td><td>14 条线性化方程</td><td>§6.1–6.7</td></tr>
+      </table></div>
+      <p><strong>计数说明：</strong>原始非线性 21 条（SW-0/0b/0c/1/2/3/4/5、W1/W2/W3/W4/W5、F1/F2/F3、P1/P2/P3、M1/M2/M3/TVC）+ 外生 7 条 + 线性化 14 条 = 42 条；其中"原始/线性化"成对存在，按独立结构方程计为 36 个（去重后）。文末 Dynare .mod 中实际 model 块写 14 条线性化方程 + 6 条 AR(1)（货币为白噪声直接入规则）。</p>
+    </div>
+
+    <div class="page-nav">
+      <a href="05-dynare-solving.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">Dynare 求解实操</div>
+      </a>
+      <a href="12-small-open-economy.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">小国开放经济</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

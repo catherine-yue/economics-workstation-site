@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>描述性统计 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item active" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">实证论文</a>
+      <span class="sep">/</span>
+      <span>03 描述性统计</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">实证论文 · Empirical · 04</span>
+      <h1>描述性统计：让审稿人"看见"你的数据</h1>
+      <p class="desc">summarize / tabstat / bysort 分组、相关系数矩阵 pwcorr、estpost + esttab 一键导出三线表到 Word/Excel、histogram / kdensity 分布图、以及贯穿始终的 label 标签系统——Table 1 是一篇论文的"门面"。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">概率论（期望 / 方差 / 协方差 / 相关系数）、统计推断基础（抽样分布、标准误）、偏度与峰度。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">无专门理论要求；能把统计量与经济含义对应起来。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">Stata 17+（外部命令：<code class="inline">estout</code> / <code class="inline">esttab</code>、<code class="inline">estpost</code>；基础 <code class="inline">summarize</code>、<code class="inline">pwcorr</code>、<code class="inline">tabstat</code>、<code class="inline">kdensity</code>）。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body">先学 <a href="02-data-merge.html">02 数据合并与面板</a>，得到一张可分析的样本。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8f3ec;color:#2d7a4f;">入门</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么 Table 1 是论文的门面</a></li>
+        <li><a href="#s2">summarize / tabstat：单变量分布</a></li>
+        <li><a href="#s3">标签系统：label variable / label define</a></li>
+        <li><a href="#s4">分组统计：bysort 与 bys 速记</a></li>
+        <li><a href="#s5">相关系数矩阵：pwcorr 带星号</a></li>
+        <li><a href="#s6">estpost + esttab：导出三线表</a></li>
+        <li><a href="#s7">导出到 Word / Excel（putexcel / outreg2）</a></li>
+        <li><a href="#s8">数据分布可视化：histogram / kdensity</a></li>
+        <li><a href="#s9">论文案例：Table 1 的范式</a></li>
+        <li><a href="#s10">常见错误与调试</a></li>
+        <li><a href="#s11">进阶学习资料</a></li>
+      </ol>
+    </div>
+
+    <!-- S1 -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么 Table 1 是论文的门面</h2>
+      <p>任何一篇实证论文的第一张表，几乎都是<strong>描述性统计表（Descriptive Statistics）</strong>，通常被称为 Table 1。它告诉审稿人三件事：(1) 你的样本是什么（观测数、时间跨度、行业覆盖）；(2) 每个变量的分布长什么样（均值、标准差、分位数）；(3) 处理组与控制组在关键协变量上是否平衡（balance check）。一张写得好的 Table 1，能让审稿人在 30 秒内判断"这篇数据靠不靠谱"。</p>
+      <p>经济学直觉上，描述性统计本身不识别因果，但它能<strong>揭示问题</strong>：如果你的核心解释变量 $x$ 标准差极小，那它就不可能显著；如果处理组的企业规模比控制组大 10 倍，那后续不控制 firm size 就一定会有偏。Table 1 是你给自己写的"数据体检报告"。</p>
+    </div>
+
+    <!-- S2 -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> summarize / tabstat：单变量分布</h2>
+      <p>Stata 里最基础的两个命令：<code class="inline">summarize</code>（简写 <code class="inline">sum</code>）给出 N、mean、sd、min、max；加上 <code class="inline">, detail</code> 给出完整分位数（p1、p50、p99）。<code class="inline">tabstat</code> 是更灵活的版本，可以自定义要报告哪些统计量。</p>
+      <div class="formula-block">
+        <div class="formula-label">描述性统计的核心量</div>
+        $$\bar{x} = \frac{1}{N}\sum_i x_i, \qquad s = \sqrt{\frac{1}{N-1}\sum_i (x_i - \bar{x})^2}$$
+        $$\text{skewness} = \frac{\frac{1}{N}\sum_i (x_i - \bar{x})^3}{s^3}, \qquad \text{kurtosis} = \frac{\frac{1}{N}\sum_i (x_i - \bar{x})^4}{s^4}$$
+      </div>
+      <p>偏度（skewness）告诉你分布是左偏还是右偏——右偏意味着均值大于中位数，正是我们做对数变换的依据。峰度（kurtosis）&gt; 3 说明比正态分布"厚尾"，极端值更常见。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · summarize 与 tabstat</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  02-summarize-tabstat.do
+*--------------------------------------------------------------*
+sysuse nlsw88, clear
+
+* 1) 基础 summarize
+summarize wage tenure ttl_exp
+
+* 2) detail：给出完整分位数与偏度峰度
+summarize wage, detail
+
+* 3) tabstat：自定义要报告的统计量
+*    statistics() 可填：mean sd p50 p25 p75 min max skewness kurtosis
+tabstat wage tenure ttl_exp, ///
+    statistics(n mean sd p50 min max) columns(statistics)
+
+* 4) 按年份分组的 tabstat（面板里常用）
+* tabstat wage tenure, by(year) statistics(mean sd) columns(statistics)
+</code></pre>
+      </div>
+    </div>
+
+    <!-- S3 -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 标签系统：label variable / label define</h2>
+      <p>描述性统计和后续导出表格能否"看得懂"，完全取决于你有没有给变量打标签。这一步在 01 数据清洗页已经埋过伏笔，这里展开讲。Stata 的标签分两类：</p>
+      <ul>
+        <li><strong>变量标签（variable label）</strong>：描述一个变量的含义，出现在 <code class="inline">describe</code>、<code class="inline">esttab</code>、<code class="inline">outreg2</code> 输出的"Variable"列。</li>
+        <li><strong>值标签（value label）</strong>：把 0/1 翻译成"否/是"，让 <code class="inline">tab</code>、<code class="inline">esttab</code> 显示文字而不是数字。</li>
+      </ul>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 标签系统全套写法</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  03-label-system.do
+*--------------------------------------------------------------*
+sysuse nlsw88, clear
+
+* 1) 变量标签：一句话写清楚
+label variable wage     "小时工资 (USD)"
+label variable tenure    "在当前雇主任职年限"
+label variable ttl_exp  "总工作经验 (年)"
+label variable collgrad "是否大学毕业"
+label variable south    "是否居住在南部"
+
+* 2) 值标签：定义一次，反复用
+*    label define 名字 数字 "文字" [数字 "文字" ...]
+label define yesno_lbl 0 "No" 1 "Yes"
+* 把标签贴到变量上
+label values collgrad south yesno_lbl
+
+* 3) 看效果
+describe wage tenure collgrad
+tab collgrad
+tab south
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">为什么必须在描述性统计之前打完标签</div>
+        <p><code class="inline">estpost tabstat</code> 与 <code class="inline">esttab</code> 都会自动读取变量标签作为行名。如果你在导出 Table 1 之前没打标签，导出的 Word 表里就会出现"wage""ttl_exp"这种无人能懂的代码，事后再手改 Word 是噩梦。</p>
+      </div>
+    </div>
+
+    <!-- S4 -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 分组统计：bysort 与 bys 速记</h2>
+      <p>面板数据里，"按年份看均值变化"、"按行业看差异"是描述性统计的高频操作。Stata 里 <code class="inline">bysort 分组变量: 命令</code>（可简写为 <code class="inline">bys</code>）就是这个用途。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · bysort 分组</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  04-bysort.do
+*--------------------------------------------------------------*
+sysuse nlsw88, clear
+
+* 1) 按是否大学毕业分组 summarize
+bysort collgrad: summarize wage tenure
+
+* 2) 等价的 bys 简写
+bys collgrad: summarize wage
+
+* 3) 多个分组变量：按 (是否大学毕业 × 是否在南部)
+bysort collgrad south: summarize wage
+
+* 4) 先排序再分组（Stata 会自动 sort，但显式写更安全）
+sort collgrad
+by collgrad: summarize wage
+
+* 5) 计算组内均值并保留
+bysort collgrad: egen wage_mean_coll = mean(wage)
+
+* 6) 分组 + tabulate：列联表
+tab collgrad south, row col
+</code></pre>
+      </div>
+    </div>
+
+    <!-- S5 -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 相关系数矩阵：pwcorr 带星号</h2>
+      <p>Table 1 之后经常跟一张 Table 2：相关系数矩阵。它让审稿人快速看到"哪些变量彼此高度相关"，从而预判多重共线性问题。最常用的命令是 <code class="inline">pwcorr</code>——<code class="inline">pw</code> 指 pairwise deletion，即每一对变量只用这两个都不缺失的观测计算相关系数，而不是 listwise 删除。<code class="inline">sig</code> 选项报告 p 值，<code class="inline">star(.05)</code> 在显著的相关系数上打星号。</p>
+      <div class="formula-block">
+        <div class="formula-label">Pearson 相关系数</div>
+        $$\rho_{x,y} = \frac{\sum_i (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_i (x_i - \bar{x})^2 \cdot \sum_i (y_i - \bar{y})^2}}$$
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · pwcorr 带星号</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  05-pwcorr.do
+*--------------------------------------------------------------*
+sysuse nlsw88, clear
+
+* 1) 基础相关系数矩阵
+pwcorr wage tenure ttl_exp age collgrad
+
+* 2) 带 p 值
+pwcorr wage tenure ttl_exp age collgrad, sig
+
+* 3) 带星号（最常用！）
+*    star(.05) 表示 |r| 显著在 5% 水平时打 *
+pwcorr wage tenure ttl_exp age collgrad, sig star(.05)
+
+* 4) 注意：corr 命令是 listwise deletion
+*    与 pwcorr 结果可能略不同，论文里统一用 pwcorr
+</code></pre>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">相关系数高 ≠ 一定有共线性问题</div>
+        <p>两个解释变量相关系数超过 0.8 才需要警惕。常见的"size 与 lev"、"age 与 tenure"通常相关 0.3–0.5，不构成问题。真正要看 VIF（方差膨胀因子）时，跑 <code class="inline">estat vif</code>。</p>
+      </div>
+    </div>
+
+    <!-- S6 -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> estpost + esttab：导出三线表</h2>
+      <p>这是本页最重要的一组命令。<code class="inline">estpost</code> 把 <code class="inline">summarize</code>、<code class="inline">tabstat</code> 等命令的输出"打包"成一个 est 估计量对象，再由 <code class="inline">esttab</code> 把它渲染成三线表。这套流程可以直接产出符合期刊格式的 Word/Excel/LaTeX 表格。</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · estpost tabstat：把统计结果"打包"</div>
+          <div class="step-desc">estpost 是 estout 包的一员，它让 summarize/tabstat 的结果进入 est 系统。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · esttab 渲染成三线表</div>
+          <div class="step-desc">指定 cells() 列布局，用 nomtitle nonumber noobs 控制是否显示冗余信息，用 label 自动读取变量标签。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 导出到 Word (.rtf) 或 Excel (.csv)</div>
+          <div class="step-desc">直接在 esttab 末尾加 using "output/Table1.rtf" replace。rtf 文件用 Word 打开即是三线表。</div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · estpost + esttab 导出 Table 1</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  06-estpost-esttab.do  —— 一键导出三线表
+*--------------------------------------------------------------*
+ssc install estout, replace    // 首次运行时安装
+
+sysuse nlsw88, clear
+
+* 先把变量标签打好（关键！）
+label variable wage     "Hourly wage (USD)"
+label variable tenure   "Tenure (years)"
+label variable ttl_exp "Total experience (years)"
+label variable age      "Age"
+label variable collgrad "College graduate (1=Yes)"
+
+* ---------- 1) estpost 打包描述性统计 ----------
+estpost tabstat wage tenure ttl_exp age collgrad, ///
+    statistics(n mean sd p50 min max) columns(statistics)
+
+* ---------- 2) esttab 渲染成三线表 ----------
+* cells() 控制列布局：mean(fmt(3)) sd(fmt(3)) ...
+esttab . using "output/Table1_descriptive.rtf", replace ///
+    cells("count(fmt(0)) mean(fmt(3)) sd(fmt(3)) p50(fmt(3)) min(fmt(3)) max(fmt(3))") ///
+    noobs nonumber nomtitle label ///
+    title("Table 1. Descriptive Statistics") ///
+    collabels("N" "Mean" "Std Dev" "Median" "Min" "Max")
+
+* ---------- 3) 相关系数矩阵也走 estout 流程 ----------
+estpost correlate wage tenure ttl_exp age, matrix listwise
+esttab . using "output/Table2_corr.rtf", replace ///
+    unstack not noobs nonumber label ///
+    title("Table 2. Correlation Matrix")
+</code></pre>
+      </div>
+    </div>
+
+    <!-- S7 -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 导出到 Word / Excel（putexcel / outreg2）</h2>
+      <p>除了 esttab，Stata 里还有两条主流导出路径：</p>
+      <ul>
+        <li><strong>esttab / outreg2 → .rtf</strong>：rtf 文件用 Word 打开后就是三线表，直接复制进论文。这是中文顶刊最常用的路径。</li>
+        <li><strong>putexcel → .xlsx</strong>：Stata 15+ 自带的 Excel 导出命令，适合需要精细排版（合并单元格、颜色、字体）时使用。</li>
+      </ul>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · putexcel 与 outreg2</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  07-export.do
+*--------------------------------------------------------------*
+sysuse nlsw88, clear
+
+* ---------- 路径 A：outreg2 导出回归表 ----------
+ssc install outreg2, replace
+reg wage tenure ttl_exp collgrad
+outreg2 using "output/reg_baseline.doc", ///
+    tstat alpha(0.01 0.05 0.1) symbol(***, **, *) ///
+    keep(tenure ttl_exp collgrad) ///
+    title("Table 3. Baseline Regression") replace
+
+* ---------- 路径 B：putexcel 精细控制 ----------
+* 1) 先把统计量存成标量
+quietly summarize wage
+scalar n    = r(N)
+scalar mean = r(mean)
+scalar sd   = r(sd)
+
+* 2) putexcel 写到 .xlsx
+putexcel set "output/desc_summary.xlsx", replace
+putexcel A1 = ("Variable") B1 = ("N") C1 = ("Mean") D1 = ("SD")
+putexcel A2 = ("wage") B2 = (n) C2 = (mean) D2 = (sd)
+* 打开 Excel 即可看到 Table
+</code></pre>
+      </div>
+    </div>
+
+    <!-- S8 -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 数据分布可视化：histogram / kdensity</h2>
+      <p>Table 1 报告数字，图告诉你"分布形状"。对核心变量做一张直方图（histogram）加核密度（kdensity）叠加图，是审稿人最爱看的"你对数据熟不熟"的证据。</p>
+      <div class="formula-block">
+        <div class="formula-label">核密度估计（Kernel Density）</div>
+        $$\hat{f}_h(x) = \frac{1}{nh}\sum_{i=1}^{n} K\!\left(\frac{x - x_i}{h}\right)$$
+        <span style="font-size:13px; color:#666;">K 是核函数（默认 Gaussian），h 是带宽（bandwidth）——带宽越大曲线越平滑。</span>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · histogram 与 kdensity</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  08-visualize.do
+*--------------------------------------------------------------*
+sysuse nlsw88, clear
+
+* 1) 直方图（默认频率）
+histogram wage, ///
+    title("Hourly Wage Distribution") ///
+    xtitle("Hourly wage (USD)") ///
+    ytitle("Frequency")
+graph export "output/hist_wage.png", replace width(1600)
+
+* 2) 直方图 + 正态密度叠加（freq 改为 density）
+histogram wage, frequency normal ///
+    title("Wage Histogram with Normal Overlay")
+
+* 3) 核密度估计（kdensity）
+kdensity wage, ///
+    title("Kernel Density of Wage") ///
+    xtitle("Hourly wage (USD)")
+graph export "output/kdensity_wage.png", replace width(1600)
+
+* 4) 分组叠加：处理组 vs 控制组的密度对比
+*    这在 DID / RDD 论文里几乎是标配
+kdensity wage if collgrad==0, lcolor(navy)  ///
+    || kdensity wage if collgrad==1, lcolor(maroon) ///
+    legend(label(1 "Non-college") label(2 "College")) ///
+    title("Wage Density: College vs. Non-college")
+graph export "output/kdensity_bygroup.png", replace width(1600)
+</code></pre>
+      </div>
+    </div>
+
+    <!-- S9 -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 论文案例：Table 1 的范式</h2>
+      <div class="paper-card">
+        <span class="paper-type en">English · 经典</span>
+        <div class="paper-title">Does Compulsory School Attendance Affect Schooling and Earnings?</div>
+        <div class="paper-meta">Joshua Angrist &amp; Alan Krueger · Quarterly Journal of Economics · 1991</div>
+        <div class="paper-desc">Table 1 是分组（按出生季度）描述性统计的范本：按处理组/控制组分别报告 N、mean、sd，并加一列"差异 t 检验"。现代中文论文的 Table 1 几乎都沿用这个模板。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 经典</span>
+        <div class="paper-title">The Effects of Care and Cash? Evidence from a Randomized Experiment</div>
+        <div class="paper-meta"> numerous authors · AER / QJE 近十年 RCT 论文的标准 Table 1 写法</div>
+        <div class="paper-desc">RCT 论文的 Table 1 必须包含 balance check：处理组 vs 控制组在所有协变量上的均值差异及 p 值。描述性统计不再只是"看数据"，而是"论证随机性是否成立"。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文顶刊 · 标杆</span>
+        <div class="paper-title">《官员任期与经济增长》</div>
+        <div class="paper-meta">张军、高远等 · 《经济研究》 · 系列论文（代表性见 2007 年张军等关于财政分权与增长的研究）</div>
+        <div class="paper-desc">Table 1 按年份和省份分组报告 GDP 增速、财政收入、人口等核心变量的均值与标准差，演示了"省级面板描述性统计"的中文范式。其用 esttab 导出三线表、在正文中报告分位数区间的做法，已成为《经济研究》论文的事实标准。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文顶刊 · 标杆</span>
+        <div class="paper-title">《企业研发投入与出口》</div>
+        <div class="paper-meta">戴觅、余淼杰 · 《经济研究》 · 2014 年第 7 期</div>
+        <div class="paper-desc">用中国工业企业数据库 + 海关数据库匹配样本，Table 1 同时报告"出口企业 vs 非出口企业"两组在企业规模、生产率、资本密集度上的均值差异及 t 检验。是"匹配后样本的描述性统计 + 组间差异检验"的中文模板。</div>
+      </div>
+    </div>
+
+    <!-- S10 -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 常见错误与调试</h2>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：estpost 后没有指定 cells()</div>
+        <p>很多同学写完 <code class="inline">estpost tabstat ...</code> 直接 <code class="inline">esttab . using ...</code>，结果导出的表只有一个 mean 列。正确做法：在 esttab 里写 <code class="inline">cells("count(fmt(0)) mean(fmt(3)) sd(fmt(3))")</code> 显式指定列。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 2：pwcorr 与 corr 混用</div>
+        <p><code class="inline">corr</code> 用 listwise deletion，<code class="inline">pwcorr</code> 用 pairwise deletion。当有缺失值时两者数值会不同。论文里请统一用 <code class="inline">pwcorr</code>，并在脚注里写明"pairwise correlations"。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 3：导出 rtf 后中文乱码</div>
+        <p>用 esttab 导出 .rtf 时，如果变量标签是中文，Word 打开可能乱码。两个解决：(1) 用 <code class="inline">esttab, ... , booktabs</code> 导出 LaTeX；(2) 在 do 文件开头加 <code class="inline">set locale_utf8 on</code>，或直接用 <code class="inline">esttab using "...", replace encoding(UTF-8)</code>。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 4：分组统计没排序就 by 调用</div>
+        <p>直接写 <code class="inline">by collgrad: summarize wage</code> 在新版 Stata 里能跑（Stata 自动 sort），但老版本会报 "not sorted"。规范写法：<code class="inline">sort collgrad</code> 后再 <code class="inline">by collgrad:</code>，或直接用 <code class="inline">bysort collgrad:</code>。</p>
+      </div>
+    </div>
+
+    <!-- S11 -->
+    <div class="section" id="s11">
+      <h2><span class="sec-num">11</span> 进阶学习资料</h2>
+      <ul>
+        <li><strong>estout 官方手册</strong>：Ben Jann 写的 <a href="https://www.stata-journal.com/sjpdf.html?articlenum=st0085" target="_blank">"Making regression tables from stored estimates"</a>（Stata Journal），是 esttab 系列的"圣经"。</li>
+        <li><strong>Stata 官方</strong>：<code class="inline">help estpost</code>、<code class="inline">help esttab</code>、<code class="inline">help pwcorr</code>、<code class="inline">help putexcel</code>。</li>
+        <li><strong>教材</strong>：Cameron &amp; Trivedi, <em>Microeconometrics Using Stata</em> 第 13 章"Production of tables and graphs"。</li>
+        <li><strong>中文资源</strong>：陈强《高级计量经济学及 Stata 应用》第 2 章；知乎/经管之家"estout 导出三线表"专题帖。</li>
+        <li><strong>图表示范</strong>：浏览 <a href="https://www.aeaweb.org/articles?id=10.1257/aer.101.3.94" target="_blank">AER 官网的最新论文</a>，挑一篇你感兴趣的，把它 Table 1 的结构抄下来，作为你自己论文的模板。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="02-data-merge.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">02 数据合并与面板整理</div>
+      </a>
+      <a href="04-baseline-regression.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">04 基准回归</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+(function() {
+  const path = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('href') && item.getAttribute('href').endsWith(path)) {
+      item.classList.add('active');
+    }
+  });
+})();
+</script>
+</body>
+</html>

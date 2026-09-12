@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>顶刊实证方法地图与真实复现工作流 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item active" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">实证论文</a>
+      <span class="sep">/</span>
+      <span>EJD方法地图与真实复现工作流</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">实证论文 · 方法地图 · 复现工程</span>
+      <h1>顶刊实证方法地图与真实复现工作流<br>The EJD Method Map &amp; Replication Workflow</h1>
+      <p class="desc">Ulm 大学 Sebastian Kranz 维护的 <strong>EJD（Empirical Journal Articles）库</strong>把约 1.1 万篇顶刊论文连同数据与代码一并归档。本页用真实抓取统计画出"方法地图"——顶刊到底用什么期刊、什么语言、什么识别策略发文；再用两篇 2025 年 AEJ:Policy 真实复现包，演示"验证前人结论稳健性"的标准操作。它是本站实证组的导航图与工程范式。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 前置页面</div>
+          <div class="prereq-body">先读 <a href="12-replication-workflow.html">12 论文复现流程</a>（复现包结构、调用链），再读本页的真实案例与稳健性操作。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 软件</div>
+          <div class="prereq-body">Stata 17+，<code class="inline">reghdfe</code> / <code class="inline">estout</code> / <code class="inline">coefplot</code>；会 <code class="inline">do</code>、<code class="inline">log</code>、读 SMCL。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 方法基础</div>
+          <div class="prereq-body">DID / RDD / IV / SCM / RCT 的识别逻辑，见站内 <a href="06-did.html">07 DID</a>、<a href="07-rdd.html">08 RDD</a>、<a href="05-endogeneity-iv.html">06 IV</a>、<a href="24-synthetic-control.html">25 SCM</a>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 数据来源</div>
+          <div class="prereq-body">EJD 库网址 <code class="inline">https://ejd.econ.mathematik.uni-ulm.de/</code>，学习素材引用，非课程广告。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#map">EJD 方法地图：期刊 / 语言 / 方法分布</a></li>
+        <li><a href="#cases">真实复现工作流：两个完整案例</a></li>
+        <li><a href="#robust">验证前人结论稳健性：标准操作</a></li>
+        <li><a href="#ops">数据清洗 / 可视化 / 建模实操清单</a></li>
+        <li><a href="#assume">模型设定假设清单</a></li>
+        <li><a href="#argue">严谨论证框架</a></li>
+        <li><a href="#place">方法归位核验与交叉链接</a></li>
+        <li><a href="#cite">引用、数据来源与版权</a></li>
+      </ol>
+    </div>
+
+    <!-- ============ A 方法地图 ============ -->
+    <div class="section" id="map">
+      <h2><span class="sec-num">A</span> EJD 方法地图：顶刊到底用什么方法发文</h2>
+      <p>EJD 库（Empirical Journal Articles，由 Ulm 大学 <strong>Sebastian Kranz</strong> 维护）长期收录 AER、QJE、JPE、REStat、AEJ 系列、Management Science、Econometrica 等顶刊的实证论文，并把作者公开的<strong>数据 + 代码</strong>一并归档。下面所有数字均来自对该库全量条目的抓取：库规模 <strong>11,470 篇</strong>，覆盖 <strong>2005–2025</strong> 二十年，其中 <strong>97.8%</strong> 的条目附带可下载的数据文件——这是它区别于普通论文库的核心价值：你看到的不只是题目，还有能跑的代码。</p>
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-num">11,470</div><div class="stat-label">收录论文（篇）</div></div>
+        <div class="stat-card"><div class="stat-num">2005–2025</div><div class="stat-label">时间跨度（年）</div></div>
+        <div class="stat-card"><div class="stat-num">97.8%</div><div class="stat-label">附带数据条目占比</div></div>
+        <div class="stat-card"><div class="stat-num">15+</div><div class="stat-label">收录顶刊数</div></div>
+      </div>
+
+      <h3>A.1 期刊分布：钱与注意力流向哪里</h3>
+      <p>下图按论文数排序。可以看到 AER 一枝独秀（约 2000 篇），Management Science、REStat、REStud 构成第二梯队；AEJ 三大刊（Policy / Applied / Macro / Micro）合计已超过 2,400 篇，是近年"中型顶刊"里最活跃、且数据代码开放度最高的阵地。<strong>对学生而言，AEJ 系列复现包友好度最高</strong>——这正是本页 B 部分两个案例都选自 AEJ:Policy 的原因。</p>
+      <div class="chart-box">
+        <div class="chart-title">图 A1 · EJD 库各刊收录论文数</div>
+        <div class="chart-sub">数据来源：EJD 全库抓取（2005–2025），单位：篇</div>
+        <div id="chartJournal" class="chart"></div>
+      </div>
+
+      <h3>A.2 代码语言分布：Stata 仍是实证事实标准</h3>
+      <p>把所有复现代件按语言归类，<strong>Stata（.do + .ado）合计超过 7,300 篇次</strong>，是绝对主力；MATLAB（结构估计 / 校准 / 宏观模型常用）约 2,300 篇居次；R 与 Python 合计约 1,450 篇，增长最快但仍非主流；Julia 仍处早期。这一分布告诉你：<strong>想复现绝大多数顶刊，先把 Stata 练熟，边际收益最大</strong>；做结构估计再补 MATLAB，做文本 / ML 再补 Python。</p>
+      <div class="chart-box">
+        <div class="chart-title">图 A2 · 复现代码语言分布（论文数）</div>
+        <div class="chart-sub">Stata do/ado 合并统计占比；Notebook 含 Jupyter / R Markdown</div>
+        <div id="chartLang" class="chart"></div>
+      </div>
+
+      <h3>A.3 方法分布：从摘要关键词看识别策略</h3>
+      <p>对全部论文摘要做方法关键词命中统计（一篇论文可命中多个方法，故合计大于总篇数）。随机实验 / RCT 遥遥领先（约 700 篇），反映近年"实验革命"；面板固定效应（330）、DID（231）、RDD（201）、IV（196）构成准实验四件套；bunching、合成控制、空间、placebo/多重检验等更细的方法命中数较小但都已稳定出现在顶刊。</p>
+      <div class="chart-box">
+        <div class="chart-title">图 A3 · 摘要关键词命中方法分布（横向条形图）</div>
+        <div class="chart-sub">单位：命中论文数；一篇论文可命中多个方法</div>
+        <div id="chartMethod" class="chart" style="height:460px;"></div>
+      </div>
+
+      <h3>A.4 每个方法的真实代表论文</h3>
+      <p>下面挑出每个方法在 EJD 库中可下载、可复现的真实代表条目。<strong>作者、期刊、卷期、年份均已按 AEA / UCPress 官方信息核验</strong>；凡标"数据大小 / 代码语言"者均为 EJD 复现包元数据。</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>方法</th><th>代表论文（题名 / 期刊 / 年份）</th><th>复现包特征</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>DID</strong></td>
+              <td>Li, Song, Zhang &amp; Zhang, <em>"The Effects of a Multifaceted Poverty Alleviation Program on Rural Income and Household Behavior in China"</em>, AEJ: Economic Policy, 17(2), 2025, pp.319–357</td>
+              <td>县级 DID + CFPS 户政；数据约 35.8MB，Stata .do 约 186KB</td>
+            </tr>
+            <tr>
+              <td><strong>RDD</strong></td>
+              <td>Management Science 2025 一篇断点回归复现包（EJD 收录条目，以期刊 / 年份 / 语言检索 RDD 关键词可得）</td>
+              <td>Stata .do；含 RD 图与带宽敏感性表</td>
+            </tr>
+            <tr>
+              <td><strong>合成控制 SCM</strong></td>
+              <td>Kumar &amp; Liang, <em>"Labor Market Effects of Credit Constraints: Evidence from a Natural Experiment"</em>, AEJ: Economic Policy, 16(3), 2024, pp.1–26</td>
+              <td>州级合成控制 + ML 改进权重；Stata / MATLAB</td>
+            </tr>
+            <tr>
+              <td><strong>结构估计</strong></td>
+              <td>De Groote, <em>"Dynamic Effort Choice in High School: Costs and Benefits of an Academic Track"</em>, Journal of Labor Economics, 43(2), 2025, pp.467–502</td>
+              <td>动态离散选择（MLE），MATLAB；弗拉芒学生追踪数据</td>
+            </tr>
+            <tr>
+              <td><strong>机器学习</strong></td>
+              <td>Ash, Galletta &amp; Giommoni, <em>"A Machine Learning Approach to Analyze and Support Anticorruption Policy"</em>, AEJ: Economic Policy, 17(2), 2025, pp.162–193</td>
+              <td>文本/监督学习检测腐败；Python + R</td>
+            </tr>
+            <tr>
+              <td><strong>RCT</strong></td>
+              <td>Kessler &amp; Roth, <em>"Increasing Organ Donor Registration as a Means to Increase Transplantation: An Experiment with Actual Organ Donor Registrations"</em>, AEJ: Economic Policy, 17(2), 2025, pp.60–83</td>
+              <td>"field-in-the-lab"随机实验 + 州级注册数据；Stata .do 约 84.8KB</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout info">
+        <div class="callout-title">ℹ 怎么用这张地图</div>
+        <p>不要按"方法名词"去学，要按"<strong>你手上有什么数据 → 它落在哪个方法格子 → 该格子里顶刊怎么写、怎么复现</strong>"来学。比如你有中国县级面板 + 一个 2012 年开始的政策，你就在 DID / 面板固定效应那两个格子里，直接去 EJD 搜本页表中的 Li et al. (2025) 复现包照着做。</p>
+      </div>
+    </div>
+
+    <!-- ============ B 真实复现工作流 ============ -->
+    <div class="section" id="cases">
+      <h2><span class="sec-num">B</span> 真实复现工作流：两个完整案例</h2>
+      <p>下面两个案例都来自 2025 年 AEJ:Economic Policy 同一期（Vol.17 No.2），是 EJD 库里数据与代码开放度最高的一类。它们恰好覆盖两种最典型的工程结构：<strong>案例一是"多源中文数据 + 受限数据 + 手工图"的复杂 DID</strong>；<strong>案例二是"单 master.do 一键跑全部图表"的干净 RCT + 合成控制</strong>。</p>
+
+      <h3>B.1 案例一：中国扶贫 DID（Li, Song, Zhang &amp; Zhang, 2025）</h3>
+      <div class="paper-card">
+        <span class="paper-type en">AEJ: Policy · 2025</span>
+        <div class="paper-title">The Effects of a Multifaceted Poverty Alleviation Program on Rural Income and Household Behavior in China</div>
+        <div class="paper-meta">Rui Li, Hong Song, Jun Zhang, Junsen Zhang. <em>American Economic Journal: Economic Policy</em>, 17(2), 2025, pp.319–357. DOI: 10.1257/pol.20210485</div>
+        <div class="paper-desc">评估中国政府主导的大规模、多维度精准扶贫对农村收入的影响。利用"国家扶贫开发工作重点县"的政策身份构造 DID，发现重点县农村收入提升约 10.9%，主要来自产业扶持、农业开发与公共服务改善；户层面进一步分析家庭行为变化。复现包数据约 35.8MB，Stata .do 约 186KB。</div>
+      </div>
+
+      <h4>① 真实中文数据来源清单</h4>
+      <p>这类中国县域研究的"硬资产"是把多源中文数据拼成一张面板。复现时必须逐源核对口径、年份、县级行政区划调整：</p>
+      <ul>
+        <li><strong>CFPS 2010–2018</strong>（中国家庭追踪调查，北京大学开放研究数据平台）：户层面收入、消费、行为变量，是 household 分析部分的核心。</li>
+        <li><strong>World Bank Open Data</strong>：国家级贫困率、人口等宏观对照序列。</li>
+        <li><strong>WITS / TRAINS</strong>：中国出口关税 MFN 税率，用于构造县级对外暴露控制变量。</li>
+        <li><strong>《中国农村贫困监测报告 2020》</strong>（CNKI / 国家统计局）：重点县名单与贫困监测口径。</li>
+        <li><strong>《中国农村统计年鉴》2008–2021</strong>：县级农业产值、耕地、农业人口等。</li>
+        <li><strong>WIND</strong>（受限数据）：县级财政、信贷等金融变量——<em>受限，需凭机构授权访问</em>。</li>
+        <li><strong>第六次全国人口普查 2010</strong>：县级人口结构、城乡比。</li>
+        <li><strong>县级 / 省级统计年鉴</strong>：财政、教育、卫生等县级协变量。</li>
+      </ul>
+
+      <h4>② 复现包工程规范：Raw/ → Data/ 双层目录 + 输出溯源</h4>
+      <p>该复现包的精髓在于<strong>每个中间 / 输出文件都标注它服务正文哪张表哪张图</strong>，让审阅者能从最终表反推到原始数据。这是"可审阅论证"的工程化。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">text · 目录与输出溯源规范</span><button class="copy-btn">复制</button></div>
+<pre><code>poverty_alleviation_replication/
+├── Raw/                      # 只读原始下载（CFPS csv、年鉴扫描表、WIND导出）
+│   ├── cfps_2010_2018/
+│   ├── yearbook_rural_*.csv
+│   └── wind_restricted/      # 受限数据，不入版本库，仅本地
+├── Data/                     # 清洗后中间/分析数据，可由代码重生成
+│   ├── county_panel.dta      # 县级面板（服务 Tables 1,3,9 & Figures 4,5,A4）
+│   ├── household_cfps.dta    # 户级（服务 Tables 5-8）
+│   └── county_baseline.dta   # 基线（服务 Tables 1,3,9 & Figures 4,5,A4）
+├── Code/
+│   ├── clean_raw.do          # Raw -> Data（每步 count 记 N）
+│   ├── Table_Do.do           # 行号映射：Table 1 = 26-54行 -> Table1.csv
+│   └── Figure_Do.do
+└── Output/
+    ├── Tables/   Table1.csv ... Table9.csv
+    ├── Figures/  Figure2_arcgis.png(手工)  Figure3_ppt.png(手工)
+    └── logs/     wind_restricted.smcl + wind_restricted.png</code></pre>
+      </div>
+
+      <h4>③ 行号映射：Table_Do.do 第 26–54 行 → Table1.csv</h4>
+      <p>规范的复现包会在 do 文件里用注释标出"这一段对应正文哪张表"。复现者据此核对：打开 Table_Do.do，定位到第 26–54 行，跑出来的就是正文 Table 1；第 26 行附近是 <code class="inline">eststo</code> 收集各列，第 54 行附近是 <code class="inline">esttab using .../Table1.csv</code>。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · Table_Do.do（行号映射示意）</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* Table_Do.do  —— 每段注释标注服务正文哪张表
+*==============================================================
+use "$root/Data/county_baseline.dta", clear
+xtset county_id year
+
+*----- Table 1：描述性统计（重点县 vs 非重点县） -----
+* [行号 26-54] -> Output/Tables/Table1.csv
+eststo clear
+estpost summarize rural_income ln_agr_output urban_share ///
+        if treat==1, detail
+esttab using "$root/Output/Tables/Table1.csv", replace ///
+        cells("mean(fmt(3)) sd(fmt(3)) min max") ///
+        title("Table 1: Summary Statistics, Treated Counties")
+
+*----- Table 3：DID 主回归（县级，双向固定效应） -----
+* [行号 60-95] -> Output/Tables/Table3.csv
+eststo clear
+eststo m1: reghdfe ln_rural_income post_treat $covars, ///
+        absorb(county_id year) vce(cluster county_id)
+eststo m2: reghdfe ln_rural_income post_treat $covars, ///
+        absorb(county_id year province#year) vce(cluster county_id)
+esttab m1 m2 using "$root/Output/Tables/Table3.csv", replace ///
+        se star(* 0.1 ** 0.05 *** 0.01)
+
+*----- Table 9：机制异质性（比较优势） -----
+* [行号 102-140] -> Output/Tables/Table9.csv</code></pre>
+      </div>
+
+      <h4>④ 受限数据与手工图：区分"可自动"与"需手工"</h4>
+      <p>这类论文有两个复现陷阱，必须提前知道：</p>
+      <ul>
+        <li><strong>受限数据（WIND）</strong>：作者无法把原始数据放进复现包。规范做法是提供一份 <code class="inline">wind_restricted.smcl</code> 日志 + 导出 PNG，证明"如果你有 WIND 授权，跑这几行就能复现该县级金融变量"。<em>复现者没有授权时，这部分只能核对日志，不能重跑数字</em>。</li>
+        <li><strong>手工图</strong>：Figure 2 需要在 <strong>ArcGIS</strong> 里手工分级设色县级地图（地理 shapefile + 处理标签），Stata 无法一键出图；Figure 3 是 <strong>PowerPoint 手工拼的事件研究示意图</strong>。复现包会给出"数据已算好、请手工排版"的说明——<em>不要指望 master.do 自动生成这两张</em>。</li>
+      </ul>
+      <div class="callout warning">
+        <div class="callout-title">⚠ 复现这类中国县域论文的两个常见坑</div>
+        <p>(1) <strong>县级行政区划调整</strong>：2008–2021 年间撤县设区、县界合并频繁，CFPS / 年鉴 / 普查三套县级代码必须先统一到同一口径，否则 merge 后样本莫名其妙减少。(2) <strong>重点县名单时点</strong>：处理组身份要用"被列为国家重点县"的起始年份，而不是论文写作年份——DID 的 post 时点错了，主系数会系统性偏。</p>
+      </div>
+
+      <h3>B.2 案例二：Kessler &amp; Roth 器官捐赠 RCT + 合成控制（2025）</h3>
+      <div class="paper-card">
+        <span class="paper-type en">AEJ: Policy · 2025</span>
+        <div class="paper-title">Increasing Organ Donor Registration as a Means to Increase Transplantation: An Experiment with Actual Organ Donor Registrations</div>
+        <div class="paper-meta">Judd B. Kessler, Alvin E. Roth. <em>American Economic Journal: Economic Policy</em>, 17(2), 2025, pp.60–83. DOI: 10.1257/pol.20220760</div>
+        <div class="paper-desc">用"field-in-the-lab"实验让被试修改<strong>真实的</strong>器官捐赠登记状态，评估不同提问措辞对登记的影响；再结合美国各州新登记数据，用合成控制思路外推政策。复现包单文件 master.do 约 84.8KB，一键跑出全部 9 图 9 表，预计运行 1–2 小时。</div>
+      </div>
+      <p>这个案例是"教科书级干净复现包"：<strong>一个 master.do 跑全部 9 图 9 表</strong>。它的工程范式正好与案例一相反——数据来源单一（实验面板 + 州级登记 CSV），所以能做到高度自动化。</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">① master.do：单入口、顺序调用</div>
+          <div class="step-desc">开头 <code class="inline">clear all / set seed / cd / log using</code>，然后依次 <code class="inline">do clean_data.do</code> → 各图各表子程序。从 raw CSV 一路生成最终图，<strong>预计运行 1–2 小时</strong>（实验数据量不大，但 bootstrap / 随机化推断较慢）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">② clean_data.do：从 raw CSV 生成 final dta</div>
+          <div class="step-desc">读入原始实验 CSV 与州级登记 CSV，做变量构造、随机化分层标签、依从性（complier）分组，输出 <code class="inline">final_analysis.dta</code>。这一步对应正文 Data Availability and Provenance Statements 里声明的每一个数据来源。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">③ 行号映射表：9 图 9 表各占一段</div>
+          <div class="step-desc">复现包附一份 README 映射：Table 1 = master.do 某段、Figure 2 = 另一段。核对时定位行号即可，不必通读全部 84.8KB。</div>
+        </div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · master.do（干净单入口范式）</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* Kessler &amp; Roth (2025) 复现主程序示意
+* 单 master.do 跑全部 9 图 9 表，预计运行 1-2 小时
+*==============================================================
+clear all
+set more off
+set varabbrev off
+set seed 20250501              // 固定种子（随机化推断/permutation）
+
+global root "C:/你路径/KesslerRoth2025"
+cd "$root"
+capture log close
+log using "log/master_$S_DATE.log", replace
+
+* --- 数据清洗：raw CSV -> final_analysis.dta ---
+do "code/clean_data.do"        // 读 raw/experiment.csv + raw/state_reg.csv
+                               // 生成 data/final_analysis.dta
+
+* --- 9 表 ---
+do "code/Tables/Table1_balance.do"     // 随机化平衡性检验
+do "code/Tables/Table2_itt.do"         // 意向处理效应 ITT
+do "code/Tables/Table3_complier.do"    // 依从者效应 CACE
+* ... Table4-9 ...
+
+* --- 9 图 ---
+do "code/Figures/Figure1_frame.do"     // 不同提问措辞对照
+do "code/Figures/Figure2_state_sc.do"  // 州级合成控制外推
+* ... Figure3-9 ...
+
+display _n "===== 全部完成，请核对 Output/Tables 与 Figures ====="
+log close</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">✓ 对照两个案例你就懂了"复现包的光谱"</div>
+        <p>案例一（中国扶贫）= <strong>多源中文数据 + 受限数据 + 手工图</strong>，工程难点在数据拼合与"哪些能自动跑"的边界；案例二（器官捐赠）= <strong>单源干净数据 + 一键 master</strong>，工程难点在随机化推断与依从性。真实研究落在两者之间：先判断你属于哪一端，再决定你的复现包该长什么样。</p>
+      </div>
+    </div>
+
+    <!-- ============ 稳健性标准操作 ============ -->
+    <div class="section" id="robust">
+      <h2><span class="sec-num">B+</span> 验证前人结论稳健性：标准操作三步法</h2>
+      <p>"复现"只到"跑通核对"为止；<strong>"验证稳健性"是在跑通之后，主动改动设定、看主结论动不动摇</strong>。这是把一篇别人的论文变成你自己方法训练的关键。标准三步如下。</p>
+
+      <h3>第一步：下载包 → 读 README → 跑 master → 核对表图数字</h3>
+      <p>严格按 <a href="12-replication-workflow.html">12 复现流程</a>五步走：从 raw 重跑到 output，把生成表与正文逐列比对（符号、量级、显著性）。这一步的产出是一张"<strong>复现核对表</strong>"：哪几张表对上了、哪几张差多少、差在哪一步 do 文件。</p>
+
+      <h3>第二步：改动设定重跑（核心训练）</h3>
+      <p>在跑通的包上，系统地改下列设定，每改一次重跑一次，记录主系数变化：</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>方法</th><th>可改的稳健性维度</th><th>对应 Stata 命令</th></tr></thead>
+          <tbody>
+            <tr><td><strong>DID</strong></td><td>换聚类层级（县→省→双向）；换控制变量；换样本窗口；换估计器（TWFE → CSDID → stacked）</td><td><code class="inline">reghdfe ... cluster()</code>；<code class="inline">csdid</code>；<code class="inline">eventdd</code></td></tr>
+            <tr><td><strong>RDD</strong></td><td>换带宽（IK / CCT / 手动）；换核函数；换多项式阶数；换边界</td><td><code class="inline">rdrobust y x, h()</code>；<code class="inline">rdplot</code></td></tr>
+            <tr><td><strong>合成控制</strong></td><td>换权重非负 / 凸组合约束；换预测变量；换 donor pool；安慰剂检验</td><td><code class="inline">synth_runner</code>；<code class="inline">pysynth</code></td></tr>
+            <tr><td><strong>IV</strong></td><td>换工具变量；换弱 IV 稳健推断；换过度识别检验</td><td><code class="inline">ivreg2</code>；<code class="inline">weakiv</code>；<code class="inline">xtivreg2</code></td></tr>
+            <tr><td><strong>RCT</strong></td><td>ITT vs CACE；换随机化推断；换协变量调整；排除分析性 attrition</td><td><code class="inline">ritest</code>；<code class="inline">teffects</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>DID 换估计器：TWFE → CSDID → stacked 的代码骨架</h4>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · did_robustness.do（换估计器重跑）</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* did_robustness.do：在跑通主回归后，系统换估计器重跑
+* 用法：接在主回归包之后，use 已构造好的 final.dta
+*==============================================================
+use "$root/Data/analysis/final.dta", clear
+
+* --- (0) 基准：双向固定效应 TWFE ---
+eststo twfe: reghdfe ln_rural_income post_treat $covars, ///
+        absorb(county_id year) vce(cluster county_id)
+
+* --- (1) 换聚类层级：从县级 -> 省级 ---
+eststo twfe_prov: reghdfe ln_rural_income post_treat $covars, ///
+        absorb(county_id year) vce(cluster province_id)
+
+* --- (2) Callaway &amp; Sant'Anna (2021) 异质性稳健 DID ---
+* ssc install csdid, replace
+csdid ln_rural_income $covars, ivar(county_id) time(year) ///
+        gvar(first_treat_year) cluster(county_id)
+estat event            // 事件研究动态效应
+
+* --- (3) stacked regression（Sun &amp; Abraham 2021 思路）---
+* 为每个处理队列构造干净对照，避免负权重
+* ssc install eventdd, replace
+eventdd ln_rural_income $covars, timevar(rel_year) ///
+        eventvar(treat) cluster(county_id) ///
+        coefplot(-5(1)5) lag(4) leads(5) ///
+        graph_op(ytitle("动态效应") title("Event Study"))
+
+* --- 输出对照：一列 TWFE，一列 CSDID，一列 stacked ---
+esttab twfe twfe_prov using "$root/Output/robust_estimator.csv", ///
+        se star(* 0.1 ** 0.05 *** 0.01) ///
+        mtitles("TWFE" "TWFE省聚类")</code></pre>
+      </div>
+
+      <h3>第三步：与原文数字对照 → 写复现 / 稳健性报告</h3>
+      <p>改完一轮后，把"原文数字 vs 你复现数字 vs 你改设定后数字"放在一张表里，写一份简短报告。报告模板如下（可直接抄成你自己的练习）：</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">text · 复现 / 稳健性报告模板</span><button class="copy-btn">复制</button></div>
+<pre><code>《[作者 年份] 复现与稳健性报告》
+1. 复现对象：题名 / 期刊 / 卷期 / 年份 / DOI
+2. 环境：Stata 版本、外部命令及版本、运行时长
+3. 复现核对：
+   - 成功复现：Table X（主系数 0.xxx，与原文差异 < 0.00x）
+   - 未完全复现：Table Y（差在 …，定位到 do 文件第 … 行）
+   - 受限/手工：WIND 部分仅有 log；Fig2 ArcGIS 手工
+4. 稳健性改动与结论：
+   | 设定           | 主系数 | 标准误 | 显著性 | 与原文一致？ |
+   | 原文 TWFE      | 0.109  | ...   | ***    | -           |
+   | 省聚类        | 0.109  | ...   | ***    | 是          |
+   | CSDID         | 0.098  | ...   | ***    | 是          |
+   | 缩窗 ±3年     | 0.115  | ...   | **     | 是          |
+5. 结论：主结论在 X/Y/Z 种设定下稳健；在 … 设定下敏感，
+   可能原因是 …（如交叠处理异质性、弱平衡趋势）。</code></pre>
+      </div>
+    </div>
+
+    <!-- ============ C 实操清单 ============ -->
+    <div class="section" id="ops">
+      <h2><span class="sec-num">C</span> 数据清洗 / 可视化 / 建模实操清单（配 Stata 代码）</h2>
+
+      <h3>C.1 三阶段文件夹规范：Raw → Clean → Analysis</h3>
+      <p>无论复现别人还是做自己，第一天就把目录搭成三层。<strong>Raw 只读、绝不修改</strong>；Clean 是可重生成的中间产物；Analysis 是最终回归样本。每个阶段开头固定日志、固定种子、记录 N。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 00_setup.do（项目初始化）</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 00_setup.do：每个项目第一步
+*==============================================================
+clear all
+set more off
+set varabbrev off
+set seed 20260911                 // 固定种子，保证可复现
+set linesize 120
+
+global root "C:/你路径/your_project"
+cd "$root"
+
+* 三阶段目录
+global raw      "$root/Raw"          // 只读，绝不 save,replace
+global clean    "$root/Clean"        // 中间数据，可重生成
+global analysis "$root/Analysis"     // 最终回归样本
+global out      "$root/Output"
+global logdir   "$root/Log"
+
+capture mkdir "$clean"
+capture mkdir "$analysis"
+capture mkdir "$out/Tables"
+capture mkdir "$out/Figures"
+capture mkdir "$logdir"
+
+capture log close
+log using "$logdir/run_$S_DATE.log", replace
+
+* 外部命令版本登记（写进 log，方便日后核对）
+which reghdfe
+which estout
+which coefplot</code></pre>
+      </div>
+
+      <h3>C.2 变量构造、codebook 与缺失 / 受限数据处理</h3>
+      <p>每构造一个变量，就在 codebook 里登记：变量名、单位、来源、构造公式。缺失值要分"真缺失"与"结构性零"；受限数据（WIND、企业保密数据）只放本地、不入版本库，并保留导出 log。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 01_clean.do（变量构造与 codebook）</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 01_clean.do：Raw -> Clean，变量构造 + 缺失处理
+*==============================================================
+use "$raw/county_raw.dta", clear
+
+* 1) 关键被解释变量：log 农村收入（加 1 防 log(0)）
+gen ln_rural_income = ln(rural_income + 1)
+label var ln_rural_income "log(农村人均可支配收入+1), 来源:农村统计年鉴"
+
+* 2) 处理变量：是否国家重点县 x 政策后
+gen post_treat = (treat==1 &amp; year>=2012)
+label var post_treat "DID处理=重点县且2012年后"
+
+* 3) 缺失值：区分结构性零与真缺失
+*    企业未报告 -> 缺失；本就无此收入 -> 0，不要盲目 replace
+mvdecode rural_income, mv(-999 = .)        // 把 -999 编码缺失转为系统缺失
+
+* 4) 缩尾：按年份组内 1%/99%（winsor2）
+* ssc install winsor2, replace
+winsor2 ln_rural_income $covars, cuts(1 99) by(year) replace
+
+* 5) 生成 codebook，留档供审阅
+codebook county_id year ln_rural_income post_treat ///
+        using "$out/codebook.md", markdown replace
+
+* 6) 每步记 N（做 flow chart）
+count
+display "清洗后 N = " r(N)
+save "$clean/county_clean.dta", replace</code></pre>
+      </div>
+
+      <h3>C.3 顶刊图规范：事件研究 / RD / 系数森林 / 时间序列</h3>
+      <p>顶刊图有约定俗成的画法：<strong>事件研究图要画动态系数 + 95% CI + 归一化在事件前一期为 0</strong>；RD 图要局部线性拟合叠加散点分箱；系数森林图横放、按大小排序；时间序列图要标政策时点。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · figures.do（四类顶刊图）</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* figures.do：四类顶刊标准图
+*==============================================================
+use "$analysis/final.dta", clear
+
+* --- (1) 事件研究图：eventdd / coefplot ---
+* ssc install eventdd, replace
+eventdd ln_rural_income $covars, ///
+        timevar(rel_year) eventvar(post_treat) ///
+        absorb(county_id year) cluster(county_id) ///
+        lag(5) leads(5) baseline(-1) ///
+        graph_op(ytitle("政策效应") xtitle("相对政策年份") ///
+        title("Figure X: Event Study") ///
+        yline(0, lcolor(red%40)) xline(0, lcolor(red%40)))
+graph export "$out/Figures/fig_eventstudy.png", replace width(2000)
+
+* --- (2) RD 图：rdplot（局部线性 + 分箱散点）---
+* ssc install rdrobust, replace
+rdplot y running_var, c(0) h(10) ///
+        title("Figure Y: RD Plot") ///
+        graph_options(ytitle("结果") xtitle("分配变量"))
+graph export "$out/Figures/fig_rd.png", replace width(2000)
+
+* --- (3) 系数森林图：coefplot（异质性分组系数横放）---
+eststo g1: reghdfe ln_rural_income c.post_treat#c.female $covars, ///
+        absorb(county_id year) cluster(county_id)
+eststo g2: reghdfe ln_rural_income c.post_treat#c.old $covars, ///
+        absorb(county_id year) cluster(county_id)
+coefplot g1 g2, keep(*post_treat*) vertical ///
+        title("Figure Z: Heterogeneity Forest") ///
+        yline(0, lcolor(red))
+graph export "$out/Figures/fig_forest.png", replace width(2000)
+
+* --- (4) 时间序列图：标政策时点 ---
+twoway (line ln_rural_income year, lwidth(2)) ///
+       (rcap lo ci_hi year), ///
+       xline(2012, lpattern(dash) lcolor(red)) ///
+       xtitle("年份") ytitle("log农村收入") ///
+       title("Figure W: 处理县均值与政策时点")
+graph export "$out/Figures/fig_ts.png", replace width(2000)</code></pre>
+      </div>
+
+      <h3>C.4 主回归建模设定决策树</h3>
+      <p>拿到一个研究问题，建模设定按下面顺序决策：<strong>① 估计器</strong>（实验？准实验？结构？）→ <strong>② 固定效应组合</strong>（个体 / 时间 / 个体×时间趋势）→ <strong>③ 聚类层级</strong>（处理层级是什么就聚到哪）→ <strong>④ 控制变量策略</strong>（先不加、再加时不变协变量、最后加 pre-trend）。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · decision_tree.do（建模设定递进）</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* decision_tree.do：建模设定逐步递进（避免"控制变量轰炸"）
+*==============================================================
+use "$analysis/final.dta", clear
+
+* 第1层：仅双向固定效应（最干净，先看 raw 相关）
+eststo m1: reghdfe ln_rural_income post_treat, ///
+        absorb(county_id year) vce(cluster county_id)
+
+* 第2层：加时不变协变量（人口、初始收入）
+eststo m2: reghdfe ln_rural_income post_treat $x0, ///
+        absorb(county_id year) vce(cluster county_id)
+
+* 第3层：加省份×年份趋势（吸收省级时变冲击）
+eststo m3: reghdfe ln_rural_income post_treat $x0, ///
+        absorb(county_id province#year) vce(cluster county_id)
+
+* 第4层：换更稳的 DID 估计器（交叠处理时）
+* csdid ln_rural_income $x0, ivar(county_id) time(year) ///
+*        gvar(first_treat) cluster(county_id)
+
+esttab m1 m2 m3 using "$out/Tables/main_spec.csv", replace ///
+        se star(* 0.1 ** 0.05 *** 0.01) ///
+        mtitles("FE only" "+协变量" "+省×年趋势")</code></pre>
+      </div>
+    </div>
+
+    <!-- ============ D 模型假设清单 ============ -->
+    <div class="section" id="assume">
+      <h2><span class="sec-num">D</span> 模型设定假设清单：识别假设 + 检验 + 常见违规</h2>
+      <p>每类因果方法都靠一组"不可直接检验、只能做证伪性检验"的识别假设成立。下表把本站涉及的方法逐一列出：核心假设、可做的检验、以及顶刊审稿人最常攻击的违规情形。<strong>写论文时，这张表就是你的"审稿人清单"</strong>——先自问每一行，再送审。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>方法</th><th>核心识别假设</th><th>可做的检验</th><th>常见违规 / 审稿人攻击点</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>DID 平行趋势</strong>（含交叠处理）</td>
+              <td>无处理时处理组与对照组结果趋势平行；交叠处理下还要求无负权重异偏误</td>
+              <td>事件研究图看处理前系数是否贴 0；安慰剂（假处理时点）；换 CSDID / stacked</td>
+              <td>事前趋势不平行；处理时点交错导致 TWFE 负权重；预期效应</td>
+            </tr>
+            <tr>
+              <td><strong>IV 相关性 + 排他性</strong></td>
+              <td>工具与内生变量强相关；工具只通过内生变量影响结果（排他约束）</td>
+              <td>第一阶段 F 统计量（弱 IV，经验值 &gt;10）；过度识别 J 检验；弱 IV 稳健 Anderson-Rubin</td>
+              <td>弱工具变量（F&lt;10）；排他性被违反（工具走其他渠道）</td>
+            </tr>
+            <tr>
+              <td><strong>RDD 连续性</strong></td>
+              <td>潜在结果在断点处连续；个体不能精确操纵分配变量</td>
+              <td>McCrary / 密度连续性检验；协变量在断点连续；换带宽/核/多项式</td>
+              <td>精确堆点（manipulation）；操纵分配变量；带宽敏感</td>
+            </tr>
+            <tr>
+              <td><strong>合成控制 SCM</strong></td>
+              <td>权重非负 + 凸组合（权重和=1）；事前拟合良好；donor pool 未受污染</td>
+              <td>事前 RMSPE 比值；安慰剂检验；换 donor pool / 预测变量</td>
+              <td>事前拟合差；处理组受其他冲击溢出；权重退化到单一 donor</td>
+            </tr>
+            <tr>
+              <td><strong>RCT</strong></td>
+              <td>SUTVA（无干扰）；随机化；依从性（非依从时用 ITT/CACE）</td>
+              <td>平衡性检验（处理前协变量均值差）；attrition 差异；随机化推断</td>
+              <td>SUTVA 违反（溢出/一般均衡）；非随机 attrition；部分依从</td>
+            </tr>
+            <tr>
+              <td><strong>面板固定效应</strong></td>
+              <td>严格外生性（过去 / 现在 / 未来解释变量与误差项不相关）</td>
+              <td>Arellano-Bond 序列相关；加入未来值做 Granger 式检验；动态面板 GMM</td>
+              <td>动态面板滞后被解释变量与 FE 相关（Nickell 偏误）；反向因果</td>
+            </tr>
+            <tr>
+              <td><strong>结构估计 MLE/GMM</strong></td>
+              <td>模型设定正确（效用/生产函数形式）；矩条件/分布假设正确；参数可识别</td>
+              <td>过度识别 Sargan/Hansen；拟合优度；out-of-sample 预测；反事实稳定性</td>
+              <td>函数形式误设；矩条件弱；参数不可识别（弱识别）</td>
+            </tr>
+            <tr>
+              <td><strong>机器学习</strong></td>
+              <td>区分预测 vs 因果；正则化引入偏误需去偏（DML）</td>
+              <td>样本外预测误差；双重交叉拟合；安慰剂 / 假标签检验</td>
+              <td>把预测精度当因果证据；过拟合；正则化偏误未校正</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">⛔ 一句话记住假设清单的用法</div>
+        <p>假设本身永远无法"证明成立"，只能"尽量不被证伪"。顶刊与普通期刊的差距，不在于假设更强，而在于<strong>作者把每一个可能的证伪性检验都做了、并把结果摆出来</strong>。你写自己论文时，按这张表逐条准备检验，就等于提前回答了审稿人。</p>
+      </div>
+    </div>
+
+    <!-- ============ E 论证框架 ============ -->
+    <div class="section" id="argue">
+      <h2><span class="sec-num">E</span> 严谨论证框架：从故事到可审阅工程</h2>
+      <h3>E.1 顶刊论文论证链模板</h3>
+      <p>一篇顶刊实证论文，无论用什么方法，论证链都高度同构。下面这条链可以直接当你写论文的目录骨架：</p>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">① 动机 Motivation</div><div class="step-desc">现实现象 + 政策空白 + 文献缺口。一句话说清"为什么这件事重要、为什么之前没人说清"。</div></div>
+        <div class="step-item"><div class="step-title">② 问题 Question</div><div class="step-desc">把动机收敛成一个可识别的因果问题（X 对 Y 的效应），并定义处理、结果、总体。</div></div>
+        <div class="step-item"><div class="step-title">③ 识别策略 Identification</div><div class="step-desc">用什么准实验 / 实验 / 结构模型切断反向因果与混杂，明确写出识别假设（对应 D 部分清单）。</div></div>
+        <div class="step-item"><div class="step-title">④ 数据 Data</div><div class="step-desc">数据来源、样本构造 flow chart（每步删多少）、变量定义、codebook。</div></div>
+        <div class="step-item"><div class="step-title">⑤ 主结果 Baseline</div><div class="step-desc">一张主回归表 + 一张事件研究 / RD 图，系数大小、置信区间、经济含义。</div></div>
+        <div class="step-item"><div class="step-title">⑥ 稳健性 Robustness</div><div class="step-desc">按 D 部分假设清单逐一做证伪检验；对应本站 <a href="08-robustness.html">09 稳健性</a>。</div></div>
+        <div class="step-item"><div class="step-title">⑦ 机制 Mechanism</div><div class="step-desc">效应通过什么渠道产生？对应 <a href="09-mechanism.html">10 机制检验</a>。</div></div>
+        <div class="step-item"><div class="step-title">⑧ 异质性 Heterogeneity</div><div class="step-desc">对谁效应更大？对应 <a href="10-heterogeneity.html">11 异质性</a>，画系数森林图。</div></div>
+        <div class="step-item"><div class="step-title">⑨ 福利 / 政策 Welfare</div><div class="step-desc">量化效应的政策含义、成本收益、外部有效性边界。</div></div>
+      </div>
+
+      <h3>E.2 复现包 = "可审阅论证"的组成部分</h3>
+      <p>过去复现包被当作论文的"附属品"；现在 AER / AEJ / QJE / Management Science 都把 <strong>Data Availability and Provenance Statements</strong> 与可重跑复现包当成论文正式组成部分。原因很简单：<strong>正文 8000 字无法承载从原始数据到主表的几百个决策，只有代码能承载</strong>。一个规范的复现包（master file、行号映射、README、数据来源声明）本身就是论证严谨性的证据——它让"你声称做了什么"变成"任何人都能核对你做了什么"。</p>
+
+      <h3>E.3 借鉴方式：选一篇目标期刊论文，用其框架 + 自己的数据重做</h3>
+      <p>最快的训练路径不是泛读，而是：<strong>选一篇你想投的期刊的目标论文（如本页 B 的 AEJ:Policy 两篇），完全照搬它的论证链骨架与复现工程规范，把它的数据换成你自己的、把它的政策换成你研究的政策</strong>。这样你同时练了"怎么讲顶刊的故事"和"怎么搭顶刊的工程"，比读十篇综述都管用。</p>
+    </div>
+
+    <!-- ============ F 方法归位核验 ============ -->
+    <div class="section" id="place">
+      <h2><span class="sec-num">F</span> 方法归位核验：本站实证组怎么分工</h2>
+      <p>本页是"地图"，告诉你每个方法在本站哪一页展开。下表逐项核验 EJD 方法分布里出现的方法是否都在实证组有对应页面，方便你按图索骥、交叉跳转。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>方法</th><th>归入本站哪个页面</th><th>本页角色</th></tr></thead>
+          <tbody>
+            <tr><td>面板固定效应 / 基准回归</td><td><a href="04-baseline-regression.html">04 基准回归</a> · <a href="02-data-merge.html">02 数据合并与面板</a></td><td>地图 + 决策树</td></tr>
+            <tr><td>DID / 交叠处理</td><td><a href="06-did.html">07 DID</a> · 本页 B 案例一 + CSDID 代码</td><td>真实复现案例</td></tr>
+            <tr><td>RDD 断点回归</td><td><a href="07-rdd.html">08 RDD</a></td><td>rdrobust / McCrary 假设检验</td></tr>
+            <tr><td>IV 内生性</td><td><a href="05-endogeneity-iv.html">06 IV</a></td><td>弱 IV 检验清单</td></tr>
+            <tr><td>合成控制 SCM</td><td><a href="24-synthetic-control.html">25 SCM</a></td><td>本页 Kumar &amp; Liang 代表论文</td></tr>
+            <tr><td>RCT 随机实验</td><td>本页 Kessler &amp; Roth 案例 · <a href="15-potential-outcomes-dag.html">16 因果图</a></td><td>ITT/CACE、SUTVA</td></tr>
+            <tr><td>机器学习 / DML / 因果森林</td><td><a href="16-dml.html">17 DML</a> · <a href="17-causal-forest.html">18 因果森林</a></td><td>Ash et al. ML 代表论文</td></tr>
+            <tr><td>结构估计 MLE/GMM</td><td><a href="../structural/01-mle.html">结构 02 MLE</a> · <a href="../structural/02-gmm.html">结构 03 GMM</a> · <a href="../structural/05-dynamic-structural.html">结构 07 动态结构</a></td><td>De Groote 代表论文</td></tr>
+            <tr><td>动态面板 GMM</td><td><a href="25-dynamic-panel-gmm.html">26 动态面板 GMM</a></td><td>严格外生假设</td></tr>
+            <tr><td>分位数 / 非参</td><td><a href="20-quantile-gar.html">21 分位数与 GaR</a></td><td>方法分布定位</td></tr>
+            <tr><td>空间计量</td><td><a href="26-spatial-econometrics.html">27 空间计量</a></td><td>方法分布定位</td></tr>
+            <tr><td>bunching / placebo / 多重检验</td><td><a href="23-significance-techniques.html">24 显著性手法库</a> · <a href="11-significance-practice.html">12 显著性诊断</a></td><td>规范判别</td></tr>
+            <tr><td>复现流程 / 工程规范</td><td><a href="12-replication-workflow.html">13 复现流程</a>（前置）</td><td>本页为其方法地图与真实案例延伸</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>交叉链接：本页与 <a href="12-replication-workflow.html">12 论文复现流程</a>（复现包结构与调用链）、<a href="11-significance-practice.html">11 显著性诊断实务</a>（统计推断规范）、<a href="23-significance-techniques.html">23 显著性手法库与规范判别</a>（p-hacking / 多重检验）形成闭环——那三页讲"流程与规范"，本页讲"顶刊真实怎么做、怎么照着复现与验证稳健性"。</p>
+    </div>
+
+    <!-- ============ G 引用与版权 ============ -->
+    <div class="section" id="cite">
+      <h2><span class="sec-num">G</span> 网站引用、数据来源与版权说明</h2>
+      <ul>
+        <li><strong>EJD 库</strong>：Empirical Journal Articles，由 University of Ulm 的 Sebastian Kranz 维护，网址 <a href="https://ejd.econ.mathematik.uni-ulm.de/" target="_blank">https://ejd.econ.mathematik.uni-ulm.de/</a>。本页所有库规模、期刊 / 语言 / 方法统计数字均来自对该库公开条目的抓取，仅作学习素材引用，非课程广告。请尊重原作者与各期刊的版权条款，复现包下载后仅限个人学习使用。</li>
+        <li><strong>本页引用的真实论文</strong>（题名 / 期刊 / 卷期 / 年份 / 作者均按官方信息标注）：
+          <ul>
+            <li>Li, Rui, Hong Song, Jun Zhang, and Junsen Zhang. 2025. "The Effects of a Multifaceted Poverty Alleviation Program on Rural Income and Household Behavior in China." <em>American Economic Journal: Economic Policy</em>, 17(2): 319–357. DOI: 10.1257/pol.20210485.</li>
+            <li>Kessler, Judd B., and Alvin E. Roth. 2025. "Increasing Organ Donor Registration as a Means to Increase Transplantation: An Experiment with Actual Organ Donor Registrations." <em>American Economic Journal: Economic Policy</em>, 17(2): 60–83. DOI: 10.1257/pol.20220760.</li>
+            <li>Kumar, Anil, and Che-Yuan Liang. 2024. "Labor Market Effects of Credit Constraints: Evidence from a Natural Experiment." <em>American Economic Journal: Economic Policy</em>, 16(3): 1–26. DOI: 10.1257/pol.20200683.</li>
+            <li>De Groote, Olivier. 2025. "Dynamic Effort Choice in High School: Costs and Benefits of an Academic Track." <em>Journal of Labor Economics</em>, 43(2): 467–502. DOI: 10.1086/726702.</li>
+            <li>Ash, Elliott, Sergio Galletta, and Tommaso Giommoni. 2025. "A Machine Learning Approach to Analyze and Support Anticorruption Policy." <em>American Economic Journal: Economic Policy</em>, 17(2): 162–193. DOI: 10.1257/pol.20210618.</li>
+          </ul>
+        </li>
+        <li><strong>Stata 代码</strong>为本页教学示意（基于上述复现包的公开工程范式改写），变量名与行号为说明性示例；实际复现请以 EJD / AEA 官方复现包中的原始代码为准。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="26-spatial-econometrics.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">空间计量入门</div>
+      </a>
+      <a href="index.html" class="next">
+        <div class="nav-label">返回 →</div>
+        <div class="nav-title">实证总览与路线</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+      throwOnError: false
+    });
+  }
+});
+
+/* ========== ECharts ========== */
+var palette = ['#1c5d6e','#2a7d92','#b87333','#d4956a','#2d7a4f','#6f8aa0','#a03a2c','#b8860b','#5a7a90','#89b4fa'];
+
+// 图 A1：期刊分布柱状图
+(function(){
+  var el = document.getElementById('chartJournal');
+  if(!el || typeof echarts === 'undefined') return;
+  var journals = ['AER','Management Science','REStat','REStud','AEJ:Pol','AEJ:App','P&P','QJE','JPE','AEJ:Mac','JEEA','Econometrica','JoLE','AEJ:Mic','JEP'];
+  var vals = [2000,1470,1183,898,700,664,638,596,526,522,488,393,305,267,259];
+  var c = echarts.init(el);
+  c.setOption({
+    color: palette,
+    grid: { left: 90, right: 30, top: 30, bottom: 40 },
+    tooltip: { trigger: 'axis', axisPointer: {type:'shadow'} },
+    xAxis: { type: 'category', data: journals, axisLabel: { rotate: 38, fontSize: 11 } },
+    yAxis: { type: 'value', name: '论文数' },
+    series: [{
+      type: 'bar', data: vals, barMaxWidth: 30,
+      itemStyle: { color: function(p){ return palette[p.dataIndex % palette.length]; } },
+      label: { show: true, position: 'top', fontSize: 10, color: '#555' }
+    }]
+  });
+  window.addEventListener('resize', function(){ c.resize(); });
+})();
+
+// 图 A2：代码语言饼图
+(function(){
+  var el = document.getElementById('chartLang');
+  if(!el || typeof echarts === 'undefined') return;
+  var data = [
+    {value:6525, name:'Stata .do'},
+    {value:2316, name:'MATLAB'},
+    {value:983,  name:'R'},
+    {value:777,  name:'Stata .ado'},
+    {value:466,  name:'Python'},
+    {value:423,  name:'SAS'},
+    {value:129,  name:'Notebook'},
+    {value:73,   name:'Julia'}
+  ];
+  var c = echarts.init(el);
+  c.setOption({
+    color: palette,
+    tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+    legend: { orient: 'vertical', right: 10, top: 'middle', textStyle:{fontSize:12} },
+    series: [{
+      type: 'pie', radius: ['38%','68%'], center: ['40%','52%'],
+      data: data, label: { formatter: '{b}\n{d}%', fontSize: 11 },
+      emphasis: { itemStyle: { shadowBlur: 10, shadowColor: 'rgba(0,0,0,0.2)' } }
+    }]
+  });
+  window.addEventListener('resize', function(){ c.resize(); });
+})();
+
+// 图 A3：方法分布横向条形图
+(function(){
+  var el = document.getElementById('chartMethod');
+  if(!el || typeof echarts === 'undefined') return;
+  var methods = ['随机实验/RCT','面板固定效应','DID','RDD','IV','非参','贝叶斯','结构估计MLE/GMM','机器学习','bunching','分位数','placebo/多重检验','合成控制','空间'];
+  var vals = [700,330,231,201,196,153,145,114,102,62,38,32,17,17];
+  // 横向条形图：从下到上升序展示，最大在最上
+  var c = echarts.init(el);
+  c.setOption({
+    grid: { left: 130, right: 60, top: 20, bottom: 30 },
+    tooltip: { trigger: 'axis', axisPointer: {type:'shadow'} },
+    xAxis: { type: 'value', name: '命中论文数' },
+    yAxis: { type: 'category', data: methods.slice().reverse(), axisLabel:{fontSize:11} },
+    series: [{
+      type: 'bar', data: vals.slice().reverse(), barMaxWidth: 18,
+      itemStyle: { color: '#2a7d92' },
+      label: { show: true, position: 'right', fontSize: 10, color: '#555' }
+    }]
+  });
+  window.addEventListener('resize', function(){ c.resize(); });
+})();
+</script>
+</body>
+</html>

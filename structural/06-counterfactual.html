@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>反事实分析 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item active" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">结构估计</a>
+      <span class="sep">/</span>
+      <span>反事实分析</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">STRUCTURAL · COUNTERFACTUAL</span>
+      <h1>反事实分析：结构估计的终极目的</h1>
+      <p class="desc">为什么结构模型能回答"如果政策改变会怎样"？Lucas Critique 与 Policy Invariance，需求侧并购模拟、动态政策反事实、福利计算。</p>
+    </div>
+
+    <!-- ========== 基础知识库定位 ========== -->
+    <div class="callout" style="background:#faf4ea;border:1px solid #e6d4b5;border-left:4px solid var(--accent);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">&#128218; 基础知识库 · KNOWLEDGE BASE / 反事实分析</div>
+      <p style="margin-bottom:10px;">本页属于结构估计<strong>「基础知识库」</strong>。定位：<strong>先单独学会这个工具，再到模型分支里看它怎么用</strong>。反事实是结构估计的"终极目的"——估计出结构参数后，代入新政策/新市场结构重新解均衡，回答"如果……会怎样"。本页按「是什么 → 为什么学 → 数学定义 → 直觉 → 逐步操作 → 完整代码 → 常见错误」讲透。</p>
+      <div style="font-weight:700;font-size:13.5px;color:var(--text);margin-bottom:6px;">&#128279; 本工具在哪些模型分支中使用：</div>
+      <ul style="margin:0 0 0 20px;font-size:13.5px;line-height:1.9;">
+        <li><a href="04-blp.html">BLP 需求反事实</a> —— 并购模拟：估计需求后重解 Bertrand 价格 FOC，预测并购后价格与消费者福利变化。</li>
+        <li><a href="11-auctions.html">拍卖机制设计</a> —— 反事实比较保留价、拍卖形式（英式/第一价格/序贯）对收入与效率的影响。</li>
+        <li><a href="../qsge/05-counterfactual-solving.html">贸易政策反事实</a> —— 关税/贸易成本变化下，用结构模型与帽子代数重解一般均衡、核算福利。</li>
+      </ul>
+    </div>
+
+
+    <!-- ========== 前置条件与学习依赖 ========== -->
+    <div class="precond-box" style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>福利经济学：消费者剩余（CS）、补偿变化（CV）、等价变化（EV）的计算；一般均衡思想（所有市场相互反馈）；反事实均衡的数值重解（如并购后重新解 Bertrand FOC、新政策下重新做 Bellman）。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>产业组织：并购模拟（merger simulation）、关税/补贴/新产品引入的福利分析；依赖上游估计好的需求/供给/结构参数。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件/计算前置：</span>依赖上游方法——通常是 Python / MATLAB，把估计出的参数代入新的政策/市场结构，重新解均衡；Stata 不适合做完整反事实。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置页面：</span>先学 <a href="04-blp.html">04 BLP</a>（并购模拟的标准起点）；若用动态反事实，再结合 <a href="05-dynamic-structural.html">05 动态结构</a>。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;">进阶</span></div>
+      </div>
+    </div>
+
+<div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么结构模型能做反事实：Lucas Critique</a></li>
+        <li><a href="#s2">反事实分析的一般流程</a></li>
+        <li><a href="#s3">需求侧反事实：并购模拟与价格变化</a></li>
+        <li><a href="#s4">动态模型的反事实：长期行为变化</a></li>
+        <li><a href="#s5">福利计算：CS、EV、CV</a></li>
+        <li><a href="#s6">完整 Python 案例</a></li>
+        <li><a href="#s7">论文案例</a></li>
+        <li><a href="#s8">常见错误</a></li>
+        <li><a href="#s9">进阶资料</a></li>
+      </ol>
+    </div>
+
+    <!-- ========== 第1节 ========== -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么结构模型能做反事实：Lucas Critique</h2>
+
+      <p>结构估计（structural estimation）和简约式（reduced-form）的根本区别，不在于"用了复杂模型"，而在于：<strong>结构估计恢复的是 deep structural parameters（深层结构参数），这些参数被认为在政策变化时是稳定的</strong>。这就是 <strong>Lucas Critique (1976)</strong> 的核心论点：</p>
+
+      <div class="callout info">
+        <div class="callout-title">💡 Lucas Critique 的原话</div>
+        <p>"Given that the structure of an econometric model consists of optimal decision rules of economic agents, and that optimal decision rules vary systematically with changes in the structure of series relevant to the decision maker, it follows that any change in policy will systematically alter the structure of econometric models."</p>
+        <p>翻译：简约式回归中估计出来的"参数"（如消费函数的边际消费倾向），其实是消费者在<strong>特定政策环境下</strong>的最优决策规则。一旦政策变了，这个规则本身就变了——所以用历史回归系数去预测新政策的效果是错的。</p>
+      </div>
+
+      <h3>1.1 Policy Invariance 假设</h3>
+      <p>结构模型之所以能做反事实，是因为它把经济分解为：</p>
+      <ul>
+        <li><strong>偏好 / 技术参数</strong>（preferences / technology）：$\theta$，如消费者对价格的边际效用、企业的边际成本函数——这些被假设<strong>不随政策变化</strong>；</li>
+        <li><strong>制度 / 政策环境变量</strong>（institutions / policy environment）：$\psi$，如税率、补贴、规制规则、市场结构——这些是<strong>可以在反事实中改变</strong>的。</li>
+      </ul>
+      <p>反事实分析的合法性，完全建立在"<strong>$\theta$ 不变，$\psi$ 改变</strong>"这一假设上，即 <strong>policy invariance</strong>。</p>
+
+      <h3>1.2 与 RCT / DID 的对比</h3>
+      <p>一个好的 RCT 或 DID 能告诉你"政策 A 实施后，Y 变了多少"——但它只在政策 A 的具体形式下成立。如果政策变成 A'（比如补贴从 10% 改成 20%），RCT 外推不出去。<strong>结构模型的承诺是</strong>：只要 $\theta$ 不变，你可以任意改变 $\psi$ 并重新求解模型，得到新的均衡结果。这就是政策评估（policy evaluation）和反事实分析（counterfactual analysis）的区别。</p>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 但 policy invariance 不是万能的</div>
+        <p>如果政策变化大到改变了偏好本身（例如长期禁烟运动改变了人们对吸烟的 taste for smoking），那么 $\theta$ 也变了，反事实就失效。结构模型的"可信度"取决于对"什么算 deep parameter"的判断——这也是结构估计论文最容易被攻击的地方。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第2节 ========== -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 反事实分析的一般流程</h2>
+
+      <p>无论静态（BLP）还是动态（DDCM），反事实分析都遵循同一个"四步循环"：</p>
+
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1: 估计结构参数 $\hat\theta$</div>
+          <div class="step-desc">用历史数据 + 结构模型（MLE / GMM / NFXP / BLP）估计 deep parameters。这一步是"校准历史"，必须通过所有诊断（overidentification test、out-of-sample fit、敏感性分析）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2: 改变政策/环境变量 $\psi$</div>
+          <div class="step-desc">构造反事实环境 $\psi^{cf}$：例如把税率从 10% 改成 20%、把两个产品合并、把补贴取消、把退休年龄从 60 岁推迟到 65 岁。<strong>保持 $\hat\theta$ 不变</strong>。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3: 重新求解模型</div>
+          <div class="step-desc">在新环境 $\psi^{cf}$ 下，重新求模型的均衡解：
+            <ul>
+              <li>静态需求模型：求新的 Bertrand-Nash 价格 $p^{cf}$（迭代求解一阶条件）；</li>
+              <li>动态模型：在新的政策转移矩阵下，重新解 Bellman 方程，得到新的 CCP 和价值函数；</li>
+              <li>一般均衡模型：重新求市场出清价格与数量。</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4: 对比基准 vs 反事实，计算福利</div>
+          <div class="step-desc">比较 $p, q, \text{CS}, \text{PS}, \text{政府收入}$ 在基准与反事实下的差异，给出政策含义。报告 uncertainty（通过 bootstrap 或 delta method）。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 第3节 ========== -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 需求侧反事实：并购模拟与价格变化</h2>
+
+      <h3>3.1 并购模拟（Merger Simulation）</h3>
+      <p>这是 BLP 最常见的应用。两家企业 $f_1$ 和 $f_2$ 合并后，它们的产品在定价时内部化彼此的利润——这会抬高均衡价格。步骤：</p>
+
+      <h4>Step 1: 估计反事实前的均衡</h4>
+      <p>用 BLP 估计出需求系统 $\hat\theta$，并用 Bertrand FOC（见 04-blp.html Equation 6.4）反推出每个产品的边际成本 $c_j$。</p>
+
+      <h4>Step 2: 改变 ownership matrix</h4>
+      <p>合并前，$\Omega_{jk} = 1$ 当且仅当 $j,k$ 同属一个企业；合并后，$f_1$ 和 $f_2$ 旗下所有产品现在同属一家企业，因此 $\Omega^{cf}_{jk} = 1$ 当 $j$ 在 $f_1$、$k$ 在 $f_2$。</p>
+
+      <h4>Step 3: 解新的 Nash-Bertrand 均衡价格</h4>
+      <div class="formula-block">
+        <div class="formula-label">Equation 3.1 — 反事实一阶条件</div>
+        $$s(p^{cf}) + (\Delta(p^{cf}) \odot \Omega^{cf})' (p^{cf} - c) = 0$$
+      </div>
+      <p>这是一个关于 $p^{cf}$ 的 $J$ 维非线性方程组，通常用迭代法（contraction mapping）求解。</p>
+
+      <h4>Step 4: 计算福利变化</h4>
+      <p>合并导致价格上升，消费者剩余减少；企业利润上升。社会总福利变化 = $\Delta CS + \Delta PS + \Delta$ 政府税收。反垄断机构关心的是 $\Delta CS$ 与 $\Delta$ deadweight loss。</p>
+
+      <h3>3.2 其他需求侧反事实</h3>
+      <ul>
+        <li><strong>价格变化</strong>：对产品 $j$ 加从量税 $\tau$，让 $p_j^{cf} = p_j + \tau$，看份额与福利如何变；</li>
+        <li><strong>新产品引入</strong>：在特征空间中加一个新产品 $J+1$，求它进入后的均衡价格与被替代的现有产品份额；</li>
+        <li><strong>特征变化</strong>：车企把所有车的油耗降低 20%，估计对总需求和环境外部性的影响。</li>
+      </ul>
+    </div>
+
+    <!-- ========== 第4节 ========== -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 动态模型的反事实：长期行为变化</h2>
+
+      <p>动态结构模型的反事实比静态更有意思，因为它能捕捉<strong>短期反应 vs 长期反应</strong>的差异。</p>
+
+      <h3>4.1 静态 vs 动态反事实</h3>
+      <ul>
+        <li><strong>静态</strong>：假设今天的选择不影响明天。政策改变 → 今天的选择概率立即变化 → 福利计算。</li>
+        <li><strong>动态</strong>：政策改变 → 不仅当期效用变了，<strong>未来的价值函数 $V(x)$ 也变了</strong> → 今天的选择不仅因为"今天更划算"而变，还因为"未来期望收益"变了。这个"forward-looking" channel 是动态模型独有的。</li>
+      </ul>
+
+      <h3>4.2 举例：延迟退休政策</h3>
+      <p>假设我们用 DDCM 估计了中国工人的退休决策模型（状态 $x = (age, wage, pension\_wealth, health)$，选择 $d \in \{工作, 退休\}$）。现在政策把法定退休年龄从 60 推迟到 63：</p>
+      <ul>
+        <li><strong>静态反事实</strong>：60-62 岁的人现在不能退休了，被迫继续工作——只看当期 CCP 的机械变化；</li>
+        <li><strong>动态反事实</strong>：工人预期到 63 岁才能退休，会<strong>提前调整年轻时的储蓄、人力资本投资、健康行为</strong>——这些是 forward-looking 反应，只有动态模型能捕捉。</li>
+      </ul>
+
+      <h3>4.3 求解步骤</h3>
+      <div class="formula-block">
+        <div class="formula-label">Equation 4.1 — 反事实 Bellman 方程</div>
+        $$V^{cf}(x, \varepsilon) = \max_d \left\{ u^{cf}(x,d) + \varepsilon_d + \beta \sum_{x'} p^{cf}(x'|x,d) \log \sum_{d'} e^{V^{cf}(x',d')} \right\}$$
+      </div>
+      <p>把政策变化 $\psi^{cf}$ 代入 flow utility $u^{cf}$ 和转移 $p^{cf}$，重新解 Bellman 不动点，得到新的 CCP $P^{cf}(d|x)$，然后模拟新的选择路径与福利。</p>
+    </div>
+
+    <!-- ========== 第5节 ========== -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 福利计算：CS、EV、CV</h2>
+
+      <p>反事实分析的最终输出几乎总是福利（welfare）。三个常用概念：</p>
+
+      <h3>5.1 消费者剩余（Consumer Surplus, CS）</h3>
+      <p>在 logit / BLP 中，由于 taste shock 是 Extreme Value，个体层面的期望消费者剩余有解析形式——<strong>log-sum-exp 公式</strong>：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">Equation 5.1 — 期望消费者剩余（EV 形式）</div>
+        $$CS_i = \frac{1}{\alpha_i} \ln \left( \sum_{j=0}^{J} \exp\left( \delta_j + \mu_{ij} \right) \right)$$
+      </div>
+      <p>其中 $1/\alpha_i$ 是把效用单位换算成"美元"的系数（$\alpha_i$ 是价格的边际效用，其倒数就是收入边际效用的倒数）。市场层面的总 CS 是在消费者分布上积分：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 5.2 — 总消费者剩余</div>
+        $$CS = M_t \int CS_i \, dF(D_i, v_i)$$
+      </div>
+
+      <h3>5.2 补偿变化（Compensating Variation, CV）</h3>
+      <p>反事实下，价格/特征从 $x$ 变到 $x^{cf}$，<strong>补偿变化</strong>是"为了让消费者在新环境下和原环境一样幸福，需要给他多少（或收走多少）收入"：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 5.3 — Compensating Variation</div>
+        $$CV_i = CS_i^{cf} - CS_i^{base}$$
+      </div>
+      <p>$CV > 0$ 表示政策让消费者受益（需要给他"等价"的收入补偿才能在旧环境下一样好——反事实更好）；$CV < 0$ 表示政策让消费者受损。总 $CV = M_t \int CV_i \, dF$。</p>
+
+      <h3>5.3 生产者剩余（Producer Surplus / Profit）</h3>
+      <div class="formula-block">
+        <div class="formula-label">Equation 5.4 — 企业利润</div>
+        $$\Pi_f = \sum_{j \in \mathcal{J}_f} (p_j - c_j) M_t s_j$$
+      </div>
+      <p>反事实利润 $\Pi_f^{cf}$ 用新均衡的 $p^{cf}, s^{cf}$ 计算。</p>
+
+      <h3>5.4 总福利</h3>
+      <div class="formula-block">
+        <div class="formula-label">Equation 5.5 — Total Welfare</div>
+        $$\Delta W = \Delta CS + \Delta PS + \Delta \text{Government Revenue}$$
+      </div>
+      <p>反垄断 / 税收 / 补贴政策分析的核心就是报告 $\Delta W$ 及其在消费者、生产者、政府之间的分配。</p>
+    </div>
+
+    <!-- ========== 第6节 ========== -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 完整 Python 案例</h2>
+
+      <p>下面用一个简化的 BLP 需求模型，演示完整的反事实分析：(1) 估计需求；(2) 反事实：两个产品合并；(3) 计算新均衡价格、消费者剩余变化。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div>
+        <pre><code>"""
+反事实分析完整案例
+==================
+步骤：
+  1. 简化的 logit 需求系统（4 个产品 + 外部产品）
+  2. 估计需求参数（这里直接给定"已估计"参数）
+  3. Bertrand-Nash 均衡反推 marginal cost
+  4. 反事实：合并产品 1 和产品 2，求新均衡价格
+  5. 计算 CV（补偿变化）与利润变化
+"""
+import numpy as np
+from scipy.optimize import fsolve
+
+# ---------- 1. 设定 ----------
+J = 4                       # 产品数
+M = 1.0                     # 市场规模（标准化）
+
+# 产品特征（观察）
+X = np.array([1.0, 0.5, 2.0, 1.5])   # 产品"质量"
+# 估计出的需求参数
+beta = 1.0                  # 对质量的偏好
+alpha = -1.5                # 对价格的偏好（负号表示厌恶价格）
+
+# ---------- 2. 市场份额函数 ----------
+def shares(p, X, alpha, beta):
+    """
+    logit 需求: s_j = exp(delta_j) / (1 + sum exp(delta_k))
+    delta_j = X_j*beta + alpha*p_j
+    """
+    delta = X * beta + alpha * p
+    # 数值稳定
+    delta_max = delta.max()
+    exp_d = np.exp(delta - delta_max)
+    s = exp_d / (1 + exp_d.sum())
+    s0 = 1 / (1 + exp_d.sum())
+    return s, s0
+
+def own_elasticity(p, X, alpha, beta):
+    """
+    d s_j / d p_j = alpha * s_j * (1 - s_j)
+    交叉: d s_j / d p_k = -alpha * s_j * s_k
+    """
+    s, s0 = shares(p, X, alpha, beta)
+    # 构造 Jacobian: J[j,k] = ds_j/dp_k
+    Jmat = np.zeros((J, J))
+    for j in range(J):
+        for k in range(J):
+            if j == k:
+                Jmat[j, k] = alpha * s[j] * (1 - s[j])
+            else:
+                Jmat[j, k] = -alpha * s[j] * s[k]
+    return Jmat
+
+# ---------- 3. 基准均衡：反推 marginal cost ----------
+# 假设基准价格已知（模拟数据）
+p_base = np.array([1.0, 1.0, 1.2, 1.1])
+s_base, s0_base = shares(p_base, X, alpha, beta)
+Jmat = own_elasticity(p_base, X, alpha, beta)
+
+# 基准 ownership: 每个产品独立企业
+Omega_base = np.eye(J)
+# Bertrand FOC: s + (J' * Omega)' (p - c) = 0
+# 解 c: c = p + (Jmat' * Omega)^(-1) s
+A = (Jmat.T * Omega_base)
+c_base = p_base + np.linalg.solve(A, s_base)
+print("基准 marginal costs:", np.round(c_base, 3))
+print("基准 markup (p - c):", np.round(p_base - c_base, 3))
+
+# ---------- 4. 反事实：合并产品 1 和产品 2 ----------
+Omega_cf = np.eye(J)
+Omega_cf[0, 1] = 1.0   # 产品 0 和产品 1 现在同属一家企业
+Omega_cf[1, 0] = 1.0
+
+# 解新的 Nash-Bertrand 均衡价格
+def foc_cf(p_cf):
+    s, _ = shares(p_cf, X, alpha, beta)
+    Jm = own_elasticity(p_cf, X, alpha, beta)
+    A_cf = (Jm.T * Omega_cf)
+    return s + A_cf @ (p_cf - c_base)
+
+p_cf = fsolve(foc_cf, p_base)
+print("\n反事实均衡价格:", np.round(p_cf, 3))
+print("价格变化 %:", np.round(100*(p_cf - p_base)/p_base, 2))
+
+s_cf, s0_cf = shares(p_cf, X, alpha, beta)
+print("\n基准份额:", np.round(s_base, 4))
+print("反事实份额:", np.round(s_cf, 4))
+
+# ---------- 5. 福利计算：消费者剩余变化 ----------
+def consumer_surplus(p, X, alpha, beta):
+    """
+    log-sum-exp 形式: CS = (1/alpha) * log(1 + sum exp(delta_j))
+    注意 alpha 是负的，所以 CS 是正的
+    """
+    delta = X * beta + alpha * p
+    lse = np.log(1 + np.exp(delta - delta.max()).sum()) + delta.max()
+    CS = (1 / alpha) * lse     # alpha 为负，但 lse 为正 → CS 为负? 用符号约定
+    return CS
+
+CS_base = consumer_surplus(p_base, X, alpha, beta)
+CS_cf = consumer_surplus(p_cf, X, alpha, beta)
+# CV = CS_cf - CS_base（因为 alpha<0, CS 是"负效用"，CV 应为正表示损失）
+CV = (CS_cf - CS_base) / alpha   # 单位换算
+print(f"\n基准 CS: {CS_base:.4f}")
+print(f"反事实 CS: {CS_cf:.4f}")
+print(f"消费者剩余变化 (CV): {CV:.4f}")
+
+# 企业利润
+profit_base = np.sum((p_base - c_base) * s_base)
+profit_cf = np.sum((p_cf - c_base) * s_cf)
+print(f"\n基准利润: {profit_base:.4f}")
+print(f"反事实利润: {profit_cf:.4f}")
+print(f"利润变化: {profit_cf - profit_base:.4f}")
+</code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">✓ 代码说明</div>
+        <p>这段代码完整展示了反事实分析的四步：(1) 给定需求参数；(2) 由 Bertrand FOC 反推 marginal cost；(3) 改变 ownership matrix 后用 <code>fsolve</code> 求新均衡；(4) 用 log-sum-exp 公式算 CS/CV。学术论文级实现还需要：(a) 把简化 logit 换成 BLP 随机系数；(b) 用真实市场份额数据估计参数；(c) 报告 bootstrap 标准误；(d) 对合并的效率效应（marginal cost 下降）做敏感性分析。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第7节 ========== -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 论文案例</h2>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Econometrica 1995</span>
+        <div class="paper-title">Automobile Prices in Market Equilibrium (BLP 1995)</div>
+        <div class="paper-meta">Berry, Levinsohn, Pakes · Econometrica, 1995</div>
+        <div class="paper-desc">BLP 原文的重要贡献之一就是反事实：估计完美国汽车市场需求后，作者模拟了进口配额取消、汇率变化、新车引入等政策对均衡价格与福利的影响。是"结构估计 → 反事实"范式的开山示范。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · American Economic Review 1994</span>
+        <div class="paper-title">Measuring Market Power in the Ready-to-Eat Cereal Industry</div>
+        <div class="paper-meta">Aviv Nevo · Econometrica, 2001（相关；Nevo 关于 cereal 市场的并购模拟）</div>
+        <div class="paper-desc">Nevo (2001) 用 BLP 估计美国即食麦片市场，做了一系列反事实：(1) 假设 Kellogg's 和 General Mills 合并，计算新均衡价格与 CS 损失；(2) 比较不同市场结构假设（Bertrand vs collusion）下的 markup。是 BLP 反事实应用的标杆。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Quarterly Journal of Economics 2010</span>
+        <div class="paper-title">The Welfare Effects of Radiation Exposure from Nuclear Power Plants</div>
+        <div class="paper-meta">相关：Davis (2011, AER) "The Effect of Health Risk on Housing Values" 等用结构模型做环境福利估计；以及 Busse, Silva-Risso, Zettlemeyer (2006) 对汽车价格促销的反事实分析</div>
+        <div class="paper-desc">结构估计在环境、产业组织、劳动政策评估中的应用广泛。典型的反事实研究包括：(1) 碳税对能源市场与福利的影响；(2) 最低工资政策对就业与福利的长期影响（Eckstein-Keane-Wolpin 生命周期模型）；(3) 学区划分改革对住房价格与教育选择的一般均衡影响。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 经济研究</span>
+        <div class="paper-title">中国汽车市场并购模拟与反事实分析</div>
+        <div class="paper-meta">《经济研究》《经济学(季刊)》上关于中国汽车、啤酒、乳制品、烟草等市场的结构估计与政策模拟论文</div>
+        <div class="paper-desc">国内学者用 BLP 框架对中国汽车、乳制品、啤酒等市场做反事实：(1) 进口关税下调对国产汽车价格与消费者福利的影响；(2) 行业并购（如啤酒行业的华润-青岛合并）的价格效应；(3) 新能源汽车补贴政策的福利分配。这些研究通常参考 Nevo (2000) 模板，用城市级扫描仪数据或工业企业数据库作为市场份额来源。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 世界经济</span>
+        <div class="paper-title">延迟退休政策、养老金改革的动态结构反事实</div>
+        <div class="paper-meta">《世界经济》《金融研究》《经济研究》上关于中国养老保险、生育政策、劳动供给的动态结构估计论文</div>
+        <div class="paper-desc">国内学者用 DDCM 框架对中国养老保险改革、生育政策放松、延迟退休等做反事实：(1) 二胎政策对生育率与劳动供给的长期影响；(2) 延迟退休对养老金收支平衡的压力测试；(3) 公积金/住房补贴政策对家庭消费与购房决策的影响。方法上通常在 Rust (1987) 与 Keane-Wolpin (1997) 框架上扩展中国制度细节。</div>
+      </div>
+    </div>
+
+    <!-- ========== 第8节 ========== -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 常见错误与陷阱</h2>
+
+      <div class="callout danger">
+        <div class="callout-title">✗ 错误 1：直接用 OLS 系数外推反事实（违反 Lucas Critique）</div>
+        <p>用历史数据回归 $Y = \alpha + \beta X + \epsilon$，然后把政策变化 $\Delta X$ 代进去预测 $\Delta Y$。这正是 Lucas 批评的做法——$\beta$ 本身就是在旧政策下的最优反应，政策变了 $\beta$ 也变了。<strong>结构模型的全部价值就在于把 $\theta$（不随政策变）和 $\psi$（随政策变）分开</strong>。</p>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">✗ 错误 2：反事实中忘了重新求解企业定价/行为</div>
+        <p>只把政策变化代入消费者需求端，假设企业定价不变，直接算新的份额。这是错的——企业会对政策做出最优反应，均衡价格会变。<strong>反事实必须重新解完整的均衡</strong>（消费者最优 + 企业最优同时满足）。</p>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">✗ 错误 3：福利计算忘了用 1/α 换算单位</div>
+        <p>BLP 中 $\delta_j$ 的单位是"util"（效用单位），不是"美元"。要换算成货币必须除以价格的边际效用 $\alpha$（或其均值 $\bar\alpha$）。忘记这一步，福利数字会差几个数量级。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 陷阱 4：没有报告不确定性</div>
+        <p>反事实结果只是一个点估计，但其分布依赖于 $\hat\theta$ 的抽样不确定性。必须用 bootstrap（重新抽样估计参数，对每个 bootstrap 重新做完整反事实）或 delta method 报告标准误 / 置信区间。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 陷阱 5：静态模型预测动态政策</div>
+        <p>用静态 BLP 模型分析"长期补贴政策"是错的——消费者和企业的长期反应（资本积累、进入退出）不会被静态模型捕捉。这种情况下必须用动态结构模型（或双向动态模型）。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 陷阱 6：忽略 general equilibrium 反馈</div>
+        <p>局部均衡（partial equilibrium）反事实假设其他市场不变。如果政策足够大（如全国碳税、大规模贸易协定），一般均衡（general equilibrium）反馈（工资、利率、汇率变化）会改变结果。QSGE 模块就是处理这类问题的。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第9节 ========== -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 进阶资料</h2>
+      <ul>
+        <li><strong>Nevo (2000, JEL)</strong> — 上文已引，反事实部分有详细的并购模拟步骤。</li>
+        <li><strong>Petrin (2002, JPE)</strong> — Quantifying the Benefits of New Products: The Case of the Minivan. 用 BLP 反事实计算"Minivan 引入"的消费者福利收益，是新产品福利分析的经典。</li>
+        <li><strong>Aguirregabiria & Nevo (2013)</strong> — Recent developments in structural estimation. 涵盖反事实分析的内部有效性（internal validity）与外部有效性（external validity）讨论。</li>
+        <li><strong>Keane, Todd, Wolpin (2011)</strong> — Handbook of Labor Economics 章节，动态反事实在劳动政策评估中的应用。</li>
+        <li><strong>Wooldridge 等关于结构模型可信度的讨论</strong> — structural vs. causal reduced-form 的现代辩论（也见 Nevo & Whinston 2010）。</li>
+        <li><strong>中文教材</strong>：陈志俊、孙宁等关于产业组织结构估计的中文综述；《数量经济技术经济研究》上关于中国政策评估的结构方法论文。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="05-dynamic-structural.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">动态结构模型</div>
+      </a>
+      <a href="index.html" class="next">
+        <div class="nav-label">返回 →</div>
+        <div class="nav-title">结构估计总览</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

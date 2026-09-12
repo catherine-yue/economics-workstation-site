@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一阶条件推导 | DSGE模型 · 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item active" href="02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">DSGE模型</a>
+      <span class="sep">/</span>
+      <span>一阶条件推导</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">DSGE · 第 3 站</span>
+      <h1>一阶条件推导：从 Lagrangian 到 Euler Equation 与 NKPC</h1>
+      <p class="desc">对家庭、Calvo 厂商的优化问题构造 Lagrangian，逐行求偏导，推出欧拉方程、劳动供给方程、最优定价与 New Keynesian Phillips Curve。每一步都不跳。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-head">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-item"><span class="prereq-label">数学 / 统计基础</span>变分/拉格朗日一阶条件、前瞻变量与乘子的时间下标、Calvo 无穷期定价问题的递归展开（求定价 FOC）。</div>
+      <div class="prereq-item"><span class="prereq-label">经济学理论前置</span>已搭好的 NK 模型部门设定（家庭预算约束 + 中间品厂商利润最大化 + 央行规则）。</div>
+      <div class="prereq-item"><span class="prereq-label">软件 / 计算前置</span>不强制；本页是纯推导。能对照 Dynare 模型块阅读会更有帮助。</div>
+      <div class="prereq-item"><span class="prereq-label">站内前置页面</span>先学 01-model-building（部门设定），本页把设定逐条变成 FOC。</div>
+      <div class="prereq-item"><span class="prereq-label">难度与路线位置</span><span class="prereq-level lv-inter">进阶</span>DSGE 推导基本功，是 03 稳态求解的前置。</div>
+    </div>
+
+    <!-- 基础知识库定位 -->
+    <div class="callout info">
+      <div class="callout-title">📚 基础知识库 · 本页定位</div>
+      <p>本页是 <strong>DSGE 基础知识库</strong>页面。定位：<strong>先单独学会这个工具，再到模型分支里看它怎么用</strong>。一阶条件（FOC）推导是把"部门优化设定"变成"可求解方程组"的关键一步——学会 Lagrangian 构造与 FOC 推导后，再去各分支看新机制（资本、金融约束、开放度）如何改写 FOC。</p>
+      <p style="margin-top:8px;margin-bottom:0"><strong>在哪些模型分支中使用：</strong>所有 DSGE 分支都要推 FOC——
+        <a href="09-rbc-model.html">RBC 基准模型</a> ·
+        <a href="10-nk-three-equation.html">NK 三方程</a> ·
+        <a href="11-medium-scale-sw.html">中尺度 SW</a> ·
+        <a href="12-small-open-economy.html">小国开放经济</a> ·
+        <a href="07-financial-frictions.html">金融摩擦 BGG/GK</a> ·
+        <a href="13-fiscal-monetary-rules.html">财政与货币规则</a> ·
+        <a href="14-tank.html">TANK两主体</a> · <a href="21-hank.html">HANK</a>
+      </p>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">推导方法论与符号</a></li>
+        <li><a href="#s2">家庭 Lagrangian 的构造</a></li>
+        <li><a href="#s3">FOC  wrt  C_t 与劳动供给方程</a></li>
+        <li><a href="#s4">FOC  wrt  b_{t+1}：欧拉方程</a></li>
+        <li><a href="#s5">Calvo 厂商最优定价 FOC</a></li>
+        <li><a href="#s6">价格加总方程 log-linearize</a></li>
+        <li><a href="#s7">NKPC 完整推导</a></li>
+        <li><a href="#s8">把 FOC 写进 Dynare</a></li>
+        <li><a href="#s9">论文案例与常见错误</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 推导方法论与符号</h2>
+      <p>DSGE 的一阶条件推导本质上是<strong>带约束的跨期最优化</strong>。标准流程：</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1：写出 objective 与 constraint</div>
+          <div class="step-desc">把 objective 写成 $E_0\sum \beta^t u(\cdot)$，把 constraint 写成等式（预算约束、需求曲线等）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2：构造 Lagrangian</div>
+          <div class="step-desc">对每个约束引入乘子 $\lambda_t$（约束值乘子），Lagrangian = objective $-\sum_t \beta^t \lambda_t \cdot(\text{constraint})$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3：对每个选择变量求偏导，令 = 0</div>
+          <div class="step-desc">注意跨期项：选择变量 $x_{t+1}$ 会同时出现在第 $t$ 期约束和第 $t+1$ 期约束里，求导时两项都要算。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4：消去乘子 $\lambda_t$，得到 Euler equation</div>
+          <div class="step-desc">把 $\partial \mathcal L/\partial C_t=0$ 解出的 $\lambda_t=C_t^{-\sigma}$ 代入 $\partial \mathcal L/\partial b_{t+1}=0$。</div>
+        </div>
+      </div>
+      <p>本页使用的所有符号沿用上一页：$C_t, N_t, b_t, w_t, i_t, \pi_t$；$\beta, \sigma, \varphi$ 为参数。下面开始正式推导。</p>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 家庭 Lagrangian 的构造</h2>
+      <p>家庭的优化问题（来自上一页 §2）：</p>
+      <div class="formula-block">
+        <div class="formula-label">原始优化问题</div>
+        $$\max_{\{C_t,N_t,b_{t+1}\}_{t=0}^{\infty}}\; E_0\sum_{t=0}^{\infty}\beta^t\left[\frac{C_t^{1-\sigma}}{1-\sigma}-\frac{N_t^{1+\varphi}}{1+\varphi}\right]$$
+        $$\text{s.t.}\quad C_t + \frac{b_{t+1}}{1+i_t} = w_t N_t + \frac{b_t}{1+\pi_t} + \Pi_t - T_t$$
+      </div>
+      <p>把约束移到左边，定义 Lagrangian：</p>
+      <div class="formula-block">
+        <div class="formula-label">Lagrangian</div>
+        $$\mathcal{L} = E_0\sum_{t=0}^{\infty}\beta^t\left\{ \frac{C_t^{1-\sigma}}{1-\sigma}-\frac{N_t^{1+\varphi}}{1+\varphi} - \lambda_t\left[C_t + \frac{b_{t+1}}{1+i_t} - w_t N_t - \frac{b_t}{1+\pi_t} - \Pi_t + T_t\right] \right\}$$
+      </div>
+      <p>其中 $\lambda_t\ge 0$ 是<strong>预算约束乘子</strong>，其经济含义是"第 $t$ 期放松一单位预算约束（即多得一单位消费）带来的边际效用"。下面我们对三个选择变量 $C_t, N_t, b_{t+1}$ 分别求偏导。</p>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> FOC wrt $C_t$ 与劳动供给方程</h2>
+      <h3>3.1 对 $C_t$ 求导</h3>
+      <p>$C_t$ 只出现在第 $t$ 期的花括号里（当期消费），所以：</p>
+      <div class="formula-block">
+        <div class="formula-label">对 C_t 求偏导</div>
+        $$\frac{\partial \mathcal{L}}{\partial C_t} = \beta^t\left[C_t^{-\sigma} - \lambda_t\right] = 0$$
+        $$\Rightarrow\quad \lambda_t = C_t^{-\sigma}$$
+      </div>
+      <p><strong>解释</strong>：$\lambda_t=C_t^{-\sigma}$ 表示"预算约束的影子价格"正好等于消费的边际效用。这是 CRRA 效用下的标准结果。</p>
+
+      <h3>3.2 对 $N_t$ 求导</h3>
+      <p>$N_t$ 也只出现在第 $t$ 期花括号里：劳动负效用项 $-N_t^{1+\varphi}/(1+\varphi)$ 对 $N_t$ 求导为 $-N_t^\varphi$；预算约束里 $+w_t N_t$ 项在乘子前面，所以 $-\lambda_t(-w_t N_t)=+\lambda_t w_t N_t$，对 $N_t$ 求导为 $+\lambda_t w_t$。合起来：</p>
+      <div class="formula-block">
+        <div class="formula-label">对 N_t 求偏导</div>
+        $$\frac{\partial \mathcal{L}}{\partial N_t} = \beta^t\left[-N_t^{\varphi} + \lambda_t w_t\right] = 0$$
+        $$\Rightarrow\quad N_t^{\varphi} = \lambda_t w_t$$
+      </div>
+      <p>把 $\lambda_t=C_t^{-\sigma}$ 代入，得到<strong>劳动供给方程</strong>：</p>
+      <div class="formula-block">
+        <div class="formula-label">Labor Supply Equation</div>
+        $$\frac{N_t^{\varphi}}{C_t^{-\sigma}} = w_t \quad\Longleftrightarrow\quad w_t = N_t^{\varphi}\, C_t^{\sigma}$$
+      </div>
+      <p><strong>直觉</strong>：多工作一单位的边际负效用 $N_t^\varphi$，要正好等于用这一单位工资换来的消费的边际效用 $\lambda_t w_t=C_t^{-\sigma}w_t$。这就是 MRS（marginal rate of substitution）等于实际工资。</p>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> FOC wrt $b_{t+1}$：欧拉方程</h2>
+      <p>关键步骤来了。$b_{t+1}$ 是"跨期变量"，它同时出现在<strong>第 $t$ 期约束</strong>（作为支出项 $b_{t+1}/(1+i_t)$）和<strong>第 $t+1$ 期约束</strong>（作为收入项 $b_{t+1}/(1+\pi_{t+1})$）里。把这两项都摘出来：</p>
+      <div class="formula-block">
+        <div class="formula-label">b_{t+1} 出现的两处</div>
+        $$\text{第 } t \text{ 期：}\quad -\lambda_t \frac{b_{t+1}}{1+i_t}$$
+        $$\text{第 } t+1 \text{ 期：}\quad -\beta\lambda_{t+1}\left[-\frac{b_{t+1}}{1+\pi_{t+1}}\right] = +\beta\lambda_{t+1}\frac{b_{t+1}}{1+\pi_{t+1}}$$
+      </div>
+      <p>把两项对 $b_{t+1}$ 求偏导，令其和为 0（注意第 $t+1$ 期变量在 $t$ 期看是期望 $E_t$）：</p>
+      <div class="formula-block">
+        <div class="formula-label">对 b_{t+1} 求偏导（关键）</div>
+        $$\frac{\partial \mathcal{L}}{\partial b_{t+1}} = E_t\left[ -\lambda_t\frac{1}{1+i_t} + \beta\lambda_{t+1}\frac{1}{1+\pi_{t+1}} \right] = 0$$
+      </div>
+      <p>移项整理：</p>
+      <div class="formula-block">
+        <div class="formula-label">跨期无套利条件</div>
+        $$\frac{\lambda_t}{1+i_t} = \beta E_t\left[\frac{\lambda_{t+1}}{1+\pi_{t+1}}\right]$$
+      </div>
+      <p>代入 $\lambda_t=C_t^{-\sigma}$：</p>
+      <div class="formula-block">
+        <div class="formula-label">欧拉方程（精确形式）</div>
+        $$\frac{C_t^{-\sigma}}{1+i_t} = \beta E_t\left[\frac{C_{t+1}^{-\sigma}}{1+\pi_{t+1}}\right]$$
+      </div>
+      <p>两边同乘 $(1+i_t)$，把右端括号拆开：</p>
+      <div class="formula-block">
+        <div class="formula-label">欧拉方程（标准形式）</div>
+        $$C_t^{-\sigma} = \beta E_t\left[C_{t+1}^{-\sigma}\cdot \frac{1+i_t}{1+\pi_{t+1}}\right]$$
+      </div>
+      <p>定义<strong>事前实际利率</strong> $(1+r_t)\equiv \frac{1+i_t}{1+E_t\pi_{t+1}}$（在零通胀稳态附近 $\pi_{t+1}\approx E_t\pi_{t+1}$，可作一阶近似），得到教科书版本：</p>
+      <div class="formula-block">
+        <div class="formula-label">Euler Equation（教科书版）</div>
+        $$C_t^{-\sigma} = \beta E_t\left[C_{t+1}^{-\sigma}(1+r_t)\right]$$
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">一步都不能跳：为什么要乘 $(1+i_t)$？</div>
+        <p>因为第 $t$ 期买的债券名义利率是 $i_t$，名义终值是 $B_{t+1}(1+i_t)$，但实际终值要除以 $P_{t+1}$。把名义利率与通胀分离，就得到 Fisher 关系 $1+r_t=(1+i_t)/(1+\pi_{t+1})$。这是 DSGE 里"名义—实际"换算的核心。</p>
+      </div>
+      <p>在资源约束 $Y_t=C_t$ 下，欧拉方程也写成产出形式：</p>
+      <div class="formula-block">
+        <div class="formula-label">IS Curve（非线性版）</div>
+        $$Y_t^{-\sigma} = \beta E_t\left[Y_{t+1}^{-\sigma}(1+r_t)\right]$$
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> Calvo 厂商最优定价 FOC</h2>
+      <p>Calvo 厂商的定价问题（上一页 §4.3）：在 $t$ 期能调价的厂商选择 $P_t^*$ 最大化贴现利润：</p>
+      <div class="formula-block">
+        <div class="formula-label">Calvo 定价问题</div>
+        $$\max_{P_t^*}\; E_t\sum_{k=0}^{\infty}\theta^k Q_{t,t+k}\left[ P_t^*\,Y_{t+k|t} - MC_{t+k}^n\,Y_{t+k|t}\right]$$
+        $$\text{s.t.}\quad Y_{t+k|t} = \left(\frac{P_t^*}{P_{t+k}}\right)^{-\varepsilon} Y_{t+k},\qquad Q_{t,t+k}=\beta^k\frac{C_{t+k}^{-\sigma}}{C_t^{-\sigma}}\frac{P_t}{P_{t+k}}$$
+      </div>
+      <p>把需求函数代入利润：</p>
+      <div class="formula-block">
+        <div class="formula-label">代入需求后的利润</div>
+        $$\Pi_{t+k|t} = (P_t^* - MC_{t+k}^n)\left(\frac{P_t^*}{P_{t+k}}\right)^{-\varepsilon}Y_{t+k}$$
+        $$= (P_t^* - MC_{t+k}^n)(P_t^*)^{-\varepsilon}P_{t+k}^{\varepsilon}Y_{t+k}$$
+      </div>
+      <p>对 $P_t^*$ 求偏导（用乘积求导法则：$(a-b)x^{-\varepsilon}$ 的导数为 $x^{-\varepsilon} + (a-b)(-\varepsilon)x^{-\varepsilon-1}$）：</p>
+      <div class="formula-block">
+        <div class="formula-label">对 P_t^* 求导</div>
+        $$\frac{\partial \Pi_{t+k|t}}{\partial P_t^*} = (P_t^*)^{-\varepsilon}P_{t+k}^{\varepsilon}Y_{t+k} - \varepsilon(P_t^*-MC_{t+k}^n)(P_t^*)^{-\varepsilon-1}P_{t+k}^{\varepsilon}Y_{t+k}$$
+        $$= (P_t^*)^{-\varepsilon-1}P_{t+k}^{\varepsilon}Y_{t+k}\left[P_t^* - \varepsilon(P_t^*-MC_{t+k}^n)\right]$$
+      </div>
+      <p>令贴现后求和的导数为 0，把公共因子 $(P_t^*)^{-\varepsilon-1}P_{t+k}^{\varepsilon}Y_{t+k}Q_{t,t+k}$ 约掉：</p>
+      <div class="formula-block">
+        <div class="formula-label">一阶条件</div>
+        $$E_t\sum_{k=0}^{\infty}\theta^k Q_{t,t+k}Y_{t+k|t}\left[(1-\varepsilon)P_t^* + \varepsilon\,MC_{t+k}^n\right] = 0$$
+      </div>
+      <p>把含 $P_t^*$ 的项与含 $MC$ 的项分开：</p>
+      <div class="formula-block">
+        <div class="formula-label">解出 P_t^*</div>
+        $$(1-\varepsilon)P_t^*\,E_t\sum_{k=0}^{\infty}\theta^k Q_{t,t+k}Y_{t+k|t} + \varepsilon\,E_t\sum_{k=0}^{\infty}\theta^k Q_{t,t+k}Y_{t+k|t}MC_{t+k}^n = 0$$
+        $$\Rightarrow\quad P_t^* = \frac{\varepsilon}{\varepsilon-1}\cdot \frac{E_t\sum_{k=0}^{\infty}\theta^k Q_{t,t+k}Y_{t+k|t}MC_{t+k}^n}{E_t\sum_{k=0}^{\infty}\theta^k Q_{t,t+k}Y_{t+k|t}}$$
+      </div>
+      <p><strong>解释</strong>：$\varepsilon/(\varepsilon-1)$ 就是稳态 markup（加成率）。当 $\theta=0$（每期都能调价），求和只剩 $k=0$ 一项，$P_t^*=\frac{\varepsilon}{\varepsilon-1}MC_t^n$，即弹性价格下厂商按 markup 定价。当 $\theta>0$，厂商要按<strong>未来预期边际成本的加权平均</strong>定价，权重由 $\theta^k$ 衰减。</p>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 价格加总方程 log-linearize</h2>
+      <p>价格指数的 law of motion（上一页 §4.3）：</p>
+      <div class="formula-block">
+        <div class="formula-label">价格加总方程</div>
+        $$P_t^{1-\varepsilon} = \theta P_{t-1}^{1-\varepsilon} + (1-\theta)(P_t^*)^{1-\varepsilon}$$
+      </div>
+      <p>两边除以 $P_t^{1-\varepsilon}$：</p>
+      <div class="formula-block">
+        <div class="formula-label">归一化</div>
+        $$1 = \theta\left(\frac{P_{t-1}}{P_t}\right)^{1-\varepsilon} + (1-\theta)\left(\frac{P_t^*}{P_t}\right)^{1-\varepsilon}$$
+      </div>
+      <p>定义 gross inflation $\Pi_t\equiv P_t/P_{t-1}$，$\pi_t\equiv\ln\Pi_t\approx \Pi_t-1$；定义相对价格 $\widetilde p_t^*\equiv\ln(P_t^*/P_t)$。在<strong>零通胀稳态</strong> $\Pi=1$、$P_t^*=P_t$ 附近做一阶 Taylor 展开：</p>
+      <div class="formula-block">
+        <div class="formula-label">Taylor 展开</div>
+        $$\left(\frac{P_{t-1}}{P_t}\right)^{1-\varepsilon} = \Pi_t^{\varepsilon-1} \approx 1 + (\varepsilon-1)\pi_t$$
+        $$\left(\frac{P_t^*}{P_t}\right)^{1-\varepsilon} \approx 1 + (1-\varepsilon)\widetilde p_t^*$$
+      </div>
+      <p>代入归一化方程：</p>
+      <div class="formula-block">
+        <div class="formula-label">线性化</div>
+        $$1 = \theta[1+(\varepsilon-1)\pi_t] + (1-\theta)[1+(1-\varepsilon)\widetilde p_t^*]$$
+      </div>
+      <p>右端常数项 $\theta+(1-\theta)=1$，正好等于左端 1，抵消。剩下：</p>
+      <div class="formula-block">
+        <div class="formula-label">关键桥梁方程</div>
+        $$0 = \theta(\varepsilon-1)\pi_t + (1-\theta)(1-\varepsilon)\widetilde p_t^*$$
+        $$\Rightarrow\quad \pi_t = \frac{1-\theta}{\theta}\,\widetilde p_t^*$$
+        $$\Rightarrow\quad \widetilde p_t^* = \frac{\theta}{1-\theta}\pi_t$$
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> NKPC 完整推导</h2>
+      <h3>7.1 最优定价的对数线性化</h3>
+      <p>把 §5 的最优定价在零通胀稳态附近 log-linearize（Galí 推导），得到：</p>
+      <div class="formula-block">
+        <div class="formula-label">最优定价的递归形式</div>
+        $$\widetilde p_t^* = (1-\beta\theta)\sum_{k=0}^{\infty}(\beta\theta)^k E_t\widehat{mc}_{t+k|t}$$
+        $$\Longleftrightarrow\quad \widetilde p_t^* = (1-\beta\theta)\widehat{mc}_t + \beta\theta E_t\widetilde p_{t+1}^*$$
+      </div>
+      <p>其中 $\widehat{mc}_t$ 是实际边际成本的对数偏离稳态。<strong>直觉</strong>：本期新价格 = 现期边际成本的影响 $(1-\beta\theta)\widehat{mc}_t$ + 未来预期新价格的贴现值 $\beta\theta E_t\widetilde p_{t+1}^*$。</p>
+
+      <h3>7.2 消去 $\widetilde p_t^*$，得到 NKPC</h3>
+      <p>把 §6 的桥梁方程 $\widetilde p_t^*=\frac{\theta}{1-\theta}\pi_t$ 代入上式：</p>
+      <div class="formula-block">
+        <div class="formula-label">代入桥梁方程</div>
+        $$\frac{\theta}{1-\theta}\pi_t = (1-\beta\theta)\widehat{mc}_t + \beta\theta E_t\left[\frac{\theta}{1-\theta}\pi_{t+1}\right]$$
+      </div>
+      <p>两边同乘 $\frac{1-\theta}{\theta}$：</p>
+      <div class="formula-block">
+        <div class="formula-label">New Keynesian Phillips Curve（边际成本形式）</div>
+        $$\pi_t = \frac{(1-\theta)(1-\beta\theta)}{\theta}\,\widehat{mc}_t + \beta E_t\pi_{t+1}$$
+      </div>
+      <p>定义斜率 $\kappa\equiv\frac{(1-\theta)(1-\beta\theta)}{\theta}$，即：</p>
+      <div class="formula-block">
+        <div class="formula-label">NKPC（边际成本形式）</div>
+        $$\pi_t = \beta E_t\pi_{t+1} + \kappa\,\widehat{mc}_t$$
+      </div>
+
+      <h3>7.3 转化为产出缺口形式</h3>
+      <p>在本工作站的 baseline 模型里（无资本、对称均衡），把劳动供给方程 $w_t=N_t^\varphi C_t^\sigma$ 与生产函数 $Y_t=A_t N_t^{1-\alpha}$、$C_t=Y_t$ 结合，可推出实际边际成本与产出缺口的关系：</p>
+      <div class="formula-block">
+        <div class="formula-label">mc 与产出缺口</div>
+        $$\widehat{mc}_t = (\sigma+\varphi)\,\widehat{y}_t + \text{技术项}$$
+      </div>
+      <p>在"产出缺口" $\hat y_t\equiv\widehat{Y}_t-\widehat{Y}_t^n$（偏离 flexible-price natural output）的定义下，技术项被自然产出吸收，于是：</p>
+      <div class="formula-block">
+        <div class="formula-label">NKPC（产出缺口形式，教科书版）</div>
+        $$\pi_t = \beta E_t\pi_{t+1} + \kappa_y\,\hat y_t,\qquad \kappa_y\equiv(\sigma+\varphi)\kappa$$
+      </div>
+      <p>本工作站按用户要求简记 $\kappa_y$ 为 $\kappa$：</p>
+      <div class="formula-block">
+        <div class="formula-label">NKPC（最终版）</div>
+        $$\boxed{\;\pi_t = \beta E_t\pi_{t+1} + \kappa\,\hat y_t\;}$$
+      </div>
+      <div class="callout info">
+        <div class="callout-title">NKPC 与传统 Phillips Curve 的差别</div>
+        <p>传统 PC 是 $\pi_t=\pi_{t-1}+\beta y_t$（后顾）；NKPC 是 $\pi_t=\beta E_t\pi_{t+1}+\kappa y_t$（前瞻）。这个"前瞻"项正是 DSGE 结构估计出来的核心：央行预期管理之所以有效，就是因为 $\beta E_t\pi_{t+1}$ 直接进当期通胀。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 把 FOC 写进 Dynare</h2>
+      <p>把 §3、§4、§7 推出来的三条核心方程补到上一页骨架的 <code class="inline">model;</code> 块里。注意 Dynare 中所有变量都是<strong>对数偏离稳态</strong>（在 steady state 归一化为 0），所以方程直接写成 $\hat x_t$ 的线性形式。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">dynare · baseline_nk_foc.mod（补完 FOC）</span><button class="copy-btn">复制</button></div>
+        <pre><code>% ============================================================
+% baseline_nk_foc.mod —— 补完 FOC 的 NK 模型
+% 上一页骨架中的注释方程，在这里全部写出来
+% ============================================================
+
+var Y C N pi i r mc y_gap A;
+varexo eps_a eps_m;
+
+parameters beta sigma phi alpha theta eps_p rho_a rho_i phi_pi phi_y kappa;
+
+beta=0.99; sigma=1.0; phi=5.0; alpha=0.25;
+theta=0.75; eps_p=9.0;
+rho_a=0.9; rho_i=0.8; phi_pi=1.5; phi_y=0.125;
+
+% NKPC 斜率 kappa = (1-theta)(1-beta*theta)/theta * (sigma+phi)
+kappa = (1-theta)*(1-beta*theta)/theta * (sigma + phi);
+
+model;
+% --- (1) 欧拉方程（对数线性化后的 IS curve）---
+%     C_t^-sigma = beta*E[C_{t+1}^-sigma*(1+r)]
+%     对数线性化：y_gap = E[y_gap(+1)] - (1/sigma)*(r)
+y_gap = y_gap(+1) - (1/sigma)*r;
+
+% --- (2) Fisher equation ---
+r = i - pi(+1);
+
+% --- (3) NKPC（产出缺口形式）---
+pi = beta*pi(+1) + kappa*y_gap;
+
+% --- (4) Taylor rule ---
+i = rho_i*i(-1) + (1-rho_i)*(phi_pi*pi + phi_y*y_gap) + eps_m;
+
+% --- (5) 技术冲击 AR(1) ---
+A = rho_a*A(-1) + eps_a;
+
+% --- (6) 自然产出与产出缺口关系（简化）---
+%     y_gap 在这里被视为给定内生变量，由 (1)(2)(3)(4) 联立决定
+end;
+
+steady_state_model;
+  % 见 03-steady-state.html
+end;
+
+shocks;
+var eps_a; stderr 0.01;
+var eps_m; stderr 0.0025;
+end;
+
+steady;
+check;
+stoch_simul(irf=20);</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 论文案例与常见错误</h2>
+      <h3>9.1 论文案例（英文经典）</h3>
+      <div class="paper-card">
+        <span class="paper-type en">English · 教材</span>
+        <div class="paper-title">Monetary Policy, Inflation, and the Business Cycle, Ch. 3.2–3.4（Deriving the Optimality Conditions）</div>
+        <div class="paper-meta">Jordi Galí, Princeton UP, 2015 (2nd ed.)</div>
+        <div class="paper-desc">Galí 教材 §3.2 严格推导家庭 FOC（eq. 3.7—3.9），§3.3 推导 Calvo 最优定价（eq. 3.11—3.14），§3.4 推出 NKPC（eq. 3.19）。本工作站的推导顺序与编号完全对应。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · AER</span>
+        <div class="paper-title">The Science of Monetary Policy: A New Keynesian Perspective</div>
+        <div class="paper-meta">Richard Clarida, Jordi Galí & Mark Gertler, Journal of Economic Literature, 1999, 37(4): 1661–1707</div>
+        <div class="paper-desc">"CGG 综述"。把 NK 三方程系统写成最简形式，并用它讲 policy trade-off。读其第 2 节 "The Model"，看 FOC 如何被压缩成三方程。</div>
+      </div>
+      <h3>9.2 论文案例（中文顶刊）</h3>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 经济研究</span>
+        <div class="paper-title">技术冲击、金融摩擦与经济波动</div>
+        <div class="paper-meta">许志伟、王文甫，《经济研究》，2019 年</div>
+        <div class="paper-desc">在标准 NK FOC 体系上引入金融摩擦，推导含银行部门的欧拉方程与 Modified NKPC。读其附录 A 的 FOC 推导，看复杂模型如何保留本工作站的基本骨架。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 经济研究</span>
+        <div class="paper-title">预期与经济波动——预期冲击是驱动中国经济波动的主要力量吗？</div>
+        <div class="paper-meta">庄子罐、崔小勇、龚六堂、邹恒甫，《经济研究》，2012 年第 8 期</div>
+        <div class="paper-desc">在 baseline NK 的 Euler equation 上引入 news shock 的预期项 $E_t\varepsilon_{t+1}^a$，使欧拉方程右端多一个 forward-looking 预期分量。是"在标准 FOC 上加一个冲击"的范式。</div>
+      </div>
+
+      <h3>9.3 推导阶段的常见错误（≥3 条）</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：求导时漏掉跨期项</div>
+        <p>对 $b_{t+1}$ 求导时，只算了第 $t$ 期预算约束里的 $-\lambda_t b_{t+1}/(1+i_t)$，忘了第 $t+1$ 期收入项 $+\beta\lambda_{t+1}b_{t+1}/(1+\pi_{t+1})$。结果欧拉方程少了 $E_t$，整个模型变成 backward-looking。检查方法：所有跨期选择变量（$b_{t+1}, K_{t+1}$）都要列两期。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：Fisher 方程用错</div>
+        <p>把 $r_t=i_t-\pi_t$（当期通胀）写成 $r_t=i_t-E_t\pi_{t+1}$。名义利率 $i_t$ 是事前确定的，实际利率必须用预期通胀。Dynare 中要写 <code class="inline">r = i - pi(+1);</code>，不是 <code class="inline">r = i - pi;</code>。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 3：NKPC 斜率 $\kappa$ 算错</div>
+        <p>正确的 $\kappa=(1-\theta)(1-\beta\theta)/\theta$。常见错误：① 漏掉 $(1-\beta\theta)$；② 分子分母写反；③ 没乘上 $(\sigma+\varphi)$ 把 $\widehat{mc}_t$ 换成 $\hat y_t$。代入数值验证：$\theta=0.75,\beta=0.99$，得 $\kappa_{mc}=0.0833$，再乘 $(\sigma+\varphi)=6$ 得 $\kappa_y\approx 0.5$，与 Galí 教材一致。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 4：把乘子 $\lambda_t$ 当成内生变量</div>
+        <p>在 Dynare 里把 $\lambda_t$ 声明为 <code class="inline">var</code> 是错的——它只是个数学工具，应该在 FOC 里被消掉。正确做法：先在纸上把 $\lambda_t=C_t^{-\sigma}$ 代入，只把"消完乘子的方程"写进 Dynare。</p>
+      </div>
+
+      <h3>9.4 进阶</h3>
+      <ul>
+        <li>下一步：<a href="03-steady-state.html" style="color:var(--primary)">04 · 稳态求解</a>，把 FOC 系统在零通胀稳态下解出来。</li>
+        <li>Galí (2015) 附录 3.1 给出完整的 FOC 推导；Woodford (2003) Ch. 3 给出 stochastic discount factor 的严格版本。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="01-model-building.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">02 · 模型构建</div>
+      </a>
+      <a href="03-steady-state.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">04 · 稳态求解</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>广义矩估计 GMM | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item active" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main"><div class="content-wrap">
+  <div class="breadcrumb">
+    <a href="../index.html">首页</a><span class="sep">/</span>
+    <a href="index.html">结构估计 Structural Estimation</a><span class="sep">/</span>
+    <span>广义矩估计 GMM</span>
+  </div>
+
+  <div class="page-header">
+    <span class="tag">03 · GENERALIZED METHOD OF MOMENTS</span>
+    <h1>广义矩估计 GMM</h1>
+    <p class="desc">自包含完整模型分支：从经济环境与矩条件假设出发，完整推导线性 IV 模型与消费欧拉方程两个案例的矩条件；覆盖阶条件/秩条件识别、GMM 估计量推导、最优权重矩阵、Hansen J 检验、与 2SLS 的关系、弱工具诊断，最后用 Python 手写两步 GMM 并讲解如何报告结果。</p>
+  </div>
+
+
+    <!-- ========== 基础知识库定位 ========== -->
+    <div class="callout" style="background:#faf4ea;border:1px solid #e6d4b5;border-left:4px solid var(--accent);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">&#128218; 基础知识库 · KNOWLEDGE BASE / GMM</div>
+      <p style="margin-bottom:10px;">本页属于结构估计<strong>「基础知识库」</strong>。定位：<strong>先单独学会这个工具，再到模型分支里看它怎么用</strong>。当分布写不出来、只能写出几个"条件矩为零"的方程时，MLE 失效、GMM 上场。本页按「是什么 → 为什么学 → 数学定义 → 直觉 → 逐步操作 → 完整代码 → 常见错误」讲透；掌握后再回模型分支看它如何嵌入。</p>
+      <div style="font-weight:700;font-size:13.5px;color:var(--text);margin-bottom:6px;">&#128279; 本工具在哪些模型分支中使用：</div>
+      <ul style="margin:0 0 0 20px;font-size:13.5px;line-height:1.9;">
+        <li><a href="04-blp.html">BLP 随机系数需求模型</a> —— Berry–Levinsohn–Pakes 的核心估计量：用 BLP 收缩映射求出隐含价格，再用 GMM 矩条件（含 BLP instruments）估计。</li>
+        <li><a href="10-production-function.html">生产函数估计（OP/LP/ACF）</a> —— 用投资/中间投入代理不可观测生产率，在矩条件下 GMM 估计生产函数参数。</li>
+        <li><a href="05-dynamic-structural.html">消费欧拉方程（跨期最优化）</a> —— 用 E[Δln c 的工具变量] 构造矩条件，是 GMM 最早、最经典的宏观应用。</li>
+      </ul>
+    </div>
+
+
+    <!-- ========== 前置条件与学习依赖 ========== -->
+    <div class="precond-box" style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>矩估计（MoM）到 GMM 的推广；矩阵代数（投影矩阵、Sandwich 方差 $(G'WG)^{-1}G'W\Omega WG(G'WG)^{-1}$）；渐近分布（Lindeberg–Levy CLT、Slutsky 定理）；两步 GMM 最优权重矩阵 $W^*=\Omega^{-1}$ 的推导。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>Wooldridge 水平；内生性与工具变量（IV）直觉，理解 OLS 为什么在遗漏变量/测量误差下偏误；消费者跨期优化（效用贴现、欧拉方程）。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件/计算前置：</span>Stata（<code class="inline">ivreg2</code>、<code class="inline">gmm</code>）或 Python（手写 <code class="inline">scipy.optimize</code> 矩条件 + <code class="inline">statsmodels</code> 辅助）。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置页面：</span>先学 <a href="01-mle.html">01 极大似然估计 MLE</a>，理解渐近理论与数值优化的共用直觉。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;">进阶</span></div>
+      </div>
+    </div>
+
+<div class="toc-box">
+    <div class="toc-title">本页目录 / CONTENTS</div>
+    <ol>
+      <li><a href="#s1">经济环境与假设</a></li>
+      <li><a href="#s2">完整模型一：线性 IV 模型</a></li>
+      <li><a href="#s3">完整模型二：消费欧拉方程</a></li>
+      <li><a href="#s4">矩条件、识别：阶条件与秩条件</a></li>
+      <li><a href="#s5">GMM 估计量推导与最优权重</a></li>
+      <li><a href="#s6">两步 / 迭代 / 连续更新 GMM</a></li>
+      <li><a href="#s7">Hansen J 检验</a></li>
+      <li><a href="#s8">与 2SLS 的关系、弱工具变量</a></li>
+      <li><a href="#s9">数据要求：工具变量的有效性</a></li>
+      <li><a href="#s10">代码：两步 GMM 完整实现</a></li>
+      <li><a href="#s11">应用解读：如何报告 GMM 结果</a></li>
+      <li><a href="#s12">论文案例</a></li>
+      <li><a href="#s13">常见错误</a></li>
+      <li><a href="#s14">进阶资料</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="s1">
+    <h2><span class="sec-num">01</span> 经济环境与假设</h2>
+    <p>GMM（Generalized Method of Moments, Hansen 1982）是为"写不出完整分布、但能写出矩条件"的环境准备的。它适用的经济环境有三个关键特征：</p>
+    <h3>1.1 矩条件可由经济理论推出</h3>
+    <p>最常见的矩条件来源有三类：</p>
+    <ul>
+      <li><strong>正交性条件：</strong>工具变量与误差项不相关，$E[Z_i\varepsilon_i]=0$（IV 回归、动态面板）；</li>
+      <li><strong>最优化一阶条件：</strong>家庭/企业最优化的 Euler 方程，如 $E[\beta(1+r_{t+1})(c_{t+1}/c_t)^{-\sigma}-1\mid z_t]=0$；</li>
+      <li><strong>矩匹配：</strong>模型预测矩 = 数据矩（SMM、BLP）。</li>
+    </ul>
+    <p>这些矩条件的共同形式是：存在一个向量函数 $g_i(\theta)$，使得在真实参数 $\theta_0$ 处 $E[g_i(\theta_0)]=0$。</p>
+    <h3>1.2 不需要完整分布假设</h3>
+    <p>与 MLE 不同，GMM 不要求知道 $\varepsilon_i$ 的完整分布形状。你只需要知道"某个变量与误差不相关"这种<strong>正交关系</strong>。这在误差分布形状未知、或误设代价大的结构模型里特别重要——比如消费欧拉方程，没人知道跨期替代弹性 $\sigma$ 的误差服从什么分布，但最优化一阶条件是清清楚楚的。</p>
+    <h3>1.3 依赖结构与渐近近似</h3>
+    <p>GMM 的一致性与渐近正态性需要：样本矩满足大数定律（独立或弱依赖）、标准化样本矩满足中心极限定理、矩条件关于 $\theta$ 可微、且 $E[\partial g_i/\partial\theta']$ 满秩。时间序列数据要求平稳遍历；面板数据要求个体间独立。</p>
+    <div class="callout info">
+      <div class="callout-title">GMM 环境一句话总结</div>
+      <p>当经济模型能推出"一组期望为零的正交条件"，但你不想（或不能）对误差分布做强假设时，用 GMM。MLE 是"用得分作矩条件"的 GMM 特例。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s2">
+    <h2><span class="sec-num">02</span> 完整模型一：线性 IV 模型</h2>
+    <h3>2.1 模型设定与经济背景</h3>
+    <div class="formula-block">
+      <div class="formula-label">线性工具变量模型</div>
+      $$y_i = x_i'\beta + \varepsilon_i,\qquad E[z_i'\varepsilon_i]=0$$
+    </div>
+    <p>经济背景：估计教育回报率 $y_i=\log(\text{wage}_i)=\beta_0+\beta_1\,S_i+\beta_2\,\text{experience}_i+\varepsilon_i$，其中教育年限 $S_i$ 与能力 $\varepsilon_i$ 相关（能力高的人既多上学又工资高），OLS 估计 $\beta_1$ 有偏。工具变量 $z_i$（如出生季度、距大学距离）需要与 $S_i$ 相关、但与 $\varepsilon_i$ 不相关。</p>
+    <h3>2.2 为什么用 IV？矩条件的经济含义</h3>
+    <p>OLS 的识别假设是 $E[x_i\varepsilon_i]=0$。当 $x_i$ 中有内生变量（如教育与能力相关），这一假设被破坏。IV 方法把"正交"对象从 $x_i$ 换成工具变量 $z_i$：</p>
+    <div class="formula-block">
+      <div class="formula-label">IV 矩条件（正交性）</div>
+      $$E[z_i'\,(y_i-x_i'\beta)]=0$$
+    </div>
+    <p>经济含义：工具变量 $z_i$ 通过"因果通道"影响内生变量 $x_i$，但<strong>不通过任何其他通道</strong>影响 $y_i$，因此它与结构误差 $\varepsilon_i$ 正交。例如出生季度影响上学年龄（相关），但与个人能力、家庭背景无关（外生）。</p>
+    <h3>2.3 从矩条件到估计量</h3>
+    <p>样本矩是 $\bar g_n(\beta)=\frac1n Z'(y-X\beta)=\frac1n\sum_i z_i(y_i-x_i'\beta)$。当工具个数 $L$ 等于参数个数 $K$（恰好识别），令 $\bar g_n=0$ 直接解出 $\hat\beta_{IV}=(Z'X)^{-1}Z'y$。当 $L>K$（过度识别），矩方程多于未知数，GMM 用二次距离最小化（见第 5 节）。</p>
+  </div>
+
+  <div class="section" id="s3">
+    <h2><span class="sec-num">03</span> 完整模型二：消费欧拉方程</h2>
+    <p>这是 GMM 最经典的"不是回归、而是最优化一阶条件"的应用。</p>
+    <h3>3.1 家庭跨期优化问题</h3>
+    <p>考虑一个无限期家庭，选择消费序列 $\{c_t\}$ 最大化期望折现效用：</p>
+    <div class="formula-block">
+      <div class="formula-label">家庭最优化问题</div>
+      $$\max_{\{c_t\}}\; E_0\sum_{t=0}^{\infty}\beta^t\frac{c_t^{1-\sigma}}{1-\sigma},\quad
+      \text{s.t.}\quad a_{t+1}=(1+r_{t+1})(a_t+y_t-c_t)$$
+    </div>
+    <p>其中 $\beta$ 是主观贴现因子，$\sigma$ 是相对风险厌恶系数（也是跨期替代弹性的倒数），$r_{t+1}$ 是资产回报率。</p>
+    <h3>3.2 推导欧拉方程</h3>
+    <p>在 $t$ 期，家庭权衡"今天少消费 1 单位、存到明天"的成本与收益：今天少消费的边际效用损失是 $u'(c_t)=c_t^{-\sigma}$；明天多消费 $(1+r_{t+1})$ 单位的期望边际效用收益是 $E_t[\beta(1+r_{t+1})u'(c_{t+1})]$。最优时两者相等：</p>
+    <div class="formula-block">
+      <div class="formula-label">消费欧拉方程（Euler equation）</div>
+      $$u'(c_t)=E_t\big[\beta(1+r_{t+1})u'(c_{t+1})\big]$$
+      $$\Longleftrightarrow\quad E_t\Big[\beta(1+r_{t+1})\Big(\frac{c_{t+1}}{c_t}\Big)^{-\sigma}-1\Big]=0$$
+    </div>
+    <p>把它写成无条件期望形式（用迭代期望 law of iterated expectations），并用 $t$ 期信息集 $z_t$ 中的变量做工具：</p>
+    <div class="formula-block">
+      <div class="formula-label">可估计的矩条件</div>
+      $$E\Big\{z_t\cdot\Big[\beta(1+r_{t+1})(c_{t+1}/c_t)^{-\sigma}-1\Big]\Big\}=0$$
+    </div>
+    <p>这里 $z_t$ 必须是 $t$ 期（或更早）已知的变量——滞后消费增长、滞后利率等——因为 $t$ 期信息对家庭已知，所以预测误差与 $z_t$ 正交。这就是 Hall (1978)、Hansen-Singleton (1982) 的经典设定。</p>
+    <h3>3.3 为什么用 GMM 而不是 MLE？</h3>
+    <p>欧拉方程只给出"预测误差与 $t$ 期信息正交"的矩条件，<strong>没有给出误差项的完整分布</strong>。你可以假设误差服从对数正态，但这是额外假设；GMM 不需要这个假设，只用矩条件就能估计 $\beta$ 和 $\sigma$。这正是 GMM 替代 MLE 的典型场景。</p>
+  </div>
+
+  <div class="section" id="s4">
+    <h2><span class="sec-num">04</span> 矩条件、识别：阶条件与秩条件</h2>
+    <p>设矩条件个数为 $L$，参数个数为 $K$，矩条件关于参数的导数矩阵为 $G=E[\partial g_i(\theta_0)/\partial\theta']$。</p>
+    <h3>4.1 识别的定义</h3>
+    <p>参数 $\theta_0$ 被识别，当且仅当：若 $\theta\neq\theta_0$，则 $E[g_i(\theta)]\neq 0$。换句话说，只有真值能让所有矩条件同时成立。</p>
+    <h3>4.2 阶条件（order condition）</h3>
+    <div class="formula-block">
+      <div class="formula-label">阶条件</div>
+      $$L \ge K$$
+    </div>
+    <p>矩条件个数至少等于参数个数。这是必要条件，不是充分条件。</p>
+    <h3>4.3 秩条件（rank condition）</h3>
+    <div class="formula-block">
+      <div class="formula-label">秩条件（充分）</div>
+      $$\text{rank}(G)=K\quad\text{(满秩)}$$
+    </div>
+    <p>在线性 IV 模型里，$G=-E[Z_i X_i']$，秩条件等价于"工具变量与内生解释变量足够相关"——即第一阶段回归矩阵 $E[Z_i'X_i]$ 列满秩。这正是"工具相关性"的数学表达。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>情形</th><th>阶条件</th><th>秩条件</th><th>权重矩阵</th><th>J 检验</th></tr></thead>
+        <tbody>
+          <tr><td>恰好识别 $L=K$</td><td>满足</td><td>需满秩</td><td>任意 $W$ 给同一估计量</td><td>无多余矩，无法检验</td></tr>
+          <tr><td>过度识别 $L&gt;K$</td><td>满足</td><td>需满秩</td><td>$W$ 影响效率，应选 $S^{-1}$</td><td>可做 Hansen J 检验</td></tr>
+          <tr><td>识别不足 $L&lt;K$</td><td>不满足</td><td>不满足</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section" id="s5">
+    <h2><span class="sec-num">05</span> GMM 估计量推导与最优权重</h2>
+    <p>GMM 的目标函数是把样本矩向量 $\bar g_n(\theta)$ 用权重矩阵 $W$ 做二次型：</p>
+    <div class="formula-block">
+      <div class="formula-label">GMM 准则函数</div>
+      $$J(\theta)=n\,\bar g_n(\theta)'\,W\,\bar g_n(\theta),\qquad \hat\theta_{GMM}=\arg\min_\theta J(\theta)$$
+    </div>
+    <p>对线性 IV 模型 $\bar g_n(\beta)=\frac1n Z'(y-X\beta)$，一阶条件 $\partial J/\partial\beta=0$ 给出解析解：</p>
+    <div class="formula-block">
+      <div class="formula-label">线性 GMM 估计量（逐步推导）</div>
+      $$\frac{\partial J}{\partial\beta}=2n\cdot\frac{1}{n}(-X'Z)\,W\,\frac{1}{n}Z'(y-X\beta)=0$$
+      $$\Longrightarrow\;X'ZWZ'X\,\beta=X'ZWZ'y$$
+      $$\Longrightarrow\;\hat\beta_{GMM}(W)=\big(X'Z W Z'X\big)^{-1}X'Z W Z'y$$
+    </div>
+    <p>关键问题：权重矩阵 $W$ 怎么选？Hansen (1982) 证明，<strong>最优权重矩阵是矩条件渐近方差矩阵的逆</strong>，让"方差大、噪声多的矩"权重小：</p>
+    <div class="formula-block">
+      <div class="formula-label">最优权重矩阵与渐近方差</div>
+      $$W^{*}=S^{-1},\qquad S=E\big[g_i(\theta_0)g_i(\theta_0)'\big]$$
+      $$\sqrt n(\hat\theta-\theta_0)\xrightarrow{d}N\!\big(0,\;(G'S^{-1}G)^{-1}\big)$$
+    </div>
+    <p>直观：方差 $S$ 大的矩信噪比低，应该少听它的话；方差小的矩精确，应该权重高。用 $W=S^{-1}$ 得到的 GMM 估计量渐近有效。麻烦在于 $S$ 本身依赖未知 $\theta_0$，无法直接算——这就是"两步法"存在的原因。</p>
+  </div>
+
+  <div class="section" id="s6">
+    <h2><span class="sec-num">06</span> 两步 / 迭代 / 连续更新 GMM</h2>
+    <p>因为 $S(\theta)$ 依赖 $\theta$，GMM 实际是"估计权重—估计参数—更新权重—再估参数"的循环。三种主流实现：</p>
+    <div class="step-flow">
+      <div class="step-item">
+        <div class="step-title">① 两步 GMM（Two-step GMM）</div>
+        <div class="step-desc">第 1 步用任意权重 $W_1=I$（或 2SLS 权重）得到一致初值 $\hat\theta^{(1)}$；用 $\hat\theta^{(1)}$ 估计 $\hat S=(1/n)\sum_i g_i(\hat\theta^{(1)})g_i(\hat\theta^{(1)})'$；第 2 步用 $W_2=\hat S^{-1}$ 重新最小化 $J$。最常用。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">② 迭代 GMM（Iterated GMM）</div>
+        <div class="step-desc">把"用当前 $\hat\theta$ 重估 $\hat S$，再最小化 $J$"重复若干次直到 $\hat\theta$ 收敛。小样本性质通常比两步法略好。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">③ 连续更新 GMM（CUE, Continuous Updating, Hansen-Heaton-Yaron 1996）</div>
+        <div class="step-desc">把 $S(\theta)$ 直接写进目标函数 $J(\theta)=n\bar g_n(\theta)'\hat S(\theta)^{-1}\bar g_n(\theta)$，一步同时对 $\theta$ 和 $S(\theta)$ 最小化。渐近性质最优，但目标函数非凸，容易有多个局部解，对弱矩敏感。</div>
+      </div>
+    </div>
+    <div class="callout tip">
+      <div class="callout-title">小样本注意</div>
+      <p>两步 GMM 在过度识别、$n$ 不大时往往<strong>过度拒绝</strong>（过度精确）。经验做法：报告两步 GMM，同时用迭代 GMM / CUE 作稳健性；并把协方差用 Newey-West / cluster 调整。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s7">
+    <h2><span class="sec-num">07</span> Hansen J 检验</h2>
+    <p>过度识别时，最优 GMM 在真实 $\theta_0$ 处的最小化目标函数 $J(\hat\theta)$ 有一个标准的渐近分布。Hansen (1982) 证明：</p>
+    <div class="formula-block">
+      <div class="formula-label">Hansen J 统计量</div>
+      $$J=n\,\bar g_n(\hat\theta)'\hat S^{-1}\bar g_n(\hat\theta)\;\xrightarrow{d}\;\chi^2(L-K)$$
+    </div>
+    <p>自由度 = 多余矩个数 $L-K$。直觉：$J$ 衡量"最优 GMM 后样本矩还有多离谱"。如果模型正确，剩下的离差只是抽样噪声，服从 $\chi^2$。若 $J$ 过大（p 值很小），说明至少有一个矩条件被模型拒绝，即<strong>过度识别约束不成立</strong>。</p>
+    <div class="callout warning">
+      <div class="callout-title">J 检验不是"模型对"的证明</div>
+      <p>J 检验只检验"所有矩条件一起成立"，它对弱矩、异方差、序列相关都敏感。J 不显著 ≠ 模型正确，只能说明"在现有矩条件下没找到拒绝证据"。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s8">
+    <h2><span class="sec-num">08</span> 与 2SLS 的关系、弱工具变量</h2>
+    <h3>8.1 2SLS 是 GMM 的特例</h3>
+    <p>线性 GMM 估计量 $\hat\beta_{GMM}(W)=(X'ZWZ'X)^{-1}X'ZWZ'y$。取 $W=(Z'Z)^{-1}$（即同方差下的"自然"权重）时回到 <strong>2SLS</strong>：</p>
+    <div class="formula-block">
+      <div class="formula-label">2SLS 作为 GMM 的特例</div>
+      $$W=(Z'Z/n)^{-1}\;\Longrightarrow\;\hat\beta_{2SLS}=(X'P_Z X)^{-1}X'P_Z y,\quad P_Z=Z(Z'Z)^{-1}Z'$$
+    </div>
+    <p>取 $W=\hat S^{-1}$（异方差稳健权重）则是<strong>最优 GMM（异方差稳健 GMM）</strong>。结论：2SLS 是 GMM 在"同方差"假设下的特例；当存在异方差时，最优 GMM 比 2SLS 更有效。</p>
+    <h3>8.2 弱工具变量问题</h3>
+    <p>当工具变量与内生变量相关性很弱（第一阶段 $F$ 统计量接近 1）时：</p>
+    <ul>
+      <li>GMM/2SLS 的小样本偏误很大，估计值朝 OLS 方向偏；</li>
+      <li>渐近正态分布严重失真，标准误不可信；</li>
+      <li>Hansen J 检验也会失效。</li>
+    </ul>
+    <p>诊断：第一阶段 <strong>F &gt; 10</strong>（Stock-Yogo 经验阈值）才认为工具足够强；否则应报告 weak-IV robust 推断（如 Anderson-Rubin 置信集），而不是 GMM 点估计。需要强调的是，弱工具问题在小样本与过度识别时尤为严重：工具越多、样本越小，GMM 的偏误越大，渐近正态近似越不可靠，此时即使 Hansen J 检验不显著也不能对参数值下定论。</p>
+    <p>在实践中，若第一阶段 F 不足，常见应对有三种：一是筛选掉最弱的工具、减少过度识别个数；二是改用对弱工具更稳健的 LIML / Fuller 估计量；三是放弃点估计，直接报告 Anderson-Rubin 对参数的置信区间——后者在工具弱时仍然有效，是最稳妥的做法。</p>
+  </div>
+
+  <div class="section" id="s9">
+    <h2><span class="sec-num">09</span> 数据要求：工具变量的有效性</h2>
+    <p>GMM 对数据的核心要求全部围绕"工具变量是否有效"展开，分两个条件：</p>
+    <h3>9.1 相关性（relevance）</h3>
+    <p>工具变量 $z_i$ 必须与内生解释变量 $x_i$ 有非零的偏相关。检验方法：第一阶段回归 $x_i=\pi' z_i+v_i$，检验工具系数联合显著性的 $F$ 统计量。$F&gt;10$ 是经验阈值（Stock-Yogo），$F&lt;10$ 说明弱工具问题。</p>
+    <h3>9.2 外生性（exogeneity / exclusion restriction）</h3>
+    <p>工具变量必须与结构误差 $\varepsilon_i$ 不相关，即 $E[z_i\varepsilon_i]=0$。这个条件<strong>无法直接检验</strong>——它是识别假设，必须由经济论证：工具只能通过内生变量影响被解释变量，不能有其他通道。过度识别时，Hansen J 检验可以间接检验"是否所有工具都外生"，但弱工具下 J 检验本身不可靠。</p>
+    <h3>9.3 样本量与矩条件个数</h3>
+    <p>线性 IV 模型 $n$ 至少几百；非线性 GMM（如欧拉方程）通常需要 $n\ge 1000$。矩条件个数 $L$ 不宜过多——每多加一个弱工具，反而会放大小样本偏误。经验法则：参数 $K$ 之外，多余矩 $L-K$ 控制在 $K$ 以内。</p>
+  </div>
+
+  <div class="section" id="s10">
+    <h2><span class="sec-num">10</span> 代码：两步 GMM 完整实现</h2>
+    <p>下面用模拟数据估计一个带内生解释变量的线性模型 $y=x_1\beta_1+x_2\beta_2+u$，其中 $x_2$ 内生、$x_1$ 外生，用 $z_1,z_2$ 作工具变量，手写两步 GMM 并算 J 统计量。</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div>
+<pre>
+import numpy as np
+from scipy.optimize import minimize
+from scipy.stats import chi2
+
+# ---------- 1. 造模拟数据 ----------
+np.random.seed(2026)
+n = 2000
+# 外生变量 x1, 工具 z1,z2（与 x2 相关）
+z1 = np.random.randn(n)
+z2 = np.random.randn(n)
+x1 = np.random.randn(n)
+# 内生变量 x2 = 0.8*z1 + 0.5*z2 + 0.3*x1 + v（与 u 相关 -> 内生）
+v = np.random.randn(n)
+u = 0.7*v + np.random.randn(n)        # u 与 v 相关 => x2 内生
+x2 = 0.8*z1 + 0.5*z2 + 0.3*x1 + v
+
+beta_true = np.array([1.0, 0.5, -0.3])  # [截距, b_x1, b_x2]
+X = np.column_stack([np.ones(n), x1, x2])
+y = X @ beta_true + u
+
+# 工具变量矩阵 Z：[1, x1, z1, z2]  （z1,z2 是额外工具，L>K -> 过度识别）
+Z = np.column_stack([np.ones(n), x1, z1, z2])
+L, K = Z.shape[1], X.shape[1]         # L=4 个矩, K=3 个参数 -> 过度识别
+
+# ---------- 2. 矩条件：g_i(beta) = Z_i' * u_i = Z_i'*(y_i - X_i beta) ----------
+def moments(beta):
+    u_hat = y - X @ beta
+    return (Z * u_hat[:, None])        # n x L，每行是 g_i
+
+# ---------- 3. 给定权重 W，最小化 J(beta)=n * gbar' W gbar ----------
+def J(beta, W):
+    gbar = moments(beta).mean(axis=0)  # L-vector
+    return n * gbar @ W @ gbar
+
+# ---------- 4. 第一步：W1 = (Z'Z/n)^-1  -> 等价 2SLS ----------
+W1 = np.linalg.inv(Z.T @ Z / n)
+res1 = minimize(J, np.zeros(K), args=(W1,), method='BFGS')
+b1 = res1.x
+
+# ---------- 5. 用第一步残差估计 S = E[g_i g_i'] ----------
+g1 = moments(b1)                       # n x L
+S = (g1.T @ g1) / n                    # 矩条件长期方差（i.i.d. 下即此式）
+W2 = np.linalg.inv(S)
+
+# ---------- 6. 第二步：最优 GMM ----------
+res2 = minimize(J, b1, args=(W2,), method='BFGS')
+b2 = res2.x
+
+# ---------- 7. 标准误：var = (G' S^-1 G)^-1 / n ----------
+# 矩条件对 beta 的导数 G = E[∂g_i/∂beta'] = -E[Z_i X_i'] = -Z'X/n
+G = -(Z.T @ X) / n
+A = G.T @ W2 @ G
+vcov = np.linalg.inv(A) / n
+se = np.sqrt(np.diag(vcov))
+
+# ---------- 8. Hansen J 统计量 ----------
+gbar_b2 = moments(b2).mean(axis=0)
+J_stat = n * gbar_b2 @ W2 @ gbar_b2
+df = L - K
+pval = 1 - chi2.cdf(J_stat, df)
+
+# ---------- 9. 第一阶段 F 统计量（工具相关性诊断） ----------
+from numpy.linalg import lstsq
+Zall = np.column_stack([np.ones(n), x1, z1, z2])
+b_first = lstsq(Zall, x2, rcond=None)[0]
+resid_fs = x2 - Zall @ b_first
+# 简化：直接报告 z1,z2 的系数（应显著为正）
+print("真实 beta :", beta_true)
+print("两步GMM beta:", np.round(b2, 4))
+print("标准误     :", np.round(se, 4))
+print(f"第一阶段系数 z1={b_first[2]:.3f}, z2={b_first[3]:.3f}（应显著为正）")
+print(f"Hansen J = {J_stat:.3f}, df={df}, p = {pval:.3f}")
+</pre>
+    </div>
+    <div class="callout tip">
+      <div class="callout-title">怎么读结果</div>
+      <p>两步 GMM 系数应接近真值 $[1.0,0.5,-0.3]$；OLS 会因为 $x_2$ 内生而偏离。J 统计量在数据确实由模型生成时应当不显著（p 较大）；若 p 很小，说明工具/模型设定被拒绝。生产代码可用 <code class="inline">linearmodels</code> 的 <code class="inline">IVGMM</code> 包。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s11">
+    <h2><span class="sec-num">11</span> 应用解读：如何报告 GMM 结果</h2>
+    <h3>11.1 系数与标准误</h3>
+    <p>报告两步 GMM 点估计（或迭代/CUE 稳健性），括号里写异方差稳健（或 cluster/Newey-West）标准误。系数解释与 OLS 相同——线性模型里就是偏效应；非线性 GMM（如欧拉方程）要解释结构参数（$\sigma$ 是风险厌恶系数，$\beta$ 是贴现因子）。</p>
+    <h3>11.2 第一阶段与弱工具诊断</h3>
+    <p>必须报告第一阶段 $F$ 统计量（或 partial $R^2$）。$F&gt;10$ 才能说"工具足够强"；$F&lt;10$ 时要改用 Anderson-Rubin 置信集或 LIML，不要只报 GMM 点估计。</p>
+    <h3>11.3 Hansen J 检验</h3>
+    <p>过度识别时必须报告 $J$ 统计量与 p 值。J 不显著（p&gt;0.1）说明"没有证据拒绝过度识别约束"；J 显著则说明至少一个工具可能不外生，需要排查。</p>
+    <h3>11.4 报告模板</h3>
+    <p>一张标准 GMM 结果表至少包含：GMM 系数（括号 robust se）、显著性星号、观测数 $n$、第一阶段 $F$、Hansen $J$ 与 p 值、过度识别自由度 $L-K$。</p>
+  </div>
+
+  <div class="section" id="s12">
+    <h2><span class="sec-num">12</span> 论文案例</h2>
+    <div class="paper-card">
+      <span class="paper-type en">英文 · 理论奠基</span>
+      <div class="paper-title">Large Sample Properties of Generalized Method of Moments Estimators</div>
+      <div class="paper-meta">L. P. Hansen, <em>Econometrica</em>, 1982, 50(4): 1029–1054.</div>
+      <div class="paper-desc">证明 GMM 的一致性、渐近正态性、最优权重选择，并引入 overidentifying restrictions 的 J 检验，是 GMM 一切应用的理论源头，后获 2013 年诺贝尔经济学奖。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">英文 · 经典应用</span>
+      <div class="paper-title">Generalized Instrumental Variables Estimation of Nonlinear Rational Expectations Models (Consumption Euler GMM)</div>
+      <div class="paper-meta">L. P. Hansen &amp; K. J. Singleton, <em>Econometrica</em>, 1982, 50(5): 1269–1286.</div>
+      <div class="paper-desc">用消费欧拉方程的矩条件估计跨期替代弹性，是 GMM 在宏观经济学的开山应用，也是本页第 3 节欧拉方程案例的原始出处。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">英文 · 面板 GMM</span>
+      <div class="paper-title">Some Tests of Specification for Panel Data: Monte Carlo Evidence and an Application to Employment Equations</div>
+      <div class="paper-meta">M. Arellano &amp; S. Bond, <em>Review of Economic Studies</em>, 1991, 58(2): 277–297.</div>
+      <div class="paper-desc">差分 GMM / 系统 GMM 的奠基性论文，把 GMM 应用到动态面板，并用 Sargan/Hansen J 检验检验过度识别。中文宏观、金融面板论文大量沿用此方法。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 结构/半结构估计应用</span>
+      <div class="paper-title">中国工业企业全要素生产率估计：1999—2007</div>
+      <div class="paper-meta">鲁晓东、连玉君，《经济学（季刊）》，2012，11(2): 541–558.</div>
+      <div class="paper-desc">OP/LP 半结构估计本质上是用矩条件（投资/中间投入作为代理变量的单调性条件）识别生产函数参数，与 GMM 的"矩识别"思想一脉相承，是中文文献里结构矩方法的代表作。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 结构估计应用</span>
+      <div class="paper-title">中国制造业企业全要素生产率研究</div>
+      <div class="paper-meta">杨汝岱，《经济研究》，2015，50(2): 61–74.</div>
+      <div class="paper-desc">在估计生产函数时使用了 Olley-Pakes / Levinsohn-Petrin 等矩识别方法，并讨论了 GMM 在解决同时性与选择偏误中的角色，是《经济研究》上结构/矩估计范式的代表。</div>
+    </div>
+  </div>
+
+  <div class="section" id="s13">
+    <h2><span class="sec-num">13</span> 常见错误</h2>
+    <div class="callout danger">
+      <div class="callout-title">错误 1：第一步权重随手设，又用它算标准误</div>
+      <p>第一步 $W_1=I$ 只用于拿初值；<strong>标准误与 J 检验必须用第二步的 $\hat S^{-1}$</strong>。混用会高估精度。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 2：异方差/序列相关下仍用 i.i.d. 协方差</div>
+      <p>$\hat S$ 必须用 Newey-West（时间序列）或 cluster-robust（面板）调整；否则标准误和 J 统计量都失真。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 3：弱工具却报 GMM 点估计</div>
+      <p>第一阶段 F 统计量低时，GMM 偏误大、推断不可靠。先报第一阶段 F，弱工具要换 Anderson-Rubin 置信集。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 4：把 J 检验当万能模型检验</div>
+      <p>J 只检验过度识别约束，且对弱矩敏感。模型误设要靠额外的子样本、额外矩、诊断回归来查，不能只看 J 不显著。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 5：把"工具外生性"当成可检验假设</div>
+      <p>外生性 $E[z_i\varepsilon_i]=0$ 在恰好识别时无法检验，只能靠经济论证。过度识别时 J 检验也只是"间接"证据，不能替代论证。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 6：矩条件个数越多越好</div>
+      <p>每加一个弱矩条件，小样本偏误和方差都可能上升。矩条件不是越多越好，要精选"强且外生"的工具。</p>
+    </div>
+    <div class="callout info">
+      <div class="callout-title">错误 7：欧拉方程用当期变量做工具</div>
+      <p>欧拉方程矩条件里 $z_t$ 必须是 $t$ 期信息集内的变量（滞后变量），不能用 $t+1$ 期变量——后者与预测误差相关，矩条件失效。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s14">
+    <h2><span class="sec-num">14</span> 进阶资料</h2>
+    <ul>
+      <li>Hansen, Heaton &amp; Yaron (1996), "Finite Sample Properties of Some Alternative GMM Estimators", <em>JBES</em> —— 两步 vs 迭代 vs CUE 的小样本比较。</li>
+      <li>Hayashi, <em>Econometrics</em>, 2000, Ch.3/4 —— GMM 与 IV/2SLS 关系的标准教材。</li>
+      <li>Stock, Wright &amp; Yogo (2002), "A Survey of Weak Instruments in IV Regression", <em>Journal of Business &amp; Economic Statistics</em>.</li>
+      <li>软件：Python <code class="inline">linearmodels.iv.gmm</code>；MATLAB <code class="inline">gp_gmm</code> 包；R <code class="inline">gmm</code> 包。</li>
+    </ul>
+  </div>
+
+  <div class="page-nav">
+    <a href="01-mle.html" class="prev"><div class="nav-label">← 上一节</div><div class="nav-title">极大似然估计 MLE</div></a>
+    <a href="03-discrete-choice.html" class="next"><div class="nav-label">下一节 →</div><div class="nav-title">离散选择模型</div></a>
+  </div>
+</div></div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

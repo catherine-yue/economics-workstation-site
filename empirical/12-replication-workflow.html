@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>实证研究完整流程与论文复现 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item active" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">实证论文</a>
+      <span class="sep">/</span>
+      <span>论文复现流程 Replication Workflow</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">实证论文 · 复现工程</span>
+      <h1>实证研究完整流程与论文复现 Replication Workflow</h1>
+      <p class="desc">读一百篇论文，不如把一篇顶刊从头跑到尾。这一页把"复现一篇论文"拆成可执行的工程步骤：从解压复现包、读懂 README、追踪主程序调用链，到环境配置、运行主程序、核对输出、再到在别人代码上做自己的扩展。复现包不是论文的附属品——它是实证研究的"标准答案"。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 统计 / 计量基础</div>
+          <div class="prereq-body">OLS 与固定效应、描述性统计、面板数据结构；能读懂 <code class="inline">reg</code> / <code class="inline">reghdfe</code> 输出。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 软件 / 计算前置</div>
+          <div class="prereq-body">Stata 17+（或 R / Python 任选其一），会用 <code class="inline">cd</code>、<code class="inline">do</code>、<code class="inline">log</code>、<code class="inline">mkdir</code>；能在终端 / Stata 命令窗口里跑脚本。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 站内前置页面</div>
+          <div class="prereq-body">先过 <a href="01-data-cleaning.html">01 数据清洗</a>、<a href="02-data-merge.html">02 数据合并</a>、<a href="04-baseline-regression.html">04 基准回归</a>，再进入复现实操。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">工程 · 入门到进阶</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#why">为什么要学复现：复现包是"标准答案"</a></li>
+        <li><a href="#structure">复现包结构解读</a></li>
+        <li><a href="#entry">如何识别主程序与调用链</a></li>
+        <li><a href="#steps">复现五步走</a></li>
+        <li><a href="#lane">案例：Lane (2025, QJE) 的数据流程</a></li>
+        <li><a href="#errors">常见错误与踩坑清单</a></li>
+        <li><a href="#example">完整示例：模拟复现包目录树 + 主程序</a></li>
+      </ol>
+    </div>
+
+    <!-- ============ 1 ============ -->
+    <div class="section" id="why">
+      <h2><span class="sec-num">01</span> 为什么要学复现：复现包是实证研究的"标准答案"</h2>
+      <p>读论文时，我们读到的是一篇被高度压缩的故事：一张主回归表、几张稳健性图、一段文字解释识别策略。但论文从原始数据到那张表之间，藏着几百个决策——哪些观测被删、缺失值怎么填、异常值怎么处理、行业代码如何统一、政策冲击变量怎么构造、固定效应按什么层级加、标准误聚在哪一层。这些决策在正文里通常只占半句话，甚至完全不提。审稿人看不到，读者更看不到。<strong>复现包（replication package）就是把这几百个决策全部摊开、写成可重跑的代码和数据。</strong></p>
+      <p>把复现包当作"标准答案"来学，有三个立刻能拿到的好处。第一，它告诉你<em>一篇顶刊论文在工程上到底长什么样</em>——不是 abstract 里那个抽象的识别故事，而是 <code class="inline">main.do</code> 里第 37 行那个 <code class="inline">drop if missing(industry)</code>。第二，它是你自己写代码的"范文"：变量命名、文件夹组织、注释风格、log 文件管理、表输出格式，都能直接照抄。第三，复现是训练"识别思维"最快的方式——你必须搞懂每一步为什么这么做，才能改得动它；而改不动，就说明你还没读懂。</p>
+      <p>反过来说，<strong>一个不会复现论文的研究者，写出来的实证几乎一定是脆弱的</strong>。因为他没见过"一篇被严格审稿、被公开复现的论文"在工程上有多讲究：从 <code class="inline">set seed</code> 到 <code class="inline">esttab</code>，从 <code class="inline">cd</code> 到 <code class="inline">save, replace</code>，每一行都有讲究。本站前面几页讲的是"方法是什么"，这一页讲的是"顶刊的方法是怎么被代码组织起来的"。</p>
+      <div class="callout tip">
+        <div class="callout-title">✓ 复现 vs 自己做研究的关系</div>
+        <p>复现不是"抄别人结果"。复现的目标有三：(1) <strong>跑通</strong>——主表主图能复出来，数字对得上；(2) <strong>读懂</strong>——每一步代码为什么这么写、删了谁、留了谁；(3) <strong>改动</strong>——在别人的复现包上改一个变量、加一个稳健性、换一个样本，变成自己的小练习。第三点才是复现的真正价值。</p>
+      </div>
+    </div>
+
+    <!-- ============ 2 ============ -->
+    <div class="section" id="structure">
+      <h2><span class="sec-num">02</span> 复现包结构解读</h2>
+      <p>一个规范的复现包，无论作者用 Stata、R 还是 Python，骨架都高度同构。你拿到一个 zip 解压后，应该立刻认出下面这些东西。如果缺了其中任何一个，这个复现包的质量就要打问号。</p>
+
+      <h3>2.1 顶层结构：README + 主程序 + data/ + output/</h3>
+      <p>打开复现包根目录，第一层通常是：</p>
+      <ul>
+        <li><strong>README.md / README.txt</strong>：入口说明书。写清楚作者、论文标题、期刊、运行环境（Stata 版本 / R 版本 / Python 版本）、外部命令清单、运行顺序、预期运行时间、常见报错。这是你读复现包第一个要打开的文件。</li>
+        <li><strong>主程序（main.do / run_all.do / master.R / run_all.py）</strong>：一键从原始数据跑到最终表的脚本。它通常会 <code class="inline">cd</code> 到根目录、依次调用各个 do 文件、最后输出表和图。</li>
+        <li><strong>code/ 或 do/ 文件夹</strong>：拆分好的子程序，通常按"数据清洗 → 描述统计 → 主回归 → 稳健性 → 图表输出"分文件。</li>
+        <li><strong>data/raw/ 或 raw_data/</strong>：<em>未经任何处理</em>的原始数据。这是你的起点——复现必须从 raw 重新跑到最终表，而不是直接用作者已经洗好的中间数据。</li>
+        <li><strong>data/derived/ 或 data/intermediate/</strong>：清洗过程中产生的中间数据（合并好的面板、生成的变量、缩尾后的数据）。</li>
+        <li><strong>data/analysis/</strong>：最终回归用的分析样本。这张表的行数应该和主回归表的 N 对得上。</li>
+        <li><strong>output/tables/ 与 output/figures/</strong>：最终的 .csv / .xls / .tex 表格和 .png / .pdf 图。</li>
+        <li><strong>log/</strong>：每次运行留下的日志文件，用来核对输出。</li>
+      </ul>
+
+      <h3>2.2 三层数据：raw → derived → analysis</h3>
+      <p>这是复现包里最重要的分层思想。<strong>raw 是只读的，你不允许修改它</strong>；derived 是中间过程，可重新生成；analysis 是最终跑回归用的表。一个复现包如果把这三层混在一起——比如直接在 raw 数据上 <code class="inline">replace</code>、<code class="inline">drop</code>、<code class="inline">save, replace</code>——那它几乎一定跑不通，因为你没法重跑，也不知道作者到底删了谁。</p>
+      <p>对应到论文里：raw 数据是"原始观测"，derived 是"清洗后的中间样本"，analysis 是"最终回归样本"。三者之间每一步删了多少观测，都应该能在代码里数清楚——这就是下一页要讲的"样本构造 flow chart"。</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>层级</th><th>目录</th><th>可否修改</th><th>对应论文中的概念</th></tr></thead>
+          <tbody>
+            <tr><td><strong>raw</strong></td><td>data/raw/</td><td>只读，绝不修改</td><td>原始观测（如 CSMAR 下载的原始 dta）</td></tr>
+            <tr><td><strong>derived</strong></td><td>data/derived/</td><td>可由代码重新生成</td><td>清洗、合并、缩尾后的中间样本</td></tr>
+            <tr><td><strong>analysis</strong></td><td>data/analysis/</td><td>可由代码重新生成</td><td>最终回归样本（N 与主表一致）</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ 3 ============ -->
+    <div class="section" id="entry">
+      <h2><span class="sec-num">03</span> 如何识别主程序：从 README 到调用链</h2>
+      <p>拿到一个复现包，作者常常给你 20 个 do 文件，你不知道该先跑哪个。识别主程序有三种办法，按可靠性排序：</p>
+      <ol>
+        <li><strong>看 README</strong>。规范的 README 会直接写"在 Stata 里运行 <code class="inline">do main.do</code>"。如果 README 没写，看下一条。</li>
+        <li><strong>找名字里带 main / master / run_all / 00_master / setup 的文件</strong>。这类文件通常一开头就 <code class="inline">clear all</code>、<code class="inline">cd</code> 到根目录、<code class="inline">set more off</code>、<code class="inline">log using</code>，然后一串 <code class="inline">do "code/01_clean.do"</code>、<code class="inline">do "code/02_merge.do"</code>。</li>
+        <li><strong>用 grep 搜调用关系</strong>。在 Stata 里或用终端 <code class="inline">grep -rn 'do "' code/</code>，找出哪个文件被最多文件调用、且它自己不调用别人——它就是叶子节点（最终输出表）；反过来，谁调用了最多文件、自己不被别人调用，谁就是主程序。</li>
+      </ol>
+      <p>找到主程序后，你要在脑子里画出一张<strong>调用链图</strong>：</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">text · 调用链示意</span><button class="copy-btn">复制</button></div>
+<pre><code>main.do
+ ├─ 00_setup.do        ← cd, set seed, 安装外部命令, 全局宏
+ ├─ 01_clean_raw.do    ← 读 data/raw/*.dta → 清洗 → 存 data/derived/clean.dta
+ ├─ 02_merge.do        ← 合并多个 derived → 面板 → data/derived/panel.dta
+ ├─ 03_sample.do       ← 筛选最终样本 → data/analysis/final.dta
+ ├─ 04_desc.do         ← 描述性统计表 → output/tables/t1_desc.tex
+ ├─ 05_main_reg.do     ← 主回归 → output/tables/t2_main.tex
+ ├─ 06_robust.do       ← 稳健性 → output/tables/t3_robust.tex
+ └─ 07_figures.do      ← 图 → output/figures/fig1.pdf</code></pre>
+      </div>
+      <p>这张图一旦画出来，你就知道：<strong>data/raw 是源头，output/tables 是终点，中间每个 do 文件都是一条加工线</strong>。复现失败时，沿着这条线倒查——是哪个 do 文件产生的中间数据出了问题。</p>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 小心"隐藏主程序"</div>
+        <p>有些论文的复现包把主程序藏在 <code class="inline">Replication.do</code>、<code class="inline">run.do</code>、<code class="inline">make.do</code> 这种不起眼的名字里，甚至藏在二级文件夹。如果 README 没写、根目录看不出入口，就用上面第 3 条 grep 方法找。</p>
+      </div>
+    </div>
+
+    <!-- ============ 4 ============ -->
+    <div class="section" id="steps">
+      <h2><span class="sec-num">04</span> 复现五步走</h2>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">第一步：环境配置（不要跳过）</div>
+          <div class="step-desc">按 README 装齐外部命令：<code class="inline">ssc install reghdfe, replace</code>、<code class="inline">ssc install estout, replace</code>、<code class="inline">ssc install ftools, replace</code> 等。把 <code class="inline">cd</code> 改成你自己机器上复现包的路径。<strong>永远不要直接改作者的 do 文件里的硬路径</strong>——在主程序最开头加一个全局宏，所有路径都引用它。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第二步：数据下载与解压</div>
+          <div class="step-desc">raw 数据通常很大（几百 MB 到几 GB），作者可能放在 Zenodo / Harvard Dataverse / 自己主页。下载后严格放进 <code class="inline">data/raw/</code>，保持作者命名。不要自己重命名——主程序里读的就是这个名字。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第三步：运行主程序，从 raw 一路跑到 output</div>
+          <div class="step-desc">在 Stata 里 <code class="inline">do main.do</code>。第一次跑几乎一定报错：路径错、外部命令没装、Stata 版本不兼容、某个变量名拼错。逐个修，不要跳着跑——必须从 raw 重新生成所有中间数据，否则你跑的不是"复现"，是"作者已经洗好的半成品"。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第四步：核对输出（这一步比跑通更重要）</div>
+          <div class="step-desc">把你 <code class="inline">output/tables/</code> 里生成的表，和论文正文里的表逐列比对：系数大小、星号、N、R²。不需要每个数字都一模一样（版本差异、浮点误差会导致第三位小数不同），但主系数的<strong>符号、量级、显著性</strong>必须一致。对不上的列，回去查那一步 do 文件。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第五步：修改与扩展（从复现走向自己的研究）</div>
+          <div class="step-desc">挑一个"无害"的改动练手：换一个缩尾比例、加一个控制变量、把标准误从聚类到 firm 改成 clustering to industry、换一个子样本。改完重新跑 main.do，看主系数稳不稳。这一步是把"读代码"变成"写代码"的关键一跃。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 5 ============ -->
+    <div class="section" id="lane">
+      <h2><span class="sec-num">05</span> 案例：Lane (2025, QJE) "Manufacturing Revolutions"</h2>
+      <div class="paper-card">
+        <span class="paper-type en">QJE · 2025</span>
+        <div class="paper-title">Manufacturing Revolutions: Industrial Policy and Industrialization in South Korea</div>
+        <div class="paper-meta">Nathan Lane, <em>The Quarterly Journal of Economics</em>, 140(3), 2025, pp. 1683–1741. DOI: 10.1093/qje/qjaf025</div>
+        <div class="paper-desc">该文利用韩国 1973–1979 年"重化工业（HCI）"产业政策的引入与终止，识别产业政策对工业化的因果效应。作者利用新组装的微观数据，发现 HCI 政策直接推动了被 targeted 行业的扩张与动态比较优势；通过投入产出网络，政策间接惠及下游中间品用户；政策结束后效果仍然持续。</div>
+      </div>
+      <p>Lane (2025) 是近年产业政策实证的代表作。这类基于新组装历史微观数据的 QJE 论文，其复现包通常遵循下面的<strong>一般模式</strong>（具体文件结构以作者在 QJE 补充材料 / 个人主页公开的 replication package 为准）：</p>
+      <ul>
+        <li><strong>raw 数据层</strong>：韩国经济统计年鉴、行业普查（industry census）、企业层面报表、投入产出表（input-output tables）、政策文件档案。这些是作者一手收集、数字化整理的历史数据，是论文最核心的"硬资产"。</li>
+        <li><strong>derived 数据层</strong>：把不同来源的行业代码统一到同一口径（韩国 SIC → 国际 ISIC），构造行业层面的产出、就业、资本、增加值面板；用投入产出矩阵构造下游/上游 exposure 变量。</li>
+        <li><strong>analysis 数据层</strong>：以行业 × 年为单位的最终面板，处理变量 = 该行业是否被 HCI targeted（或 exposure 强度），结果变量 = 产出增长、TFP、比较优势指数。</li>
+        <li><strong>识别策略</strong>：利用政策在行业间的 <em>cross-sectional</em> 差异 + 时间上的引入/退出事件，类似事件研究（event-study）+ 双重差分思路；并通过 IO 网络把处理效应从直接 targeted 行业传导到下游用户行业。</li>
+        <li><strong>输出层</strong>：主回归表（直接效应）、下游溢出表、动态效应图（event-study coefficients over time）、政策结束后的持续性图。</li>
+      </ul>
+      <div class="callout info">
+        <div class="callout-title">ℹ 如何找 Lane 2025 的复现包</div>
+        <p>QJE 要求作者公开 replication package，通常放在 OUP 网站的论文补充材料（Supplementary material）区，或作者本人主页（Nathan Lane 在 Erasmus / Warwick 等机构的 faculty page）。下载后按本页第二节的结构对照阅读：先看 README，再找 main.do，再追踪 raw → derived → analysis 三层。如果你在复现中发现某一步和本页描述的一般模式不同，<strong>以实际代码为准</strong>——本页给的是"这类论文通常长什么样"的地图，不是该论文的精确目录。</p>
+      </div>
+    </div>
+
+    <!-- ============ 6 ============ -->
+    <div class="section" id="errors">
+      <h2><span class="sec-num">06</span> 常见错误与踩坑清单</h2>
+
+      <h3>错误 1：路径硬编码（Hard-coded paths）</h3>
+      <p>作者在自己电脑上写的 <code class="inline">cd "C:/Users/Nathan/Dropbox/HCI/replication"</code>，你拿到后直接跑，必然报错。<strong>正确做法</strong>：在 main.do 最开头定义一个全局宏：</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 路径宏示例</span><button class="copy-btn">复制</button></div>
+<pre><code>* 在 main.do 开头，只改这一行
+global root "C:/你的路径/Lane2025_replication"
+cd "$root"
+
+* 之后所有 do 文件都用 "$root/data/raw/..." 引用路径
+* 不要在每个 do 文件里写死自己的电脑路径</code></pre>
+      </div>
+
+      <h3>错误 2：相对路径错误</h3>
+      <p>主程序里写 <code class="inline">do "code/01_clean.do"</code>，这个相对路径是相对于<strong>当前工作目录</strong>的。如果你手动 <code class="inline">do code/01_clean.do</code> 而不是从 main.do 调用，工作目录可能不在根目录，就会找不到文件。<strong>永远只从 main.do 跑</strong>，不要单独调子程序。</p>
+
+      <h3>错误 3：随机种子未固定</h3>
+      <p>复现包里如果有 bootstrap、随机分组、随机抽样，却没有 <code class="inline">set seed</code>，那你每次跑结果都会不一样——这不是复现错了，是代码本身不可复现。<strong>正确做法</strong>：主程序第一行就写 <code class="inline">set seed 20250801</code>（或作者指定的种子）。如果你自己做扩展，也必须固定种子，否则审稿人无法核对。</p>
+
+      <h3>错误 4：外部命令版本依赖</h3>
+      <p>作者用的是 Stata 17 + <code class="inline">reghdfe</code> v6.x，你装的是最新版 v7.x，语法可能不兼容（例如 <code class="inline">absorb()</code> 参数变化）。<strong>解决</strong>：先按 README 指定版本装；如果 README 没写，跑通后遇到报错，去 <code class="inline">ssc describe reghdfe</code> 看版本，必要时降级。自己写新代码时，在 log 开头用 <code class="inline">which reghdfe</code> 记录版本号。</p>
+
+      <h3>错误 5：直接改 raw 数据</h3>
+      <p>新手最常犯：打开 <code class="inline">data/raw/industry.dta</code>，发现一个变量名不对，直接 <code class="inline">rename</code> 然后 <code class="inline">save, replace</code>。从此你再也跑不出作者的结果，因为 raw 被污染了。<strong>铁律：raw 只读，所有清洗都在 derived 层做。</strong></p>
+
+      <h3>错误 6：跳过中间步骤直接跑最终回归</h3>
+      <p>看到 <code class="inline">05_main_reg.do</code> 里有一行 <code class="inline">use "data/analysis/final.dta"</code>，作者已经把 final.dta 放在包里了，你直接跑这一个文件，"结果对得上"——恭喜你，你什么都没复现。<strong>真正的复现必须从 raw 重新生成 final.dta</strong>，否则你只是在验证作者存好的那张表，而不是他的代码。</p>
+
+      <div class="callout danger">
+        <div class="callout-title">⛔ 复现的底线</div>
+        <p>复现不是"跑通就算赢"。如果你跑出来的主系数和论文差了一倍、符号反了、星号没了，<strong>不要假装没看见</strong>。回到调用链，一步一步比对中间样本的 N、均值、关键变量分布——差异一定藏在某一步 <code class="inline">drop if</code> 里。</p>
+      </div>
+    </div>
+
+    <!-- ============ 7 ============ -->
+    <div class="section" id="example">
+      <h2><span class="sec-num">07</span> 完整示例：一个最小复现包的目录树 + 主程序</h2>
+      <p>下面用一个模拟的"某产业政策对企业产出影响"的复现包，演示规范的目录组织和主程序写法。你可以照这个骨架搭自己的项目。</p>
+
+      <h4>目录树</h4>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">text · replication_template/</span><button class="copy-btn">复制</button></div>
+<pre><code>replication_template/
+├── README.md                  # 说明：作者、期刊、运行环境、运行顺序
+├── main.do                    # 主程序（一键从 raw 跑到 output）
+├── code/
+│   ├── 00_setup.do            # 全局设置
+│   ├── 01_clean.do            # 清洗 raw → derived
+│   ├── 02_merge.do            # 合并 → derived/panel.dta
+│   ├── 03_sample.do           # 构造分析样本 → analysis/final.dta
+│   ├── 04_descriptive.do      # 描述性统计 → output/tables/t1.tex
+│   └── 05_main_reg.do         # 主回归 → output/tables/t2.tex
+├── data/
+│   ├── raw/                   # 只读，原始下载数据
+│   │   ├── firm_raw.dta
+│   │   └── policy_raw.dta
+│   ├── derived/               # 中间数据（可重生成）
+│   └── analysis/              # 最终回归样本
+├── output/
+│   ├── tables/
+│   └── figures/
+└── log/                       # 每次运行的日志</code></pre>
+      </div>
+
+      <h4>main.do（带完整中文注释）</h4>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · main.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 主程序：从 raw 数据一键复现全部表格
+* 用法：改下面 global root 为你本机路径，然后 do main.do
+*==============================================================
+clear all
+set more off
+set varabbrev off
+set seed 20260911                // 固定随机种子，保证可复现
+
+* --- 1. 路径设置（只改这一行）---
+global root "C:/Users/你/Projects/replication_template"
+cd "$root"
+
+* --- 2. 新建输出文件夹（如不存在）---
+capture mkdir "output/tables"
+capture mkdir "output/figures"
+capture mkdir "log"
+
+* --- 3. 启动日志 ---
+capture log close
+log using "log/run_$S_DATE.log", replace
+
+* --- 4. 安装并检查外部命令 ---
+* （首次运行取消下面注释）
+* ssc install reghdfe, replace
+* ssc install estout, replace
+which reghdfe
+which estout
+
+* --- 5. 按调用链依次执行 ---
+do "code/00_setup.do"
+do "code/01_clean.do"        // raw -> derived/clean_firm.dta
+do "code/02_merge.do"        // + policy -> derived/panel.dta
+do "code/03_sample.do"       // -> analysis/final.dta
+do "code/04_descriptive.do"  // -> output/tables/t1_desc.tex
+do "code/05_main_reg.do"     // -> output/tables/t2_main.tex
+
+* --- 6. 完成 ---
+display _n "===== 全部跑完，请检查 output/tables/ ====="
+log close</code></pre>
+      </div>
+
+      <h4>03_sample.do（样本构造，演示如何记录 N 变化）</h4>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · code/03_sample.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 03_sample.do：从 derived/panel.dta 构造最终分析样本
+* 每一步都用 count 记录 N，方便做 flow chart
+*==============================================================
+use "$root/data/derived/panel.dta", clear
+
+* 初始 N
+count
+scalar N0 = r(N)
+display "初始观测: " N0
+
+* 步骤1：只保留制造业
+keep if industry_sector == "manufacturing"
+count
+scalar N1 = r(N)
+display "保留制造业后: " N1 " (删了 " N0-N1 ")"
+
+* 步骤2：删除关键变量缺失
+drop if missing(output, capital, labor, treat)
+count
+scalar N2 = r(N)
+display "删除关键变量缺失后: " N2 " (删了 " N1-N2 ")"
+
+* 步骤3：缩尾 1%/99%（在组内）
+winsor2 output capital labor, cuts(1 99) replace by(year)
+
+* 保存最终分析样本
+save "$root/data/analysis/final.dta", replace
+
+* 打印 flow chart
+display _n "===== 样本构造 flow chart ====="
+display "N0 原始面板:    " N0
+display "N1 制造业:      " N1
+display "N2 无缺失:      " N2</code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">✓ 把这个骨架抄成你自己的项目</div>
+        <p>下次开始一个新实证项目，先复制这个目录树和 main.do，把里面的模拟数据换成你自己的。从第一天就保持"raw 只读、derived 可重生成、analysis 是终点"的分层，三个月后你会感谢自己——因为你自己的项目也变成了一个别人能复现的复现包。</p>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="11-significance-practice.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">显著性诊断与规范推断</div>
+      </a>
+      <a href="13-five-layer-framework.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">五层框架：Population–Sample–Data–Model–Inference</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

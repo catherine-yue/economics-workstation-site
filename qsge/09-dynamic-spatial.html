@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>动态空间一般均衡 Dynamic Spatial GE | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item active" href="09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">量化空间一般均衡</a>
+      <span class="sep">/</span>
+      <span>动态空间一般均衡</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">QSGE · 09</span>
+      <h1>动态空间一般均衡：迁移 Bellman、值函数迭代与转移动态</h1>
+      <p class="desc">本页自包含：多地点动态迁移决策（Bellman 方程）→ Type-I 极值积分推出迁移概率 → 人口运动定律 → 每期静态 EK 均衡 → 稳态 Perron-Frobenius 主特征向量 → 向后迭代值函数 / 向前人口运动的完整 Python 求解器 → 贸易自由化与户籍改革的动态反事实 + 论文案例。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:14px 22px;border-radius:8px;margin:0 0 28px;font-size:14px;line-height:1.7;">
+      <div style="font-size:11px;letter-spacing:2px;opacity:.75;margin-bottom:4px;">EQUATION AUDIT · 公式审计</div>
+      本模型共 <strong>10</strong> 个核心方程（静态 EK 贸易份额、住房出清、间接效用、迁移 Bellman、Type-I 极值积分迁移概率、人口运动定律、稳态主特征向量、向后值函数迭代、向前人口模拟、动态福利）。迁移概率由 Type-I 极值独立最大值性质逐步积分导出，文末「方程总清单」给出索引。
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">经济环境与假设</a></li>
+        <li><a href="#s2">迁移 Bellman 方程</a></li>
+        <li><a href="#s3">迁移概率：Type-I 极值积分</a></li>
+        <li><a href="#s4">人口运动定律与每期静态均衡</a></li>
+        <li><a href="#s5">稳态：Perron-Frobenius 主特征向量</a></li>
+        <li><a href="#s6">动态求解：向后值函数 / 向前人口</a></li>
+        <li><a href="#s7">Python 动态求解器（numpy）</a></li>
+        <li><a href="#s8">参数估计与数据</a></li>
+        <li><a href="#s9">反事实：贸易自由化与户籍改革</a></li>
+        <li><a href="#s10">论文案例、常见错误与难度</a></li>
+      </ol>
+    </div>
+
+    <!-- ============ S1 ============ -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 经济环境与假设</h2>
+      <p>上一页 <a href="06-rrh-spatial.html" style="color:var(--primary);font-weight:600;">RRH 空间一般均衡</a>与 <a href="07-trade-migration-land.html" style="color:var(--primary);font-weight:600;">贸易+迁移+土地</a>都是<strong>静态</strong>框架：工人在各区间无成本（或一次性成本）地选择居住地，模型只求解单一均衡。但现实中的迁移是一个<strong>动态</strong>决策：一个在郑州工作的人今天是否搬去深圳，不仅取决于两地今天的工资差，还取决于"明年深圳的机会会怎样"——他要权衡迁移成本 $\tau_{ni}^{mig}$ 与未来一生的期望收入流。Caliendo-Dvorkin-Parro (2019, <em>Econometrica</em>) 把这一前瞻决策与 EK 静态贸易模块嵌套，开创了"动态空间一般均衡"（Dynamic Spatial GE）这一工作母机。</p>
+      <p>核心假设清单（每条附<strong>设定理由 / 参数含义 / 经济直觉</strong>）：</p>
+      <ul>
+        <li><strong>假设 A1：$N$ 个区位、离散时间 $t=0,1,2,\dots$、总人口 $\bar L$ 固定（封闭经济）。</strong>经济由 $N$ 个离散区位组成，时间离散。<em>理由</em>：离散区位与离散时间是"可量化动态"的前提——每个 $t$ 都要做一次静态均衡，连续时间无法用矩阵迭代。<em>参数含义</em>：$\bar L=\sum_n L_{n,t}$ 恒成立（无出生死亡，或已净化为人口）。<em>直觉</em>：迁移只是人口在区间的<strong>重新分配</strong>，总量不变——这正是"空间不平等"研究的天然设定。</li>
+        <li><strong>假设 A2：迁移是前瞻的动态离散选择（Bellman）。</strong>工人在 $t$ 期住在 $n$，每期可决定下期去任意 $i$，支付迁移成本 $\tau_{ni}^{mig}\ge 1$，并获得 idiosyncratic 冲击 $\epsilon_{i,t}$。<em>理由</em>：静态迁移模型（如 RRH 的 Fréchet 居住选择）隐含"每期都可无成本重选"，无法刻画"一旦迁出就难以回头"的沉没成本与预期。<em>参数含义</em>：$\beta\in(0,1)$ 是时间偏好（贴现因子），$\nu>0$ 是迁移偏好异质性（Type-I 极值尺度）。<em>直觉</em>：深圳今天工资高，但如果预期三年后产业外迁，今天搬过去可能后悔——Bellman 把这种"等一等看看"的期权价值写进模型。</li>
+        <li><strong>假设 A3：每期内是静态 EK 贸易均衡 + 住房市场出清。</strong>给定当期人口分布 $L_{n,t}$，当期工资 $w_{n,t}$、价格指数 $P_{n,t}$、房价 $Q_{n,t}$、贸易份额 $\pi_{ni,t}$ 由静态出清决定（与 <a href="02-eaton-kortum.html" style="color:var(--primary);font-weight:600;">EK 模型</a>同构）。<em>理由</em>：动态层只决定"人口怎么流"，静态层决定"流完之后各变量多高"——两层解耦是 Caliendo-Dvorkin-Parro 的核心技巧。<em>参数含义</em>：$\theta$ 是贸易弹性（Fréchet 形状），$H_n$ 是外生住房供给，$\beta_c$ 是消费份额（住房 $1-\beta_c$）。<em>直觉</em>：这正是"快变量 vs 慢变量"——价格、工资当期出清，人口几十年才重新分布。</li>
+        <li><strong>假设 A4：生产率动态来自空间溢出与集聚。</strong>$T_{i,t}$ 可随本地人口 $L_{i,t}$ 上升而上升（集聚经济），或随邻区溢出而变化。<em>理由</em>：纯外生 $T_i$ 的模型会低估贸易自由化的长期效应——人口向沿海集聚后，沿海生产率内生提升，形成累积因果。<em>参数含义</em>：集聚弹性 $\xi$ 满足 $T_{i,t}\propto L_{i,t}^{\xi}$，$\xi>0$。<em>直觉</em>：深圳从渔村变硅谷，不是外生的，而是人来了以后干中学、知识外溢。</li>
+        <li><strong>假设 A5：迁移成本 $\tau_{ni}^{mig}$ 是政策作用对象（户籍制度）。</strong>$\tau_{nn}^{mig}=1$（不迁移无成本），跨区 $\tau_{ni}^{mig}>1$，可分解为距离成本 + 制度成本（落户门槛）。<em>理由</em>：中国户籍改革、美国对墨西哥移民政策，都是直接改 $\tau_{ni}^{mig}$。<em>参数含义</em>：$\tau_{ni}^{mig}$ 以效用折损形式进入 Bellman（$\log\tau$ 进效用）。<em>直觉</em>：北京落户指标收紧 = $\tau_{\text{其他}\to\text{北京}}^{mig}\uparrow$，预期效用下降，迁入概率下降。</li>
+      </ul>
+
+      <h4>符号与参数总表</h4>
+      <div class="table-wrap">
+        <table>
+          <tr><th>符号</th><th>含义</th><th>典型取值/来源</th></tr>
+          <tr><td>$N$</td><td>区位个数</td><td>中国 31 省 / 美国 50 州 + ROW</td></tr>
+          <tr><td>$t$</td><td>离散时间期</td><td>一年一期，$t=0\dots T$</td></tr>
+          <tr><td>$L_{n,t}$</td><td>$t$ 期 $n$ 地人口（状态变量）</td><td>$\sum_n L_{n,t}=\bar L$</td></tr>
+          <tr><td>$V_{n,t}$</td><td>$t$ 期住在 $n$ 的期望终身价值</td><td>Bellman 右端</td></tr>
+          <tr><td>$U_{i,t}$</td><td>$t$ 期 $i$ 地间接效用（静态出清结果）</td><td>$w_{i,t}/(P^\beta Q^{1-\beta})$</td></tr>
+          <tr><td>$m_{ni,t}$</td><td>$t$ 期从 $n$ 迁到 $i$ 的概率</td><td>行和=1</td></tr>
+          <tr><td>$\tau_{ni}^{mig}$</td><td>迁移成本（效用折损）</td><td>$\ge1$，对角=1</td></tr>
+          <tr><td>$\beta$</td><td>时间偏好贴现因子</td><td>$0.95\sim0.98$（年）</td></tr>
+          <tr><td>$\nu$</td><td>迁移偏好异质性（Type-I 极值）</td><td>$\approx 1.5\sim 3$（从迁移流量估）</td></tr>
+          <tr><td>$\theta$</td><td>贸易弹性</td><td>$\approx 4\sim 5$</td></tr>
+          <tr><td>$\xi$</td><td>集聚弹性（$T\propto L^\xi$）</td><td>$0\sim0.1$</td></tr>
+          <tr><td>$d_{ni}$</td><td>iceberg 贸易成本</td><td>$\ge1$</td></tr>
+        </table>
+      </div>
+      <div class="callout info">
+        <div class="callout-title">为什么这一页是 RRH 的"动态扩展"？</div>
+        <p>RRH (2017) 把"选哪里住"建模成静态 Fréchet 抽取，本质上假设工人每期都在所有区间<strong>重新抽取</strong>一次最优地。动态模型则承认：迁移是有成本、有预期的<strong>状态转移</strong>。$L_{n,t}$ 变成状态变量，模型必须沿时间轴求解——这就是为什么需要"向后迭代值函数、向前模拟人口"这套算法，而不是 RRH 那一套单期不动点。</p>
+      </div>
+    </div>
+
+    <!-- ============ S2 ============ -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 迁移 Bellman 方程</h2>
+      <p>一个 $t$ 期住在 $n$ 的工人，观察当期及未来的效用路径后，选择下期居住地 $i$。她从 $i$ 地获得的"当期流量效用"是 $\log U_{i,t}$，迁移成本以效用折损 $\log\tau_{ni}^{mig}$ 进入，还有一个她自己知道、计量经济学家不知道的 idiosyncratic 偏好冲击 $\epsilon_{i,t}$。她再乘上贴现因子 $\beta$，把"住在 $i$ 地从下期开始的期望终身价值"$E_t[V_{i,t+1}]$ 加进来：</p>
+      <div class="formula-block">
+        <div class="formula-label">(DYN2) ★ 迁移 Bellman 方程</div>
+        $$V_{n,t}=\max_i\left\{\log U_{i,t}-\log\tau_{ni}^{mig}+\epsilon_{i,t}+\beta\,E_t[V_{i,t+1}]\right\}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>四项各是什么</strong>：$\log U_{i,t}$＝当期在 $i$ 地的即时效用；$-\log\tau_{ni}^{mig}$＝从 $n$ 迁到 $i$ 的迁移成本（不迁则 $i=n$，$\log\tau=0$）；$\epsilon_{i,t}\sim\text{Gumbel}(0,\nu)$＝对 $i$ 地的特有冲击；$\beta E_t[V_{i,t+1}]$＝迁到 $i$ 后从下期开始的期望终身价值。</p>
+        </div>
+      </div>
+      <p><strong>设定理由</strong>：Bellman 方程把一个无穷期序列选择问题压缩成"当前期 + 一个续值函数"，这是动态规划的标准手法。把续值 $V_{i,t+1}$ 放进选择集合，工人就<strong>前看</strong>了——她不是只看今天工资，而是看"今天在哪最划算，加上明天开始在那的好日子"。</p>
+      <p><strong>经济直觉</strong>：$\beta$ 越大，工人越看重未来，越愿意为一个"长期更好"的地方支付今天的迁移成本；$\tau_{ni}^{mig}$ 越大，跨区迁移的当期效用损失越大，迁移越慢。$\epsilon_{i,t}$ 是让迁移流不完全由工资差决定的"摩擦"——总有一小撮人因为家庭、方言、气候等不可观测原因搬。</p>
+      <p>在完美预期（perfect foresight）下，工人知道未来整条路径，$E_t[\cdot]$ 退化为确定值 $V_{i,t+1}$。绝大多数量化动态空间论文（Caliendo-Dvorkin-Parro 2019；Desmet-Rossi-Hansberg 2014）都在完美预期下求解——这避免了把整个宏观不确定性加进迁移决策的计算灾难，同时保留了"人口逐步向新均衡调整"的核心动态。</p>
+    </div>
+
+    <!-- ============ S3 ============ -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 迁移概率：Type-I 极值积分</h2>
+      <p>Bellman 右端是一个 $\max_i$。要把它变成可计算的迁移概率，需要对 $\epsilon_{i,t}$ 的分布积分。假设 $\epsilon_{i,t}\sim$ Type-I 极值（Gumbel），尺度参数 $\nu$，CDF 为 $G(\epsilon)=\exp(-e^{-\epsilon/\nu})$。这与 <a href="06-rrh-spatial.html" style="color:var(--primary);font-weight:600;">RRH 页</a>里 Fréchet 通勤概率的推导数学同构——本质上都是"独立抽取的最大值仍有闭式分布"。</p>
+
+      <h3>3.1 完整逐步推导（禁止跳步）</h3>
+      <p><strong>Step 0 · 记确定性部分。</strong>把第 $i$ 个选择的"净现值效用"（不含 $\epsilon$）记作</p>
+      <div class="formula-block">
+        $$a_{ni,t}\equiv \log U_{i,t}-\log\tau_{ni}^{mig}+\beta V_{i,t+1}$$
+      </div>
+      <p>则选 $i$ 的总效用为 $a_{ni,t}+\epsilon_{i,t}$，Bellman 右端 $=\max_i(a_{ni,t}+\epsilon_{i,t})$。</p>
+
+      <p><strong>Step 1 · Type-I 极值的 max 闭式。</strong>独立 Gumbel 抽取的最大值仍服从 Gumbel，且其选择概率服从 multinomial logit。$n$ 地工人选 $i$ 的概率为：</p>
+      <div class="formula-block">
+        <div class="formula-label">(DYN3a) 选择概率 · 积分起点</div>
+        $$m_{ni,t}=\Pr\left(a_{ni,t}+\epsilon_{i,t}=\max_k\{a_{nk,t}+\epsilon_{k,t}\}\right)$$
+      </div>
+
+      <p><strong>Step 2 · 对 $\epsilon_{i,t}$ 条件积分。</strong>以 $\epsilon_{i,t}=\epsilon$ 为条件（密度 $(1/\nu)e^{-(\epsilon+\epsilon/\nu)}$，即 Gumbel 密度），要求其余所有 $k\ne i$ 的 $a_{nk}+\epsilon_k\le a_{ni}+\epsilon$，即 $\epsilon_k\le(a_{ni}-a_{nk})+\epsilon$。独立故 CDF 连乘：</p>
+      <div class="formula-block">
+        <div class="formula-label">(DYN3b) 代入 CDF 连乘</div>
+        $$m_{ni,t}=\int_{-\infty}^{\infty}\frac{1}{\nu}e^{-(\epsilon+\epsilon/\nu)}
+        \prod_{k\ne i}\exp\!\left(-e^{-((a_{ni}-a_{nk})+\epsilon)/\nu}\right)d\epsilon$$
+      </div>
+      <p>注意 Gumbel 密度写成 $g(\epsilon)=\frac{1}{\nu}e^{-\epsilon/\nu}e^{-e^{-\epsilon/\nu}}$。把连乘与指数里的密度项合并：所有指数项都是 $e^{-(\cdot)/\nu}$ 形式，合并后得到 $\exp(-e^{-\epsilon/\nu}\sum_k e^{-a_{nk,t}/\nu})$。</p>
+
+      <p><strong>Step 3 · 变量替换 $u=e^{-\epsilon/\nu}$。</strong>由 $u=e^{-\epsilon/\nu}$ 得 $\epsilon=-\nu\ln u$，$d\epsilon=-\nu\,du/u$。上下限 $\epsilon:-\infty\to+\infty$ 对应 $u:+\infty\to0$。积分化简为一个 Gamma/指数型积分，结果正比于 $e^{a_{ni,t}/\nu}$。</p>
+
+      <p><strong>Step 4 · 归一化得闭式。</strong></p>
+      <div class="formula-block">
+        <div class="formula-label">(DYN3) ★ 迁移概率（DCL 核心方程）· 积分结果</div>
+        $$\boxed{\;m_{ni,t}=\frac{\exp\!\left[\big(\log U_{i,t}-\log\tau_{ni}^{mig}+\beta V_{i,t+1}\big)/\nu\right]}{\sum_{k=1}^{N}\exp\!\left[\big(\log U_{k,t}-\log\tau_{nk}^{mig}+\beta V_{k,t+1}\big)/\nu\right]}\;}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>三道检验</strong>：(i) 行和 $\sum_i m_{ni,t}=1$ ✓（分子分母差一个求和）；(ii) $U_{i,t}\uparrow\Rightarrow m_{ni,t}\uparrow$（更高效用地更吸引人）✓；(iii) $\tau_{ni}^{mig}\uparrow\Rightarrow m_{ni,t}\downarrow$（迁移成本上升，迁出降温）✓。</p>
+        </div>
+      </div>
+
+      <p>同时，Bellman 右端在积分后也有闭式——这正是 Type-I 极值的魔力：<strong>期望最大值 $E[\max_i(a_{ni}+\epsilon_i)]=\nu\,\text{log-sum-exp}_i(a_{ni}/\nu)$</strong>。于是 Bellman 方程本身可写成：</p>
+      <div class="formula-block">
+        <div class="formula-label">(DYN3c) 值函数的 log-sum-exp 形式</div>
+        $$V_{n,t}=\nu\,\log\sum_{k=1}^{N}\exp\!\left[\frac{\log U_{k,t}-\log\tau_{nk}^{mig}+\beta V_{k,t+1}}{\nu}\right]+C$$
+      </div>
+      <p>常数 $C=\nu\gamma_{\text{Euler}}$（欧拉常数）对所有 $n$ 相同，只影响 $V$ 的水平、不影响 $m$ 的相对结构，数值求解时常被略去。这一式子是<strong>向后迭代</strong>的关键：已知 $V_{t+1}$，就能立刻算出 $V_t$，无需模拟任何个人。</p>
+      <div class="callout tip">
+        <div class="callout-title">数值稳定性：为什么必须用 log-sum-exp</div>
+        <p>直接按公式算 $\exp(a_{ni}/\nu)$ 会在 $a_{ni}$ 很大时溢出（overflow）、很小时下溢。数值实现统一用 <code>logsumexp</code>：先减去行内最大值 $\max_k(a_{nk,t}/\nu)$ 再取指数，最后把最大值加回——数学等价但数值稳定。Python 用 <code>scipy.special.logsumexp</code> 或手写减去最大值版本。</p>
+      </div>
+    </div>
+
+    <!-- ============ S4 ============ -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 人口运动定律与每期静态均衡</h2>
+      <h3>4.1 人口运动定律</h3>
+      <p>$n$ 地 $t$ 期有 $L_{n,t}$ 个人，其中比例 $m_{ni,t}$ 迁到 $i$。于是 $i$ 地 $t+1$ 期人口等于所有原住地 $n$ 流向 $i$ 的总和：</p>
+      <div class="formula-block">
+        <div class="formula-label">(DYN4) ★ 人口运动定律</div>
+        $$L_{n,t+1}=\sum_{i=1}^{N}m_{in,t}\,L_{i,t}\qquad\Longleftrightarrow\qquad \mathbf L_{t+1}=\mathbf m_t^\top \mathbf L_t$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p>矩阵形式 $\mathbf L_{t+1}=\mathbf m_t^\top\mathbf L_t$：$\mathbf m_t$ 是"行原住地 $n$、列目的地 $i$"的迁移概率矩阵（行和=1），故转置后左乘人口列向量。$\sum_n L_{n,t+1}=\bar L$ 恒成立（行和=1 ⇒ 质量守恒）。</p>
+        </div>
+      </div>
+      <p>这就是动态模型的"运动方程"——给定初始分布 $L_0$ 和迁移概率路径 $\{m_t\}$，人口沿时间的轨迹被完全确定。它和 Solow 模型的资本积累方程 $\dot K=sY-\delta K$ 扮演同样角色：一个状态变量的 law of motion。</p>
+
+      <h3>4.2 每一期的静态均衡</h3>
+      <p>给定当期人口 $L_{n,t}$，当期内求解一个与 <a href="02-eaton-kortum.html" style="color:var(--primary);font-weight:600;">EK 模型</a>完全同构的静态均衡（贸易 + 劳动力市场 + 住房市场出清）：</p>
+      <div class="formula-block">
+        <div class="formula-label">(DYN4s) 当期静态 EK 模块</div>
+        $$\pi_{ni,t}=\frac{T_i(w_{i,t}d_{ni})^{-\theta}}{\sum_k T_k(w_{k,t}d_{nk})^{-\theta}},\qquad
+        P_{n,t}=\left[\sum_k T_k(w_{k,t}d_{nk})^{-\theta}\right]^{-1/\theta}$$
+        $$Q_{n,t}=\frac{(1-\beta_c)\,w_{n,t}L_{n,t}}{H_n},\qquad
+        U_{n,t}=\frac{w_{n,t}}{P_{n,t}^{\beta_c}Q_{n,t}^{1-\beta_c}}$$
+      </div>
+      <p>工资由贸易平衡（零利润）不动点决定：$w_{i,t}L_{i,t}=\sum_n\pi_{ni,t}\beta_c w_{n,t}L_{n,t}$（$i$ 地工资总额 = $i$ 地产品在各地的消费品销售额）。人口 $L_{n,t}$ 是<strong>状态</strong>、是外生给定的输入，$U_{n,t}$ 是<strong>静态均衡输出</strong>、再喂回 Bellman。这种"静态块被动态块反复调用"的结构，是整个求解器的骨架。</p>
+      <div class="callout info">
+        <div class="callout-title">动态 ↔ 静态如何耦合？</div>
+        <p>静态块：$L_t \xrightarrow{\text{出清}} U_t$；动态块：$U_t,V_{t+1}\xrightarrow{\text{logit}} m_t \xrightarrow{\text{运动定律}} L_{t+1}$。两块相互喂数据：静态给动态提供效用，动态给静态提供下期人口。求解时必须沿时间轴"同时"固定，这正是下一节"向后—向前"算法的由来。</p>
+      </div>
+    </div>
+
+    <!-- ============ S5 ============ -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 稳态：Perron-Frobenius 主特征向量</h2>
+      <p>当所有外生参数（$d_{ni},\tau_{ni}^{mig},T_i,H_n$）都不随时间变化时，模型收敛到一个稳态：$L_{n,t}\to L_n^*$，$U_{n,t}\to U_n^*$，$V_{n,t}\to V_n^*$，$m_{ni,t}\to m_{ni}^*$ 都不再变化。稳态下 Bellman 退化为一个不动点，人口运动定律退化为特征值问题。</p>
+      <h3>5.1 稳态人口分布 = 迁移矩阵的主特征向量</h3>
+      <p>稳态要求 $L^*=\mathbf m^{*\top}L^*$（人口不再变）。这正是说 $L^*$ 是迁移概率矩阵转置 $\mathbf m^{*\top}$ 的<strong>右特征向量</strong>，对应特征值 1。由 <strong>Perron-Frobenius 定理</strong>：对一个非负、不可约、行和为 1 的随机矩阵，存在唯一的主特征值 $\lambda=1$，对应的右特征向量是严格为正、和为 1 的向量——这就是稳态人口分布。</p>
+      <div class="formula-block">
+        <div class="formula-label">(DYN5) ★ 稳态人口 · Perron-Frobenius</div>
+        $$\mathbf L^*=\mathbf m^{*\top}\mathbf L^*,\qquad \mathbf L^*\propto \text{主右特征向量}(\mathbf m^{*\top}),\qquad \sum_n L_n^*=1$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p>$\mathbf m^*$ 行和为 1（随机矩阵）⇒ 主特征值恰为 1；不可约（任意两地之间有正迁移概率链）⇒ 特征向量严格为正、唯一。这保证稳态人口在每个区位都为正，不会出现"空城"。</p>
+        </div>
+      </div>
+      <p><strong>经济直觉</strong>：稳态不是"所有地方一样富"，而是"人口分布自我维持"——即使各地效用不同，只要 $n$ 地迁出的人数恰好等于各地迁入 $n$ 的人数，分布就稳定。高工资地人口多到把工资压下来，低工资地人口少到把工资抬上去，直到净迁移为零。</p>
+      <h3>5.2 稳态求解流程</h3>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1: 初始化人口</div>
+          <div class="step-desc">猜测 $L^{(0)}$（如均匀分布 $1/N$）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2: 解静态均衡</div>
+          <div class="step-desc">给定 $L^{(k)}$，解静态 EK 不动点得 $U^{*(k)}$、$w^*$、$Q^*$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3: 解稳态值函数</div>
+          <div class="step-desc">由 $V_n^*=\nu\log\sum_k\exp[(\log U_k^*-\log\tau_{nk}+\beta V_k^*)/\nu]$ 迭代到收敛（这是关于 $V$ 的压缩映射）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4: 算迁移矩阵并求主特征向量</div>
+          <div class="step-desc">算 $m_{ni}^*$，再用幂迭代求 $\mathbf m^{*\top}$ 的主特征向量，得 $L^{*(k+1)}$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 5: 收敛判断</div>
+          <div class="step-desc">$\|L^{*(k+1)}-L^{*(k)}\|<10^{-8}$ 停止；否则回 Step 2。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ S6 ============ -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 动态求解：向后值函数 / 向前人口</h2>
+      <p>反事实（如第 $t=1$ 期突然贸易自由化、$\tau$ 永久下降）下，模型从旧稳态出发，要经过几十年才能收敛到新稳态。这条"转移动态路径"怎么算？标准算法是 <strong>backward-forward iteration（向后迭代值函数 + 向前模拟人口）</strong>。</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step A: 解新旧两个稳态</div>
+          <div class="step-desc">用第 05 节算法分别解冲击前、冲击后的稳态。后者的 $V^*$ 作为整条路径的<strong>终端条件</strong>（$V_{T+1}=V_{\text{new}}^*$）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step B: 猜测效用路径</div>
+          <div class="step-desc">猜测一条 $U_{n,t}$ 路径（$t=1\dots T$），初值可用新旧稳态的线性插值。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step C: 向后迭代值函数</div>
+          <div class="step-desc">从终端 $V_{T+1}=V_{\text{new}}^*$ 出发，沿 $t=T,T-1,\dots,1$ 用 (DYN3c) 倒算 $V_{n,t}$：$V_{n,t}=\nu\,\text{logsumexp}_k[(\log U_{k,t}-\log\tau_{nk,t}+\beta V_{k,t+1})/\nu]$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step D: 向前模拟人口</div>
+          <div class="step-desc">从 $L_1=L_{\text{old}}^*$（旧稳态人口）出发，沿 $t=1,2,\dots,T$ 用 (DYN3) 算 $m_{ni,t}$，再用 (DYN4) 推 $L_{t+1}$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step E: 每期重解静态均衡</div>
+          <div class="step-desc">用新推出的 $L_t$ 重新解静态 EK，得到新的 $U_{n,t}$。若与 Step B 的猜测差异大，回到 Step C 继续迭代，直到整条路径收敛。</div>
+        </div>
+      </div>
+      <p>直觉：工人今天的迁移决策取决于"未来会怎样"，所以值函数必须从终点<strong>往回</strong>算；而人口分布是今天的决策累积出来的，所以人口必须从起点<strong>往前</strong>推。两条方向相反的扫描，加上中间夹一个静态均衡重解，迭代到自洽——这就是动态空间模型求解的全部精髓。计算量约为 $T\times N^2$（$T$ 期 × 每期一个 $N\times N$ logit），$N=50,T=100$ 时普通笔记本几秒可解。</p>
+    </div>
+
+    <!-- ============ S7 ============ -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> Python 动态求解器（numpy）</h2>
+      <p>下面是一个完整、可运行的动态空间一般均衡求解器。模块：① 每期静态 EK 出清；② 稳态 Perron-Frobenius 主特征向量幂迭代；③ 向后值函数迭代 + 向前人口模拟；④ 贸易自由化反事实的动态路径。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · numpy · 静态 EK + 动态求解器</span><button class="copy-btn">复制</button></div>
+<pre><code># ============================================================
+# 动态空间一般均衡求解器 (Dynamic Spatial GE Solver)
+# 结构: 每期静态EK出清 + 迁移Bellman(Type-I极值) + 人口运动
+# 参考: Caliendo, Dvorkin & Parro (2019, Econometrica)
+# 仅依赖 numpy; log-sum-exp 手写保证数值稳定
+# ============================================================
+import numpy as np
+
+def logsumexp(a, axis):
+    """数值稳定的 logsumexp: 减去最大值再 exp 再求和再 log"""
+    m = np.max(a, axis=axis, keepdims=True)
+    return (m + np.log(np.sum(np.exp(a - m), axis=axis, keepdims=True))).squeeze(axis)
+
+# ------------------------------------------------------------
+# 1) 每期静态 EK 均衡: 给定人口 L, 解出工资 w 与效用 U
+# ------------------------------------------------------------
+def static_ek(L, T, d, H, theta, bc, damp=0.6, tol=1e-9, it=3000):
+    """
+    L      : (N,) 当期人口分布 (状态)
+    T      : (N,) 各地生产率
+    d      : (N,N) iceberg 贸易成本, d[n,i]=从i卖到n
+    H      : (N,) 各地外生住房供给
+    theta  : 贸易弹性; bc: 消费品支出份额(住房1-bc)
+    返回 w, Q, P, pi, U
+    """
+    N = len(L)
+    w = np.ones(N) / N                 # 工资初值(后归一化)
+    for _ in range(it):
+        # 贸易份额与价格指数 (EK闭式)
+        A = T[None, :] * (w[None, :] * d) ** (-theta)   # A[n,i]
+        pi = A / A.sum(axis=1, keepdims=True)           # n从i进口份额
+        P = A.sum(axis=1) ** (-1.0 / theta)             # 价格指数(常数gamma略)
+        # 贸易平衡不动点: w_i L_i = bc * sum_n pi_{n i} * w_n L_n
+        spend = bc * w * L                              # n地消费品总支出
+        sales = (pi * spend[:, None]).sum(axis=0)       # i地在各地的销售额
+        w_new = sales / np.maximum(L, 1e-12)
+        w_new = w_new / w_new.sum()                     # 归一化(只识别相对工资)
+        if np.max(np.abs(w_new - w)) < tol:
+            w = w_new; break
+        w = damp * w_new + (1 - damp) * w
+    Q = (1 - bc) * w * L / H                            # 住房出清
+    U = w / (P ** bc * Q ** (1 - bc))                   # 间接效用
+    return w, Q, P, pi, U
+
+# ------------------------------------------------------------
+# 2) 稳态值函数 + 主特征向量(Perron-Frobenius)
+# ------------------------------------------------------------
+def steady_state(L0, T, d, mig, H, theta, bc, beta, nu,
+                 xi=0.0, outer=120, tol=1e-8):
+    """
+    mig : (N,N) 迁移成本 tau^mig, mig[n,i]=从n迁到i
+    xi  : 集聚弹性, T_tilde = T * L^xi
+    """
+    N = len(L0)
+    L = L0 / L0.sum()
+    for _ in range(outer):
+        T_eff = T * L ** xi                             # 生产率内生(集聚)
+        _, _, _, _, U = static_ek(L, T_eff, d, H, theta, bc)
+        lu = np.log(U)
+        # 稳态值函数不动点: V_n = nu*logsumexp_k[(lu_k - log mig_nk + beta V_k)/nu]
+        V = np.zeros(N)
+        for _it in range(2000):
+            a = (lu[None, :] - np.log(mig) + beta * V[None, :]) / nu   # (n,k)
+            V_new = nu * logsumexp(a, axis=1)
+            V_new -= V_new.mean()                       # 去掉公共常数
+            if np.max(np.abs(V_new - V)) < 1e-12:
+                V = V_new; break
+            V = 0.5 * V_new + 0.5 * V
+        # 迁移概率矩阵 m[n,i] = softmax over i of a
+        a = (lu[None, :] - np.log(mig) + beta * V[None, :]) / nu
+        m = np.exp(a - logsumexp(a, axis=1)[:, None])    # 行和=1
+        # 稳态人口 = m.T 的主右特征向量 (幂迭代)
+        L_new = m.T @ L
+        L_new = L_new / L_new.sum()
+        if np.max(np.abs(L_new - L)) < tol:
+            L = L_new; break
+        L = 0.5 * L_new + 0.5 * L
+    T_eff = T * L ** xi
+    _, Q, P, pi, U = static_ek(L, T_eff, d, H, theta, bc)
+    return dict(L=L, U=U, w=_ if False else None, Q=Q, P=P, pi=pi, m=m, V=V)
+
+# ------------------------------------------------------------
+# 3) 转移动态: 向后值函数 + 向前人口 (perfect foresight)
+# ------------------------------------------------------------
+def transition(L_old, ss_new, T, d_path, mig_path, H, theta, bc,
+               beta, nu, xi=0.0, T_horizon=60, outer=25):
+    """
+    d_path[t], mig_path[t] : 长度T_horizon的外生路径(数组列表)
+    ss_new : 新稳态解(提供终端V与终端U)
+    返回各期 L_t, U_t, 福利路径
+    """
+    N = len(L_old)
+    L_old = L_old / L_old.sum()
+    U_path = np.tile(ss_new["U"], (T_horizon, 1))       # 猜测: 先用新稳态
+    L_path = np.zeros((T_horizon + 1, N))
+    L_path[0] = L_old
+    for k in range(outer):
+        # --- 向后: 从终端 V_{T+1}=新稳态V 倒推 V_t ---
+        V_path = np.zeros((T_horizon + 1, N))
+        V_path[T_horizon] = ss_new["V"]                 # 终端条件
+        for t in range(T_horizon - 1, -1, -1):
+            lu = np.log(U_path[t])
+            a = (lu[None, :] - np.log(mig_path[t]) + beta * V_path[t + 1][None, :]) / nu
+            V_path[t] = nu * logsumexp(a, axis=1)
+        # --- 向前: 从 L_0=旧稳态 推 L_{t+1} ---
+        L_path[0] = L_old
+        for t in range(T_horizon):
+            lu = np.log(U_path[t])
+            a = (lu[None, :] - np.log(mig_path[t]) + beta * V_path[t + 1][None, :]) / nu
+            m = np.exp(a - logsumexp(a, axis=1)[:, None])
+            L_path[t + 1] = m.T @ L_path[t]
+            L_path[t + 1] /= L_path[t + 1].sum()
+        # --- 重解静态均衡, 更新 U_path ---
+        U_new = np.zeros((T_horizon, N))
+        for t in range(T_horizon):
+            T_eff = T * L_path[t] ** xi
+            _, _, _, _, U_new[t] = static_ek(L_path[t], T_eff, d_path[t], H, theta, bc)
+        err = np.max(np.abs(U_new - U_path))
+        U_path = 0.5 * U_new + 0.5 * U_path             # 阻尼
+        if err < 1e-7:
+            break
+    # 动态福利: 全经济人均期望效用的时间序列
+    welf = [(L_path[t] * U_path[t]).sum() / L_path[t].sum()
+            for t in range(T_horizon)]
+    return dict(L_path=L_path, U_path=U_path, V_path=V_path, welfare=np.array(welf))
+
+# ------------------------------------------------------------
+# 4) 反事实模拟: 贸易自由化的动态调整路径
+# ------------------------------------------------------------
+if __name__ == "__main__":
+    rng = np.random.default_rng(7)
+    N = 6
+    theta, bc, beta, nu, xi = 4.0, 0.75, 0.95, 2.0, 0.05
+    T_prod = rng.uniform(0.8, 1.3, N)
+    H = np.ones(N)
+    dist = rng.uniform(0.5, 2.0, (N, N)); np.fill_diagonal(dist, 0.0)
+    d0 = np.exp(0.3 * dist); np.fill_diagonal(d0, 1.0)      # 旧贸易成本
+    mig0 = np.exp(0.4 * dist); np.fill_diagonal(mig0, 1.0)  # 旧迁移成本
+
+    # 旧稳态
+    L0 = np.ones(N) / N
+    ss_old = steady_state(L0, T_prod, d0, mig0, H, theta, bc, beta, nu, xi)
+
+    # 反事实: 第1期起所有区间贸易成本打7折(贸易自由化)
+    d_bt = np.full((N, N), 0.7); np.fill_diagonal(d_bt, 1.0)
+    d1 = d0 * d_bt
+    ss_new = steady_state(ss_old["L"], T_prod, d1, mig0, H, theta, bc, beta, nu, xi)
+
+    T_h = 60
+    d_path = [d1] * T_h                       # 永久性贸易冲击
+    mig_path = [mig0] * T_h                   # 迁移成本不变
+    tr = transition(ss_old["L"], ss_new, T_prod, d_path, mig_path,
+                    H, theta, bc, beta, nu, xi, T_horizon=T_h)
+
+    print("旧稳态人口:", np.round(ss_old["L"], 3))
+    print("新稳态人口:", np.round(ss_new["L"], 3))
+    print("迁移矩阵行和=1:", np.allclose(ss_old["m"].sum(axis=1), 1.0))
+    print("动态福利 t=0 / t=30 / t=60:",
+          np.round([tr["welfare"][0], tr["welfare"][30], tr["welfare"][-1]], 3))
+    print("人口从旧稳态到新稳态, 第30期分布:", np.round(tr["L_path"][30], 3))
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">代码要点与排错</div>
+        <ul>
+          <li><strong>logsumexp 手写</strong>：避免 $\exp$ 溢出，这是动态模型的命脉；</li>
+          <li><strong>值函数去均值</strong>：Bellman 有一个公共常数自由度，每轮 $V$ 减去均值防漂移；</li>
+          <li><strong>向后在前、向前在后</strong>：终端条件用新稳态 $V^*$，起点用旧稳态 $L_0$；</li>
+          <li><strong>外生路径</strong>：$d_t,\tau_t$ 是政策路径，可设成"渐进式降关税"而非一次性冲击；</li>
+          <li>$N>30$ 时外层 <code>damp=0.3</code>、$T=100$，普通笔记本仍可秒级求解。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============ S8 ============ -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 参数估计与数据</h2>
+      <h3>8.1 迁移弹性 $\nu$ 的估计</h3>
+      <p>对迁移概率 (DYN3) 取对数（以不迁移 $m_{nn}$ 为基准），可得估计方程：</p>
+      <div class="formula-block">
+        <div class="formula-label">迁移概率对数化（估计方程）</div>
+        $$\ln\frac{m_{ni,t}}{m_{nn,t}}=\frac{1}{\nu}\left[\ln\frac{U_{i,t}}{U_{n,t}}-\ln\tau_{ni}^{mig}+\beta\big(E V_{i,t+1}-E V_{n,t+1}\big)\right]$$
+      </div>
+      <p>用观测到的迁移流量矩阵 $m_{ni}^{\text{data}}$（人口普查长表、流动人口监测）作被解释变量，观测的效用差（工资、房价、价格指数）作解释变量，以 pair 固定效应吸收 $\tau_{ni}^{mig}$，即可 OLS/IV 估出 $1/\nu$。典型 $\nu\approx 1.5\sim 3$——迁移流量对效用差其实<strong>不太敏感</strong>，这正是中国人口"慢流动"的结构性原因。</p>
+      <h3>8.2 迁移成本 $\tau_{ni}^{mig}$ 的反推</h3>
+      <p>与 RRH 的 inversion 同理：给定估出的 $\nu,\beta$ 和观测的 $m_{ni}^0,U_{i}^0,V_i^0$，由迁移概率方程反解 $\tau_{ni}^{mig}$：</p>
+      <div class="formula-block">
+        <div class="formula-label">迁移成本反推</div>
+        $$\log\tau_{ni}^{mig}=\ln U_i^0+\beta V_i^0-\nu\ln m_{ni}^0-\left[\ln U_n^0+\beta V_n^0-\nu\ln m_{nn}^0\right]$$
+      </div>
+      <p>即：两地期望效用现值差，减去实际迁移概率反映的偏好，剩下的就是"为什么明知更好却不去"的成本——户籍门槛、方言、亲友网络都在这里。</p>
+      <h3>8.3 数据来源</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>数据</th><th>美国来源</th><th>中国来源</th><th>用途</th></tr>
+          <tr><td>迁移流量矩阵 $m_{ni}$</td><td>IRS Statistics of Income 跨区迁移；ACS PUMS；Longitudinal Employer-Household Dynamics</td><td>人口普查长表（2000/2010/2020 户籍地—常住地）；流动人口动态监测 CMDS（卫健委）</td><td>估计 $\nu$、反推 $\tau^{mig}$</td></tr>
+          <tr><td>工资 / 收入 $w_n$</td><td>QCEW、ACS PUMS</td><td>经济普查从业地收入；城镇单位平均工资（NBS）</td><td>静态效用 $U_n$</td></tr>
+          <tr><td>价格 / 房价 $P_n,Q_n$</td><td>BLS 分地区 CPI；Zillow ZHVI</td><td>NBS 70 城价格指数；CREIS；人口普查住房长表</td><td>实际工资</td></tr>
+          <tr><td>贸易成本 $d_{ni}$</td><td>Comtrade + CEPII GeoDist</td><td>省间铁路货运；海关跨境贸易</td><td>EK 静态块</td></tr>
+          <tr><td>产出 / GDP</td><td>Penn World Table</td><td>中国城市统计年鉴</td><td>校准 $\bar L$、支出份额</td></tr>
+        </table>
+      </div>
+      <p><strong>实操提醒</strong>：中国迁移数据最大的坑是"常住人口 vs 户籍人口"——普查长表里的"常住地"才是实际居住，户籍地会系统性高估欠发达地区的"人"。反推 $\tau^{mig}$ 时必须用常住口径，否则会把户籍留守人口误判为高迁移成本。</p>
+    </div>
+
+    <!-- ============ S9 ============ -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 反事实：贸易自由化与户籍改革</h2>
+      <h3>9.1 贸易自由化的动态调整路径</h3>
+      <p>把 $d_{ni}$ 永久打七折（如上代码），模型从旧稳态出发。典型结果：<strong>第 1 期价格指数立刻下降、实际工资跳升，但人口几乎不动</strong>（因为 $\tau^{mig}$ 仍高、$\beta$ 让工人观望）；随后几十年，人口逐步向受益地区（沿海、高生产率地）流动，当地房价被推高、工资被压低，直到新稳态。福利路径呈"先跳升、再缓慢调整、最后温和收敛"的形态——<strong>短期赢家是贸易直接受益地，长期赢家是能灵活搬迁的工人</strong>，而滞留于受损地的工人长期福利受损。这正是 Caliendo-Dvorkin-Parro (2019) 评估"中国冲击"对美国劳动力市场影响的核心发现： adjustment 的缓慢性，是静态模型完全看不到的。</p>
+      <h3>9.2 迁移成本下降（户籍改革）</h3>
+      <p>把 $\tau_{ni}^{mig}$ 下降（模拟户籍放开、落户门槛降低），人口运动会快得多。典型结论：户籍改革让欠发达地区人口更快流向发达地区，短期内流出地因劳动力减少而收缩、房价下跌；长期看，全国总产出上升（劳动力配置效率提高），但<strong>空间不平等可能先扩大后收敛</strong>——因为集聚经济 $\xi>0$ 让人口流入地生产率进一步上升，形成累积因果。</p>
+      <h3>9.3 空间不平等的演化</h3>
+      <p>动态框架允许我们画出"空间不平等指数（如各地人均实际收入的方差）随时间"的曲线：贸易冲击后不平等先扩大（人来不及流），随人口再分配逐步收敛。这一"动态不平等"视角是静态 RRH 给不出的——静态模型只能比较两个稳态，无法告诉你中间那 20 年谁在受苦。</p>
+    </div>
+
+    <!-- ============ S10 ============ -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 论文案例、常见错误与难度</h2>
+      <h3>10.1 英文经典论文</h3>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Trade and Labor Market Dynamics: General Equilibrium Analysis of the China Trade Shock</div>
+        <div class="paper-meta">Caliendo, Dvorkin &amp; Parro (2019), <em>Econometrica</em> 87(3): 741-835</div>
+        <div class="paper-desc">动态空间 GE 的工作母机。把 EK 贸易、前瞻迁移决策（Bellman）、行业层面劳动力再分配嵌套，量化"中国冲击"对美国各地区就业与福利的转移动态。本页框架直接源于此文。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">The Impact of Regional and Sectoral Productivity Changes on the U.S. Economy</div>
+        <div class="paper-meta">Caliendo, Parro, Rossi-Hansberg &amp; Sarte (2018), <em>Review of Economic Studies</em> 85(4): 2042-2096（早期 NBER 版本流传更广）</div>
+        <div class="paper-desc">多区域多部门动态一般均衡，量化生产率冲击在区域与部门间的传导，是动态空间框架的另一支柱。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Goods Trade, Factor Mobility and Welfare</div>
+        <div class="paper-meta">Redding (2016), <em>Journal of International Economics</em> 88(2): 271-283</div>
+        <div class="paper-desc">把贸易与要素（劳动力）流动统一，证明自由进入下的空间均衡唯一性，是静态与动态模型的桥梁。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Development Beyond the Hill / Spatial Development</div>
+        <div class="paper-meta">Desmet &amp; Rossi-Hansberg (2013/2014), <em>American Economic Review</em> 与动态空间增长综述</div>
+        <div class="paper-desc">把生产率空间溢出与集聚经济嵌入动态空间模型，分析全球经济活动的空间分布与气候政策（如碳税对空间格局的长期影响）。</div>
+      </div>
+
+      <h3>10.2 中文顶刊与中国应用</h3>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 跨期动态</span>
+        <div class="paper-title">户籍改革、人口流动与地区差距——基于异质性人口跨期流动模型的分析</div>
+        <div class="paper-meta">《经济学（季刊）》相关研究；构造异质性人口跨期（动态）流动模型，分阶段模拟户籍改革对核心—边缘格局的影响</div>
+        <div class="paper-desc">中国情境下少有的跨期动态迁移结构模型，把户籍改革的"三阶段"集聚演化讲清楚，是本页中国应用的直接范本。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 空间均衡</span>
+        <div class="paper-title">劳动力配置效率与中国经济增长——户籍改革视角</div>
+        <div class="paper-meta">黄文彬、马银坡、史清华（异质性劳动力流动的空间一般均衡模型，量化户籍改革的地区差异与筛选作用）</div>
+        <div class="paper-desc">构建异质性劳动力流动的空间一般均衡模型，研究户籍改革如何通过城市间劳动力配置效率影响经济增长，是 RRH/动态空间框架的中国落地。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 量化空间</span>
+        <div class="paper-title">中国城镇化改革红利：一个量化空间分析</div>
+        <div class="paper-meta">基于含制度约束的空间均衡模型（用古城面积作工具变量估计集聚弹性）</div>
+        <div class="paper-desc">用流动人口落户意愿作制度约束替代指标，做降低迁移成本的反事实，直接对应本页"户籍改革"反事实。</div>
+      </div>
+
+      <h3>10.3 常见错误</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：忽略前瞻项 $\beta V_{t+1}$，把模型当静态</div>
+        <p>最大的错是直接用 $\log U_{i,t}$ 替代 Bellman，即假设工人"短视"。这会高估迁移对当期工资差的反应速度，反事实福利结论偏差巨大。只要有 $\beta\in(0,1)$，就必须解值函数。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：用普通 $\exp$ 而非 log-sum-exp，数值溢出</div>
+        <p>$a_{ni,t}/\nu$ 在 $U_i$ 大时轻松超过 700，$\exp$ 直接 inf。必须先减行内最大值。本页代码的 <code>logsumexp</code> 是生命线。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 3：终端条件设错</div>
+        <p>转移动态必须以<strong>新</strong>稳态的 $V^*$ 作终端 $V_{T+1}$，否则工人不知道"尽头是什么"，整条路径漂移。时间跨度 $T$ 要长到 $L_T$ 已贴近新稳态（通常 $T=80\sim150$ 年）。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 4：把常住人口当迁移流量</div>
+        <p>估 $\nu$ 和反推 $\tau^{mig}$ 必须用实际迁移流量（流入地—流出地配对），不能用期末存量差。存量差会把"自然增长"和"迁移"混在一起。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 5：值函数不减去公共常数导致漂移</div>
+        <p>Bellman 有一个全体共同的常数自由度，数值上 $V$ 会无限平移。每轮迭代做 $V\leftarrow V-\bar V$ 归一化。</p>
+      </div>
+
+      <h3>10.4 难度与前置</h3>
+      <p><strong>难度：★★★★☆（QSGE 里最难的两页之一）。</strong>需要同时掌握：动态规划/Bellman 与 Type-I 极值（<a href="../structural/05-dynamic-structural.html" style="color:var(--primary);font-weight:600;">动态结构模型</a>）、EK 静态贸易均衡（<a href="02-eaton-kortum.html" style="color:var(--primary);font-weight:600;">EK 模型</a>）、不动点迭代与 Perron-Frobenius。<strong>前置</strong>：先读 <a href="06-rrh-spatial.html" style="color:var(--primary);font-weight:600;">RRH 空间一般均衡</a>（静态版）与 <a href="07-trade-migration-land.html" style="color:var(--primary);font-weight:600;">贸易+迁移+土地</a>，再进入本页。本页的贸易成本模块与 <a href="10-trade-cost-estimation.html" style="color:var(--primary);font-weight:600;">贸易成本结构估计</a>互补。</p>
+    </div>
+
+    <div class="page-nav">
+      <a href="08-melitz-model.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">Melitz 异质企业模型</div>
+      </a>
+      <a href="10-trade-cost-estimation.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">贸易成本结构估计</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

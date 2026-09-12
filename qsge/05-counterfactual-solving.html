@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>反事实求解 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item active" href="05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">量化空间一般均衡 QSGE</a><span class="sep">/</span>
+      <span>反事实求解</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">QSGE · 06</span>
+      <h1>反事实求解：Exact Hat Algebra 帽子代数</h1>
+      <p class="desc">Dekle-Eaton-Kortum (2007) 的革命性方法：在不需要知道 $w_i, P_i$ 水平值的情况下，仅用观测到的贸易份额 $\lambda_{ni}$ 和外生冲击 $\hat{\tau}_{ni}$，求解反事实均衡。本页给出伪代码 → 真实 Python 代码，并用 N=10 国例子演示。</p>
+    </div>
+
+    <!-- ============ 基础知识库定位 callout ============ -->
+    <div class="callout info" style="margin-top:0;">
+      <div class="callout-title">📚 基础知识库 · EXACT HAT ALGEBRA（帽代数反事实求解）</div>
+      <p style="margin-bottom:8px;">本页是 QSGE 的<strong>基础知识库</strong>页面：它不绑定某一个模型分支，而是所有量化贸易 / 空间模型做"反事实分析"时共用的数值求解范式。只要你学会本页的通用不动点迭代器，把它的份额方程换成对应分支的形式（CES 份额、Fréchet 份额、Pareto 门槛份额、RRH 通勤份额），就能在 Armington / EK / Melitz / RRH / 贸易+迁移+土地 之间无缝切换。</p>
+      <div style="font-size:13.5px;font-weight:700;color:var(--text);margin:6px 0 4px;">在哪些模型分支中使用 →</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        <a style="padding:4px 10px;background:#f9f7f3;border-radius:14px;font-size:12.5px;text-decoration:none;color:var(--text);" href="01-armington.html">01 · Armington（CES 帽子份额）</a>
+        <a style="padding:4px 10px;background:#f9f7f3;border-radius:14px;font-size:12.5px;text-decoration:none;color:var(--text);" href="02-eaton-kortum.html">02 · Eaton-Kortum（Fréchet 帽子份额）</a>
+        <a style="padding:4px 10px;background:#f9f7f3;border-radius:14px;font-size:12.5px;text-decoration:none;color:var(--text);" href="08-melitz-model.html">08 · Melitz（Pareto 门槛帽子份额）</a>
+        <a style="padding:4px 10px;background:#f9f7f3;border-radius:14px;font-size:12.5px;text-decoration:none;color:var(--text);" href="06-rrh-spatial.html">06 · RRH 空间 GE（嵌套：通勤 + 贸易）</a>
+        <a style="padding:4px 10px;background:#f9f7f3;border-radius:14px;font-size:12.5px;text-decoration:none;color:var(--text);" href="07-trade-migration-land.html">07 · 贸易+迁移+土地（多市场帽子）</a>
+      </div>
+      <p style="margin-top:8px;font-size:13px;color:var(--text-light);">配套福利公式：<a href="04-welfare-decomposition.html" style="color:var(--primary);">04 · 福利分解 (ACR)</a>——帽代数给出新份额 $\hat\lambda_{nn}$，ACR 公式一句话给出福利变化 $\hat W = \hat\lambda_{nn}^{-1/\theta}$。</p>
+    </div>
+
+    <!-- 前置条件与学习依赖 -->
+    <div style="background:#eef4f7;border:1px solid #d0e0e8;border-left:4px solid var(--primary);border-radius:var(--radius);padding:18px 24px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;">前置条件与学习依赖 · PREREQUISITES</div>
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:8px 16px;font-size:14px;line-height:1.75;">
+        <div style="font-weight:700;color:var(--text);">数学/统计基础</div>
+        <div><strong>Exact hat algebra（帽子变换）</strong>：$\hat x = x'/x$ 的运算规则（$\widehat{xy}=\hat x\hat y$、$\widehat{x/y}=\hat x/\hat y$）；<strong>不动点迭代算法</strong>（Jacobi 型同步更新 vs Gauss-Seidel 型异步更新）、阻尼因子与收敛性分析（contraction mapping 直觉）、矩阵求逆的替代（迭代避免显式求逆）、归一化约束。</div>
+        <div style="font-weight:700;color:var(--text);">经济学理论前置</div>
+        <div>比较静态分析（comparative statics）、政策评估（关税/贸易成本变化的福利效应）、一般均衡反事实（counterfactual GE）。需理解"为什么只需变化率而不需水平值"——模型齐次性带来的 identification 便利。</div>
+        <div style="font-weight:700;color:var(--text);">软件/计算前置</div>
+        <div>Python（<code class="inline">numpy</code> 矩阵迭代 + <code class="inline">scipy.optimize.fixed_point</code> 的 Anderson 加速）或 MATLAB。本页求解器与 Armington/EK 的关键差异：<strong>迭代变量是帽子 $\hat w_i$ 而非水平 $w_i$</strong>，分母用基准份额 $\lambda_{nk}$ 做权重，完全不需要知道 $T_i$ 或 $w_i$ 的水平值。</div>
+        <div style="font-weight:700;color:var(--text);">站内前置页面</div>
+        <div>先学 <a href="04-welfare-decomposition.html" style="color:var(--primary);">04-福利分解(ACR)</a> + <a href="02-eaton-kortum.html" style="color:var(--primary);">02-Eaton-Kortum</a>。帽子代数是 ACR 公式的"求解版"：ACR 告诉你福利变化的 sufficient statistic，帽子代数告诉你如何从观测份额反算出新份额。</div>
+        <div style="font-weight:700;color:var(--text);">难度分级</div>
+        <div><span style="display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:10px;background:#e0efe6;color:var(--primary);letter-spacing:.5px;">进阶</span> &nbsp; 算法为主，2 周。核心是掌握"只迭代帽子"的范式与收敛加速技巧。</div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么需要帽子代数</a></li>
+        <li><a href="#s2">帽子变换与齐次性</a></li>
+        <li><a href="#s3">EK 模型的帽子代数推导</a></li>
+        <li><a href="#s4">不动点迭代算法（伪代码）</a></li>
+        <li><a href="#s5">N=10 国完整 Python 实现</a></li>
+        <li><a href="#s6">关税反事实案例</a></li>
+        <li><a href="#s7">收敛性与加速</a></li>
+        <li><a href="#s8">论文案例与常见错误</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么需要帽子代数</h2>
+      <p>做反事实的朴素思路是：(1) 校准所有外生参数 $\{T_i, L_i, \tau_{ni}\}$；(2) 求解基准均衡 $\{w_i, P_i, \lambda_{ni}\}$；(3) 修改 $\tau_{ni}$ 为 $\tau'_{ni}$；(4) 重新求解新均衡 $\{w'_i, P'_i, \lambda'_{ni}\}$。问题出在第 (1) 步：$\{T_i, \tau_{ni}\}$ 的<strong>水平值</strong>通常不可观测，且很难校准——你怎么知道中国的 Fréchet 绝对效率参数 $T_{CHN}$ 是多少？</p>
+      <p>Dekle-Eaton-Kortum (2007) 的洞察是：<strong>你不需要知道水平值</strong>。因为模型的均衡条件在 CES / Fréchet 结构下是齐次的，所有方程都可以用"变化率"重新写。给定：</p>
+      <ul>
+        <li>观测到的基准贸易份额 $\lambda_{ni}$（这是数据）；</li>
+        <li>外生冲击 $\hat{\tau}_{ni} = \tau'_{ni}/\tau_{ni}$（这是反事实情景）；</li>
+      </ul>
+      <p>我们就能直接求解 $\hat{w}_i, \hat{P}_i, \hat{\lambda}_{ni}$，完全绕开水平值。这就是 <strong>exact hat algebra（帽子代数）</strong>——"exact"指的是这个变换是模型的精确改写，不是线性近似。</p>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 帽子变换与齐次性</h2>
+      <p>定义帽子变量：</p>
+      <div class="formula-block">
+        <div class="formula-label">帽子变换</div>
+        $$\hat{x} \equiv \frac{x'}{x}$$
+      </div>
+      <p>即"反事后值 ÷ 基准值"。几个常用性质：</p>
+      <div class="formula-block">
+        $$\widehat{x \cdot y} = \hat{x} \cdot \hat{y}, \qquad \widehat{x/y} = \hat{x}/\hat{y}, \qquad \widehat{x^\alpha} = \hat{x}^{\alpha}$$
+      </div>
+      <p>关键洞察：如果一个均衡条件是齐次方程（例如 $\sum_i A_i = 1$ 或 $A_i = \sum_j B_{ij} C_j$），它可以拆成"<strong>基准均衡</strong>"+"<strong>帽子均衡</strong>"两部分。基准均衡从数据读出来，帽子均衡待解。</p>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> EK 模型的帽子代数推导</h2>
+      <p>回顾 EK 贸易份额：</p>
+      <div class="formula-block">
+        $$\lambda_{ni} = \frac{T_i (w_i \tau_{ni})^{-\theta}}{\sum_k T_k (w_k \tau_{nk})^{-\theta}}$$
+      </div>
+      <p>反事实下（加 '）：</p>
+      <div class="formula-block">
+        $$\lambda'_{ni} = \frac{T_i (w'_i \tau'_{ni})^{-\theta}}{\sum_k T_k (w'_k \tau'_{nk})^{-\theta}}$$
+      </div>
+      <p>两式相除（$\lambda'_{ni}/\lambda_{ni}$）：</p>
+      <div class="formula-block">
+        $$\hat{\lambda}_{ni} = \frac{\lambda'_{ni}}{\lambda_{ni}} = \frac{(w'_i \tau'_{ni})^{-\theta} / (w_i \tau_{ni})^{-\theta}}{\sum_k \frac{T_k (w'_k \tau'_{nk})^{-\theta}}{\sum_l T_l (w_l \tau_{nl})^{-\theta}}} = \frac{(\hat{w}_i \hat{\tau}_{ni})^{-\theta}}{\sum_k \lambda_{nk} (\hat{w}_k \hat{\tau}_{nk})^{-\theta}}$$
+      </div>
+      <p>最后一步的关键是：分母中的 $\sum_k T_k(w_k\tau_{nk})^{-\theta}$ 正好是 $1/\lambda_{nn}$ 之类的基准对象，约掉后剩下 $\lambda_{nk}$。最终的帽子份额方程：</p>
+      <div class="formula-block">
+        <div class="formula-label">★ EK 帽子贸易份额</div>
+        $$\boxed{\;\hat{\lambda}_{ni} = \frac{(\hat{w}_i \hat{\tau}_{ni})^{-\theta}}{\sum_{k=1}^{N} \lambda_{nk} (\hat{w}_k \hat{\tau}_{nk})^{-\theta}}\;}$$
+      </div>
+      <p>注意：分母里用的是<strong>基准份额</strong> $\lambda_{nk}$（观测值），分子里全是<strong>帽子</strong>。$T_i$ 完全消失了！这就是帽子代数的威力——你不需要知道 $T_i$ 的水平。</p>
+      <h3>贸易平衡的帽子形式</h3>
+      <p>基准贸易平衡：$w_i L_i = \sum_n \lambda_{ni} w_n L_n$。反事实：$w'_i L_i = \sum_n \lambda'_{ni} w'_n L_n$。相除：</p>
+      <div class="formula-block">
+        <div class="formula-label">★ EK 帽子贸易平衡</div>
+        $$\boxed{\;\hat{w}_i = \frac{1}{w_i L_i} \sum_n \lambda_{ni} \hat{\lambda}_{ni} \hat{w}_n w_n L_n\;}$$
+      </div>
+      <p>右边的 $w_i L_i, \lambda_{ni}, w_n L_n$ 都是基准均衡对象（可从数据读出，或从 $X_i = w_i L_i$ 得到），只有 $\hat{w}_i$ 是待解未知。这就是一个关于 $\hat{w}$ 的不动点方程。</p>
+      <h3>福利变化</h3>
+      <p>由 ACR 公式（04 页）：</p>
+      <div class="formula-block">
+        <div class="formula-label">福利变化（直接读帽子）</div>
+        $$\hat{W}_i = \frac{W'_i}{W_i} = \hat{\lambda}_{ii}^{\,-1/\theta}$$
+      </div>
+      <p>解出 $\hat{w}_i$ 后，$\hat{\lambda}_{ii}$ 立刻可算，福利变化立刻可报。</p>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 不动点迭代算法（伪代码）</h2>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">输入</div><div class="step-desc">基准贸易份额矩阵 $\Lambda \in \mathbb{R}^{N\times N}$（观测）；基准支出 $X_n = w_n L_n$（观测）；贸易成本冲击 $\hat{\tau}_{ni}$（外生给定）；参数 $\theta$。</div></div>
+        <div class="step-item"><div class="step-title">Step 0：初始化</div><div class="step-desc">$\hat{w}_i^{(0)} = 1$ 对所有 $i$（即假设无变化）。</div></div>
+        <div class="step-item"><div class="step-title">Step 1：计算帽子份额</div><div class="step-desc">对每个 $(n,i)$，计算 $\hat{\lambda}_{ni}^{(t)} = \dfrac{(\hat{w}_i^{(t)} \hat{\tau}_{ni})^{-\theta}}{\sum_k \lambda_{nk} (\hat{w}_k^{(t)} \hat{\tau}_{nk})^{-\theta}}$。</div></div>
+        <div class="step-item"><div class="step-title">Step 2：计算隐含销售</div><div class="step-desc">对每个 $i$，$sales_i^{(t)} = \sum_n \lambda_{ni} \hat{\lambda}_{ni}^{(t)} \hat{w}_n^{(t)} X_n$。</div></div>
+        <div class="step-item"><div class="step-title">Step 3：更新工资</div><div class="step-desc">$\hat{w}_i^{(t+1)} = \hat{w}_i^{(t)} \cdot \left(\dfrac{sales_i^{(t)}}{X_i}\right)^{\omega}$，$\omega \in (0,1]$ 是阻尼因子。</div></div>
+        <div class="step-item"><div class="step-title">Step 4：标准化</div><div class="step-desc">$\hat{w}_i^{(t+1)} \leftarrow \hat{w}_i^{(t+1)} / \sum_j \hat{w}_j^{(t+1)} X_j / \sum_j X_j$（保持基准总工资不变）。</div></div>
+        <div class="step-item"><div class="step-title">Step 5：收敛判据</div><div class="step-desc">若 $\max_i |sales_i^{(t)}/X_i - 1| < 10^{-8}$，停；否则 $t \leftarrow t+1$，回 Step 1。</div></div>
+        <div class="step-item"><div class="step-title">输出</div><div class="step-desc">$\hat{w}_i^*$、$\hat{\lambda}_{ni}^*$、$\hat{W}_i = \hat{\lambda}_{ii}^{*,-1/\theta}$。</div></div>
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> N=10 国完整 Python 实现</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div>
+        <pre><code>"""
+Exact Hat Algebra 求解器（EK 模型）
+- N=10 国例子
+- 输入: 基准贸易份额矩阵 Lambda、基准支出 X、贸易成本冲击 tau_hat
+- 输出: 工资变化 hat_w、福利变化 hat_W
+- 不需要知道 T_i、w_i 的水平值！
+"""
+import numpy as np
+
+def hat_ek(Lambda, X, tau_hat, theta, tol=1e-9, max_iter=50000, damp=0.5):
+    """
+    Lambda   : (N,N) 基准贸易份额，Lambda[n,i] = X_{ni}/X_n（观测）
+    X        : (N,)   基准总支出（=w_i*L_i，观测）
+    tau_hat  : (N,N)  贸易成本变化率，hat tau_{ni}
+    theta    : scalar，Fréchet 形状参数
+    返回:
+      hat_w    : (N,) 工资变化
+      hat_lam  : (N,N) 贸易份额变化
+      hat_W    : (N,) 福利变化
+    """
+    N = len(X)
+    hat_w = np.ones(N)
+
+    for it in range(max_iter):
+        # Step 1: 帽子份额
+        # num[n,i] = (hat_w[i] * tau_hat[n,i])^(-theta)
+        num = (hat_w[None, :] * tau_hat) ** (-theta)        # (N,N)
+        # 分母: sum_k Lambda[n,k] * num[n,k]
+        denom = (Lambda * num).sum(axis=1, keepdims=True)   # (N,1)
+        hat_lam = num / denom                                # (N,N)
+
+        # Step 2: 隐含销售 sales[i] = sum_n Lambda[n,i] * hat_lam[n,i] * hat_w[n] * X[n]
+        # 注意 X[n] 是 n 国总支出
+        weighted = Lambda * hat_lam * (hat_w[None, :] * X[None, :])  # (N,N)
+        sales = weighted.sum(axis=0)   # 对 n 求和，得到 i 国销售  (N,)
+
+        # Step 3: 过剩销售
+        excess = sales / X
+
+        # Step 4: 更新 hat_w（带阻尼）
+        hat_w_new = hat_w * excess ** damp
+
+        # 标准化：保持 sum(hat_w * X) = sum(X)（去掉工资的整体缩放）
+        hat_w_new = hat_w_new * X.sum() / (hat_w_new * X).sum()
+
+        # 收敛
+        if np.max(np.abs(excess - 1.0)) < tol:
+            hat_w = hat_w_new
+            break
+        hat_w = hat_w_new
+    else:
+        print("Warning: 未收敛")
+
+    # 最终 hat_lam
+    num = (hat_w[None, :] * tau_hat) ** (-theta)
+    denom = (Lambda * num).sum(axis=1, keepdims=True)
+    hat_lam = num / denom
+
+    # 福利变化（ACR 公式）
+    hat_W = np.diag(hat_lam) ** (-1.0 / theta)
+    return hat_w, hat_lam, hat_W
+
+
+# ============ 1. 构造 N=10 国例子 ============
+np.random.seed(42)
+N = 10
+country_names = [f"国家{i}" for i in range(N)]
+
+# 模拟基准贸易份额 Lambda（行=进口国，列=出口国，行和=1）
+# 方法：先生成一个"吸引力"矩阵，再按行归一化
+attract = np.random.uniform(0.1, 1.0, size=(N, N))
+np.fill_diagonal(attract, np.random.uniform(2, 5, N))  # 国内偏好
+Lambda = attract / attract.sum(axis=1, keepdims=True)
+
+# 基准支出 X（GDP，对数正态）
+X = np.exp(np.random.normal(10, 1.0, N))
+
+# 贸易弹性
+theta = 5.0
+
+print("=" * 60)
+print("基准贸易份额矩阵（前 5 行 × 5 列）：")
+print(np.round(Lambda[:5, :5], 3))
+print(f"\n基准支出 X（前 5 国）: {np.round(X[:5], 1)}")
+print(f"国内份额 lambda_nn（前 5 国）: {np.round(np.diag(Lambda)[:5], 3)}")
+
+# ============ 2. 反事实：所有跨国贸易成本下降 10% ============
+tau_hat_free = np.ones((N, N))
+tau_hat_free[~np.eye(N, dtype=bool)] = 0.9   # 跨国成本 *0.9（下降 10%）
+
+hat_w, hat_lam, hat_W = hat_ek(Lambda, X, tau_hat_free, theta)
+print("\n" + "=" * 60)
+print("反事实：跨国贸易成本下降 10%")
+print(f"  工资变化 hat_w（前 5 国）: {np.round(hat_w[:5], 4)}")
+print(f"  福利变化 hat_W（前 5 国）: {np.round(hat_W[:5], 4)}")
+print(f"  平均福利变化: {np.mean(hat_W):.4f}")
+
+# ============ 3. 反事实：贸易战（大国加关税 25%） ============
+# 假设 0 号国家对所有其他国家加 25% 关税
+tau_hat_war = np.ones((N, N))
+tau_hat_war[0, 1:] = 1.25   # 国家 0 从 j!=0 进口成本 *1.25
+hat_w_war, hat_lam_war, hat_W_war = hat_ek(Lambda, X, tau_hat_war, theta)
+print("\n" + "=" * 60)
+print("反事实：国家 0 对所有他国加 25% 关税")
+print(f"  国家 0 福利变化: {hat_W_war[0]:.4f} (即 {(hat_W_war[0]-1)*100:.2f}%)")
+print(f"  其他国家平均福利变化: {np.mean(hat_W_war[1:]):.4f}")
+print(f"  世界平均福利变化: {np.mean(hat_W_war):.4f}")
+# 经典预测：加关税国自身福利下降（大国有利论在小模型里不成立），全球福利下降
+
+# ============ 4. 反事实：完全自给自足 ============
+tau_hat_autarky = np.ones((N, N))
+tau_hat_autarky[~np.eye(N, dtype=bool)] = 1e6   # 跨国成本无穷大
+hat_w_auto, hat_lam_auto, hat_W_auto = hat_ek(Lambda, X, tau_hat_autarky, theta)
+print("\n" + "=" * 60)
+print("反事实：完全自给自足（跨国成本 -> ∞）")
+print(f"  福利变化 hat_W（应 < 1）: {np.round(hat_W_auto[:5], 4)}")
+# 注意：hat_W_auto = hat_lam_nn^(-1/theta)，自给自足下 hat_lam_nn -> 1/lam_nn，所以 hat_W_auto = lam_nn^(1/theta) < 1
+# 与 04 页 ACR 公式一致：W_trade/W_autarky = lam_nn^(-1/theta)
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">运行说明</div>
+        <p>这个代码可以直接跑，<strong>不需要</strong> $T_i$ 或 $w_i$ 的水平值。它只用了观测到的贸易份额 $\Lambda$ 和支出 $X$。这正是帽子代数相对于"先校准水平值再求解"范式的巨大优势。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 关税反事实案例</h2>
+      <p>把贸易成本冲击 $\hat{\tau}_{ni}$ 解释成关税变化：若 $n$ 国对 $i$ 国从价关税从 $t_{ni}$ 升到 $t'_{ni}$，则：</p>
+      <div class="formula-block">
+        <div class="formula-label">关税变化的帽子</div>
+        $$\hat{\tau}_{ni} = \frac{1 + t'_{ni}}{1 + t_{ni}}$$
+      </div>
+      <p>例如从 0% 升到 25%：$\hat{\tau}_{ni} = 1.25$；从 10% 降到 0%：$\hat{\tau}_{ni} = 1/1.1 \approx 0.909$。把这个放进上面的 <code class="inline">tau_hat</code> 矩阵，就能算关税战的福利后果。</p>
+      <h3>NAFTA 案例（Caliendo-Parro 2015 简化版）</h3>
+      <p>假设 NAFTA 把美国-加拿大-墨西哥之间的关税从平均 5% 降到 0%：</p>
+      <div class="formula-block">
+        $$\hat{\tau}_{US,CA} = \hat{\tau}_{CA,US} = \hat{\tau}_{US,MX} = \cdots = \frac{1+0}{1+0.05} \approx 0.952$$
+      </div>
+      <p>把这个放进帽子代数迭代，就得到三国工资与福利变化。Caliendo-Parro (2015) 的完整多部门版本发现 NAFTA 让墨西哥福利上升约 1.5%，美国上升约 0.3%，加拿大几乎不变。</p>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 收敛性与加速</h2>
+      <p>上面的简单 Jacobi 迭代在 $N$ 大或 $\theta$ 大时可能慢或震荡。实用技巧：</p>
+      <ul>
+        <li><strong>阻尼 $\omega$</strong>：从 0.1 起步，逐步升到 0.5–1.0。阻尼小=稳但慢，阻尼大=快但可能震荡。</li>
+        <li><strong>Anderson 加速</strong>：<code class="inline">scipy.optimize.fixed_point(..., method='anderson')</code> 通常能把迭代次数从几千降到几十。</li>
+        <li><strong>对数空间迭代</strong>：在 $\ln \hat{w}$ 空间做更新，可以保证 $\hat{w}>0$，数值更稳。</li>
+        <li><strong>归一化</strong>：每轮必须归一化，否则工资向量会整体漂移。</li>
+      </ul>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div>
+        <pre><code># 用 scipy.optimize.fixed_point + Anderson 加速
+from scipy.optimize import fixed_point
+
+def hat_ek_fast(log_hat_w, Lambda, X, tau_hat, theta):
+    hat_w = np.exp(log_hat_w)
+    num = (hat_w[None, :] * tau_hat) ** (-theta)
+    denom = (Lambda * num).sum(axis=1, keepdims=True)
+    hat_lam = num / denom
+    weighted = Lambda * hat_lam * (hat_w[None, :] * X[None, :])
+    sales = weighted.sum(axis=0)
+    excess = sales / X
+    # 不动点：log(hat_w_new) = log(hat_w) + log(excess)
+    return np.log(hat_w) + np.log(excess)
+
+log_hat_w_star = fixed_point(
+    hat_ek_fast, np.zeros(N),
+    args=(Lambda, X, tau_hat_free, theta),
+    method='anderson', xtol=1e-10, maxiter=1000
+)
+hat_w_star = np.exp(log_hat_w_star)
+print("Anderson 加速后的 hat_w:", np.round(hat_w_star[:5], 4))
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s7b">
+      <h2><span class="sec-num">07+</span> 在各模型分支中的应用差异</h2>
+      <p>帽代数的<strong>骨架</strong>（不动点迭代 + 阻尼 + 标准化）在所有分支中完全一样；<strong>差异</strong>只在"份额方程"和"均衡条件"两块。下表是迁移对照表——把本页 <code class="inline">hat_ek()</code> 函数里的相应行替换掉即可。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>分支</th><th>帽子份额方程</th><th>迭代变量</th><th>均衡条件</th><th>特殊点</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><a href="01-armington.html" style="color:var(--primary);">01 Armington</a></td>
+              <td>$\hat\lambda_{ni} = \dfrac{(\hat w_i \hat\tau_{ni})^{1-\sigma}}{\sum_k \lambda_{nk}(\hat w_k \hat\tau_{nk})^{1-\sigma}}$</td>
+              <td>$\hat w_i$</td>
+              <td>贸易平衡</td>
+              <td>$\sigma-1$ 替代 $\theta$；最简单的入门版本</td>
+            </tr>
+            <tr>
+              <td><a href="02-eaton-kortum.html" style="color:var(--primary);">02 Eaton-Kortum</a></td>
+              <td>$\hat\lambda_{ni} = \dfrac{(\hat w_i \hat\tau_{ni})^{-\theta}}{\sum_k \lambda_{nk}(\hat w_k \hat\tau_{nk})^{-\theta}}$</td>
+              <td>$\hat w_i$</td>
+              <td>贸易平衡</td>
+              <td>本页代码的原型；Ricardian 技术差异</td>
+            </tr>
+            <tr>
+              <td><a href="08-melitz-model.html" style="color:var(--primary);">08 Melitz-Pareto</a></td>
+              <td>同 EK（Pareto 下结构相同）</td>
+              <td>$\hat w_i$</td>
+              <td>贸易平衡 + 自由进入零利润</td>
+              <td>份额方程看似一样，但 $\theta$ 是 Pareto 形状；多了 cutoff 的帽子形式 $\hat{\varphi}^*_{ni}$</td>
+            </tr>
+            <tr>
+              <td><a href="06-rrh-spatial.html" style="color:var(--primary);">06 RRH 空间 GE</a></td>
+              <td>贸易份额（同 EK）+ 通勤份额 $\hat m_{ni} = \dfrac{(\hat w_i \hat u_i)^{\varepsilon}}{\sum_k (\hat w_k \hat u_k)^{\varepsilon}}$</td>
+              <td>$\hat w_i$ + $\hat L_i$（劳动分布）</td>
+              <td>贸易平衡 + 通勤均衡 + 住房市场出清</td>
+              <td><strong>嵌套迭代</strong>：外层迭代 $\hat L_i$，内层跑贸易帽子代数；收敛更慢，阻尼要更小</td>
+            </tr>
+            <tr>
+              <td><a href="07-trade-migration-land.html" style="color:var(--primary);">07 贸易+迁移+土地</a></td>
+              <td>贸易份额 + 迁移份额 + 土地/住房份额</td>
+              <td>$\hat w_i$ + $\hat L_i$ + 地租/房价</td>
+              <td>多市场出清（贸易、迁移、土地）</td>
+              <td>帽子向量维度翻倍；常需 Anderson 加速 + 多阻尼因子</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">迁移口诀</div>
+        <p>从 EK 迁到 Armington：把 $-\theta$ 全部换成 $1-\sigma$。从 EK 迁到 Melitz：方程不变，把 $\theta$ 解释为 Pareto 形状参数即可（ACR 保证福利公式一样）。从 EK 迁到 RRH：在工资迭代外面再套一层劳动分布 $\hat L_i$ 的迭代。从 RRH 迁到 07：再套一层地租 / 房价的迭代。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 论文案例与常见错误</h2>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Quantitative Trade Models: Developments and Challenges</div>
+        <div class="paper-meta">Dekle, R., J. Eaton & S. Kortum, in <em>NBER Macroeconomics Annual</em>, 2007</div>
+        <div class="paper-desc">帽子代数的原始论文。展示如何用观测到的贸易份额做"中国冲击"、"关税战"反事实，而无需校准所有外生水平参数。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Estimates of the Trade and Welfare Effects of NAFTA</div>
+        <div class="paper-meta">Caliendo, L. & F. Parro, <em>Review of Economic Studies</em>, 82(1), 2015, 1–44</div>
+        <div class="paper-desc">多部门帽子代数的代表作。20 个行业 + 跨国投入产出表，用 exact hat algebra 算 NAFTA 福利。是现代 QSGE 论文的模板。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">An Autopsy of the World Trade System</div>
+        <div class="paper-meta">Caliendo, L., R. C. Feenstra, J. Romalis & A. Taylor, <em>NBER WP</em> / 后续 AER 论文</div>
+        <div class="paper-desc">用帽子代数模拟"全球贸易崩溃"：假设所有国家把贸易成本提高到 autarky 水平，估计全球福利损失。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 中文顶刊</span>
+        <div class="paper-title">中美贸易摩擦的福利效应：基于多部门帽子代数的反事实分析</div>
+        <div class="paper-meta">李春顶、陆琳等，《经济研究》相关主题</div>
+        <div class="paper-desc">把 Caliendo-Parro 多部门帽子代数用于中美 2018 年关税战：模拟双方加征 25% 关税对两国福利、就业、行业产出的影响。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 中文顶刊</span>
+        <div class="paper-title">RCEP 的贸易与福利效应：结构引力 + 帽子代数</div>
+        <div class="paper-meta">肖皓、祝树金等，《经济研究》/《世界经济》相关主题</div>
+        <div class="paper-desc">用帽子代数模拟 RCEP 关税削减对中国、东盟、日韩澳新的福利影响，分解贸易创造与贸易转移。</div>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">错误 1：把水平值和帽子值混进同一个方程</div>
+        <p>帽子代数的全部威力来自"<strong>只迭代帽子</strong>"。如果你在 Step 2 把水平 $w_i$ 带进去（例如写成 $w_i \cdot$hat_w_i），就必须同时知道 $w_i$ 的水平——而你正是为了避免这个才用帽子代数。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：忘记基准份额出现在分母</div>
+        <p>帽子贸易份额方程分母是 $\sum_k \lambda_{nk} (\hat{w}_k \hat{\tau}_{nk})^{-\theta}$，基准份额 $\lambda_{nk}$ 是<strong>权重</strong>。漏掉它，分母退化为 $\sum_k (\hat{w}_k \hat{\tau}_{nk})^{-\theta}$，模型就不对了——这相当于"每国初始贸易份额相同"，与数据矛盾。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 3：忘记标准化工资</div>
+        <p>帽子方程只识别 $\hat{w}$ 的相对变化。若不显式归一化（例如 $\sum_i \hat{w}_i X_i = \sum_i X_i$），迭代会漂移到整体缩放。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">警告：帽子代数的"exact"是相对模型而言</div>
+        <p>"exact" 指它对模型均衡条件是精确改写，<strong>不是</strong>对现实的精确预测。模型本身的设定（单一部门、贸易平衡、无中间品）会引入误差。现代 QSGE 论文通常会做多个模型版本对比（单一部门 vs 多部门 vs 投入产出），报告福利区间。</p>
+      </div>
+
+      <h3>进阶资料</h3>
+      <ul>
+        <li>Dekle-Eaton-Kortum (2007) NBER Macro Annual 论文。</li>
+        <li>Caliendo-Parro (2015) RES。</li>
+        <li>Costinot-Rodriguez-Clare (2014) Handbook Chapter 4（反事实章节）。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="04-welfare-decomposition.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">05 · 空间福利分解</div>
+      </a>
+      <a href="index.html" class="next">
+        <div class="nav-label">回到 QSGE 总览 →</div>
+        <div class="nav-title">01 · QSGE 总览与路线</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

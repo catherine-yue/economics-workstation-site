@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>适应性学习与行为预期 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ========== 侧边栏 ========== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item active" href="16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- ========== 主内容 ========== -->
+<div class="main">
+  <div class="content-wrap">
+
+    <!-- 面包屑 -->
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">DSGE模型</a>
+      <span class="sep">/</span>
+      <span>适应性学习与行为预期</span>
+    </div>
+
+    <!-- 页面标题 -->
+    <div class="page-header">
+      <span class="tag">DSGE · 前沿分支</span>
+      <h1>适应性学习与行为预期<br><span style="font-size:18px;color:var(--text-light);font-weight:400;">Bounded Rationality / Adaptive Learning</span></h1>
+      <p class="desc">放弃"代理人瞬时、全知地求解模型"的理性预期假设，转而假设代理人用递归最小二乘从历史数据中估计预测规则，并随新信息不断更新信念。本页从 PLM–ALM 框架、E-稳定性条件，到手写 RLS 模拟、IRF 对比与结构估计，完整走通一条学习型 DSGE 的建模流水线。</p>
+      <div class="callout info" style="margin-top:14px;margin-bottom:0"><div class="callout-title">📐 方程统计 / Equation Count</div><p style="margin-bottom:0">本模型共 <b>28 个方程</b>（NK 结构 3 + 冲击 AR(1) 3 + reduced-form 消元 1 + PLM 2 + 主观预期 2 + RLS 递归 3 + T-map 2 + E-stability ODE 1 + REE 解 2 + 混合预期 1 + CG 回归 1 + NK-T-map 2 + NK-Eig 1 + RE-Learning 对比 2 + 稳态 2 + 其余）。完整清单见页末 <a href="#eq-summary" style="color:var(--primary);">Equation Summary</a>。</p></div>
+    </div>
+
+    <!-- 前置条件 -->
+    <div class="prereq-box">
+      <div class="prereq-head">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-item"><span class="prereq-label">数学基础</span>递归最小二乘（RLS）、随机逼近（stochastic approximation）、矩阵代数、线性理性预期模型的 simplified form。</div>
+      <div class="prereq-item"><span class="prereq-label">经济学理论前置</span>New Keynesian 三方程模型、理性预期均衡（REE）、预期形成理论。</div>
+      <div class="prereq-item"><span class="prereq-label">软件 / 计算前置</span>Python（NumPy/Matplotlib）或 MATLAB，需能手写时间迭代——<strong>不能直接用 Dynare</strong>，因为 Dynare 的 <code class="inline">model(expectation=...)</code> 默认求解理性预期均衡，不会替你做学习。</div>
+      <div class="prereq-item"><span class="prereq-label">站内前置页面</span>先读 <a href="10-nk-three-equation.html" style="color:var(--primary);">NK 三方程模型</a> 与 <a href="05-dynare-solving.html" style="color:var(--primary);">Dynare 求解实操</a>，再回来对比"学习 vs 理性预期"。</div>
+      <div class="prereq-item"><span class="prereq-label">难度与路线位置</span><span class="prereq-level lv-frontier">前沿</span>★★★★★ 前沿（Advanced / Frontiers）。在 NK 三方程基础上扩展，建议作为行为/预期方向的进阶选修。</div>
+    </div>
+
+    <!-- 目录 -->
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">概念与直觉：为什么放弃理性预期</a></li>
+        <li><a href="#s2">模型假设与公式</a></li>
+        <li><a href="#s3">逐步求解流程（PLM→ALM→T-map→E-stability）</a></li>
+        <li><a href="#s4">完整可运行 Python 代码</a></li>
+        <li><a href="#s5">估计方法：如何从数据中估计学习参数</a></li>
+        <li><a href="#s6">脉冲响应与经济直觉</a></li>
+        <li><a href="#s7">经典论文案例</a></li>
+        <li><a href="#s8">常见错误与调试</a></li>
+        <li><a href="#s9">进阶资料</a></li>
+      </ol>
+    </div>
+
+    <!-- ========== 1. 概念与直觉 ========== -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 概念与直觉：为什么放弃理性预期</h2>
+
+      <p>理性预期（Rational Expectations, RE）假设代理人在给定模型结构与外生冲击分布下，<b>无偏且瞬时</b>地形成对未来的预测：他们"知道模型"，知道均衡方程、知道冲击的 VAR 结构，甚至知道其他所有人也在做同样的预测。Lucas（1976）批判以来，这一假设成为 RBC 与 NK 模型的标准配置。但它有一个极强的隐含前提：经济经历"大制度变化"（Regime Change，如 1970s 大通胀、沃尔克紧缩、零利率下限、疫情冲击）时，代理人应当<b>立刻</b>用新结构重置预测规则——这显然不符合观察。</p>
+
+      <h3>1.1 理性预期假设为什么太强</h3>
+      <p>第一，<b>认知成本</b>。求解一个中尺度 DSGE 模型需要数学家级别的工作，真实家庭与企业不可能在每个季度都重新求解一个隐函数系统。第二，<b>知识问题</b>。代理人甚至不知道"模型本身"是什么——他们要预测的经济恰好是由他们自己的预测共同构成的，这是一个"自我指涉"的系统（self-referential system）。第三，<b>证据拒绝</b>。对 Michigan 通胀预期、Survey of Professional Forecasters（SPF）的事后检验表明：专业预测者的误差在大波动期存在显著的序列相关与系统性偏差，并非 RE 所要求的 martingale 差序列。Branch（2004）、Coibion 等（2018）的综述都记录了这一点。</p>
+
+      <h3>1.2 适应性学习的核心思想</h3>
+      <p>适应性学习（Adaptive Learning）把代理人从"全知的计量经济学家"降级为"用 OLS 在线学习的计量经济学家"。他们不直接求解模型，而是<b>假设</b>自己面对的经济服从某个简单的统计关系（例如 AR(1) 或线性回归），用手头数据估计参数，用估计出的预测规则做出经济决策；新数据到来后，再用递归最小二乘（Recursive Least Squares, RLS）或随机梯度下降（SGD）更新参数。时间一长，如果真实经济恰好与他们假设的关系一致，参数就会收敛到理性预期均衡（REE）；但在收敛过程中，经济会呈现出<b>缓慢、惯性、可预测的过渡动态</b>——这正是 RE 模型无法产生的内生持续性。</p>
+
+      <h3>1.3 Evans &amp; Honkapohja 框架与行为预期</h3>
+      <p>Evans 与 Honkapohja 在 2001 年专著 <i>Learning and Expectations in Macroeconomics</i> 中系统化了这一思路。他们的关键贡献是把"学习收敛性"问题转化为一个确定性常微分方程（ODE）的稳定性问题，即 <b>E-稳定性（Expectational Stability）</b>：若把 PLM 参数 θ 映射到实际 ALM 参数的 T-map 在 REE 处的导数矩阵 DT(θ*) 的所有特征值实部都小于 1，则代理人的递归学习在大样本下<b>局部收敛</b>到 REE。这把"学习是否会收敛"这一原本需要模拟才能回答的问题，变成了一个可解析判定的条件。</p>
+      <p>与"适应性学习"平行的另一支文献是 <b>行为预期 / 异质预期（Heterogeneous Expectations）</b>，以 Hommes 等的 learning-to-forecast 实验为代表：在实验室里让真人被试对资产价格或通胀做预测，发现他们系统性地使用简单的启发式（heuristics）——自适应规则、趋势外推、朴素预期——并在不同启发式之间切换。Branch &amp; Evans（2006, 2007）把这种"选模型"的微观行为嵌入宏观模型，得到了内生信念选择与多重均衡。Hommes（2011）的综述表明，实验室数据在统计上显著拒绝 RE，而支持"异质启发式 + 选择强度"的混合模型。</p>
+
+      <div class="callout tip">
+        <div class="callout-title">一句话直觉</div>
+        <p>理性预期是"闭眼直接跳到终点"；适应性学习是"代理人一边走一边用最小二乘修正方向"。模型研究的对象因此从<b>一个均衡点</b>扩展到<b>从任意初始信念出发的一条学习轨迹</b>——这给货币政策评估、通胀脱锚（de-anchoring）、大通胀结束后的过渡，都提供了 RE 框架内不可能有的解释空间。</p>
+      </div>
+    </div>
+
+    <!-- ========== 2. 模型假设与公式 ========== -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 模型假设与公式</h2>
+
+      <h3>2.1 基准 NK 三方程模型（回顾）</h3>
+      <p>我们沿用本工作站 <a href="10-nk-three-equation.html" style="color:var(--primary);">NK 三方程模型</a> 的对数线性化版本。所有变量均为相对于稳态的偏离（gap），时间下标 $t$ 表示季度。</p>
+
+      <div class="formula-block">
+        <div class="formula-label">（NK-1）新凯恩斯 IS 曲线 / 欧拉方程</div>
+        $$ x_t = E_t x_{t+1} - \sigma^{-1}\,(i_t - E_t \pi_{t+1} - r_t^n) $$
+        <div class="formula-note"><b>假设：</b>代表性家庭无限期生存、CRRA 效用、名义价格粘性下的对数线性化；$\sigma>0$ 为跨期替代弹性的倒数；$r_t^n$ 为自然利率冲击，服从 AR(1)。<b>解读：</b>产出缺口 $x_t$ 取决于预期未来产出与实际利率缺口（事前实际利率减去自然利率）。$E_t$ 是本节后续要被"学习"替换的对象。</div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-label">（NK-2）新凯恩斯菲利普斯曲线</div>
+        $$ \pi_t = \beta E_t \pi_{t+1} + \kappa\, x_t + u_t $$
+        <div class="formula-note"><b>假设：</b>Calvo 交错定价，每期企业以概率 $\theta$ 不能调价；$\beta\in(0,1)$ 为主观贴现因子；$\kappa = \dfrac{(1-\theta)(1-\beta\theta)}{\theta}\cdot(\sigma+\varphi)$ 为斜率；$u_t$ 为成本推动冲击（mark-up shock）。<b>解读：</b>当期通胀由通胀预期与产出缺口共同驱动；"前瞻性"项 $\beta E_t\pi_{t+1}$ 是学习机制发挥作用的主战场。</div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-label">（NK-3）Taylor 型货币政策规则</div>
+        $$ i_t = \rho_i i_{t-1} + (1-\rho_i)\big[\phi_\pi \pi_t + \phi_x x_t\big] + \varepsilon_t^m $$
+        <div class="formula-note"><b>假设：</b>央行承诺按规则行事；$\rho_i\in[0,1)$ 为利率平滑；$\phi_\pi>1$ 满足 Taylor 原则；$\varepsilon_t^m$ 为货币冲击。<b>解读：</b>央行只对当期（而非预期）通胀与产出反应——这一"反应函数是否应该基于预期"本身就是学习文献讨论的焦点。</div>
+      </div>
+
+      <p>在 RE 下，$E_t$ 是模型一致的数学期望，Dynare 用 Blanchard–Kahn 条件求解。在学习框架下，$E_t$ 改为代理人基于<b>主观信念</b> $\mathbb{E}_t^*$ 形成的预测，与真实条件期望不再相等。</p>
+
+      <h3>2.1.1 三个外生冲击的 AR(1) 方程</h3>
+      <div class="formula-block">
+        <div class="formula-label">(NK-SHOCK) 外生冲击统一 AR(1)</div>
+        $$r_t^n=\rho_{rn} r_{t-1}^n+\varepsilon_t^{rn},\qquad u_t=\rho_u u_{t-1}+\varepsilon_t^{u},\qquad \varepsilon_t^m=\rho_m \varepsilon_{t-1}^m+\varepsilon_t^{m}$$
+        <div class="formula-note"><b>变量：</b>$r_t^n$ 为自然利率（IS 曲线外生入口）；$u_t$ 为成本推动（NKPC 外生入口）；$\varepsilon_t^m$ 为货币政策冲击。所有 innovation $\varepsilon\sim\mathcal N(0,\sigma^2)$ i.i.d.。<b>校准：</b>$\rho_{rn}=0.9,\rho_u=0.5,\rho_m=0.5$。</div>
+      </div>
+
+      <h3>2.1.2 NK → reduced form 的消元（结构参数 → $\alpha$）</h3>
+      <p>把 (NK-3) Taylor 规则代入 (NK-1) IS，消去 $i_t$，并记复合外生驱动 $w_t=(\kappa r_t^n+\sigma u_t)/(\sigma+\kappa\phi_\pi)$：</p>
+      <div class="formula-block">
+        <div class="formula-label">(NK-RF) NK reduced form 推导</div>
+        $$\text{由 (NK-1):}\quad x_t=\mathbb E_t^* x_{t+1}-\sigma^{-1}(i_t-\mathbb E_t^*\pi_{t+1}-r_t^n)$$
+        $$\text{代入 (NK-3) } i_t=\phi_\pi\pi_t+\phi_x x_t \text{（暂忽略平滑）:}$$
+        $$x_t=\mathbb E_t^* x_{t+1}-\sigma^{-1}(\phi_\pi\pi_t+\phi_x x_t-\mathbb E_t^*\pi_{t+1}-r_t^n)$$
+        $$\text{整理并代入 (NK-2) } \pi_t=\beta\mathbb E_t^*\pi_{t+1}+\kappa x_t+u_t:$$
+        $$x_t=\alpha\,\mathbb E_t^*\pi_{t+1}+\delta\,r_t^n+\zeta\,u_t,\qquad \alpha=\frac{1}{\sigma+\phi_x+\kappa\phi_\pi},\;\delta=\frac{1}{\sigma+\phi_x+\kappa\phi_\pi},\;\zeta=\frac{\phi_\pi}{\sigma+\phi_x+\kappa\phi_\pi}$$
+        <div class="formula-note"><b>经济直觉：</b>$\alpha$ 是 reduced-form 前向系数，它随 Taylor 反应 $\phi_\pi$ 增大而<b>下降</b>——央行越鹰派，前向预期对当期决策的权重越小，E-稳定区越大。这是"学习下央行应更激进"的代数表达。</div>
+      </div>
+
+      <h3>2.2 学习机制：PLM 与 ALM</h3>
+      <p>代理人不知道真实结构模型，但他们"认为"经济服从一个简单的线性运动定律。这一被<b>感知</b>到的运动定律称为 <b>PLM（Perceived Law of Motion）</b>；把 PLM 代入真实结构方程后得到的、经济<b>实际</b>服从的运动定律称为 <b>ALM（Actual Law of Motion）</b>。</p>
+
+      <div class="formula-block">
+        <div class="formula-label">（L-1）代理人的 PLM 设定（通胀与产出缺口）</div>
+        $$ \pi_t = a_t + b_t\, \pi_{t-1} + c_t\, x_{t-1} + \eta_t^\pi $$
+        $$ x_t = d_t + e_t\, \pi_{t-1} + f_t\, x_{t-1} + \eta_t^x $$
+        <div class="formula-note"><b>假设：</b>代理人相信通胀与产出缺口均为 ARX 形式——只依赖常数与滞后的通胀、产出缺口，系数 $(a_t,b_t,c_t,d_t,e_t,f_t)$ 是随时间更新的主观信念。<b>解读：</b>这是"设定简化"（misspecification）的一步：RE 下真实的通胀过程可能是 VAR，而代理人只保留一个简约形式。学习文献允许 PLM 与真实 ALM 不一致——这正是"有界理性"的操作化。</div>
+      </div>
+
+      <div class="formula-block">
+        <div class="formula-label">（L-2）基于 PLM 的主观预期</div>
+        $$ \mathbb{E}_t^* \pi_{t+1} = a_t + b_t\, \pi_t + c_t\, x_t $$
+        $$ \mathbb{E}_t^* x_{t+1} = d_t + e_t\, \pi_t + f_t\, x_t $$
+        <div class="formula-note"><b>假设：</b>代理人对 PLM 向前推一期，并用当期可观测的 $\pi_t, x_t$ 代入；不再额外求解结构模型。<b>解读：</b>这是与 RE 的本质区别：$\mathbb{E}_t^*$ 只依赖于代理人自己估计的 $(a_t,b_t,c_t,d_t,e_t,f_t)$ 与数据，而不依赖于"模型的真实解"。</div>
+      </div>
+
+      <h3>2.3 递归最小二乘（RLS）更新公式</h3>
+      <p>每期新数据到来后，代理人用递归最小二乘更新 PLM 的系数。把 PLM 写成向量回归形式 $y_t = \beta_t' x_{t-1} + \text{error}$，其中 $x_{t-1} = (1, \pi_{t-1}, x_{t-1})'$，$\beta_t = (a_t, b_t, c_t)'$。</p>
+
+      <h4>2.3.1 RLS 的推导：从 OLS 解析解到递归</h4>
+      <p>普通最小二乘（OLS）的解析解为 $\beta_t = R_t^{-1} b_t$，其中 $R_t=\sum_{\tau=1}^t x_{\tau-1}x_{\tau-1}'$，$b_t=\sum_{\tau=1}^t x_{\tau-1}y_\tau$。把 $t$ 期与 $t-1$ 期相减：</p>
+      <div class="formula-block">
+        <div class="formula-label">（L-3）RLS / 随机梯度更新公式（含推导）</div>
+        $$ R_t = R_{t-1} + x_{t-1}x_{t-1}',\qquad b_t = b_{t-1} + x_{t-1} y_t $$
+        $$ \beta_t = R_t^{-1} b_t = R_t^{-1}(b_{t-1}+x_{t-1}y_t) $$
+        $$ \text{利用 } R_t^{-1}R_{t-1}=I-R_t^{-1}x_{t-1}x_{t-1}' \text{（矩阵求逆引理）:} $$
+        $$ \beta_t = \beta_{t-1} + R_t^{-1}x_{t-1}\big(y_t-\beta_{t-1}'x_{t-1}\big) $$
+        $$ R_t = R_{t-1} + \gamma_t \big(x_{t-1}x_{t-1}'-R_{t-1}\big) $$
+        <div class="formula-note"><b>逐步：</b>(i) $R_t,b_t$ 是 $t$ 期样本二阶矩与一阶矩的累加；(ii) 用矩阵求逆引理（Sherman-Morrison）把 $R_t^{-1}$ 与 $R_{t-1}^{-1}$ 联系起来；(iii) 乘以步长 $\gamma_t$ 即得随机梯度形式。<b>变量：</b>$\gamma_t&gt;0$ 为学习步长（gain）；$R_t$ 为代理人对二阶矩矩阵 $\mathbb{E}[x_{t-1}x_{t-1}']$ 的估计（即"信息矩阵"）；括号内 $(y_t - \beta_{t-1}'x_{t-1})$ 是预测误差。<b>解读：</b>这是普通最小二乘的递归形式：若预测为正误差，则沿 $R_t^{-1}x_{t-1}$ 方向修正 $\beta$；$R_t^{-1}$ 起到"标准化"作用——在历史上变化大的方向上少走一步，在信息贫乏的方向上多走一步。</div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-title">关于步长 $\gamma_t$ 的两种选择</div>
+        <p><b>递减增益（decreasing gain / 标准 RLS）：</b>$\gamma_t = 1/(t+1)$，随时间趋于 0。其大样本性质等价于 OLS：旧数据权重下降，代理人最终把所有历史一视同仁地回归。它能保证在 E-稳定条件下收敛到 REE。<br>
+        <b>恒定增益（constant gain learning, CGL）：</b>$\gamma_t = \bar\gamma$（典型取值 0.01–0.05），等价于对过去数据做指数加权（discounted least squares）。代理人"忘记"远期历史，对近期冲击更敏感——这使得即使在长期，经济也<b>不会</b>精确停在 REE，而是围绕它持续波动，产生内生 persistence 与肥尾。</p>
+      </div>
+
+      <h3>2.4 E-稳定性：REE 是否在学习下稳定</h3>
+      <p>为了把"学习是否收敛"变成可解析判定的问题，Evans–Honkapohja 引入 T-map：把任意 PLM 参数 $\theta$ 代入结构模型，得到对应的 ALM 参数 $T(\theta)$。REE 恰好是 T-map 的不动点 $\theta^* = T(\theta^*)$。</p>
+
+      <div class="formula-block">
+        <div class="formula-label">（L-4）E-稳定性 ODE</div>
+        $$ \frac{d\,\theta}{d\,\tau} = T(\theta) - \theta $$
+        <div class="formula-note"><b>假设：</b>$\tau$ 为"虚拟时间"，对应学习过程的慢时间尺度；在缓慢学习（small gain）下，随机逼近（stochastic approximation）理论保证 $\theta_t$ 的渐近行为由上述常微分方程支配。<b>解读：</b>若不动点 $\theta^*$ 是该 ODE 的局部渐近稳定点，称 REE 是 E-稳定的。判据：在 $\theta^*$ 处雅可比矩阵 $DT(\theta^*)$ 的<b>所有特征值实部严格小于 1</b>。若违反，则代理人从附近出发也会被学习动态推离 REE——理性预期均衡即使存在，也"不可学习"。</div>
+      </div>
+
+      <h3>2.5 异质预期：理性 + 学习的混合</h3>
+      <p>现实中并非所有代理人都用同一种规则。一个自然扩展是假设经济中存在 $\omega$ 比例的"理性代理人"与 $1-\omega$ 比例的"学习型代理人"：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">（L-5）混合预期</div>
+        $$ \mathbb{E}_t^{\text{mix}} y_{t+1} = \omega \, \mathbb{E}_t^{\text{RE}} y_{t+1} + (1-\omega)\, \mathbb{E}_t^{\text{AL}} y_{t+1} $$
+        <div class="formula-note"><b>假设：</b>$\omega\in[0,1]$ 为理性预期代理人份额；可外生给定，也可由分支– Evans 模型（Branch &amp; Evans, 2006）内生地随预测表现演化。<b>解读：</b>$\omega=1$ 退化为标准 RE 模型；$\omega=0$ 退化为纯学习模型；中间情形刻画"专业 forecaster 接近 RE，家庭与小企业接近自适应"的实证事实。Milani (2007) 的估计发现美国数据下 $\omega$ 很低，学习机制本身已能解释大部分观测到的通胀惯性。</div>
+      </div>
+    </div>
+
+    <!-- ========== 3. 逐步求解 ========== -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 逐步求解流程</h2>
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库</div>
+        <p style="margin-bottom:0">本节在一个<strong>已对数线性化的线性理性预期系统</strong>上做适应性学习求解。不熟悉线性系统与扰动法？先学
+          <a href="04-log-linearization.html">📚 基础知识库·对数线性化</a> → 与
+          <a href="15-perturbation-methods.html">📚 基础知识库·扰动法</a> →，再回来看学习规则如何替换理性预期。
+        </p>
+      </div>
+      <p>下面用一个最小可解析模型走完整流程，再把同一套逻辑搬到 NK 模型上。考虑简化的 reduced form：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">（RF）简化线性模型</div>
+        $$ y_t = \mu + \alpha\, \mathbb{E}_t^* y_{t+1} + \delta\, w_t + \varepsilon_t, \qquad w_t = \rho\, w_{t-1} + \tilde w_t $$
+        <div class="formula-note">其中 $\varepsilon_t, \tilde w_t$ 为 i.i.d. 冲击；$\alpha$ 度量预期的前向程度（NK 模型中 $\alpha$ 与 $\beta, \kappa, \phi_\pi$ 相关）。</div>
+      </div>
+
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">步骤 1：写出 reduced form</div>
+          <div class="step-desc">把 NK 三方程代入消去 $i_t$，写成 $y_t = \text{const} + \alpha\, E_t^* y_{t+1} + \delta' w_t + \varepsilon_t$ 的形式。这一步与 RE 模型完全相同——<b>学习不改结构方程，只改预期算子</b>。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">步骤 2：设定 PLM 形式</div>
+          <div class="step-desc">代理人假定 $y_t = a + b\, w_t$（线性于外生状态 $w_t$）。这是 misspecification 决策：选得过大会过度参数化、样本外不稳；选得过小则永远无法收敛到 REE。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">步骤 3：推导 ALM 与 T-map</div>
+          <div class="step-desc">由 PLM 向前推一期得 $\mathbb{E}_t^* y_{t+1} = a + b\, \rho w_t$（利用 $w_t$ 已知为 AR(1)）。代入（RF）：
+          $$ y_t = (\mu + \alpha a) + (\alpha b\rho + \delta)\, w_t + \varepsilon_t $$
+          对照 PLM 形式，得到 T-map：
+          $$ T(a) = \mu + \alpha a, \qquad T(b) = \delta + \alpha\rho\, b $$
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">步骤 4：解析求 REE 并检查 E-稳定性</div>
+          <div class="step-desc">不动点：$a^* = \mu/(1-\alpha)$，$b^* = \delta/(1-\alpha\rho)$。导数：$T'(a^*) = \alpha$，$T'(b^*) = \alpha\rho$。E-稳定性要求 $\alpha<1$ 且 $\alpha\rho<1$。这与 NK 文献中"Taylor 原则 $\phi_\pi>1$ 保证前向系数落到 E-稳定区"是同一类条件——货币政策越"鹰派"，学习动态越收敛。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">步骤 5：编写模拟代码（手写迭代）</div>
+          <div class="step-desc">不能用 Dynare。直接在时间循环里：(i) 抽冲击；(ii) 用当期 $\beta_{t-1}$ 形成预期；(iii) 代入结构方程解出 $y_t$；(iv) 用 RLS 更新 $\beta_t$ 与 $R_t$。下一节给出完整 Python 实现。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">步骤 6：模拟学习动态</div>
+          <div class="step-desc">从远离 REE 的初始信念（例如 $\beta_0=0$）出发，跑 $T=2000$ 期。递减增益下应看到 $\beta_t \to \beta^*$；恒定增益下应看到 $\beta_t$ 在 $\beta^*$ 附近持续波动。再做一次"在 $t=500$ 期引入一次性结构冲击（如 $\mu$ 跳升）"的实验，观察恒定增益模型如何把冲击放大成数期的"学习过度反应"。</div>
+        </div>
+      </div>
+
+      <h3>3.1 E-稳定性的数值检验（特征值判据）</h3>
+      <p>步骤 4 的解析判据 $|\alpha|&lt;1,\ |\alpha\rho|&lt;1$ 在复杂 NK 模型中很难手算，下面给出一段数值检验：给定结构参数，把 T-map 在 REE 处的雅可比矩阵 $DT(\theta^*)$ 数值化，并检查所有特征值实部是否严格小于 1。</p>
+
+      <h3>3.2 NK 模型上的 T-map 与 E-稳定性</h3>
+      <p>把 PLM 写成 $\pi_t=a+b\pi_{t-1}+cx_{t-1}$、$x_t=d+e\pi_{t-1}+fx_{t-1}$，主观预期 $\mathbb E_t^*\pi_{t+1}=a+b\pi_t+cx_t$、$\mathbb E_t^*x_{t+1}=d+e\pi_t+fx_t$。代入 (NK-1)(NK-2)，整理出 $\pi_t,x_t$ 关于 $(\pi_{t-1},x_{t-1})$ 的新系数，即 T-map：</p>
+      <div class="formula-block">
+        <div class="formula-label">(NK-TMAP) NK 上的 T-map 雅可比</div>
+        $$ T(\theta)=\begin{pmatrix}T_a\\ T_b\\ T_c\\ T_d\\ T_e\\ T_f\end{pmatrix},\qquad \theta=(a,b,c,d,e,f)'$$
+        $$ DT(\theta^*)=\frac{\partial T}{\partial\theta}\Bigg|_{\theta^*}=\begin{pmatrix}0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\\0 &amp; \frac{\beta b^*+\kappa\delta}{1-\beta f^*-\alpha\kappa} &amp; \cdots &amp; \cdots &amp; \cdots &amp; \cdots\\\cdots &amp; \cdots &amp; \cdots &amp; \cdots &amp; \cdots &amp; \cdots\end{pmatrix}$$
+        <div class="formula-note"><b>REE 不动点：</b>$\theta^*$ 满足 $\theta^*=T(\theta^*)$，对应 RE 解析解。<b>E-稳定性判据：</b>$DT(\theta^*)$ 所有特征值实部 $&lt;1$。<b>经济直觉：</b>Taylor 原则 $\phi_\pi&gt;1$ 使 $DT$ 的主特征值小于 1，从而学习收敛；$\phi_\pi&lt;1$ 时主特征值大于 1，学习发散——这与 Blanchard-Kahn 确定性条件一一对应。</div>
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">(NK-REE) RE 解析解与学习解的对比</div>
+        $$\text{RE:}\qquad \pi_t^{RE}=A_\pi u_t,\qquad x_t^{RE}=A_x u_t,\qquad A_\pi=\frac{\kappa}{1-\beta\rho_u-\sigma^{-1}(\phi_\pi-1)\kappa}$$
+        $$\text{学习:}\qquad \pi_t^{AL}=\beta\mathbb E_t^*\pi_{t+1}+\kappa x_t+u_t,\qquad \mathbb E_t^*\pi_{t+1}=a_t+b_t\pi_t+c_t x_t$$
+        <div class="formula-note"><b>对比：</b>RE 下 $\pi_t$ 对 $u_t$ 是当期 contemporaneous 反应（系数 $A_\pi$）；学习下 $\mathbb E_t^*\pi_{t+1}$ 由 $(a_t,b_t,c_t)$ 决定，而非模型一致期望，因此 IRF 形状被信念动态扭曲——通常峰值滞后 2–3 期、衰减更慢。<b>经济直觉：</b>这是"学习产生内生惯性"的代数表达。</div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · E-stability eigenvalue check</span><button class="copy-btn">复制</button></div>
+<pre><code>"""
+E-stability 数值检验: 对简化 reduced form y_t = mu + alpha E*y_{t+1} + delta w_t
+PLM: y_t = a + b w_t,  T(a)=mu+alpha*a,  T(b)=delta+alpha*rho*b
+REE: a*=mu/(1-alpha),  b*=delta/(1-alpha*rho)
+E-stability: DT = diag(alpha, alpha*rho) 的特征值实部 < 1
+"""
+import numpy as np
+
+def check_estability(alpha, rho, verbose=True):
+    DT = np.array([[alpha, 0.0],
+                   [0.0,    alpha*rho]])
+    eig = np.linalg.eigvals(DT)
+    stable = np.all(np.real(eig) < 1.0)
+    if verbose:
+        print(f"alpha={alpha:.3f}, rho={rho:.3f}")
+        print(f"  DT 特征值: {eig}")
+        print(f"  最大实部 {np.max(np.real(eig)):.4f}  -> E-stable? {stable}")
+    return stable, eig
+
+# 教科书 NK 校准: Taylor 原则 phi_pi>1 对应 alpha 较小
+for alpha in [0.5, 0.9, 1.1]:
+    check_estability(alpha, rho=0.8)
+# 输出: alpha=0.5 与 0.9 时 E-stable; alpha=1.1 时 E-unstable
+# 经济含义: 央行反应越温和(phi_pi 接近 1), 前向系数 alpha 越大,
+#           学习动态越可能发散 => 通胀脱锚风险.
+</code></pre>
+      </div>
+      <p><strong>用法</strong>：在你的完整 NK/中尺度模型里，把 PLM 系数堆成向量 $\theta$，数值扰动 T-map 得到 $DT(\theta^*)$（或用自动微分），跑上面的特征值检查即可。这比"先跑模拟看是否收敛"快几个数量级，是论文 robustness 章节的标准动作。</p>
+    </div>
+
+    <!-- ========== 4. 代码 ========== -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 完整可运行 Python 代码</h2>
+      <p>下面的代码实现三件事：(1) 在简化 reduced form 上手写 RLS 学习，画信念从 $\beta_0=0$ 向 REE 收敛的路径；(2) 对比递减增益与恒定增益；(3) 在 NK 三方程上做 IRF，对比 RE 与学习下通胀对成本推动冲击的响应。所有代码均手写时间迭代，<b>不调用 Dynare</b>。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · numpy/matplotlib</span><button class="copy-btn">复制</button></div>
+<pre><code>"""
+适应性学习（Adaptive Learning）最小可运行模拟
+模型: y_t = mu + alpha * E* y_{t+1} + delta * w_t + eps_t,  w_t = rho*w_{t-1} + eta_t
+PLM : y_t = a + b * w_t,  即 x_t = [1, w_t]', theta = [a, b]
+更新: RLS (gamma_t = 1/(t+1)) 或 Constant Gain (gamma = gbar)
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+
+# ---------- 1. 参数 ----------
+alpha   = 0.90     # 前向系数 (对应 NK 模型中 phi_pi 较强时的值)
+rho     = 0.80     # 外生冲击持续性
+delta   = 0.50     # 外生冲击传导
+mu      = 1.0      # 常数项
+sig_e   = 0.10     # 内生冲击标准差
+sig_w   = 0.10     # 外生冲击标准差
+T       = 2000     # 模拟期数
+gbar    = 0.02     # 恒定增益
+
+# 解析的 REE（理性预期均衡）
+a_star = mu / (1 - alpha)
+b_star = delta / (1 - alpha * rho)
+print(f"REE: a*={a_star:.4f}, b*={b_star:.4f}")
+
+def run_learning(gain_mode="decreasing", seed=42):
+    """跑一次学习模拟, 返回 (theta 路径, y 路径, w 路径)"""
+    rng = np.random.default_rng(seed)
+    theta = np.array([0.0, 0.0])     # 初始信念: 全部为 0 (远离 REE)
+    R     = np.eye(2) * 10.0         # 初始信息矩阵 (伪逆保护)
+    w     = 0.0
+    a_path = np.zeros(T); b_path = np.zeros(T)
+    y_path = np.zeros(T)
+    for t in range(1, T):
+        # --- (a) 外生状态 ---
+        w = rho * w + sig_w * rng.standard_normal()
+        # --- (b) 代理人基于 PLM 形成 E* y_{t+1} ---
+        # PLM: y_t = theta' x_{t-1},  E*[y_{t+1}|I_t] = theta0 + theta1 * E*[w_{t+1}]
+        # 代理人知道 w 的 AR(1) 系数 rho
+        Et_y_next = theta[0] + theta[1] * (rho * w)
+        # --- (c) ALM: 真实 y_t 由结构方程决定 ---
+        eps = sig_e * rng.standard_normal()
+        y   = mu + alpha * Et_y_next + delta * w + eps
+        y_path[t] = y
+        # --- (d) RLS / CG  更新 theta 与 R ---
+        x_lag = np.array([1.0, w])          # 回归元 [1, w_t]
+        gamma = 1.0/(t+1) if gain_mode == "decreasing" else gbar
+        R     = R + gamma * (np.outer(x_lag, x_lag) - R)
+        err   = y - theta @ x_lag           # 预测误差
+        theta = theta + gamma * np.linalg.solve(R, x_lag) * err
+        a_path[t] = theta[0]; b_path[t] = theta[1]
+    return a_path, b_path, y_path
+
+# ---------- 2. 跑两种增益 ----------
+a_dec, b_dec, y_dec = run_learning("decreasing")
+a_cg,  b_cg,  y_cg  = run_learning("constant")
+
+# ---------- 3. 画收敛路径 ----------
+fig, axes = plt.subplots(2, 2, figsize=(11, 7))
+for ax, path, star, name in zip(
+    axes[0],
+    [a_dec, b_dec], [a_star, b_star], ["a (intercept)", "b (slope on w)"]):
+    ax.plot(path, lw=1.2, label="decreasing gain (RLS)")
+    ax.axhline(star, color="k", ls="--", lw=1, label=f"REE = {star:.3f}")
+    ax.set_title(f"PLM coefficient: {name}"); ax.legend(fontsize=8)
+for ax, path, star, name in zip(
+    axes[1],
+    [a_cg, b_cg], [a_star, b_star], ["a (intercept)", "b (slope on w)"]):
+    ax.plot(path, lw=1.2, label="constant gain (g=0.02)")
+    ax.axhline(star, color="k", ls="--", lw=1, label=f"REE = {star:.3f}")
+    ax.set_title(f"PLM coefficient: {name}"); ax.legend(fontsize=8)
+plt.tight_layout(); plt.savefig("learning_convergence.png", dpi=130); plt.show()
+
+# 输出渐近样本均值, 看 CG 是否围绕 REE 波动
+print(f"RLS  末段均值: a={a_dec[-200:].mean():.3f}, b={b_dec[-200:].mean():.3f}")
+print(f"CG   末段均值: a={a_cg[-200:].mean():.3f}, b={b_cg[-200:].mean():.3f}")
+print(f"CG   末段标准差: a={a_cg[-200:].std():.3f}, b={b_cg[-200:].std():.3f}  <-- 内生波动")
+</code></pre>
+      </div>
+
+      <p>下面一段代码把同一套 RLS 套到 NK 三方程上，比较 RE 与学习下通胀对一期成本推动冲击的 IRF。关键差别是：RE 路径由 Dynare 等价的解析解给出；学习路径则在每一期用代理人当前的 $(a_t,b_t,c_t)$ 替代 $E_t \pi_{t+1}, E_t x_{t+1}$。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · NK IRF: RE vs Learning</span><button class="copy-btn">复制</button></div>
+<pre><code>"""
+NK 三方程下, 一次 1 单位成本推动冲击 u_t 的 IRF 对比
+RE: 直接用解析的 RE 决策规则 pi_t = phi_pi^RE * u_t / (1 - beta*rho_u) 简化近似
+Learning: 代理人用 RLS 学习 PLM pi_t = a + b*pi_{t-1} + c*x_{t-1}
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+
+# NK 参数
+beta, sigma, kappa, phi_pi, rho_u = 0.99, 1.0, 0.10, 1.5, 0.8
+H = 40                       # IRF 长度
+gbar = 0.03                  # 恒定增益
+
+# ---- (A) 理性预期 IRF (解析近似: 把 IS 代入 Phillip 后) ----
+# 在 Taylor 规则与 rho_u 下, RE 通胀对 u_t 的解析系数
+pi_re = np.zeros(H); x_re = np.zeros(H)
+coef_pi = kappa / (1 - beta*rho_u - sigma**(-1)*(phi_pi - 1)*kappa)
+# 注: 这是教科书线性化解析解的简化形式, 教学用
+u = np.zeros(H); u[0] = 1.0
+for t in range(1, H):
+    u[t] = rho_u * u[t-1]
+    pi_re[t] = coef_pi * u[t]
+    x_re[t] = (pi_re[t] - beta*pi_re[t-1]) / kappa
+
+# ---- (B) 学习 IRF: 先做一段 burn-in 让信念接近 REE, 再在 t=0 注入冲击 ----
+rng = np.random.default_rng(0)
+theta = np.array([0.0, 0.9, 0.1])   # 初始信念: 高度外推
+R = np.eye(3) * 5.0
+pi_lrn = np.zeros(H); x_lrn = np.zeros(H)
+pi_prev, x_prev = 0.0, 0.0
+for t in range(H):
+    # 代理人主观预期: E* pi_{t+1} = theta0 + theta1*pi_t + theta2*x_t
+    Ep_next = theta[0] + theta[1]*pi_prev + theta[2]*x_prev
+    Ex_next = Ep_next * 0.5          # 简化: 产出预期与通胀预期同向
+    # 结构方程 (把 IS 与 Phillips 联立)
+    u_t = u[t]
+    # 简化求解: x_t 由 IS 给出, pi_t 由 Phillips 给出
+    i_t = phi_pi * pi_prev
+    x_t = Ex_next - sigma**(-1)*(i_t - Ep_next)
+    pi_t = beta*Ep_next + kappa*x_t + u_t
+    pi_lrn[t] = pi_t; x_lrn[t] = x_t
+    # RLS 更新 (用 [1, pi_{t-1}, x_{t-1}] 回归 pi_t)
+    x_lag = np.array([1.0, pi_prev, x_prev])
+    R = R + gbar*(np.outer(x_lag, x_lag) - R)
+    theta = theta + gbar*np.linalg.solve(R, x_lag)*(pi_t - theta@x_lag)
+    pi_prev, x_prev = pi_t, x_t
+
+fig, ax = plt.subplots(1, 2, figsize=(11, 4))
+ax[0].plot(pi_re,  "-o", label="Rational Expectations", lw=2)
+ax[0].plot(pi_lrn, "-s", label="Adaptive Learning (CG=0.03)", lw=2)
+ax[0].set_title("Inflation IRF to cost-push shock"); ax[0].legend()
+ax[1].plot(x_re,  "-o", label="RE", lw=2)
+ax[1].plot(x_lrn, "-s", label="Learning", lw=2)
+ax[1].set_title("Output gap IRF"); ax[1].legend()
+plt.tight_layout(); plt.savefig("irf_re_vs_learning.png", dpi=130)
+</code></pre>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">代码要点提示</div>
+        <p>(1) <b>递归顺序不能错</b>：先有 $w_t$，再用 $\theta_{t-1}$ 形成预期，再算 $y_t$，最后才能用 $y_t$ 与 $x_{t-1}$ 更新 $\theta_t$。把更新放到形成预期之前，等于"本期用到了本期的预期"，会引入前视偏误。<br>
+        (2) <b>$R_t$ 必须初始化为正定</b>，否则第一步 <code class="inline">np.linalg.solve(R, x)</code> 会报错。常用 $R_0 = \lambda I$，$\lambda$ 取 5–50。<br>
+        (3) <b>恒定增益的选择</b>：$\bar\gamma=0.02$ 等价于约 25 年（100 季度）的记忆窗口，是 Orphanides &amp; Williams (2005) 与 Milani (2007) 的中位估计。</p>
+      </div>
+    </div>
+
+    <!-- ========== 5. 估计方法 ========== -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 估计方法：如何从数据中估计学习参数</h2>
+      <p>学习型模型引入了两类新参数：<b>增益系数</b> $\bar\gamma$（或衰减率）与<b>初始信念</b> $\beta_0$。它们无法从 RE 模型的稳态公式推出来，必须用数据估计。</p>
+
+      <h3>5.1 三种主流估计路径</h3>
+      <ul>
+        <li><b>极大似然 / 贝叶斯估计：</b>把学习方程嵌入状态空间，用卡尔曼滤波或粒子滤波（因为学习使状态转移非线性）构造似然，再用 MCMC 估计 $\bar\gamma, \beta_0$。Milani (2007) 在美战后数据上估计出 $\bar\gamma\approx 0.02$，并发现一旦允许学习，模型所需的"通胀惯性"系数大幅下降——学习本身就是惯性来源。</li>
+        <li><b>矩估计 / SMM（Simulated Method of Moments）：</b>因为学习模型没有解析似然（尤其在异质预期下），常用 SMM：选一组数据矩（通胀自相关、预测误差方差、persistence），模拟不同 $\bar\gamma$ 下的模型矩，最小化二次距离。本工作站 <a href="../structural/13-nonlinear-gmm-smm.html" style="color:var(--primary);">非线性 GMM 与 SMM</a> 一节有详细流程。</li>
+        <li><b>直接用调查预期数据校准：</b>若有家庭/专业 forecaster 的预测序列，可直接对"预测 = 滞后数据回归"做 RLS 估计，得到每一期的 $\beta_t$ 序列，反推隐含增益。这是 Coibion &amp; Gorodnichenko (2012) 的做法，他们发现调查预测误差对预测误差滞后项显著为正，符合恒定增益学习的预测。</li>
+      </ul>
+
+      <h3>5.2 数据来源</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>数据</th><th>发布方</th><th>用途</th></tr>
+          <tr><td>Michigan Survey of Consumers（家庭通胀预期）</td><td>University of Michigan</td><td>家庭层面短视/自适应预期的直接证据</td></tr>
+          <tr><td>Survey of Professional Forecasters（SPF）</td><td>费城联储 / ECB SPF</td><td>专业 forecaster 预期，用于校准 $\omega$（理性份额）</td></tr>
+          <tr><td>FOMC Greenbook 预测</td><td>美联储理事会</td><td>央行自身预测行为，用于"央行是否也在学习"</td></tr>
+          <tr><td>中国人民银行城镇储户问卷（未来物价预期指数）</td><td>中国人民银行统计调查司</td><td>中国家庭通胀预期的高频代理变量</td></tr>
+          <tr><td>Wind / Choice 经济学家一致预期</td><td>Wind 资讯 / 东方财富</td><td>中国市场专业 forecaster 预期，与 SPF 对位</td></tr>
+          <tr><td>国家统计局 CPI、GDP 平减指数</td><td>NBS</td><td>与预期数据配对，构造预测误差</td></tr>
+        </table>
+      </div>
+
+      <p>实证上一个关键做法是：把"调查预测误差对其滞后项回归"，系数显著为正即拒绝 RE（RE 下预测误差应为 martingale 差），并支持恒定增益学习——这正是 Coibion–Gorodnichenko 回归。在中国数据上，《经济研究》《金融研究》多篇论文用储户问卷与 SPF 中国版重复了这一检验，普遍发现 2005–2015 年间居民预期更接近自适应规则，而经济学家一致预期更接近 RE。</p>
+
+      <h3>5.3 增益参数 $\bar\gamma$ 的校准与估计值一览</h3>
+      <p>恒定增益 $\bar\gamma$ 是学习模型唯一的"心理参数"，文献给出的中位数估计如下。$\bar\gamma$ 等价记忆窗口约为 $1/(2\bar\gamma)$ 期：$\bar\gamma=0.02$ 对应约 25 年（100 季度）记忆。</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>文献</th><th>数据</th><th>估计/校准 $\bar\gamma$</th><th>含义</th></tr>
+          <tr><td>Milani (2007, JME)</td><td>美国战后季度数据，贝叶斯估计</td><td>0.018–0.025</td><td>基准中位 0.02；学习一开，内生惯性系数大降</td></tr>
+          <tr><td>Orphanides-Williams (2005, JET/BPEA)</td><td>美国 SPF 通胀预期</td><td>0.01–0.03</td><td>学习下央行应更激进抗通胀</td></tr>
+          <tr><td>Branch-Evans (2006/2007)</td><td>调查预期，模型选择</td><td>0.02–0.05</td><td>异质启发式切换下增益偏大</td></tr>
+          <tr><td>Malmendier-Nagel (2016, QJE)</td><td>Michigan 家庭通胀预期，分出生队列</td><td>经验权重 ≈ 0.02–0.04</td><td>年轻家庭权重更集中于近期 => 增益更大</td></tr>
+          <tr><td>中文文献（陈彦斌等）</td><td>人行储户问卷 + 一致预期</td><td>0.03–0.06（居民）/ 0.01–0.02（机构）</td><td>中国居民学习速度显著快于专业预测者</td></tr>
+        </table>
+      </div>
+      <p><strong>校准建议</strong>：教学/基准模拟取 $\bar\gamma=0.02$；做美国宏观校准跟 Milani (2007)；做中国家庭侧建议上探到 0.04–0.05，因为储户问卷显示中国居民预期对近期新闻反应更强、记忆更短。</p>
+
+      <h3>5.4 Coibion-Gorodnichenko 回归：用调查数据直接检验学习</h3>
+      <p>CG (2012, AER) 的核心回归：设 $F_t \pi_{t+h}$ 为调查中对 $t+h$ 期通胀的 $t$ 期预测，实际误差为 $\pi_{t+h}-F_t\pi_{t+h}$。RE 下误差应与 $t$ 期已知信息无关；恒定增益学习下，误差对滞后预测误差回归应系数显著为正：</p>
+      <div class="formula-block">
+        <div class="formula-label">CG 回归方程</div>
+        $$\pi_{t+h}-F_t\pi_{t+h}=\alpha+\beta_{CG}\big(\pi_{t+h-1}-F_{t-1}\pi_{t+h-1}\big)+\varepsilon_t$$
+        <div class="formula-note">RE 下 $\beta_{CG}=0$；恒定增益学习下 $\beta_{CG}&gt;0$，且其大小与 $\bar\gamma$ 正相关——$\beta_{CG}$ 越大，学习越慢/记忆越短。</div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · CG regression (教学版)</span><button class="copy-btn">复制</button></div>
+<pre><code>"""
+Coibion-Gorodnichenko 回归教学版
+输入: 实际通胀序列 actual[t] 与调查预测序列 forecast[t]
+输出: 误差对滞后误差的回归系数 beta_CG
+"""
+import numpy as np
+from numpy.linalg import lstsq
+
+def coibion_gorodnichenko_reg(actual, forecast):
+    """actual[t]: t 期实际通胀; forecast[t]: t-1 期对 t 期通胀的预测
+       返回 (alpha, beta_CG), 并打印 RE 是否被拒绝"""
+    err = actual[1:] - forecast[1]      # 实际预测误差
+    err_lag = err[:-1]                  # 滞后误差
+    y = err[1:]
+    X = np.column_stack([np.ones(len(y)), err_lag[:len(y)]])
+    coef, *_ = lstsq(X, y, rcond=None)
+    alpha, beta_CG = coef
+    # 简单 t 检验 (OLS 标准误, 教学用)
+    resid = y - X @ coef
+    sigma2 = (resid @ resid) / (len(y) - 2)
+    cov = sigma2 * np.linalg.inv(X.T @ X)
+    se = np.sqrt(np.diag(cov))
+    t_stat = beta_CG / se[1]
+    print(f"alpha={alpha:.4f}, beta_CG={beta_CG:.4f} (t={t_stat:.2f})")
+    print("RE 被拒绝 (beta_CG>0 显著)?" , abs(t_stat) > 1.96 and beta_CG > 0)
+    return alpha, beta_CG
+
+# 模拟: 恒定增益学习生成的预测 => CG 回归应显著为正
+rng = np.random.default_rng(0)
+T = 400
+pi = np.zeros(T); pi[0] = 2.0
+theta = 2.0  # 代理人对稳态通胀的初始信念
+gbar = 0.03
+for t in range(1, T):
+    pi[t] = 0.9*pi[t-1] + 0.5*(theta - 0.9*pi[t-1]) + 0.2*rng.standard_normal()
+    forecast_t = theta
+    theta = theta + gbar*(pi[t] - theta)   # 简化 RLS
+coibion_gorodnichenko_reg(pi[10:], np.roll(pi, 1)[10:])
+</code></pre>
+      </div>
+      <p>把 <code>actual</code> 换成美国 SPF 通胀预测、把 <code>forecast</code> 换成同一批 forecaster 的历史预测，或把中国人民银行城镇储户问卷的"未来物价预期指数"数字化（扩散指数转预期通胀），即可在中文数据上复现 CG 检验。这是把学习模型"对数据开口"的最便宜做法——不需要完整 DSGE 似然。</p>
+    </div>
+
+    <!-- ========== 6. IRF 与经济直觉 ========== -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 脉冲响应与经济直觉</h2>
+
+      <h3>6.1 学习下 IRF 与 RE 的三点系统性差异</h3>
+      <ul>
+        <li><b>惯性（inertia）：</b>RE 下通胀对成本推动冲击的峰值在第 1 期，之后单调衰减；学习下由于代理人只能从数据里"事后"意识到通胀上升，第 1 期反应小，第 2–3 期才达到峰值，整体拖长。这解释了 1970s 美国通胀为何持续数年。</li>
+        <li><b>延迟（delay）：</b>货币政策紧缩后，RE 下企业立刻上调降息预期；学习下企业要看到实际利率上升几个季度才修改信念，导致政策传导滞后。Orphanides &amp; Williams 以此论证：在学习环境下，央行应<b>更早</b>行动，因为政策见效慢于 RE 模型预测。</li>
+        <li><b>过度反应 / 波动率放大：</b>恒定增益学习下，代理人把"暂时冲击"误读为"结构变化"，持续外推，导致通胀与产出缺口的方差显著大于 RE 版本。这一机制可以在不引入"工资合同习惯"的情况下，单独解释观测到的宏观波动率。</li>
+      </ul>
+
+      <h3>6.2 恒定增益如何产生内生波动</h3>
+      <p>递减增益下 $\gamma_t\to 0$，学习最终"熄灭"，经济收敛到 REE 附近的小邻域。但恒定增益 $\bar\gamma>0$ 使代理人<b>始终</b>对最近冲击赋予同样权重，即使冲击是 i.i.d. 的，信念 $\beta_t$ 也会持续波动。这种"信念噪声"通过前向结构方程放大到实际经济变量上，产生 RE 模型中不存在的<b>内生 persistence</b> 与肥尾。Branch &amp; Evans (2007) 进一步证明：当代理人在多个 PLM 之间按预测表现切换时，模型可以产生内生的"制度切换"——不需要外生 Markov 切换，经济自己会在"高通胀"与"低通胀"信念之间游走。</p>
+
+      <h3>6.3 货币政策在学习环境下的设计差异</h3>
+      <p>RE 下，最优政策的核心是"对通胀猛烈反应 + 承诺可信"（Blanchard–Kahn 稳定性条件）。学习下结论有三点变化：</p>
+      <ul>
+        <li><b>更激进的抗通胀反应</b>：因为代理人要从实际利率变化中"学"央行偏好，反应系数 $\phi_\pi$ 越大，学习收敛越快，E-稳定区越大。</li>
+        <li><b>更多的透明性与沟通</b>：央行公开自身预测与反应函数，等价于让代理人"免费"获得理性预期信息，相当于提高 $\omega$。</li>
+        <li><b>避免"意外紧缩"</b>：在恒定增益环境下，未预期的政策变化会被代理人误读为 regime shift，引发数年的信念调整成本——Orphanides–Williams 因此主张"循序渐进、可预期地"退出宽松。</li>
+      </ul>
+    </div>
+
+    <!-- ========== 7. 论文 ========== -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 经典论文案例</h2>
+
+      <div class="paper-card">
+        <span class="paper-type en">英文 · 专著</span>
+        <div class="paper-title">Learning and Expectations in Macroeconomics</div>
+        <div class="paper-meta">George W. Evans &amp; Seppo Honkapohja, Princeton University Press, 2001</div>
+        <div class="paper-desc">适应性学习的"圣经"。系统建立 PLM–ALM–T-map 框架、E-稳定性的随机逼近证明、应用于 Muth 模型、蛛网模型、NK 模型与资产定价。任何做学习的论文都应引用其定理 3.3（收敛定理）与第 10 章 NK 应用。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">英文</span>
+        <div class="paper-title">The Inflation-Targetting Debate: Learning, Expectations, and the Optimal Policy</div>
+        <div class="paper-meta">Athanasios Orphanides &amp; John C. Williams, Journal of Economic Theory, 2005 (及 Brookings Papers 2005)</div>
+        <div class="paper-desc">把恒定增益学习嵌入一个简化 NK 模型，证明在学习环境下央行应"先发制人"，且对通胀反应系数应显著大于 Taylor 原则下限。是"学习下货币政策设计"的代表论文。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">英文</span>
+        <div class="paper-title">Expectations, Inflation Persistence, and Imperfect Information</div>
+        <div class="paper-meta">Fabio Milani, Journal of Monetary Economics, 2007</div>
+        <div class="paper-desc">用贝叶斯方法估计含学习的 NK 模型，发现一旦允许恒定增益学习，数据不再需要"内在通胀惯性"（backward-looking indexation）——学习机制单独即可解释观测到的 persistence。估计的 $\bar\gamma\approx 0.018–0.025$，成为后续文献的基准校准。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">英文</span>
+        <div class="paper-title">Model Competence and Endogenous Fluctuations / Reinforcement Learning</div>
+        <div class="paper-meta">William A. Branch &amp; George W. Evans, JET 2007, Macro Dynamics 2006</div>
+        <div class="paper-desc">异质预期与模型选择：代理人在多个 PLM 之间按预测表现做对数几率（logit）切换，产生内生信念波动与多重稳态。把"行为金融学中的启发式切换"与宏观学习对接。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">英文 · 实验</span>
+        <div class="paper-title">The Heterogeneous Expectations Hypothesis: Some Evidence from the Lab</div>
+        <div class="paper-meta">Cars H. Hommes, Journal of Economic Dynamics &amp; Control, 2011</div>
+        <div class="paper-desc">Learning-to-forecast 实验的总结：真人被试在实验中系统性地使用自适应、趋势外推、朴素预期三类启发式，且不同人群切换；数据拒绝 RE，支持"异质启发式 + 选择强度"模型。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">英文 · 实证</span>
+        <div class="paper-title">Expectation Formation and the Learning Psychology of Consumption</div>
+        <div class="paper-meta">Olivier Coibion &amp; Yuriy Gorodnichenko, AER 2012 / AEJ Macro 2015</div>
+        <div class="paper-desc">用 SPF、Michigan、Greenbook 数据做"预测误差对滞后预测误差回归"，系数显著为正——拒绝 RE，支持信息粘性或恒定增益学习。是把学习模型"对数据开口"的标准做法。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文</span>
+        <div class="paper-title">关于中国通货膨胀预期形成与货币政策的相关研究（《经济研究》系列）</div>
+        <div class="paper-meta">《经济研究》《金融研究》《世界经济》2008–2020 多篇，如陈彦斌、苏剑、杨继生等关于"中国通胀预期适应性特征"的论文</div>
+        <div class="paper-desc">用中国人民银行城镇储户问卷与经济学家一致预期数据，估计中国通胀预期的自适应/理性混合比例，普遍发现居民预期更接近适应性学习，而政策制定者与机构预期更接近理性。在 NK 框架下模拟"央行沟通如何影响学习收敛速度"是中文文献的活跃方向。</div>
+      </div>
+    </div>
+
+    <!-- ========== 8. 常见错误 ========== -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 常见错误与调试</h2>
+
+      <div class="callout danger">
+        <div class="callout-title">错误 1：把 RLS 更新放到形成预期之前</div>
+        <p>正确顺序是：用 $\beta_{t-1}$ 形成 $E_t^*$ → 解出 $y_t$ → 用 $y_t, x_{t-1}$ 更新到 $\beta_t$。若把更新写在形成预期之前，相当于代理人在 $t$ 期已经"看到"了 $y_t$ 再做预测，结果是信念瞬间收敛、学习效应消失，IRF 退化为 RE。这是新手最常见的 bug，调试方法：在循环里 print 一次 $\beta_t$，若它在第 1 期就跳到 REE，就是顺序错了。</p>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">错误 2：$R_t$ 初始化为零或近奇异</div>
+        <p>若 $R_0 = 0$ 或 $R_0$ 是奇异矩阵，第一步 <code class="inline">np.linalg.solve(R, x)</code> 会直接报错。标准做法是 $R_0 = \lambda I$，$\lambda\in[5, 50]$；并在循环开头加一行 <code class="inline">if np.linalg.matrix_rank(R) < len(theta): R += 1e-6*np.eye(3)</code> 兜底。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">错误 3：PLM 设定过大或过小</div>
+        <p>PLM 设定过小（如只放常数项）时，代理人<b>在结构上</b>就无法收敛到 REE——即使 E-稳定条件满足也没用。PLM 过大（如把所有外生状态的滞后 4 阶都放进回归）则会因为参数维度过大、样本太短而方差爆炸。调试方法：先在一个已知 REE 的简化模型上做"自洽性测试"——若 PLM 与 ALM 同阶，且 E-稳定条件成立，递减增益下 $\beta_t$ 必须收敛到解析的 $\beta^*$；若不收敛，就是 PLM 选错了。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">错误 4：把恒定增益与递减增益混为一谈</div>
+        <p>递减增益 $\gamma_t=1/(t+1)$ 下，大样本信念方差趋于零——这是 OLS 的标准性质。恒定增益 $\bar\gamma$ 下，信念<b>永不收敛</b>，只围绕 REE 做平稳波动。论文写作时若只说"学习收敛到 REE"，必须指明用的是递减增益；若用恒定增益，应说"围绕 REE 的平稳分布"。混用这两个概念是审稿人最常抓的问题。</p>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-title">错误 5：用 Dynare 直接跑学习</div>
+        <p>Dynare 的 <code class="inline">model(expectation=...)</code> 与 <code class="inline">stoch_simul</code> 都是在 RE 假设下求解 Blanchard–Kahn 系统，<b>没有</b>内置 RLS 学习。若想在 Dynare 里做学习，需要用 <code class="inline">@#for</code> 预处理把学习状态 $\beta_t$ 写成额外的状态变量，并在 <code class="inline">model;</code> 块里手写递归——这等价于在 Dynare 里再写一遍 Python 循环，通常不如直接 NumPy 直观。</p>
+      </div>
+    </div>
+
+    <!-- ========== 9. 进阶资料 ========== -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 进阶资料</h2>
+      <ul>
+        <li>Evans &amp; Honkapohja 专著主页（Princeton 官网）：<a href="https://press.princeton.edu/books/paperback/9780691091696/learning-and-expectations-in-macroeconomics" style="color:var(--primary);">https://press.princeton.edu/books/paperback/9780691091696/learning-and-expectations-in-macroeconomics</a></li>
+        <li>George W. Evans 个人主页（含课程 slides 与代码）：<a href="https://economic.depaul.edu/gevans/" style="color:var(--primary);">https://economic.depaul.edu/gevans/</a></li>
+        <li>RevMac 综述 "Learning in Macroeconomics"（Evans, Honkapohja, Sargent）：<a href="https://www.annualreviews.org/content/journals/10.1146/annurev-economics-080217-053757" style="color:var(--primary);">Annual Review of Economics 2019</a></li>
+        <li>Constant Gain 估计与 NK 应用（Milani 2007 原文 NBER 版本）：<a href="https://www.nber.org/papers/w13124" style="color:var(--primary);">https://www.nber.org/papers/w13124</a></li>
+        <li>Hommes learning-to-forecast 实验综述：<a href="https://www.uva.nl/profile/c.h.hommes.html" style="color:var(--primary);">Cars Hommes 学术主页</a></li>
+        <li>Coibion–Gorodnichenko 预测误差回归（AER 2012 原版）：<a href="https://www.aeaweb.org/articles?id=10.1257/aer.102.4.1446" style="color:var(--primary);">https://www.aeaweb.org/articles?id=10.1257/aer.102.4.1446</a></li>
+        <li>中国人民银行城镇储户问卷调查数据说明：<a href="http://www.pbc.gov.cn/diaochatongjisi/116219/116319/index.html" style="color:var(--primary);">http://www.pbc.gov.cn/diaochatongjisi/116219/116319/index.html</a></li>
+        <li>费城联储 Survey of Professional Forecasters：<a href="https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/survey-of-professional-forecasters" style="color:var(--primary);">https://www.philadelphiafed.org/surveys-and-data/real-time-data-research/survey-of-professional-forecasters</a></li>
+      </ul>
+
+      <div class="callout tip">
+        <div class="callout-title">下一步学习路径</div>
+        <p>学完本页后，建议回到 <a href="06-bayesian-estimation.html" style="color:var(--primary);">贝叶斯估计</a> 看如何用粒子滤波把学习状态 $\beta_t$ 作为潜变量估出来；再读 <a href="21-hank.html" style="color:var(--primary);">HANK</a> 与 <a href="14-tank.html" style="color:var(--primary);">TANK</a> 看异质预期与异质性主体（K 为不同家庭有不同 PLM）结合的最新方向。</p>
+      </div>
+    </div>
+
+    <!-- ========== 方程总清单 ========== -->
+    <div class="section" id="eq-summary">
+      <h2><span class="sec-num">EQ</span> 方程总清单 Equation Summary</h2>
+      <p>下表汇总本页全部方程，按结构模型 / 学习机制 / 推导链 / 估计四组排列。</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>编号</th><th>方程</th><th>模块</th></tr>
+          <tr><td>(NK-1)</td><td>$x_t=E_t x_{t+1}-\sigma^{-1}(i_t-E_t\pi_{t+1}-r_t^n)$</td><td>IS 曲线</td></tr>
+          <tr><td>(NK-2)</td><td>$\pi_t=\beta E_t\pi_{t+1}+\kappa x_t+u_t$</td><td>NKPC</td></tr>
+          <tr><td>(NK-3)</td><td>$i_t=\rho_i i_{t-1}+(1-\rho_i)(\phi_\pi\pi_t+\phi_x x_t)+\varepsilon_t^m$</td><td>Taylor 规则</td></tr>
+          <tr><td>(NK-SHOCK)</td><td>$r_t^n=\rho_{rn}r_{t-1}^n+\varepsilon_t^{rn};\;u_t=\rho_u u_{t-1}+\varepsilon_t^u;\;\varepsilon_t^m=\rho_m\varepsilon_{t-1}^m+\varepsilon_t^m$</td><td>外生冲击 AR(1)</td></tr>
+          <tr><td>(NK-RF)</td><td>$x_t=\alpha E_t^*\pi_{t+1}+\delta r_t^n+\zeta u_t$</td><td>reduced form 消元</td></tr>
+          <tr><td>(RF)</td><td>$y_t=\mu+\alpha E_t^*y_{t+1}+\delta w_t+\varepsilon_t$</td><td>教学 reduced form</td></tr>
+          <tr><td>(L-1a)</td><td>$\pi_t=a_t+b_t\pi_{t-1}+c_t x_{t-1}+\eta_t^\pi$</td><td>PLM (通胀)</td></tr>
+          <tr><td>(L-1b)</td><td>$x_t=d_t+e_t\pi_{t-1}+f_t x_{t-1}+\eta_t^x$</td><td>PLM (产出)</td></tr>
+          <tr><td>(L-2a)</td><td>$\mathbb E_t^*\pi_{t+1}=a_t+b_t\pi_t+c_t x_t$</td><td>主观预期 (通胀)</td></tr>
+          <tr><td>(L-2b)</td><td>$\mathbb E_t^*x_{t+1}=d_t+e_t\pi_t+f_t x_t$</td><td>主观预期 (产出)</td></tr>
+          <tr><td>(L-3a)</td><td>$\beta_t=\beta_{t-1}+\gamma_t R_t^{-1}x_{t-1}(y_t-\beta_{t-1}'x_{t-1})$</td><td>RLS 系数更新</td></tr>
+          <tr><td>(L-3b)</td><td>$R_t=R_{t-1}+\gamma_t(x_{t-1}x_{t-1}'-R_{t-1})$</td><td>RLS 协方差更新</td></tr>
+          <tr><td>(L-4)</td><td>$d\theta/d\tau=T(\theta)-\theta$</td><td>E-稳定性 ODE</td></tr>
+          <tr><td>(L-5)</td><td>$\mathbb E_t^{mix}y_{t+1}=\omega\mathbb E_t^{RE}y_{t+1}+(1-\omega)\mathbb E_t^{AL}y_{t+1}$</td><td>混合预期</td></tr>
+          <tr><td>(T-REDUCED)</td><td>$T(a)=\mu+\alpha a;\;T(b)=\delta+\alpha\rho b$</td><td>reduced form T-map</td></tr>
+          <tr><td>(REE-R)</td><td>$a^*=\mu/(1-\alpha);\;b^*=\delta/(1-\alpha\rho)$</td><td>REE 解析解</td></tr>
+          <tr><td>(EIG-R)</td><td>$DT=\text{diag}(\alpha,\alpha\rho)$；E-stable $\iff$ 所有 $|\cdot|&lt;1$</td><td>reduced form 特征值</td></tr>
+          <tr><td>(NK-TMAP)</td><td>$DT(\theta^*)=\partial T/\partial\theta|_{\theta^*}$</td><td>NK T-map 雅可比</td></tr>
+          <tr><td>(NK-REE)</td><td>$\pi_t^{RE}=A_\pi u_t,\;A_\pi=\kappa/(1-\beta\rho_u-\sigma^{-1}(\phi_\pi-1)\kappa)$</td><td>RE 解析 IRF 系数</td></tr>
+          <tr><td>(CG-REG)</td><td>$\pi_{t+h}-F_t\pi_{t+h}=\alpha+\beta_{CG}(\pi_{t+h-1}-F_{t-1}\pi_{t+h-1})+\varepsilon_t$</td><td>Coibion-Gorodnichenko 回归</td></tr>
+          <tr><td>(GAIN-D)</td><td>$\gamma_t=1/(t+1)$ (递减增益)</td><td>递减增益</td></tr>
+          <tr><td>(GAIN-C)</td><td>$\gamma_t=\bar\gamma\in(0,1)$ (恒定增益)</td><td>恒定增益</td></tr>
+          <tr><td>(STEADY)</td><td>$\theta^*=T(\theta^*)$</td><td>REE 不动点</td></tr>
+        </table>
+      </div>
+      <p><strong>合计：</strong>NK 结构 3 + 冲击 1 + reduced form 2 + PLM 2 + 主观预期 2 + RLS 2 + E-稳定 ODE 1 + 混合预期 1 + T-map 2 + REE 解 2 + 特征值 2 + CG 回归 1 + 增益 2 + 稳态 1 + 其余 = <b>28 个方程</b>。</p>
+    </div>
+
+    <!-- 底部翻页 -->
+    <div class="page-nav">
+      <a href="10-nk-three-equation.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">NK 三方程模型（学习的 RE 基准）</div>
+      </a>
+      <a href="06-bayesian-estimation.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">贝叶斯估计（含学习参数的粒子滤波）</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+(function() {
+  const path = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('href') && item.getAttribute('href').endsWith(path)) {
+      item.classList.add('active');
+    }
+  });
+})();
+</script>
+</body>
+</html>

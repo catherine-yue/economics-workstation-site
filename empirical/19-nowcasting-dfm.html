@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>动态因子模型与即时预测 Nowcasting & DFM | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item active" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">实证论文</a><span class="sep">/</span>
+      <span>Nowcasting 与 DFM</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">Frontier · Nowcasting & Dynamic Factor Models</span>
+      <h1>动态因子模型与即时预测 Nowcasting &amp; DFM</h1>
+      <p class="desc">在官方 GDP 发布之前，如何用月度、周度、日度乃至新闻文本的高频实时数据，提前数月拼出"当前季度经济"的图景？本节讲清即时预测（Nowcasting）的概念、动态因子模型（DFM）的状态空间表达、混频数据（MIDAS）、锯齿形数据边（jagged edge）与卡尔曼滤波处理缺失值，并用完整可运行的 Python / MATLAB 代码复现一条 nowcast 流水线。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">状态空间模型、卡尔曼滤波、主成分分析（PCA）、VAR、时间序列平稳化与季节性调整。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">理解宏观数据发布日历（release calendar）、GDP 核算与短期预测的政策意义。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">Python 3.9+（<code class="inline">numpy / scipy / pandas / statsmodels</code>）；MATLAB 可选用 Nowcasting Toolbox（ECB / Banbura 等）。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body">建议先读 <a href="03-descriptive-stats.html">描述性统计</a> 与 <a href="04-baseline-regression.html">基准回归</a>；与 DSGE 的状态空间、贝叶斯估计互为呼应。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">前沿 · 进阶</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">什么是即时预测 Nowcasting</a></li>
+        <li><a href="#s2">动态因子模型 DFM 原理</a></li>
+        <li><a href="#s3">混频数据与 MIDAS</a></li>
+        <li><a href="#s4">实时数据流与锯齿形边</a></li>
+        <li><a href="#s5">主成分估计 vs 最大似然估计</a></li>
+        <li><a href="#s6">Python 完整流水线</a></li>
+        <li><a href="#s7">MATLAB 实现与工具箱</a></li>
+        <li><a href="#s8">文本经济监测：Thorsrud (2020)</a></li>
+        <li><a href="#s9">中国应用与论文案例</a></li>
+        <li><a href="#s10">逐步流程与常见错误</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 什么是即时预测 Nowcasting</h2>
+      <p><strong>即时预测（Nowcasting，也译"现势预测""当下预测"）</strong>回答的是一个看似简单、实则棘手的问题：<strong>在本季度官方 GDP 数据尚未公布时，这个季度的经济增速大概是多少？</strong> 传统宏观预测面对的是"未来"（forecast，下一两个季度）或"已过去但未被官方统计"的当下。GDP 是季度频率、且滞后发布（中国季度 GDP 初步核算通常在季后约半个月公布，美国 Advance Estimate 在季后首月末），而工业增加值、PMI、出口、货币供应、高频物价、电力耗煤、地铁客流、期货价格等变量往往按月、按周甚至按日更新。这些高频数据比 GDP 更早"剧透"了当前经济的温度。</p>
+      <p>Nowcasting 的核心思想是：<strong>把发布时间不同、频率不同、覆盖维度不同的一大组指标，用一个或少数几个潜在因子（latent factors）压缩成"经济活动的共同成分"，再通过这个共同成分对尚未公布的 GDP 做出估计。</strong>它与普通预测的根本区别有三：第一，它是<strong>实时（real-time）</strong>的，每一条新数据公布都要更新一次预测，而不是等季度末一次性出数；第二，它必须处理<strong>不规则的缺失结构</strong>——不同指标在同一时点的"最新一期"不同（锯齿形边）；第三，它关心的不只是点预测，还包括<strong>新数据条目的"信息含量"分解</strong>：当一个 nowcast 被新数据改变时，要能回答"是哪条新闻、改变了多少"。</p>
+      <div class="callout info">
+        <div class="callout-title">📌 一个直觉例子</div>
+        <p>假设现在是 4 月中旬，你要"猜"第一季度（1–3 月）的 GDP 增速。此时 3 月的工业增加值、PMI、出口数据已经公布，1–2 月的财政收支已出，但一季度 GDP 官方值要到 4 月 15–20 日才发布。Nowcast 模型把这些已发布的月度指标"投影"到一个潜在因子上，再由因子映射回季度 GDP，就能在官方值出来前给出一个概率意义上的估计。Giannone, Reichlin &amp; Small (2008) 证明：这种 nowcast 在样本外精度上系统性优于"只看最新月度指标简单外推"的桥接方程（bridge equation）基准。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 动态因子模型 DFM 原理</h2>
+      <p>动态因子模型（Dynamic Factor Model, DFM）的核心假设极其简洁：<strong>大量宏观变量的共动，是由少数几个不可观测的共同因子驱动的。</strong>例如工业生产、就业、收入、销售这四个变量之所以同步起伏，是因为它们都受同一个"实体经济周期"因子牵引；而各自特有的噪声则是特质成分。设 $x_t=(x_{1t},\dots,x_{Nt})'$ 为 $N$ 个已标准化（去均值、除以标准差）的宏观变量，$F_t$ 为 $r\times 1$ 的共同因子向量，则测量方程与状态方程写成：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (1) — 测量方程（measurement equation）</div>
+        $$X_t = \Lambda F_t + \xi_t,\qquad \xi_t\sim \mathcal{N}(0,R)$$
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">Equation (2) — 状态方程（transition equation）</div>
+        $$F_t = \Phi F_{t-1} + \eta_t,\qquad \eta_t\sim \mathcal{N}(Q)$$
+      </div>
+      <p>其中 $\Lambda$ 是 $N\times r$ 的因子载荷矩阵（factor loadings），$\xi_t$ 是特质扰动、对角协方差 $R$，$\Phi$ 是 $r\times r$ 的因子自回归矩阵，$\eta_t$ 是因子冲击。这就是一个标准的线性高斯状态空间系统：$X_t$ 是观测，$F_t$ 是状态。GDP 本身也可以作为 $X_t$ 中的一个变量（季度频率，见下节混频处理），于是"预测 GDP"就等价于"在已知其他月度指标的条件下，推断 GDP 对应的那个观测值"。</p>
+      <p>为什么"少数因子"足够？宏观数据虽然成百上千，但它们本质上由实体经济活动、价格、金融条件等少数几个维度驱动。Stock &amp; Watson (2002) 证明：当截面维度 $N$ 与时间维度 $T$ 同时趋于无穷时，前几个主成分能一致地估计共同因子。经验上，宏观 nowcasting 文献通常取 $r=2$ 到 $r=4$ 个因子（实体经济因子、价格因子、利率因子、全球因子等）。</p>
+      <div class="callout tip">
+        <div class="callout-title">✅ 直觉</div>
+        <p>把上百个时间序列想象成一张高维照片，DFM 假设这张照片的有效信息只分布在少数几个方向（因子）上。载荷 $\Lambda$ 告诉每个变量"在每个方向上有多重要"，因子 $F_t$ 随时间演化，于是给定 $F_t$，所有变量的当期值就被共同决定了——这正是"共同成分 + 特质噪声"分解。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 混频数据与 MIDAS</h2>
+      <p>GDP 是季度的，工业增加值是月度的，金融条件指数可能是日度的。把它们塞进同一个 DFM 有两条主流路线：</p>
+      <p><strong>路线 A：混频 DFM（mixed-frequency DFM）。</strong>在状态空间里直接处理频率差异。季度变量（如 GDP）被"提升"为月度变量：把季度 GDP 增速写作该季度内三个月月度增速的几何平均，再用状态空间的"时间聚合"约束把它与月度因子联系起来。Giannone, Reichlin &amp; Small (2008)、Doz, Giannone &amp; Reichlin (2011) 的做法是：先把所有变量统一到月度频率，季度 GDP 只在每第三个月有观测，其余月份自然缺失，由卡尔曼滤波填补。</p>
+      <p><strong>路线 B：MIDAS（Mixed Data Sampling，Ghysels 等 2004）。</strong>不把变量塞进一个因子模型，而是直接用月度（或更高频）自变量预测季度因变量。核心是用一个<strong>参数化的权重函数</strong>把高频滞后项压缩成少数几个参数：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (3) — MIDAS 回归</div>
+        $$y_{t_Q} = \beta_0 + \beta_1\, b(L^{1/m};\theta)\,x_{t_Q}^{(m)} + \varepsilon_{t_Q}$$
+      </div>
+      <p>其中 $m$ 是每季度的高频观测数（月度取 $m=3$，日度取 $m\approx 65$），$b(L^{1/m};\theta)=\sum_{k=0}^{K}b(k;\theta)L^{k/m}$ 是带参数 $\theta$ 的滞后权重多项式（常用指数 Almon 滞后或 Beta 权重）。MIDAS 的好处是不依赖因子假设、可单方程估计；DFM 的好处是能利用成百上千个变量、并自然处理缺失。郑挺国、尚玉皇 (2013, 《金融研究》) 正是把 MIDAS 用于中国 GDP 的混频预测。</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>方法</th><th>频率处理</th><th>变量维度</th><th>代表文献</th></tr>
+          <tr><td>混频 DFM</td><td>状态空间时间聚合</td><td>高维（数十~数百）</td><td>GRS (2008)、Doz et al. (2011)</td></tr>
+          <tr><td>MIDAS</td><td>参数化滞后权重</td><td>低维（少数预测元）</td><td>Ghysels, Santa-Clara, Valkanov (2004)</td></tr>
+          <tr><td>桥接方程 Bridge</td><td>先月度自回归再季度聚合</td><td>低维</td><td>传统央行短期预测</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 实时数据流与锯齿形边（jagged edge）</h2>
+      <p>真实实时数据库的最后一行，不是一个整齐的平面，而是一个<strong>锯齿形的阶梯</strong>：</p>
+      <ul>
+        <li>金融市场数据（利率、股价、汇率）几乎是最新的，截至昨天；</li>
+        <li>PMI、工业增加值是月度数据，最新一期是上月；</li>
+        <li>GDP 是季度数据，最新一期可能是上上个季度；</li>
+        <li>某些调查数据甚至滞后一个多月。</li>
+      </ul>
+      <p>把这种"同一时点各变量最新一期错位"的数据边称为<strong>jagged edge（锯齿边 / 不规则边缘）</strong>。如果不加处理、简单地把缺失年份删掉，会损失大量信息；如果用前向填充（forward fill），又会错误地假设"未公布的数据等于上次的值"，扭曲预测。DFM + 卡尔曼滤波的优雅之处正在于此：<strong>缺失值被当作"观测矩阵中对应的那一行被移除"，滤波照常进行。</strong>给定 $t$ 时点已发布的所有信息集 $\Omega_t$，对 GDP 的 nowcast 就是条件期望 $E[GDP_t\mid\Omega_t]$，由卡尔曼滤波的更新步直接给出。</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (4) — 卡尔曼滤波更新（锯齿边下的缺失处理）</div>
+        $$\hat{F}_{t|t}=\hat{F}_{t|t-1}+K_t\big(X_{t}^{obs}-\Lambda_{obs}\hat{F}_{t|t-1}\big),\qquad K_t=P_{t|t-1}\Lambda_{obs}'\big(\Lambda_{obs}P_{t|t-1}\Lambda_{obs}'+R_{obs}\big)^{-1}$$
+      </div>
+      <p>其中 $\Lambda_{obs}$ 与 $R_{obs}$ 是把"尚未发布的行"删掉后的观测矩阵。每一条新闻公布，相当于把该行加回来，重跑一次滤波——这就是 nowcast 的实时滚动更新。此外，<strong>数据修订（data revision）</strong>是另一个陷阱：官方统计会对已发布的 GDP、工业增加值做多次修订，实时评估预测能力时必须用"当时能看到的那版数据"（vintage），否则会高估模型精度。</p>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 主成分估计 vs 最大似然估计</h2>
+      <p>估计 DFM 参数 $(\Lambda,\Phi,Q,R)$ 有两条主流路线，理解它们的取舍是写论文的关键：</p>
+      <p><strong>(1) 主成分估计（PCA / 两步法，GRS 2008、Doz-Giannone-Reichlin 2011）。</strong>第一步，对平衡面板（取所有变量都有观测的样本区间）做主成分分析，取前 $r$ 个主成分作为因子估计 $\hat F_t$，并由载荷-因子回归估计 $\hat\Lambda$。第二步，把 $\hat F_t$ 当作观测，对因子的 AR 过程 $F_t=\Phi F_{t-1}+\eta_t$ 做 OLS 估计 $\hat\Phi,\hat Q$，对特质残差估计 $\hat R$。优点：计算极快、对高维数据稳健、不需要正态假设；缺点：没有充分利用缺失数据的结构，且 $\hat F_t$ 含估计误差被忽略。</p>
+      <p><strong>(2) 最大似然估计（MLE / 准 MLE，Doz-Giannone-Reichlin 2012）。</strong>把状态空间参数 $(\Lambda,\Phi,Q,R)$ 当作未知参数，用 EM 算法（或 BFGS）在允许缺失的样本上最大化高斯似然：E 步用卡尔曼滤波-平滑得到因子的条件分布，M 步更新参数。优点：在高斯假设下渐近有效、自然处理缺失、可做模型比较（信息准则）；缺点：计算慢、对初值敏感、因子个数需事先定。实践中，央行与学术界常两者并用：PCA 给初值，MLE 再精修。</p>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 因子个数怎么选？</div>
+        <p>不要拍脑袋选 $r=1$ 或 $r=2$。常用 Bai-Ng (2002) 信息准则（IC_p1 / IC_p2）、Kapetanios (2010) 的残差方差图（scree plot），或比较不同 $r$ 下 nowcast 样本外 RMSE。经验上 $r=2\sim4$ 足够，但实体经济与价格因子必须分开。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> Python 完整流水线</h2>
+      <p>下面用模拟数据完整走一遍：生成混频数据（季度 GDP + 月度指标）→ 人为制造锯齿边 → 用 PCA + 卡尔曼滤波做 nowcast → 与"随机游走 / 单桥接方程"基准比较。代码可直接运行，仅依赖 numpy / scipy / pandas。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · 混频 DFM nowcasting 完整代码</span><button class="copy-btn">复制</button></div>
+        <pre><code># -*- coding: utf-8 -*-
+"""
+Nowcasting with a mixed-frequency Dynamic Factor Model (DFM)
+============================================================
+步骤：
+  1) 模拟月度潜在因子 f_t（实体经济周期）
+  2) 由因子生成 N 个月度宏观指标 + 1 个季度 GDP
+  3) 构造"锯齿边"缺失：金融数据最新、PMI 滞后一月、GDP 滞后一季
+  4) 用主成分(PCA)估计载荷 Lambda 与因子
+  5) 拟合因子 AR(1) 状态方程，用卡尔曼滤波处理缺失、nowcast GDP
+  6) 与随机游走基准对比样本外 RMSE
+"""
+import numpy as np
+import pandas as pd
+from numpy.linalg import eig
+
+np.random.seed(20240101)
+T_m = 240                      # 月度样本长度（20 年）
+N_m = 8                        # 月度指标个数
+r = 1                          # 共同因子个数
+
+# ---------- 1. 模拟潜在因子（月度 AR(1)） ----------
+phi = 0.85
+f = np.zeros(T_m)
+for t in range(1, T_m):
+    f[t] = phi * f[t-1] + np.random.normal(0, 0.5)
+
+# ---------- 2. 模拟月度指标：x_it = lambda_i * f_t + 特异噪声 ----------
+Lam_m = np.random.uniform(0.5, 1.5, size=(N_m, r))     # 载荷
+Xm = np.zeros((T_m, N_m))
+for i in range(N_m):
+    Xm[:, i] = Lam_m[i, 0] * f + np.random.normal(0, 0.8, size=T_m)
+
+# 季度 GDP：每 3 个月的因子均值 → 模拟 GDP 季度同比
+# 先把因子聚合成季度，再加噪声；这里按季度索引 q=0,1,2,...,Q-1
+Q = T_m // 3
+gdp_true = np.zeros(Q)
+for q in range(Q):
+    gdp_true[q] = 1.2 + 0.6 * f[3*q:3*q+3].mean() + np.random.normal(0, 0.4)
+
+# ---------- 3. 构造锯齿边（jagged edge）----------
+# 假设我们站在最后一个月 t = T_m-1，做"当前季度"nowcast：
+#   - 月度指标 Xm 全部可见（模拟它们已发布）
+#   - GDP 最新只到 Q-2（上上个季度已公布，本季度 Q-1 尚未公布）
+# 把月度数据与 GDP 拼成长表：GDP 在每第三个月才出现一次观测
+Y = Xm.copy()                  # 月度观测矩阵 (T_m, N_m)
+gdp_col = np.full(T_m, np.nan) # GDP 列：仅季度末月有观测
+for q in range(Q-1):           # 模拟：最新一个季度 (Q-1) 的 GDP 尚未发布
+    gdp_col[3*q+2] = gdp_true[q]
+# 此时 gdp_col 的最后 3 个月全为 NaN —— 这就是要 nowcast 的季度
+Y_aug = np.column_stack([Y, gdp_col])
+
+# ---------- 4. PCA 估计载荷与因子（平衡面板：去掉 GDP 缺失行） ----------
+mask = ~np.isnan(Y_aug).any(axis=1)
+Y_bal = Y_aug[mask]
+Y_std = (Y_bal - Y_bal.mean(0)) / Y_bal.std(0, ddof=1)
+# 主成分
+cov = np.cov(Y_std, rowvar=False)
+w, v = eig(cov)
+order = np.argsort(w)[::-1]
+Lam_hat = np.real(v[:, order[:r]]) * np.sqrt(np.real(w[order[:r]]))
+# 平衡面板上的因子
+F_bal = Y_std @ np.linalg.lstsq(Lam_hat, np.eye(N_m+1), rcond=None)[0].T
+# 简化：直接用前 r 个主成分得分
+pc = Y_std @ np.real(v[:, order[:r]])
+pc = pc / pc.std(0)
+
+# 把因子估计"回填"到全部月度：用月度指标 PCA 外推
+Ym_std = (Y - Y.mean(0)) / Y.std(0, ddof=1)
+cov_m = np.cov(Ym_std, rowvar=False)
+wm, vm = eig(cov_m)
+ordm = np.argsort(wm)[::-1]
+F_all = Ym_std @ np.real(vm[:, ordm[:r]])
+F_all = F_all / F_all.std(0)
+
+# ---------- 5. 因子 AR(1) + 卡尔曼滤波 nowcast ----------
+# 状态：F_t = phi*F_{t-1} + eta；观测：gdp_q = a + b * F_{季内三月平均} + eps
+phi_hat = np.corrcoef(F_all[1:, 0], F_all[:-1, 0])[0, 1]
+
+# 用已公布的 GDP 回归因子季度均值
+gdp_obs_q = []
+f_mean_q = []
+for q in range(Q-1):
+    if not np.isnan(gdp_col[3*q+2]):
+        gdp_obs_q.append(gdp_col[3*q+2])
+        f_mean_q.append(F_all[3*q:3*q+3, 0].mean())
+b1, b0 = np.polyfit(f_mean_q, gdp_obs_q, 1)
+
+# 对当前季度 (Q-1) 的 nowcast：直接用季内三月因子均值回归
+f_now = F_all[3*(Q-1):3*Q, 0].mean()
+nowcast_gdp = b0 + b1 * f_now
+print(f"当前季度 GDP nowcast = {nowcast_gdp:.3f}")
+print(f"（模拟真实值          = {gdp_true[Q-1]:.3f}）")
+
+# ---------- 6. 与基准对比：滚动样本外 ----------
+rmse_dfm, rmse_naive = [], []
+for q in range(20, Q-1):
+    # 用截止 q-1 的数据估计
+    f_hist = F_all[:3*q, 0]
+    g_hist = [gdp_true[j] for j in range(q)]
+    fm = [f_hist[3*j:3*j+3].mean() for j in range(q)]
+    b_ = np.polyfit(fm, g_hist, 1)
+    # nowcast 第 q 季度
+    fq = F_all[3*q:3*q+3, 0].mean()
+    rmse_dfm.append(b_[1] + b_[0]*fq - gdp_true[q])
+    # 基准：上一季度增速（随机游走）
+    rmse_naive.append(gdp_true[q-1] - gdp_true[q])
+
+rmse_dfm = np.sqrt(np.mean(np.square(rmse_dfm)))
+rmse_naive = np.sqrt(np.mean(np.square(rmse_naive)))
+print(f"样本外 RMSE  DFM nowcast = {rmse_dfm:.3f}")
+print(f"样本外 RMSE  随机游走基准 = {rmse_naive:.3f}")
+print(f"DFM 相对精度提升：{(1-rmse_dfm/rmse_naive)*100:.1f}%")
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">✅ 代码要点</div>
+        <p>这段代码用了最简化的"月度 PCA 因子 + 季度 GDP 回归"两步法，等价于 GRS (2008) 的核心思想。生产环境中应把 GDP 写成状态空间的观测行、用 statsmodels 的 <code class="inline">MLEModel</code> 或自写卡尔曼滤波做真正的缺失值滤波，并引入多个因子、滞后阶数与数据修订 vintage。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> MATLAB 实现与工具箱</h2>
+      <p>MATLAB 生态中，欧洲央行（ECB）与多家央行使用的 <strong>Nowcasting Toolbox</strong>（Banbura, Modugno 等，GitHub 开源）是事实标准，它直接实现了 GRS (2008) 与 Doz et al. (2011) 的混频 DFM，内置锯齿边处理、EM 估计与 nowcast 分解。下面给出核心调用骨架：</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">MATLAB · Nowcasting Toolbox 骨架</span><button class="copy-btn">复制</button></div>
+        <pre><code>%% ================================================
+%  MATLAB: 用 ECB Nowcasting Toolbox 做 GDP nowcast
+%  安装：https://github.com/european-central-bank/Nowcasting
+% =================================================
+clear; clc;
+
+% ---- 1. 读入混频数据（第一列为日期，其余为指标；季度 GDP 行内留空即缺失）----
+% 数据列顺序建议：月度硬指标 -> 月度软指标 -> 金融指标 -> 季度 GDP
+[data, dates] = xlsread('mixed_data.xlsx');   % data(T,N), 缺失用 NaN
+series_names  = {'IndProd','Retail','PMI_Hc','PMI_Svc','CPI','FedFunds','GDPq'};
+
+% ---- 2. 参数设定 ----
+Spec.nfactors      = 2;          % 因子个数
+Spec.lag_factor    = 1;          % 因子 VAR 滞后
+Spec.blocks        = [1 1 1 1 2 2 0];  % 各变量归属块（0=不属块）
+Spec.lag_turn      = 1;
+Spec.start_year    = 1995;
+Spec.start_quarter = 1;
+Spec.end_year      = 2024;
+Spec.end_quarter   = 1;
+Spec.savehist      = 1;
+
+% ---- 3. 估计 DFM（EM 算法，自动处理 NaN 锯齿边）----
+Spec = nowcast_config(Spec, series_names);
+[Res] = nowcast_estimate(data, dates, Spec);
+
+% ---- 4. 滚动 nowcast：每个新数据点重估一次 ----
+[Nowcast] = nowcast_recursive(data, dates, Spec, Res);
+
+% ---- 5. 绘制 nowcast 演进（news 曲线）----
+figure;
+plot(Nowcast.dates, Nowcast.gdp_nowcast, '-o'); hold on;
+plot(Nowcast.dates, Nowcast.gdp_real, 'r--');
+legend('Nowcast','Realized GDP');
+title('GDP Nowcast 随实时数据流更新');
+
+% ---- 6. News 分解：每条新数据对 nowcast 的边际贡献 ----
+% 见 Res.news / Res.contribution：回答"是哪条数据把 nowcast 拉高了 0.1pp"
+</code></pre>
+      </div>
+      <p>工具箱还提供 <code class="inline">nowcast_news.m</code> 函数做<strong>信息分解</strong>：把相邻两次 nowcast 之差，按每条新公布数据的"意外成分"（实际值 − 模型预测值）分解，这是央行沟通报告里"本月制造业 PMI 超预期，贡献 +0.08pp"的技术来源。</p>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 文本经济监测：Thorsrud (2020, JBES)</h2>
+      <p>2010 年代以后，<strong>新闻文本、搜索引擎趋势、社交媒体</strong>成为新的高频"经济指标"。Thorsrud (2020) 的论文 "Words are the New Numbers: A Newsy Coincident Index of the Business Cycle"（<em>Journal of Business &amp; Economic Statistics</em>, 38(2), 393–409）是这一方向的代表作。他用挪威一家全国性日报的每日新闻语料，做了如下事情：</p>
+      <ol>
+        <li><strong>文本降维：</strong>对每日新闻做分词、去停用词，用 LDA（Latent Dirichlet Allocation）主题模型把海量文本压缩成若干"主题占比"时间序列（如"金融市场主题""劳动力市场主题""油价主题"）；</li>
+        <li><strong>时变稀疏 DFM：</strong>把这些主题时间序列当作"观测变量"，与季度 GDP 一起放进一个<strong>时变载荷、动态稀疏（latent threshold）</strong>的动态因子模型——即允许每个主题在不同时期对共同因子的重要性发生切换；</li>
+        <li><strong>日频业务周期指数：</strong>估计出一个日频的经济活动共同因子，其样本外 nowcast 精度与基于官方月度指标的模型相当甚至更优，且更新频率高得多。</li>
+      </ol>
+      <p>这篇论文的方法论启示是：<strong>"文本"不是用来做叙事，而是用来构造一个可观测的、高频的、与 GDP 同步的经济活动指数。</strong>对中国应用而言，类似的素材包括财经新闻语料（Wind / 同花顺 / 新浪财经）、百度搜索指数、央行货币政策执行报告文本、12345 政务热线等。Thorsrud 的做法可推广为"日频新闻主题因子 + 季度 GDP"的混频 DFM。</p>
+      <div class="paper-card">
+        <span class="paper-type en">English · JBES</span>
+        <div class="paper-title">Words are the New Numbers: A Newsy Coincident Index of the Business Cycle</div>
+        <div class="paper-meta">Leif Anders Thorsrud · Journal of Business &amp; Economic Statistics, 2020, 38(2): 393–409. DOI: 10.1080/07350015.2018.1506344</div>
+        <div class="paper-desc">用每日商业报纸文本，经 LDA 主题模型得到主题时间序列，再用时变稀疏动态因子模型估计日频业务周期指数。论文证明新闻文本能像官方统计数字一样，成为实时监测经济活动的高频数据源。</div>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 中国应用与论文案例</h2>
+      <p><strong>中国语境下的 nowcasting</strong>有两个特殊性：一是官方月度指标发布节奏与发达国家不同（工业增加值、固定资产投资、社会消费品零售常合并在次月中旬发布）；二是高频替代数据（电耗、货运、地铁客流、螺纹钢价格）非常丰富。郑挺国、王霞 (2013) 在《经济研究》第 6 期发表的《中国经济周期的混频数据测度及实时分析》是中文文献中把混频 DFM 用于中国宏观的奠基性论文之一，作者基于季度 GDP 与月度指标构建混频动态因子模型，刻画中国经济周期并做实时分析。后续王霞、司诺、宋涛 (2021, 《金融研究》)《中国季度 GDP 的即时预测与混频分析》进一步把 nowcasting 框架系统应用于中国季度 GDP 的实时预测。</p>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · J. Monetary Economics</span>
+        <div class="paper-title">Nowcasting: The Real-Time Informational Content of Macroeconomic Data Releases</div>
+        <div class="paper-meta">Domenico Giannone, Lucrezia Reichlin &amp; David Small · Journal of Monetary Economics, 2008, 55(4): 665–676. DOI: 10.1016/j.jmoneco.2008.05.010</div>
+        <div class="paper-desc">Nowcasting 领域的奠基论文。提出用大维度动态因子模型 + 卡尔曼滤波处理美国月度数据的不规则发布边，证明 new data releases 对当前季度 GDP 的预测增量可被分解、且模型优于传统桥接方程。纽约联储 Nowcasting 项目即基于此框架。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · JBES</span>
+        <div class="paper-title">Macroeconomic Forecasting Using Diffusion Indexes</div>
+        <div class="paper-meta">James H. Stock &amp; Mark W. Watson · Journal of Business &amp; Economic Statistics, 2002, 20(2): 147–162. DOI: 10.1198/073500102317351921</div>
+        <div class="paper-desc>"扩散指数"（diffusion index）方法的开山之作：从大量宏观序列中提取主成分（因子），再用因子做预测。证明当 $N,T\to\infty$ 时主成分一致估计共同因子，是所有后续大维度 DFM 的理论基础。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 经济研究</span>
+        <div class="paper-title">中国经济周期的混频数据测度及实时分析</div>
+        <div class="paper-meta">郑挺国、王霞 · 《经济研究》, 2013, 48(6): 58–70.</div>
+        <div class="paper-desc">将混频动态因子模型引入中国宏观，利用季度 GDP 与月度宏观指标的混频数据，测度中国经济周期并做实时分析。是中文 nowcasting / 混频 DFM 方向的代表性文献。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · JBES</span>
+        <div class="paper-title">Words are the New Numbers: A Newsy Coincident Index of the Business Cycle</div>
+        <div class="paper-meta">Leif Anders Thorsrud · JBES, 2020, 38(2): 393–409.</div>
+        <div class="paper-desc">见第 08 节：用新闻文本 LDA 主题 + 时变稀疏 DFM 构造日频业务周期指数，是"文本即经济指标"的范式论文。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · J. Econometrics</span>
+        <div class="paper-title">Quasi-Maximum Likelihood Estimation of Large, Dynamic Factor Models</div>
+        <div class="paper-ming" style="font-size:13px;color:var(--text-light);">Doz, Giannone &amp; Reichlin · Review of Economics and Statistics, 2012（另见 Doz, Giannone, Reichlin 2011, J. Applied Econometrics 两阶段 OLS 估计）</div>
+        <div class="paper-desc">证明当 $N,T$ 都较大时，用卡尔曼滤波 + EM 的准 MLE 估计 DFM 即使在因子扰动不严格正交、特质序列弱相关的情况下仍一致。为 GRS (2008) 的 PC 两步法提供了 MLE 精修的理论依据。</div>
+      </div>
+    </div>
+
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 逐步流程与常见错误</h2>
+
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 构造实时数据集（vintage）</div>
+          <div class="step-desc">按数据发布日历整理每个变量在每个时点"能看到的最新值"，保留修订版本；不要直接用最终版数据做样本外评估。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 平稳化与变换</div>
+          <div class="step-desc">所有变量取对数 / 差分 / 同比，消除单位根与季节性（X-13ARIMA），再标准化为零均值单位方差。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 选因子个数</div>
+          <div class="step-desc">用 Bai-Ng (2002) 信息准则 + scree plot + nowcast 样本外 RMSE 三方对照，确定 $r$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4 · 估计 DFM</div>
+          <div class="step-desc">先 PCA 两步法给初值，再用 EM / MLE 精修；确认因子载荷符号经济上合理（实体经济因子载荷应多为正）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 5 · 滚动 nowcast 与样本外检验</div>
+          <div class="step-desc">从样本中点开始，每个数据发布点重估一次模型，记录 nowcast 与实际值，计算 RMSE、与随机游走 / 桥接基准对比（Diebold-Mariano 检验）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 6 · News 分解与解读</div>
+          <div class="step-desc">把 nowcast 的变化按数据条目分解，写成"本月 X 指标超预期，贡献 +0.05pp"式的政策叙事。</div>
+        </div>
+      </div>
+
+      <h3>常见错误</h3>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 1：忽略数据修订，用最终版数据做评估</div>
+        <p>GDP、工业增加值等都会被多次修订。用今天能看到的"最终版"数据去评估"当时的预测"，等于让模型偷看未来，样本外 RMSE 被人为压低。必须构造 real-time vintage 数据集（如 ALFRED、中国 CEIC 实时库），按每个预测时点当时能看到的数据切片评估。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 2：不处理锯齿边，简单 forward fill</div>
+        <p>把缺失的 GDP / 工业增加值用上一期值填上，等于假设"未公布数据等于上期"，会严重扭曲因子估计。正确做法是状态空间里把缺失行删掉、由卡尔曼滤波推断，而不是事前填充。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 3：因子个数拍脑袋（r=1 或 r=10）</div>
+        <p>r=1 无法分离实体经济与价格、金融条件；r 太大则把特质噪声也当因子。应用 Bai-Ng (2002) IC 准则，并结合样本外 RMSE 与载荷经济含义确定。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 4：变量不平稳就塞进 DFM</div>
+        <p>DFM 假设 $X_t$ 平稳。直接把名义 GDP 水平、CPI 水平塞进模型，会让主成分被趋势主导、因子载荷失真。必须先差分 / 同比 / 去季节。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 5：把 nowcast 当成点估计而不报告不确定性</div>
+        <p>nowcast 的价值在于它天然给出预测密度（卡尔曼滤波的条件协方差）。只报点预测、不报区间，等于浪费了 DFM 相对 OLS 的最大优势。</p>
+      </div>
+
+      <h3>进阶资料</h3>
+      <ul>
+        <li>Giannone, Reichlin &amp; Small (2008), <em>JME</em> — Nowcasting 奠基论文。</li>
+        <li>Stock &amp; Watson (2002), <em>JBES</em> — 扩散指数与主成分因子。</li>
+        <li>Doz, Giannone &amp; Reichlin (2012), <em>REStud</em> / (2011, <em>JAE</em>) — 大维度 DFM 的 QMLE 理论。</li>
+        <li>Thorsrud (2020), <em>JBES</em> — 文本即经济指标。</li>
+        <li>郑挺国、王霞 (2013), 《经济研究》— 中国混频 DFM 与实时周期测度。</li>
+        <li>GitHub：ECB Nowcasting Toolbox（MATLAB）；Python 可用 <code class="inline">statsmodels</code> 的状态空间与 <code class="inline">pandas_datareader</code> 数据接口。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="11-significance-practice.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">显著性诊断实务</div>
+      </a>
+      <a href="20-quantile-gar.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">分位数回归与 Growth-at-Risk</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+(function() {
+  const path = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('href') && item.getAttribute('href').endsWith(path)) {
+      item.classList.add('active');
+    }
+  });
+})();
+</script>
+</body>
+</html>

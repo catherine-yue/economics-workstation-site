@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Armington 模型 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item active" href="01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">量化空间一般均衡 QSGE</a><span class="sep">/</span>
+      <span>Armington 模型</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">QSGE · 02</span>
+      <h1>Armington 模型：CES 偏好、贸易份额与多国一般均衡</h1>
+      <p class="desc">每个地区专业化生产一种"国产品"，消费者在 CES 聚合下按来源国购买。这是 QSGE 家族里最简单、最易上手的模型——把它吃透，后面 EK、Melitz、帽子代数都会顺理成章。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:14px 22px;border-radius:8px;margin:0 0 28px;font-size:14px;line-height:1.7;">
+      <div style="font-size:11px;letter-spacing:2px;opacity:.75;margin-bottom:4px;">EQUATION AUDIT · 公式审计</div>
+      本模型共 <strong>20</strong> 个方程（含 CES 需求推导、价格指数、贸易份额、贸易平衡、工资出清、帽子代数、ACR 福利公式）。每个方程编号、推导步骤、变量定义、经济直觉已逐项写全；文末「方程总清单」给出索引。
+    </div>
+
+    <!-- 前置条件与学习依赖 -->
+    <div style="background:#eef4f7;border:1px solid #d0e0e8;border-left:4px solid var(--primary);border-radius:var(--radius);padding:18px 24px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;">前置条件与学习依赖 · PREREQUISITES</div>
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:8px 16px;font-size:14px;line-height:1.75;">
+        <div style="font-weight:700;color:var(--text);">数学/统计基础</div>
+        <div>CES 效用函数推导（拉格朗日一阶条件）、支出最小化与 Shephard 对偶、矩阵代数（$N\times N$ 贸易份额矩阵的行归一化）、比较静态分析。不需要概率分布知识。</div>
+        <div style="font-weight:700;color:var(--text);">经济学理论前置</div>
+        <div>国际贸易理论入门：理解 Armington 假设（产品按来源国差异化）、贸易成本/冰山成本、一般均衡（产品市场出清 + 劳动市场出清）。中级微观的需求与效用理论即可。</div>
+        <div style="font-weight:700;color:var(--text);">软件/计算前置</div>
+        <div>Python（<code class="inline">numpy</code> 矩阵迭代）或 MATLAB。本页代码实现<strong>帽子代数风格的工资不动点迭代求解器</strong>：给定 $\tau_{ni}$ 矩阵，迭代更新 $w_i$ 直到贸易平衡——这是后续所有 GE 求解器的母版。</div>
+        <div style="font-weight:700;color:var(--text);">站内前置页面</div>
+        <div><strong>无前置</strong>（QSGE 入门起点）。建议先浏览 <a href="index.html" style="color:var(--primary);">QSGE 总览</a> 了解整体路线，然后直接进入本页。</div>
+        <div style="font-weight:700;color:var(--text);">难度分级</div>
+        <div><span style="display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:10px;background:#e3f0e8;color:var(--success);letter-spacing:.5px;">入门</span> &nbsp; 模型简洁、直觉清晰，1 周可跑通。贸易份额与福利公式都是闭式，代码仅需 numpy。</div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">模型设定与直觉</a></li>
+        <li><a href="#s2">CES 效用与需求函数（含假设解读）</a></li>
+        <li><a href="#s3">贸易份额与价格指数（含假设解读）</a></li>
+        <li><a href="#s4">一般均衡条件</a></li>
+        <li><a href="#s5">福利分解：ACR 充分统计量</a></li>
+        <li><a href="#s6">反事实求解：精确帽子代数</a></li>
+        <li><a href="#s7">完整 Python 求解与反事实代码</a></li>
+        <li><a href="#s8">校准参数与数据来源</a></li>
+        <li><a href="#s9">论文案例</a></li>
+        <li><a href="#s10">常见错误与进阶</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 模型设定与直觉</h2>
+      <p>Armington (1969) 的核心假设极其简单：<strong>产品按来源国差异化</strong>。世界有 $N$ 个地区（国家）$i=1,\dots,N$。每个地区只生产一种"国产品"（Armington good），技术规模报酬不变，唯一生产要素是劳动力 $L_i$。地区 $n$ 的消费者把这 $N$ 种国产品放在一个 CES 篮子里消费。</p>
+      <p>直觉上：法国消费者既要买"法国红酒"，也要买"中国白酒"，这两种东西在他的效用函数里是不完全替代的——哪怕它们在物理上都是酒精饮料。偏好上的"来源国差异"使得每国企业都面临一条向下倾斜的需求曲线，从而即使技术完全相同，贸易也会发生（这是 Armington 模型与 Ricardian 模型最本质的差别：Ricardo 靠技术差异，Armington 靠偏好差异）。</p>
+      <p>贸易成本采用 iceberg 形式：从 $i$ 运到 $n$ 要付出 $d_{ni}\geq 1$ 的"融化"——即 $d_{ni}$ 单位货物从 $i$ 出发，只有 1 单位抵达 $n$。因此 CIF 价格为：</p>
+      <div class="formula-block">
+        <div class="formula-label">CIF 价格</div>
+        $$p_{ni} = \tau_{ni}\, p_i, \qquad \tau_{ni} = d_{ni} \cdot (1+t_{ni})$$
+      </div>
+      <p>其中 $p_i$ 是 $i$ 国国产品在产地 $i$ 的 FOB 价格，$t_{ni}$ 是从价从量关税（若有）。注意 $\tau_{ii}=1$（国内运输无成本，无关税），这是后面构造 $\lambda_{ii}$ 的关键。</p>
+      <div class="callout info">
+        <div class="callout-title">假设与解读 · 冰山贸易成本</div>
+        <p>冰山成本 $\tau_{ni}\geq 1$ 的含义是：从 $i$ 发运 $\tau_{ni}$ 单位货物，在运输途中"融化"掉 $\tau_{ni}-1$ 单位，只有 1 单位抵达 $n$。这一假设把所有贸易摩擦（运费、关税、非关税壁垒、政策距离）压缩进一个标量，使得 CIF 价格与 FOB 价格成比例——这是后面贸易份额能写成闭式的技术前提。$\tau_{nn}=1$ 是规范化假设：国内贸易不穿越国境，没有额外冰山损耗；如果研究国内市场分割，可以把 $\tau_{nn}$ 放松为大于 1 的省际内耗参数。关税项 $t_{ni}$ 在这里是从价税，且税收假设一次性返还给消费者（或被政府按支出比例花掉），否则预算约束不再闭合。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> CES 效用与需求函数</h2>
+      <p>$n$ 国代表性消费者的 CES 效用为：</p>
+      <div class="formula-block">
+        <div class="formula-label">CES 聚合</div>
+        $$U_n = \left[\sum_{i=1}^{N} q_{ni}^{\,\frac{\sigma-1}{\sigma}}\right]^{\frac{\sigma}{\sigma-1}}, \qquad \sigma > 1$$
+      </div>
+      <p>其中 $q_{ni}$ 是 $n$ 国从 $i$ 国购买的数量，$\sigma$ 是替代弹性（elasticity of substitution）。预算约束为 $\sum_i p_{ni} q_{ni} = X_n$，$X_n$ 是 $n$ 国总支出。</p>
+      <div class="callout info">
+        <div class="callout-title">假设与解读 · 为什么用 CES？Armington 假设与 $\sigma&gt;1$</div>
+        <p><strong>Armington 假设</strong>：产品按来源国差异化。"法国红酒"和"中国白酒"在物理上相似，但在偏好上是两种不同的 variety——消费者不是在"买酒精"，而是在"买法国红酒"和"买中国白酒"。这一假设是整个 Armington 模型的灵魂：它让每国企业都面临一条向下倾斜的需求曲线，从而即使各国技术完全相同，贸易也会因偏好差异而发生（对比 Ricardian 模型：贸易来自技术差异）。</p>
+        <p><strong>为什么用 CES 聚合</strong>：CES（常数替代弹性）是唯一同时满足"同质性、对称性、位似"的加总函数。它有三个不可替代的性质：(1) 替代弹性 $\sigma$ 是常数，不随价格变化，便于做比较静态；(2) 需求系统可由对偶价格指数闭式表示；(3) Dixit-Stiglitz 加总下，支出份额恰好等于相对价格的 $1-\sigma$ 次方，这是引力方程的微观基础。</p>
+        <p><strong>$\sigma&gt;1$ 的假设</strong>：$\sigma$ 是任意两国产品之间的替代弹性。$\sigma=1$ 对应 Cobb-Douglas（支出份额固定，不响应价格）；$\sigma\to\infty$ 对应完全替代（一价定律，只有最便宜的品种被购买）。要求 $\sigma&gt;1$ 是为了保证：(a) 需求函数对价格弹性为负且大于 1（奢侈品性质），(b) 价格指数 $P=(\sum p_i^{1-\sigma})^{1/(1-\sigma)}$ 有限且良态。经验上 $\sigma$ 通常取 4–10，下文校准章节会详细讨论。</p>
+      </div>
+      <div class="callout info">
+        <div class="callout-title">假设与解读 · 预算约束</div>
+        <p>预算约束 $\sum_i p_{ni} q_{ni}=X_n$ 背后有三个简化假设：(1) 消费者将全部收入用于当期消费，<strong>无储蓄、无投资、无资产贸易</strong>——这是静态模型，跨期决策被略去；(2) $n$ 国代表性消费者的总支出 $X_n$ 等于其劳动收入 $w_n L_n$（贸易平衡，无贸易顺差/逆差）；(3) 政府若征关税，关税收入一次性总额返还给代表性消费者，所以总支出仍等于劳动收入加关税收入。这些假设一旦放松（例如引入贸易赤字），福利公式就需要额外修正项。</p>
+      </div>
+      <h3>第一步：拉格朗日一阶条件（完整推导）</h3>
+      <p>构造拉格朗日函数：$\mathcal{L}=U_n-\lambda_n\left(\sum_i p_{ni}q_{ni}-X_n\right)$。对 $q_{ni}$ 求偏导并令其为零：</p>
+      <div class="formula-block">
+        <div class="formula-label">(A4) 拉格朗日 FOC</div>
+        $$\frac{\partial U_n}{\partial q_{ni}}=\lambda_n p_{ni},\qquad
+        \frac{\partial U_n}{\partial q_{ni}}=U_n^{\,1/\sigma}\,q_{ni}^{\,-1/\sigma}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>变量/参数</strong>：$U_n$ 效用水平，$q_{ni}$ 购买量，$p_{ni}$ CIF 价格，$\lambda_n$ 拉格朗日乘子（= 收入边际效用），$X_n$ 总支出。</p>
+          <p><strong>设定理由</strong>：CES 聚合函数对 $q_{ni}$ 求导，链式法则给出 $(\sigma/(\sigma-1))U_n^{1/(\sigma-1)}\cdot((\sigma-1)/\sigma)q_{ni}^{-1/\sigma}=U_n^{1/\sigma}q_{ni}^{-1/\sigma}$。</p>
+          <p><strong>经济直觉</strong>：边际效用等于边际支出（$\lambda_n p_{ni}$）。$\lambda_n$ 是"每一元钱的边际效用"，跨品种一致。</p>
+        </div>
+      </div>
+      <p>对两个不同品种 $i,k$ 分别写出 FOC 并相除，消去 $\lambda_n$ 与 $U_n$，得到<strong>边际替代率等于价格比</strong>（这是"替代弹性为 $\sigma$"的定义式）：</p>
+      <div class="formula-block">
+        <div class="formula-label">(A5) MRS = 价格比（替代弹性定义）</div>
+        $$\frac{q_{ni}}{q_{nk}}=\left(\frac{p_{ni}}{p_{nk}}\right)^{-\sigma}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>推导</strong>：由 (A4)，$U_n^{1/\sigma}q_{ni}^{-1/\sigma}=\lambda_n p_{ni}$，故 $q_{ni}=(\lambda_n/U_n^{1/\sigma})^{-\sigma}p_{ni}^{-\sigma}$。两式相除：$q_{ni}/q_{nk}=(p_{ni}/p_{nk})^{-\sigma}$，$\lambda_n$ 与 $U_n$ 全部消掉。</p>
+          <p><strong>经济直觉</strong>：相对价格上升 1%，相对需求下降 $\sigma$%。$\sigma$ 越大替代越充分。</p>
+        </div>
+      </div>
+
+      <h3>第二步：代入预算约束消去 $\lambda_n$，定义价格指数</h3>
+      <p>把 (A5) 变形 $q_{ni}=q_{nk}(p_{ni}/p_{nk})^{-\sigma}$ 代入预算约束 $\sum_i p_{ni}q_{ni}=X_n$。先解出 $q_{nk}$：</p>
+      <div class="formula-block">
+        $$X_n=q_{nk}p_{nk}^{\sigma}\sum_i p_{ni}^{\,1-\sigma}
+        \;\Rightarrow\;
+        q_{nk}=\frac{X_n\,p_{nk}^{-\sigma}}{\sum_i p_{ni}^{\,1-\sigma}}$$
+      </div>
+      <p>这就是需求函数。为了让它写成更紧凑的对偶形式，定义 <strong>Dixit-Stiglitz 价格指数</strong> $P_n$ 为"获得一单位效用所需的最小支出"：</p>
+      <div class="formula-block">
+        <div class="formula-label">(A7) Dixit-Stiglitz 价格指数</div>
+        $$P_n \equiv \left[\sum_{i=1}^{N} p_{ni}^{\,1-\sigma}\right]^{1/(1-\sigma)},\qquad P_n^{1-\sigma}=\sum_i p_{ni}^{1-\sigma}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>Shephard 对偶验证</strong>：在支出最小化问题 $\min_q\sum p_{ni}q_{ni}\;\text{s.t.}\;U_n\ge\bar U$ 下，最小支出函数 $e(P,\bar U)=P_n\bar U$。对 $P_n$ 求 Shephard 引理：$\partial e/\partial p_{ni}=X_n(p_{ni}/P_n)^{-\sigma}/P_n=q_{ni}$，与上面需求函数一致，证明 $P_n$ 是"真实价格水平"。</p>
+          <p><strong>经济直觉</strong>：$P_n$ 不是任一单个价格，而是 $N$ 个 CIF 价格按 $1-\sigma$ 幂次聚合的"最优篮子成本"。品种越多、价格越低，$P_n$ 越低。</p>
+        </div>
+      </div>
+      <p>由 Shephard / 对偶，最小支出下的需求函数为：</p>
+      <div class="formula-block">
+        <div class="formula-label">(A8) Armington 需求函数</div>
+        $$q_{ni} = X_n \cdot \frac{p_{ni}^{-\sigma}}{P_n^{1-\sigma}} = \frac{X_n}{P_n}\left(\frac{p_{ni}}{P_n}\right)^{-\sigma}$$
+      </div>
+      <p>这是 CES 模型里最常被引用的式子：每个 variety 的"支出份额"与其相对价格的 $-\sigma$ 次方成正比。当 $\sigma$ 越大，消费者对价格越敏感，价格下降一点点，需求量爆炸式上升。</p>
+      <div class="callout info">
+        <div class="callout-title">假设与解读 · 需求函数的推导逻辑</div>
+        <p>需求函数 $q_{ni}=X_n p_{ni}^{-\sigma}/P_n^{1-\sigma}$ 是"效用最大化 + 预算约束"的解。推导链条是：(1) 拉格朗日 $L=U_n-\lambda(\sum p_{ni}q_{ni}-X_n)$ 对 $q_{ni}$ 求一阶导；(2) 两个 variety $i$ 和 $k$ 的边际效用比等于价格比，给出 $q_{ni}/q_{nk}=(p_{ni}/p_{nk})^{-\sigma}$（这就是"替代弹性为 $\sigma$"的定义式）；(3) 代入预算约束解出 $\lambda$，再用 Shephard 对偶把 $\lambda$ 解释为支出函数对 $P_n$ 的导数。价格指数 $P_n=(\sum p_{ni}^{1-\sigma})^{1/(1-\sigma)}$ 不是任意假设，而是<strong>使 $X_n=P_n U_n$ 成立的最小支出价格</strong>——即获得一单位效用所需的最少支出。这一构造保证了支出份额 $\lambda_{ni}=p_{ni}q_{ni}/X_n=(p_{ni}/P_n)^{1-\sigma}$ 恰好对 $i$ 加总为 1。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 贸易份额与价格指数</h2>
+      <h3>贸易份额的完整推导</h3>
+      <p>$n$ 国从 $i$ 国的进口额（trade flow）为 $X_{ni} = p_{ni} q_{ni}$。把需求函数 (A8) 代入：</p>
+      <div class="formula-block">
+        <div class="formula-label">(A9) 贸易份额推导</div>
+        $$X_{ni}=p_{ni}\,q_{ni}=p_{ni}\cdot X_n\frac{p_{ni}^{-\sigma}}{P_n^{1-\sigma}}=X_n\frac{p_{ni}^{\,1-\sigma}}{P_n^{1-\sigma}}$$
+        <p style="margin-top:8px;">两边除以总支出 $X_n$：</p>
+        $$\lambda_{ni}\equiv\frac{X_{ni}}{X_n}=\frac{p_{ni}^{\,1-\sigma}}{\sum_{k=1}^{N}p_{nk}^{\,1-\sigma}}$$
+      </div>
+      <p>在完全竞争 + CRS + 归一化生产率 $A_i=1$ 下，产地 FOB 价格 $p_i=w_i$（单位成本），CIF 价格 $p_{ni}=\tau_{ni}w_i$。代入即得：</p>
+      <div class="formula-block">
+        <div class="formula-label">(A10) ★ Armington 贸易份额</div>
+        $$\lambda_{ni} = \frac{(w_i \tau_{ni})^{1-\sigma}}{\sum_k (w_k \tau_{nk})^{1-\sigma}}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>份额加总为 1</strong>：$\sum_i\lambda_{ni}=\sum_i p_{ni}^{1-\sigma}/P_n^{1-\sigma}=P_n^{1-\sigma}/P_n^{1-\sigma}=1$。这是 (A7) 的直接推论。</p>
+          <p><strong>弹性</strong>：$\partial\ln\lambda_{ni}/\partial\ln\tau_{ni}=(1-\sigma)+\partial\ln\sum_k/\partial\ln\tau_{ni}\approx(1-\sigma)$（当 $N$ 大时近似），即贸易成本上升 1%，份额下降约 $\sigma-1$ 个百分点。</p>
+        </div>
+      </div>
+      <p>最后一步我们把产地价格 $p_i$ 写成劳动成本 $w_i$（因为完全竞争 + CRS，$p_i = w_i / A_i$，归一化生产率 $A_i=1$）。这一形式有三个关键性质：</p>
+      <div class="callout info">
+        <div class="callout-title">假设与解读 · 贸易份额公式背后的假设</div>
+        <p>把 $p_i=w_i$ 直接代入，隐含了四个假设：(1) <strong>完全竞争</strong>：价格等于边际成本，没有加成；(2) <strong>规模报酬不变（CRS）</strong>：单位劳动产出 $A_i$ 不随产量变化，归一化为 1；(3) <strong>劳动是唯一生产要素</strong>：没有资本、土地或中间品投入，$w_i L_i$ 就是全部产出价值；(4) <strong>冰山成本已体现在 $\tau_{ni}$ 中</strong>，没有其他分配成本。贸易份额对 $\tau_{ni}$ 的弹性为 $1-\sigma$（因为 $\sigma&gt;1$，所以为负）：贸易成本上升 1%，从 $i$ 国的进口份额下降约 $\sigma-1$ 个百分点。这一弹性就是后面 ACR 福利公式里的"贸易弹性"。</p>
+      </div>
+      <ol>
+        <li>$\sum_i \lambda_{ni} = 1$（对每一行 $n$，份额加总为 1）；</li>
+        <li>当 $\tau_{ni}\uparrow$（贸易成本上升），$\lambda_{ni}\downarrow$，且弹性为 $1-\sigma$（负的，因为 $\sigma>1$）；</li>
+        <li>价格指数也可以用份额表示：$P_n^{1-\sigma} = (w_n \tau_{nn})^{1-\sigma}/\lambda_{nn} = w_n^{1-\sigma}/\lambda_{nn}$，因为 $\tau_{nn}=1$。</li>
+      </ol>
+      <div class="formula-block">
+        <div class="formula-label">用国内份额反推价格指数</div>
+        $$P_n = w_n \cdot \lambda_{nn}^{\,1/(\sigma-1)}$$
+      </div>
+      <p>这个式子极重要：它把"价格水平"这一不可观测对象，转化为"可观测的国内贸易份额 $\lambda_{nn}$"和一个参数 $\sigma$。这正是 ACR 福利公式的雏形。</p>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 一般均衡条件</h2>
+      <p>模型的内生变量是工资向量 $\{w_i\}_{i=1}^N$。给定外生禀赋 $\{L_i\}$ 和贸易成本矩阵 $\{\tau_{ni}\}$，均衡由四个方程（(A11)–(A14)）封闭：</p>
+
+      <h3>条件 0：收入 = 支出（贸易平衡）</h3>
+      <div class="formula-block">
+        <div class="formula-label">(A11) 贸易平衡 / 收入支出恒等</div>
+        $$X_n = w_n L_n$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>含义</strong>：$n$ 国代表性消费者把全部劳动收入用于消费，无储蓄、无贸易赤字、无资本收益。这是"长期封闭经济 + 无资产贸易"假设。</p>
+          <p><strong>放松</strong>：若存在外生贸易赤字 $D_n$，则 $X_n=w_n L_n+D_n$，ACR 福利公式需乘修正因子 $\widehat{X_n/(X_n-D_n)}$。</p>
+        </div>
+      </div>
+
+      <h3>条件 1：产品市场出清（贸易平衡方程）</h3>
+      <p>$i$ 国的工资收入等于其对全世界的销售。$n$ 国花在 $i$ 国产品上的支出为 $\lambda_{ni}X_n$，对所有 $n$ 求和：</p>
+      <div class="formula-block">
+        <div class="formula-label">(A12) 双边贸易平衡</div>
+        $$w_i L_i = \sum_{n=1}^{N} X_{ni} = \sum_{n=1}^{N} \lambda_{ni} X_n = \sum_{n=1}^{N} \lambda_{ni}\,w_n L_n$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>推导</strong>：左边 $w_iL_i$ 是 $i$ 国劳动总收入（= 总产出价值，CRS 下全部支付给劳动）；右边是全世界 $n=1,\dots,N$ 对 $i$ 国产品的购买额之和。两者相等即"产品市场出清"。</p>
+          <p><strong>世界加总恒等式</strong>：把 (A12) 对 $i$ 求和，$\sum_i w_iL_i=\sum_i\sum_n\lambda_{ni}w_nL_n=\sum_n w_nL_n\sum_i\lambda_{ni}=\sum_n w_nL_n$，恒等成立——这就是 Walras 定律：$N$ 个市场出清方程中只有 $N-1$ 个独立。</p>
+        </div>
+      </div>
+
+      <h3>条件 2：劳动市场出清</h3>
+      <p>由于 CRS 与完全竞争，$i$ 国对劳动的需求恰好吸纳 $L_i$：$w_i L_i$ 已经是劳动报酬。这一条件与条件 1 重合（Walras's law），所以我们只需要 $N-1$ 个独立的市场出清方程。</p>
+
+      <h3>条件 3：工资标准化（价格归一）</h3>
+      <div class="formula-block">
+        <div class="formula-label">(A13) 工资归一化</div>
+        $$\sum_{i=1}^{N} w_i L_i = 1 \quad\text{或}\quad w_{\text{numeraire}}=1$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>为什么必须有</strong>：模型关于工资齐次（所有 $w_i$ 同乘 $\alpha$，份额 $\lambda_{ni}$ 不变，均衡不变），所以只能识别相对工资。必须选一个 numeraire 才能数值求解。</p>
+        </div>
+      </div>
+
+      <h3>条件 4：份额加总恒等式（每行归一）</h3>
+      <div class="formula-block">
+        <div class="formula-label">(A14) 行归一</div>
+        $$\sum_{i=1}^{N}\lambda_{ni}=1,\qquad\forall n$$
+      </div>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">Step 1：猜工资 $\{w_i^{(0)}\}$</div><div class="step-desc">初始猜测通常用 1 向量或观测到的 GDP 比例。</div></div>
+        <div class="step-item"><div class="step-title">Step 2：计算份额矩阵 $\Lambda$</div><div class="step-desc">对每对 $(n,i)$，用 $\lambda_{ni} = (w_i \tau_{ni})^{1-\sigma}/\sum_k(w_k\tau_{nk})^{1-\sigma}$。</div></div>
+        <div class="step-item"><div class="step-title">Step 3：检查贸易平衡</div><div class="step-desc">计算"隐含支出" $X_i^{impl} = \sum_n \lambda_{ni} X_n$，与 $X_i = w_i L_i$ 比较。</div></div>
+        <div class="step-item"><div class="step-title">Step 4：更新工资</div><div class="step-desc">若 $X_i^{impl} > X_i$，说明 $i$ 国世界需求 > 本国供给，应提高 $w_i$；反之降。标准更新：$w_i^{new} = w_i \cdot (X_i^{impl}/X_i)^{\omega}$，$\omega \in (0,1]$ 为阻尼因子。</div></div>
+        <div class="step-item"><div class="step-title">Step 5：标准化并迭代</div><div class="step-desc">每轮后归一化 $\sum_i w_i L_i = 1$，直到 $\max_i |X_i^{impl}/X_i - 1| < 10^{-8}$。</div></div>
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 福利分解：ACR 充分统计量公式</h2>
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库：本节使用 ACR 福利分解</div>
+        <p>Armington 的福利公式 $\hat W = \hat\lambda_{nn}^{-1/(\sigma-1)}$ 是 ACR 充分统计量在 $\varepsilon=\sigma-1$ 下的特例。不熟悉 ACR 的推导、成立条件与多部门扩展？先学 → <a href="04-welfare-decomposition.html" style="color:var(--primary);font-weight:600;">基础知识库 · 福利分解 (ACR)</a></p>
+      </div>
+      <p>实际工资（real wage）是衡量福利的标准统计量。在贸易平衡下，$n$ 国代表性工人的实际收入为：</p>
+      <div class="formula-block">
+        <div class="formula-label">实际工资</div>
+        $$\frac{w_n}{P_n} = \frac{w_n}{w_n \lambda_{nn}^{\,1/(\sigma-1)}} = \lambda_{nn}^{\,-1/(\sigma-1)}$$
+      </div>
+      <p>这个结果极其优美：实际工资只取决于<strong>国内贸易份额</strong> $\lambda_{nn}$，且与 $\sigma-1$ 互为倒数。直觉：$\lambda_{nn}$ 越低，说明本国消费越依赖外国产品，外国竞争压低了价格指数，工人实际购买力越高。</p>
+      <h3>Autarky（自给自足）对比</h3>
+      <p>在 autarky 下，$\tau_{ni}=\infty$ 对 $n\neq i$，于是 $\lambda_{nn}^{aut}=1$，实际工资 $=1$。在自由贸易（贸易成本有限）下，$\lambda_{nn}&lt;1$，实际工资 $=\lambda_{nn}^{-1/(\sigma-1)}&gt;1$。<strong>贸易利得</strong>（gains from trade）为：</p>
+      <div class="formula-block">
+        <div class="formula-label">Armington 贸易利得</div>
+        $$G_n^{Armington} = \left(\frac{1}{\lambda_{nn}}\right)^{1/(\sigma-1)} - 1$$
+      </div>
+      <p>例如若 $\lambda_{nn}=0.8$（即 80% 消费自本国），$\sigma=5$，则 $G_n = (1/0.8)^{1/4}-1 \approx 5.7\%$。这就是说：开放贸易让该国实际工资比 autarky 高约 5.7%。</p>
+
+      <h3>从贸易利得到 ACR 公式：反事实福利变化</h3>
+      <p>上面的公式回答了"从 autarky 到开放"的福利差。但量化贸易经济学家真正关心的问题是：<strong>当贸易成本从 $\tau$ 变到 $\tau'$（例如关税调整），福利变化多少？</strong>定义帽子（hat）记号 $\hat{x}\equiv x'/x$ 表示反事实相对基准的比率。由 $P_n = w_n \lambda_{nn}^{1/(\sigma-1)}$，两边取帽子：</p>
+      <div class="formula-block">
+        <div class="formula-label">价格指数的帽子形式</div>
+        $$\hat{P}_n = \hat{w}_n \cdot \hat{\lambda}_{nn}^{\,1/(\sigma-1)}$$
+      </div>
+      <p>福利（实际工资）的变化为：</p>
+      <div class="formula-block">
+        <div class="formula-label">★ ACR 福利公式（Armington 版本）</div>
+        $$\hat{W}_n \equiv \frac{\hat{w}_n}{\hat{P}_n} = \hat{\lambda}_{nn}^{\,-1/(\sigma-1)}$$
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">ACR 公式的惊人之处</div>
+        <p>福利变化 $\hat{W}_n$ 只依赖两个对象：(1) 国内支出份额的变化 $\hat{\lambda}_{nn}=\lambda_{nn}'/\lambda_{nn}$；(2) 贸易弹性 $\sigma-1$。<strong>你不需要知道</strong> $\tau_{ni}$ 的具体变化路径、不需要知道其他国家工资怎么调、甚至不需要重新解一般均衡——只要观测到（或用帽子代数算出）$\lambda_{nn}'$，福利变化就唯一确定了。这就是 Arkolakis-Costinot-Rodriguez-Clare (2012) 著名的"<strong>充分统计量</strong>"（sufficient statistic）思想：在一类广泛的量化贸易模型里，福利变化都可以被 $\lambda_{nn}$ 和贸易弹性两个统计量充分概括。</p>
+      </div>
+      <h3>ACR 公式成立的三个假设</h3>
+      <ol>
+        <li><strong>CES 偏好</strong>（或等价的 Dixit-Stiglitz 聚合）：保证价格指数能写成 $\lambda_{nn}$ 的闭式函数；</li>
+        <li><strong>贸易平衡</strong>：$X_n=w_n L_n$，没有外生贸易顺差/逆差。若存在贸易赤字 $D_n$，则福利公式要修正为 $\hat{W}_n=\hat{\lambda}_{nn}^{-1/(\sigma-1)}\cdot \widehat{(X_n/(X_n-D_n))}$；</li>
+        <li><strong>单一生产要素（劳动）</strong>：没有其他要素市场的一般均衡反馈。若引入资本或中间品，公式需扩展（Caliendo-Parro 多部门版本）。</li>
+      </ol>
+      <p>这三条假设恰恰是本模型一直在做的。所以 Armington 模型本身就是 ACR 公式的最简载体——理解了它，就理解了 ACR 的全部直觉。</p>
+      <div class="callout info">
+        <div class="callout-title">直觉</div>
+        <p>$\sigma$ 越大，国产品之间越容易替代，开放的"价格下降"效应越弱，贸易利得越小；$\sigma$ 越接近 1，"多样性"价值越大，贸易利得越大。这与 Dixit-Stiglitz 内生 variety 模型的结论同构。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 反事实求解：精确帽子代数（Exact Hat Algebra）</h2>
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库：本节使用精确帽代数</div>
+        <p>本节用的是 EK 帽子代数的 Armington 版本（把 $-\theta$ 换成 $1-\sigma$）。完整的通用求解器代码、阻尼 / Anderson 加速、在各分支间的迁移差异 → 先学 <a href="05-counterfactual-solving.html" style="color:var(--primary);font-weight:600;">基础知识库 · 帽代数反事实求解</a></p>
+      </div>
+      <p>ACR 公式告诉我们：一旦知道反事实的国内份额 $\lambda_{nn}'$，福利就确定了。但 $\lambda_{nn}'$ 本身需要解一个新的一般均衡。<strong>精确帽子代数</strong>（Dekle-Eaton-Kortum 2007, 2008）的核心洞见是：我们不需要知道 $\tau_{ni}$、$w_i$ 的<strong>绝对水平</strong>，只需要知道基准的份额矩阵 $\lambda_{ni}$ 和外生冲击 $\hat{\tau}_{ni}$，就能直接解出帽子 $\hat{w}_i$，进而解出 $\hat{\lambda}_{ni}$。</p>
+      <h3>第一步：份额的帽子方程（逐步推导）</h3>
+      <p>基准份额：$\lambda_{ni}=(w_i\tau_{ni})^{1-\sigma}/\sum_k(w_k\tau_{nk})^{1-\sigma}$。反事实份额：$\lambda'_{ni}=(w'_i\tau'_{ni})^{1-\sigma}/\sum_k(w'_k\tau'_{nk})^{1-\sigma}$。两式相除定义 $\hat x\equiv x'/x$：</p>
+      <div class="formula-block">
+        <div class="formula-label">(A18) 份额帽子方程 · 推导</div>
+        <p><strong>分子</strong>：$\dfrac{(w'_i\tau'_{ni})^{1-\sigma}}{(w_i\tau_{ni})^{1-\sigma}}=(\hat w_i\hat\tau_{ni})^{1-\sigma}$。</p>
+        <p><strong>分母</strong>：$\displaystyle\frac{\sum_k(w'_k\tau'_{nk})^{1-\sigma}}{\sum_k(w_k\tau_{nk})^{1-\sigma}}
+        =\sum_k\frac{(w_k\tau_{nk})^{1-\sigma}}{\sum_j(w_j\tau_{nj})^{1-\sigma}}(\hat w_k\hat\tau_{nk})^{1-\sigma}
+        =\sum_k\lambda_{nk}(\hat w_k\hat\tau_{nk})^{1-\sigma}$。</p>
+        <p><strong>相除</strong>：</p>
+        $$\hat\lambda_{ni}\equiv\frac{\lambda'_{ni}}{\lambda_{ni}}=\frac{(\hat w_i\hat\tau_{ni})^{1-\sigma}}{\sum_k\lambda_{nk}(\hat w_k\hat\tau_{nk})^{1-\sigma}}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>关键观察</strong>：分母里的权重是基准份额 $\lambda_{nk}$，不是 1。这是帽子代数能"忘掉绝对量"的关键——基准均衡的全部信息都压缩进 $\lambda_{nk}$。</p>
+        </div>
+      </div>
+
+      <h3>第二步：贸易平衡的帽子方程（逐步推导）</h3>
+      <p>基准贸易平衡：$w_iL_i=\sum_n\lambda_{ni}w_nL_n$。反事实：$w'_iL_i=\sum_n\lambda'_{ni}w'_nL_n$（$L_i$ 不变，故 $\hat L_i=1$）。把 $\lambda'_{ni}=\lambda_{ni}\hat\lambda_{ni}$、$w'_n=\hat w_n w_n$ 代入：</p>
+      <div class="formula-block">
+        <div class="formula-label">(A19) 贸易平衡帽子方程 · 推导</div>
+        $$\hat w_i\,w_iL_i=\sum_n\lambda_{ni}\hat\lambda_{ni}\,\hat w_n\,w_nL_n$$
+        <p>两边除以基准 $w_iL_i$：</p>
+        $$\hat w_i=\sum_n\frac{\lambda_{ni}\hat\lambda_{ni}\hat w_n(w_nL_n)}{w_iL_i}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>未知量</strong>：$\hat w_i$（工资帽子）与 $\hat\lambda_{ni}$（份额帽子）。$\lambda_{ni}$、$w_nL_n$ 都是基准数据，已知。这是一个关于 $\hat w$ 的非线性不动点。</p>
+        </div>
+      </div>
+      <p>这里 $w_n L_n$ 是基准支出（已知数据），$\lambda_{ni}$ 是基准份额（已知数据），未知的只有 $\hat{w}_i$ 和 $\hat{\lambda}_{ni}$。这是一个关于 $\hat{w}$ 的非线性不动点。</p>
+      <h3>第三步：迭代算法（Jacobi 阻尼）</h3>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">Step 1：初始化 $\hat{w}_i^{(0)}=1$（假设冲击下工资不变）</div><div class="step-desc">外生输入：基准 $\lambda_{ni}$、$w_i L_i$、外生冲击 $\hat{\tau}_{ni}$。</div></div>
+        <div class="step-item"><div class="step-title">Step 2：用帽子份额方程算 $\hat{\lambda}_{ni}^{(k)}$</div><div class="step-desc">代入当前 $\hat{w}^{(k)}$。</div></div>
+        <div class="step-item"><div class="step-title">Step 3：用贸易平衡方程算"隐含帽子工资" $\tilde{w}_i^{(k)}$</div><div class="step-desc">即右边求和。</div></div>
+        <div class="step-item"><div class="step-title">Step 4：算术阻尼更新 $\hat{w}_i^{(k+1)}=(1-\omega)\hat{w}_i^{(k)}+\omega\tilde{w}_i^{(k)}$</div><div class="step-desc">$\omega\in(0,1]$ 为阻尼因子，建议 0.2。<strong>不要</strong>用几何更新 $\hat w_i(\tilde w_i/\hat w_i)^\omega$——它会收敛到伪不动点（见常见错误 7）。</div></div>
+        <div class="step-item"><div class="step-title">Step 5：归一化并迭代到收敛</div><div class="step-desc">$\max_i|\tilde{w}_i/\hat{w}_i-1|&lt;10^{-8}$。</div></div>
+      </div>
+      <h3>第四步：福利与反事实份额</h3>
+      <p>收敛后，反事实份额 $\lambda_{ni}'=\lambda_{ni}\hat{\lambda}_{ni}$，福利变化直接由 ACR 公式：</p>
+      <div class="formula-block">
+        $$\hat{W}_n = \hat{\lambda}_{nn}^{\,-1/(\sigma-1)} = \left(\frac{\lambda_{nn}'}{\lambda_{nn}}\right)^{-1/(\sigma-1)}$$
+      </div>
+      <div class="callout info">
+        <div class="callout-title">为什么帽子代数比"重解全模型"好用？</div>
+        <p>(1) <strong>不需要估 $\tau_{ni}$ 的绝对水平</strong>：只要观测到基准贸易份额矩阵（数据里直接有），就能做反事实；(2) <strong>数值稳定</strong>：迭代在帽子空间进行，量级在 1 附近，不会出现绝对工资的量级漂移；(3) <strong>可解释</strong>：每一步 $\hat{\lambda}_{ni}$ 和 $\hat{w}_i$ 都有直接经济学含义。这是 Dekle-Eaton-Kortum (2007) 以来所有量化贸易/空间模型的标准求解范式。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 完整 Python 求解与反事实代码</h2>
+      <p>下面代码实现两层求解：(1) 给定绝对 $\tau$ 矩阵求解基准均衡工资 $w$、份额 $\Lambda$；(2) 用<strong>精确帽子代数</strong>直接在份额空间做反事实（只需基准份额 + 外生 $\hat{\tau}$ 冲击），并验证 ACR 福利公式。直接复制到 .py 文件即可运行（只需 numpy）。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div>
+        <pre><code>"""
+Armington 多国一般均衡求解器 + 精确帽子代数反事实
+- 3 国例子：Home, Foreign1, Foreign2
+- Part A: 给定 tau 矩阵求解基准均衡 w, P, Lambda
+- Part B: 精确帽子代数反事实（只需基准 Lambda + 外生 tau_hat）
+- Part C: 验证 ACR 福利公式 W_hat = lambda_nn_hat^(-1/(sigma-1))
+"""
+import numpy as np
+
+# ---------- 1. 参数 ----------
+N = 3                       # 国家数
+sigma = 5.0                 # 替代弹性（常见校准值 4~8）
+L = np.array([1.0, 1.0, 1.0])   # 各国劳动力禀赋
+tau = np.array([
+    [1.0, 1.5, 2.0],
+    [1.5, 1.0, 1.8],
+    [2.0, 1.8, 1.0],
+])
+
+# ---------- 2. 基准均衡求解（绝对空间） ----------
+def solve_armington_abs(tau, L, sigma, tol=1e-10, max_iter=20000, damp=0.5):
+    N = len(L)
+    w = np.ones(N)
+    for it in range(max_iter):
+        p = w[None, :] * tau
+        a = p ** (1.0 - sigma)
+        P_row = a.sum(axis=1, keepdims=True)
+        Lam = a / P_row
+        sales = Lam.T @ (w * L)
+        excess = sales / (w * L)
+        w_new = w * excess ** damp
+        w_new = w_new / np.sum(w_new * L)
+        if np.max(np.abs(excess - 1.0)) &lt; tol:
+            w = w_new; break
+        w = w_new
+    p = w[None, :] * tau
+    a = p ** (1.0 - sigma)
+    P_row = a.sum(axis=1, keepdims=True)
+    Lam = a / P_row
+    P = P_row.flatten() ** (1.0 / (1.0 - sigma))
+    return w, P, Lam
+
+# ---------- 3. 精确帽子代数反事实 ----------
+def solve_armington_hat(Lam0, X0, tau_hat, sigma, tol=1e-10,
+                        max_iter=100000, damp=0.2):
+    """
+    输入:
+      Lam0   (N,N) 基准贸易份额 (行 n = 进口国)
+      X0     (N,)  基准总支出 w_n L_n
+      tau_hat(N,N) 外生冲击的帽子 tau'/tau
+    输出:
+      w_hat, lam_hat, Lam1 (反事实份额)
+    注意: 更新规则用算术阻尼 w_new=(1-damp)*w+damp*impl，
+          不要用几何阻尼 w*(impl/w)^damp —— 后者在本模型下会
+          收敛到一个违反 Walras 定律的伪不动点（见"常见错误"节）。
+    """
+    N = len(X0)
+    w_hat = np.ones(N)
+    for it in range(max_iter):
+        # 3.1 份额帽子方程: lam_hat[n,i] = (w_hat[i]*tau_hat[n,i])^(1-sigma)
+        #                                / sum_k Lam0[n,k]*(w_hat[k]*tau_hat[n,k])^(1-sigma)
+        num = (w_hat[None, :] * tau_hat) ** (1.0 - sigma)          # (N,N)
+        den = (Lam0 * num).sum(axis=1, keepdims=True)              # (N,1)
+        lam_hat = num / den
+        # 3.2 贸易平衡帽子方程: w_hat[i] = sum_n Lam0[n,i]*lam_hat[n,i]*w_hat[n]*X0[n] / X0[i]
+        sales1 = (Lam0 * lam_hat).T @ (w_hat * X0)
+        w_hat_implied = sales1 / X0
+        # 3.3 算术阻尼更新（关键：不要用几何阻尼）
+        w_hat_new = (1.0 - damp) * w_hat + damp * w_hat_implied
+        w_hat_new = w_hat_new / np.sum(w_hat_new * X0)
+        if np.max(np.abs(w_hat_implied / w_hat - 1.0)) &lt; tol:
+            w_hat = w_hat_new; break
+        w_hat = w_hat_new
+    # 反事实份额
+    Lam1 = Lam0 * lam_hat
+    return w_hat, lam_hat, Lam1
+
+# ---------- 4. 基准均衡 ----------
+w, P, Lam = solve_armington_abs(tau, L, sigma)
+X = w * L
+print("=" * 55)
+print("基准均衡")
+print(f"  工资 w          = {np.round(w, 4)}")
+print(f"  实际工资 w/P     = {np.round(w/P, 4)}")
+print(f"  国内份额 lambda_nn = {np.round(np.diag(Lam), 3)}")
+gains = (1.0 / np.diag(Lam)) ** (1.0 / (sigma - 1.0)) - 1.0
+print(f"  贸易利得 vs Autarky = {np.round(gains*100, 2)} %")
+
+# ---------- 5. 反事实：Home 对 Foreign1 加 25% 关税 ----------
+tau_hat = np.ones((N, N))
+tau_hat[0, 1] = 1.25   # 仅 Home 对 F1 的贸易成本上升 25%
+w_hat, lam_hat, Lam1 = solve_armington_hat(Lam, X, tau_hat, sigma)
+
+# ACR 福利公式
+W_hat_ACR = np.diag(Lam1) / np.diag(Lam)
+W_hat_ACR = W_hat_ACR ** (-1.0 / (sigma - 1.0))
+
+print("\n" + "=" * 55)
+print("反事实：Home 对 F1 加 25% 关税（帽子代数）")
+print(f"  工资帽子 w_hat           = {np.round(w_hat, 4)}")
+print(f"  国内份额 lambda_nn: {np.round(np.diag(Lam),3)} -> {np.round(np.diag(Lam1),3)}")
+print(f"  ACR 福利变化 W_hat       = {np.round(W_hat_ACR, 4)}")
+print(f"  对应福利变化率           = {np.round((W_hat_ACR-1)*100, 3)} %")
+
+# 对照：用绝对空间重解
+tau_cf = tau.copy(); tau_cf[0, 1] *= 1.25
+w2, P2, Lam2 = solve_armington_abs(tau_cf, L, sigma)
+W_check = (w2/P2) / (w/P)
+print(f"  绝对空间重解 W 变化率     = {np.round((W_check-1)*100, 3)} %  (应与 ACR 一致)")
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">运行结果提示</div>
+        <p>你应该会看到：(1) 帽子代数算出的 $\hat{W}_n$ 与绝对空间重解的 $(w'/P')/(w/P)$ 几乎完全一致——这验证了帽子代数的正确性；(2) 对 F1 加关税后，Home 的 $\lambda_{00}$ 上升，$\hat{W}_0&lt;1$（福利下降），而 F1 的实际工资也下降（贸易战损人不利己）；(3) ACR 公式只用 $\lambda_{nn}$ 的变化就复现了完整 GE 的福利结果，充分统计量思想得到验证。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 校准参数与数据来源</h2>
+      <h3>$\sigma$（替代弹性 = 贸易弹性 + 1）</h3>
+      <p>Armington 模型里唯一需要外部校准的结构参数就是 $\sigma$。它同时承担两个角色：(1) 需求侧任意两国产品之间的替代弹性；(2) 贸易份额对贸易成本的弹性为 $1-\sigma$，因此"<strong>贸易弹性</strong>"（trade elasticity，即贸易流对冰山成本变化的弹性）为 $\sigma-1$。经验文献对 $\sigma-1$ 的估计值集中在 4–10 区间：</p>
+      <ul>
+        <li><strong>Eaton &amp; Kortum (2002)</strong>：用 OECD 国家引力回归估计 $\theta\approx 8.28$，在 Armington 对应物下即 $\sigma-1\approx 8.28$，$\sigma\approx 9.28$。这是 QSGE 文献最常引用的"基准贸易弹性"。</li>
+        <li><strong>Simonovska &amp; Waugh (2014)</strong>：用结构引力 + 价格数据重新估计，得到 $\theta\approx 4$ 左右，对应 $\sigma\approx 5$。这是更保守、更现代的估计值。</li>
+        <li><strong>Feenstra et al. (2014)</strong>：区分"母国-外国"Armington 弹性与"外国-外国"弹性，发现前者偏小、后者偏大，建议在 4–8 之间做敏感性分析。</li>
+        <li><strong>行业差异</strong>：农产品/原材料替代弹性高（$\sigma$ 大），差异化制成品 $\sigma$ 小。多部门模型应分行业校准。</li>
+      </ul>
+      <div class="callout warning">
+        <div class="callout-title">敏感性提示</div>
+        <p>福利公式 $\hat{W}_n=\hat{\lambda}_{nn}^{-1/(\sigma-1)}$ 对 $\sigma$ 高度敏感：$\sigma-1$ 从 4 变到 8，同样的 $\hat{\lambda}_{nn}=0.95$，福利变化从 $0.95^{-1/4}-1\approx 1.3\%$ 降到 $0.95^{-1/8}-1\approx 0.6\%$。所以论文里必须做 $\sigma\in\{4,5,8,10\}$ 的敏感性表。</p>
+      </div>
+      <h3>数据来源（具体变量与口径）</h3>
+      <p>下表给出构造基准份额矩阵 $\lambda_{ni}$ 与做反事实时每一步用到的具体数据库与变量名。论文里必须逐一交代，不能只写"来自公开数据库"。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>用途</th><th>数据库</th><th>具体变量 / 口径</th></tr></thead>
+          <tbody>
+            <tr><td>双边采购矩阵 $X_{ni}$</td><td><strong>WIOD</strong>（World Input-Output, 2016 release）或 <strong>OECD ICIO</strong></td><td>国家×国家中间投入 + 最终使用矩阵；行 i 列 n 即 n 国从 i 国采购额。WIOD 覆盖 43 国 56 部门，ICIO 覆盖 60+ 国。</td></tr>
+            <tr><td>双边贸易流 $X_{ni}$（行业级）</td><td><strong>UN Comtrade / WITS</strong></td><td>HS 6 位码双边进出口额（CIF 进口、FOB 出口）。WITS（World Integrated Trade Solution）是 World Bank + UNCTAD 的查询前端，可一次性拉 1988–至今的面板。注意 CIF/FOB 差额本身就是隐含贸易成本的直接度量。</td></tr>
+            <tr><td>地理与制度贸易成本变量</td><td><strong>CEPII GeoDist / Gravity</strong></td><td><code>dist</code>（首都/最大城市间大圆距离 km）、<code>distw</code>（人口加权距离）、<code>contig</code>（接壤虚拟变量）、<code>comlang_off</code>（共同官方语言）、<code>comlang_ethno</code>（9% 以上人口说同一语言）、<code>colony</code>（殖民联系）、<code>comcol</code>（1945 后共同殖民者）、<code>legal_orig</code>（法系起源）。Mayer &amp; Zignago (2011) 是官方说明文档。</td></tr>
+            <tr><td>关税 / 非关税</td><td><strong>WITS / UNCTAD TRAINS / WTO TAO</strong></td><td>MFN 从价关税、有效适用关税（applied rate）、HS 6 位码。反事实 $\hat\tau_{ni}$ 里的关税分量 $1+\hat t_{ni}$ 从这里取。</td></tr>
+            <tr><td>GDP / 总支出 $X_n$</td><td><strong>Penn World Table (PWT 10.0)</strong> 或 World Bank WDI</td><td>PWT 变量 <code>cgdpe</code>（支出法 GDP，现价美元）、<code>cgdpo</code>（产出法 GDP）。WDI 对应"GDP (current US$)"。用于归一化与帽子代数权重。</td></tr>
+            <tr><td>劳动力 $L_i$</td><td>PWT 10.0 / WDI</td><td>PWT 变量 <code>emp</code>（就业人数，百万）；WDI"劳动力总数"。注意 PWT 的 <code>emp</code> 自 9.1 起才一致可比。</td></tr>
+            <tr><td>工资率 $w_i$（若需）</td><td>PWT / ILO STAT</td><td>PWT <code>labsh</code>（劳动收入份额）× GDP / <code>emp</code> 近似；ILO 平均实际工资。Armington 帽子代数不需要绝对 $w_i$，只有做技术/生产率反事实时才需要。</td></tr>
+            <tr><td>汇率（本币→美元）</td><td><strong>IMF IFS</strong>（International Financial Statistics）</td><td>年平均官方汇率 <code>rf</code>。把各国本币计价的贸易流、GDP 统一折成美元；反事实若含名义汇率假设需单独声明。</td></tr>
+            <tr><td>中国专用：企业/海关微观</td><td><strong>中国海关数据库</strong>（China Customs Import/Export Database）、<strong>中国工业企业数据库</strong>（ASIF）</td><td>HS 8/10 位、企业-月度进出口额与价格；用于分行业 $\sigma_s$ 估计或多部门扩展。加工贸易与一般贸易需拆分（余淼杰 2015 的处理方式）。</td></tr>
+            <tr><td>中国专用：宏观与价格</td><td><strong>国家统计局</strong>年度/季度数据库、<strong>CEIC</strong>、Wind</td><td>分省 GDP、就业、分行业工业品出厂价格指数（PPI）、居民消费价格（CPI）；CEIC 提供更长的季度序列与分省面板。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>冰山成本 $\tau_{ni}$ 的两种构造方法</h3>
+      <p>冰山成本不可直接观测，文献里有两条标准路径：</p>
+      <ol>
+        <li><strong>从贸易份额反推（structural inversion，最常用）</strong>：由份额公式 $\lambda_{ni}/\lambda_{nn}=(\tau_{ni})^{1-\sigma}$（归一化 $w_i=w_n$ 时），得
+        $$\tau_{ni}=\left(\frac{\lambda_{nn}}{\lambda_{ni}}\right)^{1/(\sigma-1)}$$
+        再用国内贸易成本归一 $\tau_{nn}=1$。这一方法不需要估引力方程，直接从数据份额矩阵读出 $\tau$ 的相对水平——是量化贸易论文的默认做法（Head &amp; Mayer 2014 综述）。</li>
+        <li><strong>引力方程残差法</strong>：估计结构引力 $\ln X_{ni}=\alpha_i+\beta_n-(1-\sigma)\ln\tau_{ni}$，令 $\ln\tau_{ni}=\beta_1\ln dist_{ni}+\beta_2\,contig_{ni}+\beta_3\,comlang_{ni}+\beta_4\,colony_{ni}+\cdots$，把拟合的 $\ln\tau_{ni}$ 指数化得到 $\tau_{ni}=\exp(\widehat{\ln\tau_{ni}})$，再归一化使 $\tau_{nn}=1$。优点是能分解"距离/语言/殖民"各自的贡献；缺点是要处理多边阻力（Anderson-van Wincoop 2003 提醒：必须用国固定效应或 PPML 估计）。</li>
+      </ol>
+      <div class="callout info">
+        <div class="callout-title">为什么帽子代数阶段不需要 $\tau$？</div>
+        <p>精确帽子代数只用基准份额矩阵 $\lambda_{ni}$ 与外生冲击 $\hat\tau_{ni}$（例如关税下降 50% 即 $\hat\tau_{ni}=1/1.5$）。基准 $\tau$ 的绝对水平被吸收进 $\lambda_{ni}$，所以做反事实时你甚至不需要"构造 $\tau$"——只要能说出冲击的 $\hat\tau$ 就行。只有当你想做"距离变长"这类反事实时，才需要先用引力残差法估出 $\tau_{ni}$ 的基线。</p>
+      </div>
+
+      <h3>构造基准份额矩阵的标准流程</h3>
+      <ol>
+        <li>从 WIOD/ICIO 取 $N$ 国 × $N$ 国双边采购矩阵 $X_{ni}$（$n$ 国从 $i$ 国采购的总额）；</li>
+        <li>对每一行 $n$ 归一化：$\lambda_{ni}=X_{ni}/\sum_k X_{nk}$；</li>
+        <li>国内份额 $\lambda_{nn}$ 由行内对角元直接读出；</li>
+        <li>基准总支出 $X_n=\sum_k X_{nk}$，用于帽子代数的权重；</li>
+        <li>工资 $w_n L_n$ 在贸易平衡假设下等于 $X_n$，无需单独估 $w_n$ 与 $L_n$。</li>
+      </ol>
+      <p>这一流程的好处是：<strong>你不需要观测 $w_n$ 或 $\tau_{ni}$ 的绝对水平</strong>，所有基准信息都在 $\lambda_{ni}$ 里。这正是帽子代数在实证上可行的原因。</p>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 论文案例</h2>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">A Theory of Demand for Products Distinguished by Place of Production</div>
+        <div class="paper-meta">Armington, P. S., <em>IMF Staff Papers</em>, 16(1), 1969, 159–178</div>
+        <div class="paper-desc">原始 Armington 设定。把"来源国"作为产品差异化维度，是后来所有 QSGE 模型的微观基础。原始文章写于计算机普及之前，主要是需求侧的解析推导。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">The Case of the Missing Trade and Other Mysteries</div>
+        <div class="paper-meta">Trefler, D., <em>American Economic Review</em>, 85(5), 1995, 1029–1046</div>
+        <div class="paper-desc">指出 Heckscher-Ohlin 模型严重低估了真实贸易流——即"missing trade"之谜。后续 QSGE 文献用 Armington 偏好 + 贸易成本来解释：消费者偏爱本国产品，所以"理论上应该发生的贸易"远比现实多。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Gravity with Gravitas: A Solution to the Border Puzzle</div>
+        <div class="paper-meta">Anderson, J. E. &amp; E. van Wincoop, <em>American Economic Review</em>, 93(1), 2003, 170–192</div>
+        <div class="paper-desc">把 Armington 偏好 + CES 支出最小化做成结构引力方程，首次严格推导出"多边阻力项"（multilateral resistance），解释了 McCallum (1995) 的"边境之谜"。是本页 (A7)–(A10) 推导在实证上的直接对应物：所有结构引力/PPML 估计都要从这篇读起。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">General Equilibrium Effects of Trade Reductions</div>
+        <div class="paper-meta">Alvarez, F. &amp; R. E. Lucas Jr., <em>American Economic Review</em>, 97(5), 2007, 1700–1727</div>
+        <div class="paper-desc">在 EK/Ricardian 框架下严格证明了多国一般均衡的存在性、唯一性与数值算法，是工资不动点迭代收敛性的理论背书。Armington 分支的数值结果在 Alvarez-Lucas 的存在性定理下同样适用。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">The Gravity Equation in International Trade: An Explanation</div>
+        <div class="paper-meta">Anderson, J. E. (1979), "A Theoretical Foundation for the Gravity Equation", <em>AER</em>, 69(1), 106–116</div>
+        <div class="paper-desc">Armington 偏好如何自然产生引力方程的原始理论证明。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">New Welfare Gains from Trade</div>
+        <div class="paper-meta">Arkolakis, Costinot &amp; Rodríguez-Clare, <em>American Economic Review</em>, 102(1), 2012, 94–130</div>
+        <div class="paper-desc">本页 ACR 福利公式 $\hat W_n=\hat\lambda_{nn}^{-1/(\sigma-1)}$ 的原始出处。证明在 CES + 贸易平衡 + 单一要素下，Armington、EK、Melitz-Pareto 三类模型的福利变化都被"国内份额 + 贸易弹性"两个充分统计量概括。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 中文顶刊</span>
+        <div class="paper-title">企业异质性、贸易成本与中国出口增长的二元边际</div>
+        <div class="paper-meta">钱学锋，《管理世界》，2008年第9期，48–56</div>
+        <div class="paper-desc">用中国海关数据库把出口增长分解为集约边际与扩展边际，背后是 Armington/Melitz 结构引力框架。是国内最早把"贸易成本 $\tau$ + 结构份额"用于中国数据的代表作之一。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 中文顶刊</span>
+        <div class="paper-title">中国的多产品出口企业及其产品范围：事实与解释</div>
+        <div class="paper-meta">钱学锋、王胜、陈勇兵，《管理世界》，2013年第1期，9–24</div>
+        <div class="paper-desc">基于 2000–2005 年中国海关 + 工业企业匹配数据，用拓展引力模型刻画多产品企业出口产品范围。是"Armington variety × 企业异质性"在中国数据上的标准应用。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 中文顶刊</span>
+        <div class="paper-title">测度中国与 G-7 的双边贸易成本——一个改进引力模型方法的应用</div>
+        <div class="paper-meta">钱学锋、梁琦，《数量经济技术经济研究》，2008年第2期，53–62</div>
+        <div class="paper-desc">用 Novy (2013) 型改进引力方法直接反推中国与 G-7 的 $\tau_{ni}$，是"从贸易份额反推冰山成本"路径在两国/双边框架下的中国应用。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 综述</span>
+        <div class="paper-title">国际贸易与经济地理中的量化一般均衡研究综述</div>
+        <div class="paper-meta">余淼杰、张睿，《长安大学学报（社会科学版）》，2019年第6期（人大复印资料《国际贸易研究》2019年第5期全文转载）</div>
+        <div class="paper-desc">国内唯一系统综述 QSGE（Armington → EK → Melitz → RRH → 帽子代数 → ACR 福利）的中文文献，建议作为本页之后的进阶阅读地图。</div>
+      </div>
+    </div>
+
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 常见错误与进阶</h2>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：忘记标准化工资</div>
+        <p>Armington 模型只有相对工资是被识别的——只乘以一个常数 $\alpha$，所有 $w_i$ 同时缩放，均衡不变。如果不显式归一化（每轮 $\sum w_i L_i = 1$），迭代可能漂移到无穷或零。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：把 $\tau_{ii}$ 写成 1 但忘了它</div>
+        <p>$\tau_{ii}=1$ 是国内贸易无成本。如果你误写成 $\tau_{ii}=\bar\tau>1$，模型会把"国内采购"也当成有贸易成本，结果 $\lambda_{ii}$ 会人为偏低，福利公式给出虚假的"巨大贸易利得"。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 3：阻尼太小导致迭代不收敛</div>
+        <p>工资更新步长 damp 取 1.0 在 N 大或 $\sigma$ 大时容易震荡。建议从 damp=0.1 起步，逐步调大；若震荡，用 Anderson 加速或直接 scipy.optimize.fixed_point。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 4：把贸易平衡方程的行/列方向写反</div>
+        <p>正确方程是 $w_iL_i=\sum_n\lambda_{ni}w_nL_n$——右边是对<strong>进口国 $n$</strong> 求和（列方向，$\Lambda^\top$ 乘以支出向量）。如果你写成 $\sum_n\lambda_{in}w_nL_n$（行方向），就把"谁卖给谁"搞反了，迭代永远不收敛。代码里检查：<code>sales = Lam.T @ (w*L)</code>，转置 <code>.T</code> 不能丢。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 5：忘记关税收入一次性返还</div>
+        <p>对 $n$ 国从 $i$ 国加关税 $t_{ni}$ 后，消费者预算应为 $X_n=w_nL_n+\sum_i t_{ni}p_{ni}q_{ni}$（关税收入返还）。如果你只把 $\tau_{ni}$ 乘以 $1+t_{ni}$ 而<strong>不把关税收入加回预算</strong>，$X_n$ 少了一块，贸易平衡方程不闭合，福利计算系统偏低。帽子代数代码里 <code>tau_hat</code> 变化时若同时改了 $X_0$，要同步处理关税返还项。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 6：把贸易弹性的符号写反</div>
+        <p>贸易份额对 $\tau_{ni}$ 的弹性是 $1-\sigma$（因为 $\sigma>1$ 所以为负）。"贸易弹性"（贸易流对冰山成本的弹性绝对值）是 $\sigma-1$。ACR 公式里指数是 $-1/(\sigma-1)$，不是 $-1/(1-\sigma)$。写成后者符号翻转，福利结论完全相反。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 7：帽子代数用几何阻尼，收敛到伪不动点</div>
+        <p>常见写法 <code>w_new = w * (impl/w)**damp</code>（几何阻尼）在本模型下会收敛到一个<strong>违反 Walras 定律</strong>的伪不动点：残差 $\max|impl_i/w_i-1|$ 停在 0.07 附近不再下降，ACR 福利与绝对空间重解差约 1 个百分点。原因是归一化 $\sum w_i X_i=1$ 与几何更新叠加后，$impl_i/w_i=\text{常数}$ 就变成不动点。<strong>正确做法</strong>：用算术阻尼 <code>w_new = (1-damp)*w + damp*impl</code>（damp≈0.2），残差会收敛到机器精度。本页代码已采用算术阻尼；如果你从别处复制了几何阻尼的 DEK 代码，务必先做"ACR vs 绝对空间重解"的数值核对。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">局限</div>
+        <p>Armington 模型的贸易弹性 $1-\sigma$ 是<strong>任意校准</strong>的——它来自偏好假设，而非技术。EK 模型（下一页）把弹性内生化到 Fréchet 分布的形状参数上，这才是 QSGE 真正的革命。</p>
+      </div>
+      <h3>进阶资料</h3>
+      <ul>
+        <li>Feenstra, R. C. (2016), <em>Advanced International Trade: Theory and Evidence</em>, Chapter 5。</li>
+        <li>Anderson, J. E. (1979), "A Theoretical Foundation for the Gravity Equation", <em>AER</em>——Armington 模型如何自然产生引力方程。</li>
+      </ul>
+    </div>
+
+    <!-- ========== 方程总清单 ========== -->
+    <div class="section" id="summary">
+      <h2><span class="sec-num">∑</span> 方程总清单 · Equation Summary</h2>
+      <p>本模型共 <strong>20</strong> 个方程，按推导顺序编号如下。每个方程都在正文中给出完整推导、变量定义与经济直觉。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>编号</th><th>名称</th><th>公式</th><th>所在节</th></tr></thead>
+          <tbody>
+            <tr><td>(A1)</td><td>CIF 价格</td><td>$p_{ni}=\tau_{ni}p_i$</td><td>01</td></tr>
+            <tr><td>(A2)</td><td>CES 聚合效用</td><td>$U_n=[\sum_i q_{ni}^{(\sigma-1)/\sigma}]^{\sigma/(\sigma-1)}$</td><td>02</td></tr>
+            <tr><td>(A3)</td><td>预算约束</td><td>$\sum_i p_{ni}q_{ni}=X_n$</td><td>02</td></tr>
+            <tr><td>(A4)</td><td>拉格朗日 FOC</td><td>$\partial U_n/\partial q_{ni}=\lambda_n p_{ni}$</td><td>02</td></tr>
+            <tr><td>(A5)</td><td>MRS = 价格比</td><td>$q_{ni}/q_{nk}=(p_{ni}/p_{nk})^{-\sigma}$</td><td>02</td></tr>
+            <tr><td>(A6)</td><td>需求（预算代入后）</td><td>$q_{nk}=X_n p_{nk}^{-\sigma}/\sum_i p_{ni}^{1-\sigma}$</td><td>02</td></tr>
+            <tr><td>(A7)</td><td>Dixit-Stiglitz 价格指数</td><td>$P_n=[\sum_i p_{ni}^{1-\sigma}]^{1/(1-\sigma)}$</td><td>02</td></tr>
+            <tr><td>(A8)</td><td>Armington 需求函数</td><td>$q_{ni}=X_n p_{ni}^{-\sigma}/P_n^{1-\sigma}$</td><td>02</td></tr>
+            <tr><td>(A9)</td><td>贸易份额推导</td><td>$\lambda_{ni}=p_{ni}^{1-\sigma}/P_n^{1-\sigma}$</td><td>03</td></tr>
+            <tr><td>(A10)</td><td>★ 贸易份额</td><td>$\lambda_{ni}=(w_i\tau_{ni})^{1-\sigma}/\sum_k(w_k\tau_{nk})^{1-\sigma}$</td><td>03</td></tr>
+            <tr><td>(A11)</td><td>收入=支出</td><td>$X_n=w_nL_n$</td><td>04</td></tr>
+            <tr><td>(A12)</td><td>双边贸易平衡</td><td>$w_iL_i=\sum_n\lambda_{ni}w_nL_n$</td><td>04</td></tr>
+            <tr><td>(A13)</td><td>工资归一化</td><td>$\sum_i w_iL_i=1$</td><td>04</td></tr>
+            <tr><td>(A14)</td><td>份额行归一</td><td>$\sum_i\lambda_{ni}=1$</td><td>04</td></tr>
+            <tr><td>(A15)</td><td>用国内份额反推价格</td><td>$P_n=w_n\lambda_{nn}^{1/(\sigma-1)}$</td><td>03</td></tr>
+            <tr><td>(A16)</td><td>实际工资 / 福利水平</td><td>$W_n=w_n/P_n=\lambda_{nn}^{-1/(\sigma-1)}$</td><td>05</td></tr>
+            <tr><td>(A17)</td><td>贸易利得 vs autarky</td><td>$G_n=\lambda_{nn}^{-1/(\sigma-1)}-1$</td><td>05</td></tr>
+            <tr><td>(A18)</td><td>★ 份额帽子方程</td><td>$\hat\lambda_{ni}=(\hat w_i\hat\tau_{ni})^{1-\sigma}/\sum_k\lambda_{nk}(\hat w_k\hat\tau_{nk})^{1-\sigma}$</td><td>06</td></tr>
+            <tr><td>(A19)</td><td>贸易平衡帽子方程</td><td>$\hat w_i=\sum_n\lambda_{ni}\hat\lambda_{ni}\hat w_n w_nL_n/(w_iL_i)$</td><td>06</td></tr>
+            <tr><td>(A20)</td><td>★ ACR 福利公式</td><td>$\hat W_n=\hat\lambda_{nn}^{-1/(\sigma-1)}$</td><td>05/06</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="index.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">01 · QSGE 总览与路线</div>
+      </a>
+      <a href="02-eaton-kortum.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">03 · Eaton-Kortum 模型</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

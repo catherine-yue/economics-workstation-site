@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>多部门与投入产出 DSGE：生产网络与冲击传导 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item active" href="20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">DSGE模型</a><span class="sep">/</span>
+      <span>多部门 / 投入产出 DSGE</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">DSGE · 生产网络 · 投入产出传导 · 完整模型分支</span>
+      <h1>多部门 / 投入产出 DSGE：IO 矩阵传导、Leontief 逆与网络中心性</h1>
+      <p class="desc">真实经济不是"一个代表性部门"，而是由成百上千个通过<strong>投入产出（IO）关系</strong>互相喂料的部门组成：钢铁厂的产品是汽车厂的中间投入，汽车厂的产品又是建筑公司的中间投入。本页把 NK 三方程扩展到 $J$ 个生产部门，用投入产出矩阵 $A=(a_{ij})$ 刻画"部门 $j$ 每生产一单位要从部门 $i$ 买多少"，推导部门成本最小化、部门边际成本（含 IO 网络传导）、部门 Calvo 定价（异质 $\theta_j$）与部门 NKPC；核心是那条<strong>价格沿网络传导的方程</strong> $\hat P_j=\sum_i a_{ij}\hat P_i+\hat w_j$ 与 <strong>Leontief 逆矩阵 $(I-A)^{-1}$</strong> 对总波动的放大。给出完整 Dynare .mod（双部门 + IO 链 + 部门 Calvo + 部门冲击）与完整 Python 网络传导模拟（Leontief 逆、部门 IRF、中心性），最后落到 Acemoglu et al. (2012) 的"聚合之谜"与中国投入产出数据。</p>
+      <div class="callout info" style="margin-top:16px;margin-bottom:0">
+        <div class="callout-title">📐 本页方程清单（审计口径）</div>
+        <p style="margin-bottom:6px">本页在部门维度扩展，核心方程 9 组：IO 技术矩阵（Eq.M1）、中间投入 CES 加总（Eq.M2）、成本最小化一阶条件（Eq.M3）、部门边际成本（Eq.M4）、价格网络传导（Eq.M5）、部门 Calvo 定价（Eq.M6）、多部门 NKPC（Eq.M7）、家庭支出分配（Eq.M8）、Leontief 逆与总产出桥（Eq.M9）。每个公式按 <code class="inline">Eq.Mx</code> 编号。</p>
+      </div>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-head">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-item"><span class="prereq-label">数学 / 统计基础</span>矩阵代数（投入产出分析的 Leontief 逆）、CES 成本函数与 Shephard 引理；比单部门略多一点线性代数。</div>
+      <div class="prereq-item"><span class="prereq-label">经济学理论前置</span><a href="10-nk-three-equation.html">10 NK 三方程</a>（Calvo 定价、NKPC 的单部门版）、<a href="09-rbc-model.html">09 RBC</a> 技术冲击。</div>
+      <div class="prereq-item"><span class="prereq-label">软件 / 计算前置</span>MATLAB + Dynare；Python 3 + numpy（本页网络传导代码）。</div>
+      <div class="prereq-item"><span class="prereq-label">数据前置</span>看得懂投入产出表（中间使用矩阵、增加值、最终使用）。</div>
+      <div class="prereq-item"><span class="prereq-label">难度与路线位置</span><span class="prereq-level lv-frontier">进阶→前沿</span>把"代表性主体"放松成"异质部门+网络"，是结构宏观最活跃的方向之一。</div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">概念直觉：为什么要分部门</a></li>
+        <li><a href="#s2">经济环境与假设：$J$ 部门与 IO 矩阵</a></li>
+        <li><a href="#s3">厂商推导：成本最小化与部门边际成本</a></li>
+        <li><a href="#s4">价格网络传导与部门 NKPC</a></li>
+        <li><a href="#s5">家庭支出分配与总产出桥</a></li>
+        <li><a href="#s6">均衡求解：Leontief 逆与网络中心性</a></li>
+        <li><a href="#s7">Dynare .mod：双部门 IO-DSGE</a></li>
+        <li><a href="#s8">Python：IO 网络冲击传导模拟</a></li>
+        <li><a href="#s9">估计与数据：IO 表、PPI 与部门 TFP</a></li>
+        <li><a href="#s10">模拟与结果：聚合之谜与福利</a></li>
+        <li><a href="#s11">论文、常见错误与交叉链接</a></li>
+      </ol>
+    </div>
+
+    <!-- S1 -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 概念直觉：为什么要分部门</h2>
+      <p>单部门 NK/RBC 模型假设所有产品同质、企业同频调价、冲击是"均匀落在所有企业头上"的。但现实有两个单部门模型回答不了的事实：</p>
+      <ul>
+        <li><strong>部门异质价格粘性：</strong>食品、能源价格每个月都在变，而制造业、服务业价格一年才调一次（Bils-Klenow；Nakamura-Steinsson）。如果央行只盯一个"平均通胀"，会对哪个部门调价更敏感判断错。</li>
+        <li><strong>部门间通过中间投入互相喂料：</strong>油价（能源部门）一涨，不只直接抬高居民汽油开支，还会顺着"能源→化工→制造业→零售"这条链，逐级抬高所有下游成本。<strong>一个部门的小冲击，可能被生产网络放大成宏观波动。</strong></li>
+      </ul>
+      <p>多部门 DSGE 就是把这两件事同时写进模型：$J$ 个部门、各自的 Calvo 粘性、各自的生产率冲击，再用一张<strong>投入产出矩阵</strong>把它们焊在一起。</p>
+      <div class="callout info">
+        <div class="callout-title">与 QSGE 生产网络页的分工</div>
+        <p>多部门 DSGE 关心<strong>动态、价格粘性、货币政策</strong>（部门 IRF、聚合之谜、福利）；QSGE 的 RRH/生产网络更关心<strong>静态、贸易、空间</strong>的一般均衡反事实。本页是"带粘性、带动态"的生产网络 NK。</p>
+      </div>
+    </div>
+
+    <!-- S2 -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 经济环境与假设：$J$ 部门与 IO 矩阵</h2>
+      <p>经济有 $J$ 个生产部门（$j=1,\dots,J$）。每个部门由一组垄断竞争厂商组成，用<strong>劳动 + 其他部门的中间投入</strong>生产。核心新对象是<strong>投入产出技术矩阵</strong>。</p>
+
+      <h3>2.1 投入产出矩阵 $A$ 的定义</h3>
+      <div class="formula-block">
+        <div class="formula-label">Eq.M1 · 投入产出技术矩阵</div>
+        $$A=(a_{ij})_{J\times J}, \qquad a_{ij} = \frac{\text{部门 }j\text{ 购买的部门 }i\text{ 中间投入价值}}{\text{部门 }j\text{ 的总产出价值}}$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>设定理由：</strong>这就是投入产出表里的"<strong>直接消耗系数</strong>"（直接分配系数的转置口径）。<strong>读法：</strong>$a_{ij}$ 是"部门 $j$ 每生产 1 元产出，要从部门 $i$ 买多少元中间品"。列 $j$ 是部门 $j$ 的成本构成；行 $i$ 是部门 $i$ 的产品卖给了哪些部门。<strong>经济直觉：</strong>$A$ 的稀疏/稠密、谁在列和行里占比大，直接刻画"谁是谁的上游/下游""谁是关键节点"。</p>
+      </div>
+
+      <h3>2.2 部门生产函数与中间投入 CES 加总</h3>
+      <p>部门 $j$ 的代表性厂商用劳动 $N_{jt}$ 与一个<strong>由各部门中间品 CES 加总而成的复合中间投入</strong> $M_{jt}$ 生产：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.M2 · 部门生产技术（Cobb-Douglas 劳动-中间，CES 中间）</div>
+        $$Y_{jt} = Z_{jt}\,N_{jt}^{\alpha_j}\,M_{jt}^{1-\alpha_j}, \qquad M_{jt}=\left[\sum_{i=1}^{J}\omega_{ij}^{\frac{1}{\eta}}M_{ijt}^{\frac{\eta-1}{\eta}}\right]^{\frac{\eta}{\eta-1}}$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>变量：</strong>$Z_{jt}$ 部门特定 TFP（部门 $j$ 自己的生产率冲击）；$N_{jt}$ 部门 $j$ 用工；$M_{ijt}$ 部门 $j$ 从部门 $i$ 买的中间品。<strong>参数：</strong>$\alpha_j$ 劳动在成本中的份额；$\eta$ 各部门中间品之间的替代弹性；$\omega_{ij}$ 部门 $j$ 对部门 $i$ 中间品的偏好/技术权重（校准为 $\omega_{ij}=a_{ij}$ 的归一化）。<strong>直觉：</strong>CES 意味着不同来源的中间品不能完美替代——能源贵了不能一夜之间换成别的能源，故成本被网络锁定。</p>
+      </div>
+
+      <h3>2.3 部门特定冲击与部门价格粘性</h3>
+      <div class="formula-block">
+        <div class="formula-label">部门 TFP 与 Calvo 粘性</div>
+        $$\ln Z_{jt} = \rho_j \ln Z_{j,t-1} + \varepsilon_{jt}, \qquad \Pr(\text{部门 }j\text{ 不能调价})=\theta_j$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>关键异质性：</strong>每个部门 $j$ 有<strong>自己的</strong> TFP 冲击 $\varepsilon_{jt}$（不是单一总技术冲击）和<strong>自己的</strong> Calvo 概率 $\theta_j$。食品 $\theta$ 小（调价勤）、服务业 $\theta$ 大（调价慢）。<strong>直觉：</strong>$\theta_j$ 的部门异质性让货币政策的传导取决于"哪个部门被冲击、它粘不粘"。</p>
+      </div>
+
+      <h3>2.4 家庭：CES 加总各部门最终品</h3>
+      <div class="formula-block">
+        <div class="formula-label">家庭消费篮子（Eq.M8 的对象）</div>
+        $$C_t = \left[\sum_{j=1}^{J}\xi_j^{\frac{1}{\epsilon}}C_{jt}^{\frac{\epsilon-1}{\epsilon}}\right]^{\frac{\epsilon}{\epsilon-1}}$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>参数：</strong>$\xi_j$ 部门 $j$ 最终品在消费篮子中的权重（校准为家庭最终需求份额）；$\epsilon$ 部门间消费替代弹性。<strong>直觉：</strong>家庭在食品、制造、服务之间替代消费，价格相对变了就调整支出。</p>
+      </div>
+    </div>
+
+    <!-- S3 -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 厂商推导：成本最小化与部门边际成本</h2>
+      <h3>3.1 成本最小化 → 中间投入需求</h3>
+      <p>部门 $j$ 厂商给定产出 $Y_{jt}$，选择劳动与中间投入最小化成本 $\min W_t N_{jt}+\sum_i P_{it}M_{ijt}$。由 CES 加总的一阶条件（Shephard 引理），对部门 $i$ 中间品的需求为：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.M3 · 中间投入需求函数（条件要素需求）</div>
+        $$M_{ijt} = \omega_{ij}\left(\frac{P_{it}}{P^M_{jt}}\right)^{-\eta} M_{jt}$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>含义：</strong>部门 $j$ 对部门 $i$ 中间品的相对需求，取决于部门 $i$ 价格 $P_{it}$ 相对部门 $j$ 复合中间品价格 $P^M_{jt}$ 的<strong>相对价格</strong>，弹性为 $-\eta$。<strong>直觉：</strong>某个上游部门涨价（$P_{it}\uparrow$），下游 $j$ 就少买它、多买替代品——替代弹性 $\eta$ 决定这种"绕开"的容易程度。</p>
+      </div>
+
+      <h3>3.2 部门边际成本：IO 矩阵进入成本</h3>
+      <p>把成本最小化代入，部门 $j$ 的<strong>实际边际成本</strong> $\widehat{mc}_{jt}$（对数偏离）由两部分构成——工资项 + 各上游部门价格项：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.M4 · 部门边际成本（含 IO 矩阵传导）</div>
+        $$\widehat{mc}_{jt} = (1-\alpha_j)\,\hat w_t + \alpha_j\Big(\sum_{i=1}^{J} a_{ij}\,\widehat{mc}_{it}\Big) - \widehat{z}_{jt}$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>关键结构：</strong>$\sum_i a_{ij}\widehat{mc}_{it}$ 这一项就是 IO 矩阵 $A$ 的第 $j$ 列对所有上游边际成本的加权——<strong>部门 $j$ 的成本，直接取决于它的上游部门 $i$ 的成本</strong>。这是生产网络"成本沿链传导"的数学表达。$\hat w_t$ 共同工资、$\widehat{z}_{jt}$ 部门 TFP。<strong>直觉：</strong>上游涨价→下游成本上升→下游定价上升→再传到更下游，层层放大。</p>
+      </div>
+    </div>
+
+    <!-- S4 -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 价格网络传导与部门 NKPC</h2>
+      <h3>4.1 价格沿 IO 网络传导（核心方程）</h3>
+      <p>把边际成本方程展开到价格水平，得到本页最核心的<strong>价格传导恒等式</strong>。用对数偏离 $\hat P_{jt}$ 表示部门 $j$ 相对价格变化：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.M5 · 投入产出价格传导方程（网络效应）</div>
+        $$\boxed{\hat P_{jt} = \sum_{i=1}^{J} a_{ij}\,\hat P_{it} + \hat w_{jt} - \widehat{z}_{jt}}$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>这就是任务里点名的那条。</strong>部门 $j$ 价格变化 = 它所用全部上游部门价格变化的加权和（权重 $a_{ij}$）+ 工资冲击 - 技术进步。写成矩阵形式就是 $\hat P = A^\top \hat P + (\hat w-\hat z)$，解出 $\hat P=(I-A^\top)^{-1}(\hat w-\hat z)$——<strong>Leontief 逆直接把一个部门的成本冲击放大成所有部门的价格响应</strong>。<strong>直觉：</strong>这是"通胀传导"的网络版：上游一次成本冲击，会被 Leontief 逆放大、扩散到整张网。</p>
+      </div>
+
+      <h3>4.2 部门 Calvo 定价与多部门 NKPC</h3>
+      <p>每个部门 $j$ 有自己的 Calvo 概率 $\theta_j$。沿用单部门推导（见 <a href="10-nk-three-equation.html">10 NK 三方程</a> §5），得到部门 $j$ 的前瞻型菲利普斯曲线：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.M6/M7 · 部门 Calvo 定价与多部门 NKPC</div>
+        $$\hat\pi_{jt} = \beta E_t\hat\pi_{j,t+1} + \kappa_j\,\widehat{mc}_{jt}, \qquad \kappa_j = \frac{(1-\theta_j)(1-\beta\theta_j)}{\theta_j}\cdot\text{需求弹性项}$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>关键异质性：</strong>斜率 $\kappa_j$ 随 $\theta_j$ 变——<strong>价格粘性越大的部门（$\theta_j$ 大），$\kappa_j$ 越小</strong>，其通胀对边际成本反应越慢。<strong>聚合时</strong>，总体通胀 $\pi_t=\sum_j b_j\hat\pi_{jt}$（$b_j$ 部门权重），于是总体 NKPC 的斜率是各部门 $\kappa_j$ 按份额加权——<strong>异质粘性让总体通胀更平滑、更"向后看"</strong>（Carvalho 2006 的著名结论：异质价格粘性放大货币非中性）。</p>
+      </div>
+    </div>
+
+    <!-- S5 -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 家庭支出分配与总产出桥</h2>
+      <h3>5.1 部门需求曲线</h3>
+      <p>由家庭 CES 支出最小化，部门 $j$ 的最终需求为：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.M8 · 家庭对部门 $j$ 的需求</div>
+        $$C_{jt} = \xi_j\left(\frac{P_{jt}}{P_t}\right)^{-\epsilon} C_t$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>含义：</strong>部门 $j$ 相对其他部门越贵（$P_{jt}/P_t\uparrow$），家庭买得越少，弹性 $-\epsilon$。$P_t$ 是总体价格指数。</p>
+      </div>
+      <h3>5.2 总产出与部门产出：Leontief 桥</h3>
+      <p>部门 $j$ 的产出既卖给家庭（最终需求），又卖给其他部门（中间需求）。把所有部门的产出写成向量 $\mathbf{Y}$、最终需求写成向量 $\mathbf{F}$，则：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.M9 · 投入产出恒等式与 Leontief 逆</div>
+        $$\mathbf{Y} = A\mathbf{Y} + \mathbf{F} \quad\Longrightarrow\quad \boxed{\mathbf{Y}=(I-A)^{-1}\mathbf{F}}$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>这就是投入产出分析的核心结果。</strong>$(I-A)^{-1}$ 是 <strong>Leontief 逆矩阵</strong>（完全消耗系数）。<strong>含义：</strong>一个部门 $k$ 的最终需求 $\mathbf F$ 增加 1 单位，不只是部门 $k$ 增产，还要带动它的上游、上游的上游……把这些<strong>间接的、连锁的</strong>引致需求全部算进 $(I-A)^{-1}$ 第 $k$ 列。<strong>直觉：</strong>这就是"乘数"的网络版——谁在 Leontief 逆里列和最大，谁就是"国民经济关键部门"。</p>
+      </div>
+    </div>
+
+    <!-- S6 -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 均衡求解：Leontief 逆与网络中心性</h2>
+      <h3>6.1 多部门均衡方程组一览</h3>
+      <p>完整模型由三层方程组成：① 厂商侧（Eq.M3/M4/M6/M7，每个部门一套）；② 家庭侧（Eq.M8 与消费/劳动/债券欧拉）；③ 会计恒等式（Eq.M9 与资源约束）。加上货币政策的总体 Taylor 规则，构成闭合理性预期系统，用 Dynare 一阶扰动求解。</p>
+      <h3>6.2 网络中心性（centrality）与冲击传导</h3>
+      <p>不是所有部门冲击都一样重要。Acemoglu-Carvalho-Ozdaglar-Tahbaz-Salehi（2012）证明：一个部门对<strong>总</strong>波动的影响，取决于它在生产网络中的<strong>中心性</strong>。两个常用度量：</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>中心性度量</th><th>定义</th><th>经济含义</th></tr></thead>
+        <tbody>
+          <tr><td>出度 / 前向关联</td><td>$\sum_j a_{ij}$（部门 $i$ 卖给下游多少）</td><td>"上游关键供应商"：它一断料，下游全链停摆</td></tr>
+          <tr><td>入度 / 后向关联</td><td>$\sum_i a_{ij}$（部门 $j$ 买自上游多少）</td><td>"下游大买家"：它的需求拉动上游</td></tr>
+          <tr><td>Leontief 逆中心性</td><td>$(I-A)^{-1}$ 的行/列和</td><td>含间接引致需求的"完全"中心性，最贴近总波动贡献</td></tr>
+          <tr><td>Katz 中心性</td><td>$\sum_{k\ge1} c^k A^k \mathbf{1}$</td><td>考虑邻居的邻居的邻居……的加权度</td></tr>
+        </tbody>
+      </table></div>
+      <h3>6.3 数值求解步骤</h3>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">第 1 步：从 IO 表校准 $A$</div>
+          <div class="step-desc">把统计局/BEA 的投入产出表"中间使用"矩阵除以各部门总产出，得到直接消耗系数 $a_{ij}$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第 2 步：写部门均衡方程</div>
+          <div class="step-desc">为每个部门写边际成本（Eq.M4）、部门 NKPC（Eq.M7）、部门 TFP 过程；加总体 Taylor 规则。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第 3 步：Dynare 一阶扰动求解</div>
+          <div class="step-desc">线性化后用 <code class="inline">stoch_simul</code>，得各部门政策函数、IRF、方差分解。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第 4 步：算中心性与反事实</div>
+          <div class="step-desc">用 Leontief 逆识别关键部门，做"把某部门冲击放大/关闭"的反事实，看总波动变化。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S7 -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> Dynare .mod：双部门 IO-DSGE</h2>
+      <p>下面是一个<strong>完整可运行</strong>的双部门（部门 1 = 上游，部门 2 = 下游）IO-DSGE。上游部门 1 的中间投入卖给下游部门 2；两部门各有自己的 Calvo 概率 $\theta_1,\theta_2$ 与 TFP 冲击。运行 <code class="inline">dynare multi_sector.mod</code>。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Dynare / multi_sector.mod（双部门 IO-DSGE）</span><button class="copy-btn">复制</button></div>
+        <pre><code>// ============================================================
+// multi_sector.mod  ——  双部门 NK-DSGE + 投入产出链
+// 部门1: 上游（如能源/原材料），产品卖给部门2作中间投入
+// 部门2: 下游（如制造业），用部门1中间品 + 劳动生产
+// 两部门各有：异质 Calvo 概率、异质 TFP 冲击
+// 运行：dynare multi_sector.mod
+// ============================================================
+
+// ---------- 内生变量（部门1 下标1，部门2 下标2） ----------
+var  y1 y2          // 两部门产出缺口
+     pi1 pi2        // 两部门部门通胀
+     pi             // 总体通胀（消费篮子加权）
+     mc1 mc2        // 两部门实际边际成本
+     n1 n2          // 两部门就业
+     w              // 共同实际工资
+     rrn            // 自然利率（需求侧）
+     z1 z2          // 两部门对数 TFP（外生状态）
+     i              // 名义政策利率（总体 Taylor 规则）
+     p1_rel p2_rel; // 部门相对价格（这里取相对偏离）
+
+// ---------- 外生冲击 ----------
+varexo eps_z1 eps_z2 eps_d;
+
+// ---------- 参数 ----------
+parameters beta sigma varphi epsilon ...
+           theta1 theta2        // 两部门异质 Calvo 概率
+           k1 k2                // 两部门 NKPC 斜率（由 theta 推）
+           a12                  // 部门2 每单位产出用部门1中间品的份额
+           alpha2               // 部门2 劳动份额（1-alpha2 即中间品份额）
+           b1 b2                // 部门1、2在消费篮子中的权重（b1+b2=1）
+           phi_pi phi_y rho_z rho_d;
+
+// ---------- 校准 ----------
+beta    = 0.99;
+sigma   = 1.0;
+varphi  = 1.0;
+epsilon = 6.0;
+
+// 部门1（上游/能源）价格调得勤 -> theta1 小；
+// 部门2（下游/制造）价格粘 -> theta2 大
+theta1  = 0.55;     // 上游约 2 季度调一次价
+theta2  = 0.80;     // 下游约 5 季度调一次价
+k1 = (1-theta1)*(1-beta*theta1)/theta1;   // 上游 NKPC 斜率大（灵活）
+k2 = (1-theta2)*(1-beta*theta2)/theta2;   // 下游 NKPC 斜率小（粘性）
+
+// 投入产出关键参数：a12 = 部门2 用部门1 中间品的份额
+a12     = 0.35;     // 下游 35% 成本来自购买上游中间品
+alpha2  = 0.65;     // 下游 65% 成本来自劳动（1-alpha2-a12=0 简化）
+b1      = 0.30;     // 上游最终品占消费篮子 30%
+b2      = 0.70;     // 下游最终品占消费篮子 70%
+
+phi_pi  = 1.5;
+phi_y   = 0.125;
+rho_z   = 0.90;
+rho_d   = 0.80;
+
+// ---------- model 块 ----------
+model;
+// (1) 部门1 边际成本：只用劳动（上游不买别人中间品，简化）
+//     mc1 = varphi*n1 + sigma*y1 - z1   （单部门劳动-边际成本桥）
+mc1 = varphi*n1 + sigma*y1 - z1;
+
+// (2) 部门2 边际成本：关键！含 IO 传导
+//     部门2 成本 = 工资项 + 上游部门1 价格/成本项（权重 a12）
+//     即 Eq.M4：mc2 = alpha2*w + a12*mc1 - z2
+mc2 = alpha2*w + a12*mc1 - z2;
+
+// (3) 部门1 NKPC（斜率 k1 大 -> 灵活）
+pi1 = beta*pi1(+1) + k1*mc1;
+
+// (4) 部门2 NKPC（斜率 k2 小 -> 粘）
+pi2 = beta*pi2(+1) + k2*mc2;
+
+// (5) 总体通胀 = 消费篮子加权（Eq.M7 聚合）
+pi  = b1*pi1 + b2*pi2;
+
+// (6) 共同工资与部门就业的劳动供给桥（简化：w = varphi*n + sigma*y）
+//     两部门在统一劳动市场上竞争
+w   = varphi*n1 + sigma*y1;
+w   = varphi*n2 + sigma*y2;   // 同一工资，两边都满足（冗余恒等，供 Dynare 求解）
+
+// (7) 资源 / 需求侧（简化 IS：总体产出缺口由实际利率调节）
+y1 = y1(+1) - (1/sigma)*( i - pi(+1) - rrn );
+y2 = y2(+1) - (1/sigma)*( i - pi(+1) - rrn );
+
+// (8) 货币政策：总体 Taylor 规则
+i = phi_pi*pi + phi_y*(b1*y1 + b2*y2);
+
+// (9) 部门 TFP 外生过程
+z1 = rho_z*z1(-1) + eps_z1;
+z2 = rho_z*z2(-1) + eps_z2;
+
+// (10) 需求侧自然利率
+rrn = rho_d*rrn(-1) + eps_d;
+end;
+
+// ---------- 稳态初始值（全 0，对数偏离） ----------
+initval;
+ y1=0; y2=0; pi1=0; pi2=0; pi=0; mc1=0; mc2=0;
+ n1=0; n2=0; w=0; rrn=0; z1=0; z2=0; i=0;
+end;
+steady;
+check;
+
+// ---------- 冲击分布 ----------
+shocks;
+var eps_z1 = (0.01)^2;    // 上游 TFP 冲击
+var eps_z2 = (0.01)^2;     // 下游 TFP 冲击
+var eps_d  = (0.01)^2;     // 总需求冲击
+end;
+
+// ---------- 求解并画 IRF（40 期） ----------
+// 重点观察：eps_z1（上游能源）如何通过 a12 传导到 mc2 -> pi2 -> 总体 pi
+stoch_simul(order=1, irf=40) y1 y2 pi1 pi2 pi mc1 mc2 i;</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">看哪条 IRF</div>
+        <p>跑出来后重点看 <code class="inline">eps_z1</code>（上游冲击）那一列：上游 TFP 上升 $\Rightarrow mc_1\downarrow\Rightarrow$ 通过 $a_{12}mc_1$ 使 $mc_2\downarrow\Rightarrow$ 由于部门 2 价格粘（$\theta_2$ 大、$\kappa_2$ 小），$pi_2$ 反应慢而持久——这就是<strong>异质粘性 + IO 传导</strong>的联合效应。</p>
+      </div>
+    </div>
+
+    <!-- S8 -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> Python：IO 网络冲击传导模拟</h2>
+      <p>下面用 numpy 做一个<strong>纯网络</strong>的冲击传导模拟：构造 IO 矩阵 $A$、算 Leontief 逆、给某部门一个 TFP 冲击、看它如何通过网络扩散到所有部门的价格/产出，并计算网络中心性。这是理解 Eq.M5/M9 最直接的数值实验。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python / io_network_shock.py（IO 网络传导模拟）</span><button class="copy-btn">复制</button></div>
+        <pre><code># ============================================================
+# io_network_shock.py  ——  投入产出网络冲击传导模拟
+# 内容：
+#   1) 构造 J 部门 IO 矩阵 A（直接消耗系数 a_ij）
+#   2) 计算 Leontief 逆 (I - A)^{-1}
+#   3) 给某部门 TFP/成本冲击，沿网络传导到所有部门价格
+#   4) 计算网络中心性（前向/后向/Leontief）并识别关键部门
+# 依赖：numpy
+# ============================================================
+import numpy as np
+
+# ---------- 1. 构造 4 部门 IO 矩阵 A ----------
+# 行 i = 产品供给方，列 j = 产品需求方；
+# a[i,j] = 部门 j 每生产 1 元要从部门 i 买多少元
+# 示例网络：能源(0)->化工(1)->制造(2)->服务(3)，并允许回流
+A = np.array([
+    # 能源 化工 制造 服务
+    [0.20, 0.30, 0.05, 0.10],   # 能源卖给各下游（自己+化工+制造+服务）
+    [0.05, 0.15, 0.25, 0.10],   # 化工
+    [0.02, 0.10, 0.20, 0.30],   # 制造
+    [0.03, 0.05, 0.10, 0.15],   # 服务
+])
+J = A.shape[0]
+names = ["能源", "化工", "制造", "服务"]
+
+# 校验：每列之和应 <= 1（其余是劳动/增加值份额）
+colsum = A.sum(axis=0)
+print("各部门中间投入合计（剩余为劳动/增加值）:")
+for j in range(J):
+    print(f"  部门{names[j]}: 中间品={colsum[j]:.2f}, 增加值={1-colsum[j]:.2f}")
+
+# ---------- 2. Leontief 逆 (I - A)^{-1} ----------
+# 投入产出恒等式 Y = A Y + F  =>  Y = (I-A)^{-1} F
+I = np.eye(J)
+Leontief_inv = np.linalg.inv(I - A)
+print("\n=== Leontief 逆矩阵 (完全消耗系数) ===")
+print(np.round(Leontief_inv, 3))
+
+# ---------- 3. 价格传导：上游成本冲击 -> 全网价格 ----------
+# Eq.M5:  P_hat = (I - A.T)^{-1} (w - z)
+# 这里给"能源(部门0)"一个负 TFP 冲击（成本上升），
+# 等价于其成本项 z_hat = -0.05（负技术进步 -> 涨价压力 +0.05）
+shock = np.zeros(J)
+shock[0] = 0.05   # 能源部门成本/价格上行 5%
+# 价格沿网络传导：解 P = A.T P + shock  =>  P = (I - A.T)^{-1} shock
+P_resp = np.linalg.inv(I - A.T) @ shock
+print("\n=== 能源部门成本 +5%% 后，各部门价格的网络传导 ===")
+for j in range(J):
+    bar = "█" * int(abs(P_resp[j]) * 100)
+    print(f"  部门{names[j]:<4}: 价格 +{P_resp[j]*100:6.2f}%  {bar}")
+print("解读：能源冲击不只是能源涨价，还被 (I-A.T)^-1 放大、")
+print("      扩散到化工/制造/服务，且越下游累计涨幅越大。")
+
+# ---------- 4. 产出引致需求：给某部门 1 单位最终需求 ----------
+# Y = (I-A)^-1 F；F = e_k 表示只对部门 k 最终需求 +1
+demand = np.eye(J)
+output_multiplier = Leontief_inv @ demand   # 每列：1 单位最终需求引致的总产出
+print("\n=== 关键部门识别：1 单位最终需求引致的各部门总产出 ===")
+# 部门 k 的总拉动 = 第 k 列之和（含所有间接上下游）
+total_pull = Leontief_inv.sum(axis=0)
+order = np.argsort(-total_pull)
+print("按'总拉动乘数'从大到小：")
+for rank, k in enumerate(order, 1):
+    print(f"  第{rank}名 部门{names[k]:<4}: 总拉动乘数 = {total_pull[k]:.3f}")
+
+# ---------- 5. 网络中心性 ----------
+# 前向中心性（出度）：部门 i 卖给下游的总量
+out_degree = A.sum(axis=1)
+# 后向中心性（入度）：部门 j 购买上游的总量
+in_degree  = A.sum(axis=0)
+print("\n=== 网络中心性 ===")
+for j in range(J):
+    print(f"  部门{names[j]:<4}: 前向(出度)={out_degree[j]:.3f}, "
+          f"后向(入度)={in_degree[j]:.3f}, "
+          f"Leontief列和={total_pull[j]:.3f}")
+
+# ---------- 6. 部门 IRF（简化：一次性 TFP 冲击的衰减路径） ----------
+# 假设部门 TFP 冲击 AR(1) 持续性 rho=0.9，价格经 Leontief 逆传导
+rho = 0.90
+T = 12
+print("\n=== 能源 TFP 冲击后，制造部门价格的传导-衰减路径 ===")
+print("期数  制造部门价格响应")
+for t in range(T):
+    path = (Leontief_inv[2, 0]) * (rho ** t) * shock[0]
+    print(f"  t={t:<2}: {path*100:7.3f}%")
+print("直觉：冲击当期制造价格已因能源涨价而上升（通过 Leontief 逆 [2,0]），")
+print("      随后随能源冲击自身按 rho=0.9 缓慢衰减。")</code></pre>
+      </div>
+      <div class="callout info">
+        <div class="callout-title">这个脚本在干什么</div>
+        <p>它把 Eq.M5（价格传导 $\hat P=(I-A^\top)^{-1}(\hat w-\hat z)$）和 Eq.M9（产出桥 $\mathbf Y=(I-A)^{-1}\mathbf F$）直接数值化：① 一个上游成本冲击被 Leontief 逆<strong>放大</strong>成全网价格；② <strong>中心性排名</strong>告诉你哪个部门是"关键节点"，它的冲击对总波动贡献最大。把真实 IO 表读进来替换 $A$，就是一次正经的生产网络量化。</p>
+      </div>
+    </div>
+
+    <!-- S9 -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 估计与数据：IO 表、PPI 与部门 TFP</h2>
+      <h3>9.1 投入产出表数据来源</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>来源</th><th>覆盖</th><th>用途 / 说明</th></tr></thead>
+        <tbody>
+          <tr><td>中国国家统计局</td><td>全国/分省 IO 表（逢 2、7 编制基准表，逢 0、5 延长表）</td><td>校准中国 $a_{ij}$ 的金标准；分 42/149 部门</td></tr>
+          <tr><td>美国 BEA</td><td>年度/季度行业 IO 账户</td><td>校准美国生产网络，Nakamura-Steinsson 等用</td></tr>
+          <tr><td>WIOD（世界投入产出数据库）</td><td>跨国、分行业、年度</td><td>跨国生产网络、全球价值链研究</td></tr>
+          <tr><td>OECD ICIO</td><td>国家间双边 IO</td><td>供应链、贸易网络量化</td></tr>
+        </tbody>
+      </table></div>
+      <h3>9.2 校准 $a_{ij}$ 的方法</h3>
+      <p>从 IO 表的"<strong>中间使用</strong>"矩阵 $Z_{ij}$（部门 $j$ 使用部门 $i$ 产品的价值）与部门 $j$ 总产出 $X_j$，直接算直接消耗系数：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 校准口径</div>
+        $$a_{ij} = \frac{Z_{ij}}{X_j}$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555">注意区分"<strong>竞争型</strong>"与"<strong>非竞争型</strong>" IO 表：竞争型把进口中间品混在国内使用里，做中国 DSGE 时若要刻画国内网络，最好用非竞争型（进口单列），否则 $a_{ij}$ 会高估国内上游依赖。</p>
+      </div>
+      <h3>9.3 部门价格与部门 TFP</h3>
+      <ul>
+        <li><strong>部门价格：</strong>用分部门 PPI（工业生产者出厂价格指数，分行业）或分部门 GDP 平减指数，构造各部门通胀 $\pi_{jt}$，校准 $\theta_j$ 与验证部门 NKPC。</li>
+        <li><strong>部门 TFP：</strong>用 Olley-Pakes / Levinsohn-Petrin / Ackerberg-Caves-Frazer（见 <a href="../structural/10-production-function.html">生产函数估计页</a>）在分行业企业/行业面板上估计，再汇总成 $\ln Z_{jt}$。</li>
+      </ul>
+    </div>
+
+    <!-- S10 -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 模拟与结果：聚合之谜与福利</h2>
+      <h3>10.1 部门冲击的跨部门传导 IRF</h3>
+      <p>给上游部门一个负 TFP（成本上升）冲击，IRF 应表现出：<strong>同期上游部门涨价 → 中期通过 $a_{ij}$ 抬高中游成本 → 后期下游部门被动涨价</strong>。由于下游 $\theta_j$ 大（价格粘），这条"传导链"在时间上被拉长，总体通胀呈<strong>滞后、长尾</strong>形态——比单部门模型预测的"即期反应"慢得多。</p>
+      <h3>10.2 网络中心性与总波动：聚合之谜（Acemoglu et al. 2012）</h3>
+      <p>长期有个"分散化论证"：若有 $J$ 个独立的部门冲击，每个方差 $\sigma^2$，大数定律会让总波动 $\propto 1/\sqrt J$，部门越多总波动越小。Acemoglu-Carvalho-Ozdaglar-Tahbaz-Salehi（2012, Econometrica）证明：<strong>只要生产网络足够"非对称"（少数部门中心性高），这个 $1/\sqrt J$ 就不成立</strong>——少数关键部门的冲击被 Leontief 逆放大，足以维持可观的<strong>总</strong>波动。这就是著名的"<strong>聚合之谜（granular / disaggregate shocks → aggregate fluctuations）</strong>"：微观、部门级别的冲击，能通过网络"颗粒化"成宏观波动。Gabaix（2011）的"granular origins"是另一支（企业规模幂律）。</p>
+      <div class="callout tip">
+        <div class="callout-title">为什么这重要</div>
+        <p>它解释了"为什么无法用单一总技术冲击解释的宏观波动，能被一堆部门冲击 + 生产网络解释"。这对当前中国"卡脖子""产业链安全"讨论尤其 relevant：<strong>关键部门被断供，等于一次宏观级供给冲击。</strong></p>
+      </div>
+      <h3>10.3 福利分析</h3>
+      <p>多部门带来新的福利权衡：① 总体通胀稳定 vs 相对价格扭曲——异质粘性下，最优货币政策不再只盯总体通胀，而要<strong>按部门粘性加权</strong>（粘得最死的部门，其通胀权重应更大）；② 网络放大让"对冲关键部门冲击"的政策价值更高；③ 价格分散造成的资源错配，在多部门下更严重。</p>
+    </div>
+
+    <!-- S11 -->
+    <div class="section" id="s11">
+      <h2><span class="sec-num">11</span> 论文、常见错误与交叉链接</h2>
+      <h3>11.1 必读论文</h3>
+      <div class="paper-card">
+        <span class="paper-type en">English · 奠基 RBC 多部门</span>
+        <div class="paper-title">Real Business Cycles</div>
+        <div class="paper-meta">Long J.B. &amp; Plosser C.I., <em>Journal of Political Economy</em>, 1983, 91(1)</div>
+        <div class="paper-desc">最早用多部门投入产出结构证明：部门间的中间投入关联，能把部门技术冲击传导成协动的总周期。生产网络宏观的开山之作。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 网络起源</span>
+        <div class="paper-title">The Network Origins of Aggregate Fluctuations</div>
+        <div class="paper-meta">Acemoglu D., Carvalho V.M., Ozdaglar A. &amp; Tahbaz-Salehi A., <em>Econometrica</em>, 2012, 80(5)</div>
+        <div class="paper-desc">本页 §10.2 的出处。用图论+IO 证明：非对称网络中部门冲击可经 Leontief 逆放大成宏观波动，打破 $1/\sqrt J$ 分散化论证。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 综述</span>
+        <div class="paper-title">From Micro to Macro via Production Networks</div>
+        <div class="paper-meta">Carvalho V.M., <em>Journal of Economic Perspectives</em>, 2014, 28(4)</div>
+        <div class="paper-desc">生产网络宏观的入门综述：把 IO 矩阵、中心性、冲击传导讲得清楚，是本页 §3-§6 直觉的最佳参考。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 多部门价格粘性</span>
+        <div class="paper-title">Monetary Non-Neutrality in a Multisector Menu Cost Model</div>
+        <div class="paper-meta">Nakamura E. &amp; Steinsson J., <em>Quarterly Journal of Economics</em>, 2010, 125(3)</div>
+        <div class="paper-desc">用多部门菜单成本模型证明：异质价格粘性（调价频率部门差异）如何放大货币非中性，与本页 Eq.M7 的 $\theta_j$ 异质性直接对应。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 多部门货币传导</span>
+        <div class="paper-title">The Transmission of Monetary Policy in a Multi-Sector Economy</div>
+        <div class="paper-meta">Bouakez H., Cardia E. &amp; Ruge-Murcia F.J., <em>International Economic Review</em>, 2009, 50(4)</div>
+        <div class="paper-desc">把 Calvo 多部门化、估计部门异质价格粘性，研究货币政策在异质部门间的传导，是本页 Dynare 模型的直接理论原型。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · IO 结构与中国周期</span>
+        <div class="paper-title">投入产出结构、行业异质性与中国经济波动</div>
+        <div class="paper-meta">鄢莉莉、吴利学，《世界经济》2017 年第 40 卷第 8 期，第 3–28 页</div>
+        <div class="paper-desc">把投入产出结构与行业异质性嵌入中国多部门 DSGE，定量研究行业冲击经 IO 网络传导对中国经济波动的贡献，是中文顶刊里多部门/IO-DSGE 的代表。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 产业链网络与风险传染</span>
+        <div class="paper-title">产业链结构新视角下的尾部风险跨行业传染</div>
+        <div class="paper-meta">杨子晖、王姝黛、梁方，《经济学（季刊）》2023 年第 23 卷第 1 期，第 212 页起</div>
+        <div class="paper-desc">结合中国投入产出表，从产业链结构考察行业间尾部风险传染，发现议价能力高的行业向上下游输出风险、尾部风险沿产业链逆向传导，是生产网络视角的中文代表作。</div>
+      </div>
+
+      <h3>11.2 常见错误（6 条）</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：IO 矩阵行列方向搞反（$a_{ij}$ 谁乘谁）</div>
+        <p>$a_{ij}$ 是"部门 $j$ 从部门 $i$ 买多少"（列向成本）。写成"部门 $i$ 卖给 $j$"做对称转置，价格传导方向就反了。<strong>校准后先检查列和 = 中间投入占比，行和 = 产品去向，别混。</strong></p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：直接把竞争型 IO 表的 $a_{ij}$ 当国内网络用</div>
+        <p>竞争型表把进口中间品混进了国内使用。做中国国内生产网络，应用非竞争型 IO 表（进口单列）或剔除进口列，否则高估国内上游依赖、低估对外脆弱性。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 3：所有部门用同一个 Calvo 概率 $\theta$</div>
+        <p>多部门模型的全部意义就是 $\theta_j$ 异质。若偷懒把 $\theta$ 设成常数，就退化成单部门、丢掉"异质粘性放大货币非中性"这个核心机制（Nakamura-Steinsson 2010）。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 4：忽视 Leontief 逆，只算直接消耗系数</div>
+        <p>直接消耗系数 $a_{ij}$ 只算"一轮"；完整的链式引致需求在 $(I-A)^{-1}$ 里。用 $A$ 而不用 Leontief 逆算"关键部门"，会低估上游间接传导、漏掉真正的网络中心。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 5：相信"部门越多总波动越小"（忘记聚合之谜）</div>
+        <p>独立部门 + 对称网络才有 $1/\sqrt J$。真实网络高度非对称，少数关键部门的冲击被放大成宏观波动。做方差分解前先算中心性，别默认分散化一定成立。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 6：部门 TFP 用总量方法粗估，再当部门冲击</div>
+        <p>部门 TFP 应用分行业生产函数估计（OP/LP/ACF），不是对部门产出简单索洛余差再假设同质。否则部门冲击测不准，跨部门传导 IRF 与方差分解全偏。</p>
+      </div>
+
+      <h3>11.3 进阶资料与交叉链接</h3>
+      <ul>
+        <li>Carvalho V.M. &amp; Tahbaz-Salehi A. (2019), "Production Networks: A Primer", <em>Annual Review of Economics</em> —— 生产网络的系统教材式综述。</li>
+        <li>Gabaix X. (2011), "The Granular Origins of Aggregate Fluctuations", <em>Econometrica</em> —— 与 Acemoglu et al. 并列的"聚合之谜"另一支。</li>
+        <li>Baqaee D. &amp; Farhi E. (2020), "Productivity and Misallocation in General Equilibrium", <em>QJE</em> —— 用生产网络做资源错配/效率的高阶方法。</li>
+        <li>交叉链接：单部门内核见 <a href="10-nk-three-equation.html">10 NK 三方程</a>；RBC 技术冲击见 <a href="09-rbc-model.html">09 RBC 模型</a>；部门 TFP 估计见 <a href="../structural/10-production-function.html">生产函数估计(OP/LP/ACF)</a>；求解与 IRF 见 <a href="08-irf-simulation.html">08 IRF 与模拟</a>；同站 <a href="19-zlb-occasionally-binding.html">ZLB 与偶发约束</a> 互为非线性/前沿姊妹篇。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="19-zlb-occasionally-binding.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">ZLB 与偶发约束</div>
+      </a>
+      <a href="index.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">DSGE 总览与路线</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

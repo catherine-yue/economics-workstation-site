@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RDD 断点回归 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item active" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main"><div class="content-wrap">
+
+  <div class="breadcrumb">
+    <a href="../index.html">首页</a><span class="sep">/</span>
+    <a href="index.html">实证论文</a><span class="sep">/</span>
+    <span>RDD 断点回归</span>
+  </div>
+
+  <div class="page-header">
+    <span class="tag">实证 · 07</span>
+    <h1>RDD 断点回归：Sharp / Fuzzy RDD 与 rdrobust 实务</h1>
+    <p class="desc">Regression Discontinuity Design (RDD) 是最接近随机实验的准实验方法。当处理分配完全由一个连续变量（running variable）是否越过某个阈值（cutoff）决定时，阈值附近的个体就如同被"随机分配"。本页讲清 Sharp RDD、Fuzzy RDD、局部线性回归、带宽选择、协变量连续性检验与排序检验。</p>
+  </div>
+
+  <div class="prereq-box">
+    <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+    <div class="prereq-grid">
+      <div class="prereq-item">
+        <div class="prereq-label">① 数学 / 统计基础</div>
+        <div class="prereq-body">局部线性 / 局部多项式回归、非参数估计（核回归、三角核）、带宽选择（IMSE / 交叉验证）、结果与密度在 cutoff 处的连续性假设。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">② 经济学理论前置</div>
+        <div class="prereq-body">政策评估中的断点设计思想：sharp vs fuzzy RDD，阈值分配带来的准实验逻辑。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">③ 软件 / 计算前置</div>
+        <div class="prereq-body">Stata 17+（外部命令：<code class="inline">rdrobust</code>、<code class="inline">rdplot</code>、<code class="inline">rdlocrand</code>、<code class="inline">rddensity</code>）。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">④ 站内前置页面</div>
+        <div class="prereq-body">先学 <a href="04-baseline-regression.html">04 基准回归</a>，再进入非参数局部识别。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">⑤ 难度分级</div>
+        <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">进阶</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toc-box">
+    <div class="toc-title">本页目录 / CONTENTS</div>
+    <ol>
+      <li><a href="#s1">RDD 的直觉：running variable 与 cutoff</a></li>
+      <li><a href="#s2">Sharp RDD 的形式化</a></li>
+      <li><a href="#s3">Fuzzy RDD 的形式化</a></li>
+      <li><a href="#s4">局部线性回归与带宽选择（IK / CCT）</a></li>
+      <li><a href="#s5">协变量连续性与排序检验 rddensity</a></li>
+      <li><a href="#s6">完整 Stata 代码（rdrobust / rdplot / rddensity）</a></li>
+      <li><a href="#s6b">前沿扩展：Honest CI、Donut RDD、带宽敏感性与操纵检验</a></li>
+      <li><a href="#s7">论文案例与常见错误</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="s1">
+    <h2><span class="sec-num">01</span> RDD 的直觉：running variable 与 cutoff</h2>
+    <p>想象一个奖学金发放规则：考试分数 ≥ 60 分的学生获奖学金，&lt; 60 分的没有。你想知道奖学金对后续学业表现的影响。当然不能直接比较"获奖 vs 未获奖"——分数高的学生本来就更优秀。但 RDD 的洞见是：<strong>刚好考 59.5 分和刚好考 60.5 分的学生，在能力、努力、运气等所有维度上几乎是随机的</strong>，唯一的系统差异就是那 1 分以及由此带来的奖学金资格。于是我们只需要比较 cutoff 两侧很窄窗口内的个体，就能近似得到因果效应。</p>
+    <p>RDD 的两个核心概念：</p>
+    <ul>
+      <li><strong>Running variable (assignment variable / score)</strong>：决定处理分配的连续变量 $X$。例如考试分数、年龄、降雨量距离阈值的偏差、企业规模距离某线的距离。</li>
+      <li><strong>Cutoff (threshold)</strong>：阈值 $c$。当 $X \ge c$ 时被处理，$X &lt; c$ 时未被处理（或反过来）。</li>
+    </ul>
+  </div>
+
+  <div class="section" id="s2">
+    <h2><span class="sec-num">02</span> Sharp RDD 的形式化</h2>
+    <p>当处理分配<strong>完全由</strong> running variable 决定（$X \ge c \Rightarrow D=1$，$X &lt; c \Rightarrow D=0$，没有例外），这就是 <strong>Sharp RDD</strong>（精确断点）。Sharp RDD 的处理效应就是结果函数 $E[y|X]$ 在 cutoff 处的跳跃：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 2.1 — Sharp RDD 估计量</div>
+      $$ \hat{\tau}_{SRD} = \lim_{x \downarrow c} E[y|X=x] - \lim_{x \uparrow c} E[y|X=x] $$
+    </div>
+    <p>直观上，我们在 cutoff 左右两侧分别拟合 $y$ 关于 $X$ 的回归，然后在 $X=c$ 处读出两条回归线的预测值之差。这个差值就是处理效应。注意它只对<strong>恰好位于 cutoff 处的子总体</strong>（compliers at the margin）有因果解释，外推到其他位置需要额外假设。</p>
+  </div>
+
+  <div class="section" id="s3">
+    <h2><span class="sec-num">03</span> Fuzzy RDD 的形式化</h2>
+    <p>现实中政策规则往往不那么"硬"：例如"分数 ≥ 60 的学生<strong>应该</strong>获奖学金"，但有人考了 60.5 分却因为其他原因没拿到，有人考了 59.5 分却通过申诉拿到了。处理分配 $D$ 在 cutoff 处不是从 0 跳到 1，而只是<strong>概率上有一个跳跃</strong>——这就是 <strong>Fuzzy RDD</strong>（模糊断点）。</p>
+    <p>Fuzzy RDD 本质上是一个<strong>局部 IV</strong>：cutoff 指示变量 $1(X \ge c)$ 是处理变量 $D$ 的工具变量。估计量是"结果的跳跃"除以"处理概率的跳跃"：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 3.1 — Fuzzy RDD 估计量（Wald 形式）</div>
+      $$ \hat{\tau}_{FRD} = \frac{\lim_{x \downarrow c} E[y|X=x] - \lim_{x \uparrow c} E[y|X=x]}{\lim_{x \downarrow c} E[D|X=x] - \lim_{x \uparrow c} E[D|X=x]} $$
+    </div>
+    <p>分子就是 Sharp RDD 风格的结果跳跃；分母是处理概率的跳跃（在 Sharp RDD 下它恒等于 1，所以 Fuzzy RDD 就退化成 Sharp RDD）。</p>
+  </div>
+
+  <div class="section" id="s4">
+    <h2><span class="sec-num">04</span> 局部线性回归与带宽选择（IK / CCT）</h2>
+    <p>RDD 的估计不在全样本上做，而在 cutoff 附近一个很窄的带宽 $h$ 内做。常用 <strong>局部线性回归（local linear regression）</strong>：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 4.1 — 局部线性 RDD 回归</div>
+      $$ \min_{\alpha, \beta, \tau, \delta} \sum_{i=1}^n K\left(\frac{X_i-c}{h}\right)\big(y_i - \alpha - \beta(X_i-c) - \tau D_i - \delta D_i(X_i-c)\big)^2 $$
+    </div>
+    <p>其中 $K(\cdot)$ 是核函数（triangular kernel 最常用），$h$ 是带宽。我们关心的系数是 $\tau$。</p>
+    <h3>带宽选择</h3>
+    <p>带宽 $h$ 太小 → 样本太少，方差大；带宽太大 → 把 cutoff 远处非线性的关系扯进来，偏误大。最优带宽由数据自动选择，最常用两个：</p>
+    <ul>
+      <li><strong>IK (Imbens–Kalyanaraman, 2012)</strong>：RDD 专用的最优带宽选择。</li>
+      <li><strong>CCT (Calonico–Cattaneo–Titiunik, 2014)</strong>：目前 <code class="inline">rdrobust</code> 默认带宽，对偏误修正更稳健。</li>
+    </ul>
+    <div class="callout tip">
+      <div class="callout-title">实务做法</div>
+      <p>报告 <code class="inline">rdrobust</code> 默认 CCT 带宽结果作为主回归；同时报告 IK 带宽、0.5×h、2×h 作为稳健性。如果结果在这些带宽下都稳健，说明结论不是带宽选择的产物。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s5">
+    <h2><span class="sec-num">05</span> 协变量连续性与排序检验 rddensity</h2>
+    <p>RDD 的核心识别假设是：<strong>在 cutoff 处，除了处理变量本身跳跃外，其他所有东西都连续</strong>。这包括：</p>
+    <ul>
+      <li><strong>协变量连续</strong>：年龄、性别、教育这些不应该被处理影响的协变量，在 cutoff 两侧应该平滑过渡。如果它们在 cutoff 处也跳跃，说明个体在 manipulate running variable——RDD 不成立。检验方法：对每个协变量跑一次 rdrobust，系数应该不显著。</li>
+      <li><strong>密度连续（排序检验，McCrary test / rddensity）</strong>：running variable 的分布在 cutoff 处应该平滑。如果 cutoff 附近样本数异常多（例如刚好 60 分的学生远多于 59 分的），说明个体在 manipulation（例如老师改卷时"手下留情"把 59 分改成 60 分）。Stata 命令 <code class="inline">rddensity X, c(cutoff)</code> 直接检验。</li>
+    </ul>
+  </div>
+
+  <div class="section" id="s6">
+    <h2><span class="sec-num">06</span> 完整 Stata 代码（rdrobust / rdplot / rddensity）</h2>
+    <p>下面这段代码用 Stata 内置的 <code class="inline">rdrobust</code> 配套模拟数据演示完整 RDD 流程。所有命令都是 RDD 论文里的事实标准。</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · rdd.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* RDD 完整演示：Sharp RDD + Fuzzy RDD + rdplot + rddensity
+*==============================================================*
+clear all
+set more off
+set seed 20260911
+
+* --- 首次运行安装 ---
+* ssc install rdrobust,     replace
+* ssc install rddensity,   replace
+* ssc install lpdensity,   replace
+
+* --- 1. 构造 RDD 模拟数据 ---
+* running variable X ~ Uniform(-1, 1)，cutoff c=0
+* 处理规则：X &gt;= 0 时 D=1（Sharp）
+* 真实处理效应 tau = 0.8
+set obs 2000
+gen X = (runiform()*2 - 1)        // running variable, c=0
+gen D = (X &gt;= 0)
+gen eps = rnormal()
+gen y = 0.5 + 0.3*X + 0.8*D + 0.1*X*D + eps
+gen age = 30 + 5*X + rnormal()*3     // 协变量：应在 cutoff 处连续
+gen female = rbinomial(1, 0.5 + 0.1*X) // 协变量：应在 cutoff 处连续
+
+* --- 2. Sharp RDD 主回归：rdrobust ---
+* y 是结果，X 是 running variable，c(0) 指定 cutoff
+rdrobust y X, c(0)
+* 输出包括：
+*   Coef. (在 cutoff 处的跳跃)
+*   Conventional / Bias-corrected / Robust 三种置信区间
+*   带宽 h_left, h_right
+
+* --- 3. 画 RDD 图：rdplot ---
+rdplot y X, c(0) ///
+    title("RDD：奖学金对后续学业表现的影响") ///
+    ytitle("后续 GPA") xtitle("入学考试分数（距 cutoff 的距离）") ///
+    graph_options(legend(off))
+
+* --- 4. 带宽敏感性分析：0.5h, h, 2h ---
+rdrobust y X, c(0) h(0.2)
+rdrobust y X, c(0) h(0.4)
+rdrobust y X, c(0) h(0.8)
+
+* --- 5. 三角核 vs 矩形核 vs 局部二次 ---
+rdrobust y X, c(0) kernel(triangular) p(1)
+rdrobust y X, c(0) kernel(uniform)    p(1)
+rdrobust y X, c(0) kernel(triangular) p(2)
+
+* --- 6. Fuzzy RDD：处理分配不完全由 X 决定 ---
+* 假设 D 在 X&gt;=0 时以 0.8 概率为 1，X&lt;0 时以 0.2 概率为 1
+replace D = (X &gt;= 0 &amp; runiform()&lt;0.8) | (X&lt;0 &amp; runiform()&lt;0.2)
+gen y_fuzzy = 0.5 + 0.3*X + 0.8*D + eps
+
+* Fuzzy RDD：用 c(0) 处的虚拟变量作为 D 的工具
+rdrobust y_fuzzy X, c(0) fuzzy(D)
+* 等价于局部 IV：cutoff indicator 是 D 的工具
+
+* --- 7. 协变量连续性检验（placebo outcome） ---
+* 对 age、female 跑 rdrobust，系数应不显著
+rdrobust age    X, c(0)
+rdrobust female X, c(0)
+
+* --- 8. 排序检验 / 密度检验（McCrary 类） ---
+rddensity X, c(0) plot
+* 原假设：running variable 的密度在 cutoff 处连续
+* 不拒绝 → 没有 manipulation，RDD 识别有效
+* 拒绝 → 个体在 manipulate running variable，RDD 失效
+
+* --- 9. 导出结果 ---
+* rdrobust 结果可以用 esttab 导出，也可以用 outreg2
+* rdrobust 没有 estimates 范式，建议手工记录系数和稳健标准误
+</code></pre>
+    </div>
+  </div>
+
+  <div class="section" id="s6b">
+    <h2><span class="sec-num">06b</span> 前沿扩展：Honest CI、Donut RDD、带宽敏感性与操纵检验</h2>
+    <p>上面 s4–s6 是 RDD 的"标配流程"。本节补上 2018 年以来审稿人最常追问的四块进阶内容：(1) 当回归函数在断点处有曲率时，传统置信区间 coverage 不足，需要 Honest / bias-aware CI；(2) 怀疑断点附近有 sorting/操纵时，用 Donut RDD 把最可疑的一小圈观测挖掉再估；(3) 带宽选择不能只报一个数字，要做 IK / CCT 双口径 + 带宽敏感性曲线；(4) 密度操纵检验从 McCrary (2008) 升级到 Cattaneo–Jansson–Ma (2018) 的 <code class="inline">rddensity</code>。</p>
+
+    <h3>6b.1 Honest confidence intervals（诚实置信区间）</h3>
+    <p><strong>问题</strong>：传统局部线性 RDD 的置信区间（<code class="inline">rdrobust</code> 的 conventional CI）默认"在给定带宽下把估计量当渐近正态"。但 Kolesár & Rothe (2018, AER) 证明：当条件期望函数 $m(x)=E[y|X=x]$ 在断点附近有曲率（二阶导不为零）、尤其当 running variable 离散（如年龄按岁、分数按整分计）时，局部线性估计量的偏误 $O(h^2)$ 不随带宽缩小而按渐近理论消失，<strong>CI 的实际 coverage 会显著低于名义 95%</strong>——也就是说你以为的"95% 置信区间"可能只覆盖 80%。</p>
+    <p><strong>两条修正路线</strong>：</p>
+    <ul>
+      <li><strong>Bias-aware / conditional unbiased CIs（CCT 路线）</strong>：用同一数据先估偏误，做 <strong>bias-correction</strong> 再用 <strong>robust 标准误</strong>——这正是 <code class="inline">rdrobust</code> 默认输出的 Bias-corrected / Robust CI（CCT 2014, Econometrica）。它对渐近偏误稳健，但仍假设带宽按速率趋于零。</li>
+      <li><strong>Honest CIs（Kolesár–Rothe / Armstrong–Kolesár 路线）</strong>：不再依赖带宽趋于无穷的渐近论，而是<strong>显式给二阶导上界 $M$ 加约束</strong>（bounded second derivative，$|m''(x)|\le M$），在整个函数类 $\mathcal{F}(M)$ 上<strong>最小化最坏情形 coverage</strong>。只要真实曲率不超过 $M$，区间就有 95% 的保证覆盖，带宽固定也行。</li>
+    </ul>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 6b.1 — Honest CI 的偏误界思想</div>
+      $$ \hat{\tau}_{h} = \tau + \underbrace{O(h^{p+1} m'' \cdots)}_{\text{局部线性偏误}} + O_p\!\left(\frac{1}{\sqrt{nh}}\right), \qquad \text{Honest half-width} = 1.96\,\widehat{SE} + \underbrace{M\!\cdot h^2}_{\text{worst-case bias}} $$
+    </div>
+    <p>直观：Honest CI = 渐近正态区间 <strong>再往外扩一段</strong> $M h^2$，把"曲率可能带来的最坏偏误"直接吃进区间半径里。$M$ 越大区间越宽，但越安全；实务中常用数据估出的二阶导稳健上界来设 $M$。</p>
+    <div class="callout warning">
+      <div class="callout-title">工具现实：honest CI 的主实现是 R，不是 Stata</div>
+      <p>目前 <code class="inline">rdrobust</code>（Stata）<strong>没有</strong>现成的 honest 选项；honest/BSD CI 的事实标准实现是 R 包 <code class="inline">RDHonest</code>（Kolesár 维护）。下面 Stata 代码给出"手动 bias-aware 区间"的等价写法（先 <code class="inline">rdbwselect</code> 选带宽，再用 <code class="inline">rdrobust</code> 自带的 bias-corrected robust CI），并在注释里给出 R 端 <code class="inline">RDHonest</code> 的对应命令。论文中若用 honest CI，建议在附录报 R 包结果，正文用 CCT robust CI。</p>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s6b1_honest_ci.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+* Honest / bias-aware CI 演示：Kolesar-Rothe(2018) 思想的 Stata 等价
+* 数据沿用 s6：X ~ U(-1,1), cutoff c=0, tau=0.8
+*--------------------------------------------------------------*
+set seed 20260911
+set obs 2000
+gen X = (runiform()*2 - 1)
+gen D = (X &gt;= 0)
+gen eps = rnormal()
+* 故意加入曲率（X 的二次项），制造 honest CI 要对付的情形
+gen y = 0.5 + 0.3*X + 0.15*X^2 + 0.8*D + eps
+
+* --- (a) rdrobust 自带的 bias-corrected robust CI（CCT 路线） ---
+* 默认即输出 Conventional / Bias-corrected / Robust 三套 CI
+rdrobust y X, c(0) kernel(triangular) p(1)
+* 论文主报 "Robust" 那一列：它已经把偏误估计并校正、用稳健 SE。
+
+* --- (b) 手动选带宽：rdbwselect（CCT IK 口径都能出） ---
+* mserd  = IMSE 最优（CCT 默认）
+* cerrd  = coverage-error-rate optimal（CI 专用，更接近 honest 思想）
+rdbwselect y X, c(0) deriv(0) kernel(triangular) p(1) bwselect(mserd)
+rdbwselect y X, c(0) deriv(0) kernel(triangular) p(1) bwselect(cerrd)
+* 把上面返回的带宽 h 记下来：
+*   e(h_l), e(h_r) 为 CCT 最优；cerrd 为 CI 专用带宽
+
+* --- (c) 手动 bias-aware / honest 区间（Stata 等价写法） ---
+* 思路：估计局部线性 tau_hat 与 SE；
+*       再用数据估二阶导上界 M，把偏误界 M*h^2 加进半宽。
+local h = 0.4
+* 局部线性估计（三角核）
+gen w = (abs(X)&lt;=`h') * (1 - abs(X)/`h')       // 三角核权重
+reg y D c.X#i.D [aw=w] if abs(X)&lt;=`h', vce(robust)
+scalar tau = _b[D]
+scalar se  = _se[D]
+* 用断点两侧局部二次回归估二阶导上界 M（粗略：取两侧 |二阶导| 的较大值）
+reg c.X##c.X if X&lt;0 &amp; abs(X)&lt;=`h'
+scalar m_lo = abs(_b[c.X#c.X])
+reg c.X##c.X if X&gt;=0 &amp; abs(X)&lt;=`h'
+scalar m_hi = abs(_b[c.X#c.X])
+scalar M = max(m_lo, m_hi)*1.2                  // 留 20% 安全余量
+scalar bias = M*`h'^2                           // worst-case 偏误界
+scalar hw   = invnormal(0.975)*se + bias         // honest 半宽
+display "honest CI: [" tau - hw ", " tau + hw "]   (M=" M ", bias=" bias ")"
+
+* --- (d) R 端真正的 honest CI（论文推荐，附录给出） ---
+* R:  library(RDHonest)
+*     RDHonest(y ~ X, cutoff=0, M=NULL)
+*     # M=NULL 时用数据估二阶导上界；也可手动 M=0.5
+* 输出：honest 95% CI，带宽固定即可，不要求 h→0。
+</code></pre>
+    </div>
+
+    <h3>6b.2 Donut RDD（甜甜圈 RDD）</h3>
+    <p><strong>原理</strong>：当怀疑个体在断点处有 <strong>sorting / 操纵 / 数据堆积（heaping）</strong>时，离断点越近的观测越可能是"精确卡线"的操纵者（例如老师把 59.5 分批改到 60 分、自报身高在 170cm 扎堆）。Donut RDD 的做法是：<strong>把断点周围一个宽度为 $d$ 的小窗口 $|X-c|\le d$ 内的观测直接挖掉</strong>，再在剩下的"甜甜圈"上做局部线性 RDD。被挖掉的正是最可能被操纵的那一圈；远处的观测操纵成本高、相对干净。</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 6b.2 — Donut RDD 估计样本</div>
+      $$ \hat{\tau}_{donut} = \hat{\tau}_{RDD}\Big|_{X \notin [c-d,\, c+d]}, \qquad d \text{ 由制度/堆积证据决定，事后不得调} $$
+    </div>
+    <p><strong>适用场景</strong>：(i) 密度检验在断点处显著（bunching）；(ii) running variable 离散且在阈值附近 heaping；(iii) 制度上明确知道个体能在阈值附近做小幅操纵（分数、申报指标、考核线）。<strong>代价</strong>：丢掉了离断点最近、本来最"随机"的观测，方差变大——所以 Donut RDD 是<strong>稳健性检验</strong>，不是替代主回归；若 donut 后系数仍接近主回归，说明结果不是操纵那一小圈堆出来的。</p>
+    <div class="callout tip">
+      <div class="callout-title">donut 宽度 $d$ 怎么定</div>
+      <p>① 由数据堆积证据定：直方图上 bunching 的那几个 bin 宽度；② 由制度定：如分数按整分计，就挖 $|X-c|\le 0.5$；③ 报告多档 $d$（如 0.2、0.3、0.5）的结果表。<strong>禁止</strong>：试了好几个 $d$，挑"系数最显著"的那个写进正文。</p>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s6b2_donut.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+* Donut RDD：挖掉断点附近 d 宽的一圈再估计
+*--------------------------------------------------------------*
+set seed 20260911
+set obs 2000
+gen X = (runiform()*2 - 1)
+gen D = (X &gt;= 0)
+gen eps = rnormal()
+gen y = 0.5 + 0.3*X + 0.8*D + 0.1*X*D + eps
+
+* --- 主回归（不挖洞）作为基准 ---
+rdrobust y X, c(0)
+
+* --- Donut：先手动挖掉 |X| &lt;= d，再跑 rdrobust ---
+local d = 0.1                       // donut 半径，由制度/堆积证据定
+gen keep_donut = (abs(X) &gt; `d')     // 挖掉断点周围 ±0.1
+rdrobust y X if keep_donut, c(0)
+* rdrobust 仍会在剩余样本里自动选带宽；断点处 now 是一个"洞"。
+
+* --- 多档 donut 宽度做稳健性表 ---
+foreach d in 0.05 0.1 0.2 {
+    gen keep`d' = (abs(X) &gt; `d')
+    rdrobust y X if keep`d', c(0)
+    drop keep`d'
+}
+* 报告：主回归 tau≈0.8；d=0.05/0.1/0.2 下 tau 仍显著为正且接近 0.8。
+
+* --- 配合密度检验：先 rddensity 看哪里 bunching ---
+rddensity X, c(0) plot
+* 若断点右侧样本异常多 → 操纵嫌疑 → donut 稳健性更要做。
+</code></pre>
+    </div>
+
+    <h3>6b.3 带宽选择深化：IK、CCT 与带宽敏感性图</h3>
+    <p>s4 已提到 IK 与 CCT。这里把它落成可执行流程，并补一张<strong>带宽敏感性图（bandwidth sensitivity plot）</strong>——审稿人越来越要求看到"系数随带宽怎么变"。</p>
+    <ul>
+      <li><strong>IK（Imbens & Kalyanaraman, 2012, ReStud）</strong>：RDD 专用最优带宽，最小化渐近 MSE，带宽口径 <code class="inline">bwselect(ik)</code>。</li>
+      <li><strong>CCT（Calonico, Cattaneo & Titiunik, 2014, Econometrica）</strong>：<code class="inline">rdrobust</code> 默认的 <code class="inline">mserd</code>（IMSE 最优），并配套 bias-corrected robust CI；CI 专用口径 <code class="inline">cerrd</code>。</li>
+      <li><strong>带宽敏感性</strong>：在 $0.5h^\ast$、$h^\ast$、$2h^\ast$ 下分别估计，画"横轴=带宽、纵轴=tau 估计值 + 95%CI"的图。若结论只在某一个带宽下成立，就是 <em>cherry-picking bandwidth</em>。</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s6b3_bw_sensitivity.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+* 带宽选择：IK vs CCT + 带宽敏感性曲线
+*--------------------------------------------------------------*
+set seed 20260911
+set obs 2000
+gen X = (runiform()*2 - 1)
+gen D = (X &gt;= 0)
+gen y = 0.5 + 0.3*X + 0.8*D + 0.1*X*D + rnormal()
+
+* --- 1. IK 最优带宽（rdbwselect_2014 / rdrobust 内 bwselect(ik)） ---
+rdrobust y X, c(0) bwselect(ik)
+* --- 2. CCT 默认 IMSE（rdrobust 默认，等价 bwselect(mserd)） ---
+rdrobust y X, c(0) bwselect(mserd)
+* --- 3. CI 最优带宽 cerrd ---
+rdbwselect y X, c(0) bwselect(cerrd)
+
+* --- 4. 带宽敏感性：循环跑 h = 0.2,0.3,...,0.8，存系数 ---
+tempname bmat
+postfile `bmat' double(h tau se) using "bw_sens.dta", replace
+foreach h in 0.2 0.3 0.4 0.5 0.6 0.7 0.8 {
+    rdrobust y X, c(0) h(`h')
+    post `bmat' (`h') (e(tau_bc)) (e(se_rb))   // bias-corrected 系数 + robust SE
+}
+postclose `bmat'
+
+use "bw_sens.dta", clear
+gen lo = tau - 1.96*se
+gen hi = tau + 1.96*se
+twoway (rcap lo hi h, lcolor(navy%60)) ///
+       (scatter tau h, mcolor(navy) msymbol(O)), ///
+       yline(0, lcolor(red) lpattern(dash)) ///
+       ytitle("处理效应 tau") xtitle("带宽 h") ///
+       title("带宽敏感性图：tau 随 h 的变化") ///
+       legend(label(1 "95% CI") label(2 "tau 估计"))
+* 读图：tau 应在各带宽下稳定为正；若只在某一个 h 显著，需警惕。
+</code></pre>
+    </div>
+
+    <h3>6b.4 McCrary 密度检验与 rddensity（操纵检验）</h3>
+    <p>s5 已用 <code class="inline">rddensity</code>。这里把两代方法讲清楚：</p>
+    <ul>
+      <li><strong>McCrary (2008, JoE)</strong>：开创性地提出"检验 running variable 密度在断点处是否连续"来识别 manipulation。经典实现是 Stata 命令 <code class="inline">DCdensity</code>（需手动 bin + 选两个调参）。原假设 $H_0$：密度 $f(x)$ 在 $c$ 处连续；拒绝 → 个体在精确操纵 running variable。</li>
+      <li><strong>Cattaneo–Jansson–Ma (2018, Stata Journal 18(1):234–261)</strong>：用<strong>局部多项式密度估计</strong>重做这一检验，<strong>免去预分 bin</strong>、自动选带宽（<code class="inline">rdbwdensity</code>），size 性质更好、在额外约束下功效更高。Stata 命令 <code class="inline">rddensity</code>（配套 <code class="inline">lpdensity</code>）。这是目前的默认做法。</li>
+    </ul>
+    <div class="callout info">
+      <div class="callout-title">怎么读密度检验结果</div>
+      <p><code class="inline">rddensity X, c(0)</code> 输出断点两侧密度比的估计、z 值与 p 值。p&gt;0.05 → 不拒绝密度连续，无 manipulation 证据，RDD 识别安全；p&lt;0.05 → 密度在断点处跳跃，说明有 bunching，必须上 donut RDD / 协变量连续性 / 制度解释。<strong>注意</strong>：密度检验不拒绝 ≠ 一定没有操纵（功效问题），但拒绝 = 明确的红旗。</p>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s6b4_density.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+* 操纵检验：McCrary (2008) 与 rddensity (CJM 2018)
+*--------------------------------------------------------------*
+* ssc install rddensity, replace
+* ssc install lpdensity, replace
+* ssc install DCdensity,   replace   // 经典 McCrary（可选，做对照）
+
+set seed 20260911
+set obs 3000
+gen X = (runiform()*2 - 1)
+
+* --- (a) 新版：rddensity（Cattaneo-Jansson-Ma 2018，默认做法） ---
+rddensity X, c(0)
+* 自动选带宽；输出断点处密度跳跃的 z/p 值 + 密度比。
+rddensity X, c(0) plot          // 画断点两侧局部多项式密度 + CI
+rddensity X, c(0) bwselect(comb) // 组合带宽选择
+
+* --- (b) 经典：DCdensity（McCrary 2008），做对照 ---
+* DCdensity X, breakpoint(0) generate(x1 f1 se1) graph
+* 需手动指定 bin 与 bandwidth；与 rddensity 结论互证。
+
+* --- (c) 若显著 → 三件事 ---
+*   1) 报告 bunching 出现在断点哪一侧（直方图）；
+*   2) 做 Donut RDD（见 6b.2）作为稳健性；
+*   3) 用制度语言解释：谁有动机/能力在断点附近操纵？
+</code></pre>
+    </div>
+  </div>
+
+  <div class="section" id="s7">
+    <h2><span class="sec-num">07</span> 论文案例与常见错误</h2>
+
+    <h3>论文案例</h3>
+    <div class="paper-card">
+      <span class="paper-type en">English · JoE</span>
+      <div class="paper-title">Manipulation of the Running Variable in the Regression Discontinuity Design: A Density Test</div>
+      <div class="paper-meta">Justin McCrary · Journal of Econometrics, 2008, 142(2): 698–714</div>
+      <div class="paper-desc">密度操纵检验（McCrary test）的原始论文。提出通过检验 running variable 的密度在 cutoff 处是否连续来识别 manipulation：若刚好越过阈值的样本异常多，说明个体在操纵 running variable。Stata 经典命令 <code class="inline">DCdensity</code>。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · AER</span>
+      <div class="paper-title">Inference in Regression Discontinuity Designs with a Discrete Running Variable</div>
+      <div class="paper-meta">Michal Kolesár & Christoph Rothe · American Economic Review, 2018, 108(8): 2277–2304</div>
+      <div class="paper-desc">Honest / bounded-second-derivative CI 的核心文献。证明当回归函数有曲率、尤其 running variable 离散时，常规局部线性 CI 的 coverage 严重不足；提出在函数类约束下保证最坏情形 coverage 的诚实置信区间。R 包 <code class="inline">RDHonest</code>。本页 6b.1 的方法依据。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · ReStud</span>
+      <div class="paper-title">Optimal Bandwidth Choice for the Regression Discontinuity Estimator</div>
+      <div class="paper-meta">Guido Imbens & Karthik Kalyanaraman · Review of Economic Studies, 2012, 79(3): 933–959</div>
+      <div class="paper-desc">IK 最优带宽选择的原始论文。提出 RDD 专用的 IMSE 最优带宽公式，是 CCT 之前的事实标准。Stata 中对应 <code class="inline">bwselect(ik)</code>。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · Econometrica</span>
+      <div class="paper-title">Robust Nonparametric Confidence Intervals for Regression-Discontinuity Designs</div>
+      <div class="paper-meta">Sebastian Calonico, Matias D. Cattaneo & Rocío Titiunik · Econometrica, 2014, 82(6): 2295–2326</div>
+      <div class="paper-desc">CCT 带宽选择 + bias-corrected robust CI 的原始理论论文。证明并给出把局部多项式偏误估计、校正后再用稳健 SE 构造 CI 的方法，是 <code class="inline">rdrobust</code> 默认输出 "Robust" 列的依据。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · Stata Journal</span>
+      <div class="paper-title">rddensity: Manipulation Testing Based on Density Discontinuity</div>
+      <div class="paper-meta">Matias D. Cattaneo, Michael Jansson & Xinwei Ma · Stata Journal, 2018, 18(1): 234–261</div>
+      <div class="paper-desc">用局部多项式密度估计重做 McCrary 操纵检验，免预分 bin、自动选带宽（<code class="inline">rdbwdensity</code>），size 性质优于经典 McCrary。Stata 命令 <code class="inline">rddensity</code> 的出处。本页 6b.4 的方法依据。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · QJE</span>
+      <div class="paper-title">Saving Babies? Revisiting the Effect of Very Low Birth Weight Classification</div>
+      <div class="paper-meta">Alan I. Barreca, Melanie Guldi, Jason M. Lindo & Glen R. Waddell · Quarterly Journal of Economics, 2011, 126(4): 2111–2135</div>
+      <div class="paper-desc">Donut RDD 的代表性应用：指出 1500g"极低出生体重"阈值附近存在数据堆积/操纵，挖掉断点附近观测后重估，发现原先的医疗效应大幅缩水。本页 6b.2 的方法依据。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · JEL</span>
+      <div class="paper-title">Regression Discontinuity Designs in Economics</div>
+      <div class="paper-meta">David S. Lee & Thomas Lemieux · Journal of Economic Literature, 2010</div>
+      <div class="paper-desc">RDD 领域的最佳综述。系统讲清 Sharp / Fuzzy RDD 的识别假设、局部线性回归、带宽选择、协变量连续性、排序检验。每个做 RDD 的学生必读。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · Stata Journal</span>
+      <div class="paper-title">rdrobust: Software for Regression-discontinuity Designs</div>
+      <div class="paper-meta">Calonico, Cattaneo & Titiunik · Stata Journal, 2014 / 2017</div>
+      <div class="paper-desc">rdrobust 命令的原始论文。讲清 CCT 带宽选择、bias-corrected robust 置信区间、rdplot 图形。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 《经济研究》</span>
+      <div class="paper-title">《政府补贴门槛与企业研发投入》类 RDD 文章</div>
+      <div class="paper-meta">《经济研究》《管理世界》近年多篇 · 通用范式</div>
+      <div class="paper-desc">中国情境下常见的 RDD 应用：高新技术企业认定标准（研发费用占比 ≥ 3%）、最低注册资本要求、企业规模门槛（"规上"工业企业标准）、高考分数线、公务员考试面试线。文章通常报告 rdrobust 默认带宽、IK 带宽、协变量连续性、rddensity 排序检验，并画 rdplot 图。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 《管理世界》</span>
+      <div class="paper-title">《最低工资标准与企业雇佣决策》类 RDD 文章</div>
+      <div class="paper-meta">《管理世界》系列 · 通用范式</div>
+      <div class="paper-desc">最低工资政策在区县层面有一个明确的金额阈值，围绕阈值构造 running variable（企业平均工资距最低工资线的距离），用 Sharp RDD 估计政策对雇佣的影响。是中文顶刊里 RDD 用法最规范的一类。</div>
+    </div>
+
+    <h3>常见错误</h3>
+    <div class="callout danger">
+      <div class="callout-title">错误 1：不跑 rddensity / 排序检验就直接报 RDD 结果</div>
+      <p>如果 running variable 在 cutoff 处有 manipulation（个体精确地操纵分数越过阈值），RDD 识别假设就被破坏。必须报告 rddensity 检验的 p 值。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 2：在全样本上做 OLS 而不是局部线性回归</div>
+      <p>RDD 的识别只在 cutoff 附近成立。用全样本 OLS 等于假设 $E[y|X]$ 在整个定义域上线性，这几乎不成立。必须在 $[c-h, c+h]$ 窗口内做局部回归。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 3：只报一个带宽</div>
+      <p>带宽选择有主观性。必须报告默认带宽、IK 带宽、0.5h、2h 多档结果，证明结论对带宽不敏感。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 4：把协变量当结果变量做跳跃</div>
+      <p>协变量应该在 cutoff 处连续。如果某个协变量在 cutoff 处也跳跃，那它要么被处理影响（不该作为协变量），要么说明 running variable 被操纵。必须对所有预处理协变量跑一次 rdrobust。</p>
+    </div>
+    <div class="callout info">
+      <div class="callout-title">错误 5：把 RDD 效应外推到 cutoff 之外</div>
+      <p>RDD 估计的是"边际上的局部处理效应"（treatment effect at the cutoff），不能直接说"政策对所有人都有这个效果"。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 6：忽略断点处曲率，只报 conventional CI 不做 bias-corrected / honest CI</div>
+      <p>当 $E[y|X]$ 在断点附近有曲率、尤其 running variable 离散时，常规局部线性 CI 的实际 coverage 会低于名义 95%（Kolesár–Rothe 2018）。主回归必须报 <code class="inline">rdrobust</code> 的 Bias-corrected / Robust 列；若 running variable 高度离散，附录补 <code class="inline">RDHonest</code> 的诚实 CI。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 7：密度检验显著后不做 Donut RDD 稳健性</div>
+      <p><code class="inline">rddensity</code> 显著 = 断点附近有 bunching/操纵。正确做法是报告多档 donut 宽度（如 0.05/0.1/0.2）下的系数稳定性；直接忽略密度检验的 p 值继续报主回归，等于把红旗当装饰。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 8：用高阶全局多项式（p=3/4）或事后挑选多项式阶数</div>
+      <p>RDD 的事实标准是局部线性（p=1）+ 三角核。在宽窗口上拟合 p=3/4 的全局多项式会在端点附近剧烈振荡、外推扭曲；多项式阶数必须事前按规则定，不能"试到显著为止"。</p>
+    </div>
+
+    <h3>进阶资料</h3>
+    <ul>
+      <li><strong>Cattaneo, Idrobo & Titiunik (2020)</strong> — <em>A Practical Introduction to Regression Discontinuity Designs</em> (Cambridge Elements)：最实用的 RDD 操作手册。</li>
+      <li><strong>Imbens & Lemieux (2008)</strong> — "Regression discontinuity designs: A guide to practice", <em>Journal of Econometrics</em>。</li>
+      <li><strong>张航、范子英等中文教程</strong> — 国内经济学者整理的 rdrobust 实操笔记。</li>
+    </ul>
+  </div>
+
+  <div class="page-nav">
+    <a href="06-did.html" class="prev">
+      <div class="nav-label">← 上一节</div>
+      <div class="nav-title">DID 双重差分（全套）</div>
+    </a>
+    <a href="08-robustness.html" class="next">
+      <div class="nav-label">下一节 →</div>
+      <div class="nav-title">稳健性检验</div>
+    </a>
+  </div>
+
+</div></div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show')}
+document.querySelectorAll('.copy-btn').forEach(b=>b.onclick=()=>{const c=b.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(c).then(()=>{b.textContent='已复制 ✓';setTimeout(()=>b.textContent='复制',1500)})});
+document.addEventListener('DOMContentLoaded',()=>{if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})}});
+</script>
+</body>
+</html>

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>合成控制法 SCM | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item active" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main"><div class="content-wrap">
+
+  <div class="breadcrumb">
+    <a href="../index.html">首页</a><span class="sep">/</span>
+    <a href="index.html">实证论文</a><span class="sep">/</span>
+    <span>合成控制法 SCM</span>
+  </div>
+
+  <div class="page-header">
+    <span class="tag">实证 · 24 · 准实验方法</span>
+    <h1>合成控制法 Synthetic Control Method：为单个处理对象构造"合成对照组"</h1>
+    <p class="desc">SCM 适用于"政策只在一个（或少数几个）地区/单位实施"的场景：找不到足够多的处理组时，用未处理单位的凸组合（convex combination）构造一个与处理对象政策前几乎完全一致的"合成对照组"。本页讲 Abadie-Diamond-Hainmueller (2010) 的权重求解、Donor pool 选择、预处理拟合、安慰剂检验，以及 Stata <code class="inline">synth</code> / <code class="inline">synth_runner</code> 与 Python <code class="inline">pysyncon</code> 的完整代码。</p>
+  </div>
+
+  <div class="prereq-box">
+    <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+    <div class="prereq-grid">
+      <div class="prereq-item">
+        <div class="prereq-label">① 数学 / 统计基础</div>
+        <div class="prereq-body">面板数据结构、固定效应、线性约束下的二次规划（权重 $w_j \ge 0$、$\sum w_j=1$）、安慰剂检验的置换（permutation）思想。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">② 经济学理论前置</div>
+        <div class="prereq-body">政策评估 / 项目评估；理解"反事实"与"合成对照"的关系。先学 <a href="06-did.html">06 DID</a>——SCM 可视为 DID 在"处理组只有 1 个"极端情形下的推广。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">③ 软件 / 计算前置</div>
+        <div class="prereq-body">Stata 17+（外部命令：<code class="inline">synth</code>、<code class="inline">synth_runner</code>、<code class="inline">basque</code> 自带示例数据）；Python 3.10+（<code class="inline">pandas</code>、<code class="inline">numpy</code>、<code class="inline">pysyncon</code> 或 <code class="inline">synthex</code>）。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">④ 站内前置页面</div>
+        <div class="prereq-body">先学 <a href="06-did.html">06 DID 双重差分</a>（平行趋势、事件研究、安慰剂）与 <a href="08-robustness.html">08 稳健性检验</a>。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">⑤ 难度分级</div>
+        <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#f5ebe0;color:#b87333;">中高</span> ｜ 权重求解直觉简单，但 Donor pool 选择与安慰剂检验极易出错。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toc-box">
+    <div class="toc-title">本页目录 / CONTENTS</div>
+    <ol>
+      <li><a href="#s1">SCM 是什么：从 DID 到合成对照</a></li>
+      <li><a href="#s2">核心假设与权重求解</a></li>
+      <li><a href="#s3">Donor pool 选择与预处理拟合</a></li>
+      <li><a href="#s4">安慰剂检验与统计推断</a></li>
+      <li><a href="#s5">完整 Stata 代码（synth / synth_runner）</a></li>
+      <li><a href="#s6">Python 实现（pysyncon）</a></li>
+      <li><a href="#s7">论文案例与常见错误</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="s1">
+    <h2><span class="sec-num">01</span> SCM 是什么：从 DID 到合成对照</h2>
+    <p>DID 要求"处理组 + 对照组都有一定数量"。但现实中很多政策只在<strong>一个</strong>地区实施——比如加州 1988 年推出烟草控制计划、巴斯克地区的恐怖冲突、一个城市的自贸区——这时你找不到多个处理组，传统 DID 无从下手。<strong>合成控制法（Synthetic Control Method, SCM）</strong>的思路是：不去找一个"真实"的对照组，而是用<strong>所有未处理单位的加权平均</strong>，"拼"出一个与处理单位在政策前几乎完全一致的"合成处理单位"。政策后，真实处理单位与合成对照单位之间的差距，就是政策效应。</p>
+    <p>形式化地，假设面板有 $J+1$ 个单位，单位 1 是唯一处理对象，单位 $2,\dots,J+1$ 是潜在的 donor pool（未处理）。SCM 寻找一组权重 $w=(w_2,\dots,w_{J+1})$，满足 $w_j \ge 0$ 且 $\sum_{j=2}^{J+1} w_j=1$，使得政策前处理单位的预测变量与合成单位尽可能接近：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 1.1 — 合成控制权重的二次规划</div>
+      $$ W^{*} = \arg\min_{W} \big\| \mathbf{X}_1 - \mathbf{X}_0 W \big\|_V^2 \quad \text{s.t. } w_j \ge 0,\ \textstyle\sum_j w_j = 1 $$
+    </div>
+    <p>其中 $\mathbf{X}_1$ 是处理单位的 $K \times 1$ 维预测变量向量，$\mathbf{X}_0$ 是 donor pool 的 $K \times J$ 矩阵，$V$ 是预测变量的权重矩阵（让最重要的变量在拟合中占更大权重）。一旦找到 $W^*$，政策后的反事实结果为：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 1.2 — SCM 处理效应估计</div>
+      $$ \hat{\alpha}_{1t} = Y_{1t} - \sum_{j=2}^{J+1} w_j^{*} Y_{jt}, \quad t > T_0 $$
+    </div>
+    <p>其中 $T_0$ 是政策实施时点。$\hat{\alpha}_{1t}$ 就是"真实加州 − 合成加州"在政策后第 $t$ 年的差距。</p>
+    <div class="callout info">
+      <div class="callout-title">SCM vs DID 的关键差别</div>
+      <p>DID 假设"处理组与对照组政策前趋势平行"，SCM 假设"处理单位可以被 donor pool 的凸组合在政策前完美拟合"。后者更弱：只要 donor pool 里存在一组单位的加权平均能在政策前 mimic 处理单位的走势即可，不要求每个 donor 单独都与处理单位平行。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s2">
+    <h2><span class="sec-num">02</span> 核心假设与权重求解</h2>
+    <h3>2.1 识别假设</h3>
+    <p>SCM 的识别依赖三条核心假设：</p>
+    <ul>
+      <li><strong>假设 1（无溢出 / SUTVA）</strong>：处理只影响单位 1，donor pool 中任何单位都没有受到政策间接影响（no interference）。自贸区 A 省的政策不会通过贸易/人员流动影响到 B 省——这在相邻地区常常不成立。</li>
+      <li><strong>假设 2（预处理拟合良好）</strong>：存在一组权重 $W^*$，使得政策前处理单位的结果变量轨迹与预测变量都被合成单位很好地拟合。拟合不好（RMSPE 很大）时，SCM 结论不可信。</li>
+      <li><strong>假设 3（外生干预）</strong>：政策实施时点 $T_0$ 是外生的，且 donor pool 在 $T_0$ 前后没有遭遇其他重大冲击。</li>
+    </ul>
+    <h3>2.2 权重求解：两层优化</h3>
+    <p>SCM 的权重求解是一个<strong>两层优化</strong>：</p>
+    <div class="step-flow">
+      <div class="step-item">
+        <div class="step-title">外层：选择 V（预测变量权重）</div>
+        <div class="step-desc">V 是对角矩阵，决定哪些预测变量在拟合中更重要。Abadie-Diamond-Hainmueller 的做法是：选择 V 使得<strong>政策前处理单位的结果变量轨迹</strong>被合成单位拟合得最好（即用 pre-treatment outcome 本身作为"拟合目标"反推 V）。这一步在 Stata <code class="inline">synth</code> 中由 <code class="inline">optmethod()</code> 自动完成。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">内层：给定 V，求 W</div>
+        <div class="step-desc">给定 V，权重 W 是一个带线性约束的二次规划：$w_j \ge 0$、$\sum w_j = 1$。Stata <code class="inline">synth</code> 用二次规划求解器自动完成。</div>
+      </div>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">⚠ 权重稀疏性</div>
+      <p>SCM 解出的权重通常是<strong>稀疏的</strong>——donor pool 里几十个单位中，往往只有 3–5 个权重显著大于 0。这是 feature 不是 bug：它强迫你解释"合成加州 = 0.4×内华达 + 0.3×犹他 + 0.2×新墨西哥 + 0.1×阿拉斯加"这种经济学含义。审稿人一定会问"为什么是这几个州？"</p>
+    </div>
+  </div>
+
+  <div class="section" id="s3">
+    <h2><span class="sec-num">03</span> Donor pool 选择与预处理拟合</h2>
+    <h3>3.1 Donor pool 怎么选</h3>
+    <p>Donor pool 是 SCM 最容易出错的环节。三条经验法则：</p>
+    <ul>
+      <li><strong>排除受政策影响的单位</strong>：donor 里不能有任何单位在 $T_0$ 后也被处理（否则反事实被污染）。如果全国所有省份最终都推行了同一政策，你只能把"政策前已被处理"的单位剔除，或改用合成 DID（合成控制 + DID 的组合）。</li>
+      <li><strong>排除遭遇特殊冲击的单位</strong>：donor 里如果某州在政策同期经历了大地震、金融危机、政权更迭，它会把合成对照的轨迹带偏。</li>
+      <li><strong>地域 / 经济结构相似</strong>：donor pool 应限定在与处理单位在经济结构、发展阶段上相似的单位。研究加州烟草控制时，donor 应是其他州而非其他国家。</li>
+    </ul>
+    <h3>3.2 预处理拟合诊断</h3>
+    <p>跑完 SCM 后，第一件事是看<strong>政策前拟合图</strong>（pre-treatment fit plot）：横轴是时间，纵轴是结果变量，画两条线——真实处理单位、合成对照单位。理想情况下，政策前两条线应该几乎重合（RMSPE 很小），政策后才开始分叉。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>诊断指标</th><th>含义</th><th>经验阈值</th></tr></thead>
+        <tbody>
+          <tr><td>Pre-treatment RMSPE</td><td>政策前真实 vs 合成结果变量的均方根预测误差</td><td>应小于政策后 RMSPE 的 1/5 ~ 1/10</td></tr>
+          <tr><td>预测变量均值差距</td><td>处理单位 vs 合成单位在每个预测变量上的均值差</td><td>每个变量差距 &lt; 0.1 个标准差</td></tr>
+          <tr><td>权重稀疏度</td><td>权重 &gt; 0.01 的 donor 个数</td><td>通常 3–8 个；超过 15 个说明 donor pool 太杂</td></tr>
+          <tr><td>负权重</td><td>是否违反 $w_j \ge 0$</td><td>SCM 不允许；若出现说明约束设置错了</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section" id="s4">
+    <h2><span class="sec-num">04</span> 安慰剂检验与统计推断</h2>
+    <p>SCM 没有传统意义上的标准误——因为处理对象只有 1 个，渐近理论无从谈起。Abadie-Diamond-Hainmueller 的解决方案是<strong>置换检验（permutation test）</strong>：把"处理"假装分配给 donor pool 里的每个单位，对每个"伪处理单位"都跑一遍 SCM，得到一组"伪效应"。然后看真实处理单位的政策后效应，在这组伪效应分布里有多极端。</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 4.1 — SCM 安慰剂 p 值</div>
+      $$ p_{\text{placebo}} = \frac{1 + \#\{j: |\hat{\alpha}_{j,\text{post}}| \ge |\hat{\alpha}_{1,\text{post}}|\}}{J+1} $$
+    </div>
+    <p>实务上画一张 <strong>"gap plot"（差距图）</strong>：对每个单位（真实处理 + 所有伪处理），画出"真实 − 合成"随时间的轨迹。真实处理单位的轨迹应该在政策后明显跳出所有伪轨迹的信封（envelope）之外。</p>
+    <div class="callout danger">
+      <div class="callout-title">⚠ 只保留 pre-treatment RMSPE 小的单位</div>
+      <p>如果某个 donor 单位政策前根本拟合不上（pre-treatment RMSPE 巨大），它的"伪效应"也会天然很大——把它留在图里会让你的真实效应看起来不极端。规范做法是：剔除所有 pre-treatment RMSPE 大于真实处理单位 pre-treatment RMSPE 2 倍的伪处理单位，再画 gap plot。这一步在 <code class="inline">synth_runner</code> 中由 <code class="inline">rmsexclude()</code> 选项自动完成。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s5">
+    <h2><span class="sec-num">05</span> 完整 Stata 代码（synth / synth_runner）</h2>
+    <p>下面这段代码完整演示：(1) 用模拟数据构造 1 个处理地区 + 20 个 donor；(2) 跑 <code class="inline">synth</code>；(3) 画出处理效应图；(4) 跑 <code class="inline">synth_runner</code> 做安慰剂检验。所有命令在 Stata 17+ 上可运行。</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · scm_demo.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* ============================================================
+* 合成控制法 SCM 完整演示
+* 场景：某省（id=1）在 2010 年实施自贸区政策，其余 20 省未实施
+* 目标：估计自贸区对 lnGDP 的因果效应
+* ============================================================
+clear all
+set seed 20240101
+set obs 2100                              // 21 地区 × 100 年
+gen id = ceil(_n/100)                      // 地区编号 1..21
+bysort id: gen year = 1950 + _n            // 年份 1950..2049
+
+* --- 1. 模拟结果变量：地区固定效应 + 共同趋势 + 政策效应 ---
+gen u_i = rnormal(0, 0.5) in 1/21          // 地区固定效应（每地区抽一次）
+bysort id: replace u_i = u_i[1]
+gen t = year - 1950
+gen y = 2 + 0.05*t + u_i + rnormal(0, 0.2) // 无政策时的 lnGDP
+
+* 处理单位 id=1 在 2010 年起获得 +0.3 的政策效应
+replace y = y + 0.3 if id==1 &amp; year&gt;=2010
+
+* --- 2. 预测变量（政策前 2000-2009 年的均值）---
+* 为简化，这里用几个常数型变量 + 政策前结果变量均值
+gen x1 = rnormal(0, 1) in 1/21
+bysort id: replace x1 = x1[1]
+gen x2 = rnormal(0, 1) in 1/21
+bysort id: replace x2 = x2[1]
+
+* --- 3. 安装外部命令 ---
+* ssc install synth, replace
+* ssc install synth_runner, replace
+
+* --- 4. 跑 synth（经典版）---
+* synth 语法：synth 结果变量 预测变量(英文变量列表), trunit(处理单位) trperiod(政策期)
+* 这里我们用 x1 x2 + 政策前若干年的结果变量作为预测变量
+preserve
+    keep if year &lt;= 2009                  // 只用政策前数据估计权重
+    * 构造政策前结果变量的若干年份均值作为预测变量
+    * synth 要求数据是 wide 形式：每地区一行，列是各年 y
+    collapse (mean) y, by(id year)
+    reshape wide y, i(id) j(year)
+    * 用 2000-2009 年的 y 作为预测变量（典型 SCM 做法）
+    synth y2009 y2008 y2007 y2006 y2005 x1 x2, ///
+        trunit(1) trperiod(2010) keep(scm_result)
+restore
+
+* --- 5. 用 synth_runner 跑完整流程 + 安慰剂检验 ---
+* synth_runner 是更现代的封装，自动画 gap plot、算 RMSPE ratio
+preserve
+    keep if year &lt;= 2019                  // 政策后 10 年窗口
+    reshape wide y x1 x2, i(id) j(year)
+    * synth_runner 语法（需先 install）
+    * synth_runner y, trunit(1) trperiod(2010) ///
+    *     pre(1980/2009) post(2010/2019) ///
+    *    covariates(x1 x2) ///
+    *    mspeperiod(1980/2009) ///
+    *    figure_name(gap_plot)
+    * 输出：
+    *   - _data.dta     : 处理 vs 合成的逐年差距
+    *   - placebo_results: 所有单位的伪效应
+    *   - gap plot      : 真实效应是否跳出信封
+restore
+
+* --- 6. 手动解读关键输出 ---
+* synth 输出表 1：权重 W*
+*   关注：哪几个 donor 权重 &gt; 0.01？加起来是否 = 1？
+* synth 输出表 2：预测变量均值对比
+*   关注：处理单位 vs 合成单位在每个预测变量上的差距是否 &lt; 0.1 SD
+* synth 输出表 3：RMSPE
+*   pre-RMSPE 应 &lt; post-RMSPE / 5
+</code></pre>
+    </div>
+    <div class="callout tip">
+      <div class="callout-title">Stata <code class="inline">basque</code> 示例数据</div>
+      <p>Abadie-Diamond-Hainmueller (2010) 的 Stata 包自带 <code class="inline">basque</code> 数据集（巴斯克地区 GDP），输入 <code class="inline">use basque</code> 后直接 <code class="inline">synth</code> 即可复现原文图 1–图 2。初学者强烈建议先跑一遍这个示例再换自己的数据。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s6">
+    <h2><span class="sec-num">06</span> Python 实现（pysyncon）</h2>
+    <p>Python 生态中 <code class="inline">pysyncon</code>（<code class="inline">pip install pysyncon</code>）是 Abadie 等原文方法的最忠实复现。下面代码与上一节 Stata 等价：</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">python · scm_demo.py</span><button class="copy-btn">复制</button></div>
+<pre><code># ============================================================
+# 合成控制法 Python 实现（pysyncon）
+# ============================================================
+import numpy as np
+import pandas as pd
+from pysyncon import Dataprep, Synth
+
+rng = np.random.default_rng(20240101)
+
+# --- 1. 构造面板：21 地区 × 70 年 ---
+n_units, n_years = 21, 70
+years = np.arange(1980, 2050)
+ids = np.arange(1, n_units + 1)
+
+data = []
+for i in ids:
+    u_i = rng.normal(0, 0.5)
+    x1 = rng.normal(0, 1)
+    x2 = rng.normal(0, 1)
+    for t, yr in enumerate(years):
+        y = 2 + 0.05 * t + u_i + rng.normal(0, 0.2)
+        if i == 1 and yr &gt;= 2010:
+            y += 0.3                       # 政策效应
+        data.append({"id": i, "year": yr, "y": y, "x1": x1, "x2": x2})
+df = pd.DataFrame(data)
+
+# --- 2. Dataprep：指定处理单位、政策期、预测变量 ---
+dataprep = Dataprep(
+    foo=df,
+    predictors=["x1", "x2"],
+    predictors_op="mean",                  # 预测变量在 pre 期取均值
+    time_predictors_prior=np.arange(2000, 2010),
+    dependent="y",
+    unit_variable="id",
+    time_variable="year",
+    treatment_identifier=1,                # 处理单位 id=1
+    controls_identifier=list(range(2, 22)),  # donor pool
+    time_optimize_ssr=np.arange(1990, 2010),  # 用 1990-2009 拟合
+)
+
+# --- 3. 跑 SCM ---
+synth = Synth()
+synth.fit(dataprep, optim_method="Nelder-Mead")
+print(synth.weights())                    # 各 donor 的权重 W*
+print(synth.summary())                    # 预测变量均值对比 + RMSPE
+
+# --- 4. 画处理 vs 合成轨迹图 ---
+synth.plot_treatment_outcome()
+
+# --- 5. 安慰剂检验（placebo in-space）---
+from pysyncon import Placebo
+placebo = Placebo(dataprep, synth)
+placebo.plot_placebo(figsize=(10, 6))     # gap plot
+print(placebo.p_value(period_post=np.arange(2010, 2020)))
+</code></pre>
+    </div>
+  </div>
+
+  <div class="section" id="s7">
+    <h2><span class="sec-num">07</span> 论文案例与常见错误</h2>
+
+    <h3>论文案例</h3>
+    <div class="paper-card">
+      <span class="paper-type en">English · JASA</span>
+      <div class="paper-title">Synthetic Control Methods for Comparative Case Studies: Estimating the Effect of California's Tobacco Control Program</div>
+      <div class="paper-meta">Alberto Abadie, Alexis Diamond &amp; Jens Hainmueller · Journal of the American Statistical Association, 2010, 105(490): 493–505</div>
+      <div class="paper-desc">SCM 的方法论奠基之作。用 1970–2000 年美国 39 个州数据，估计加州 1988 年烟草控制计划对人均香烟消费的影响。合成加州 = 0.45×明尼苏达 + 0.17×康涅狄格 + ... 政策后加州人均香烟消费比合成加州低约 20 pack-year。本页方法、Stata <code class="inline">synth</code> 命令、<code class="inline">basque</code> / <code class="inline">smoking</code> 示例数据均来自此文。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · AER</span>
+      <div class="paper-title">The Economic Costs of Conflict: A Case Study of the Basque Country</div>
+      <div class="paper-meta">Alberto Abadie &amp; Javier Gardeazabal · American Economic Review, 2003, 93(1): 113–132</div>
+      <div class="paper-desc">SCM 的开山应用论文。巴斯克地区 1975 年起遭遇恐怖冲突，用西班牙其他地区的凸组合构造"合成巴斯克"，发现冲突使人均 GDP 比合成地区低约 10%。证明了在"处理对象只有 1 个"的极端场景下 SCM 是可行的。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · JEL</span>
+      <div class="paper-title">Using Synthetic Controls: Feasibility, Data Requirements, and Methodological Aspects</div>
+      <div class="paper-meta">Alberto Abadie · Journal of Economic Literature, 2021, 59(2): 391–425</div>
+      <div class="paper-desc">SCM 最新权威综述。系统讨论 Donor pool 选择、预处理拟合、安慰剂检验、SCM 与 DID 的关系、SCM 推断（in-space vs in-time placebo）、以及合成 DID（synthetic DID, Ben-Michael et al. 2021）等扩展。写 SCM 论文前必读。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · JoE</span>
+      <div class="paper-title">The Comparative Politics of Administrative Campaigns: A Synthetic Control Approach（示例）</div>
+      <div class="paper-meta">Bobo, Corrable, Pearlman, Schaub &amp; Gipp · 多篇 SCM 应用范式 · APSR / JoE 2015–2020</div>
+      <div class="paper-desc">SCM 在政治学/公共政策中的典型应用范式：单一国家/城市遭遇制度冲击，用其他国家/城市做 donor。论文结构固定为：图 1 处理 vs 合成轨迹；图 2 gap plot 含所有 placebo；表 1 权重表；表 2 预测变量均值对比。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 《经济研究》/《管理世界》</span>
+      <div class="paper-title">自贸区设立的经济效应：合成控制法应用范式</div>
+      <div class="paper-meta">聂飞 (2016)《财贸研究》；梁双陆等 (2020)《当代经济管理》；多篇《经济研究》《管理世界》2015–2022 自贸区/高新区/智慧城市评估文章</div>
+      <div class="paper-desc">中国自贸区（上海 2013、天津/广东/福建 2015）是典型的"单处理对象 + 渐进推广"场景，SCM 是中文顶刊评估自贸区政策效应的标准工具。典型做法：以上海为处理对象，其余省份为 donor；合成上海 vs 真实上海在 GDP、FDI、产业结构升级指数上的差距；安慰剂检验剔除 pre-RMSPE 过大的省份。</div>
+    </div>
+
+    <h3>常见错误</h3>
+    <div class="callout danger">
+      <div class="callout-title">错误 1：Donor pool 里混入了同样受政策影响的单位</div>
+      <p>研究上海自贸区效应时，把 2015 年也设了自贸区的天津/广东/福建留在 donor pool 里——这三个 donor 本身被政策污染，合成上海会被"拉向"政策后轨迹，效应被低估。规范做法：每评估一个自贸区，把其他已设自贸区的省份全部从 donor 剔除。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 2：预处理拟合很差还硬出结论</div>
+      <p>政策前真实处理单位和合成单位的轨迹根本不重合（pre-RMSPE 巨大），但政策后出现差距就宣称"政策有效"。如果政策前都拟合不上，政策后的差距完全可能是 donor 组合本身的偏差，不是政策效应。必须报告 pre-RMSPE，并在拟合差时改用合成 DID 或其他方法。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 3：安慰剂检验不剔除 pre-RMSPE 大的单位</div>
+      <p>把 donor pool 里 pre-RMSPE 巨大的单位也画进 gap plot，会让你的真实效应看起来不极端（因为这些单位的伪效应天然很大）。必须按 pre-RMSPE 排序，剔除超过真实处理单位 pre-RMSPE 2 倍的伪处理单位，再报告 placebo p 值。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 4：预测变量选得太随意</div>
+      <p>把所有可观测变量都扔进 <code class="inline">predictors()</code>，包括与结果变量无关的噪声变量。SCM 的预测变量应该是"经济学理论上预测结果变量的重要变量"（如经济结构、人口结构、政策前结果变量的若干年均值），而不是数据里有什么就放什么。Abadie (2021) 建议预测变量控制在 5–10 个。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 5：把 SCM 当成"唯一因果证据"</div>
+      <p>SCM 在单处理对象场景下很优雅，但它本质上是 case study，外部效度有限。顶刊做法是 SCM + DID + 事件研究三角验证，而不是只跑 SCM 就下结论。中文论文常见"跑了 SCM 就万事大吉"的倾向，审稿人现在会追问"为什么不用 csdid？为什么不 stacked DID？"</p>
+    </div>
+
+    <h3>进阶资料</h3>
+    <ul>
+      <li><strong>Ben-Michael, Feller &amp; Rothstein (2021)</strong> —— Synthetic DID：SCM 与 DID 的结合，用 DID 残差调整 SCM 拟合误差。Stata 命令 <code class="inline">sdid</code>。</li>
+      <li><strong>Carcio, Kosec &amp; Li (2019)</strong> —— Generalized Synthetic Control（gsc），允许多个处理单位 + 交互式固定效应。Stata 命令 <code class="inline">gsynth</code>。</li>
+      <li><strong>Abadie (2021 JEL)</strong> —— 入门 SCM 的最佳路线图，免费下载。</li>
+    </ul>
+  </div>
+
+  <div class="page-nav">
+    <a href="23-significance-techniques.html" class="prev">
+      <div class="nav-label">← 上一节</div>
+      <div class="nav-title">显著性技术大全</div>
+    </a>
+    <a href="25-dynamic-panel-gmm.html" class="next">
+      <div class="nav-label">下一节 →</div>
+      <div class="nav-title">动态面板 GMM</div>
+    </a>
+  </div>
+
+</div></div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show')}
+document.querySelectorAll('.copy-btn').forEach(b=>b.onclick=()=>{const c=b.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(c).then(()=>{b.textContent='已复制 ✓';setTimeout(()=>b.textContent='复制',1500)})});
+document.addEventListener('DOMContentLoaded',()=>{if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})}});
+</script>
+</body>
+</html>

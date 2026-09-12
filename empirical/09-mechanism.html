@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>机制检验：中介与因果机制 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item active" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">实证论文</a><span class="sep">/</span>
+      <span>机制检验</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">Empirical · Mechanism / Mediation</span>
+      <h1>机制检验：中介效应、因果中介与渠道识别</h1>
+      <p class="desc">Mechanism Analysis：不仅要证明 X 影响 Y，还要解释"X 通过什么路径影响 Y"。本节系统讲 Baron-Kenny 三步法、Sobel 检验、Bootstrap 中介、Imai 因果中介分析、渠道检验与调节效应，并诚实地说明"统计中介 ≠ 因果机制"。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">中介效应分析（Baron–Kenny 三步、Sobel 检验、Bootstrap 中介）、因果图 DAG（前门 / 后门准则、混淆 vs 中介）、调节效应（交互项）。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">应用微观经济学的机制思维；理解“统计中介 ≠ 因果机制”这一认识论要点。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">Stata 17+（外部命令：<code class="inline">sgmediation</code>、<code class="inline">mediation</code>、<code class="inline">boottest</code>、<code class="inline">estout</code>、<code class="inline">reghdfe</code>）。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body">先学 <a href="04-baseline-regression.html">04 基准回归</a>，主效应跑稳后再谈渠道。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">进阶</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">机制检验要回答什么问题</a></li>
+        <li><a href="#s2">中介效应模型的形式化</a></li>
+        <li><a href="#s3">Baron-Kenny 三步法与 Sobel 检验</a></li>
+        <li><a href="#s4">Bootstrap 中介与因果中介分析</a></li>
+        <li><a href="#s5">渠道检验：分组与交互项</a></li>
+        <li><a href="#s6">调节效应 Moderation</a></li>
+        <li><a href="#s7">机制变量的选取原则</a></li>
+        <li><a href="#s8">逐步流程与 Stata 代码</a></li>
+        <li><a href="#s9">论文案例与常见误区</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 机制检验要回答什么问题</h2>
+      <p>基准回归告诉你 <strong>X 影响 Y</strong>（总效应 $c$），但这只是"是什么"。机制分析（mechanism / channel analysis）要回答的是"<strong>怎么影响、通过什么路径影响</strong>"：政策 X 究竟是改变了企业的融资约束（$M_1$）、还是改变了劳动配置（$M_2$）、还是改变了创新激励（$M_3$），进而影响了结果 Y？一个论文如果只报告总效应而不打开"黑箱"（black box），审稿人往往会问：你怎么知道是这个机制，而不是那个机制在起作用？</p>
+      <p>机制分析有两套互补的语言：<strong>中介分析（mediation）</strong>关心"X 通过 M 传递到 Y 的那部分效应有多大"；<strong>渠道/调节分析（channel / moderation）</strong>关心"X 对 Y 的效应在什么条件下更强或更弱"。前者把 M 当作被 X 改变的中间变量，后者把某个环境变量 Z 当作放大或抑制 X→Y 的"开关"。两者都需要经济学理论先验，而不是跑一堆变量谁显著就用谁。</p>
+      <div class="callout info">
+        <div class="callout-title">📌 核心提醒</div>
+        <p>经济学顶刊越来越强调：<strong>机制检验必须由理论先验驱动</strong>。先从模型推导出"X 应该通过 M 影响 Y"，再用数据检验；而不是把所有能想到的变量都当中介跑一遍，谁显著写谁。后者是典型的 specification search。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 中介效应模型的形式化</h2>
+      <p>经典中介模型由三个方程构成。设 $X$ 为核心解释变量（处理），$M$ 为中介变量，$Y$ 为被解释变量：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (1) — a 路径：X → M</div>
+        $$M = aX + \varepsilon_1$$
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">Equation (2) — b / c' 路径：X + M → Y</div>
+        $$Y = c'X + bM + \varepsilon_2$$
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">Equation (3) — 总效应（不纳入 M）</div>
+        $$Y = cX + \varepsilon_0$$
+      </div>
+      <p>系数含义：$a$ 是 X 对中介 M 的效应（a path）；$b$ 是控制 X 后 M 对 Y 的效应（b path）；$c'$ 是加入 M 后 X 对 Y 的直接效应（direct effect）；$c$ 是 X 对 Y 的总效应（total effect）。<strong>间接效应（indirect effect）= 经由 M 传递的部分 = $a \times b$</strong>。在线性、无交互、无遗漏的假设下，总效应满足分解：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (4) — 效应分解</div>
+        $$c = c' + a \times b$$
+      </div>
+      <p>即"总效应 = 直接效应 + 间接效应"。中介效应占总效应的比例为 $ab/c$，常被报告为"X 经由 M 解释了百分之多少的总效应"。</p>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> Baron-Kenny 三步法与 Sobel 检验</h2>
+      <p><strong>Baron & Kenny (1986) 三步法</strong>是最经典的中介检验流程，依次估计三条路径：</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">第一步：总效应 c</div>
+          <div class="step-desc">回归 $Y = cX + \varepsilon_0$，要求 $c$ 显著（X 确实影响 Y）。这一步失败，说明总效应都不存在，谈中介无意义。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第二步：a 路径</div>
+          <div class="step-desc">回归 $M = aX + \varepsilon_1$，要求 $a$ 显著（X 确实改变了中介 M）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第三步：同时纳入 X 与 M</div>
+          <div class="step-desc">回归 $Y = c'X + bM + \varepsilon_2$。若 $b$ 显著且 $|c'|&lt;|c|$（直接效应缩小），则存在部分中介；若 $c'$ 变得不显著，则称完全中介。</div>
+        </div>
+      </div>
+      <p>但三步法只看系数显著性，并没有直接检验"间接效应 $a\times b$ 是否显著不为零"。为此 <strong>Sobel 检验</strong>构造间接效应 $a\hat{b}$ 的近似标准误：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (5) — Sobel 统计量</div>
+        $$Z_{Sobel}=\frac{\hat{a}\hat{b}}{\sqrt{\hat{b}^2 s_a^2+\hat{a}^2 s_b^2}}$$
+      </div>
+      <p>其中 $s_a, s_b$ 分别是 $\hat{a}, \hat{b}$ 的标准误。在大样本下 $Z_{Sobel}$ 近似服从正态分布，$|Z|&gt;1.96$ 即认为间接效应在 5% 水平显著。</p>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ Sobel 检验的局限</div>
+        <p>Sobel 检验假设间接效应 $a\hat{b}$ 服从正态分布，但 $a\times b$ 是两个正态变量的乘积，分布往往有偏（尤其小样本时）。因此现代做法优先使用 <strong>Bootstrap 中介</strong>（见下节），它不依赖正态假设。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> Bootstrap 中介与因果中介分析</h2>
+      <p><strong>Bootstrap 中介（Preacher & Hayes 系列）</strong>通过有放回地重复抽样，直接构造间接效应 $a\times b$ 的经验分布与置信区间，不需要正态假设，是当前社科与实证经济学更推荐的做法。若 95% Bootstrap 置信区间不包含 0，则间接效应显著。</p>
+      <p>更进一步，<strong>因果中介分析（Causal Mediation Analysis, Imai, Keele & Tingley 2010）</strong>把中介问题提升到潜在结果框架，区分出：</p>
+      <ul>
+        <li><strong>平均因果中介效应 ACME（Average Causal Mediation Effect）</strong>：经由 M 传递的因果部分；</li>
+        <li><strong>平均直接效应 ADE（Average Direct Effect）</strong>：不经过 M 的部分；</li>
+        <li><strong>总效应 TE = ACME + ADE</strong>。</li>
+      </ul>
+      <p>Imai 等人指出，即便 X 是随机分配的，<strong>M 与 Y 之间仍可能存在未观测混杂</strong>（因为 M 通常不是随机分配的），所以传统中介只能给出"关联上的中介"，要上升到"因果中介"需要序列可忽略性（sequential ignorability）假设，并做敏感度分析。这一点是本节最重要的诚实立场。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 中介三步 / Sobel / Bootstrap / Imai 因果中介</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ===== 04.1 Baron-Kenny 三步法 =====
+* 第一步：总效应 c
+reg Y X $Xctrl, vce(cluster id)
+est store step1
+
+* 第二步：a 路径 X -> M
+reg M X $Xctrl, vce(cluster id)
+est store step2
+scalar a = _b[X]
+
+* 第三步：同时纳入 X 与 M
+reg Y X M $Xctrl, vce(cluster id)
+est store step3
+scalar bp = _b[M]
+scalar cp = _b[X]
+esttab step1 step2 step3, se star(* 0.1 ** 0.05 *** 0.01)
+
+* ===== 04.2 Sobel 检验（手工）=====
+scalar sa = _se[X]          // a 的标准误（第二步回归后）
+* 注意：bp、cp 来自第三步；重新跑第二步取 se
+reg M X $Xctrl, vce(cluster id)
+scalar a=_b[X], sa=_se[X]
+reg Y X M $Xctrl, vce(cluster id)
+scalar b=_b[M], sb=_se[M]
+scalar indirect = a*b
+scalar se_ab   = sqrt(b^2*sa^2 + a^2*sb^2)
+scalar Z_sobel = indirect/se_ab
+disp "间接效应 a*b = " indirect
+disp "Sobel Z = " Z_sobel
+
+* ===== 04.3 Bootstrap 中介（推荐，不依赖正态）=====
+* ssc install mediation  （或使用 Hayes 的 medeff/medsem）
+* 方法A：medeff 做 Bootstrap 间接效应
+medeff (regress M X $Xctrl) (regress Y X M $Xctrl), treat(X) mediate(M) sims(1000)
+
+* 方法B：连乘间接效应 + Bootstrap 置信区间
+bootstrap r(indirect), reps(1000) seed(20240101): ///
+    mediation_boot, xvar(X) mvar(M) yvar(Y)
+
+* ===== 04.4 Imai 因果中介分析 + 敏感度分析 =====
+* 安装：net install st0289.pkg （或 ssc install med4way）
+* 回归中介模型与结果模型，估计 ACME / ADE / TE
+regress M X $Xctrl
+est store m_mod
+regress Y X M $Xctrl
+est store y_mod
+* 输出 ACME（间接）、ADE（直接）、总效应及其比例
+mediation, treat(X) mediate(M) sims(1000)
+* 敏感度分析：rho 取何值时间接效应不再显著
+medsens, rho(-0.5(0.05)0.5)
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 渠道检验：分组回归与交互项</h2>
+      <p>当中介变量难以直接观测、或理论上更适合用"效应差异"来识别渠道时，常用<strong>渠道检验（channel test）</strong>而非中介模型。逻辑是：如果 X 通过某个渠道 M 起作用，那么在"渠道更容易被激活"的子样本里，X→Y 的效应应当<strong>显著更强</strong>。</p>
+      <p>两种做法：</p>
+      <p><strong>(1) 分组回归（split-sample）</strong>：按渠道强度把样本分成"强渠道组"与"弱渠道组"，分别估计 X→Y，比较两组系数大小。例如检验"融资约束渠道"，就按企业融资约束高低分两组：高融资约束组里政策效应应更大。</p>
+      <p><strong>(2) 交互项法</strong>：直接加入 X 与渠道变量 M 的交互项，系数为正则说明渠道放大了效应。交互项模型见下节。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 渠道检验：分组回归 + 交互项</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ===== 05.1 渠道检验：分组回归 =====
+* 按融资约束(SA指数)中位数分高/低两组
+xtile SA_group = SA_index, nq(2)
+
+reghdfe Y X $Xctrl if SA_group==1, absorb(id year) vce(cluster id)  // 低约束组
+est store ch_low
+reghdfe Y X $Xctrl if SA_group==2, absorb(id year) vce(cluster id)  // 高约束组
+est store ch_high
+esttab ch_low ch_high, keep(X) se star(* 0.1 ** 0.05 *** 0.01) ///
+    mtitles("低融资约束" "高融资约束")
+
+* ===== 05.2 渠道检验：交互项法 =====
+gen X_by_channel = X * SA_index
+reghdfe Y X SA_index X_by_channel $Xctrl, absorb(id year) vce(cluster id)
+* 交互项 X_by_channel 显著 => 渠道强度调节了 X 的效应
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 调节效应 Moderation</h2>
+      <p>调节效应（moderation）与中介不同：调节变量 $Z$ 不被 X 影响，而是<strong>影响 X→Y 这条关系的强弱或方向</strong>。模型为：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (6) — 调节效应 / 交互项</div>
+        $$Y=\beta_0+\beta_1 X+\beta_2\,X\times Z+\beta_3 Z+\varepsilon$$
+      </div>
+      <p>其中 $\beta_1$ 是 $Z=0$ 时 X 的效应；$\beta_2$ 是 Z 每增加一单位、X→Y 斜率的变化（调节效应）；$X$ 对 $Y$ 的总偏效应为 $\partial Y/\partial X=\beta_1+\beta_2 Z$。报告调节效应时，常画<strong>简单斜率图（simple slope plot）</strong>：在 Z 取 ±1 标准差时画出 X→Y 的斜率及其置信区间。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 调节效应与简单斜率图</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ===== 06.1 调节效应：交互项（连续Z）=====
+* 对连续Z中心化，减少共线性
+center SA_index, prefix(c_)
+gen X_x_cZ = X * c_SA_index
+reghdfe Y X c_SA_index X_x_cZ $Xctrl, absorb(id year) vce(cluster id)
+
+* ===== 06.2 画简单斜率图（Z = 均值±1SD）=====
+* ssc install marginsplot
+margins, dydx(X) at(c_SA_index=(-1 0 1))   // 标准化Z取 -1,0,+1
+marginsplot, title("Moderation: effect of X at different Z") ///
+    yline(0)
+
+* ===== 06.3 分组虚拟变量 D 的交互（异质性调节）=====
+gen XxD = X * D
+reghdfe Y X D XxD $Xctrl, absorb(id year) vce(cluster id)
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 机制变量的选取原则</h2>
+      <p>机制变量 M 的好坏，直接决定机制检验是否可信。选取时应遵循以下原则：</p>
+      <ol>
+        <li><strong>理论先验优先</strong>：M 必须来自正式模型或文献，能说清"为什么 X 会先改变 M、M 再改变 Y"。不能因为某个变量恰好显著就把它封为机制。</li>
+        <li><strong>时序正确</strong>：M 必须发生在 X 之后、Y 之前，即 $X \to M \to Y$ 的时间顺序成立。用同期甚至前置变量当中介，逻辑上不成立。</li>
+        <li><strong>避免"坏控制"（bad control）</strong>：M 不能是 X 的结果同时又直接决定 Y 的" collider "，否则把它放进回归会引入偏误。</li>
+        <li><strong>测量可信</strong>：M 要有公认的度量（如用 SA 指数、KZ 指数度量融资约束），并在稳健性中换一个度量。</li>
+        <li><strong>与总效应方向一致</strong>：若 a 路径与 b 路径符号相反，间接效应可能为负（遮掩效应 suppression effect），需要特别解释，不能简单说"存在中介"。</li>
+      </ol>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 逐步流程</h2>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 理论先行</div>
+          <div class="step-desc">从结构模型或文献推导出 X 应当经由哪个 M 影响 Y，写清 $X\to M\to Y$ 的经济学故事，并确认时序。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 跑 Baron-Kenny 三步</div>
+          <div class="step-desc">依次估计 c、a、b/c' 三条路径，看总效应、a 路径是否显著，直接效应是否缩小。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 用 Sobel + Bootstrap 检验间接效应</div>
+          <div class="step-desc">先报 Sobel Z 值，再用 Bootstrap（1000 次）构造 $a\times b$ 的置信区间；后者更可信。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4 · 升级到因果中介（可选但推荐）</div>
+          <div class="step-desc">用 Imai et al. 的方法估计 ACME/ADE/TE，并做敏感度分析（medsens），报告序列可忽略性在多大程度上会被违反。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 5 · 辅以渠道检验与调节效应</div>
+          <div class="step-desc">用分组回归或交互项，从"效应在何处更强"的侧面交叉印证机制，并画简单斜率图。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 6 · 诚实讨论局限</div>
+          <div class="step-desc">明确写出：本检验提供的是"与该机制一致的证据"，而非"证明了该机制"；M 与 Y 间的未观测混杂是主要威胁。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 论文案例与常见误区</h2>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Psychological Methods / 方法论</span>
+        <div class="paper-title">Identification and Inference for Causal Mediation Analysis</div>
+        <div class="paper-meta">Imai, Keele & Yamamoto (2010), Psychological Methods</div>
+        <div class="paper-desc">把中介分析纳入潜在结果框架，提出 ACME/ADE/TE 的分解与序列可忽略性假设，并给出敏感度分析工具。是"因果中介"区别于"统计中介"的方法论奠基之作，也是本页推荐用 Imai 框架而非仅用 Baron-Kenny 的原因。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · 方法论经典</span>
+        <div class="paper-title">The Moderator-Mediator Variable Distinction in Social Psychological Research</div>
+        <div class="paper-meta">Baron & Kenny (1986), Journal of Personality and Social Psychology</div>
+        <div class="paper-desc">三步法的原始出处，至今仍是中文实证论文最常引用的中介检验流程。论文清晰区分了 mediator（传递 X→Y）与 moderator（改变 X→Y 强弱）两类变量，是理解"机制 vs 调节"概念边界的必读。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 经济研究</span>
+        <div class="paper-title">数字经济、融资约束与企业创新（机制检验范例）</div>
+        <div class="paper-meta">《经济研究》近年数字经济与企业创新类实证论文（机制章节范式）</div>
+        <div class="paper-desc">这类论文普遍采用"基准总效应 → 中介模型（融资约束作为 M）→ 分组渠道检验"的三段式：先证明数字经济提升创新，再用融资约束做中介变量跑三步法与 Sobel/Bootstrap，最后按企业融资约束高低分组做渠道检验。是中文顶刊机制写作的标准范式。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 管理世界</span>
+        <div class="paper-title">环境规制与企业全要素生产率（波特假说的机制检验）</div>
+        <div class="paper-meta">《管理世界》环境规制/波特假说类实证论文（机制章节范式）</div>
+        <div class="paper-desc">围绕"波特假说"，论文常把研发投入、技术创新作为中介 M，用三步法检验"环境规制 → 创新 → TFP"，再按行业污染程度、产权性质做调节与渠道分析，展示了如何把中介与异质性调节结合起来讲故事。</div>
+      </div>
+
+      <h3>常见误区</h3>
+      <div class="callout danger">
+        <div class="callout-title">❌ 误区 1：把"统计中介"等同于"因果机制"</div>
+        <p>这是机制分析最大的误区。Baron-Kenny 三步法只是相关性链条：M 与 Y 之间很可能存在未观测混杂（M 不是随机分配的）。即使 a、b 都显著，也不能断言"X 通过 M 因果地影响了 Y"。正确表述是"数据与 X→M→Y 这一机制一致"，并尽量用 Imai 因果中介 + 敏感度分析来加固。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 误区 2：M 时序错乱或沦为"坏控制"</div>
+        <p>用与 X 同期、甚至早于 X 的变量当中介，逻辑链不成立；或者把本身由 Y 反向决定的变量放进 Y 方程，制造 collider 偏误。机制变量必须满足 X→M→Y 的真实时间顺序。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 误区 3：把所有变量都当中介跑一遍</div>
+        <p>在几十个候选变量里挑显著的当机制，本质是 p-hacking。机制变量必须由理论先验限定在少数几个，且换度量后结论要一致。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 误区 4：只报告三步法，不报告间接效应检验</div>
+        <p>看 a、b 分别显著并不能直接证明 a×b 显著。必须同时报告 Sobel Z 或 Bootstrap 置信区间，否则"中介效应"的统计依据是不完整的。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 误区 5：调节效应只看交互项系数不画简单斜率图</div>
+        <p>调节效应 $\beta_3$ 显著只说明"X→Y 关系随 Z 变化"，但读者需要知道在 Z 的典型取值下 X→Y 的斜率与置信区间。必须用 <code class="inline">margins, at(Z=(p10 p50 p90))</code> + <code class="inline">marginsplot</code> 画简单斜率图。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 误区 6：把被处理 D 影响的变量放进控制变量（bad control）</div>
+        <p>Angrist-Pischke (2009) 警告：如果 M 本身由 D 决定，把 M 同时放进 Y 方程会把 D 的效应"稀释"成直接效应，总效应被低估。机制分析中 M 是后定变量（post-treatment），不能作为控制变量进入基准回归——它只能在专门的中介分析中作为 M 出现。</p>
+      </div>
+
+      <h3>进阶资料</h3>
+      <ul>
+        <li>Imai, Keele & Yamamoto (2010), <em>Psychological Methods</em> — 因果中介与敏感度分析。</li>
+        <li>Baron & Kenny (1986), <em>JPSP</em> — 中介与调节的概念区分。</li>
+        <li>Preacher & Hayes (2008) — Bootstrap 间接效应的非参数做法。</li>
+        <li>Stata 命令：<code class="inline">medeff</code>、<code class="inline">medsens</code>、<code class="inline">mediation</code>、<code class="inline">margins / marginsplot</code>。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="08-robustness.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">稳健性检验</div>
+      </a>
+      <a href="10-heterogeneity.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">异质性分析</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+(function() {
+  const path = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('href') && item.getAttribute('href').endsWith(path)) {
+      item.classList.add('active');
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新凯恩斯三方程模型 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item active" href="10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">DSGE模型</a><span class="sep">/</span>
+      <span>新凯恩斯三方程模型</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">DSGE · 货币政策核心 · 完整模型分支</span>
+      <h1>新凯恩斯三方程模型：从微观假设到 Dynare 货币政策模拟</h1>
+      <p class="desc">New Keynesian 3-Equation Model 是货币政策分析的最小可用骨架。本页是一个"完整模型分支"：从家庭 CRRA 效用与 Calvo 定价的微观假设出发，逐步推导出 IS 曲线、NKPC 与 Taylor 规则，讲清每一个公式背后的假设与经济学解读；随后进入稳态、参数校准、Dynare .mod 逐行撰写，并在代码中验证 Taylor 原理 $\phi_\pi>1$ 的确定性条件，最后解读货币政策冲击的脉冲响应与通胀目标制的直觉。</p>
+      <div class="callout info" style="margin-top:16px;margin-bottom:0">
+        <div class="callout-title">📐 本模型方程清单（审计口径）</div>
+        <p style="margin-bottom:6px">本模型共 <strong>N = 21 个方程</strong>：家庭与厂商微观设定 6 个（Eq.N1–N6）、Calvo 最优定价与价格指数 3 个（Eq.N7–N9）、三大线性化核心 3 个（Eq.N10–N12）、外生冲击过程 2 个（Eq.N13–N14）、稳态方程 3 个（Eq.SS1–SS3）、辅助定义 4 个（Eq.D1–D4：自然利率、$\kappa$ 定义、边际成本桥、Taylor 原理）。每个公式在正文均按 <code class="inline">Eq.Nx</code> 编号，文末 <a href="#eq-summary">§15 方程总清单</a> 汇总。</p>
+      </div>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-head">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-item"><span class="prereq-label">数学 / 统计基础</span>动态最优化与欧拉方程（RBC 页已推过）、对欧拉和价格加成的一阶泰勒展开；代数为主，矩阵需求很小。</div>
+      <div class="prereq-item"><span class="prereq-label">经济学理论前置</span>RBC 的实体骨架 + 垄断竞争与 Dixit-Stiglitz 加总、Calvo 交错定价与价格粘性、自然产出/自然利率概念。</div>
+      <div class="prereq-item"><span class="prereq-label">软件 / 计算前置</span>MATLAB + Dynare ≥4.6，能读懂并运行 .mod；本页不要求手写求解器。</div>
+      <div class="prereq-item"><span class="prereq-label">站内前置页面</span>先学 09-rbc-model：本页 IS 曲线就是 RBC 消费欧拉的对数线性版。</div>
+      <div class="prereq-item"><span class="prereq-label">难度与路线位置</span><span class="prereq-level lv-inter">入门→进阶</span>DSGE 货币政策分析的最小模型，后续 SOE、财政货币、HANK 都以它为内核。</div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">概念直觉：三方程在做什么</a></li>
+        <li><a href="#s2">微观基础：家庭、厂商与价格粘性</a></li>
+        <li><a href="#s3">三方程总览与参数含义</a></li>
+        <li><a href="#s4">IS 曲线：欧拉方程的对数线性化</a></li>
+        <li><a href="#s5">NKPC：Calvo 定价的前瞻型菲利普斯曲线</a></li>
+        <li><a href="#s6">Taylor 规则与自然利率</a></li>
+        <li><a href="#s7">稳态：零通胀零缺口均衡</a></li>
+        <li><a href="#s8">参数校准</a></li>
+        <li><a href="#s9">Taylor 原理与 Blanchard-Kahn 条件</a></li>
+        <li><a href="#s10">Dynare .mod 逐行撰写</a></li>
+        <li><a href="#s11">货币政策冲击 IRF 解读</a></li>
+        <li><a href="#s12">贝叶斯估计：先验、数据、观测方程与 MCMC</a></li>
+        <li><a href="#s13">方差分解与估计结果解读</a></li>
+        <li><a href="#s14">通胀目标制的直觉</a></li>
+        <li><a href="#s15">论文、常见错误与进阶资料</a></li>
+      </ol>
+    </div>
+
+    <!-- S1 -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 概念直觉：三方程在做什么</h2>
+      <p>新凯恩斯模型（New Keynesian, NK）是 RBC 骨架上加上<strong>名义价格粘性</strong>的产物。它回答 RBC 回答不了的问题：货币政策为什么有实际效果？为什么通胀有惯性？央行应该怎么设定利率？Galí (2015)《Monetary Policy, Inflation, and the Business Cycle》把这套理论浓缩成三个方程，人称"三方程模型"。</p>
+      <p>直觉上，三个方程各管一件事：<strong>IS 曲线</strong>管"总需求如何被实际利率调节"，<strong>NKPC</strong> 管"通胀如何被产出缺口驱动"，<strong>Taylor 规则</strong>管"央行如何用名义利率把经济拉回稳定"。三者联立，就是一个闭环的货币政策实验室：外生冲击（技术、偏好、货币政策）进入，通过 IS 曲线影响产出，通过 NKPC 影响通胀，再由 Taylor 规则把利率反馈回去，形成完整的动态系统。</p>
+      <div class="callout info">
+        <div class="callout-title">和 IS-LM 的区别</div>
+        <p>三方程不是旧式 IS-LM 的翻版：IS 曲线是<strong>前瞻的（forward-looking）</strong>，里面有 $E_t\hat y_{t+1}$；NKPC 也是前瞻的，里面有 $E_t\hat\pi_{t+1}$；价格粘性来自<strong>微观 Calvo 定价</strong>而非机械假设。它是<strong>可由优化问题推出来的</strong>，这正是 DSGE 的要求——每一条宏观方程背后都有一个家庭或厂商的跨期最优化问题。</p>
+      </div>
+    </div>
+
+    <!-- S2 -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 微观基础：家庭、厂商与价格粘性</h2>
+      <p>在写宏观方程之前，必须先把两类主体的最优化问题摆出来。三方程模型之所以"新凯恩斯"，全靠两块微观假设：家庭侧的 <strong>CRRA 跨期效用</strong>，和厂商侧的 <strong>垄断竞争 + Calvo 交错定价</strong>。</p>
+
+      <h3>2.1 家庭：CRRA 效用、预算约束与欧拉方程推导</h3>
+      <p>代表性家庭最大化跨期期望效用：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N1 · 家庭目标函数（CRRA 效用）</div>
+        $$\max\ E_0\sum_{t=0}^{\infty}\beta^t\left[\frac{C_t^{1-\sigma}}{1-\sigma} - \frac{N_t^{1+\varphi}}{1+\varphi}\right]$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>变量：</strong>$C_t$ 实际消费；$N_t$ 劳动供给。<strong>参数：</strong>$\beta\in(0,1)$ 贴现因子；$\sigma>0$ 风险厌恶 = 1/EIS；$\varphi>0$ Frisch 劳动弹性倒数。</p>
+      </div>
+      <p>家庭面对名义无风险债券 $B_t$，<strong>完整预算约束</strong>为：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N2 · 家庭预算约束（分散经济）</div>
+        $$P_t C_t + B_t = (1+i_{t-1}) B_{t-1} + W_t N_t + \Pi_t$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>变量：</strong>$P_t$ 价格水平；$B_t$ 一期名义债券（期初持有）；$i_{t-1}$ 名义利率；$W_t$ 名义工资；$\Pi_t$ 厂商利润（一次性转移给家庭）。<strong>信息约束：</strong>家庭在 $t$ 期知道 $P_t,W_t,i_t$，对 $P_{t+1}$ 不确定。</p>
+      </div>
+      <p><strong>拉格朗日函数：</strong>对每一期预算约束引入乘子 $\lambda_t$（单位：效用 / 一单位名义货币）：</p>
+      <div class="formula-block">
+        $$\mathcal L = E_0\sum_{t=0}^{\infty}\beta^t\left\{\frac{C_t^{1-\sigma}}{1-\sigma}-\frac{N_t^{1+\varphi}}{1+\varphi} - \lambda_t\left[P_t C_t + B_t - (1+i_{t-1})B_{t-1}-W_t N_t-\Pi_t\right]\right\}$$
+      </div>
+      <p><strong>FOC-1：对 $C_t$ 求偏导。</strong>$C_t$ 只出现在第 $t$ 期：</p>
+      <div class="formula-block">
+        $$\frac{\partial\mathcal L}{\partial C_t} = \beta^t\left[C_t^{-\sigma} - \lambda_t P_t\right]=0\quad\Longrightarrow\quad \lambda_t P_t = C_t^{-\sigma}$$
+        <div class="formula-label">Eq.N3 · 消费的 FOC（消费边际效用 = 名义财富影子价格）</div>
+      </div>
+      <p><strong>FOC-2：对 $N_t$ 求偏导。</strong></p>
+      <div class="formula-block">
+        $$\frac{\partial\mathcal L}{\partial N_t} = \beta^t\left[-N_t^\varphi + \lambda_t W_t\right]=0\quad\Longrightarrow\quad N_t^\varphi = \lambda_t W_t$$
+        <div class="formula-label">Eq.N4 · 劳动供给 FOC（MRS = 实际工资）</div>
+      </div>
+      <p>把 Eq.N3 代入 Eq.N4，消去 $\lambda_t$：$N_t^\varphi = (W_t/P_t) C_t^\sigma$，即</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N4' · 劳动–消费期内最优条件</div>
+        $$\frac{N_t^\varphi}{C_t^{-\sigma}} = \frac{W_t}{P_t}\equiv w_t$$
+      </div>
+      <p><strong>FOC-3：对 $B_t$ 求偏导（跨期欧拉）。</strong>$B_t$ 同时进入第 $t$ 期约束 $+\lambda_t B_t$ 与第 $t+1$ 期约束 $-\lambda_{t+1}(1+i_t)B_t$：</p>
+      <div class="formula-block">
+        $$\frac{\partial\mathcal L}{\partial B_t} = E_t\beta^t\lambda_t - E_t\beta^{t+1}\lambda_{t+1}(1+i_t)=0$$
+        $$\Longrightarrow\quad \lambda_t = \beta(1+i_t)E_t[\lambda_{t+1}]$$
+      </div>
+      <p>把 Eq.N3 的 $\lambda_t = C_t^{-\sigma}/P_t$ 代入：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N5 · 消费欧拉方程（家庭侧）</div>
+        $$C_t^{-\sigma} = \beta(1+i_t)\,E_t\!\left[\frac{P_t}{P_{t+1}} C_{t+1}^{-\sigma}\right]$$
+      </div>
+      <p>它的经济学含义是：家庭在"今天消费一单位"与"存起来明天消费 $(1+i_t)P_t/P_{t+1}$ 单位"之间无差异。今天消费的边际效用 $C_t^{-\sigma}$，等于把它存起来明天消费的贴现边际效用。对数线性化之后，这就是 IS 曲线的胚胎。</p>
+      <p><strong>横截条件：</strong>$\lim_{T\to\infty}\beta^T E_0[\lambda_T B_T]=0$，排除 Ponzi 泡沫。在教学版 .mod 中不单独写出（Bond 市场出清 $B_t=0$ 自动满足）。</p>
+
+      <h3>2.2 厂商：垄断竞争、CES 需求与 Calvo 定价</h3>
+      <p>厂商侧假设中间产品部门是<strong>垄断竞争</strong>的：存在连续统 $i\in[0,1]$ 家厂商，每家生产一种差异化中间品 $Y_t(i)$，最终品由 Dixit-Stiglitz 加总：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N6 · Dixit–Stiglitz 最终品加总（ aggregator ）</div>
+        $$Y_t = \left[\int_0^1 Y_t(i)^{\frac{\varepsilon-1}{\varepsilon}}di\right]^{\frac{\varepsilon}{\varepsilon-1}}$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>参数：</strong>$\varepsilon>1$ 中间品替代弹性。<strong>假设：</strong>连续统厂商、对称 CES 偏好。</p>
+      </div>
+      <p>其中 $\varepsilon>1$ 是中间品之间的<strong>替代弹性</strong>。<strong>由最终品厂商成本最小化推导 CES 需求：</strong>给定 $Y_t$，最小化 $\int P_t(i)Y_t(i)di$ 受 Eq.N6 约束。设乘子 $\mu_t$，对 $Y_t(i)$ 求一阶条件：</p>
+      <div class="formula-block">
+        $$P_t(i) = \mu_t \frac{\varepsilon}{\varepsilon-1}\left[\int Y_t(j)^{\frac{\varepsilon-1}{\varepsilon}}dj\right]^{\frac{1}{\varepsilon-1}} Y_t(i)^{-1/\varepsilon}$$
+        <p style="margin:6px 0 0;font-size:13.5px;color:#555">把 $i$ 与 $j$ 两式相除消去 $\mu_t$，再利用 $\int Y_t(i)^{(\varepsilon-1)/\varepsilon}di = Y_t^{(\varepsilon-1)/\varepsilon}$，得到 CES 需求曲线：</p>
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">Eq.D1 · CES 需求曲线（成本最小化结果）</div>
+        $$Y_t(i) = \left(\frac{P_t(i)}{P_t}\right)^{-\varepsilon} Y_t$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>价格指数：</strong>由成本最小化的对偶问题（给定支出最小化加总数量），价格水平满足 $P_t = \left[\int_0^1 P_t(i)^{1-\varepsilon}di\right]^{1/(1-\varepsilon)}$。</p>
+      </div>
+      <p>每家厂商面临一条向下倾斜的需求曲线，因而拥有定价权（市场势力），稳态加成 markup 为 $\varepsilon/(\varepsilon-1)$。当 $\varepsilon=6$ 时，稳态加成约为 $1/(1-1/6)=1.2$，即 20% 的毛利率——这是宏观文献里的标准校准。</p>
+      <p>关键假设是 <strong>Calvo (1983) 定价</strong>：每期只有比例为 $1-\theta$ 的厂商能重新最优化调价，剩下比例为 $\theta$ 的厂商只能维持上期价格。$\theta$ 是一个外生的"不能调价概率"，它同时刻画了价格粘性的<strong>程度</strong>与<strong>平均调价周期</strong>：平均而言，一家厂商每隔 $1/(1-\theta)$ 期调一次价。取 $\theta=0.75$，意味着每个季度只有 25% 的厂商调价，平均调价周期为 4 个季度（一年），与美国微观价格数据（Bils-Klenow 2004）的量级吻合。</p>
+
+      <h3>2.3 为什么必须有价格粘性？</h3>
+      <p>如果没有价格粘性（$\theta=0$，每期所有厂商都自由调价），模型就退化成 RBC：货币只影响名义变量，不影响实际产出与就业，即古典二分法（classical dichotomy）与货币长期/短期中性同时成立。此时央行无论怎么调利率，都只会改变通胀与名义利率，实际利率与产出始终在自然率水平上——<strong>货币政策完全无效</strong>。Calvo 摩擦的存在，正是为了让名义扰动有"时间"去影响实际变量：当一部分厂商无法即时调价时，货币当局的利率变动会改变实际利率，进而改变家庭的跨期消费决策，最终让产出与就业偏离自然水平。这就是新凯恩斯革命的核心。</p>
+      <div class="callout warning">
+        <div class="callout-title">一个常见误解</div>
+        <p>"价格粘性"不是说价格<strong>不</strong>变，而是说价格调整是<strong>交错的、分批的</strong>。Calvo 假设每期只有一小部分厂商调价，宏观价格水平因此是缓慢变化的——这就是为什么 NKPC 里通胀是前望的、但调整有惯性。</p>
+      </div>
+    </div>
+
+    <!-- S3 -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 三方程总览与参数含义</h2>
+      <p>记 $\hat y_t$ 为产出缺口（相对灵活价格均衡的对数偏离），$\hat\pi_t$ 为通胀（相对零通胀稳态的百分点偏离），$\hat i_t$ 为名义利率偏离稳态，$\hat r_t^n$ 为<strong>自然利率</strong>（natural rate，即价格完全灵活时的实际利率）。三方程为：</p>
+      <div class="formula-block">
+        <div class="formula-label">NK 三方程系统</div>
+        $$\hat y_t = E_t\hat y_{t+1} - \tfrac{1}{\sigma}\big(\hat i_t - E_t\hat\pi_{t+1} - \hat r_t^n\big) \qquad \text{IS 曲线}$$
+        $$\hat\pi_t = \beta E_t\hat\pi_{t+1} + \kappa\,\hat y_t \qquad \text{新凯恩斯菲利普斯曲线 NKPC}$$
+        $$\hat i_t = \phi_\pi \hat\pi_t + \phi_y \hat y_t + \varepsilon_t^m \qquad \text{Taylor 规则}$$
+      </div>
+      <p>下面先把所有参数的经济学含义一次性列清，后续推导中不再重复解释：</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>参数</th><th>经济学含义</th><th>本页校准值</th></tr></thead>
+          <tbody>
+            <tr><td>$\beta$</td><td>家庭主观季度贴现因子，$\beta=1/(1+\bar r)$</td><td>0.99（对应年实际利率约 4%）</td></tr>
+            <tr><td>$\sigma$</td><td>相对风险厌恶系数 = 跨期替代弹性倒数；越大，消费越不愿跨期替代，IS 曲线越陡</td><td>1.0（log 消费效用）</td></tr>
+            <tr><td>$\varphi$</td><td>Frisch 劳动供给弹性的倒数；越大，劳动供给越刚性，边际成本对产出越敏感</td><td>1.0</td></tr>
+            <tr><td>$\varepsilon$</td><td>中间品 CES 替代弹性；越小，厂商垄断力越强，稳态 markup 越大</td><td>6（稳态 markup ≈ 20%）</td></tr>
+            <tr><td>$\theta$</td><td>Calvo 中每期不能调价的厂商比例；越大，价格粘性越强</td><td>0.75（平均一年调价一次）</td></tr>
+            <tr><td>$\kappa$</td><td>NKPC 斜率，由上述参数组合决定</td><td>≈ 0.025（见 §8）</td></tr>
+            <tr><td>$\phi_\pi$</td><td>Taylor 规则对通胀的反应系数；$>1$ 为主动货币政策</td><td>1.5</td></tr>
+            <tr><td>$\phi_y$</td><td>Taylor 规则对产出缺口的反应系数（季度化）</td><td>0.125</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- S4 -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> IS 曲线：欧拉方程的对数线性化</h2>
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库</div>
+        <p style="margin-bottom:0">本节使用 <strong>对数线性化</strong>方法（§04 IS、§05 NKPC、§06 Taylor 规则都是它的应用）。不熟悉？先学 <a href="04-log-linearization.html">📚 基础知识库·对数线性化</a> →（展开点见 <a href="03-steady-state.html">稳态求解</a>）。</p>
+      </div>
+
+      <h3>4.1 推导起点：家庭欧拉方程</h3>
+      <p>IS 曲线完全来自 §2.1 的欧拉方程（Eq.N5），<strong>不引入任何新假设</strong>。把欧拉方程写成实际利率形式：</p>
+      <div class="formula-block">
+        <div class="formula-label">原始方程：实际利率定义 + 欧拉</div>
+        $$C_t^{-\sigma} = \beta\,E_t\!\left[(1+r_t)C_{t+1}^{-\sigma}\right],\qquad 1+r_t \equiv \frac{1+i_t}{E_t(1+\pi_{t+1})}$$
+      </div>
+      <p><strong>对数线性化逐步展开：</strong>记稳态消费为 $C$（常数），稳态利率 $r=1/\beta-1$。令 $\hat c_t\equiv\ln(C_t/C)$、$\hat r_t\equiv r_t-r$。</p>
+      <p>① 对 $C_t^{-\sigma}$：$\ln(C_t^{-\sigma})=-\sigma\ln C_t$，故 $\widehat{C_t^{-\sigma}}=-\sigma\hat c_t$。</p>
+      <p>② 对 $C_{t+1}^{-\sigma}$：同理 $\widehat{C_{t+1}^{-\sigma}}=-\sigma E_t\hat c_{t+1}$。</p>
+      <p>③ 对 $1+r_t$：稳态处 $1+r=1/\beta$，一阶泰勒展开 $\widehat{1+r_t}\approx \frac{r}{1+r}\hat r_t = \beta r\,\hat r_t$。</p>
+      <p>④ 在稳态处 $1=\beta(1+r)$，两边对数线性化：$-\sigma\hat c_t = -\sigma E_t\hat c_{t+1} + \beta r\,\hat r_t$。注意 $\beta r=\beta(1/\beta-1)=1-\beta$，且 $\hat r_t\approx \hat i_t-E_t\hat\pi_{t+1}$（Fisher 关系的一阶近似）。</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N10a · 线性化欧拉（消费形式）</div>
+        $$\hat c_t = E_t\hat c_{t+1} - \tfrac{1}{\sigma}\big(\hat i_t - E_t\hat\pi_{t+1}\big)$$
+      </div>
+
+      <h3>4.2 关键简化假设：消费 = 产出 = 需求</h3>
+      <p>从消费方程走到 IS 曲线，需要两个<strong>模型简化假设</strong>，必须讲清楚：</p>
+      <ul>
+        <li><strong>无资本、无投资</strong>：模型里没有 $I_t$，所有产出要么消费要么给政府。这是 Galí 教材的"最简 NK 模型"设定，目的是把货币政策传导链条压缩到最短。</li>
+        <li><strong>无政府支出 / 或把政府支出并入冲击</strong>：资源约束 $Y_t=C_t+G_t$。当 $G_t$ 为常数或被归入 $\hat r_t^n$ 后，有 $\hat c_t = \hat y_t$（对数线性化下）。</li>
+      </ul>
+      <div class="formula-block">
+        <div class="formula-label">Eq.D2 · 资源约束与市场出清</div>
+        $$Y_t = C_t + G_t,\qquad \text{对数线性化：}\quad \hat y_t = \hat c_t$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555">最后一步用到 $G_t$ 稳态恒定（$\hat g_t=0$）。在三方程教学版中，把政府支出波动归入自然利率冲击 $\hat r_t^n$。</p>
+      </div>
+      <p>在这两条假设下，把 $\hat c_t$ 直接换成 $\hat y_t$，就得到封闭经济的 IS 曲线雏形。但还需要做最后一步：把<strong>灵活价格均衡</strong>下的自然产出 $\hat y_t^n$ 减掉，定义产出缺口 $\hat y_t^{gap}\equiv \hat y_t - \hat y_t^n$。灵活价格下实际利率自然为 $\hat r_t^n$，代入欧拉并相减，消去趋势项，得到标准形式：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N10 · 前望 IS 曲线（产出缺口形式）</div>
+        $$\hat y_t = E_t\hat y_{t+1} - \tfrac{1}{\sigma}\big(\hat i_t - E_t\hat\pi_{t+1} - \hat r_t^n\big)$$
+      </div>
+
+      <h3>4.3 假设与解读</h3>
+      <p><strong>背后假设：</strong>(i) 家庭无限期存活、完全理性、无借贷约束（Ricardian 等价）；(ii) 没有资本积累，投资不出现；(iii) 劳动市场完全竞争（工资灵活）；(iv) 所有变量都在零通胀稳态附近做对数线性化，因此 $\hat y_t$ 是"缺口"而非水平。</p>
+      <p><strong>经济学解读：</strong>这条曲线说的是"实际利率差"如何驱动需求。如果央行把名义利率 $\hat i_t$ 调高，而通胀预期 $E_t\hat\pi_{t+1}$ 短期不变，那么<em>实际利率</em> $\hat i_t-E_t\hat\pi_{t+1}$ 就上升，家庭推迟消费，当期产出缺口 $\hat y_t$ 下降。系数 $1/\sigma$ 是消费跨期替代的敏感程度：$\sigma$ 越小（越愿意替代），实际利率变动对当期需求的影响越大。自然利率 $\hat r_t^n$ 是"经济自身在灵活价格下需要的实际利率"——它外生于货币政策，吸收了技术、偏好、政府支出等真实冲击。</p>
+    </div>
+
+    <!-- S5 -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> NKPC：Calvo 定价的前瞻型菲利普斯曲线</h2>
+
+      <h3>5.1 Calvo 定价问题与 FOC（完整推导）</h3>
+      <p>每期能调价的那部分厂商（比例 $1-\theta$）选择最优名义价格 $P_t^\ast$，最大化未来期望实际利润的现值：</p>
+      <div class="formula-block">
+        <div class="formula-label">Calvo 厂商优化问题</div>
+        $$\max_{P_t^\ast}\ E_t\sum_{k=0}^{\infty}(\beta\theta)^k\ \frac{\Lambda_{t+k}}{\Lambda_t}\ \left[\frac{P_t^\ast}{P_{t+k}} - MC_{t+k}^{nom}\right]Y_{t+k}(i)$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>变量：</strong>$P_t^\ast$ 当期新设定的最优价格；$MC^{nom}$ 名义边际成本；$\Lambda_{t+k}/\Lambda_t$ 家庭随机贴现因子；$(\beta\theta)^k$ 同时贴现"活到 $k$ 期仍未调价"的概率。<strong>约束：</strong>需求 $Y_{t+k}(i)=(P_t^\ast/P_{t+k})^{-\varepsilon}Y_{t+k}$。</p>
+      </div>
+      <p><strong>把需求约束代入目标函数：</strong>利润 $\propto (P_t^\ast)^{1-\varepsilon}P_{t+k}^{\varepsilon-1}Y_{t+k} - MC_{t+k}^{nom}(P_t^\ast)^{-\varepsilon}P_{t+k}^{\varepsilon}Y_{t+k}$。对 $P_t^\ast$ 求偏导：</p>
+      <div class="formula-block">
+        $$\frac{\partial \pi}{\partial P_t^\ast} = E_t\sum_{k=0}^{\infty}(\beta\theta)^k\frac{\Lambda_{t+k}}{\Lambda_t}\left[(1-\varepsilon)(P_t^\ast)^{-\varepsilon}P_{t+k}^{\varepsilon-1}Y_{t+k} + \varepsilon\, MC_{t+k}^{nom}(P_t^\ast)^{-\varepsilon-1}P_{t+k}^{\varepsilon}Y_{t+k}\right]=0$$
+      </div>
+      <p>两边除以 $(P_t^\ast)^{-\varepsilon-1}$ 并整理成"目标加成"形式（实际边际成本 $mc_{t+k}\equiv MC_{t+k}^{nom}/P_{t+k}$）：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N7 · Calvo 最优定价 FOC（加成形式）</div>
+        $$\frac{P_t^\ast}{P_t} = \frac{\varepsilon}{\varepsilon-1}\ \frac{E_t\sum_{k=0}^{\infty}(\beta\theta)^k\frac{\Lambda_{t+k}}{\Lambda_t}mc_{t+k}\,Y_{t+k}(i)\,P_{t+k}^{\varepsilon-1}}{E_t\sum_{k=0}^{\infty}(\beta\theta)^k\frac{\Lambda_{t+k}}{\Lambda_t}Y_{t+k}(i)\,P_{t+k}^{\varepsilon-1}}$$
+      </div>
+      <p>在零通胀稳态 $\bar\pi=0$、$\Lambda_{t+k}/\Lambda_t=1$、$P_{t+k}=P_t$ 处对数线性化。记 $\hat p_t^\ast\equiv\ln(P_t^\ast/P_t)$、$\widehat{mc}_t\equiv\ln(mc_t/mc)$，$\frac{\varepsilon}{\varepsilon-1}$ 是常数加成在对数偏离中消去，得到：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N8 · 最优新价格的对数线性化（前瞻求和）</div>
+        $$\hat p_t^\ast \equiv \ln\frac{P_t^\ast}{P_t} = (1-\beta\theta)\,E_t\sum_{k=0}^{\infty}(\beta\theta)^k\,\widehat{mc}_{t+k}$$
+        <p style="margin:6px 0 0;font-size:13.5px;color:#555"><strong>等价递归形式：</strong>$\hat p_t^\ast = (1-\beta\theta)\widehat{mc}_t + \beta\theta E_t\hat p_{t+1}^\ast$（无穷求和的向前递推）。</p>
+      </div>
+      <p>直觉：今天能调价的厂商，知道自己的价格可能在未来很长时间都不能改，所以它<strong>一步把当前和未来预期的边际成本全部涨进去</strong>——这就是 NKPC 前望性的来源。</p>
+
+      <h3>5.2 价格指数、边际成本桥与 NKPC（完整步骤）</h3>
+      <p><strong>第 1 步：写出 Calvo 价格指数。</strong>每期 $(1-\theta)$ 比例厂商设新价 $P_t^\ast$，$\theta$ 比例厂商维持上期价，由 Dixit–Stiglitz 价格加总：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N9 · Dixit–Stiglitz 价格指数（Calvo 加总）</div>
+        $$P_t^{1-\varepsilon} = (1-\theta)(P_t^\ast)^{1-\varepsilon} + \theta P_{t-1}^{1-\varepsilon}$$
+      </div>
+      <p><strong>第 2 步：对 Eq.N9 做对数线性化。</strong>稳态处 $P=P^\ast=P_{t-1}$，两边减稳态：</p>
+      <div class="formula-block">
+        $$(1-\varepsilon)(1)\hat p_t = (1-\theta)(1-\varepsilon)(1)\hat p_t^\ast + \theta(1-\varepsilon)(1)\hat p_{t-1}$$
+      </div>
+      <p>两边除以 $(1-\varepsilon)$ 并整理。定义通胀 $\hat\pi_t\equiv\ln(P_t/P_{t-1})$，注意 $\hat p_t=0$（价格水平归一为基准），得：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N9' · 价格指数的线性化</div>
+        $$0 = (1-\theta)\hat p_t^\ast + \theta\hat p_{t-1}\quad\Longrightarrow\quad \hat\pi_t = \frac{1-\theta}{\theta}\,\hat p_t^\ast$$
+      </div>
+      <p><strong>第 3 步：把 Eq.N8 的递归形式代入 Eq.N9' 并做向前差分。</strong>由 Eq.N8：$\hat p_t^\ast = (1-\beta\theta)\widehat{mc}_t + \beta\theta E_t\hat p_{t+1}^\ast$。两边乘 $(1-\theta)/\theta$：</p>
+      <div class="formula-block">
+        $$\frac{1-\theta}{\theta}\hat p_t^\ast = \frac{(1-\theta)(1-\beta\theta)}{\theta}\widehat{mc}_t + \beta\theta\cdot\frac{1-\theta}{\theta}E_t\hat p_{t+1}^\ast$$
+      </div>
+      <p>用 Eq.N9' 替换 $\frac{1-\theta}{\theta}\hat p_t^\ast=\hat\pi_t$ 与 $\frac{1-\theta}{\theta}E_t\hat p_{t+1}^\ast=E_t\hat\pi_{t+1}$：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N11a · NKPC（边际成本形式）</div>
+        $$\hat\pi_t = \beta E_t\hat\pi_{t+1} + \frac{(1-\theta)(1-\beta\theta)}{\theta}\,\widehat{mc}_t$$
+      </div>
+      <p><strong>第 4 步：把边际成本与产出缺口联系起来（边际成本桥）。</strong>在劳动市场出清、生产函数 $Y_t=N_t$（线性）下，实际边际成本 $mc_t=W_t/(P_t\cdot MPL)=w_t$（因为 $MPL=1$）。由家庭劳动供给 FOC（Eq.N4'）$w_t=N_t^\varphi C_t^\sigma$。市场出清 $C_t=Y_t$、$N_t=Y_t$，故 $mc_t=Y_t^{\varphi+\sigma}$。对数线性化：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.D3 · 边际成本–产出缺口桥</div>
+        $$\widehat{mc}_t = (\sigma+\varphi)\hat y_t$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555">更一般的情形（垄断竞争稳态 markup）下要除以 $1+\varepsilon\varphi$，见 Galí 第 3 章。</p>
+      </div>
+      <p><strong>第 5 步：代入得标准 NKPC。</strong></p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N11 · 新凯恩斯菲利普斯曲线（前瞻型）</div>
+        $$\hat\pi_t = \beta E_t\hat\pi_{t+1} + \kappa\,\hat y_t,\qquad \kappa \equiv \frac{(1-\theta)(1-\beta\theta)}{\theta}\cdot\frac{\sigma+\varphi}{1+\varepsilon\varphi}$$
+      </div>
+
+      <h3>5.3 假设与解读</h3>
+      <p><strong>背后假设：</strong>(i) Calvo 随机调价机制——每期 $(1-\theta)$ 比例厂商可最优调价，其余维持原价；(ii) 所有厂商对称、技术相同；(iii) 对数线性化于<strong>零通胀稳态</strong>（若稳态通胀非零，需用非线性 NKPC 或趋势通胀版本）；(iv) 价格指数为 Dixit-Stiglitz 加总；(v) 劳动市场完全竞争、工资灵活。</p>
+      <p><strong>参数 $\theta$ 的经济学含义：</strong>它是每期不能调价的概率。$\theta$ 越大，价格粘性越强，$\kappa$ 越小（通胀对产出越不敏感）。$\theta=0$ 回到完全灵活价格，$\kappa\to\infty$，通胀可以瞬间跳到任何水平，货币政策无效；$\theta=1$ 则完全价格刚性，$\kappa=0$，货币政策可以毫无代价地影响产出。$\theta=0.75$ 是文献中的中位数。</p>
+      <p><strong>经济学解读：</strong>$\kappa\hat y_t$ 是"成本推动"项：正产出缺口 ⇒ 劳动需求上升 ⇒ 工资与边际成本上升 ⇒ 能调价的那 25% 厂商涨价 ⇒ 当期通胀上升。$\beta E_t\hat\pi_{t+1}$ 是"预期"项：今天能调价的厂商知道未来通胀会高，会一步把未来涨进去，因此当前通胀立即对未来通胀预期做出反应。注意标准 NKPC 里<strong>没有 $\hat\pi_{t-1}$ 项</strong>——通胀是纯前望的，这也是它被批评"缺少通胀惯性"的地方（CEE 2005 加入价格指数化后才有 $\gamma_p\hat\pi_{t-1}$）。</p>
+    </div>
+
+    <!-- S6 -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> Taylor 规则与自然利率</h2>
+
+      <h3>6.1 Taylor 规则</h3>
+      <p>央行按 Taylor (1993) 规则设定名义利率：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N12 · Taylor 规则（含货币政策冲击）</div>
+        $$\hat i_t = \phi_\pi \hat\pi_t + \phi_y \hat y_t + \varepsilon_t^m$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>参数：</strong>$\phi_\pi>0$ 对通胀的反应；$\phi_y\ge 0$ 对产出缺口的反应。<strong>冲击：</strong>$\varepsilon_t^m$ 货币政策意外。</p>
+      </div>
+      <p><strong>背后假设：</strong>央行<strong>承诺</strong>按此规则行事（不再自由裁量），规则是可观察、可承诺、可预期的。$\phi_\pi$ 是对通胀偏离目标的反应系数，$\phi_y$ 是对产出缺口的反应系数。$\varepsilon_t^m$ 是货币政策冲击——它捕捉了规则未能解释的利率变动，可解释为央行的"意外"宽松或紧缩。Taylor 原始值 $\phi_\pi=1.5,\ \phi_y=0.5$（年化口径），季度模型里 $\phi_y=0.5/4=0.125$。</p>
+
+      <h3>6.2 自然利率与技术冲击的关系</h3>
+      <p>自然利率 $\hat r_t^n$ 不是外生凭空出现的，它由灵活价格均衡下的欧拉方程决定。在只有技术冲击 $Z_t$ 的最简 RBC 骨架里，产出 $Y_t=Z_t N_t$，灵活价格下家庭劳动供给与消费的一阶条件给出自然产出 $\hat y_t^n$。把灵活价格下的欧拉方程（Eq.N10a）用于 $C_t=Y_t^n$：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.D4 · 自然利率的决定（灵活价格欧拉）</div>
+        $$\hat y_t^n = E_t\hat y_{t+1}^n - \tfrac{1}{\sigma}\hat r_t^n\quad\Longrightarrow\quad \hat r_t^n = \sigma\big(E_t\hat y_{t+1}^n - \hat y_t^n\big) = \sigma E_t\Delta\hat y_{t+1}^n$$
+      </div>
+      <p>其中 $\Delta \hat y_{t+1}^n \equiv E_t\hat y_{t+1}^n - \hat y_t^n$ 是自然产出的预期增长率。直觉：<strong>当预期未来技术进步快、自然产出增速高时，家庭想提前消费，必须用更高的实际利率来"劝"他们储蓄</strong>，于是自然利率上升。反过来，技术停滞或衰退预期下，自然利率下降——这就是 secular stagnation 讨论的理论起点。在三方程模型里，$\hat r_t^n$ 通常被建模为外生 AR(1)：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N13 · 自然利率 AR(1) 过程</div>
+        $$\hat r_t^n = \rho_r \hat r_{t-1}^n + \varepsilon_t^r, \qquad \varepsilon_t^r\sim\mathcal N(0,\sigma_r^2)$$
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N14 · 货币政策冲击 AR(1) 过程</div>
+        $$\hat m_t = \rho_m \hat m_{t-1} + \varepsilon_t^m, \qquad \varepsilon_t^m\sim\mathcal N(0,\sigma_m^2)$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555">这对应 Dynare .mod 里的 <code class="inline">mshock</code> 变量。</p>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">为什么需要"自然利率"</div>
+        <p>$\hat r_t^n$ 是 IS 曲线里唯一的需求侧外生驱动。它吸收了技术冲击、政府支出、偏好冲击等一切"在价格灵活时本该动的实际利率"。央行若不调整名义利率跟随 $\hat r_t^n$，实际利率就会错位，产出缺口与通胀就会偏离零。</p>
+      </div>
+    </div>
+
+    <!-- S7 -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 稳态：零通胀零缺口均衡</h2>
+      <p>三方程全部是围绕稳态的对数偏离，因此稳态本身极其简单。设所有外生冲击为零、预期一致，则：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.SS1 · IS 曲线稳态（零产出缺口）</div>
+        $$0 = 0 - \tfrac{1}{\sigma}(\bar i - \bar\pi - \bar r^n)\quad\Longrightarrow\quad \bar i - \bar\pi = \bar r^n$$
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">Eq.SS2 · NKPC 稳态（零通胀）</div>
+        $$\bar\pi = \beta\bar\pi + \kappa\cdot 0\quad\Longrightarrow\quad \bar\pi(1-\beta)=0$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555">因为 $\beta\in(0,1)$，故 $\bar\pi=0$。这就是为什么教学版 NK 模型必须把稳态通胀设为零。</p>
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">Eq.SS3 · Taylor 规则稳态（零冲击）</div>
+        $$\bar i = \phi_\pi\bar\pi + \phi_y\cdot 0 + 0\quad\Longrightarrow\quad \bar i = 0$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555">结合 Eq.SS1 与 $\bar\pi=0$，得 $\bar r^n=0$。</p>
+      </div>
+      <p>含义：在长期均衡中，产出等于自然产出（缺口为零）、通胀等于目标（这里设为零）、名义利率等于自然利率（$\bar i = \bar r = 1/\beta - 1$，季度约 1%）。这正是为什么在 Dynare 里 <code class="inline">initval</code> 把所有变量初始化为 0 就够了——对数线性模型的稳态原点就是所有缺口为零。</p>
+      <div class="callout info">
+        <div class="callout-title">为什么稳态通胀设为零？</div>
+        <p>NKPC 的推导假设零通胀稳态。若稳态通胀为 $\bar\pi>0$，Calvo 厂商在不同通胀率下的相对价格扭曲会改变一阶条件，需要用"趋势通胀"版本（Coibion-Gorodnichenko 2011）。教学模型一律取 $\bar\pi=0$，这也是 Galí 教材的标准做法。</p>
+      </div>
+    </div>
+
+    <!-- S8 -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 参数校准</h2>
+      <p>下面按季度频率校准全部深参数与政策参数。这一节是 Dynare 代码的"设计依据"。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>参数</th><th>校准值</th><th>依据</th></tr></thead>
+          <tbody>
+            <tr><td>$\beta$</td><td>0.99</td><td>季度贴现，对应年实际利率约 $4\%$（$\bar r = 1/\beta - 1 \approx 1\%$/季度）</td></tr>
+            <tr><td>$\sigma$</td><td>1.0</td><td>log 消费效用，风险厌恶中性</td></tr>
+            <tr><td>$\varphi$</td><td>1.0</td><td>Frisch 劳动供给弹性 = 1，中性偏好</td></tr>
+            <tr><td>$\varepsilon$</td><td>6.0</td><td>Dixit-Stiglitz 替代弹性，稳态 markup $\varepsilon/(\varepsilon-1)=1.2$（20% 加成）</td></tr>
+            <tr><td>$\theta$</td><td>0.75</td><td>每期 25% 厂商调价，平均一年调一次（与 Bils-Klenow 微观证据一致）</td></tr>
+            <tr><td>$\phi_\pi$</td><td>1.5</td><td>Taylor 原始值，满足 Taylor 原理 $\phi_\pi>1$</td></tr>
+            <tr><td>$\phi_y$</td><td>0.125</td><td>= 0.5/4，Taylor 年度系数季度化</td></tr>
+            <tr><td>$\rho_r$</td><td>0.9</td><td>自然利率冲击高度持续（文献典型 0.8–0.9）</td></tr>
+            <tr><td>$\rho_m$</td><td>0.5</td><td>货币政策冲击中等持续</td></tr>
+            <tr><td>$\sigma(\varepsilon^r)$</td><td>$0.01$（1%）</td><td>自然利率/需求冲击标准差</td></tr>
+            <tr><td>$\sigma(\varepsilon^m)$</td><td>$0.0025$（0.25%）</td><td>货币政策冲击标准差（季度利率单位）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>把前五个深参数代入 $\kappa$ 的定义：</p>
+      <div class="formula-block">
+        $$\kappa = \frac{(1-0.75)(1-0.99\times0.75)}{0.75}\cdot\frac{1+1}{1+6\times1} \approx 0.0858\times 0.2857 \approx 0.0245$$
+      </div>
+      <p>这个 $\kappa\approx 0.025$ 是美国数据中 NKPC 斜率的合理量级。注意早期草稿里常写 $\kappa=0.1$，那是把 $\theta$ 取小（价格更灵活）或忽略了 CES 分母 $(1+\varepsilon\varphi)$ 的结果——本页坚持由深参数推出，便于在 Dynare 里直接计算。</p>
+    </div>
+
+    <!-- S9 -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> Taylor 原理与 Blanchard-Kahn 条件</h2>
+      <p>三方程联立后是一个<strong>前瞻理性预期方程组</strong>。把 IS、NKPC、Taylor 写成矩阵形式 $\mathbb{A} E_t\mathbf{x}_{t+1} = \mathbb{B}\mathbf{x}_t + \mathbf{u}_t$，其解是否唯一、是否收敛，取决于政策系数是否满足 <strong>Blanchard-Kahn 条件</strong>：前瞻变量的个数必须等于单位圆外特征根的个数。</p>
+
+      <h3>9.1 确定性（Determinacy）</h3>
+      <p>当政策反应足够强，特别是满足 <strong>Taylor 原理（Taylor Principle）</strong>：</p>
+      <div class="formula-block">
+        <div class="formula-label">Taylor 原理</div>
+        $$\phi_\pi > 1 \qquad\Longleftrightarrow\qquad \text{实际利率 } \hat i_t - E_t\hat\pi_{t+1} \text{ 随通胀上升而上升}$$
+      </div>
+      <p>此时系统有唯一的、平稳的理性预期解，即<strong>确定性</strong>。直觉：通胀上升 1 个百分点，央行把名义利率上调超过 1 个百分点，实际利率上升，压制总需求与通胀——经济形成稳定的负反馈。</p>
+
+      <h3>9.2 不确定性（Indeterminacy）与太阳黑子</h3>
+      <p>若 $\phi_\pi < 1$（央行只是名义加息、实际利率反而随通胀下降），系统出现<strong>多重平稳解</strong>，即不确定性。此时即使没有基本面冲击，<strong>太阳黑子（sunspot）型预期自我实现</strong>也能驱动经济波动——这正是上世纪 70 年代高通胀的一种理论解释：央行反应太弱，失去名义锚。</p>
+
+      <h3>9.3 在 Dynare 中验证</h3>
+      <p>把 $\phi_\pi=1.5$ 跑一遍，<code class="inline">check;</code> 会报告：前瞻变量 2 个（$\hat\pi_t,\hat y_t$），单位圆外特征根 2 个，Blanchard-Kahn 条件满足。把 $\phi_\pi$ 改成 0.5 再跑，Dynare 直接报错：</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Dynare 运行输出（phi_pi=0.5 时）</span><button class="copy-btn">复制</button></div>
+        <pre><code>??? Blanchard Kahn conditions are not satisfied: indeterminacy
+    Impossible to find a stable solution.</code></pre>
+      </div>
+      <p>这就是 Taylor 原理 $\phi_\pi>1$ 在代码里的直接体现——亲手改一次，印象最深。</p>
+      <div class="callout warning">
+        <div class="callout-title">Taylor 原理的政策含义</div>
+        <p>央行必须让名义利率<strong>超过通胀上升幅度</strong>地调升（$\phi_\pi>1$），才能让实际利率顺周期收紧、压制通胀。Taylor 原始建议 $\phi_\pi=1.5,\ \phi_y=0.125$，正是典型的确定性区间。</p>
+      </div>
+    </div>
+
+    <!-- S10 -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> Dynare .mod 逐行撰写</h2>
+      <p>下面把三方程直接写成对数线性形式，存为 <code class="inline">nk_three_equation.mod</code>。我们按 Dynare 的执行顺序逐块讲解：声明 → 模型 → 稳态 → 冲击 → 求解。</p>
+
+      <h3>10.1 第一步：var / varexo / parameters 声明</h3>
+      <p>Dynare 在求解前必须知道谁是内生变量、谁是外生冲击、谁是参数。<code class="inline">var</code> 列出模型在 <code class="inline">model;</code> 块里会出现的所有内生变量；<code class="inline">varexo</code> 列出 <code class="inline">shocks;</code> 块要赋值的外生 innovation；<code class="inline">parameters</code> 声明所有待赋值的深参数与政策参数。</p>
+
+      <h3>10.2 第二步：model 块逐行对照</h3>
+      <p><code class="inline">model;</code> 与 <code class="inline">end;</code> 之间就是模型的方程系统。Dynare 用 <code class="inline">x(+1)</code> 表示 $E_t x_{t+1}$、<code class="inline">x(-1)</code> 表示 $x_{t-1}$。</p>
+
+      <h3>10.3 第三步：initval 与 steady</h3>
+      <p>由于所有变量都是对数偏离，稳态原点就是全 0。<code class="inline">initval;</code> 显式给出一个初始猜测（这里就是全 0），<code class="inline">steady;</code> 让 Dynare 求解非线性稳态；对线性模型它会直接返回 0。<code class="inline">check;</code> 紧接着打印 Blanchard-Kahn 诊断。</p>
+
+      <h3>10.4 完整 .mod 代码</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Dynare / nk_three_equation.mod</span><button class="copy-btn">复制</button></div>
+        <pre><code>// ============================================================
+// nk_three_equation.mod  ——  新凯恩斯三方程模型（完整 .mod）
+// 运行：dynare nk_three_equation.mod
+// 模型：IS曲线 + NKPC + Taylor规则（满足 Taylor 原理 phi_pi=1.5）
+// ============================================================
+
+// ---------- 第 1 块：内生变量声明 ----------
+// 所有变量均为偏离稳态的对数/百分点（季度频率）
+var  y        // 产出缺口  y_t = Y_t / Y_t^n 的对数偏离
+     pi       // 通胀缺口  pi_t （零通胀稳态附近的百分点偏离）
+     i        // 名义利率偏离（季度口径，非年化）
+     rn       // 自然利率  r_t^n（灵活价格下的实际利率）
+     mshock;  // Taylor 规则中的货币政策冲击项（AR(1)）
+
+// ---------- 第 2 块：外生冲击声明 ----------
+varexo eps_m    // 货币政策创新：进入 mshock 的白噪声
+       eps_rn;  // 自然利率创新：进入 rn 的白噪声
+
+// ---------- 第 3 块：参数声明 ----------
+parameters beta sigma phi varphi epsilon theta ...
+           kappa phi_pi phi_y rho_rn rho_m;
+
+// ---------- 第 4 块：深参数校准（与 §8 一致） ----------
+beta    = 0.99;   // 季度贴现因子，对应年实际利率约 4%
+sigma   = 1.0;    // 相对风险厌恶 = 1（log 消费效用）
+varphi  = 1.0;    // Frisch 劳动供给弹性的倒数
+epsilon = 6.0;    // CES 替代弹性，稳态 markup = epsilon/(epsilon-1) = 1.2
+theta   = 0.75;   // Calvo 每期不能调价的厂商比例（季度调价概率 0.25）
+
+// 由深参数推出 NKPC 斜率（在 .mod 里直接算，避免手抄错）
+kappa   = (1-theta)*(1-beta*theta)/theta * (sigma+varphi)/(1+epsilon*varphi);
+
+// ---------- 第 5 块：政策参数与冲击持续性 ----------
+phi_pi  = 1.5;    // Taylor 规则对通胀的反应（>1，满足 Taylor 原理）
+phi_y   = 0.125;  // 对产出缺口的反应（=0.5/4，年度系数季度化）
+rho_rn  = 0.9;    // 自然利率冲击 AR(1) 持续性
+rho_m   = 0.5;    // 货币政策冲击 AR(1) 持续性
+
+// ---------- 第 6 块：model 块（三方程 + 两个外生过程） ----------
+model;
+// (1) 前望 IS 曲线
+//     y_t = E_t y_{t+1} - (1/sigma)*(i_t - E_t pi_{t+1} - rn_t)
+//     直觉：实际利率上升 -> 当期产出缺口下降
+y = y(+1) - (1/sigma)*( i - pi(+1) - rn );
+
+// (2) 新凯恩斯菲利普斯曲线 NKPC
+//     pi_t = beta*E_t pi_{t+1} + kappa*y_t
+//     直觉：正产出缺口 -> 边际成本上升 -> 当期通胀上升
+pi = beta*pi(+1) + kappa*y;
+
+// (3) Taylor 规则（含货币政策冲击项 mshock）
+//     i_t = phi_pi*pi_t + phi_y*y_t + mshock_t
+i = phi_pi*pi + phi_y*y + mshock;
+
+// (4) 自然利率外生 AR(1) 过程
+//     rn_t = rho_rn * rn_{t-1} + eps_rn_t
+rn = rho_rn*rn(-1) + eps_rn;
+
+// (5) 货币政策冲击项服从 AR(1)
+//     mshock_t = rho_m * mshock_{t-1} + eps_m_t
+mshock = rho_m*mshock(-1) + eps_m;
+end;
+
+// ---------- 第 7 块：稳态初始值（所有对数偏离 = 0） ----------
+initval;
+y       = 0;
+pi      = 0;
+i       = 0;
+rn      = 0;
+mshock  = 0;
+end;
+
+// 求解稳态（线性模型下就是原点），并打印 Blanchard-Kahn 诊断
+steady;
+check;
+
+// ---------- 第 8 块：外新冲击分布 ----------
+shocks;
+var eps_m   = (0.0025)^2;   // 货币政策冲击标准差约 0.25%（季度利率单位）
+var eps_rn  = (0.01)^2;     // 自然利率冲击标准差约 1%
+end;
+
+// ---------- 第 9 块：一阶扰动求解，画 40 期 IRF ----------
+// order=1：一阶线性近似；irf=40：画 40 个季度的脉冲响应
+stoch_simul(order=1, irf=40) y pi i rn mshock;</code></pre>
+      </div>
+
+      <h3>10.5 运行结果怎么读</h3>
+      <p>Dynare 跑完后会在工作目录生成 <code class="inline">nk_three_equation_results</code> 文件夹，里面有：</p>
+      <ul>
+        <li><code class="inline">.mat</code> 工作空间：包含政策函数 <code class="inline">oo_.dr.ghx</code>、状态空间表示、二阶矩。</li>
+        <li><code class="inline">*.eps / *.pdf</code>：所有变量对每个冲击的 IRF 图。</li>
+        <li>命令窗口打印：稳态值、特征根、Blanchard-Kahn 诊断、理论矩（标准差、自相关、相关系数）。</li>
+      </ul>
+      <div class="callout tip">
+        <div class="callout-title">自检：把 $\phi_\pi$ 改成 0.5 会怎样</div>
+        <p>把 <code class="inline">phi_pi = 0.5</code> 再跑一次，Dynare 会在 <code class="inline">check;</code> 处报 <code class="inline">Blanchard Kahn conditions are not satisfied: indeterminacy</code>。这就是 Taylor 原理 $\phi_\pi>1$ 在代码里的直接体现。</p>
+      </div>
+    </div>
+
+    <!-- S11 -->
+    <div class="section" id="s11">
+      <h2><span class="sec-num">11</span> 货币政策冲击 IRF 解读</h2>
+      <p>对一个紧缩性货币政策冲击 $\varepsilon_t^m>0$（央行意外加息 1 个标准差），按三方程的预测，IRF 应如下演化：</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">同期（第 0 季度）：名义利率跳升</div>
+          <div class="step-desc">$\hat i_t$ 立即上升（Taylor 规则里 $\varepsilon_t^m$ 直接进）。因为通胀粘性，<strong>实际利率</strong> $\hat i_t - E_t\hat\pi_{t+1}$ 也上升。这是货币政策传导的"发令枪"。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">产出缺口下降，呈驼峰形</div>
+          <div class="step-desc">由 IS 曲线，实际利率上升 ⇒ 当期 $\hat y_t$ 下降（需求被压缩）。注意 IRF 常呈 <strong>hump-shaped（驼峰形）</strong>：因为 $E_t\hat y_{t+1}$ 也在动，最大产出损失往往出现在冲击后 4~6 个季度，而非冲击当期。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">通胀逐步回落，滞后于产出</div>
+          <div class="step-desc">负产出缺口 ⇒ 边际成本下降 ⇒ 由 NKPC，$\hat\pi_t$ 下降。但因为 NKPC 前望，通胀反应相对平缓、滞后于产出，呈现"通胀缓慢下降"的形态。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">自然利率不变</div>
+          <div class="step-desc">$\hat r_t^n$ 是实际侧变量（技术/偏好决定），货币政策冲击不影响它。这是 NK 模型"货币短期非中性、长期中性"的体现——冲击消散后，所有变量回到原点。</div>
+        </div>
+      </div>
+      <div class="callout info">
+        <div class="callout-title">理论 vs. 数据</div>
+        <p>标准 NKPC 预测通胀对货币政策冲击反应<strong>过快、过弹性</strong>，与 SVAR 里"通胀缓慢下降"的事实不符。这正是后来 CEE (2005) / SW (2007) 加入<strong>价格指数化（indexation）与工资粘性</strong>、把 $\hat\pi_{t-1}$ 塞进 NKPC 的动机——见下一页中尺度模型。</p>
+      </div>
+    </div>
+
+    <!-- S12 -->
+    <div class="section" id="s12">
+      <h2><span class="sec-num">12</span> 贝叶斯估计：先验、数据、观测方程与 MCMC</h2>
+      <p>第 8 节校准表给的是"教科书中位值"，写论文必须用数据估计。三方程 NK 模型是贝叶斯 DSGE 的最小可用案例：Galí 教材只校准，但 Smets-Wouters 传统把它做成了完整的估计流水线。本节把数据、先验、观测方程、算法四件事一次写全。</p>
+
+      <h3>12.1 数据来源：美国 FRED 序列</h3>
+      <p>三方程模型只需要三个可观测序列——<strong>产出缺口（或产出增长）、通胀、名义利率</strong>。全部来自 FRED（fred.stlouisfed.org），样本惯例 1984Q1–2019Q4（大缓和时代起，避开沃尔克紧缩初期的高通胀）。</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>观测变量</th><th>FRED 代码</th><th>名称 / 处理</th></tr></thead>
+        <tbody>
+          <tr><td>产出 / 产出缺口</td><td><code>GDPC1</code></td><td>实际 GDP（十亿链式 2017 美元，季度 SAAR）。观测方程用<strong>一阶对数差分</strong> $\Delta\ln Y_t$（对应趋势增长），或 HP 滤波后得产出缺口 $\hat y_t$</td></tr>
+          <tr><td>通胀</td><td><code>GDPDEF</code>（或 <code>PCEPI</code> / <code>PCEC</code>）</td><td>GDP 平减指数。取 $\pi_t=100[4\ln(P_t/P_{t-1})]$（季度年化百分比）；核心通胀用 <code>PCEPILFE</code></td></tr>
+          <tr><td>名义利率</td><td><code>FEDFUNDS</code></td><td>联邦基金有效利率（月频，%年化）。季度平均后除以 4 转成季度口径，再减去长期均值得 $\hat i_t$</td></tr>
+          <tr><td>（校验用）</td><td><code>UNRATE</code> / <code>PRS85006023</code></td><td>失业率 / 总工时，用于构造 Okun 式产出缺口，稳健性检验</td></tr>
+        </tbody>
+      </table></div>
+      <div class="guide">
+        <div class="guide-label">为什么用一阶差分而不是 HP 滤波</div>
+        <p>DSGE 状态空间模型要求数据是平稳的。对 $\ln Y_t$ 取差分后，观测方程写成 $\Delta\ln Y_t = \bar g + \hat y_t - \hat y_{t-1}$，其中 $\bar g$ 是待估的季度趋势增长率；通胀与利率则直接去均值。HP 滤波会让模型对端点敏感、且把模型不该解释的低频波动塞进观测方程——Smets-Wouters 及 FRBNY DSGE 都用差分。</p>
+      </div>
+
+      <h3>12.2 中国数据适配</h3>
+      <p>做中国 NK 模型时，FRED 不可用，数据源换成：<strong>国家统计局</strong>（季度 GDP、CPI、GDP 平减指数）、<strong>中国人民银行</strong>（7 天逆回购利率 / 银行间 7 天回购质押利率 DR007 或 7 天加权平均质押回购利率 R007，作为政策利率代理）、<strong>Wind / CSMAR / CEIC</strong>。中国 Taylor 规则估计要注意：① 2019 年前央行主政策工具是<strong>数量型</strong>（M2 增速、存款准备金率），纯利率规则拟合差，文献常加入货币供应量项（刘斌 2008）；② 利率市场化（2015 存款利率上限放开）前后结构有断裂，建议分样本估计；③ 产出缺口用 HP 滤波或生产函数法构造，学界尚无共识。</p>
+
+      <h3>12.3 观测方程（measurement equations）</h3>
+      <p>把模型变量与数据对应起来。三方程模型的 Dynare 观测方程（写在 <code>estimated_params</code> 块之后、用 <code>varobs;</code> 声明）如下：</p>
+      <div class="formula-block">
+        <div class="formula-label">观测方程（季度，百分比口径）</div>
+        $$\pi_t^{data} = \pi^\ast + 100\cdot\pi_t$$
+        $$i_t^{data} = \pi^\ast + 100\cdot(r^\ast + i_t)$$
+        $$\Delta\ln Y_t^{data} = 100\cdot g_y + (y_t - y_{t-1})$$
+      </div>
+      <p>其中 $\pi^\ast$ 是稳态通胀（待估，先验围绕 0.5%/季度 ≈ 2% 年化），$r^\ast$ 是稳态实际利率，$g_y$ 是季度趋势增长。注意 $\pi^\ast$ 在三方程教学模型里设为 0，但估计时必须放进来——否则观测通胀的均值会被错误归因到冲击上。</p>
+
+      <h3>12.4 先验表</h3>
+      <p>固定弱识别参数，只估政策与行为参数。下表是 Smets-Wouters (2007) / 刘斌 (2008) 的标准先验：</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>参数</th><th>分布</th><th>先验均值</th><th>先验标准差</th><th>经济含义 / 约束理由</th></tr></thead>
+        <tbody>
+          <tr><td>$\phi_\pi$</td><td>Normal</td><td>1.50</td><td>0.25</td><td>Taylor 原理要求 &gt;1</td></tr>
+          <tr><td>$\phi_y$</td><td>Normal</td><td>0.125</td><td>0.05</td><td>季度化 Taylor 系数</td></tr>
+          <tr><td>$\theta$</td><td>Beta</td><td>0.75</td><td>0.10</td><td>价格粘性概率，约束 (0,1)；Bils-Klenow 微观证据</td></tr>
+          <tr><td>$\sigma$</td><td>Normal</td><td>1.00</td><td>0.25</td><td>跨期替代弹性倒数</td></tr>
+          <tr><td>$\varphi$</td><td>Gamma</td><td>1.00</td><td>0.50</td><td>Frisch 劳动弹性倒数</td></tr>
+          <tr><td>$\rho_r$</td><td>Beta</td><td>0.90</td><td>0.05</td><td>自然利率冲击持续性</td></tr>
+          <tr><td>$\rho_m$</td><td>Beta</td><td>0.50</td><td>0.20</td><td>货币政策冲击持续性</td></tr>
+          <tr><td>$100\sigma_r$</td><td>Inv-gamma(1)</td><td>1.00</td><td>Inf</td><td>自然利率冲击标准差</td></tr>
+          <tr><td>$100\sigma_m$</td><td>Inv-gamma(1)</td><td>0.25</td><td>Inf</td><td>货币政策冲击标准差</td></tr>
+          <tr><td>$\pi^\ast$</td><td>Gamma</td><td>0.50</td><td>0.10</td><td>季度稳态通胀（≈年化 2%）</td></tr>
+          <tr><td>$100g_y$</td><td>Normal</td><td>0.40</td><td>0.10</td><td>季度趋势产出增长</td></tr>
+        </tbody>
+      </table></div>
+      <div class="callout warning">
+        <div class="callout-title">先验不是拍脑袋</div>
+        <p>① Beta 分布专门用于落在 (0,1) 的参数（$\theta,\rho$）；② Inv-gamma 用于标准差；③ Normal 用于无界参数；④ 先验均值取文献中位值，先验标准差取"允许数据偏离先验约一个标准差"。<strong>后验与先验几乎重合 ⇒ 数据不识别该参数</strong>，这是估计诊断的核心信号。</p>
+      </div>
+
+      <h3>12.5 算法：卡尔曼滤波 + Metropolis-Hastings MCMC</h3>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">第一步：参数 → 状态空间</div>
+          <div class="step-desc">给定一组候选参数 $\theta$，Dynare 用一阶扰动法把三方程写成 $X_t=A(\theta)X_{t-1}+B(\theta)\varepsilon_t$，观测方程 $Y_t^{obs}=H(\theta)X_t$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第二步：卡尔曼滤波算似然 $p(Y|\theta)$</div>
+          <div class="step-desc">从初始状态 $X_0$ 开始，逐期做"预测—更新"：先预测 $E[X_t|\mathcal I_{t-1}]$ 与协方差，再用当期观测 $Y_t^{obs}$ 的预测误差更新。对数似然 $\ell(\theta)=\sum_t\ln p(Y_t|Y^{t-1},\theta)$ 由预测误差递推得到。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第三步：后验核 = 先验 × 似然</div>
+          <div class="step-desc">$p(\theta|Y)\propto p(\theta)\,p(Y|\theta)$。用模式最大化（<code>mode_compute=6</code>，Newton-style优化）找后验众数 $\hat\theta$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第四步：MCMC 抽样</div>
+          <div class="step-desc">以后验众数为起点，跑 2 条 Metropolis-Hastings 链，每条 20–50 万步。提议分布协方差按 <code>mh_jscale=0.3–0.4</code> 校准，使接受率约 25%~35%。前 50%  burn-in，后 50% 保留为后验样本。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第五步：收敛诊断</div>
+          <div class="step-desc">看 Brooks-Gelman-Rubin 统计量（应 &lt;1.1）、有效样本量 ESS（&gt;100）、后验轨迹图是否平稳。不收敛就延长链或检查观测方程。</div>
+        </div>
+      </div>
+
+      <h3>12.6 Dynare 估计命令片段</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Dynare / 估计块（追加在 .mod 末尾）</span><button class="copy-btn">复制</button></div>
+        <pre><code>// === 观测变量声明（与数据列对应） ===
+varobs pi i y;
+
+// === 待估参数与先验（estimated_params 块） ===
+estimated_params;
+phi_pi,  normal_pdf,   1.50, 0.25;
+phi_y,   normal_pdf,   0.125,0.05;
+theta,   beta_pdf,     0.75, 0.10;
+sigma,   normal_pdf,   1.00, 0.25;
+varphi,  gamma_pdf,    1.00, 0.50;
+rho_rn,  beta_pdf,     0.90, 0.05;
+rho_m,   beta_pdf,     0.50, 0.20;
+stderr eps_rn, inv_gamma_pdf, 1.00, Inf;
+stderr eps_m,  inv_gamma_pdf, 0.25, Inf;
+// 稳态通胀与趋势增长（观测方程截距）
+pie_star, gamma_pdf,   0.50, 0.10;
+gy,      normal_pdf,   0.40, 0.10;
+end;
+
+// === 数据文件（三列：pi, i, 产出同比差分，季度） ===
+// 数据文件 nk_data.m 或 .xlsx，列顺序与 varobs 一致
+// 运行：dynare nk_estimate.mod
+estimation(datafile=nk_data, xls_sheet=Sheet1, ...
+           mode_compute=6, ...            % 用优化器找后验众数
+           mh_replic=200000, ...          % 20万步 MCMC
+           mh_nblocks=2, ...              % 2条链
+           mh_jscale=0.35, ...            % 提议分布尺度
+           first_obs=1, nobs=142, ...     % 1984Q1-2019Q4
+           smoothed_state=2, ...
+           y) pi i y;                     % 要画IRF的变量</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">常见报错排查</div>
+        <p><strong>① "The log data density is too low"</strong>：先验与数据冲突，检查观测方程截距（$\pi^\ast,g_y$）。<strong>② MCMC 不收敛</strong>：接受率过高/过低，调 <code>mh_jscale</code>；或参数弱识别，固定几个参数别估。<strong>③ 后验方差爆炸</strong>：通常是某个参数先验误设（如把 Inv-gamma 写成 Normal）。</p>
+      </div>
+    </div>
+
+    <!-- S13 -->
+    <div class="section" id="s13">
+      <h2><span class="sec-num">13</span> 方差分解与估计结果解读</h2>
+      <p>估计跑完后，Dynare 自动打印两张表：<strong>方差分解</strong>（每个变量的预测方差由各冲击贡献多少）与<strong>后验矩</strong>（后验均值、置信区间）。怎么读？</p>
+
+      <h3>13.1 方差分解：谁在驱动通胀与产出</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>变量</th><th>$\varepsilon^r$（需求/自然利率）</th><th>$\varepsilon^m$（货币政策）</th><th>解读</th></tr></thead>
+        <tbody>
+          <tr><td>产出缺口 $\hat y_t$（短期）</td><td>≈60%~70%</td><td>≈30%~40%</td><td>需求冲击主导，但货币政策非边际</td></tr>
+          <tr><td>通胀 $\hat\pi_t$（短期）</td><td>≈80%~90%</td><td>≈10%~20%</td><td>通胀主要由需求/边际成本推动</td></tr>
+          <tr><td>名义利率 $\hat i_t$</td><td>≈40%</td><td>≈60%</td><td>利率一半是规则内生反应、一半是意外冲击</td></tr>
+          <tr><td>长期（>40 期）</td><td>$\varepsilon^r$ 占绝对主导</td><td>$\varepsilon^m$ 衰减殆尽</td><td>货币政策长期中性</td></tr>
+        </tbody>
+      </table></div>
+      <p>这张表与 SVAR 文献（Christiano-Eichenbaum-Evans 1999）的结论一致：<strong>货币政策冲击只能解释一小部分产出与通胀波动，大部分是需求/供给面冲击被政策规则放大或吸收</strong>。这是 NK 模型对"货币政策到底有多重要"的定量回答。</p>
+
+      <h3>13.2 后验结果怎么读</h3>
+      <ul>
+        <li><strong>$\phi_\pi$ 后验均值应显著 &gt;1</strong>（典型 1.5~1.8）。若后验挤到 1 附近或 &lt;1，说明数据支持被动货币政策——这正是 Clarida-Galí-Gertler (2000) 对 1970 年代的著名诊断：前 Volcker 时代 $\phi_\pi&lt;1$ 导致不确定性与通胀失控。</li>
+        <li><strong>$\theta$ 后验均值约 0.7~0.85</strong>，与 Bils-Klenow 微观证据一致；若后验 &gt;0.9，模型会"过粘"，IRF 反应过慢。</li>
+        <li><strong>$\kappa$ 由后验 $\theta$ 与 $\sigma,\varphi$ 算出</strong>，典型 0.02~0.05。若 $\kappa$ 后验 &lt;0.01，说明数据认为价格极粘、货币政策极有效。</li>
+        <li><strong>后验置信区间是否覆盖先验</strong>：若 $100\sigma_m$ 的后验区间压在 0.1% 附近，说明数据认为货币政策冲击很小——央行主要按规则行事。</li>
+      </ul>
+
+      <h3>13.3 模型诊断清单</h3>
+      <ul>
+        <li><strong>确定性条件：</strong>后验均值处重跑 <code>check;</code>，仍须满足 Blanchard-Kahn；若后验抽样中 $\phi_\pi$ 偶尔 &lt;1，报告时要注明"后验尾部概率"。</li>
+        <li><strong>理论矩 vs. 数据矩：</strong>Dynare 打印的模型预测通胀自相关应落在 0.5~0.8；若模型预测 &lt;0.3，说明纯前望 NKPC 缺通胀惯性——这就是 CEE 加入价格指数化的动机。</li>
+        <li><strong>预测误差：</strong>卡尔曼滤波的 smoothed shock 序列应是白噪声（无自相关）；若 $\varepsilon^m$ 有自相关，说明 Taylor 规则缺利率平滑项 $\rho_i$。</li>
+        <li><strong>边际似然：</strong>与 BVAR、RVAR 等基准模型比 log marginal data density（差 &gt;10 即强证据）。</li>
+      </ul>
+    </div>
+
+    <!-- S14 -->
+    <div class="section" id="s14">
+      <h2><span class="sec-num">14</span> 通胀目标制的直觉</h2>
+      <p>把三方程联立起来，可以看到一个优美的政策结论：如果央行能完美地观察自然利率 $\hat r_t^n$ 并把名义利率一直调到 $\hat i_t = E_t\hat\pi_{t+1}^* + \hat r_t^n$（即"盯住自然利率 + 目标通胀预期"），那么产出缺口 $\hat y_t=0$、通胀 $\hat\pi_t=0$，经济永远处于灵活价格均衡——<strong>价格稳定与产出稳定可以同时实现，没有权衡</strong>。这就是 Blanchard-Gali (2007) 所说的"divine coincidence（神圣巧合）"。</p>
+      <p>现实中央行观察不到 $\hat r_t^n$，估计也有误差，所以只能用 Taylor 规则做近似。Taylor 规则 $\phi_\pi>1$ 的意义在于：<strong>只要对通胀反应足够强，即使不知道自然利率的精确值，系统也不会失锚</strong>。这就是现代通胀目标制（inflation targeting）的理论基石——新西兰、英国、加拿大、欧洲央行的政策框架，背后都是这条逻辑。</p>
+      <div class="callout tip">
+        <div class="callout-title">政策含义</div>
+        <p>在标准三方程世界里，央行不需要"相机抉择"，只需坚持 $\phi_\pi>1$ 的简单规则就能带来最优结果。这解释了为什么央行沟通如此重视"预期管理"——因为 $E_t\hat\pi_{t+1}$ 本身就在 IS 与 NKPC 两条曲线里，<strong>锚住通胀预期就等于锚住了整条曲线</strong>。</p>
+      </div>
+    </div>
+
+    <!-- S15 -->
+    <div class="section" id="s15">
+      <h2><span class="sec-num">15</span> 论文、常见错误与进阶资料</h2>
+      <h3>13.1 必读论文</h3>
+      <div class="paper-card">
+        <span class="paper-type en">English · 教材</span>
+        <div class="paper-title">Monetary Policy, Inflation, and the Business Cycle: An Introduction to the New Keynesian Framework</div>
+        <div class="paper-meta">Galí J., Princeton University Press, 2nd ed. 2015</div>
+        <div class="paper-desc">三方程模型的圣经。第 3 章推导 IS 曲线、第 4 章推导 NKPC、第 5 章讲 Taylor 规则与确定性，与本页结构一一对应。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 政策规则</span>
+        <div class="paper-title">Discretion versus Policy Rules in Practice</div>
+        <div class="paper-meta">Taylor J.B., Carnegie-Rochester Conference Series, 1993</div>
+        <div class="paper-desc">提出 Taylor 规则 $i_t = \pi_t + 0.5(\pi_t-2) + 0.5 y_t + 2$，并论证 $\phi_\pi>1$ 是稳定通胀的关键。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 微观定价</span>
+        <div class="paper-title">Staggered Prices in a Utility-Maximizing Framework</div>
+        <div class="paper-meta">Calvo G.A., Journal of Monetary Economics, 1983</div>
+        <div class="paper-desc">Calvo 定价的原始论文。证明了当每期只有 $(1-\theta)$ 比例厂商调价时，宏观通胀会表现出前望型菲利普斯曲线。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 估计范式</span>
+        <div class="paper-title">Comparing Shocks and Frictions in US and Euro Area Business Cycles</div>
+        <div class="paper-meta">Smets F. &amp; Wouters R., <em>Journal of Applied Econometrics</em>, 2007</div>
+        <div class="paper-desc">中尺度 NK 贝叶斯估计的标杆。本页三方程是它的最小内核：先验表、观测方程、MCMC 设置都可在其附录找到。后续 SW 2007、Christiano-Motto-Rostagno (2014) 都沿用这套流水线。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 泰勒原理实证</span>
+        <div class="paper-title">Monetary Policy Rules and Macroeconomic Stability: Evidence and Some Theory</div>
+        <div class="paper-meta">Clarida R., Galí J. &amp; Gertler M., <em>Quarterly Journal of Economics</em>, 2000</div>
+        <div class="paper-desc">用 FRED 数据估计联邦基金利率规则，发现前 Volcker 时代 $\phi_\pi&lt;1$（不确定性）、后 Volcker 时代 $\phi_\pi&gt;1$（确定性），为 Taylor 原理提供了跨国分时段的实证支持。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 中国 NK 估计</span>
+        <div class="paper-title">我国 DSGE 模型的开发及在货币政策分析中的应用</div>
+        <div class="paper-meta">刘斌，《金融研究》2008 年第 10 期，第 3–21 页</div>
+        <div class="paper-desc">国内用贝叶斯估计 NK-DSGE 的标杆。结合中国数据（国家统计局 GDP、央行货币供应量与利率）校准 $\theta,\phi_\pi$，讨论数量型 vs. 价格型货币政策规则。配套专著《动态随机一般均衡模型及其应用》（中国金融出版社，2010）。</div>
+      </div>
+
+      <h3>13.2 常见错误（≥4 条）</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：把 IS 写成 $\hat y_t = E_t\hat y_{t+1} - \tfrac{1}{\sigma}(\hat i_t - E_t\hat\pi_{t+1})$ 漏掉 $\hat r_t^n$</div>
+        <p>自然利率项不能省。省掉后 IS 曲线失去外生驱动，模型只剩货币政策冲击一个来源，无法讨论技术/偏好冲击。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：Taylor 规则写成年化系数却用季度数据</div>
+        <p>$\phi_y=0.5$ 是<strong>年度</strong> Taylor 规则系数，季度模型里必须除以 4（取 0.125）。直接套 0.5 会让产出反应过强、IRF 失真。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 3：把 NKPC 写成对数偏离形式却在 .mod 里用水平值</div>
+        <p>所有变量都是偏离稳态的对数/百分点，稳态通胀通常设为 0。若混入水平通胀（如 2%），方程两边量纲不一致。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 4：$\phi_\pi<1$ 仍硬跑模型</div>
+        <p>此时 Dynare 报 indeterminacy，不是代码 bug，而是政策规则本身不满足 Taylor 原理。先回到第 9 节确认系数，再调试代码。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 5：把 $\theta$ 当成"调价频率"而非"不调价概率"</div>
+        <p>$\theta=0.75$ 意味着<strong>不</strong>调价的比例是 75%，调价比例是 25%，平均调价周期 4 个季度。把 $\theta$ 直接当成"调价概率"会让价格粘性差 4 倍，$\kappa$ 严重错估。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 6：贝叶斯估计时观测方程截距不估，或频率口径不统一</div>
+        <p>两个最常见的估计翻车点：① 观测方程里的稳态通胀 $\pi^\ast$、趋势增长 $g_y$ 直接固定为 0，结果数据均值被错误塞给冲击方差，$100\sigma_m$ 虚大；② 利率用 <code>FEDFUNDS</code> 的年化值（约 5%）却没除以 4，观测方程与模型季度口径量纲不一致，似然直接爆炸。估计前先把所有数据统一到<strong>季度、百分比、去均值/去趋势</strong>三个口径。</p>
+      </div>
+
+      <h3>13.3 进阶资料</h3>
+      <ul>
+        <li>Woodford M. (2003), <em>Interest and Prices</em> —— 新凯恩斯的理论大全。</li>
+        <li>Clarida, Galí &amp; Gertler (1999), "The Science of Monetary Policy", <em>JEL</em>。</li>
+        <li>Bils M. &amp; Klenow P. (2004), "Some Evidence on the Importance of Sticky Prices", <em>JPE</em>。</li>
+        <li>Dynare 官方 NK 示例：<code class="inline">examples/NK_baseline.mod</code>。</li>
+      </ul>
+    </div>
+
+    <!-- Equation Summary -->
+    <div class="section" id="eq-summary">
+      <h2><span class="sec-num">15</span> 方程总清单 Equation Summary</h2>
+      <p>本表汇总 NK 三方程模型全部方程：家庭/厂商微观设定（N1–N6）、Calvo 定价与价格指数（N7–N9）、三大线性化核心（N10–N12）、外生冲击过程（N13–N14）、稳态方程（SS1–SS3）、辅助定义（D1–D4）。<strong>合计 N = 21 个方程</strong>。</p>
+      <div class="table-wrap"><table>
+        <tr><th>编号</th><th>方程名称</th><th>公式简写</th><th>所在章节</th></tr>
+        <tr><td colspan="4" style="background:#eef4f7;font-weight:700">A. 家庭与厂商微观设定（6 个）</td></tr>
+        <tr><td>Eq.N1</td><td>家庭 CRRA 效用</td><td>$\max E_0\sum\beta^t[C_t^{1-\sigma}/(1-\sigma)-N_t^{1+\varphi}/(1+\varphi)]$</td><td>§2.1</td></tr>
+        <tr><td>Eq.N2</td><td>家庭预算约束</td><td>$P_tC_t+B_t=(1+i_{t-1})B_{t-1}+W_tN_t+\Pi_t$</td><td>§2.1</td></tr>
+        <tr><td>Eq.N3</td><td>FOC on $C_t$</td><td>$\lambda_t P_t = C_t^{-\sigma}$</td><td>§2.1</td></tr>
+        <tr><td>Eq.N4/N4'</td><td>FOC on $N_t$</td><td>$N_t^\varphi=C_t^{-\sigma}W_t$，即 $N_t^\varphi/C_t^{-\sigma}=W_t/P_t$</td><td>§2.1</td></tr>
+        <tr><td>Eq.N5</td><td>消费欧拉方程</td><td>$C_t^{-\sigma}=\beta(1+i_t)E_t[(P_t/P_{t+1})C_{t+1}^{-\sigma}]$</td><td>§2.1</td></tr>
+        <tr><td>Eq.N6</td><td>Dixit–Stiglitz 最终品加总</td><td>$Y_t=[\int Y_t(i)^{(\varepsilon-1)/\varepsilon}di]^{\varepsilon/(\varepsilon-1)}$</td><td>§2.2</td></tr>
+        <tr><td colspan="4" style="background:#eef4f7;font-weight:700">B. Calvo 定价与价格指数（3 个）</td></tr>
+        <tr><td>Eq.N7/N7'</td><td>Calvo 最优定价 FOC</td><td>$P_t^\ast/P_t = [\varepsilon/(\varepsilon-1)]\cdot$ 加权实际边际成本之和</td><td>§5.1</td></tr>
+        <tr><td>Eq.N8</td><td>最优新价格线性化</td><td>$\hat p_t^\ast=(1-\beta\theta)E_t\sum(\beta\theta)^k\widehat{mc}_{t+k}$</td><td>§5.1</td></tr>
+        <tr><td>Eq.N9/N9'</td><td>Dixit–Stiglitz 价格指数及线性化</td><td>$P_t^{1-\varepsilon}=(1-\theta)(P_t^\ast)^{1-\varepsilon}+\theta P_{t-1}^{1-\varepsilon}$；$\hat\pi_t=\frac{1-\theta}{\theta}\hat p_t^\ast$</td><td>§5.2</td></tr>
+        <tr><td colspan="4" style="background:#eef4f7;font-weight:700">C. 三大线性化核心（3 个）</td></tr>
+        <tr><td>Eq.N10</td><td>前望 IS 曲线</td><td>$\hat y_t=E_t\hat y_{t+1}-\frac{1}{\sigma}(\hat i_t-E_t\hat\pi_{t+1}-\hat r_t^n)$</td><td>§4.2</td></tr>
+        <tr><td>Eq.N11</td><td>NKPC</td><td>$\hat\pi_t=\beta E_t\hat\pi_{t+1}+\kappa\hat y_t$</td><td>§5.2</td></tr>
+        <tr><td>Eq.N12</td><td>Taylor 规则</td><td>$\hat i_t=\phi_\pi\hat\pi_t+\phi_y\hat y_t+\varepsilon_t^m$</td><td>§6.1</td></tr>
+        <tr><td colspan="4" style="background:#eef4f7;font-weight:700">D. 外生冲击过程（2 个）</td></tr>
+        <tr><td>Eq.N13</td><td>自然利率 AR(1)</td><td>$\hat r_t^n=\rho_r\hat r_{t-1}^n+\varepsilon_t^r$</td><td>§6.2</td></tr>
+        <tr><td>Eq.N14</td><td>货币政策冲击 AR(1)</td><td>$\hat m_t=\rho_m\hat m_{t-1}+\varepsilon_t^m$</td><td>§6.2</td></tr>
+        <tr><td colspan="4" style="background:#eef4f7;font-weight:700">E. 稳态方程（3 个）</td></tr>
+        <tr><td>Eq.SS1</td><td>IS 稳态</td><td>$\bar i-\bar\pi=\bar r^n$</td><td>§7</td></tr>
+        <tr><td>Eq.SS2</td><td>NKPC 稳态</td><td>$\bar\pi=0$</td><td>§7</td></tr>
+        <tr><td>Eq.SS3</td><td>Taylor 稳态</td><td>$\bar i=0$（故 $\bar r^n=0$）</td><td>§7</td></tr>
+        <tr><td colspan="4" style="background:#eef4f7;font-weight:700">F. 辅助定义（4 个）</td></tr>
+        <tr><td>Eq.D1</td><td>CES 需求曲线</td><td>$Y_t(i)=(P_t(i)/P_t)^{-\varepsilon}Y_t$</td><td>§2.2</td></tr>
+        <tr><td>Eq.D2</td><td>资源约束 $Y=C+G$</td><td>对数线性化 $\hat c_t=\hat y_t$</td><td>§4.2</td></tr>
+        <tr><td>Eq.D3</td><td>边际成本桥</td><td>$\widehat{mc}_t=(\sigma+\varphi)\hat y_t$</td><td>§5.2</td></tr>
+        <tr><td>Eq.D4</td><td>自然利率决定</td><td>$\hat r_t^n=\sigma E_t\Delta\hat y_{t+1}^n$</td><td>§6.2</td></tr>
+      </table></div>
+      <div class="callout info">
+        <div class="callout-title">计数说明</div>
+        <p>微观设定 6 + Calvo/价格指数 3 + 三大核心 3 + 冲击过程 2 + 稳态 3 + 辅助定义 4 = <strong>21 个独立方程</strong>。其中 Eq.N4/N4'、Eq.N7/N7'、Eq.N9/N9' 是同一 FOC/定义的两种写法（带乘子/消去乘子、水平/对数线性化），按一个独立方程计。</p>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="09-rbc-model.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">RBC 基准模型</div>
+      </a>
+      <a href="01-model-building.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">模型构建（中尺度）</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

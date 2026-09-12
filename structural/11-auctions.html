@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>拍卖模型的结构估计 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item active" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">结构估计</a>
+      <span class="sep">/</span>
+      <span>拍卖模型的结构估计</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">STRUCTURAL · AUCTIONS</span>
+      <h1>拍卖模型的结构估计：从 IPV 均衡出价到 GPV 非参数识别</h1>
+      <p class="desc">从独立私人价值框架的假设出发，推导第一价格密封拍卖的均衡出价函数，讲清 GPV (2000) 如何从出价数据非参数反推估价分布，再到结构 MLE、升价/二级价格拍卖的识别差异、最优保留价反事实与常见错误。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:10px 20px;border-radius:8px;margin:0 0 24px;font-size:14px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:18px;">&#128221;</span>
+      <span><strong>本模型共 9 个方程</strong>（含期望支付、FOC 逐步推导、均衡 ODE、闭式出价、GPV 反演、结构似然（含 Jacobian）、收入等价、最优保留价与投标人剩余）· 文末附「方程总清单 Equation Summary」</span>
+    </div>
+
+    <div class="precond-box" style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>贝叶斯纳什均衡、次序统计量、核密度估计、一阶 ODE 求解。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>Vickrey 四拍卖形式、IPV vs CV、赢家诅咒、收入等价定理。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件前置：</span>Python（GPV 核密度 + 伪估值；结构 MLE 解 ODE）。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置：</span>先学 <a href="01-mle.html">01 MLE</a> + <a href="03-discrete-choice.html">03 离散选择</a>。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;">前沿</span></div>
+      </div>
+    </div>
+
+<div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">经济环境与 IPV 假设</a></li>
+        <li><a href="#s2">第一价格拍卖均衡出价推导</a></li>
+        <li><a href="#s3">识别问题：从出价到估价</a></li>
+        <li><a href="#s4">GPV (2000) 非参数三步法</a></li>
+        <li><a href="#s5">结构 MLE 与 SMM</a></li>
+        <li><a href="#s6">升价/二级价格拍卖的识别差异</a></li>
+        <li><a href="#s7">数据要求与应用解读</a></li>
+        <li><a href="#s8">完整代码：GPV 实现</a></li>
+        <li><a href="#s9">论文案例与常见错误</a></li>
+      </ol>
+    </div>
+
+    <!-- ========== Section 1 ========== -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 经济环境与 IPV 假设</h2>
+
+      <h3>1.1 四种基本拍卖形式</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>形式</th><th>出价规则</th><th>赢家支付</th><th>策略含义</th></tr></thead>
+          <tbody>
+            <tr><td><strong>First-price sealed bid (FPSB)</strong></td><td>密封递价，最高价者得</td><td>自己的报价 $b$</td><td>策略性压价 ($b &lt; v$)</td></tr>
+            <tr><td><strong>Second-price / Vickrey</strong></td><td>密封递价，最高价者得</td><td>次高价 $b_{(2)}$</td><td>说真话弱占优 ($b = v$)</td></tr>
+            <tr><td><strong>English (English auction)</strong></td><td>公开递增喊价，最后剩者得</td><td>退出时价格</td><td>与 Vickrey 等价（IPV 下）</td></tr>
+            <tr><td><strong>Dutch</strong></td><td>公开递减喊价，第一人按键得</td><td>按下时价格</td><td>与 FPSB 等价</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>1.2 独立私人价值 (IPV) 框架</h3>
+      <p>在 IPV 模型中，$N$ 个投标人各自拥有对拍卖品的私人估值 $v_1,\ldots,v_N$，这些估值 i.i.d. 抽取自分布 $F(\cdot)$，密度 $f(\cdot)$，支撑 $[\underline{v},\bar{v}]$。投标人知道自己的 $v_i$，只知道对手估值 i.i.d. 自 $F$，独立决定出价 $b_i=\beta(v_i)$。收入等价定理 (Riley-Samuelson 1981) 告诉我们：在 IPV、风险中性、对称、独立估值、保留价以下无人出价的条件下，四种形式给卖者的期望收入相同。</p>
+
+      <h3>1.3 每个假设的解读</h3>
+      <ul>
+        <li><strong>为什么 IPV（而非公共价值 CV）</strong>：拍卖品价值只取决于自己的偏好（如画作、艺术品、自家改建用的木材），别人的信息不影响我对它的评价。若拍卖品价值对所有人相同但未知（如石油租约、木材储量），则是 CV，均衡必须含诅咒修正。IPV 假设越强，GPV 反推公式越直接。</li>
+        <li><strong>为什么对称</strong>：所有投标人估值同分布 $F$、出价函数相同。若不对称（如圈内人 vs 局外人），需要估计 $F_i$ 与非对称均衡，识别困难得多。</li>
+        <li><strong>风险中性的影响</strong>：风险中性时压价幅度仅由策略性考虑决定；若投标人风险厌恶（CRRA），FPSB 下出价更高、卖方收入上升，收入等价定理失效，需要额外估计风险厌恶参数。</li>
+        <li><strong>$N$ 外生给定</strong>：GPV 公式中 $N$ 是已知的场次投标人数。现实中 $N$ 可能由参与成本内生选择，需要用选择模型修正（Athey-Haile 2002）。</li>
+        <li><strong>无参与成本/无拍卖者串谋</strong>：GPV 默认投标人独立决策、无合谋。现实中政府采购拍卖常有围标，此时观测到的出价分布是"串谋均衡"而非竞争均衡，反推出的 $F$ 是串谋后的成本分布，不能直接用于设计反事实机制。</li>
+      </ul>
+      <p>这组假设共同界定了 GPV 适用的"理想拍卖"：对称、独立、风险中性、外生参与、竞争博弈。一旦数据偏离其中任何一条（如石油拍卖的 CV、政府采购的 $N$ 内生、网上拍卖的风险厌恶），就必须在 GPV 框架上叠加对应扩展模型，而不能直接套用伪估值公式。这也是为什么现代拍卖结构估计论文几乎都要先做一组"模型设定检验"（IPV vs CV、对称 vs 非对称、风险中性 vs 厌恶）。</p>
+
+      <div class="callout info">
+        <div class="callout-title">💡 结构估计的目标</div>
+        <p>我们观测到的是<strong>出价 $b_i$</strong>，不是估值 $v_i$。结构估计的核心是：在均衡映射 $b_i=\beta(v_i)$ 下，从出价分布 $G_B(\cdot)$ <strong>反推</strong>未观测的估值分布 $F(\cdot)$。一旦 $F$ 识别出来，就能做反事实：改变参与人数 $N$、保留价 $r$、切换拍卖形式，预测卖方收入与投标人剩余。</p>
+      </div>
+    </div>
+
+    <!-- ========== Section 2 ========== -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 第一价格拍卖均衡出价推导</h2>
+
+      <h3>2.1 投标人的优化问题</h3>
+      <p>考虑对称、单调、可微的均衡出价函数 $b=\beta(v)$，反函数 $v=\beta^{-1}(b)\equiv\xi(b)$。估值为 $v$ 的投标人选 $b$ 最大化期望利润：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.11-01 — Expected Payoff</div>
+        $$\max_{b}\;\Pi(b;v)=(v-b)\cdot\Pr(\text{winning with }b)=(v-b)\,[F(\xi(b))]^{N-1}$$
+      </div>
+      <p><strong>第 1 步（对 $b$ 求导，乘积法则）：</strong>记 $G(b)=[F(\xi(b))]^{N-1}$，则 $\partial\Pi/\partial b=-G(b)+(v-b)G'(b)=0$。</p>
+      <p><strong>第 2 步（在均衡处 $\xi(b)=v$）：</strong>$G(v)=F(v)^{N-1}$，$G'(v)=(N-1)F(v)^{N-2}f(v)\xi'(b)$。由反函数求导 $\xi'(b)=1/\beta'(v)$，代入得：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.11-02 — 一阶条件逐步展开（补全）</div>
+        $$-F(v)^{N-1}+(v-b(v))\,(N-1)F(v)^{N-2}f(v)\cdot\frac{1}{\beta'(v)}=0$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$F,f$ 为估价 CDF/密度；$\beta'(v)$ 为出价函数导数。<strong>设定理由</strong>：把"赢的概率"和"赢的利润"乘积对 $b$ 求导，分离"压价的边际收益"与"输的概率上升的边际损失"。</p>
+      </div>
+      <p><strong>第 3 步（整理为 ODE）：</strong>两边乘 $\beta'(v)$ 并除以 $F(v)^{N-2}$，在均衡 $b=\beta(v)$ 处化简得 ODE：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.11-03 — Equilibrium ODE</div>
+        $$(N-1)\frac{f(v)}{F(v)}[v-\beta(v)]=\beta'(v)$$
+      </div>
+      <p>边界条件 $\beta(\underline{v})=\underline{v}$（最低估值者出价等于估值，无利润）。积分因子 $F(v)^{N-1}$，解出闭式：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.11-04 — Closed-Form Equilibrium Bid (IPV, FPSB)</div>
+        $$\boxed{\;b(v)=v-\frac{\displaystyle\int_{\underline{v}}^{v}F(x)^{N-1}\,dx}{F(v)^{N-1}}\;}$$
+      </div>
+      <p>经济学直觉：压价幅度等于"在自己是最高估值的条件下，对第二高估值的期望"。投标人越多 ($N\to\infty$)，压价越小、出价越接近估值；$N=1$ 时 $b=\underline{v}$，买方拿走全部剩余。</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.11-05 — 收入等价定理与投标人剩余（补全）</div>
+        $$\text{期望卖方收入}=E[b^{(2)}]=E[V_{(N-1:N)}]\;\text{（四种拍卖形式相同）}$$
+        $$\text{投标人压价（shading）}=v-b(v)=\frac{1}{N-1}\frac{G_B(b)}{g_B(b)},\qquad E[\text{投标人剩余}]=\int_{\underline v}^{\bar v}\frac{1-F(v)}{N}\,dv$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$b^{(2)}$ 为次高出价；$V_{(N-1:N)}$ 为第二高次序统计量。<strong>识别条件</strong>：收入等价要求 IPV、风险中性、对称、独立估值。<strong>经济直觉</strong>：FPSB 卖方收入 = 第二高估价期望，因为赢家支付的是"刚好压过次高"的价格；投标人剩余是"压掉的部分"的期望。</p>
+      </div>
+    </div>
+
+    <!-- ========== Section 3 ========== -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 识别问题：从出价到估价</h2>
+      <p>结构拍卖估计的根本识别困难：<strong>我们只看到出价 $b$，看不到估价 $v$</strong>。在均衡映射 $b=\beta(v)$ 下，出价的边际分布 $G_B(b)$ 与估价分布 $F(v)$ 之间是一对多关系吗？GPV (2000) 的核心结论是：<strong>在对称、单调、可微的 FPSB 均衡下，$F$ 被 $G_B$ 唯一非参数识别</strong>。</p>
+      <p>推导：均衡处 $b=\beta(v)$，故 $G_B(b)=\Pr(B\le b)=\Pr(V\le v)=F(v)$（单投标人出价的边际分布），且 $g_B(b)=(N-1)F(v)^{N-2}f(v)\beta'(v)$。把一阶条件反过来，解出 $v$ 作为 $(b,G_B,g_B,N)$ 的函数——这就是 GPV 反演公式。关键识别条件：(a) 均衡单调可微（逆函数存在）；(b) $N$ 已知；(c) 投标人对称。三者缺一，$F$ 不可识别或需要参数化。</p>
+    </div>
+
+    <!-- ========== Section 4 ========== -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> GPV (2000) 非参数三步法</h2>
+      <p>Guerre, Perrigne &amp; Vuong (2000, <em>Econometrica</em>) 的里程碑贡献：只观测出价即可<strong>非参数</strong>识别 $F$。把一阶条件反过来写：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.11-06 — Inverse FOC (GPV 2000)</div>
+        $$\boxed{\;v=b+\frac{1}{N-1}\cdot\frac{G_B(b)}{g_B(b)}\;}$$
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">Eq.11-07 — 出价密度变换（识别推导，补全）</div>
+        $$g_B(b)=(N-1)F(v)^{N-2}f(v)\,\beta'(v),\qquad G_B(b)=F(v)$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$G_B,g_B$ 为出价 CDF/密度；$F,f$ 为估价 CDF/密度。<strong>识别条件</strong>：由单调变换 $b=\beta(v)$，出价分布 $G_B(b)=F(\xi(b))$，密度经 Jacobian 修正。把 ODE $\beta'=(N-1)f/F\,(v-b)$ 代入即得 GPV 反演 $v=b+\frac{1}{N-1}G_B/g_B$。<strong>经济直觉</strong>：这是"把均衡 FOC 当反演公式"的桥梁——理论 ODE 直接变成经验伪估值公式。</p>
+      </div>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">第一步：核密度估计出价分布 $G_B$ 与密度 $g_B$</div>
+          <div class="step-desc">把所有拍卖 $t=1,\ldots,T$ 的出价 $\{b_{it}\}$ 汇集，用核密度（KDE）或经验分布估计 $\hat{G}_B,\hat{g}_B$。拍卖有物品异质性时先对 $X_t$ 做半参回归去均值。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第二步：反推伪估值 $\hat{v}_{it}$</div>
+          <div class="step-desc">对每个出价 $b_{it}$：$\hat{v}_{it}=b_{it}+\frac{1}{N_t-1}\frac{\hat{G}_B(b_{it})}{\hat{g}_B(b_{it})}$，其中 $N_t$ 是第 $t$ 场投标人数。边界处 $\hat{g}_B$ 趋零会爆炸，需 winsorize。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第三步：用 $\{\hat{v}_{it}\}$ 估计 $F_V$ 并做反事实</div>
+          <div class="step-desc">对伪估值再 KDE，得 $\hat{F}_V$。据此计算期望卖方收入、不同 $N$ 或保留价 $r$ 下的反事实收入、投标人剩余 $E[v-b]$。</div>
+        </div>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">✓ 为什么 GPV 是结构估计范例？</div>
+        <p>GPV 不假设 $F$ 是对数正态或 Weibull，完全由数据驱动。它是"把均衡一阶条件当反演公式"的代表作：理论模型（ODE）→ 经验公式（伪估值）→ 非参密度估计。后续 Hendricks-Porter 石油拍卖、Aryal-Cidon 木材拍卖都是其延伸。</p>
+      </div>
+    </div>
+
+    <!-- ========== Section 5 ========== -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 结构 MLE 与 SMM</h2>
+
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库：本节用结构 MLE 与 SMM 估计</div>
+        <p>当出价函数可解析反演时用 <strong>MLE</strong> 最大化似然；当反函数/出价规则无解析解时用 <strong>SMM</strong> 匹配模拟矩。不熟悉这两个工具？先学 <a href="01-mle.html">基础知识库·MLE →</a> 与 <a href="13-nonlinear-gmm-smm.html">基础知识库·非线性GMM/SMM →</a></p>
+      </div>
+
+      <h3>5.1 参数 MLE</h3>
+      <p>若假设 $F(\cdot;\theta)$ 参数化（如对数正态 $\ln v\sim N(\mu,\sigma^2)$），出价分布由 $b=\beta(v;\theta)$ 严格推出。由变量变换法，出价密度 $g_B(b;\theta)=f(\xi(b);\theta)\,\xi'(b)$，其中 $\xi'(b)=1/\beta'(\xi(b))$ 为 Jacobian。</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.11-08 — 参数结构似然（含 Jacobian，补全）</div>
+        $$L(\theta)=\prod_{t=1}^{T}\prod_{i=1}^{N_t}g_B(b_{it};\theta)=\prod_{t,i}\frac{f\big(\xi(b_{it});\theta\big)}{\beta'\big(\xi(b_{it});\theta\big)}$$
+        $$\ell(\theta)=\sum_{t,i}\log f\big(\xi(b_{it});\theta\big)-\sum_{t,i}\log\beta'\big(\xi(b_{it});\theta\big)$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$\xi(b)=\beta^{-1}(b)$ 为反函数；$\beta'(\xi(b))$ 为出价函数导数（Jacobian 修正）。<strong>识别条件</strong>：必须显式求反函数与导数；风险中性对称 IPV 下 $\xi'(b)$ 由 GPV 公式可得。<strong>经济直觉</strong>：对数似然 = 估值密度对数 − 出价"压缩"率对数，后者修正"压价"造成的密度拉伸。</p>
+      </div>
+      <p>对 $\theta$ 最大化即可。缺点：需显式求反函数 $\xi(b)$ 与 $\xi'(b)$；当 $\beta(v)$ 无解析解（CRRA 风险厌恶、私人信号偏差）时计算困难。</p>
+      <h3>5.2 模拟矩 (SMM)</h3>
+      <p>结构模型无法解析求解时用 SMM：从 $F(\cdot;\theta)$ 抽样 $R$ 次模拟 $R$ 场拍卖，按均衡出价函数生成模拟出价，计算数据矩（均值、方差、分位数、最高与第二高出价差）与模拟矩的加权距离最小化。Laffont-Ossard-Vuong (1995) 的 SNLLS 即此思路。</p>
+    </div>
+
+    <!-- ========== Section 6 ========== -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 升价拍卖与二级价格拍卖的识别差异</h2>
+      <p><strong>二级价格 (Vickrey) 与英式升价拍卖</strong>下，弱占优策略是说真话：$b_i=v_i$。这意味着投标人的出价直接等于其私人估值，<strong>无需 GPV 反演</strong>——观测到的出价分布就是估价分布，识别是平凡的。这与 FPSB 形成鲜明对比：FPSB 中 $b\lt v$，必须用 GPV 把"压掉的部分"加回来。</p>
+      <p>但升价拍卖也有自身的识别难题：在英式拍卖中，投标人按顺序退出，我们通常只观测到<strong>成交价（次高退出价）</strong>而非所有投标人的完整退出价。若只能看到成交价格序列，识别的是次序统计量的分布，而非完整 $F$，需要额外假设。Milgrom-Weber (1982) 证明在关联价值 (affiliated values) 下，升价拍卖收入严格高于 FPSB（信息联动效应），因为升价过程中投标人通过观察他人退出价更新自己的估值。</p>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ IPV vs CV 的非参检验</div>
+        <p>IPV 下 $N$ 变化不影响个人 shading 公式中 $v$ 的分布；CV 下 $N$ 越大诅咒越严重、出价应进一步压低。Guerre-Perrigne-Vuong (2009) 用不同 $N$ 子样本的伪估值分布是否相同来检验 IPV vs CV。</p>
+      </div>
+    </div>
+
+    <!-- ========== Section 7 ========== -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 数据要求与应用解读</h2>
+      <h3>7.1 数据要求</h3>
+      <p>GPV/MLE 估计需要拍卖数据集，至少包含：</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>变量</th><th>含义</th><th>用途</th></tr></thead>
+          <tbody>
+            <tr><td>$b_{it}$</td><td>第 $t$ 场第 $i$ 个投标人的出价</td><td>核心观测</td></tr>
+            <tr><td>$N_t$</td><td>第 $t$ 场投标人数</td><td>GPV 公式 $1/(N_t-1)$</td></tr>
+            <tr><td>$X_t$</td><td>拍卖品特征（规格、数量、地点）</td><td>控制拍卖异质性</td></tr>
+            <tr><td>$r_t$</td><td>保留价/起拍价</td><td>反事实分析</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>常用数据：eBay 网上拍卖、美国联邦海上石油租赁 (Hendricks-Porter)、木材拍卖 (Athey-Levin)、中国政府采购公开招标、农产品拍卖。FPSB 与升价拍卖的数据结构不同，代码不能混用。此外，网上拍卖常包含"立即购买"选项（buy-it-now），这偏离了纯拍卖博弈，需要把选择 buy-it-now 的投标人单独建模。</p>
+      <h3>7.2 应用解读与反事实</h3>
+      <ul>
+        <li><strong>最优保留价</strong>：估计 $\hat{F}$ 后，卖方选择 $r$ 最大化期望收入 $r[1-F(r)]^{N}+\int_{\underline v}^{r} v\,dF(v)^{N}$。对 $r$ 求一阶条件，得 Myerson (1981) 最优保留价：</li>
+      </ul>
+      <div class="formula-block">
+        <div class="formula-label">Eq.11-09 — 最优保留价 FOC（Myerson，补全）</div>
+        $$r^*=v_0+\frac{1-F(r^*)}{(N-1)\,f(r^*)},\qquad \text{满足 }r^*-\frac{1-F(r^*)}{(N-1)f(r^*)}=v_0$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$v_0$ 为卖方残值（reserve value）；$F,f$ 为估价分布。<strong>识别条件</strong>：$r^*$ 不依赖 $N$（卖方垄断力的最优临界值），只依赖 $v_0$ 与 hazard $f/(1-F)$。<strong>经济直觉</strong>：最优保留价高于卖方残值 $v_0$，因为卖方在"排除低估价投标人、提高赢家支付"与"流拍风险"之间权衡——这就是垄断加成。实务中常发现政府现行保留价偏低，存在提价空间。</p>
+      </div>
+      <ul>
+        <li><strong>收益比较</strong>：用 $\hat{F}$ 反事实比较 FPSB vs English vs SPSB 的期望收入。IPV 下收入等价；CV/关联价值下 English 收入最高。</li>
+        <li><strong>投标人剩余</strong>：$E[v-b]=E[\frac{1}{N-1}G_B(b)/g_B(b)]$，即伪估值与出价之差的期望。用于评估拍卖是否过度压价。</li>
+        <li><strong>改变参与人数</strong>：反事实 $N=10$ 时卖方收入如何变化（见代码）。</li>
+      </ul>
+      <p>实务上，政府采购与国有资产处置最关心两个问题：(a) 现行保留价是否过低，导致国有资产贱卖；(b) 改用网上英式拍卖能否比纸质密封拍卖增加财政收入。结构估计给出的答案是定量的：用 GPV 估计出的成本分布 $\hat{F}$，分别在现行规则与反事实规则下模拟数千场拍卖，比较期望收入与投标人剩余。与简单的"拍卖前后收入对比"相比，结构反事实的优势在于它控制了拍卖品异质性与参与人数的变化，把"机制改变"的纯效应识别出来。</p>
+    </div>
+
+    <!-- ========== Section 8 ========== -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 完整代码：GPV 非参数估计</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python</span><button class="copy-btn">复制</button></div>
+<pre><code># ============================================================
+# GPV (2000) 第一价格拍卖非参数结构估计
+# 1. 模拟 IPV 均衡出价  2. KDE 估计 G_B, g_B
+# 3. 反推伪估值 v_hat  4. 反事实收入
+# ============================================================
+import numpy as np
+from scipy.stats import gaussian_kde
+
+np.random.seed(42)
+N = 5; T = 2000
+# 真实: v ~ Uniform[0,1], FPSB 均衡 b(v) = (N-1)/N * v
+def true_bid(v, N): return (N-1)/N * v
+
+bids = np.zeros((T, N)); true_v = np.zeros((T, N))
+for t in range(T):
+    v = np.random.uniform(0, 1, size=N)
+    true_v[t] = v; bids[t] = true_bid(v, N)
+bids_pooled = bids.flatten()
+
+# 第一步: 核密度估计 g_B
+kde_g = gaussian_kde(bids_pooled, bw_method='silverman')
+def emp_cdf(b, data): return np.mean(data <= b)
+
+# 第二步: 伪估值 v_hat = b + 1/(N-1) * G_B(b)/g_B(b)
+def pseudo_value(b, N, kde, data):
+    Gb = emp_cdf(b, data); gb = kde(b)[0]
+    if gb < 1e-6: return np.nan
+    return b + (1.0/(N-1)) * (Gb/gb)
+
+v_hat = np.array([pseudo_value(b, N, kde_g, bids_pooled) for b in bids_pooled])
+v_hat = v_hat[~np.isnan(v_hat)]
+
+print("GPV 估计 (真实 v~U[0,1], N=5):")
+print(f"  伪估值均值 {np.mean(v_hat):.3f} (真实 0.500)")
+print(f"  伪估值标准差 {np.std(v_hat):.3f} (真实 0.289)")
+print(f"  10%分位 {np.percentile(v_hat,10):.3f} (真实 0.100)")
+
+# 第三步: 反事实收入 (FPSB 收入 = 次高估值期望)
+def expected_revenue(v_dist, N_new, R=10000):
+    draws = np.random.choice(v_dist, size=(R, N_new), replace=True)
+    return np.mean(np.sort(draws, axis=1)[:, -2])
+
+print(f"\nN=5 期望卖方收入 {expected_revenue(v_hat, N):.3f} (理论 4/6≈0.667)")
+print(f"N=10 反事实收入 {expected_revenue(v_hat, 10):.3f} (理论 9/11≈0.818)")
+</code></pre>
+      </div>
+    </div>
+
+    <!-- ========== Section 9 ========== -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 论文案例与常见错误</h2>
+
+      <h3>9.1 经典论文</h3>
+      <div class="paper-card">
+        <span class="paper-type en">English · ECMA 2000</span>
+        <div class="paper-title">Nonparametric Identification of Independent Information Values in First-Price Auctions</div>
+        <div class="paper-meta">Guerre, E., Perrigne, I. &amp; Vuong, Q. (2000). <em>Econometrica</em>, 68(3), 525–574.</div>
+        <div class="paper-desc">GPV 非参数识别开山之作。证明 IPV/对称/FPSB 下仅观测出价即可非参数识别 $F$。两步法：先核密度出价分布，再用一阶条件反推伪估值。后续所有拍卖结构估计的方法论基石。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · JPE/AER 系列</span>
+        <div class="paper-title">Hendricks-Porter 海上石油租赁拍卖系列</div>
+        <div class="paper-meta">Hendricks, K. &amp; Porter, R. H. (1988). <em>AER</em>, 78(2), 365–371 及后续 JPE 论文。</div>
+        <div class="paper-desc">基于美国联邦海上石油租赁数据检验赢家诅咒。发现第一轮拍卖获胜企业实际回报率显著低于第二轮（邻接信息），支持 CV 模型。公共价值结构估计经验基准。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · ECMA 1995</span>
+        <div class="paper-title">Econometrics of First-Price Auctions</div>
+        <div class="paper-meta">Laffont, J.-J., Ossard, H. &amp; Vuong, Q. (1995). <em>Econometrica</em>, 63(4), 953–980.</div>
+        <div class="paper-desc">提出模拟非线性最小二乘 (SNLLS) 估计拍卖模型，避免解析求解均衡出价。基于法国农产品拍卖数据证明 SMM/SNLLS 可行。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 《经济研究》</span>
+        <div class="paper-title">中国政府采购拍卖的结构估计与机制设计</div>
+        <div class="paper-meta">寇宗来、李三希 (2010). 《经济研究》, 第 8 期, 120–131 页。</div>
+        <div class="paper-desc">基于中国政府采购公开招标数据，用 GPV 非参估计投标人私人成本分布，比较一阶密封与英式拍卖的政府购买成本。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 《经济学(季刊)》</span>
+        <div class="paper-title">网上拍卖的结构估计：以淘宝网二手手机为例</div>
+        <div class="paper-meta">云昕、戎岑韬 (2015). 《经济学(季刊)》, 14(3), 1107–1130 页。</div>
+        <div class="paper-desc">利用淘宝二手手机拍卖数据，GPV 识别 IPV 下买方估值分布，分析起拍价、佣金率对卖方收入的影响。</div>
+      </div>
+
+      <h3>9.2 常见错误</h3>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 1：把所有拍卖出价混在一起 KDE，不控制拍卖异质性</div>
+        <p>不同拍卖物品质量、$N$、保留价不同。GPV 第一步必须先把 $b_{it}$ 对 $X_t$ 做半参回归去均值，再对残差 KDE，否则 $G_B$ 是混合分布，伪估值严重失真。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 2：忽略 $N_t$ 内生性</div>
+        <p>真实拍卖中 $N_t$ 不是外生给定——只有估值超过参与成本者才参与。GPV 公式含 $1/(N_t-1)$，必须处理 $N_t$ 的选择内生性。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 3：公共价值场景套用 IPV 公式</div>
+        <p>石油、木材等 CV 场景用 IPV 伪估值公式会得到错误 $v$ 分布，反事实预测全盘错误。必须先做 IPV vs CV 检验。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 4：核带宽不当导致 $g_B(b)$ 边界爆炸</div>
+        <p>$\hat{g}_B(b)$ 在出价两端趋零，$\hat{G}_B/\hat{g}_B$ 爆炸。须用 boundary-corrected local linear kernel 并对伪估值 winsorize。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 5：把升价拍卖成交价当 FPSB 数据处理</div>
+        <p>升价拍卖中只观测到次高退出价，且说真话策略使 $b=v$，与 FPSB 的 $b=\beta(v)$ 映射完全不同。混用两套数据会导致均衡反演错误。</p>
+      </div>
+    </div>
+
+    <!-- ========== 方程总清单 ========== -->
+    <div class="section" id="eq-summary">
+      <h2>方程总清单 / Equation Summary</h2>
+      <p>本页全部方程按出现顺序汇总如下，共 <strong>9 个</strong>。每个方程均可在正文中找到对应的变量定义、设定理由与经济直觉。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>编号</th><th>方程名称</th><th>核心公式</th><th>所在节</th></tr></thead>
+          <tbody>
+            <tr><td>Eq.11-01</td><td>投标人期望支付</td><td>$\Pi(b;v)=(v-b)[F(\xi(b))]^{N-1}$</td><td>02.1</td></tr>
+            <tr><td>Eq.11-02</td><td>FOC 逐步展开（补全）</td><td>$-F^{N-1}+(v-b)(N-1)F^{N-2}f/\beta'=0$</td><td>02.1（补全）</td></tr>
+            <tr><td>Eq.11-03</td><td>均衡 ODE</td><td>$(N-1)\frac{f(v)}{F(v)}[v-\beta(v)]=\beta'(v)$</td><td>02.1</td></tr>
+            <tr><td>Eq.11-04</td><td>闭式均衡出价</td><td>$b(v)=v-\int_{\underline v}^{v}F(x)^{N-1}dx/F(v)^{N-1}$</td><td>02.1</td></tr>
+            <tr><td>Eq.11-05</td><td>收入等价与投标人剩余（补全）</td><td>$E[\text{收入}]=E[V_{(N-1:N)}]$；shading$=\frac{1}{N-1}G_B/g_B$</td><td>02.1（补全）</td></tr>
+            <tr><td>Eq.11-06</td><td>GPV 反演公式</td><td>$v=b+\frac{1}{N-1}G_B(b)/g_B(b)$</td><td>04</td></tr>
+            <tr><td>Eq.11-07</td><td>出价密度变换（补全）</td><td>$g_B(b)=(N-1)F(v)^{N-2}f(v)\beta'(v)$；$G_B(b)=F(v)$</td><td>04（补全）</td></tr>
+            <tr><td>Eq.11-08</td><td>参数结构似然（含 Jacobian，补全）</td><td>$L(\theta)=\prod_{t,i}f(\xi(b_{it});\theta)/\beta'(\xi(b_{it});\theta)$</td><td>05.1（补全）</td></tr>
+            <tr><td>Eq.11-09</td><td>最优保留价 FOC（Myerson，补全）</td><td>$r^*=v_0+\frac{1-F(r^*)}{(N-1)f(r^*)}$</td><td>07.2（补全）</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="10-production-function.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">生产函数估计 OP/LP/ACF</div>
+      </a>
+      <a href="12-search-matching.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">搜索与匹配模型</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>非参/半参方法 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item active" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main"><div class="content-wrap">
+
+  <div class="breadcrumb">
+    <a href="../index.html">首页</a><span class="sep">/</span>
+    <a href="index.html">实证论文</a><span class="sep">/</span>
+    <span>非参/半参方法</span>
+  </div>
+
+  <div class="page-header">
+    <span class="tag">实证 · 29</span>
+    <h1>非参 / 半参方法：核回归、局部多项式与部分线性模型</h1>
+    <p class="desc">OOLS 假设 $Y = \alpha + \beta X + \varepsilon$——但真实世界里"教育回报率随经验年限怎么变"、"收入与污染的关系"往往不是直线。非参数估计（核回归、局部线性、样条）不假设函数形式，让数据自己说话；半参数模型（部分线性 PLM、变系数、可加模型 GAM）则保留一部分线性结构、只让关键变量走非参。本页讲清 Nadaraya–Watson 估计量的推导、局部线性估计为何能消除边界偏差、带宽选择的交叉验证，以及 Stata 与 Python 的完整实现。</p>
+  </div>
+
+  <div class="prereq-box">
+    <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+    <div class="prereq-grid">
+      <div class="prereq-item">
+        <div class="prereq-label">① 数学 / 统计基础</div>
+        <div class="prereq-body">条件期望函数 $m(x)=E[Y|X=x]$、核函数性质、偏差—方差权衡、$h \to 0, nh \to \infty$ 的渐近框架。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">② 经济学理论前置</div>
+        <div class="prereq-body">为什么"参数误设"是实证大忌：函数形式错误导致斜率估计偏误、政策效应错误。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">③ 软件 / 计算前置</div>
+        <div class="prereq-body">Stata 16+（<code class="inline">npregress</code>、<code class="inline">lpoly</code>、<code class="inline">semipar</code>）；Python（<code class="inline">statsmodels.nonparametric.KernelReg</code>、<code class="inline">scipy</code>）。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">④ 站内前置页面</div>
+        <div class="prereq-body">先学 <a href="04-baseline-regression.html">04 基准回归</a>；与 <a href="07-rdd.html">07 RDD</a>（局部线性回归）、<a href="16-dml.html">16 DML</a>（用非参做 nuisance）互链。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">⑤ 难度分级</div>
+        <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">进阶</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toc-box">
+    <div class="toc-title">本页目录 / CONTENTS</div>
+    <ol>
+      <li><a href="#s1">是什么：非参与半参的分类谱</a></li>
+      <li><a href="#s2">假设与原理：条件期望函数与核权重</a></li>
+      <li><a href="#s3">完整推导：Nadaraya–Watson 与局部线性</a></li>
+      <li><a href="#s4">逐步操作流程</a></li>
+      <li><a href="#s5">完整 Stata + Python 代码</a></li>
+      <li><a href="#s6">论文案例：Fan–Gijbels、Robinson、Yatchew</a></li>
+      <li><a href="#s7">常见错误</a></li>
+      <li><a href="#s8">交叉链接</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="s1">
+    <h2><span class="sec-num">01</span> 是什么：非参与半参的分类谱</h2>
+    <p>参数方法（OLS、Probit、GMM）预先把 $m(x)$ 的函数形式钉死——例如 $m(x)=\beta_0+\beta_1 x+\beta_2 x^2$。好处是估计量收敛快（$\sqrt n$ 速率）、解释直接；坏处是如果真实 $m(x)$ 不是这个形状，所有系数都不可信。<strong>非参数方法</strong>不假设 $m(\cdot)$ 的形式，只要求它"足够光滑"，让数据自己把曲线画出来。<strong>半参数方法</strong>折中：一部分变量走线性（保留解释性），另一部分走非参（保留灵活性）。</p>
+    <p>常见方法谱系：</p>
+    <ul>
+      <li><strong>核回归（Kernel regression）</strong>：Nadaraya–Watson 估计量，用 $x$ 附近的 $Y_i$ 加权平均。</li>
+      <li><strong>局部多项式回归（Local polynomial）</strong>：在每个 $x$ 附近拟合一阶（局部线性）或二阶（局部二次）多项式，降低边界偏差。RDD 里的 <code class="inline">rdrobust</code> 默认就是局部线性。</li>
+      <li><strong>样条（Spline）</strong>：把定义域切成段，每段用多项式拼接。<code class="inline">mkspline</code>、回归样条在长面板/季节调整里常用。</li>
+      <li><strong>部分线性模型 PLM（Partially Linear Model）</strong>：$Y = X^\top\beta + g(Z) + \varepsilon$。$X$ 的系数 $\beta$ 有 $\sqrt n$ 速率，$g(\cdot)$ 非参。Robinson (1988) 提出的 "double residual" 估计量是经典。</li>
+      <li><strong>变系数模型（Varying Coefficient Model）</strong>：$\beta(Z)$ 随 $Z$ 平滑变化，Hastie–Tibshirani (1990)。</li>
+      <li><strong>可加模型 GAM（Generalized Additive Model）</strong>：$Y = \beta_0 + g_1(X_1) + g_2(X_2) + \cdots$。每个 $g_j$ 独立非参拟合，缓解维度灾难。</li>
+    </ul>
+    <p>一个直观判断：如果你的论文里核心自变量与结果变量的散点图肉眼看不是直线（例如 U 形、S 形、阶梯形），就不该直接报 OLS 线性系数。此时要么用非参曲线展示形状，要么用半参模型把核心变量非参化、控制变量保持线性。本页代码同时给出 Stata（<code class="inline">lpoly</code>、<code class="inline">npregress</code>、<code class="inline">semipar</code>）与 Python（<code class="inline">statsmodels</code>）两套实现，建议在自己数据上各跑一遍对照。</p>
+  </div>
+
+    <h3>方法对比速查表</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>方法</th><th>函数形式假设</th><th>收敛速率</th><th>解释性</th><th>典型用途</th></tr></thead>
+        <tbody>
+          <tr><td>OLS</td><td>线性</td><td>$\sqrt n$</td><td>系数直接解释</td><td>基准回归</td></tr>
+          <tr><td>NW 核回归</td><td>无（光滑）</td><td>$n^{-2/5}$</td><td>只能画图</td><td>一维散点拟合</td></tr>
+          <tr><td>局部线性 LL</td><td>无（光滑）</td><td>$n^{-2/5}$，边界偏差小</td><td>只能画图</td><td>RDD、边界拟合</td></tr>
+          <tr><td>PLM 部分线性</td><td>参数部分线性 + 非参 $g(Z)$</td><td>参数部分 $\sqrt n$</td><td>$\beta$ 可解释</td><td>关键变量灵活、控制变量线性</td></tr>
+          <tr><td>GAM 可加</td><td>可加分解</td><td>每维 $n^{-2/5}$</td><td>画图 + 可加性</td><td>多维但无交互</td></tr>
+          <tr><td>样条</td><td>分段多项式</td><td>$\sqrt n$（knot 固定）</td><td>段内斜率可读</td><td>长面板、季节调整</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section" id="s2">
+    <h2><span class="sec-num">02</span> 假设与原理：条件期望函数与核权重</h2>
+    <p>核心模型假设：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 2.1 — 非参数回归的总体假设</div>
+      $$ Y_i = m(X_i) + \varepsilon_i, \qquad E[\varepsilon_i|X_i]=0 $$
+    </div>
+    <p>我们要估计的就是条件期望函数 $m(x) = E[Y|X=x]$。直觉上：在点 $x$ 处，取所有离 $x$ "足够近"的观测，把它们的 $Y_i$ 平均一下，就是 $m(x)$ 的估计。关键问题是：<strong>多近算近？远近如何加权？</strong></p>
+    <p>核函数 $K(\cdot)$ 就是一个把"距离"映射为"权重"的对称函数，要求 $\int K(u)du=1$、$K(u)=K(-u)\ge 0$。常用：</p>
+    <ul>
+      <li><strong>Epanechnikov 核</strong>：$K(u)=\frac{3}{4}(1-u^2)\mathbb{1}[|u|\le 1]$，理论上最优（最小渐近 MSE）。</li>
+      <li><strong>Gaussian 核</strong>：$K(u)=\frac{1}{\sqrt{2\pi}}e^{-u^2/2}$，光滑无界，实务最常用。</li>
+      <li><strong>三角核（Triangular）</strong>：$K(u)=(1-|u|)\mathbb{1}[|u|\le 1]$，RDD 默认。</li>
+    </ul>
+    <p><strong>带宽 $h$</strong> 控制"邻域大小"。偏差—方差权衡：</p>
+    <ul>
+      <li>$h$ 太小 → 每个点附近只有几个观测，<strong>方差大</strong>、曲线抖动。</li>
+      <li>$h$ 太大 → 把远处不属于局部的关系也扯进来，<strong>偏差大</strong>、曲线被过度平滑成直线。</li>
+    </ul>
+    <p>用均方误差 $MSE(x)=Bias^2(x)+Var(x)$ 量化：偏差 $\propto h^2$（二阶导数 $m''(x)$ 大小），方差 $\propto (nh)^{-1}$。二者平衡给出最优 $h^* \propto n^{-1/5}$。这一权衡与本页第 03 节 bunching 反事实多项式拟合中"多项式阶数 × excluded window"的选择在哲学上完全一致——<strong>灵活性 vs 稳定性</strong>是所有非参/半参方法的核心矛盾。</p>
+    <h3>为什么经济学家需要非参？</h3>
+    <p>实证论文的常见尴尬：OLS 跑出来 $\hat\beta$ 显著，但加一个 $X^2$ 或 $X^3$ 后系数就变号或消失。这说明你报告的"线性效应"可能只是函数形式误设的产物。非参曲线是一面照妖镜：把 $m(X)$ 画出来，如果真实形状是 U 形或阶梯形，OLS 的"平均效应"毫无政策含义。Yatchew (1998, JEL) 建议把非参图作为实证论文的"诊断步骤"，而非最终结果——先画一条非参曲线判断函数形式，再决定要不要参数化。</p>
+  </div>
+
+  <div class="section" id="s3">
+    <h2><span class="sec-num">03</span> 完整推导：Nadaraya–Watson 与局部线性</h2>
+    <h3>Nadaraya–Watson 估计量</h3>
+    <p>对任意点 $x$，核权重 $K_h(x-X_i) = \frac{1}{h}K\big(\frac{x-X_i}{h}\big)$。Nadaraya–Watson (NW) 估计量就是加权平均：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 3.1 — Nadaraya–Watson 估计量</div>
+      $$ \hat m_{NW}(x) = \frac{\sum_{i=1}^n K_h(x-X_i)\, Y_i}{\sum_{i=1}^n K_h(x-X_i)} $$
+    </div>
+    <p>推导：由定义 $m(x)=E[Y|X=x]=\dfrac{\int y f(x,y)dy}{f_X(x)}$。分母用核密度估计 $\hat f_X(x)=\frac{1}{n}\sum_i K_h(x-X_i)$；分子用 $\frac{1}{n}\sum_i K_h(x-X_i)Y_i$ 估计 $\int y f(x,y)dy$。两者相除即得 Eq. 3.1。</p>
+    <h3>局部线性估计（Local Linear, LL）</h3>
+    <p>NW 的主要缺点是<strong>边界偏差大</strong>：在样本支撑区间的两端，$x$ 一侧没有数据，加权平均被"拉"向有数据的一侧。解决办法是在每个 $x$ 附近拟合一条局部直线：</p><div class="formula-block">
+      <div class="formula-label">Eq. 3.2 — 局部线性最小化问题</div>
+      $$ \min_{\beta_0, \beta_1} \sum_{i=1}^n K_h(x-X_i)\big[Y_i - \beta_0 - \beta_1(X_i-x)\big]^2 $$
+    </div>
+    <p>解出的 $\hat\beta_0$ 就是 $\hat m_{LL}(x)$。局部线性自动修正边界处的一阶偏差，且在内部等价于 NW 加一个偏差修正项。Fan–Gijbels (1996) 证明局部线性在渐近 MSE 上几乎最优。</p>
+    <h3>样条（Spline）与回归样条</h3>
+    <p>除核回归外，<strong>样条</strong>是另一种主流非参工具。它把 $X$ 的定义域切成若干段（knots），每段用低次多项式拟合，段间在 knot 处保持连续（并要求一阶/二阶导数连续）。最常用的是<strong>三次样条（cubic spline）</strong>与<strong>光滑样条（smoothing spline）</strong>。Stata 里 <code class="inline">mkspline</code> 直接生成样条基变量，然后照常 OLS。样条与核回归的区别：核回归是"局部加权"，样条是"分段多项式拼接"；两者渐近性质一致，但样条对边界更敏感、knot 数量直接决定灵活度。</p>
+    <h3>可加模型 GAM 与维度灾难的缓解</h3>
+    <p>纯非参回归在 $d$ 维下收敛速率为 $n^{-2/(d+4)}$，$d=5$ 时即使 $n=10^5$ 也不够——这就是<strong>维度灾难（curse of dimensionality）</strong>。GAM 的聪明之处是把高维函数拆成一维函数之和：$m(X_1,\dots,X_d)=\beta_0+\sum_j g_j(X_j)$，每个 $g_j$ 独立非参拟合。这样每个 $g_j$ 仍是一维估计，收敛速率回到 $n^{-2/5}$。代价是假设各变量<strong>可加、无交互</strong>——若怀疑交互，可加两个变量的交互项 $g_{jk}(X_j,X_k)$。</p>
+    <h3>带宽选择</h3>
+    <p>理论上最优带宽（IMSE 最优）：$h^* \propto n^{-1/5}$（一维核回归）。实务中两个选择器：</p>
+    <ul>
+      <li><strong>交叉验证 CV</strong>：$CV(h)=\frac{1}{n}\sum_i (Y_i - \hat m_{-i}(X_i))^2$，选 $h$ 最小化 CV。留一法避免过拟合。</li>
+      <li><strong>Silverman 经验法则</strong>：$h^* \approx 1.06\,\hat\sigma\, n^{-1/5}$，其中 $\hat\sigma$ 是 $X$ 的标准差。快速近似用。</li>
+    </ul>
+  </div>
+
+  <div class="section" id="s4">
+    <h2><span class="sec-num">04</span> 逐步操作流程</h2>
+    <div class="step-flow">
+      <div class="step-item">
+        <div class="step-title">① 选择核函数</div>
+        <div class="step-desc">核函数选择对结果影响很小（远小于带宽）。实务默认 Gaussian 或 Epanechnikov。RDD 用三角核。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">② 选择带宽</div>
+        <div class="step-desc">先用 CV 自动选 $h^*$，再画 $0.5h^*$、$h^*$、$2h^*$ 三档曲线。如果三条曲线形状差别不大，说明对带宽不敏感；如果差别大，需要回到 CV 并检查样本量。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">③ 估计并画置信带</div>
+        <div class="step-desc">用局部线性拟合 $\hat m(x)$；用 pointwise 95% 置信区间 $\hat m(x) \pm 1.96\,\widehat{SE}(\hat m(x))$ 画灰色置信带。<strong>不要</strong>用整体置信带代替 pointwise，反之亦然。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">④ 半参模型：先线性部分再非参部分</div>
+        <div class="step-desc">PLM 用 Robinson 残差法：分别非参拟合 $E[Y|Z]$ 与 $E[X|Z]$，再用残差回归 $\tilde Y = \tilde X^\top\beta + \varepsilon$。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">⑤ 稳健性与外推边界</div>
+        <div class="step-desc">报告不同核、不同带宽下的曲线；标注支撑区间（support），区间外的外推不可信。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="s5">
+    <h2><span class="sec-num">05</span> 完整代码（Stata + Python）</h2>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · nonparametric.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* 非参 / 半参回归演示：核回归、局部线性、PLM
+* 情境：模拟 Y = sin(X) + 0.3*X + eps，看非参能否抓出非线性
+*==============================================================*
+clear all
+set more off
+set seed 20260911
+
+* --- 1. 模拟数据 ---
+set obs 1000
+gen X = runiform()*4*_pi - 2*_pi       // X ~ Uniform[-2pi, 2pi]
+gen Z = rnormal()                       // PLM 中的非参变量
+gen true_m = sin(X) + 0.3*Z            // 真实 m(X) 与线性 Z 系数
+gen Y = true_m + rnormal()*0.5
+
+* --- 2. 非参核回归：lpoly（局部线性） ---
+* 语法：lpoly Y X, width(h) gengrid n(100) ci
+* 默认 Epanechnikov 核；width 为带宽
+lpoly Y X, leg(order(2)) ///
+    ci                  ///  画 95% 置信带
+    bw cvplot           ///  用 CV 选带宽并画 CV 曲线
+    graph(title("局部线性回归：Y 关于 X")) ///
+    ytitle("拟合值") xtitle("X")
+graph export "lpoly_cv.png", replace
+
+* --- 3. 多档带宽稳健性 ---
+local h_default = 0.5
+twoway (lpolyci Y X, fcolor(gs12%30) lcolor(navy)), ///
+    legend(off) title("带宽 = 0.5")
+* 对比 0.25 与 1.0
+lpoly Y X, at(X) bwidth(0.25) gen(y025)
+lpoly Y X, at(X) bwidth(0.50) gen(y050)
+lpoly Y X, at(X) bwidth(1.00) gen(y100)
+twoway (line y025 X, sort lcolor(red)) ///
+       (line y050 X, sort lcolor(navy)) ///
+       (line y100 X, sort lcolor(orange)), ///
+       legend(label(1 "h=0.25") label(2 "h=0.50") label(3 "h=1.00")) ///
+       title("带宽敏感性：过小/适中/过大")
+
+* --- 4. 部分线性模型 PLM：Robinson (1988) 残差法 ---
+* 模型：Y = beta*Z + g(X) + eps
+* 步骤：① 非参拟合 E[Y|X]、E[Z|X]；② 残差化；③ OLS
+lpoly Y X, at(X) bwidth(0.5) gen(E_Y)
+lpoly Z X, at(X) bwidth(0.5) gen(E_Z)
+gen tilde_Y = Y - E_Y
+gen tilde_Z = Z - E_Z
+reg tilde_Y tilde_Z
+* tilde_Z 的系数就是 beta 的 Robinson 估计（渐近 sqrt-n 一致）
+* 与 OLS 直接对比：
+reg Y Z X
+* 若 X 与 Z 相关、且 g(X) 非线性，OLS 会偏；PLM 一致
+
+* --- 5. Stata 16+ 官方 npregress（更现代） ---
+* npregress kernel Y X, kernel(epanechnikov) bw(cv)
+* npregress series  Y X, order(3)  // 序列回归（多项式样条）
+* 注意：npregress 是 Stata 16+ 内置，无需 ssc install
+</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">python · nonparametric.py</span><button class="copy-btn">复制</button></div>
+<pre><code># ==============================================================
+# 非参 / 半参：statsmodels KernelReg + 手写 Nadaraya-Watson
+# ==============================================================
+import numpy as np
+import matplotlib.pyplot as plt
+from statsmodels.nonparametric.kernel_regression import KernelReg
+from statsmodels.nonparametric.kde import KDEUnivariate
+
+rng = np.random.default_rng(20260911)
+
+# --- 1. 模拟数据：与 Stata 一致 ---
+n = 1000
+X = rng.uniform(-2*np.pi, 2*np.pi, n)
+Z = rng.normal(size=n)
+true_m = np.sin(X) + 0.3*Z
+Y = true_m + rng.normal(scale=0.5, size=n)
+
+# --- 2. statsmodels 核回归（局部线性，多维自动带宽） ---
+# reg_type='ll' 局部线性；var_type='c' 连续变量
+kr = KernelReg(endog=Y, exog=np.column_stack([X, Z]),
+               var_type='cc', reg_type='ll', bw='cv_ls')
+m_hat, bw = kr.fit()
+print("CV 选出的带宽 =", bw)
+
+# --- 3. 手写 Nadaraya-Watson（便于理解） ---
+def nw(x0, X, Y, h, kernel='gauss'):
+    u = (X - x0)/h
+    if kernel == 'gauss':
+        w = np.exp(-0.5*u**2)
+    else:  # epanechnikov
+        w = np.where(np.abs(u) <= 1, 0.75*(1-u**2), 0.0)
+    return np.sum(w*Y)/np.sum(w)
+
+grid = np.linspace(X.min(), X.max(), 200)
+h = 0.5
+nw_fit = np.array([nw(g, X, Y, h) for g in grid])
+ll_fit, _ = kr.fit(data_predict=[grid, np.full_like(grid, Z.mean())])
+
+# --- 4. 可视化 ---
+fig, ax = plt.subplots(figsize=(8, 4.5))
+ax.scatter(X, Y, s=8, alpha=0.3, color='gray', label='观测')
+ax.plot(grid, np.sin(grid)+0.3*Z.mean(), 'k--', lw=1.5, label='真实 m(X)')
+ax.plot(grid, nw_fit, lw=2, color='#b87333', label=f'NW (h={h})')
+ax.plot(grid, ll_fit, lw=2, color='#1c5d6e', label='局部线性 (CV)')
+ax.set_xlabel('X'); ax.set_ylabel('Y')
+ax.set_title('非参回归：NW vs 局部线性 vs 真实函数')
+ax.legend(); plt.tight_layout(); plt.show()
+
+# --- 5. Robinson (1988) PLM 估计 ---
+# Y = beta*Z + g(X) + eps；先非参去均值，再 OLS
+E_Y = np.array([nw(g, X, Y, h) for g in X])
+E_Z = np.array([nw(g, X, Z, h) for g in X])
+beta_plm = np.sum((Z-E_Z)*(Y-E_Y)) / np.sum((Z-E_Z)**2)
+print(f"Robinson PLM beta_Z = {beta_plm:.3f}  (true = 0.300)")
+</code></pre>
+    </div>
+  </div>
+
+  <div class="section" id="s6">
+    <h2><span class="sec-num">06</span> 论文案例</h2>
+    <div class="paper-card">
+      <span class="paper-type en">English · 专著</span>
+      <div class="paper-title">Local Polynomial Modelling and Its Applications</div>
+      <div class="paper-meta">Jianqing Fan & Irene Gijbels · Chapman & Hall, 1996</div>
+      <div class="paper-desc">局部多项式回归的圣经。系统讲清局部线性/局部二次估计量的渐近性质、边界偏差、带宽选择。任何做非参的实证学者案头必备。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · Econometrica</span>
+      <div class="paper-title">Root-N-Consistent Semiparametric Regression</div>
+      <div class="paper-meta">Peter M. Robinson · Econometrica, 1988</div>
+      <div class="paper-desc">部分线性模型 PLM 的经典论文。证明"残差化 + OLS"估计量的参数部分仍可达 $\sqrt n$ 速率——半参模型既能灵活、又能快。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · JASA / 专著</span>
+      <div class="paper-title">Generalized Additive Models（GAM）</div>
+      <div class="paper-meta">Trevor Hastie & Robert Tibshirani · Chapman & Hall, 1990</div>
+      <div class="paper-desc">可加模型与变系数模型的开创性著作。把"一个未知函数"推广为"多个未知函数相加"，是统计学习经典教材。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · JEL</span>
+      <div class="paper-title">Nonparametric Regression Techniques in Economics</div>
+      <div class="paper-meta">Adonis Yatchew · Journal of Economic Literature, 1998</div>
+      <div class="paper-desc">面向经济学家的非参回归综述。不讲严格渐近理论，专讲"怎么用、怎么读、怎么避免错误"。是实证学者读非参的最佳入门。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 中文计量应用</span>
+      <div class="paper-title">半参数 / 非参方法在国内实证中的应用（TFP 估计、可加模型）</div>
+      <div class="paper-meta">周亚虹（上海财经大学）等团队系列；谢琍、刘磊、曹瑞元《部分线性可加自回归模型及其应用》，《数理统计与管理》2018 年第 37 卷第 2 期</div>
+      <div class="paper-desc">国内半参数计量经济研究的代表：周亚虹团队长期从事半参数模型理论与微观数据应用；谢琍等（2018）把部分线性可加自回归模型用于波士顿房价数据，并用样条逼近可加函数分量，是中文期刊里半参模型应用的规范范例。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 非参 TFP</span>
+      <div class="paper-title">中国高新技术企业全要素生产率估计与分析——基于非参数模型</div>
+      <div class="paper-meta">《北京航空航天学报（社会科学版）》系列论文，2023 年</div>
+      <div class="paper-desc">用 2013–2019 年国家高新区企业微观数据，构建非参数生产函数模型，放松投入—产出线性假设，并处理投入决策内生性，用两阶段非参数法估计企业 TFP。是中文实证中非参生产函数应用的代表。</div>
+    </div>
+  </div>
+
+  <div class="section" id="s7">
+    <h2><span class="sec-num">07</span> 常见错误</h2>
+    <div class="callout danger">
+      <div class="callout-title">错误 1：带宽过小，曲线过拟合噪声</div>
+      <p>$h$ 太小会让曲线跟着每个数据点抖。判断方法：画 $0.5h$、$h$、$2h$ 三档曲线，如果 $0.5h$ 出现明显锯齿、$2h$ 接近直线，说明你选的 $h$ 偏小。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 2：带宽过大，把非线性"磨平"</div>
+      <p>$h$ 太大会让非参估计退化成常数线（近似 OLS 截距）。如果画出的曲线几乎水平、与 OLS 回归线重合，检查带宽是否过大。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 3：忽略边界偏差</div>
+      <p>NW 在支撑区间两端偏差显著。应改用局部线性（reg_type='ll'），并在论文中明确标注支撑区间，区间外的曲线不要画或画虚线。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 4：高维非参（维度灾难）</div>
+      <p>非参回归的收敛速度随维数 $d$ 下降：$n^{-2/(d+4)}$。当 $d\ge 5$，即使 10 万样本也不够。对策：用 GAM（可加分解）、PLM（只对关键变量非参）、或 DML 式的 ML 方法。</p>
+    </div>
+    <div class="callout info">
+      <div class="callout-title">错误 5：把置信带当成"显著性区间"</div>
+      <p>pointwise 95% 置信带只在单个 $x$ 点上有解释力；说"整条曲线与零显著不同"需要 simultaneous 置信带（如 sup-t 调整）。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s8">
+    <h2><span class="sec-num">08</span> 交叉链接</h2>
+    <ul>
+      <li><strong>与 <a href="04-baseline-regression.html">04 基准回归</a></strong>：非参是 OLS 的非参数对照。当 OLS 系数对函数形式敏感时，画一条非参曲线能直观判断"线性假设错在哪"。</li>
+      <li><strong>与 <a href="07-rdd.html">07 RDD</a></strong>：RDD 的局部线性回归就是一维非参回归在 cutoff 处的应用；带宽选择（IK/CCT）与本页 CV 同源。</li>
+      <li><strong>与 <a href="16-dml.html">16 DML 去偏机器学习</a></strong>：DML 用非参/ML 估计 nuisance function（$E[Y|X]$、$E[D|X]$），再做正交化回归——非参是 DML 的工具之一。</li>
+      <li><strong>与 <a href="28-bunching-kink.html">28 Bunching/Kink</a></strong>：bunching 反事实密度的多项式拟合本质是局部多项式非参回归；bin width 与 excluded window 的选择是带宽选择的变体。</li>
+    </ul>
+    <p>最后提醒：非参/半参方法在中文顶刊中常用于<strong>诊断与稳健性</strong>，而非主回归。典型范式是：基准回归用 OLS 报系数，稳健性部分用局部线性核回归画 $m(X)$ 曲线，证明"线性假设不是结论的来源"。如果非参曲线与 OLS 线性预测一致，OLS 结论更可信；如果不一致，需要回到模型设定讨论。把非参当作"视觉化的函数形式检验"，比把它当作独立的因果识别工具更稳妥。</p>
+  </div>
+
+  <div class="page-nav">
+    <a href="28-bunching-kink.html" class="prev">
+      <div class="nav-label">← 上一节</div>
+      <div class="nav-title">Bunching/Kink 聚束设计</div>
+    </a>
+    <a href="30-bayesian-empirical.html" class="next">
+      <div class="nav-label">下一节 →</div>
+      <div class="nav-title">贝叶斯实证推断</div>
+    </a>
+  </div>
+
+</div></div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show')}
+document.querySelectorAll('.copy-btn').forEach(b=>b.onclick=()=>{const c=b.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(c).then(()=>{b.textContent='已复制 ✓';setTimeout(()=>b.textContent='复制',1500)})});
+document.addEventListener('DOMContentLoaded',()=>{if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})}});
+</script>
+</body>
+</html>

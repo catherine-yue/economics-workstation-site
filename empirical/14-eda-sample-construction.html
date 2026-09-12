@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDA探索性分析与样本构造 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item active" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">实证论文</a>
+      <span class="sep">/</span>
+      <span>EDA 探索性分析与样本构造</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">实证论文 · 跑回归前的必修课</span>
+      <h1>EDA 探索性分析与样本构造 Exploratory Data Analysis</h1>
+      <p class="desc">在跑任何一个 <code class="inline">reg</code> 之前，你必须先"用眼睛看一遍数据"。直方图告诉你变量偏不偏、散点图告诉你关系是不是线性、时间趋势图告诉你有没有结构断点、分组均值图告诉你组间差多少。这一页把 EDA 的全套图、样本 flow chart、样本选择诊断串成一套可照抄的 Stata 流程。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 统计基础</div>
+          <div class="prereq-body">均值、方差、分位数、偏态、峰度；理解"分布"和"条件分布"的区别。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 站内前置页面</div>
+          <div class="prereq-body"><a href="01-data-cleaning.html">01 数据清洗</a>、<a href="03-descriptive-stats.html">03 描述性统计</a>、<a href="13-five-layer-framework.html">14 五层框架</a>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件前置</div>
+          <div class="prereq-body">Stata 17+，外部命令：<code class="inline">kdensity</code>、<code class="inline">binscatter</code>、<code class="inline">lowess</code>、<code class="inline">winsor2</code>、<code class="inline">coefplot</code>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">基础 · 必做</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#position">EDA 的定位：跑回归前必须做的事</a></li>
+        <li><a href="#dist">分布图：histogram / kdensity / boxplot</a></li>
+        <li><a href="#scatter">散点图与拟合线：scatter / lowess / binscatter</a></li>
+        <li><a href="#trend">时间趋势图：tsline 与 by(year) 均值</a></li>
+        <li><a href="#group">分组均值图：条形图与置信区间</a></li>
+        <li><a href="#flow">样本构造流程与 flow chart</a></li>
+        <li><a href="#selection">样本选择检查：谁被删了？</a></li>
+        <li><a href="#code">完整 Stata 代码：模拟数据全套 EDA</a></li>
+        <li><a href="#errors">常见错误</a></li>
+      </ol>
+    </div>
+
+    <!-- ============ 1 ============ -->
+    <div class="section" id="position">
+      <h2><span class="sec-num">01</span> EDA 的定位：跑回归之前必须做的事</h2>
+      <p>很多初学者拿到数据的第一反应是 <code class="inline">reg y x controls</code>，然后看 p 值。这是一种危险的习惯。<strong>回归是对数据的一种"压缩"——它把成千上万行数据压缩成一个系数、一个标准误、一个 p 值。如果你没先看过数据长什么样，你根本不知道这个压缩过程丢掉了什么。</strong></p>
+      <p>EDA（Exploratory Data Analysis，探索性数据分析）就是"在跑回归之前，先用眼睛把数据看一遍"。它不是正式的假设检验，而是<em>对数据的直觉训练</em>：Y 的分布偏不偏？X 和 Y 是线性关系还是 U 型？处理组和对照组在政策前有没有平行趋势？异常值是真实的极端事件还是录入错误？这些问题，<strong>回归表回答不了，图能回答</strong>。</p>
+      <p>EDA 的另一个重要功能是<em>防止你被回归系数骗</em>。Anscombe (1973) 著名的四重奏（Anscombe's quartet）展示了四组完全不同的散点图，它们的均值、方差、相关系数、回归系数竟然完全一样——如果你只看回归表，你会以为四组数据是一回事；如果你看图，你会发现一组是线性、一组是曲线、一组有异常值、一组是杠杆点牵着走。<strong>这就是为什么每一篇严肃的实证论文，在主回归之前都要有一组描述性图。</strong></p>
+      <div class="callout tip">
+        <div class="callout-title">✓ EDA 的三个层次</div>
+        <p>(1) <strong>单变量分布</strong>：每个变量长什么样？(2) <strong>双变量关系</strong>：X 和 Y 怎么一起动？(3) <strong>分组/时间维度</strong>：处理组 vs 对照组、政策前 vs 政策后、不同行业之间的差异。下面三节按这三层展开。</p>
+      </div>
+    </div>
+
+    <!-- ============ 2 ============ -->
+    <div class="section" id="dist">
+      <h2><span class="sec-num">02</span> 分布图：histogram / kdensity / boxplot</h2>
+      <h3>2.1 直方图 histogram：看整体形状</h3>
+      <p>直方图把数值范围切成若干等宽的 bin，数每个 bin 里的观测数。它告诉你：分布是单峰还是多峰？是对称还是偏态？有没有一坨数据挤在 0 附近？</p>
+      <ul>
+        <li><strong>右偏（right-skewed）</strong>：长尾拖向右边，绝大多数观测集中在小值，少数极端大值。企业规模、收入、专利数通常右偏——此时用对数变换 <code class="inline">gen ly = log(y+1)</code> 通常能让分布对称。</li>
+        <li><strong>左偏（left-skewed）</strong>：长尾拖向左边，少数极端小值。</li>
+        <li><strong>多峰（multimodal）</strong>：出现两个峰，说明数据可能是两种不同子总体混合的——比如处理组和对照组没分开画，结果叠出双峰。</li>
+      </ul>
+      <h3>2.2 核密度 kdensity：看平滑形状</h3>
+      <p>直方图受 bin 宽度影响很大，bin 太粗看不到细节，bin 太细噪声大。<code class="inline">kdensity</code> 用核密度估计把直方图平滑成一条连续曲线，更容易和正态分布（<code class="inline">normal</code> 选项）对比。如果曲线明显偏离对称钟形，就不要在没变换的变量上跑 OLS——OLS 对偏态不敏感，但假设检验和预测区间会受影响。</p>
+      <h3>2.3 箱线图 boxplot：看异常值</h3>
+      <p>箱线图把中位数、四分位距（IQR）、须线、疑似异常值画成一张图。箱线图是<strong>检查异常值最快的工具</strong>：任何超过须线（通常是 1.5×IQR）的点都会被单独画出来。你应该逐一看这些异常点——它们是真实的极端事件（如一家企业在政策冲击年产能翻倍），还是数据录入错误（如把"100"写成了"10000"）？</p>
+      <div class="callout warning">
+        <div class="callout-title">⚠ 不要一见异常值就删</div>
+        <p>异常值在微观数据里往往携带最多信息——它们可能正是你想研究的"极端处理效应"。先诊断它是什么，再决定是缩尾（winsorize）、对数变换、还是保留。<code class="inline">winsor2</code> 是把 1% 和 99% 分位点以外的值"压缩"到分位点，而不是删除——这是更稳妥的做法。</p>
+      </div>
+    </div>
+
+    <!-- ============ 3 ============ -->
+    <div class="section" id="scatter">
+      <h2><span class="sec-num">03</span> 散点图与拟合线：scatter / lowess / binscatter</h2>
+      <h3>3.1 散点图 twoway scatter</h3>
+      <p>两个连续变量的最基本图。N 很大时（>10000），散点会糊成一坨，看不出形状——此时应该用 <code class="inline">binscatter</code>。</p>
+      <h3>3.2 lowess 局部拟合</h3>
+      <p><code class="inline">lowess y x</code> 不假设全局线性，而是在每个点附近用局部多项式拟合一条曲线。它让你<em>无参数地</em>看到 X 和 Y 的真实关系形状：是单调上升？倒 U 型？有平台期？如果 lowess 明显弯了，你在线性回归里加一个 <code class="inline">c.x##c.x</code> 二次项就不是"数据挖掘"，而是"按图索骥"。</p>
+      <h3>3.3 binscatter：大样本的散点替代品</h3>
+      <p><code class="inline">binscatter y x, nquantiles(20)</code> 把 X 分成 20 个等频 bin，每个 bin 画一个点（该 bin 内 X 和 Y 的均值）。它比散点图清爽得多，且能自动加线性拟合线。<strong>binscatter 是顶刊论文里最常见的 EDA 图</strong>——因为它在大样本下既不糊、又能展示非线性。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 双变量 EDA 三件套</span><button class="copy-btn">复制</button></div>
+<pre><code>* 三件套：散点 + lowess + binscatter
+twoway (scatter y x) (lfit y x), name(sc1, replace)
+twoway (lowess y x, bw(0.3)), name(sc2, replace)
+binscatter y x, nquantiles(20) name(sc3, replace)
+
+* 并排放三张图
+graph combine sc1 sc2 sc3, rows(1) ycommon
+graph export "output/figures/bivariate_eda.png", replace</code></pre>
+      </div>
+    </div>
+
+    <!-- ============ 4 ============ -->
+    <div class="section" id="trend">
+      <h2><span class="sec-num">04</span> 时间趋势图：tsline 与 by(year) 均值</h2>
+      <p>面板数据的 EDA 必须包括<em>时间维度</em>。它回答两个问题：(1) 结果变量 Y 在时间上是平稳的、有趋势的、还是有结构断点？(2) 处理组和对照组在政策前是否平行？</p>
+      <h3>4.1 整体时间趋势</h3>
+      <p>对年度数据：<code class="inline">collapse (mean) y, by(year)</code>，然后 <code class="inline">tsline y</code> 或 <code class="inline">line y year</code>。一眼能看出：政策实施年份前后有没有跳跃？有没有持续趋势？有没有异常年份？</p>
+      <h3>4.2 分组时间趋势（DID 平行趋势预检验）</h3>
+      <p>这是 DID 识别策略的命脉。按处理组和对照组分别画 Y 的年均值趋势：</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · DID 平行趋势可视化</span><button class="copy-btn">复制</button></div>
+<pre><code>* 按 (year, treat) 计算 Y 的均值
+collapse (mean) y, by(year treat)
+twoway (line y year if treat==1) ///
+       (line y year if treat==0), ///
+       legend(label(1 "处理组") label(2 "对照组")) ///
+       xline(2012, lpattern(dash) lcolor(red)) ///  // 政策实施年份
+       title("政策前后两组均值趋势")
+* 如果政策前两组基本平行，DID 平行趋势假设看起来合理
+* 如果政策前两组已经在发散，DID 就有问题</code></pre>
+      </div>
+      <p>时间趋势图还能帮你发现<em>结构断点</em>：2008 年金融危机前后、2015 年汇改前后、疫情前后——这些外生冲击会让你的回归系数跳变，必须在模型里控制时间固定效应或剔除异常年份。</p>
+    </div>
+
+    <!-- ============ 5 ============ -->
+    <div class="section" id="group">
+      <h2><span class="sec-num">05</span> 分组均值图：条形图与置信区间</h2>
+      <p>回归系数本质上是"组间均值差"。在跑回归之前，你应该先用最简单的图把这个差异画出来：处理组和对照组的 Y 均值差多少？95% 置信区间有没有重叠？</p>
+      <ul>
+        <li><strong>条形图（bar chart）</strong>：<code class="inline">graph bar (mean) y, over(treat)</code> 画两组均值的高度对比。</li>
+        <li><strong>点估计 + 置信区间图</strong>：<code class="inline">coefplot</code> 或 <code class="inline">ciplot</code> 直接把均值差和 95% CI 画成横向点线图。这比数字表直观得多。</li>
+      </ul>
+      <p>这一步的价值在于：<strong>在加任何控制变量之前，先看"裸"的组间差是什么样</strong>。如果处理组和对照组在 Y 上裸差就很小，你的回归系数再显著也解释不出什么经济意义；如果裸差很大但回归系数不显著，那是控制变量或样本选择在起作用，需要回去查。</p>
+    </div>
+
+    <!-- ============ 6 ============ -->
+    <div class="section" id="flow">
+      <h2><span class="sec-num">06</span> 样本构造流程与 flow chart</h2>
+      <p>样本构造是 EDA 里最容易被忽略、但审稿人最关心的部分。你必须能回答：<strong>从原始观测到最终回归样本，每一步删了多少观测？为什么删？</strong></p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 0：原始样本（raw）</div>
+          <div class="step-desc">从数据库下载的所有观测，例如 2000–2020 年所有 A 股上市公司 - 年观测。先 <code class="inline">count</code> 记下 N0。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 1：保留目标行业 / 年份</div>
+          <div class="step-desc">只保留制造业、2008 年以后的样本。<code class="inline">keep if industry=="M" &amp; year&gt;=2008</code>，记下 N1。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2：删除关键变量缺失</div>
+          <div class="step-desc">因变量 Y 和核心解释变量 X 不能有缺失。<code class="inline">drop if missing(Y, X)</code>，记下 N2。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3：删除极端异常值 / 缩尾</div>
+          <div class="step-desc">对连续变量做 1%/99% 缩尾（<code class="inline">winsor2</code>），而不是直接删除——缩尾不减少 N，只改极端值。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4：最终分析样本</div>
+          <div class="step-desc">N3 = 最终回归 N。这个数必须和主回归表里的 N 完全一致。</div>
+        </div>
+      </div>
+      <p>把 N0 → N1 → N2 → N3 做成一张 flow chart（横向条形图或表格）放在论文附录里。审稿人一看就知道你的样本是怎么来的，也知道你每一步删了谁。flow chart 的另一个隐性作用是：它逼你把"为什么删"写成一句话——如果你写不出"为什么保留制造业"，说明你的样本选择本身就没想清楚。</p>
+    </div>
+
+    <!-- ============ 7 ============ -->
+    <div class="section" id="selection">
+      <h2><span class="sec-num">07</span> 样本选择检查：谁被删了？</h2>
+      <p>最危险的情况是：<strong>你删掉的观测，恰恰是和 Y 最相关的那批</strong>。例如你因为"研发支出缺失"删企业，如果"研发支出缺失"的企业正是创新失败、最该被研究的企业，那你删掉的就是最有信息量的观测。</p>
+      <p>诊断方法很简单：把"被删"和"被留"两组在关键变量上做均值检验。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 样本选择诊断</span><button class="copy-btn">复制</button></div>
+<pre><code>* 假设 kept==1 是保留下来的样本
+gen byte kept = !missing(Y, X, controls)
+
+* 对比被删组 vs 保留组在 X、Y、控制变量上的均值
+foreach v in X Y age size leverage {
+    quietly ttest `v', by(kept)
+    display "变量 `v': 被删组均值=" r(mu_1) " 保留组均值=" r(mu_2) ///
+            "  p值=" r(p)
+}
+* 如果 p 值很小，说明"能否进样本"和这些变量系统相关
+* 你的 Sample 层有选择偏误，需要在论文里讨论</code></pre>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">⛔ 红线</div>
+        <p>如果"被删"和"被留"在 Y 上均值差异显著，你的回归结果<em>不能</em>解释为对原始总体的效应——它只能解释为对"被保留下来的子总体"的效应。这正是上一页"五层框架"里 Sample 层的核心警告。</p>
+      </div>
+    </div>
+
+    <!-- ============ 8 ============ -->
+    <div class="section" id="code">
+      <h2><span class="sec-num">08</span> 完整 Stata 代码：模拟数据全套 EDA</h2>
+      <p>下面这段代码自己生成一份模拟面板数据（1000 家企业 × 10 年），然后跑完整套 EDA。你可以直接复制到 Stata 里跑通，作为你自己项目的模板。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 14_eda_full.do（可直接运行）</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 14_eda_full.do：模拟数据的全套 EDA
+* 目标：在跑任何回归之前，先用眼睛看一遍数据
+*==============================================================
+clear all
+set more off
+set seed 20260911
+
+* --- 1. 生成模拟面板数据 ---
+* 1000 家企业 × 10 年 = 10000 观测
+set obs 1000
+gen firm_id = _n
+gen treat = (runiform() < 0.5)            // 处理组 50%
+expand 10
+bysort firm_id: gen year = 2010 + _n - 1
+
+* 处理变量：2015 年及以后处理组受到政策冲击
+gen post = (year >= 2015)
+gen did = treat * post
+
+* 协变量：企业规模（对数正态）、年龄
+gen size = exp(rnormal(2, 1))
+gen age  = floor(runiform()*20 + 1)
+
+* 结果变量：企业利润（对数）
+* 真实模型：lprofit = 0.5*did + 0.3*ln(size) - 0.01*age + 噪声
+gen ln_size = log(size)
+gen lprofit = 0.5*did + 0.3*ln_size - 0.01*age + rnormal(0, 1)
+
+* 故意加几个异常值（1% 的极端大值）
+replace lprofit = lprofit + 8 if runiform() < 0.01
+
+* 故意让部分企业在 2010 年缺失利润（模拟选择偏误）
+replace lprofit = . if year==2010 & treat==1 & runiform()<0.3
+
+*==============================================================
+* 2. 单变量分布 EDA
+*==============================================================
+* 2.1 直方图 + 正态叠加
+histogram lprofit, normal name(h_lp, replace) ///
+    title("利润对数分布")
+graph export "eda_1_hist_lprofit.png", replace
+
+* 2.2 核密度（处理组 vs 对照组）
+twoway (kdensity lprofit if treat==1) ///
+       (kdensity lprofit if treat==0), ///
+       legend(label(1 "处理组") label(2 "对照组")) ///
+       name(kd_grp, replace)
+graph export "eda_2_kdensity_group.png", replace
+
+* 2.3 箱线图：按处理组
+graph box lprofit, over(treat) name(box_grp, replace)
+graph export "eda_3_boxplot.png", replace
+
+*==============================================================
+* 3. 双变量关系 EDA
+*==============================================================
+* 3.1 binscatter：ln(size) vs lprofit
+binscatter lprofit ln_size, nquantiles(30) ///
+    name(bin_size, replace) ///
+    title("企业规模 vs 利润")
+graph export "eda_4_binscatter_size.png", replace
+
+* 3.2 lowess：年龄 vs lprofit（看是否非线性）
+lowess lprofit age, bw(0.3) name(lowess_age, replace)
+graph export "eda_5_lowess_age.png", replace
+
+*==============================================================
+* 4. 时间趋势 EDA（DID 平行趋势预检）
+*==============================================================
+preserve
+    collapse (mean) lprofit, by(year treat)
+    twoway (line lprofit year if treat==1) ///
+           (line lprofit year if treat==0), ///
+           legend(label(1 "处理组") label(2 "对照组")) ///
+           xline(2015, lpattern(dash) lcolor(red)) ///
+           name(trend, replace) ///
+           title("政策前后利润趋势（2015 为政策年）")
+    graph export "eda_6_trend.png", replace
+restore
+
+*==============================================================
+* 5. 分组均值 + 置信区间
+*==============================================================
+* 2015 年前 vs 后，处理组 vs 对照组
+preserve
+    keep if !missing(lprofit)
+    ci means lprofit, by(treat post)
+restore
+
+*==============================================================
+* 6. 样本构造 flow chart
+*==============================================================
+count
+scalar N0 = r(N)
+display "Step0 原始观测: " N0
+
+* 只保留 2010 年以后（其实数据就是 2010 起）
+keep if year >= 2010
+count
+scalar N1 = r(N)
+display "Step1 保留2010年后: " N1
+
+* 删除 lprofit 缺失
+drop if missing(lprofit)
+count
+scalar N2 = r(N)
+display "Step2 删除lprofit缺失: " N2
+
+* 缩尾 1%/99%（注意：缩尾不改变 N）
+capture which winsor2
+if _rc ssc install winsor2, replace
+winsor2 lprofit ln_size, cuts(1 99) replace
+
+count
+scalar N3 = r(N)
+display "Step3 缩尾后: " N3 "（N 不变）"
+
+display _n "===== Flow Chart ====="
+display "N0 = " N0
+display "N1 = " N1 " (删了 " N0-N1 ")"
+display "N2 = " N2 " (删了 " N1-N2 ")"
+display "N3 = " N3 " (最终回归 N)"
+
+*==============================================================
+* 7. 样本选择诊断：被删的是谁？
+*==============================================================
+* 重新读一遍原始数据，标记哪些被删了
+preserve
+    * 这里略：实际项目中用 kept 哑变量 + ttest 对比
+    display "请参考本页第 07 节的 ttest 模板"
+restore
+
+*==============================================================
+* 8. 最后才跑回归
+*==============================================================
+reg lprofit did ln_size i.age, vce(cluster firm_id)
+estimates table, b(%9.3f) se(%9.3f) stats(N r2)
+
+display _n "===== EDA 全部完成 ====="
+display "先看图，再看回归表。两者必须对得上。"</code></pre>
+      </div>
+    </div>
+
+    <!-- ============ 9 ============ -->
+    <div class="section" id="errors">
+      <h2><span class="sec-num">09</span> 常见错误</h2>
+      <h3>错误 1：只看回归表，不看分布图</h3>
+      <p>这是最普遍的错误。<code class="inline">reg y x</code> 跑出来 p=0.03，你就宣布效应显著。但如果你先画一张 lprofit 的直方图，你会发现它右偏严重、1% 的极端值把 OLS 拉到一边。这种情况下，回归系数显著不等于"经济关系显著"——它可能只是被几个极端点拖着走。<strong>每一个核心变量，在跑回归之前都要画一张直方图或核密度图。</strong></p>
+      <h3>错误 2：忽略样本选择</h3>
+      <p>直接在"有完整数据"的子样本上跑回归，不检查被删掉的观测是不是随机的。后果是：你估计的不是总体效应，而是"能被观测到的那部分"的效应。下一页五层框架会反复强调这一点。</p>
+      <h3>错误 3：异常值不诊断，直接缩尾或删除</h3>
+      <p>看到箱线图上有几个点飘在外面，<code class="inline">winsor2, cuts(1 99)</code> 一缩了事。但那几个点可能是真实的政策受益者——比如一家企业因为政策产能翻了三倍。在不诊断的情况下缩尾，等于把你最该研究的观测"压扁"了。正确顺序：先 <code class="inline">list</code> 看这几个点是谁、为什么这么极端，再决定缩尾还是保留。</p>
+      <h3>错误 4：不画时间趋势就跑 DID</h3>
+      <p>DID 的平行趋势假设是"处理组和对照组在政策前趋势平行"。这个假设在回归里检验不了（事件研究图可以部分检验），但在 EDA 阶段，<strong>一张简单的分组时间趋势图就能让你看到平行趋势是否成立</strong>。如果政策前两组线已经在发散，你跑出来的 DID 系数再显著也没用。</p>
+      <h3>错误 5：binscatter 没加控制变量就下结论</h3>
+      <p>binscatter 画的是原始 X 和 Y 的关系。如果你加了企业 FE、年份 FE，原始 binscatter 看到的"关系"和回归里的系数完全是两回事。正确做法：在 binscatter 里也加 <code class="inline">absorb(firm year)</code> 选项，让图和回归对应。</p>
+      <h3>错误 6：EDA 一次性做完、之后再也不回头看</h3>
+      <p>EDA 不是"开题时做一次就归档"的仪式，而是贯穿整个实证过程的习惯。每次你换了一个样本、加了一个变量、改了一个筛选条件，都应该重画几张关键图：样本 flow chart 更新没有？新加入的变量分布合理吗？被新规则删掉的观测和原来的样本系统不同吗？把 EDA 当成"每次改代码后必跑的自检"，而不是"开学第一周的任务"。</p>
+      <div class="callout tip">
+        <div class="callout-title">✓ 一句话总结</div>
+        <p>回归是把数据"压缩"成一个数；EDA 是在压缩之前，先看清楚你压缩的是什么。<strong>先看图，再看表；图和表对不上，一定是表错了，不是图错了。</strong></p>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="13-five-layer-framework.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">五层框架 Population–Sample–Data–Model–Inference</div>
+      </a>
+      <a href="index.html" class="next">
+        <div class="nav-label">返回总览 →</div>
+        <div class="nav-title">实证论文路线图与总览</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLP随机系数模型 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item active" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">结构估计</a>
+      <span class="sep">/</span>
+      <span>BLP随机系数模型</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">STRUCTURAL · DEMAND ESTIMATION</span>
+      <h1>BLP 随机系数模型：从 Logit 到 Berry-Levinsohn-Pakes</h1>
+      <p class="desc">为什么简单 Logit 会产生荒谬的替代模式？如何用随机系数 + 收缩映射 + GMM 估计差异化产品的需求系统，并反推出价格成本加成（markup）。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:10px 20px;border-radius:8px;margin:0 0 24px;font-size:14px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:18px;">&#128221;</span>
+      <span><strong>本模型共 23 个方程</strong>（含效用设定、份额积分、收缩映射、结构误差、GMM 矩条件与权重、集中化线性解、弹性与 Bertrand markup、收缩证明与外循环梯度）· 文末附「方程总清单 Equation Summary」</span>
+    </div>
+
+    
+
+    <!-- ========== 前置条件与学习依赖 ========== -->
+    <div class="precond-box" style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>Blackwell 充分条件与收缩映射（contraction mapping）、Banach 不动点定理；两步 GMM 与最优权重；数值积分（quasi-Monte Carlo、Halton draws）；矩阵投影 Z′Z 与 Sandwich 方差；Bertrand–Nash 一阶条件的矩阵形式 (Δ⊙Ω)′。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>产业组织（IO）：差异化产品需求系统、寡头竞争、价格内生性、工具变量（成本侧 / 竞争品特征 / Hausman IV）；并购模拟与反垄断直觉。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件/计算前置：</span>Python（手写收缩映射 + GMM 内外循环，推荐 <code class="inline">PyBLP</code> 开源包）或 MATLAB；计算量大、数值敏感，需要熟悉向量化与多初值。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置页面：</span>先学 <a href="09-mixed-logit.html">09 混合 Logit</a>（随机系数）+ <a href="02-gmm.html">02 GMM</a>（工具变量与权重矩阵）。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;">前沿</span></div>
+      </div>
+    </div>
+
+<div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么需要随机系数：Logit 的 IIA 问题</a></li>
+        <li><a href="#s2">BLP 模型设定与效用函数</a></li>
+        <li><a href="#s3">市场份额反演：收缩映射（Contraction Mapping）</a></li>
+        <li><a href="#s4">GMM 估计与工具变量</a></li>
+        <li><a href="#s5">完整估计流程：内循环 + 外循环</a></li>
+        <li><a href="#s6">需求弹性与价格成本加成</a></li>
+        <li><a href="#s7">完整 Python 实现</a></li>
+        <li><a href="#s8">论文案例</a></li>
+        <li><a href="#s9">常见错误与陷阱</a></li>
+        <li><a href="#s10">进阶资料</a></li>
+      </ol>
+    </div>
+
+    <!-- ========== 第1节 ========== -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么需要随机系数：Logit 的 IIA 问题</h2>
+
+      <p>上一页我们讲了标准的 logit 离散选择模型。它形式简单、似然函数解析可导，但在<strong>差异化产品市场（differentiated product market）</strong>的需求估计中存在一个致命缺陷：<strong>IIA 性质（Independence of Irrelevant Alternatives，无关替代品独立性）</strong>。</p>
+
+      <p>回忆一下标准 logit 的选择概率：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">Equation 1.1 — 标准 Logit 选择概率</div>
+        $$P_{ijt} = \frac{e^{V_{ijt}}}{\sum_{k=0}^{J_t} e^{V_{ikt}}}, \qquad V_{ijt} = x_{jt}'\beta - \alpha p_{jt} + \xi_{jt}$$
+      </div>
+
+      <p>其中 $j=0$ 代表外部产品（outside option，即"不购买任何产品"）。IIA 性质意味着：<strong>任意两个产品 $j$ 与 $k$ 的相对选择概率之比，只取决于它们自己的效用，与其他产品无关</strong>：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">Equation 1.2 — IIA 性质</div>
+        $$\frac{P_{ijt}}{P_{ikt}} = \frac{e^{V_{ijt}}}{e^{V_{ikt}}}, \qquad \text{对任意 } l \notin \{j,k\}, \text{ 新增/去掉 } l \text{ 不影响此比值}$$
+      </div>
+
+      <h3>著名的"红巴士/蓝巴士"（Red Bus / Blue Bus）悖论</h3>
+      <p>McFadden 当年用一个思想实验批评 IIA：假设一个人在"开车"和"坐红巴士"之间选择，概率各为 1/2。现在加入"蓝巴士"——它和红巴士除了颜色之外完全一样。按 IIA，选择概率必须满足"红巴士:蓝巴士 = 1:1"，而"开车"这一份额必须不变，于是三者各占 1/3。但直觉上，理性人会把原来给红巴士的一半分给蓝巴士，"开车"仍应占 1/2，红/蓝巴士各占 1/4。<strong>IIA 强制了"比例替代"（proportionate substitution），这在差异化产品市场里完全不合理</strong>：价格上升的产品，其失去的份额应该按"产品之间的相似程度"再分配，而不是机械地按当前份额比例扩散到所有其他产品。</p>
+
+      <h3>在汽车市场上的具体后果</h3>
+      <p>考虑 Berry, Levinsohn, Pakes (1995) 研究的汽车市场。如果用标准 logit 估计需求，那么当某款"大众甲壳虫"涨价 10%，它流失的份额会按所有其他车（包括保时捷 911、本田思域、雪佛兰索罗德皮卡）的当前份额比例分摊。这显然荒谬：甲壳虫的用户更可能转去 Mini Cooper 或 Fiat 500，而不是转去一辆重型皮卡。<strong>标准 logit 的 own-price elasticity（自身价格弹性）只取决于市场份额本身，cross-price elasticity（交叉价格弹性）被 IIA 机械地决定</strong>，完全无法反映产品在特征空间中的邻近性。</p>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ IIA 在差异化产品市场的后果</div>
+        <p>1. 价格弹性被错误估计，尤其是大份额产品 own-price elasticity 被人为压低；<br>
+        2. 并购模拟（merger simulation）会严重失真——两家产品特征相近的公司合并，本应大幅提价，但标准 logit 几乎测不出这个提价压力；<br>
+        3. 新产品的福利分析（new product welfare analysis）不可信。</p>
+      </div>
+
+      <p>解决思路很直接：<strong>允许消费者对产品特征的偏好是异质的</strong>（random coefficients）。这样，喜欢"小尺寸、低油耗"的消费者在甲壳虫涨价时会集中流向类似特征的 Mini，而不是均匀分散。这就是 BLP（1995）的核心思想。</p>
+    </div>
+
+    <!-- ========== 第2节 ========== -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> BLP 模型设定与效用函数</h2>
+
+      <h3>2.1 消费者效用的随机系数形式</h3>
+      <p>考虑市场 $t$ 中有 $J_t$ 个差异化产品，市场中有 $I$ 个潜在消费者（aggregated 后对应总市场规模 $M_t$）。消费者 $i$ 对产品 $j$ 在时期 $t$ 的间接效用写为：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">Equation 2.1 — BLP 随机系数效用</div>
+        $$u_{ijt} = x_{jt}'\beta_i - \alpha_i p_{jt} + \xi_{jt} + \varepsilon_{ijt}$$
+      </div>
+
+      <p>其中：</p>
+      <ul>
+        <li>$x_{jt}$：产品 $j$ 的观察特征向量（如马力、油耗、尺寸）；</li>
+        <li>$p_{jt}$：价格（内生，因为企业定价时会考虑 $\xi_{jt}$）；</li>
+        <li>$\xi_{jt}$：产品 $j$ 的<strong>未观察特征</strong>（unobserved product characteristic），是结构性误差项，企业和消费者都能看到，但计量经济学家看不到；</li>
+        <li>$\varepsilon_{ijt}$：i.i.d. 的 Type-I Extreme Value 误差（和标准 logit 一样）；</li>
+        <li>$\beta_i, \alpha_i$：<strong>消费者层面的随机系数</strong>，随 $i$ 变化——这是与标准 logit 的根本区别。</li>
+      </ul>
+
+      <h3>2.2 随机系数的分解</h3>
+      <p>BLP 把随机系数进一步分解为"均值 + 人口统计 + 偏好冲击"三部分：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">Equation 2.2 — Random Coefficients 分解</div>
+        $$\beta_i = \beta + \Pi D_i + \Sigma v_i$$
+      </div>
+
+      <p>其中：</p>
+      <ul>
+        <li>$\beta$：所有消费者共同的系数均值（vector, dimension $K$）；</li>
+        <li>$D_i$：消费者 $i$ 的可观察人口统计（income, age, family size…），dimension $D$；</li>
+        <li>$\Pi$：$K \times D$ 矩阵，把人口统计映射到偏好；</li>
+        <li>$v_i \sim N(0, I_K)$：消费者 $i$ 的不可观察偏好冲击（standard normal）；</li>
+        <li>$\Sigma$：$K \times K$ 对角矩阵（实践中常取对角），控制偏好异质性的大小。</li>
+      </ul>
+
+      <p>价格系数也可以写成 $\alpha_i = \alpha + \pi_y y_i + \sigma_\alpha v_{i,\alpha}$，其中 $y_i$ 是收入，体现"富人对价格不敏感"。</p>
+
+      <h3>2.3 把效用拆成"共同部分 + 异质部分"</h3>
+      <p>把 Equation 2.2 代入 2.1，效用可以拆成两块：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">Equation 2.3 — 效用分解</div>
+        $$u_{ijt} = \underbrace{x_{jt}'\beta - \alpha p_{jt} + \xi_{jt}}_{\equiv \delta_{jt} \text{（mean utility，共同部分）}} + \underbrace{x_{jt}'(\Pi D_i + \Sigma v_i) - (\pi_y y_i + \sigma_\alpha v_{i,\alpha}) p_{jt}}_{\equiv \mu_{ijt} \text{（individual deviation，异质部分）}} + \varepsilon_{ijt}$$
+      </div>
+
+      <p>这个分解极其关键：</p>
+      <ul>
+        <li>$\delta_{jt}$ 只依赖产品 $j$ 的特征和均值系数，<strong>不随 $i$ 变化</strong>，叫 mean utility（平均效用）；</li>
+        <li>$\mu_{ijt}$ 是消费者 $i$ 相对于均值的偏离，<strong>随 $i$ 变化</strong>，叫 consumer-product specific deviation；</li>
+        <li>外部产品（outside good）的效用归一化为 $u_{i0t} = \varepsilon_{i0t}$（即 $\delta_{0t}=0, \mu_{i0t}=0$）。</li>
+      </ul>
+
+      <h3>2.4 市场份额的表达式</h3>
+      <p>由于 $\varepsilon_{ijt}$ 是 i.i.d. Extreme Value，条件在 $v_i, D_i$ 上，消费者 $i$ 选 $j$ 的概率仍是 logit 形式：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">Equation 2.4 — 个体选择概率</div>
+        $$P_{ijt} = \frac{e^{\delta_{jt} + \mu_{ijt}}}{1 + \sum_{k=1}^{J_t} e^{\delta_{kt} + \mu_{ikt}}}$$
+      </div>
+
+      <p><strong>整个市场的份额</strong> $s_{jt}$ 是个体选择概率在人口分布上的积分：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">Equation 2.5 — 市场份额（本页核心公式之一）</div>
+        $$s_{jt}(\delta, \theta_2) = \int \frac{e^{\delta_{jt} + \mu_{ijt}(\theta_2)}}{1 + \sum_{k=1}^{J_t} e^{\delta_{kt} + \mu_{ikt}(\theta_2)}} \, dF(D_i, v_i)$$
+      </div>
+
+      <p>这里 $\theta_2 = \{\Pi, \Sigma, \pi_y, \sigma_\alpha\}$ 是"非线性参数"（nonlinear parameters）——它们出现在 $\mu_{ijt}$ 里，因为 $\mu$ 是 $v_i$ 的非线性函数。而 $\theta_1 = \{\beta, \alpha\}$ 是"线性参数"（linear parameters），只出现在 $\delta_{jt} = x_{jt}'\beta - \alpha p_{jt} + \xi_{jt}$ 中。</p>
+
+      <div class="callout info">
+        <div class="callout-title">💡 直觉：为什么这样就解决了 IIA？</div>
+        <p>当价格上升时，最不喜欢该产品特征的那批消费者会最先离开；他们会集中去"自己偏好特征相似"的产品，而不是按比例分散。积分 $dF(D_i,v_i)$ 自动实现了这种"特征空间中的最近邻替代"。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第3节 ========== -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 市场份额反演：收缩映射（Contraction Mapping）</h2>
+
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库：本节用"收缩映射 + 嵌套迭代"求解均衡</div>
+        <p>BLP 的收缩映射是估计的内循环；它与外循环的 GMM 嵌套迭代容易慢、不收敛。想了解如何用 <strong>MPEC</strong> 把收缩映射改写成等式约束、一次性求解？先学 <a href="14-mpec.html">基础知识库·MPEC →</a></p>
+      </div>
+
+      <p>BLP 估计的核心难点是：观测到的市场份额 $S_{jt}$（来自数据）和模型预测的份额 $s_{jt}(\delta, \theta_2)$（来自 Equation 2.5）之间有什么关系？我们要做的是"反演"——给定 $\theta_2$ 和观测份额 $S$，找到使 $s(\delta, \theta_2) = S$ 成立的 $\delta$。</p>
+
+      <h3>3.1 为什么不能直接解 $\delta$？</h3>
+      <p>在标准 logit 里，反演是解析的：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 3.1 — 标准 Logit 的解析反演（Berry 1994）</div>
+        $$\ln S_{jt} - \ln S_{0t} = x_{jt}'\beta - \alpha p_{jt} + \xi_{jt}$$
+      </div>
+      <p>这是一个线性方程，直接 OLS/IV 即可。但在 BLP 中，Equation 2.5 是一个多维非线性积分，<strong>没有解析解</strong>。我们必须数值求 $\delta$。</p>
+
+      <h3>3.2 BLP 收缩映射迭代</h3>
+      <p>Berry (1994) 与 BLP (1995) 提出的迭代公式：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">Equation 3.2 — 收缩映射（Contraction Mapping，本页核心公式之二）</div>
+        $$\delta_{jt}^{h+1} = \delta_{jt}^{h} + \ln S_{jt} - \ln s_{jt}(\delta^h, \theta_2)$$
+      </div>
+
+      <p>逐步解释：</p>
+      <ul>
+        <li>给定初始猜测 $\delta^0$（通常设为 0，或用标准 logit 的 $\hat\delta$）；</li>
+        <li>用 Equation 2.5 在给定的 $\theta_2$ 下数值积分（用 Halton draws 或 pseudo-random draws 模拟 $F(D_i,v_i)$），算出模型预测份额 $s_{jt}(\delta^h, \theta_2)$；</li>
+        <li>比较观测份额 $S_{jt}$ 与预测份额 $s_{jt}$ 的对数差：如果 $S_{jt} > s_{jt}$，说明预测份额太低，需要提高产品 $j$ 的平均效用 $\delta_{jt}$，于是 $\delta^{h+1} > \delta^h$；</li>
+        <li>迭代直到 $\|\delta^{h+1} - \delta^h\|_\infty < \text{tol}$（例如 $10^{-8}$）。</li>
+      </ul>
+
+      <h3>3.3 为什么它收敛？（Blackwell 充分条件）</h3>
+      <p>BLP 证明了这个映射是一个 <strong>contraction mapping</strong>：在标准条件下，存在 $\lambda \in (0,1)$ 使得 $\|g(\delta_1) - g(\delta_2)\| \leq \lambda \|\delta_1 - \delta_2\|$，其中 $g(\delta) = \delta + \ln S - \ln s(\delta)$。由 Banach 不动点定理，迭代收敛到唯一不动点 $\delta^*(\theta_2)$。</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 3.2b — Blackwell 收缩系数（补全）</div>
+        $$\lambda=\sup_{\delta}\Big\|I-\frac{\partial\ln s(\delta)}{\partial\delta'}\Big\|_\infty,\qquad 0\le\lambda<1\;\Longrightarrow\;\|\delta^{h+1}-\delta^*\|_\infty\le\lambda\,\|\delta^h-\delta^*\|_\infty$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$\partial\ln s/\partial\delta'$ 为份额对平均效用的雅可比（对角元 $1-s_{j}$，非对角元 $-s_k$）。<strong>设定理由</strong>：Blackwell 充分条件要求映射单调 + 折扣（discountivity），BLP 用 sup-norm 证明了 $\lambda<1$。<strong>经济直觉</strong>：$\lambda$ 越接近 1 收敛越慢；当随机系数方差大、替代模式灵活时 $\lambda$ 上升，这就是 BLP 内循环常需几百次迭代的原因。</p>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">✓ 数值实现要点</div>
+        <p>1. <strong>模拟 draws</strong>：用 $R=100$–$1000$ 个 $(D_i, v_i)$ 的 Halton 序列（quasi-Monte Carlo），比纯随机 draws 收敛快、方差小；<br>
+        2. <strong>向量化</strong>：在 Python 中把所有 $J_t \times R$ 同时算（broadcasting），避免 Python 层循环；<br>
+        3. <strong>加速技巧</strong>：可以用 SQUAREM 或 Anderson Acceleration 把迭代次数从几百降到几十。</p>
+      </div>
+
+      <h3>3.4 收敛后得到什么？</h3>
+      <p>对给定的 $\theta_2$，收缩映射收敛后得到 $\delta^*(\theta_2)$。然后由 Equation 2.3 的定义：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">Equation 3.3 — 结构误差项 $\xi$</div>
+        $$\xi_{jt}(\theta_2, \theta_1) = \delta^*_{jt}(\theta_2) - x_{jt}'\beta + \alpha p_{jt}$$
+      </div>
+
+      <p>注意：$\xi$ 既依赖 $\theta_2$（通过 $\delta^*$），也依赖 $\theta_1$（通过 $\beta, \alpha$）。但 <strong>$\theta_1$ 是线性的</strong>，我们可以在 GMM 内层解析地 concentrating out（见下一节）。</p>
+    </div>
+
+    <!-- ========== 第4节 ========== -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> GMM 估计与工具变量</h2>
+
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库：本节用 GMM 估计</div>
+        <p>BLP 的外循环就是广义矩估计。不熟悉矩条件、最优权重矩阵、Hansen J 检验？先学 <a href="02-gmm.html">基础知识库·GMM →</a>。若想看如何把本节"收缩映射 + GMM"的嵌套优化改写成单层约束优化，见 <a href="14-mpec.html">基础知识库·MPEC →</a>。</p>
+      </div>
+
+      <h3>4.1 矩条件</h3>
+      <p>$\xi_{jt}$ 是企业在定价时已知的未观察产品特征，因此 $p_{jt}$ 与 $\xi_{jt}$ 相关——这就是需求估计中的经典<strong>价格内生性</strong>（price endogeneity）。BLP 的识别依赖于工具变量：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">Equation 4.1 — BLP GMM 矩条件</div>
+        $$E\left[Z_{jt}' \, \xi_{jt}(\theta)\right] = 0$$
+      </div>
+
+      <p>其中 $Z_{jt}$ 是工具变量矩阵，dimension $L$（每行一个 moment）。</p>
+
+      <h3>4.2 工具变量的构造</h3>
+      <p>实践中常用三类 IV：</p>
+
+      <h4>(a) Cost-side instruments（成本侧工具）</h4>
+      <p>影响企业成本但不直接影响需求的变量：原材料价格、工资、汇率（进口车）。这些会通过边际成本影响价格，但与 $\xi_{jt}$（未观察需求冲击）无关。</p>
+
+      <h4>(b) BLP instruments（基于产品特征的"竞争品特征和"）</h4>
+      <p>对产品 $j$，构造：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 4.2 — BLP instruments</div>
+        $$z_{jt,k} = \sum_{k' \neq j, \, k' \in \text{同市场}} x_{k',k}$$
+      </div>
+      <p>直觉：如果产品 $j$ 所在市场有很多"类似特征"的竞争品，那么产品 $j$ 面临的竞争更激烈，均衡价格会更低；但这些竞争品的特征是外生的（由产品设计预先决定），与 $\xi_{jt}$ 不相关。在 multi-product firm 设定下，通常把"同企业其他产品特征"与"竞争企业产品特征"分开构造（Berry, Levinsohn, Pakes 1999 的最优 instruments）。</p>
+
+      <h4>(c) Hausman instruments（其他市场的价格）</h4>
+      <p>Hausman (1997) 提议用<strong>同一产品在其他市场的价格</strong>作为本市场价格的 IV：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 4.3 — Hausman instruments</div>
+        $$z_{jt} = \frac{1}{T-1}\sum_{t' \neq t} p_{j,t'}$$
+      </div>
+      <p>逻辑：同一产品在其他市场的价格反映了共同的成本冲击（影响本市场价格），但与本市场的特定需求冲击 $\xi_{jt}$ 不相关。<strong>批评</strong>：如果全国性的品牌广告冲击同时影响所有市场，这个 IV 就不合法——实践中需要谨慎。</p>
+
+      <h3>4.3 GMM 目标函数</h3>
+      <p>定义堆叠后的矩向量：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 4.4 — Moment vector</div>
+        $$g(\theta) = \frac{1}{NT} \sum_{j,t} Z_{jt}' \, \xi_{jt}(\theta_2, \theta_1)$$
+      </div>
+      <p>GMM 目标函数：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 4.5 — GMM 目标函数（本页核心公式之三）</div>
+        $$\hat\theta = \arg\min_\theta \; g(\theta)' \, W \, g(\theta)$$
+      </div>
+      <p>其中 $W$ 是权重矩阵。<strong>两步 GMM</strong>：第一步用 $W = (Z'Z)^{-1}$ 得到 $\hat\theta^{(1)}$，第二步用 $W^* = (\frac{1}{NT}\sum Z_{jt}\xi_{jt}\xi_{jt}'Z_{jt}')^{-1}$（optimal GMM weight）得到 $\hat\theta^{GMM}$。</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 4.5b — BLP 外循环梯度（补全）</div>
+        $$\frac{\partial g(\theta)}{\partial\theta_2'}=\frac{1}{NT}\sum_{j,t}Z_{jt}'\,\frac{\partial\xi_{jt}}{\partial\theta_2'},\qquad \frac{\partial\xi_{jt}}{\partial\theta_2'}=\frac{\partial\delta^*_{jt}}{\partial\theta_2'}$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$\partial\delta^*/\partial\theta_2$ 由隐函数定理 $\partial\delta^*/\partial\theta_2=-(\partial\ln s/\partial\delta')^{-1}(\partial\ln s/\partial\theta_2')$ 一步算出。<strong>设定理由</strong>：外循环优化器（BFGS）需要解析梯度，避免数值微分的噪声与昂贵。<strong>经济直觉</strong>：$\theta_2$（随机系数标准差）通过改变替代弹性影响反演出的 $\delta^*$，进而影响 $\xi$，最终通过矩条件被识别。</p>
+      </div>
+
+      <h3>4.4 Concentrating out $\theta_1$（解析解）</h3>
+      <p>由于 $\theta_1 = \{\beta, \alpha\}$ 只在 $\xi = \delta^*(\theta_2) - X\beta + \alpha p$ 中线性出现，对给定的 $\theta_2$，最优的 $\theta_1$ 可以解析地求出（类似 IV 回归的 closed form）：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 4.6 — Linear projection of $\xi$ on $[X,p]$ using instruments $Z$</div>
+        $$\hat\theta_1(\theta_2) = (X' Z W Z' X)^{-1} X' Z W Z' \delta^*(\theta_2)$$
+      </div>
+      <p>因此外循环只需要在 $\theta_2$（通常不到 10 维）上优化，极大降低了维度灾难。</p>
+    </div>
+
+    <!-- ========== 第5节 ========== -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 完整估计流程：内循环 + 外循环</h2>
+
+      <p>BLP 估计是一个典型的<strong>嵌套优化（nested optimization）</strong>：</p>
+
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 0: 数据准备</div>
+          <div class="step-desc">整理面板数据：每个市场 $t$ 中所有产品 $j$ 的市场份额 $S_{jt}$、价格 $p_{jt}$、特征 $x_{jt}$、外部市场份额 $S_{0t}=1-\sum_j S_{jt}$。构造工具变量 $Z_{jt}$。生成 $R$ 个 Halton draws 模拟 $(D_i, v_i)$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 1: 外循环 — 猜测一个 $\theta_2$</div>
+          <div class="step-desc">非线性参数 $\theta_2 = \{\Pi, \Sigma, \pi_y, \sigma_\alpha\}$ 由优化器（如 scipy.optimize.minimize, L-BFGS-B）提出一个候选值。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2: 内循环 — 收缩映射求 $\delta^*(\theta_2)$</div>
+          <div class="step-desc">从 $\delta^0$ 开始迭代 Equation 3.2，直到 $\|\delta^{h+1} - \delta^h\|_\infty < 10^{-8}$。每次迭代都要在模拟 draws 上算 Equation 2.5 的数值积分。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3: Concentrating out $\theta_1$</div>
+          <div class="step-desc">用 Equation 4.6 解析地求最优的 $\hat\theta_1(\theta_2)$，进而得到 $\xi_{jt}(\theta_2) = \delta^*_{jt} - x_{jt}'\hat\beta + \hat\alpha p_{jt}$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4: 计算 GMM 目标函数</div>
+          <div class="step-desc">计算 $g(\theta_2) = \frac{1}{NT}\sum Z_{jt}'\xi_{jt}$，再算 $J(\theta_2) = g' W g$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 5: 外循环优化器更新 $\theta_2$</div>
+          <div class="step-desc">L-BFGS-B 根据 $J$ 对 $\theta_2$ 的数值梯度（finite-difference 或 analytic gradient）提出新的 $\theta_2$，回到 Step 2。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 6: 两步 GMM 重加权</div>
+          <div class="step-desc">第一步收敛后，构造最优权重 $W^*$，从 $\hat\theta^{(1)}$ 重新跑一次外循环，得到最终的 $\hat\theta^{GMM}$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 7: 标准误与推断</div>
+          <div class="step-desc">用 sandwich formula：$\hat V = (G' W G)^{-1} G' W \hat\Omega W G (G' W G)^{-1}$，其中 $G = \partial g / \partial \theta$，$\hat\Omega = \frac{1}{NT}\sum (Z'\xi)(Z'\xi)'$（聚类稳健标准误按 market/firm cluster）。</div>
+        </div>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 数值稳定性</div>
+        <p>BLP 是出了名的"数值脆弱"：(1) 收缩映射 tol 太紧会导致外循环梯度噪声；太松会导致偏误。推荐 inner tol $=10^{-10}$；(2) 必须用 quasi-Monte Carlo（Halton）而非伪随机 draws，否则数值噪声会污染外循环优化；(3) 多次从不同初值启动优化，确认收敛到同一局部最优；(4) Conlon, Gortmaker (2020 JAE) 给出了大量实用建议，必读。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第6节 ========== -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 需求弹性与价格成本加成</h2>
+
+      <p>估计完参数后，BLP 的两大应用是：(a) 计算 price elasticities；(b) 由 Bertrand-Nash 定价一阶条件反推出 marginal cost 与 markup。</p>
+
+      <h3>6.1 Own-price elasticity</h3>
+      <p>对个体 $i$，$P_{ijt}$ 对 $p_{jt}$ 的导数为 $\partial P_{ijt}/\partial p_{jt} = (-\alpha_i)(1 - P_{ijt}) P_{ijt}$。市场层面的弹性：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">Equation 6.1 — Own-price elasticity</div>
+        $$\eta_{jj,t} = \frac{\partial s_{jt}}{\partial p_{jt}} \frac{p_{jt}}{s_{jt}} = \frac{p_{jt}}{s_{jt}} \int (-\alpha_i)(1 - P_{ijt}) P_{ijt} \, dF(D_i,v_i)$$
+      </div>
+
+      <p>Cross-price elasticity：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 6.2 — Cross-price elasticity</div>
+        $$\eta_{jk,t} = \frac{\partial s_{jt}}{\partial p_{kt}} \frac{p_{kt}}{s_{jt}} = \frac{p_{kt}}{s_{jt}} \int \alpha_i P_{ijt} P_{ikt} \, dF(D_i,v_i)$$
+      </div>
+
+      <p>关键性质：在 BLP 中，$\eta_{jk}$ 的大小取决于产品 $j$ 与 $k$ 在特征空间中的接近程度——相似产品之间 cross elasticity 大，这正是我们希望的。</p>
+
+      <h3>6.2 Bertrand-Nash 一阶条件与 markup</h3>
+      <p>假设企业 $f$ 同时拥有一组产品 $\mathcal{J}_f$，在差异化产品 Bertrand 竞争下，企业利润最大化：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 6.3 — 企业利润</div>
+        $$\max_{p_j, j \in \mathcal{J}_f} \; \sum_{j \in \mathcal{J}_f} (p_j - c_j) M_t s_j(p)$$
+      </div>
+      <p>一阶条件（matrix form）：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 6.4 — Bertrand FOC</div>
+        $$s(p) + (\Delta \odot \Omega)' (p - c) = 0$$
+      </div>
+      <p>其中 $\Delta_{jk} = \partial s_j / \partial p_k$（$J \times J$ 矩阵），$\Omega_{jk} = 1$ 当 $j,k$ 同属一个企业 $f$，否则 0。解出 marginal cost：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 6.5 — Marginal cost 反推与 markup</div>
+        $$c = p + (\Delta \odot \Omega)'^{-1} s, \qquad \text{markup}_j = p_j - c_j$$
+      </div>
+
+      <p>这就是 BLP 在反垄断（antitrust）中被广泛使用的原因：估计出需求系统后，我们能反推出企业的真实边际成本与加价，进而模拟并购后的新均衡价格。</p>
+    </div>
+
+    <!-- ========== 第7节 ========== -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 完整 Python 实现</h2>
+
+      <p>下面用模拟数据演示 BLP 的核心算法：收缩映射 + GMM 外循环。为了可运行，我们简化为单一市场、只有价格与一个特征、随机系数只有价格的异质性 $\sigma_\alpha$。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div>
+        <pre><code>"""
+BLP (Berry-Levinsohn-Pakes) 简化实现
+====================================
+演示：单市场、J=10 个产品、R=100 个模拟消费者
+关键组件：
+  - 随机系数效用
+  - 收缩映射（内循环）求 delta
+  - GMM 外循环优化
+依赖：numpy, scipy
+"""
+import numpy as np
+from scipy.optimize import minimize
+
+np.random.seed(42)
+
+# ---------- 1. 模拟数据 ----------
+J = 10           # 产品数
+R = 100          # 模拟 draws 数
+K = 2            # 特征维数（常数 + x1）
+
+# 真实参数
+beta_true = np.array([1.0, 0.5])     # 平均系数
+alpha_true = -2.0                    # 平均价格系数
+sigma_alpha_true = 1.0               # 价格系数的异质性
+
+# 产品特征：常数项 + 一个观察特征
+X = np.column_stack([np.ones(J), np.random.randn(J)])
+p = np.exp(np.random.randn(J) * 0.3)  # 价格取正
+
+# 未观察产品特征 xi
+xi_true = 0.3 * np.random.randn(J)
+
+# 模拟消费者的偏好冲击 v_i ~ N(0,1)，影响价格系数
+v = np.random.randn(R)               # (R,)
+# 消费者层面价格系数 alpha_i = alpha + sigma_alpha * v_i
+alpha_i = alpha_true + sigma_alpha_true * v  # (R,)
+
+# 真实 mean utility
+delta_true = X @ beta_true + alpha_true * p + xi_true
+
+# 计算真实市场份额（用于模拟"观测份额" S）
+def calc_shares(delta, X, p, alpha_i):
+    """
+    输入：
+      delta: (J,)  平均效用
+      X:     (J,K) 特征
+      p:     (J,)  价格
+      alpha_i: (R,)  每个消费者的价格系数
+    输出：
+      s: (J,)  市场份额（在 R 个消费者上积分）
+    """
+    # 个体层面的 utility: (R, J)
+    # mu_irj = - alpha_i_r * p_j  （这里只让价格系数异质）
+    mu = -alpha_i[:, None] * p[None, :]      # (R, J)
+    # 总 utility = delta_j + mu_irj
+    u = delta[None, :] + mu                  # (R, J)
+    # logit: P(r,j) = exp(u) / (1 + sum exp(u))
+    u_max = u.max(axis=1, keepdims=True)
+    exp_u = np.exp(u - u_max)                # (R, J)
+    denom = 1.0 + exp_u.sum(axis=1, keepdims=True)  # (R,1)
+    P = exp_u / denom                        # (R, J)
+    # 在 R 个消费者上平均，得到市场份额
+    s = P.mean(axis=0)                       # (J,)
+    return s
+
+S = calc_shares(delta_true, X, p, alpha_i)   # 观测份额（数据）
+
+# ---------- 2. 工具变量 ----------
+# 简化：用成本冲击作为 IV
+cost_shock = 0.2 * np.random.randn(J)
+# 构造 Z: 包含 X 和 cost_shock（与 p 相关、与 xi 独立）
+Z = np.column_stack([X, cost_shock])          # (J, 3)
+
+# ---------- 3. 收缩映射（内循环） ----------
+def contraction_mapping(S_obs, X, p, sigma_alpha, v,
+                       tol=1e-10, max_iter=1000):
+    """
+    给定 sigma_alpha，迭代求 delta 使得 s(delta) = S_obs
+    返回收敛的 delta
+    """
+    delta = np.zeros(J)
+    for h in range(max_iter):
+        s_pred = calc_shares(delta, X, p, alpha_i=alpha_true + sigma_alpha * v)
+        # 收缩映射：delta_new = delta + ln(S_obs) - ln(s_pred)
+        delta_new = delta + np.log(S_obs) - np.log(s_pred)
+        # 数值稳定：把 delta 减去均值（因为外部产品固定为 0）
+        delta_new -= delta_new.mean()
+        diff = np.max(np.abs(delta_new - delta))
+        delta = delta_new
+        if diff < tol:
+            break
+    return delta
+
+# ---------- 4. GMM 目标函数（外循环） ----------
+def gmm_objective(theta2, S_obs, X, p, Z, v):
+    """
+    theta2 = [sigma_alpha]  非线性参数
+    其他参数 theta1 = [beta0, beta1, alpha] 通过 linear IV 解析集中化
+    """
+    sigma_alpha = theta2[0]
+    # 内循环：求 delta
+    delta = contraction_mapping(S_obs, X, p, sigma_alpha, v)
+    # 集中化 theta1: 把 delta 对 [X, p] 用 IV Z 回归
+    # Y = delta, W = [X, p], Z = instruments
+    Wmat = np.column_stack([X, p])
+    # IV 估计: theta1 = (W' Z (Z'Z)^-1 Z' W)^-1 W' Z (Z'Z)^-1 Z' delta
+    ZtZ_inv = np.linalg.inv(Z.T @ Z)
+    Pz = Z @ ZtZ_inv @ Z.T
+    WtPzW = Wmat.T @ Pz @ Wmat
+    WtPzd = Wmat.T @ Pz @ delta
+    try:
+        theta1 = np.linalg.solve(WtPzW, WtPzd)
+    except np.linalg.LinAlgError:
+        return 1e10
+    # 结构误差 xi
+    xi = delta - Wmat @ theta1
+    # 矩条件
+    g = Z.T @ xi / J                  # (L,)
+    Wgmm = np.eye(Z.shape[1])         # 简化：第一步用单位权重
+    obj = g @ Wgmm @ g
+    return obj
+
+# ---------- 5. 外循环优化 ----------
+print("开始 GMM 优化 ...")
+res = minimize(gmm_objective,
+               x0=[0.5],
+               args=(S, X, p, Z, v),
+               method='L-BFGS-B',
+               bounds=[(0.01, 5.0)],
+               options={'maxiter': 50, 'ftol': 1e-8})
+print(f"收敛状态: {res.message}")
+print(f"估计 sigma_alpha = {res.x[0]:.3f}  (真实值 {sigma_alpha_true})")
+
+# ---------- 6. 用估计的参数算弹性 ----------
+sigma_alpha_hat = res.x[0]
+delta_hat = contraction_mapping(S, X, p, sigma_alpha_hat, v)
+alpha_i_hat = alpha_true + sigma_alpha_hat * v  # 注意：这里 alpha_true 简化了
+
+# 计算 own-price elasticity
+mu = -alpha_i_hat[:, None] * p[None, :]
+u = delta_hat[None, :] + mu
+u_max = u.max(axis=1, keepdims=True)
+exp_u = np.exp(u - u_max)
+denom = 1.0 + exp_u.sum(axis=1, keepdims=True)
+P = exp_u / denom                  # (R, J)
+s_hat = P.mean(axis=0)             # (J,)
+
+# dP_j/dp_j = -alpha_i (1-P_j) P_j
+dP_dp = -alpha_i_hat[:, None] * (1 - P) * P     # (R, J)
+ds_dp = dP_dp.mean(axis=0)                       # (J,)
+own_elasticity = (ds_dp * p / s_hat)
+print("\nOwn-price elasticities (前5个产品):")
+print(np.round(own_elasticity[:5], 3))
+</code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">✓ 运行提示</div>
+        <p>这段代码在普通笔记本上几秒钟即可跑完。它展示了 BLP 的<strong>骨架</strong>：内循环收缩映射 + 外循环 GMM。完整的学术论文级实现还需要：(1) Halton 序列代替伪随机 draws；(2) 最优 GMM 权重；(3) 解析梯度（analytic gradient）；(4) 多市场面板数据；(5) 多产品企业的 ownership matrix。推荐参考 Conlon's PyBLP 开源包。</p>
+      </div>
+    </div>
+
+    <!-- ========== 数据来源对照表 ========== -->
+    <div class="section" id="s-dat">
+      <h2><span class="sec-num">07+</span> 数据来源对照表（BLP 市场级数据）</h2>
+      <p>BLP 用的不是个体级选择，而是<strong>市场级 aggregate 份额数据</strong>：每个市场 $t$ 中产品 $j$ 的份额 $S_{jt}$、价格 $p_{jt}$、特征 $x_{jt}$。下表对照经典与中国数据来源：</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>市场/数据</th><th>国家/地区</th><th>份额来源</th><th>价格/特征来源</th><th>典型应用</th></tr></thead>
+          <tbody>
+            <tr><td><strong>汽车市场</strong></td><td>美国</td><td>Ward's Automotive 年销量</td><td>MSRP + EPA 油耗/马力</td><td>BLP (1995) 原始数据</td></tr>
+            <tr><td><strong>谷物/食品</strong></td><td>美国</td><td>扫描数据 scanner (Nielsen)</td><td>IRI/InfoScan 价格+特征</td><td>Nevo (2000) 复现</td></tr>
+            <tr><td><strong>汽车市场</strong></td><td>中国</td><td>机动车保有量/上牌量</td><td>厂商指导价 + 工信部参数</td><td>中国汽车需求/并购模拟</td></tr>
+            <tr><td><strong>乳制品/啤酒</strong></td><td>中国</td><td>城市级扫描数据</td><td>商超价格 + 包装规格</td><td>中国差异化产品需求</td></tr>
+            <tr><td><strong>收入分布</strong></td><td>美国/中国</td><td>CPS / <strong>CHIP / CHFS</strong></td><td>—（用于模拟 $D_i$）</td><td>BLP 中消费者人口统计 $D_i$</td></tr>
+            <tr><td><strong>成本/IV</strong></td><td>—</td><td>原材料价格、汇率、税收</td><td>成本侧工具变量</td><td>价格内生性 IV</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout info">
+        <div class="callout-title">BLP 数据的特殊点</div>
+        <p>BLP 最容易卡住的不是估计而是<strong>数据构造</strong>：市场份额要从销量反推（除以市场规模 $M_t$），价格要去通胀，特征要标准化。中国选题多用机动车上牌量或商超扫描数据；消费者收入分布用 CHIP/CHFS 模拟 $D_i$。市场规模 $M_t$ 的选择（成年人？驾照持有人？）必须做稳健性。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第8节 ========== -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 论文案例</h2>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Econometrica 1995</span>
+        <div class="paper-title">Automobile Prices in Market Equilibrium</div>
+        <div class="paper-meta">Steven Berry, James Levinsohn, Ariel Pakes · Econometrica, 1995, 63(4): 841-890</div>
+        <div class="paper-desc">BLP 的开山之作。用 1971-1990 年美国汽车市场数据估计随机系数需求系统，并反推边际成本与 markup。第一次证明了"用市场层面价格-份额数据 + 随机系数 + GMM"可以恢复出合理的需求弹性和竞争结构。是产业组织（IO）领域引用最高的论文之一。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Journal of Economic Literature 2000</span>
+        <div class="paper-title">A Practitioner's Guide to Estimating Random Coefficients Logit Models of Demand</div>
+        <div class="paper-meta"> Aviv Nevo · Journal of Economic Literature, 2000, 18(4): 513-548</div>
+        <div class="paper-desc">BLP 方法论最实用的教学文章。详细介绍了如何在真实数据上实现 BLP：数据准备、工具变量构造、收缩映射调参、GMM 权重、标准误计算、以及与 nested logit / simple logit 的对比。所有做 BLP 的学生必读。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · RAND Journal of Economics 1999</span>
+        <div class="paper-title">When Are Differentiated Products Markets Oligopolistic?</div>
+        <div class="paper-meta">Berry, Levinsohn, Pakes · RAND, 1999</div>
+        <div class="paper-desc">BLP 的姊妹篇，把需求估计嵌入到完整的均衡供给模型中，讨论在不同竞争假设（Bertrand / Cournot / 合谋）下如何检验市场行为。是 BLP 应用到供给侧/反事实分析的关键参考。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 经济研究</span>
+        <div class="paper-title">中国汽车市场需求估计与并购模拟——基于 BLP 随机系数模型</div>
+        <div class="paper-meta">相关中文文献见《经济研究》《经济学(季刊)》《世界经济》上关于中国汽车、啤酒、奶粉等差异化产品市场的实证研究</div>
+        <div class="paper-desc">国内学者用 BLP 框架估计中国汽车、乳制品、啤酒、香烟等差异化产品市场的需求系统，并进行并购模拟和价格补贴政策分析。代表性工作讨论了：(1) 用城市级扫描仪数据或机动车牌照数据作为市场份额来源；(2) 用原材料成本、汇率、税收作为工具变量；(3) 中国市场收入分布的拟合（用 CHIP/CHFS 数据模拟 $D_i$）。中文应用文献通常参考 Nevo (2000) 的实现模板。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 经济学(季刊)</span>
+        <div class="paper-title">从 BLP 模型到中国消费品市场的结构估计：方法与应用</div>
+        <div class="paper-meta">《经济学(季刊)》《数量经济技术经济研究》上关于随机系数离散选择模型的中文综述与应用</div>
+        <div class="paper-desc">中文期刊上系统介绍 BLP 方法并应用于中国乳制品、智能手机、白酒等市场的研究。重点关注：(1) 中国城乡收入差距对偏好异质性的影响；(2) 进口关税变化对国内产品市场份额的反事实分析；(3) 高铁/网约车对出租车市场的替代效应估计。这些文章通常在数据层面比英文原作更"粗糙"，但方法框架完全遵循 BLP (1995) 与 Nevo (2000)。</div>
+      </div>
+    </div>
+
+    <!-- ========== 第9节 ========== -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 常见错误与陷阱</h2>
+
+      <div class="callout danger">
+        <div class="callout-title">✗ 错误 1：忽略价格内生性，直接 OLS/ML</div>
+        <p>把 $\xi_{jt}$ 当成纯测量误差，直接用 OLS 估计 $\alpha$。结果：$\hat\alpha$ 向 0 偏误（因为 $p$ 与 $\xi$ 正相关——高质量产品定价高且 $\xi$ 大），需求弹性被严重低估，markup 被高估。<strong>必须用 IV/GMM</strong>，且工具变量要"成本侧"或"竞争品特征侧"，不能用产品自己的其他特征。</p>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">✗ 错误 2：收缩映射收敛不够紧</div>
+        <p>内循环 tol 设成 $10^{-4}$，看起来已经"收敛"了，但外循环 GMM 优化器算 $J(\theta_2)$ 的梯度时，$\delta^*(\theta_2)$ 的数值噪声远大于梯度信号，导致优化器乱跳。<strong>内循环 tol 必须比外循环 ftol 小至少 4 个数量级</strong>，推荐 inner tol $=10^{-10}$。</p>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">✗ 错误 3：用伪随机 draws 而非 Halton/低偏差序列</div>
+        <p>用 numpy 随机数生成器模拟 $v_i$，$R=200$ 时 Monte Carlo 噪声仍然很大。BLP 是"外循环优化器不断调用内循环"的结构，数值噪声会被放大。<strong>必须用 Halton 或 Sobol 低偏差序列</strong>，且每次外循环迭代使用<strong>固定</strong>的 draws（不能重新生成），否则目标函数 $J(\theta_2)$ 不连续。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 陷阱 4：外部产品份额设定不当</div>
+        <p>BLP 必须有一个外部产品 $j=0$，其份额 $S_{0t} = 1 - \sum_{j=1}^{J_t} S_{jt}$。市场规模 $M_t$ 的选择（汽车市场：成年人数量？驾照持有人？家庭户数？）会极大影响估计结果。Nevo (2000) 专门讨论了这个问题，建议做稳健性。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 陷阱 5：单一初值就报告结果</div>
+        <p>BLP 的 GMM 目标函数是非凸的，可能存在多个局部最优。必须从多个不同的 $\theta_2$ 初值（包括 0、OLS 估计、文献值）启动，确认收敛到同一解。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第10节 ========== -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 进阶资料</h2>
+      <ul>
+        <li><strong>Conlon & Gortmaker (2020, JAE)</strong> — Best Practices for BLP Estimation. 必读，涵盖了过去 25 年 BLP 实现的所有坑和改进（加速、稳定、最优 IV）。</li>
+        <li><strong>Nevo (2000, JEL)</strong> — 上文已引，最实用的入门教程。</li>
+        <li><strong>Knittel & Metaxoglou (2014)</strong> — BLP 估计的数值敏感性：演示了不同优化器、tol、draws 选择如何改变点估计。</li>
+        <li><strong>PyBLP 开源包</strong>（jeffgortmaker/pyblp）— 现代 Python 实现，包含大量默认 best practices，可直接用于真实数据。</li>
+        <li><strong>Grigolon & Verboven (2014)</strong> — 带持久消费者需求（persistent consumer demand）的 BLP 扩展，处理耐用品市场。</li>
+        <li><strong>毛亮、孙爽 等中文论文</strong> — 用 BLP 估计中国汽车/乳制品/智能手机市场，是中文读者最好的对照参考。</li>
+      </ul>
+    </div>
+
+    <!-- ========== 方程总清单 ========== -->
+    <div class="section" id="eq-summary">
+      <h2>方程总清单 / Equation Summary</h2>
+      <p>本页全部方程按出现顺序汇总如下，共 <strong>23 个</strong>。每个方程均可在正文中找到对应的变量定义、设定理由与经济直觉。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>编号</th><th>方程名称</th><th>核心公式</th><th>所在节</th></tr></thead>
+          <tbody>
+            <tr><td>Eq.04-01</td><td>标准 Logit 选择概率</td><td>$s_j=e^{\delta_j}/\sum_k e^{\delta_k}$</td><td>01</td></tr>
+            <tr><td>Eq.04-02</td><td>IIA 性质</td><td>$s_j/s_k=e^{\delta_j-\delta_k}$</td><td>01</td></tr>
+            <tr><td>Eq.04-03</td><td>BLP 随机系数效用</td><td>$u_{ij}=x_j'\beta_i-\alpha_i p_j+\xi_j+\varepsilon_{ij}$</td><td>02</td></tr>
+            <tr><td>Eq.04-04</td><td>随机系数分解</td><td>$\beta_i=\beta+\Sigma v_i$</td><td>02</td></tr>
+            <tr><td>Eq.04-05</td><td>效用分解（共同+异质）</td><td>$u_{ij}=\delta_j+\mu_{ij}+\varepsilon_{ij}$</td><td>02</td></tr>
+            <tr><td>Eq.04-06</td><td>个体选择概率</td><td>$s_{ij}=e^{\delta_j+\mu_{ij}}/\sum_k e^{\delta_k+\mu_{ik}}$</td><td>02</td></tr>
+            <tr><td>Eq.04-07</td><td>市场份额（积分）</td><td>$s_j=\int s_{ij}dP^*(D_i,v_i)$</td><td>02</td></tr>
+            <tr><td>Eq.04-08</td><td>标准 Logit 解析反演</td><td>$\ln S_j-\ln S_0=x_j'\beta-\alpha p_j+\xi_j$</td><td>03.1</td></tr>
+            <tr><td>Eq.04-09</td><td>收缩映射迭代</td><td>$\delta^{h+1}=\delta^h+\ln S-\ln s(\delta^h,\theta_2)$</td><td>03.2</td></tr>
+            <tr><td>Eq.04-10</td><td>Blackwell 收缩系数（补全）</td><td>$\lambda=\sup\|I-\partial\ln s/\partial\delta'\|_\infty<1$</td><td>03.3（补全）</td></tr>
+            <tr><td>Eq.04-11</td><td>结构误差项 $\xi$</td><td>$\xi_{jt}=\delta^*_{jt}-x_{jt}'\beta+\alpha p_{jt}$</td><td>03.4</td></tr>
+            <tr><td>Eq.04-12</td><td>GMM 矩条件</td><td>$E[Z_{jt}'\xi_{jt}(\theta)]=0$</td><td>04.1</td></tr>
+            <tr><td>Eq.04-13</td><td>BLP instruments</td><td>$z_{jt,k}=\sum_{k'\ne j}x_{k',k}$</td><td>04.2</td></tr>
+            <tr><td>Eq.04-14</td><td>Hausman instruments</td><td>$z_{jt}=(T-1)^{-1}\sum_{t'\ne t}p_{j,t'}$</td><td>04.2</td></tr>
+            <tr><td>Eq.04-15</td><td>矩向量</td><td>$g(\theta)=(NT)^{-1}\sum Z_{jt}'\xi_{jt}$</td><td>04.3</td></tr>
+            <tr><td>Eq.04-16</td><td>GMM 目标函数</td><td>$\hat\theta=\arg\min_\theta g(\theta)'Wg(\theta)$</td><td>04.3</td></tr>
+            <tr><td>Eq.04-17</td><td>外循环梯度（补全）</td><td>$\partial g/\partial\theta_2'=(NT)^{-1}\sum Z'\partial\delta^*/\partial\theta_2'$</td><td>04.3（补全）</td></tr>
+            <tr><td>Eq.04-18</td><td>线性部分集中化解</td><td>$\theta_1(\theta_2)=(Z'X W Z'X)^{-1}Z'X W Z'\delta^*$</td><td>04.4</td></tr>
+            <tr><td>Eq.04-19</td><td>Own-price elasticity</td><td>$\eta_{jj}=\frac{p_j}{s_j}\int\frac{\partial s_{ij}}{\partial p_j}$</td><td>06.1</td></tr>
+            <tr><td>Eq.04-20</td><td>Cross-price elasticity</td><td>$\eta_{jk}=\frac{p_k}{s_j}\int\frac{\partial s_{ij}}{\partial p_k}$</td><td>06.1</td></tr>
+            <tr><td>Eq.04-21</td><td>企业利润</td><td>$\pi_f=\sum_{j\in f}(p_j-c_j)Ms_j$</td><td>06.2</td></tr>
+            <tr><td>Eq.04-22</td><td>Bertrand FOC</td><td>$s_j+\sum_{k\in f}(p_k-c_k)\frac{\partial s_k}{\partial p_j}=0$</td><td>06.2</td></tr>
+            <tr><td>Eq.04-23</td><td>Markup 反推</td><td>$p_j-c_j=s_j\big/(-\partial s_f/\partial p_j)$</td><td>06.2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="03-discrete-choice.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">离散选择模型</div>
+      </a>
+      <a href="05-dynamic-structural.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">动态结构模型（DDCM / Rust / Hotz-Miller）</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>五层框架 Population-Sample-Data-Model-Inference | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item active" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">实证论文</a>
+      <span class="sep">/</span>
+      <span>五层框架 Population–Sample–Data–Model–Inference</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">实证论文 · 方法论总纲</span>
+      <h1>五层框架 Population–Sample–Data–Model–Inference</h1>
+      <p class="desc">审稿人问你"你估计的到底是什么"，你能不能一句话答上来？五层框架把一项实证研究从"研究谁"到"怎么算标准误"拆成五层：总体、抽样、数据、模型、推断。绝大多数被质疑的论文，错都不在某一层技术上，而在层与层之间的"不一致"——你以为你估计的是 A，其实代码里跑出来的是 B。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 计量基础</div>
+          <div class="prereq-body">OLS、固定效应、标准误与聚类；理解"总体均值""抽样分布""条件期望"这些基础概念。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 站内前置页面</div>
+          <div class="prereq-body"><a href="04-baseline-regression.html">04 基准回归</a>、<a href="05-endogeneity-iv.html">05 内生性与IV</a>、<a href="06-did.html">06 DID</a>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件前置</div>
+          <div class="prereq-body">Stata 17+，会用 <code class="inline">reg</code>、<code class="inline">areg</code>、<code class="inline">reghdfe</code>、<code class="inline">collapse</code>、<code class="inline">table</code>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#f5ebe0;color:#b87333;">方法论 · 核心</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#what">五层框架是什么</a></li>
+        <li><a href="#pop">第 1 层：Population 研究总体</a></li>
+        <li><a href="#sample">第 2 层：Sample 抽样机制</a></li>
+        <li><a href="#data">第 3 层：Data 数据测量</a></li>
+        <li><a href="#model">第 4 层：Model 模型设定</a></li>
+        <li><a href="#infer">第 5 层：Inference 统计推断</a></li>
+        <li><a href="#consistency">层间一致性：你估计的到底是什么</a></li>
+        <li><a href="#checklist">每层检查清单与 Stata 命令</a></li>
+        <li><a href="#lalonde">论文案例：LaLonde (1986)</a></li>
+      </ol>
+    </div>
+
+    <!-- ============ 1 ============ -->
+    <div class="section" id="what">
+      <h2><span class="sec-num">01</span> 五层框架是什么</h2>
+      <p>一篇实证论文，从"我想研究 X 对 Y 的影响"到那张回归表，中间其实经过了五层独立的决策。把这五层叠起来看：</p>
+      <div class="formula-block" style="background:var(--bg-card);border:1px solid var(--border);border-left:4px solid var(--primary);padding:18px 24px;margin:16px 0;border-radius:0 var(--radius) var(--radius) 0;">
+        <div style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:15px;line-height:2;">
+          <strong>Population（总体）</strong> → 研究谁？<br>
+          ↓<br>
+          <strong>Sample（抽样）</strong> → 哪些人/企业进了样本？<br>
+          ↓<br>
+          <strong>Data（测量）</strong> → X 和 Y 怎么测？<br>
+          ↓<br>
+          <strong>Model（模型）</strong> → 用什么函数关系去拟合？<br>
+          ↓<br>
+          <strong>Inference（推断）</strong> → 标准误怎么算？结论怎么推？
+        </div>
+      </div>
+      <p>这五层不是流水线，而是<strong>五层独立的"假设"</strong>。每一层都可能出错，而最致命的错误不是某一层内部算错了，而是<strong>层与层之间不一致</strong>——你在引言里说研究的是"中国所有制造业企业的平均效应"（Population），但样本里只有 2010 年以后上市的企业（Sample），变量用的是"年报披露的研发支出"（Data），模型是线性 OLS（Model），标准误聚在企业层（Inference）。这五层放在一起，你真正估计的其实是"<em>2010 年后中国上市制造业企业、其年报披露的研发支出对会计利润的线性关系、按企业层聚类的条件相关</em>"——和你引言里说的那句话，已经相去甚远。</p>
+      <p>这一页的任务，就是把这五层逐一拆开，告诉你每一层该问什么问题、用什么 Stata 命令去检查、以及层与层之间怎么对齐。</p>
+    </div>
+
+    <!-- ============ 2 ============ -->
+    <div class="section" id="pop">
+      <h2><span class="sec-num">02</span> 第 1 层：Population 研究总体</h2>
+      <p><strong>Population 回答的问题是：你想研究"谁"？</strong>不是"你手上有什么数据"，而是"你真正想对谁下结论"。</p>
+      <p>常见的 Population 表述有三种，从窄到宽：</p>
+      <ul>
+        <li><strong>具体总体</strong>："2010–2020 年中国 A 股上市制造业企业"。这是一个有明确边界的总体。</li>
+        <li><strong>理论总体</strong>："所有面临融资约束的创新型企业"。这是理论概念，需要在 Sample 层操作化。</li>
+        <li><strong>抽象总体</strong>："企业投资对政策冲击的反应"。这是经济学命题，Population 其实是"一般企业"。</li>
+      </ul>
+      <p>Population 层最常见的问题是<strong>没有明确的研究总体</strong>。很多论文引言写"本文研究 X 对 Y 的影响"，通篇不说"对谁"。这在审稿人眼里是一个红旗——你连研究谁都没说清楚，怎么能说你估计的是"平均效应"？</p>
+      <div class="callout tip">
+        <div class="callout-title">✓ 一句话检验</div>
+        <p>在写引言第一段时，逼自己写出完整句子："<em>本文研究 ____（政策/处理）对 ____（结果）在 ____（总体）中的因果效应。</em>"最后那个空必须填出来。填不出来，就是 Population 层没设计好。</p>
+      </div>
+    </div>
+
+    <!-- ============ 3 ============ -->
+    <div class="section" id="sample">
+      <h2><span class="sec-num">03</span> 第 2 层：Sample 抽样机制</h2>
+      <p><strong>Sample 回答的问题是：Population 里的哪些个体，最终进了你的回归样本？</strong>这中间经过了多少道筛选？每一道筛选是不是和你关心的结果相关？</p>
+      <p>抽样机制分两类：</p>
+      <ul>
+        <li><strong>概率抽样（probability sampling）</strong>：总体中每个个体有已知的入样概率。例如"从全国人口普查框中按 1% 等比例随机抽取"。这种情况下，样本均值是总体均值的无偏估计。</li>
+        <li><strong>非概率抽样（non-probability sampling）</strong>：入样概率未知、或为零。例如"只看上市公司""只看某城市的调查""只看注册满 5 年的企业"。</li>
+      </ul>
+      <p>绝大多数微观实证论文用的都是非概率抽样。此时你必须回答一个关键问题：<strong>样本选择是否与结果变量相关？</strong>如果"能否进样本"和"Y 的值"独立，那么样本选择是随机的、不影响因果解释（只影响外部效度）；如果"能否进样本"本身就依赖于 Y 或与 Y 相关的变量，那就产生了<strong>选择偏误（selection bias）</strong>。</p>
+      <p>经典例子：你研究"教育对收入的影响"，但样本只包含"已经工作的人"。而"是否工作"本身和"潜在收入"相关——低收入的人更可能不工作。于是你观察到的"教育—收入"关系，是在<em>已经工作的那批人</em>里的关系，不是全人口的关系。这就是 Heckman (1979) 两阶段模型要处理的问题。</p>
+      <div class="callout warning">
+        <div class="callout-title">⚠ Sample 层最隐蔽的偏误</div>
+        <p>不是"样本太小"，而是"<strong>删除观测的规则和 Y 相关</strong>"。例如你因为"研发支出缺失"删掉企业，如果"研发支出缺失"和"企业创新失败"相关，那你删掉的恰恰是最该被研究的那批企业。下一页 EDA 会教你怎么诊断这一点。</p>
+      </div>
+    </div>
+
+    <!-- ============ 4 ============ -->
+    <div class="section" id="data">
+      <h2><span class="sec-num">04</span> 第 3 层：Data 数据测量</h2>
+      <p><strong>Data 回答的问题是：你论文里写的 X 和 Y，在数据里到底是什么变量？</strong></p>
+      <p>理论概念到可观测变量之间，隔着一层"操作化（operationalization）"。例如：</p>
+      <ul>
+        <li>理论概念"企业创新" → 数据里你用的是"专利申请数"？还是"研发支出"？还是"新产品销售额"？</li>
+        <li>理论概念"政策冲击" → 数据里你用的是"政策实施年份的虚拟变量"？还是"企业 exposure 强度"？</li>
+        <li>理论概念"融资约束" → 你用 KZ 指数？WW 指数？SA 指数？还是利息支出/现金流？</li>
+      </ul>
+      <p>测量层有两个核心问题：</p>
+      <ol>
+        <li><strong>测量误差（measurement error）</strong>：如果你用 X̃ = X* + e 去代替真实的 X*，且 e 与 X* 无关（经典测量误差），那么 OLS 系数会向零衰减（attenuation bias）；如果 e 与 X* 相关，偏误方向不确定。</li>
+        <li><strong>代理变量（proxy variable）</strong>：当真实 X* 根本不可观测时，你只能用一个相关的变量 Z 去代理它。例如用"教育年限"代理"人力资本"。代理变量引入的偏误取决于它和遗漏变量的关系。</li>
+      </ol>
+      <p>Data 层的检查标准很朴素：<strong>你的变量名、变量定义、单位、取值范围、缺失规则，能不能在论文附录里一页写清楚？</strong>写不清楚，就是 Data 层没过关。</p>
+    </div>
+
+    <!-- ============ 5 ============ -->
+    <div class="section" id="model">
+      <h2><span class="sec-num">05</span> 第 4 层：Model 模型设定</h2>
+      <p><strong>Model 回答的问题是：你假设 X 和 Y 之间是什么函数关系？</strong></p>
+      <p>最常见的 Model 假设是线性：</p>
+      <div class="formula-block">
+        <div class="formula-label">线性模型</div>
+        $$Y_i = \alpha + \beta X_i + \gamma' Z_i + \varepsilon_i$$
+      </div>
+      <p>但线性假设本身是一个强假设。它假设：(1) X 对 Y 的边际效应处处相同（线性）；(2) 没有交互项；(3) 控制变量 Z 的系数不依赖于 X；(4) 误差项与 X 条件独立（外生性）。这四条里只要有一条不成立，你的 β 就不是你想要的那个因果效应。</p>
+      <p>Model 层常见问题：</p>
+      <ul>
+        <li><strong>函数形式误设</strong>：真实关系是 U 型（Y 随 X 先降后升），你却硬跑线性，系数可能接近 0——不是没效应，是你用错了函数。</li>
+        <li><strong>固定效应层级错</strong>：你以为在控制"企业不可观测异质性"，结果 FE 设在了行业层，那你控制的其实是行业、不是企业。</li>
+        <li><strong>控制变量选错</strong>：控制了"坏控制变量"（bad control）——即那些本身被处理影响的变量——相当于把处理效应的一部分"控制掉"了。</li>
+      </ul>
+      <p>Model 层的核心原则：<strong>你写下的每一个符号，都必须对应一个可讲的经济学故事。</strong>写不出故事的项，就不要放进模型。</p>
+    </div>
+
+    <!-- ============ 6 ============ -->
+    <div class="section" id="infer">
+      <h2><span class="sec-num">06</span> 第 5 层：Inference 统计推断</h2>
+      <p><strong>Inference 回答的问题是：你报告的标准误、p 值、置信区间，对不对？</strong></p>
+      <p>这是五层里技术上最"琐碎"、但被审稿人挑得最多的一层。核心问题有三个：</p>
+      <ol>
+        <li><strong>标准误聚类层级</strong>：误差项在什么维度上相关？是企业内时序相关（聚到企业）？行业内相关（聚到行业）？还是双向聚类（企业 + 行业年份）？聚类层级选错，标准误会被低估几个数量级，星号全是假的。</li>
+        <li><strong>多重比较（multiple testing）</strong>：你跑了 20 个回归，其中一个 p=0.04，这个 0.04 还可信吗？Bonferroni 校正、FDR 控制都是为此而生。</li>
+        <li><strong>推断的"目标"是什么</strong>：你是在对样本做描述（population 已知），还是在对总体做推断（population 未知、从 sample 推断）？前者根本不需要标准误，后者才需要。</li>
+      </ol>
+      <p>Inference 层最常见的错误：<strong>只报 OLS 默认的 i.i.d. 标准误，不聚类</strong>。在面板数据里，企业内多年观测显然不独立，默认标准误几乎一定太小。</p>
+    </div>
+
+    <!-- ============ 7 ============ -->
+    <div class="section" id="consistency">
+      <h2><span class="sec-num">07</span> 层间一致性：你估计的到底是什么</h2>
+      <p>五层框架最有价值的部分，不是单独看每一层，而是看<strong>层与层之间是否对齐</strong>。下面这张表列出最常见的"不一致"及其后果：</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>不一致类型</th><th>你以为你在估计</th><th>实际上你在估计</th></tr></thead>
+          <tbody>
+            <tr><td>Population ≠ Sample</td><td>"所有制造业企业的平均效应"</td><td>"上市、规模以上、存活到样本期末的企业的平均效应"（选择偏误）</td></tr>
+            <tr><td>Sample ≠ Data</td><td>"研发投入对创新的影响"</td><td>"年报披露的研发支出对专利申请数的影响"（测量口径偏误）</td></tr>
+            <tr><td>Data ≠ Model</td><td>"非线性门槛效应"</td><td>"线性条件相关"（函数形式错）</td></tr>
+            <tr><td>Model ≠ Inference</td><td>"企业层面的处理效应"</td><td>"聚到行业层的标准误被高估，企业内变异被吞掉"</td></tr>
+            <tr><td>Population ≔ Inference</td><td>"对全中国企业的推断"</td><td>"只对样本期内的样本企业做了描述"（无法外推）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>审稿人最爱问的一句话——"你估计的这个效应，是 LATE、ATE 还是 ATT？"——本质上就是在问：你的五层是不是对齐的？如果你的处理只影响了"complier"群体，而你在引言里说估计的是"总体平均效应"，那你就把 LATE 当成了 ATE 在写，这就是层间不一致。</p>
+      <div class="callout danger">
+        <div class="callout-title">⛔ 层间不一致是比"方法用错"更严重的错误</div>
+        <p>方法用错可以换；层间不一致意味着你整篇论文讲的故事和代码跑出来的东西根本不是一回事。这种错误在答辩和审稿时最难辩护——因为它不是技术细节，是"你到底在做什么研究"的根本问题。</p>
+      </div>
+    </div>
+
+    <!-- ============ 8 ============ -->
+    <div class="section" id="checklist">
+      <h2><span class="sec-num">08</span> 每层检查清单与 Stata 命令</h2>
+
+      <h3>Population 层检查清单</h3>
+      <ul>
+        <li>□ 引言第一段是否写清了"对谁、对什么、什么效应"？</li>
+        <li>□ 你的总体是"有边界的"还是"理论概念"？如果是后者，操作化是否在 Data 层讲清楚了？</li>
+      </ul>
+
+      <h3>Sample 层检查清单与命令</h3>
+      <ul>
+        <li>□ 从 raw 到 analysis 每一步删了多少观测？（<code class="inline">count</code>、<code class="inline">return list</code>）</li>
+        <li>□ 被删掉的观测，在 X、Y 上和保留下来的观测系统不同吗？（<code class="inline">ttest</code> 比较组间均值）</li>
+        <li>□ 是否存在"只有 Y 可见时才进样本"的情况？（Heckman 选择模型）</li>
+      </ul>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · Sample 层诊断</span><button class="copy-btn">复制</button></div>
+<pre><code>* 对比"被删" vs "被留"的样本在 X、Y 上是否系统不同
+gen kept = !missing(output, capital, labor)
+ttest output, by(kept)        // 被删组 vs 保留组的 output 均值
+ttest capital, by(kept)
+ttest labor, by(kept)
+* 如果 t 检验显著，说明删除不是随机的，Sample 层有选择偏误</code></pre>
+      </div>
+
+      <h3>Data 层检查清单与命令</h3>
+      <ul>
+        <li>□ 核心变量的取值范围合理吗？（<code class="inline">summarize</code>、<code class="inline">codebook</code>）</li>
+        <li>□ 缺失值是 MCAR / MAR / MNAR 哪一种？</li>
+        <li>□ 变量定义和论文附录写的一致吗？</li>
+      </ul>
+
+      <h3>Model 层检查清单与命令</h3>
+      <ul>
+        <li>□ 线性假设合理吗？跑一下 <code class="inline">twoway (scatter y x) (lfit y x) (qfit y x)</code> 看曲线形状。</li>
+        <li>□ 是否该加二次项？<code class="inline">gen x2 = x^2; reg y c.x##c.x</code>。</li>
+        <li>□ 固定效应层级对吗？<code class="inline">reghdfe y x, absorb(firm year)</code> vs <code class="inline">absorb(industry year)</code>。</li>
+      </ul>
+
+      <h3>Inference 层检查清单与命令</h3>
+      <ul>
+        <li>□ 标准误聚类在哪一层？企业？行业？双向？<code class="inline">reghdfe y x, absorb(firm year) vce(cluster firm)</code>。</li>
+        <li>□ 你跑了多少个规格？是否需要多重比较校正？</li>
+        <li>□ 置信区间宽度合理吗？（见 11 页显著性诊断）</li>
+      </ul>
+    </div>
+
+    <!-- ============ 9 ============ -->
+    <div class="section" id="lalonde">
+      <h2><span class="sec-num">09</span> 论文案例：LaLonde (1986) NSW 实验</h2>
+      <div class="paper-card">
+        <span class="paper-type en">AER · 1986</span>
+        <div class="paper-title">Evaluating the Econometric Evaluations of Training Programs with Experimental Data</div>
+        <div class="paper-meta">Robert J. LaLonde, <em>American Economic Review</em>, 76(4), 1986, pp. 604–620.</div>
+        <div class="paper-desc">LaLonde 利用美国 National Supported Work (NSW) 示范项目的随机实验数据，先得到"培训对收入影响"的无偏实验估计（benchmark），然后故意把实验对照组扔掉、改用 PSID / CPS 调查中的非实验对照组，再用当时主流的观测计量方法（OLS、固定效应、Heckman 两步法）去估计同一个效应。结论是：观测方法估计出来的效应与实验基准相差甚远，且符号、量级都不稳定。</div>
+      </div>
+      <p>用五层框架看 LaLonde (1986) 的贡献，会非常清楚：</p>
+      <ul>
+        <li><strong>Population 层</strong>：都是"接受 NSW 培训的低收入成年男性"，这一层实验和观测数据完全一致。</li>
+        <li><strong>Sample 层（问题出在这里）</strong>：实验对照组是<em>从同一批申请者中随机抽的未参加者</em>；而 LaLonde 替换上去的 PSID / CPS 对照组是<em>全国调查中的普通劳动年龄男性</em>。这两组人在年龄、教育、历史收入、种族、地域上的分布完全不同——也就是说，虽然 Population 概念上一样，<strong>Sample 的构成机制完全不同</strong>。</li>
+        <li><strong>Data 层</strong>：收入变量都来自调查，但实验数据和 PSID/CPS 的调查工具、时间窗口不同。</li>
+        <li><strong>Model 层</strong>：LaLonde 用了当时主流的各种 OLS / FE / 选择模型，形式上和实验对照组的估计式一致。</li>
+        <li><strong>Inference 层</strong>：标准误计算方式相同。</li>
+      </ul>
+      <p>关键洞察：<strong>五层里，四层都对齐了，唯独 Sample 层错了</strong>——实验对照组是"随机抽的"，观测对照组是"全国调查里碰巧出现的"。就这一层的不一致，导致所有观测方法的估计都偏离实验基准。这就是为什么 LaLonde (1986) 被视为"观测研究可信度危机"的开山之作：它告诉整个行业，<em>你不能只盯着 Model 层的函数形式，Sample 层的选择机制错了，再精致的模型也救不回来</em>。</p>
+      <p>后续 Dehejia &amp; Wahba (1999, JASA) 用倾向得分匹配（propensity score matching）重新分析 NSW 数据，部分恢复了实验基准；Heckman, Ichimura, Smith &amp; Todd (1998, RESTUD) 进一步指出，匹配能否成功的关键，在于对照组和处理组是否来自<em>同一劳动力市场、同一调查工具、同样的协变量分布</em>——这本质上就是在强调 Sample 层的"可比性"。四十年后的今天，LaLonde 提出的核心问题仍然是因果推断方法的试金石。</p>
+      <div class="callout tip">
+        <div class="callout-title">✓ 把五层框架用在你的下一篇论文里</div>
+        <p>在开始写论文之前，拿一张白纸，把这五层各写一句话。写完之后，自己读一遍——如果五句话连起来读不通（比如 Population 说"所有企业"、Sample 说"上市公司"、Data 说"专利"、Model 说"线性"、Inference 说"聚到行业"），你就知道哪里需要回头改。</p>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="12-replication-workflow.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">实证研究完整流程与论文复现</div>
+      </a>
+      <a href="14-eda-sample-construction.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">EDA 探索性分析与样本构造</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

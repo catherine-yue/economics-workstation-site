@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>因果森林与政策学习 Causal Forest &amp; Policy Learning | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item active" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">实证论文</a><span class="sep">/</span>
+      <span>因果森林与政策学习</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">Empirical · Causal Machine Learning / HTE</span>
+      <h1>因果森林与政策学习 Causal Forest &amp; Policy Learning</h1>
+      <p class="desc">从平均处理效应（ATE）到<strong>条件平均处理效应 $CATE(x)$</strong>：谁受政策影响最大？因果森林（Athey-Tibshirani-Wager, 2019 PNAS）把随机森林改造成一个"非参数 CATE 估计器"，并用诚实树（honest tree）给出渐近正态的置信区间。政策树（Athey-Wager, 2021 Operations Research）进一步从"估计异质性效应"跨到"把资源分配给谁最优"。本节讲 grf（R）与 econml（Python）的完整用法。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">随机森林/决策树原理、bootstrap、out-of-bag 估计、$\sqrt{n}$ 推断；已学 <a href="16-dml.html">16 DML</a>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">能说出"政策效应应当沿哪些维度分化"，用于解释 CATE 异质性的经济学含义。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">R 4.1+：<code class="inline">install.packages("grf")</code>；Python：<code class="inline">pip install econml scikit-learn</code>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body"><a href="10-heterogeneity.html">10 异质性分析</a>（传统做法对比）；<a href="16-dml.html">16 DML</a>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#f5ebe0;color:#b87333;">前沿进阶</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">从 ATE 到 HTE / CATE</a></li>
+        <li><a href="#s2">因果森林原理与诚实树</a></li>
+        <li><a href="#s3">渐近正态性与置信区间</a></li>
+        <li><a href="#s4">R 完整代码：grf 包</a></li>
+        <li><a href="#s5">Python 完整代码：econml CausalForestDML</a></li>
+        <li><a href="#s6">政策树 Policy Tree 与靶向</a></li>
+        <li><a href="#s7">与传统交互项 / 分样本回归对比</a></li>
+        <li><a href="#s8">逐步流程</a></li>
+        <li><a href="#s9">论文案例</a></li>
+        <li><a href="#s10">常见错误</a></li>
+      </ol>
+    </div>
+
+    <!-- ========== 正文 ========== -->
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 从 ATE 到 HTE / CATE</h2>
+      <p>ATE 回答"政策平均影响多大"，但政策制定者更关心：<strong>谁受影响最大？应该把资源优先给谁？</strong>这就需要刻画效应的<strong>异质性处理效应（Heterogeneous Treatment Effect, HTE）</strong>，更具体地，条件平均处理效应：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (1) — CATE 定义</div>
+        $$\tau(x)=E\big[Y(1)-Y(0)\mid X=x\big]$$
+      </div>
+      <p>$\tau(x)$ 是一个<strong>函数</strong>：给定协变量 $X=x$ 的子人群，处理效应的平均值。传统做法是研究者<strong>事先指定</strong>几个 $X$ 维度，做交互项或分样本回归（见 <a href="10-heterogeneity.html">10 异质性分析</a>）。这种做法的局限是：(1) 只能探索你想到的维度；(2) 高维协变量下手工交互项组合爆炸；(3) 多重检验下容易 p-hacking。<strong>因果森林的目标就是让数据自己告诉你 $\tau(x)$ 的形状</strong>。</p>
+      <div class="callout info">
+        <div class="callout-title">📌 三种异质性视角</div>
+        <p>(1) <strong>ATE</strong>：$\tau$ 是常数；(2) <strong>线性异质性</strong>：$\tau(x)=\theta_0+\theta_1'x$（DML 的 IRM 模型）；(3) <strong>任意形状异质性</strong>：$\tau(x)$ 是任意函数（因果森林 / GFR）。越往后越灵活，但估计方差越大。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 因果森林原理与诚实树</h2>
+      <p>因果森林（Wager &amp; Athey 2018; Athey, Tibshirani &amp; Wager 2019）是随机森林的改造版。普通决策树在叶子节点预测 $Y$；因果树在叶子节点<strong>估计处理效应</strong> $\hat\tau_\ell$（叶子 $\ell$ 内处理组与对照组的均值差）。递归分裂的目标不是最小化 $Y$ 的预测误差，而是<strong>最大化叶子节点之间的效应差异</strong>。</p>
+      <p>但这种做法有一个统计陷阱：如果用同一批数据既"选择分裂点"又"在叶子里估计 $\tau_\ell$"，那么分裂会偏向于"噪声看起来差异很大"的位置，导致估计的 $\tau(x)$ 有偏、置信区间不覆盖。<strong>诚实树（honest tree）</strong>解决这个问题：</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 把每个样本的一半数据（J1）用于"选择分裂点"</div>
+          <div class="step-desc">只在 J1 上递归生长，决定每个叶子的边界。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 把另一半数据（J2）用于"估计叶子内 $\tau_\ell$"</div>
+          <div class="step-desc">在固定好的叶子里，用 J2 数据估计处理组与对照组的均值差。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 装袋成森林</div>
+          <div class="step-desc">对 bootstrap 样本重复 Step 1-2，把所有树的预测平均，得到 $\hat\tau(x)$。</div>
+        </div>
+      </div>
+      <p>诚实性把"模型选择"和"效应估计"用不同样本分开，从而消除了过拟合。grf 包的默认参数 <code class="inline">honesty=TRUE, honesty.fraction=0.5</code> 就是这个机制。</p>
+      <p>分裂准则也和普通随机森林不同。普通树按"叶子内 $Y$ 的方差下降"分裂；因果树按"叶子之间的处理效应差异"分裂——具体地，对每个候选分裂点，计算左右两个子叶子的 $\hat\tau_\ell$ 之差，取最大化这个差异（同时要求每个叶子内处理组和对照组都有足够样本）的分裂点。这等价于一个<strong>"因果 R 平方"</strong>目标：我们要找的不是"最能预测 $Y$ 的分割"，而是"最能区分效应的分割"。这是因果森林与预测随机森林最本质的算法差异。</p>
+      <p>另一个工程细节：<strong>ci.group.size</strong>。为了估计方差，grf 把树再分组，组内的树用不同的样本子集拟合，组间差异用来度量估计的不确定性。<code class="inline">ci.group.size=2</code> 是默认，正式研究建议设为 3 或 4 以获得更稳的方差估计。</p>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 渐近正态性与置信区间</h2>
+      <p>Wager &amp; Athey (2018) 的核心理论贡献是：在诚实树 + 适当正则化（叶子大小、分裂规则）下，$\sqrt{n}\big(\hat\tau(x)-\tau(x)\big)$ 渐近正态，且方差可估。grf 包通过 <code class="inline">estimate.variance=TRUE</code> 给出每一个预测点 $\hat\tau(x)$ 的置信区间。这在机器学习方法里非常罕见——多数 ML 只能给点估计，因果森林能给<strong>带置信区间的 CATE</strong>。</p>
+      <div class="callout tip">
+        <div class="callout-title">✅ 解释 $\hat\tau(x)$ 的正确姿势</div>
+        <p>不要只看 $\hat\tau(x)$ 的点估计；要看它的置信区间宽度。如果 CI 跨过零，说明在这个 $x$ 处效应不显著异于零。报告时画"CATE 直方图"和"CATE 沿某 $X$ 变量的散点 + CI"。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> R 完整代码：grf 包</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">R · grf 因果森林完整示例</span><button class="copy-btn">复制</button></div>
+        <pre><code># ============================================================
+# 04.1 R: 用 grf 估计 CATE、变量重要性、置信区间
+# install.packages("grf")
+# ============================================================
+library(grf)
+set.seed(123)
+
+# ---- 1. 模拟数据：n=2000, p=6；CATE 与 X1, X3 有关 ----
+n &lt;- 2000
+p &lt;- 6
+X &lt;- matrix(rnorm(n * p), n, p)
+W &lt;- rbinom(n, 1, 0.5)                                   # 随机分配处理
+# 真实 CATE(x) = X[,1] + X[,3]（其他变量不影响效应）
+tau_true &lt;- X[, 1] + X[, 3]
+Y &lt;- tau_true * W + X[, 2] + pmin(X[, 4], 0) + rnorm(n)
+
+# ---- 2. 拟合因果森林（默认 honesty=TRUE）----
+cf &lt;- causal_forest(
+  X = X,
+  Y = Y,
+  W = W,
+  num.trees = 2000,          # 树数
+  min.node.size = 5,         # 叶子最小样本
+  honesty = TRUE,            # 诚实树
+  honesty.fraction = 0.5,    # 一半选分裂、一半估效应
+  ci.group.size = 2          # 用于方差估计
+)
+
+# ---- 3. 用 out-of-bag 预测训练样本的 CATE ----
+tau.hat.oob &lt;- predict(cf)
+hist(tau.hat.oob$predictions,
+     main = "OOB CATE 估计分布", xlab = "tau_hat(x)")
+
+# ---- 4. 置信区间（在测试样本上）----
+X.test &lt;- matrix(rnorm(100 * p), 100, p)
+tau.test &lt;- predict(cf, X.test, estimate.variance = TRUE)
+# tau.test$predictions       : CATE 点估计
+# tau.test$variance.estimates: 方差估计
+# 95% CI = predictions ± 1.96 * sqrt(variance.estimates)
+ci_lower &lt;- tau.test$predictions - 1.96 * sqrt(tau.test$variance.estimates)
+ci_upper &lt;- tau.test$predictions + 1.96 * sqrt(tau.test$variance.estimates)
+
+# ---- 5. 模型校准诊断（calibration test）----
+test_calibration(cf)
+# 输出：估计 ATE、最优线性投影 R^2、是否校准良好
+
+# ---- 6. 变量重要性（哪些 X 决定了 CATE）----
+varimp &lt;- variable_importance(cf)
+print(data.frame(variable = paste0("X", 1:p),
+                 importance = round(varimp, 3)))
+# X1, X3 的 importance 应显著高于 X2, X4, X5, X6
+
+# ---- 7. 平均处理效应 ATE ----
+ate_cf &lt;- average_treatment_effect(cf)
+print(ate_cf)   # 估计 ATE 与标准误
+</code></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">R · 用因果森林做政策树（policy tree）</span><button class="copy-btn">复制</button></div>
+        <pre><code># ============================================================
+# 04.2 R: 用 policy_tree 从 CATE 到最优政策
+# ============================================================
+library(grf)
+
+# 用上一步的 cf
+# 政策树：直接在观察数据上学习"哪些 x 应被处理"
+pt &lt;- policy_tree(X, Y, W,
+                  depth = 2,             # 树深
+                  policy = "overall")    # 最大化整体福利
+
+# 在测试样本上预测政策：1=建议处理, 0=建议不处理
+policy.predict &lt;- predict(pt, X.test)
+table(policy.predict$predictions)
+
+# 画政策树
+plot(pt)
+# 树的每个叶子给出"按哪个变量切分 -> 该叶子里是否建议处理"
+# 这就是可解释的"政策规则"
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> Python 完整代码：econml CausalForestDML</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · econml CausalForestDML 完整示例</span><button class="copy-btn">复制</button></div>
+        <pre><code># ============================================================
+# 05.1 Python: econml CausalForestDML
+# pip install econml scikit-learn
+# ============================================================
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.ensemble import GradientBoostingRegressor, GradientBoostingClassifier
+from econml.dml import CausalForestDML
+
+np.random.seed(42)
+
+# ---- 1. 模拟数据（与 R 版相同）----
+n, p = 2000, 6
+X = np.random.normal(size=(n, p))
+W = np.random.binomial(1, 0.5, size=n)
+tau_true = X[:, 0] + X[:, 2]            # 真实 CATE(x)
+Y = tau_true * W + X[:, 1] + np.minimum(X[:, 3], 0) + np.random.normal(size=n)
+
+# ---- 2. 拟合 CausalForestDML ----
+est = CausalForestDML(
+    model_y=GradientBoostingRegressor(n_estimators=200, max_depth=3,
+                                      random_state=42),
+    model_t=GradientBoostingClassifier(n_estimators=200, max_depth=3,
+                                       random_state=42),
+    discrete_treatment=True,              # W 是二值
+    n_estimators=1000,                    # 树数
+    min_samples_leaf=20,
+    max_samples=0.5,
+    honest=True,                          # 诚实分裂
+    inference=True,                       # 启用置信区间
+    random_state=42,
+)
+est.fit(Y, W, X=X)
+
+# ---- 3. CATE 点估计与置信区间 ----
+cate_hat = est.effect(X)                  # 每个个体的 CATE
+lb, ub = est.effect_interval(X, alpha=0.05)
+
+print("CATE 均值 =", cate_hat.mean())
+print("CATE 标准差 =", cate_hat.std())
+print("95% CI 半宽 均值 =", ((ub - lb) / 2).mean())
+
+# ---- 4. 与真实 CATE 对比 ----
+plt.figure(figsize=(6, 6))
+plt.scatter(tau_true, cate_hat, alpha=0.5, s=10)
+plt.plot([-4, 4], [-4, 4], "r--")
+plt.xlabel("true CATE"); plt.ylabel("estimated CATE")
+plt.title("Causal Forest: true vs estimated CATE")
+plt.tight_layout()
+plt.savefig("cate_true_vs_hat.png", dpi=120)
+
+# ---- 5. 变量重要性（基于分裂频率）----
+imp = est.feature_importances_
+for i in range(p):
+    print(f"X{i+1}: importance = {imp[i]:.3f}")
+# X1, X3 应最高
+
+# ---- 6. 政策解释：用单棵决策树逼近 CATE ----
+from econml.cate_interpreter import SingleTreeCateInterpreter
+interp = SingleTreeCateInterpreter(include_model_uncertainty=True,
+                                   max_depth=2)
+interp.interpret(est, X)
+# interp.plot()  # 在 Jupyter 中画可解释的 CATE 树
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 政策树 Policy Tree 与靶向</h2>
+      <p>从"估计 $\tau(x)$"到"做出政策决策"，Athey &amp; Wager (2021, Operations Research) 提出<strong>政策树（Policy Tree）</strong>：直接优化"给定预算下，把政策分配给谁，期望福利最大"。与 CATE 估计不同，政策树的目标不是让 $\hat\tau(x)$ 点估计准，而是让<strong>分配规则</strong> $D^*(x)\in\{0,1\}$ 最大化 $\mathbb{E}[\tau(x)\cdot D^*(x)]$。</p>
+      <p>实务流程：</p>
+      <ol>
+        <li>用因果森林估计 $\hat\tau(x)$ 与置信区间。</li>
+        <li>按 $\hat\tau(x)$ 排序，把政策资源优先分给 $\hat\tau(x)$ 最高的 $q\%$ 人群——这就是<strong>靶向（targeting）</strong>。</li>
+        <li>用政策树把"哪些人群该被处理"压缩成一条可解释的规则（"X1 &gt; 0.5 且 X3 &gt; 0 时处理"）。</li>
+        <li>在留出样本或 RCT 数据上验证政策树的期望收益是否显著优于"全民处理"或"随机处理"。</li>
+      </ol>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 靶向的伦理与统计边界</div>
+        <p>政策靶向可能把资源从"最贫困"转移到"对政策最敏感"的人群。Haushofer et al. (2025, AER) 标题就叫"Targeting Impact versus Deprivation"，明确讨论<strong>按效应靶向 vs 按贫困靶向</strong>的权衡。统计上，靶向规则的估计本身需要诚实样本，否则会过拟合到训练数据的噪声。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 与传统交互项 / 分样本回归对比</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>方法</th><th>异质性来源</th><th>可识别的形状</th><th>置信区间</th><th>主要风险</th></tr></thead>
+          <tbody>
+            <tr><td>分样本回归</td><td>研究者预先切分</td><td>离散的、低维</td><td>有（但忽略了切分本身）</td><td>p-hacking、未校正多重检验</td></tr>
+            <tr><td>交互项 $D\times X$</td><td>研究者指定调节变量</td><td>线性异质性</td><td>有</td><td>只能探索想到的维度</td></tr>
+            <tr><td>分位数回归</td><td>沿 $Y$ 分布的异质性</td><td>分布形状</td><td>有</td><td>不是 $X$ 维度的异质性</td></tr>
+            <tr><td>DML-IRM</td><td>线性异质性 $\theta(X)$</td><td>线性</td><td>有（半参有效）</td><td>形状受限</td></tr>
+            <tr><td>因果森林</td><td>数据驱动</td><td>任意非参数</td><td>有（渐近正态）</td><td>需要大样本、外推风险</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>实务建议：<strong>把因果森林当作"发现工具"，把传统交互项当作"确认工具"</strong>。先用因果森林发现"效应沿哪些 $X$ 维度分化"，再用交互项在同一数据集（或新数据）上正式检验，避免"用同一数据发现又确认"的过拟合。</p>
+      <p>从写作角度，一份合格的因果森林章节通常包含四张图/表：(1) <strong>CATE 直方图</strong>，展示 $\hat\tau(x)$ 的分布形状——是集中在零附近（几乎没有异质性），还是两端有长尾（异质性很大）；(2) <strong>CATE 沿关键协变量的散点图</strong>，横轴是某个连续 $X$，纵轴是 $\hat\tau(x)$，叠加核密度或低阶多项式拟合；(3) <strong>变量重要性表</strong>，列出 Top 5-10 个驱动 CATE 的变量，并解释经济学含义；(4) <strong>政策树图</strong>或靶向人群特征表，说明"建议处理"与"不建议处理"两组在 $X$ 上的差异。</p>
+      <p>还要特别说明 <strong>CATE 与 ATE 的关系</strong>：CATE 的加权平均就是 ATE。如果因果森林给出的 ATE 与 DML / OLS 估的 ATE 差很多，说明森林本身拟合有问题（过拟合、honesty 未开、样本量不足），必须先排查再继续解释异质性。</p>
+      <h3>因果森林与 BART / 其他异质性方法</h3>
+      <p>除了因果森林，估计 $\tau(x)$ 还有两条常见路线：(1) <strong>BART（Bayesian Additive Regression Trees）</strong>，用贝叶斯树的后验分布给出 CATE 的后验区间，天然带不确定性；(2) <strong>S-/T-/X-/R-learner</strong> 等元学习器（meta-learner），把任意预测模型包装成 CATE 估计器。因果森林的优势是渐近正态性严格、grf/econml 包成熟；BART 的优势是后验分布自然、小样本稳；X-learner 在处理组与对照组样本严重不平衡时表现更好。实务中，Athey-Wager 团队的 grf 仍然是经济学顶刊的主流选择，因为它和 DML 同一学派、理论保证最清晰。</p>
+      <p>从"估计异质性"到"写论文"，还有一个容易被忽略的环节：<strong>异质性发现的多重检验问题</strong>。当你把 20 个协变量都扔进因果森林，森林总会"找到"一些异质性——哪怕真实 DGP 里根本没有。这是因为 ML 的优化目标就是最小化训练误差，它会把噪声也当成信号。缓解办法：(1) 报告 CATE 的整体 $R^2$（grf 的 <code class="inline">test_calibration</code> 给出），若接近零则说明几乎没有真异质性；(2) 用独立的留出样本验证 $\hat\tau$ 的排序是否稳定；(3) 在论文里诚实说明"这是数据驱动的探索性分析，需要外部样本复制"。</p>
+      <h3>应用论文精读：Delfino (2024) 与 Haushofer et al. (2025)</h3>
+      <p><strong>Delfino (2024, AER)</strong> 研究"鼓励男性进入传统粉色职业（如护士、幼儿教师）"的现场实验。她把招聘广告随机分配给男性求职者，有的广告强调"欢迎男性申请"，有的没有。传统的 ATE 分析给出平均处理效应；进一步用因果森林探索异质性，发现效应集中在"对性别刻板印象敏感度低、家庭中有女性从事类似职业"的子人群。这种"RCT + 因果森林 + 子群体机制讨论"的写法，已经成为 AER 上实验论文的标准结构。</p>
+      <p><strong>Haushofer et al. (2025, AER)</strong> 研究肯尼亚现金转移支付的靶向问题。传统做法是按"贫困程度"选受益人；论文提出另一种思路：按"预期效应大小"选受益人。他们用因果森林估计每个家庭的 CATE，比较两种靶向规则下的总福利。核心发现是：按效应靶向 vs 按贫困靶向各有优劣——按贫困靶向帮到最需要的人，但按效应靶向总福利更大。这篇论文把"政策学习"从统计学概念真正带进了发展经济学的政策讨论。</p>
+      <h3>从因果森林到政策建议的写作模板</h3>
+      <p>在论文中报告因果森林结果时，建议按以下顺序：(1) 先报告 ATE 与传统异质性（交互项 / 分样本）；(2) 报告因果森林的校准诊断（$R^2$、CI 覆盖率）；(3) 画 CATE 直方图与变量重要性；(4) 用政策树给出"可执行"的靶向规则；(5) 在外部样本或 bootstrap 上验证政策规则的稳定性；(6) 讨论靶向的伦理与公平含义（如 Haushofer et al. 做的）。这个结构既能让计量审稿人满意，也能让政策读者看懂"你到底建议怎么做"。</p>
+      <p>最后提醒：因果森林不是"自动发现因果"的黑箱。它仍然需要你先回答上一节 DAG 框架里的问题——处理 $D$ 与结果 $Y$ 之间的后门路径是否被 $X$ 阻断？如果答案是否定的，因果森林给出的 $\hat\tau(x)$ 仍然是有偏的。把因果森林放在<strong>"可忽略性成立前提下，非参数地刻画异质性"</strong>的位置，而不是"绕过识别假设"的捷径。</p>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 逐步流程</h2>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 估计 ATE 作为基准</div>
+          <div class="step-desc">先用 DML 或 OLS 估 ATE，确认平均效应存在，再探索异质性。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 拟合因果森林</div>
+          <div class="step-desc">在 R grf 或 Python econml 中启用 honesty、足够树数（≥2000）、ci.group.size≥2。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 诊断校准</div>
+          <div class="step-desc">用 <code class="inline">test_calibration()</code> 或 econml 内置诊断，确认 $\hat\tau$ 校准良好；若 R² 接近 0，说明数据里几乎没有异质性。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4 · 报告 CATE 分布与变量重要性</div>
+          <div class="step-desc">画 CATE 直方图、CATE 沿关键 $X$ 的散点 + CI；列出 Top 重要性变量。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 5 · 政策树 / 靶向分析</div>
+          <div class="step-desc">用 policy_tree 或按 $\hat\tau$ 排序做靶向，在留出样本验证期望福利。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 6 · 与传统方法并列报告</div>
+          <div class="step-desc">把因果森林结果与交互项 / 分样本回归并列，让审稿人看到两边一致。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 论文案例</h2>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · JASA</span>
+        <div class="paper-title">Recursive Partitioning for Heterogeneous Causal Effects</div>
+        <div class="paper-meta">Susan Athey &amp; Guido Imbens · Journal of the American Statistical Association, 2016</div>
+        <div class="paper-desc">提出"诚实树"（honest tree）概念：把样本分成"选分裂"和"估效应"两半，第一次让因果树有了有效的置信区间。是因果森林的思想源头。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · JASA</span>
+        <div class="paper-title">Estimation and Inference of Heterogeneous Treatment Effects Using Random Forests</div>
+        <div class="paper-meta">Stefan Wager &amp; Susan Athey · Journal of the American Statistical Association, 2018</div>
+        <div class="paper-desc">证明因果森林在诚实分裂下 $\sqrt{n}$ 渐近正态、方差可估。是 grf 包 <code class="inline">causal_forest()</code> 的理论出处。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · PNAS</span>
+        <div class="paper-title">Generalized Random Forests</div>
+        <div class="paper-meta">Susan Athey, Julie Tibshirani &amp; Stefan Wager · Proceedings of the National Academy of Sciences, 2019</div>
+        <div class="paper-desc">把随机森林推广为一个通用框架：任意低维目标函数（不仅是 CATE，还包括分位数、工具变量效应）都能用"局部核 + 似然"估计。grf 包是其官方实现。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Operations Research</span>
+        <div class="paper-title">Policy Learning with Observational Data</div>
+        <div class="paper-meta">Susan Athey &amp; Stefan Wager · Operations Research, 2021</div>
+        <div class="paper-desc">政策树的方法学论文。给出观察数据下最优政策树的半参效率界与诚实分裂规则。R 包 <code class="inline">grf::policy_tree()</code> 即实现此文算法。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · American Economic Review</span>
+        <div class="paper-title">Breaking Gender Barriers: Experimental Evidence on Men in Pink-Collar Jobs</div>
+        <div class="paper-meta">Alexia Delfino · American Economic Review, 2024, 114(6): 1816–1853</div>
+        <div class="paper-desc">AER 2024 年现场实验论文。在随机实验数据上用因果森林类方法探索"鼓励男性进入粉色职业"的处理效应异质性，示范了"RCT + 因果森林 + 政策靶向"的现代应用范式。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · American Economic Review</span>
+        <div class="paper-title">Targeting Impact versus Deprivation</div>
+        <div class="paper-meta">Johannes Haushofer, Paul Niehaus, Carlos Paramo, Edward Miguel &amp; Michael Walker · American Economic Review, 2025, 115(6): 1936–1974</div>
+        <div class="paper-desc">讨论现金转移支付中"按预期效应靶向"与"按贫困程度靶向"的权衡。用机器学习方法估计 CATE 并比较两种靶向规则的福利结果，是政策学习在发展经济学的代表作。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · NBER / Applied</span>
+        <div class="paper-title">Generic Machine Learning Inference on Heterogeneous Treatment Effects in Randomized Experiments</div>
+        <div class="paper-meta">Chernozhukov, Demirer, Duflo &amp; Fernandez-Val · NBER WP 24678（后发于 Annals of Applied Statistics, 2018）</div>
+        <div class="paper-desc">在 RCT 数据上用 ML 估计异质性效应的方法学论文。与因果森林互补，强调"在实验数据上用 ML 发现 HTE"的可行性。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><span class="sec-num">10</span> 常见错误</h2>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 1：不开诚实分裂（honesty=FALSE）就报告 CI</div>
+        <p>不开 honesty 等于用同一批数据既选分裂又估效应，置信区间严重偏窄、覆盖率失真。grf 与 econml 默认 honesty=TRUE，不要关掉。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 2：样本量不足却做高维 CATE</div>
+        <p>因果森林每个叶子需要足够的处理组和对照组样本。$n=200$、$p=50$ 时，CATE 估计噪声极大。经验法则：$n$ 至少上千、$p$ 不超过 $n/10$；样本小就用线性 DML。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 3：外推（extrapolation）到支持域之外</div>
+        <p>因果森林在数据稀疏区域（X 取值极端）的预测是外推，不可信。报告 CATE 时叠加 $X$ 的核密度，只在"有足够样本支撑"的区域下结论。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 4：把 $\hat\tau(x)$ 的排序当成"政策靶向"而不做留出验证</div>
+        <p>训练样本上 $\hat\tau$ 高的人，在新数据上不一定真是高效应组。政策靶向必须在留出样本或新实验上验证期望福利。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 5：把因果森林当"银弹"，不报告 ATE 与传统异质性结果</div>
+        <p>因果森林是补充工具，不是替代。论文应同时报告 OLS ATE、交互项异质性、因果森林 CATE，三者一致才有说服力。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 6：忽略未观测混淆</div>
+        <p>因果森林在可忽略性假设下识别 CATE。它不能解决未观测混淆——如果原始 DGP 有 IV 或 RDD 依赖，应该用 IV-LASSO / 工具变量森林，而不是普通因果森林。</p>
+      </div>
+
+      <h3>进阶资料</h3>
+      <ul>
+        <li>grf 官方文档：<code class="inline">grf-labs.github.io/grf</code>，含大量案例。</li>
+        <li>econml 文档：<code class="inline">econml.readthedocs.io</code>，含 <code class="inline">CausalForestDML</code> 与 <code class="inline">SingleTreeCateInterpreter</code>。</li>
+        <li>Athey &amp; Imbens (2019), <em>Annual Review of Economics</em> "Machine Learning Methods that Economists Should Know About" —— 综述。</li>
+        <li>Chernozhukov et al. (2018 JEL / Annu. Rev. Econ.) 综述，与 DML 配套阅读。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="16-dml.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">DML 双重/去偏机器学习</div>
+      </a>
+      <a href="index.html" class="next">
+        <div class="nav-label">返回 →</div>
+        <div class="nav-title">实证总览与路线</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+(function() {
+  const path = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('href') && item.getAttribute('href').endsWith(path)) {
+      item.classList.add('active');
+    }
+  });
+})();
+</script>
+</body>
+</html>

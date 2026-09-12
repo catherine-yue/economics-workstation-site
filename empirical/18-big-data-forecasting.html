@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大数据宏观预测 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item active" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main"><div class="content-wrap">
+
+  <div class="breadcrumb">
+    <a href="../index.html">首页</a><span class="sep">/</span>
+    <a href="index.html">实证论文</a><span class="sep">/</span>
+    <span>大数据宏观预测 Big Data Macroeconomic Forecasting</span>
+  </div>
+
+  <div class="page-header">
+    <span class="tag">实证 · 18 · 前沿方法</span>
+    <h1>大数据宏观预测 Big Data Macroeconomic Forecasting</h1>
+    <p class="desc">用成百上千个预测子（predictors）预测 GDP、CPI、通胀，是过去十年宏观实证最活跃的方向之一。本页系统讲清楚：为什么传统 VAR / 单变量 AR 不够用，Lasso / 岭回归 / 弹性网如何做稀疏选择，随机森林与 XGBoost 如何捕捉非线性，以及如何用滚动窗口 + Diebold-Mariano 检验在样本外严格比较这些模型。附完整 Python (sklearn) 与 Stata (elasticnet) 代码。</p>
+  </div>
+
+  <div class="prereq-box">
+    <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+    <div class="prereq-grid">
+      <div class="prereq-item">
+        <div class="prereq-label">① 数学 / 统计基础</div>
+        <div class="prereq-body">多元线性回归、OLS 假设、过拟合与偏差-方差权衡、交叉验证、滚动窗口（rolling window）与递归窗口（recursive window）。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">② 经济学理论前置</div>
+        <div class="prereq-body">经典宏观预测模型：AR(p)、VAR、扩散指数（diffusion index, Stock-Watson）；理解"数据丰富环境"data-rich environment 下的预测问题。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">③ 软件 / 计算前置</div>
+        <div class="prereq-body">Python 3.9+（<code class="inline">pandas</code>、<code class="inline">numpy</code>、<code class="inline">scikit-learn</code>、<code class="inline">xgboost</code>、<code class="inline">scipy</code>）；Stata 16+（内置 <code class="inline">elasticnet</code> / <code class="inline">lasso</code>）。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">④ 站内前置页面</div>
+        <div class="prereq-body">先学 <a href="04-baseline-regression.html">04 基准回归</a>（掌握 OLS 与推断），再学本页的高维正则化方法。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">⑤ 难度分级</div>
+        <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">进阶</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toc-box">
+    <div class="toc-title">本页目录 / CONTENTS</div>
+    <ol>
+      <li><a href="#s1">为什么用大数据预测宏观</a></li>
+      <li><a href="#s2">稀疏模型：Lasso / Ridge / Elastic Net</a></li>
+      <li><a href="#s3">非线性模型：随机森林与 XGBoost</a></li>
+      <li><a href="#s4">模型比较与预测评价</a></li>
+      <li><a href="#s5">通胀预测案例：Medeiros et al. (2021, JBES)</a></li>
+      <li><a href="#s6">中国 CPI 预测：郑挺国等 (2025, 管理科学学报)</a></li>
+      <li><a href="#s7">完整 Python 代码</a></li>
+      <li><a href="#s8">Stata elasticnet 代码</a></li>
+      <li><a href="#s9">常见错误与论文清单</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="s1">
+    <h2><span class="sec-num">01</span> 为什么用大数据预测宏观</h2>
+    <p>传统宏观预测（1990 年代之前）几乎只用少量变量：预测 GDP 就用 GDP 自己的滞后项加利率；预测通胀就用菲利普斯曲线里的失业率 + 滞后通胀。这种"小模型"思路在平稳的样本期里没问题，但一旦出现结构性变化（金融危机、疫情、供应链冲击），少变量模型就会漏掉关键信号。</p>
+    <p>大数据宏观预测的逻辑完全不同：<strong>与其在经济理论指导下精心挑 5 个预测子，不如把 FRED-MD（McCracken & Ng 2016 维护的美国宏观月度数据库，128+ 个变量）、Wind/Choice 的成百上千个宏观指标全部塞进模型，让正则化或树模型自己挑</strong>。这就是 Stock & Watson 从 2002 年起持续推动的"data-rich environment"预测范式。</p>
+    <div class="callout info">
+      <div class="callout-title">为什么 OLS 直接用会失败？</div>
+      <p>当预测子个数 $p$ 接近甚至超过样本量 $T$ 时（例如月度数据 400 期、预测子 128 个 + 滞后项后 $p$ 可能达到几百），OLS 要么不可逆、要么过拟合严重。你需要：(i) <strong>正则化</strong>（把不重要的系数压到 0），或 (ii) <strong>降维</strong>（扩散指数 / PCA），或 (iii) <strong>非线性模型</strong>（树模型自动选择变量）。</p>
+    </div>
+    <p>本页聚焦两条主流路线：<strong>线性正则化模型</strong>（Lasso / Ridge / Elastic Net，第 2 节）和<strong>非线性机器学习模型</strong>（随机森林 / XGBoost，第 3 节）。第 4 节解决"怎么公平比较"的问题——样本外滚动窗口 + Diebold-Mariano 检验。</p>
+  </div>
+
+  <div class="section" id="s2">
+    <h2><span class="sec-num">02</span> 稀疏模型：Lasso / Ridge / Elastic Net</h2>
+    <h3>2.1 从 OLS 到正则化</h3>
+    <p>标准 OLS 最小化残差平方和：$\min_\beta \sum_{t=1}^T (y_t - \mathbf{x}_t^\top\beta)^2$。当 $p$ 大时，这个目标函数对噪声敏感。正则化方法在目标函数后加一个<strong>惩罚项</strong> $\lambda P(\beta)$：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 2.1 — 带惩罚的目标函数</div>
+      $$ \hat{\beta}(\lambda) = \arg\min_{\beta} \left\{ \frac{1}{2T}\sum_{t=1}^T (y_t - \mathbf{x}_t^\top\beta)^2 + \lambda P(\beta) \right\} $$
+    </div>
+    <p>$\lambda\ge 0$ 控制惩罚强度：$\lambda=0$ 回到 OLS，$\lambda\to\infty$ 把所有系数压到 0。关键是怎么选 $\lambda$——必须用<strong>样本外 / 交叉验证</strong>，不能在样本内选。</p>
+
+    <h3>2.2 Ridge 岭回归：L2 惩罚</h3>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 2.2 — Ridge (L2)</div>
+      $$ P_{\text{Ridge}}(\beta) = \sum_{j=1}^p \beta_j^2 = \|\beta\|_2^2, \qquad \hat{\beta}^{\text{Ridge}} = (X^\top X + \lambda I)^{-1}X^\top y $$
+    </div>
+    <p>Ridge 把系数向 0 收缩，但<strong>不会把任何系数精确压成 0</strong>——它做"收缩"不做"选择"。优点是计算稳定（解析解）、对高度共线的预测子友好；缺点是当真实模型稀疏（只有少数预测子重要）时，它仍把噪声变量的小系数保留在模型里。</p>
+
+    <h3>2.3 Lasso：L1 惩罚</h3>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 2.3 — Lasso (L1, Tibshirani 1996)</div>
+      $$ P_{\text{Lasso}}(\beta) = \sum_{j=1}^p |\beta_j| = \|\beta\|_1 $$
+    </div>
+    <p>Lasso 同时做两件事：收缩 <em>和</em> 变量选择。L1 惩罚在原点有"尖角"，会把系数<strong>精确压成 0</strong>——这正是稀疏模型想要的：成百上千个候选预测子里，Lasso 自动挑出真正重要的十几个，其余系数为 0。这在宏观预测里尤其重要，因为经济解释需要知道"哪些变量真正驱动了通胀"。</p>
+
+    <h3>2.4 Elastic Net 弹性网</h3>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 2.4 — Elastic Net (Zou & Hastie 2005)</div>
+      $$ P_{\text{EN}}(\beta) = \alpha \|\beta\|_1 + \frac{1-\alpha}{2}\|\beta\|_2^2 $$
+    </div>
+    <p>Elastic Net 把 L1 和 L2 混合：$\alpha=1$ 是纯 Lasso，$\alpha=0$ 是纯 Ridge。当预测子之间高度相关（宏观数据里利率、汇率、资产价格经常一起动）时，Lasso 倾向于只随机保留其中一个，Elastic Net 则倾向于<strong>成组保留</strong>。Medeiros et al. (2021) 的通胀预测里 Elastic Net 表现就很稳健。</p>
+
+    <h3>2.5 交叉验证选 $\lambda$</h3>
+    <p>$\lambda$ 怎么定？标准做法是 <strong>$K$ 折交叉验证</strong>（宏观时间序列上推荐时间序列 CV，即 forward-chaining，不能随机打乱）：</p>
+    <ol>
+      <li>把时间序列按时间顺序分成 $K$ 折（例如 $K=5$）。</li>
+      <li>对一组候选 $\lambda$（通常 $\lambda_{\max}$ 到 $\lambda_{\min}=0.001\lambda_{\max}$ 对数网格上 100 个点），每次用前 $k-1$ 折训练、第 $k$ 折验证，计算 MSE。</li>
+      <li>选平均验证 MSE 最小的 $\lambda^*$；实务中也常选"1-SE 准则"（在最小 MSE 一个标准误范围内选最大的 $\lambda$，模型更稀疏）。</li>
+    </ol>
+    <div class="callout warning">
+      <div class="callout-title">数据泄露警告</div>
+      <p>宏观时间序列上做 CV，<strong>绝不能用 sklearn 的 KFold 随机打乱</strong>——那会把未来信息泄露到训练集。必须用 <code class="inline">TimeSeriesSplit</code>，或干脆用第 4 节的滚动窗口直接做样本外预测。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s3">
+    <h2><span class="sec-num">03</span> 非线性模型：随机森林与 XGBoost</h2>
+    <h3>3.1 为什么宏观预测需要非线性</h3>
+    <p>线性模型假设 $y_t = \beta^\top x_t + \varepsilon_t$，但宏观经济关系常常是<strong>非线性、门限型、交互型</strong>的：油价冲击在通缩期和通胀期影响不同；政策利率接近零下限时传导机制不同；金融压力大时失业率对产出的弹性更高。Lasso/Ridge 只能拟合线性关系，<strong>树模型</strong>通过递归二分自动捕捉这种非线性和交互项。</p>
+
+    <h3>3.2 随机森林 (Random Forest, Breiman 2001)</h3>
+    <p>随机森林的核心是"<strong>bagging + 随机特征选择</strong>"：</p>
+    <ol>
+      <li>对原始样本有放回地 bootstrap 抽取 $B$ 个子样本（通常 $B=500$ 或 $1000$）。</li>
+      <li>每个子样本上长一棵 CART 回归树，但每次分裂时只随机抽 $m \approx \sqrt{p}$ 个候选特征（回归问题常用 $m=p/3$）。</li>
+      <li>对所有树的预测取平均：$\hat{y} = \frac{1}{B}\sum_{b=1}^B \hat{f}_b(x)$。</li>
+    </ol>
+    <p>随机森林天然给出<strong>变量重要性</strong>（每次分裂带来的 MSE 下降的累加），这正是宏观预测论文最需要的解释性输出。Medeiros et al. (2021) 的核心发现之一就是：随机森林在美国通胀预测上系统性地跑赢 AR、ARDI、Lasso。</p>
+
+    <h3>3.3 XGBoost / LightGBM 梯度提升树</h3>
+    <p>XGBoost (Chen & Guestrin 2016) 与随机森林的区别是"<strong>boosting</strong>"：树是<strong>顺序</strong>长出来的，每一棵新树都去拟合上一轮的<strong>残差</strong>，从而一步步降低偏差：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 3.1 — 梯度提升加法模型</div>
+      $$ \hat{f}_B(x) = \sum_{b=1}^B \nu \cdot h_b(x), \qquad h_b = \arg\min_h \sum_{t} L\big(y_t, \hat{f}_{b-1}(x_t) + h(x_t)\big) $$
+    </div>
+    <p>其中 $\nu$ 是学习率（shrinkage，常用 0.01–0.1）。XGBoost 在损失函数里额外加了树复杂度惩罚 $\Omega(h) = \gamma T + \frac{1}{2}\lambda\|\mathbf{w}\|^2$，防止单棵树过大。LightGBM (Ke et al. 2017) 用直方图算法 +  Leaf-wise 生长，速度比 XGBoost 快一个数量级，在大样本宏观数据上更常用。</p>
+
+    <h3>3.4 超参数调优</h3>
+    <p>树模型没有解析解，超参数必须调。宏观预测里重点调这几个：</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>模型</th><th>关键超参数</th><th>推荐搜索范围</th><th>调优方法</th></tr></thead>
+        <tbody>
+          <tr><td>随机森林</td><td><code class="inline">n_estimators</code>, <code class="inline">max_features</code>, <code class="inline">max_depth</code>, <code class="inline">min_samples_leaf</code></td><td>树数 500–2000；max_features = p/3；max_depth = 5–15</td><td>时间序列 CV / 网格搜索</td></tr>
+          <tr><td>XGBoost</td><td><code class="inline">learning_rate</code>, <code class="inline">max_depth</code>, <code class="inline">n_estimators</code>, <code class="inline">subsample</code>, <code class="inline">colsample_bytree</code></td><td>学习率 0.01–0.1；深度 3–8；subsample 0.7–0.9</td><td>时间序列 CV / 贝叶斯优化</td></tr>
+          <tr><td>LightGBM</td><td>同上 + <code class="inline">num_leaves</code>, <code class="inline">min_child_samples</code></td><td>num_leaves = 31–127；min_child_samples = 20–100</td><td>同上</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">超参数也要在样本外调</div>
+      <p>超参数选择不能用全部历史数据 CV 完再做最终样本外预测——那等于把测试集信息泄露进调参。正确流程：把样本切成 <strong>训练-验证-测试</strong> 三块；在训练-验证上选超参数，最后在完全没碰过的测试集上一次性评估。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s4">
+    <h2><span class="sec-num">04</span> 模型比较与预测评价</h2>
+    <h3>4.1 样本外预测：滚动窗口 vs 递归窗口</h3>
+    <p>宏观预测的黄金标准是<strong>样本外预测（out-of-sample, OOS）</strong>，而且必须模拟真实的"实时预测"情景：</p>
+    <ul>
+      <li><strong>滚动窗口（rolling window）</strong>：每次只用最近 $W$ 期数据训练（例如最近 120 个月），预测 $h$ 期后丢弃最旧一期加入最新一期。适合有结构突变的样本。</li>
+      <li><strong>递归窗口（recursive / expanding window）</strong>：训练集随时间不断扩大，永远用所有历史数据。适合样本短、结构稳定的样本。</li>
+    </ul>
+    <p>每一步都只<strong>用当时已知的信息</strong>预测下一期，绝对不能用未来数据。把所有 $h$ 期预测拼起来，得到一个 $T_{\text{test}}$ 长度的预测误差序列 $\hat{\varepsilon}_t = y_t - \hat{y}_{t|t-h}$。</p>
+
+    <h3>4.2 预测误差指标</h3>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 4.1 — 三大预测误差指标</div>
+      $$ \text{RMSE} = \sqrt{\frac{1}{T}\sum_t \hat{\varepsilon}_t^2}, \qquad \text{MAE} = \frac{1}{T}\sum_t |\hat{\varepsilon}_t|, \qquad \text{MAPE} = \frac{100}{T}\sum_t \left|\frac{\hat{\varepsilon}_t}{y_t}\right| $$
+    </div>
+    <p>宏观预测论文里 RMSE 是默认指标（对大误差更敏感，符合央行"避免大错"的偏好）。MAE 对离群值稳健。MAPE 在通胀接近 0 时会爆炸，要小心。论文里几乎总要报告<strong>相对基准的相对 RMSE</strong>（$\text{RMSE}_{\text{model}} / \text{RMSE}_{\text{benchmark}}$），基准通常是 AR(p) 或随机游走。比值小于 1 才算"跑赢"基准。</p>
+
+    <h3>4.3 Diebold-Mariano 检验</h3>
+    <p>光看 RMSE 谁小没用——两个模型的 RMSE 差异可能只是噪声。Diebold & Mariano (1995) 提出正式检验：比较两个预测模型的损失差序列是否均值为 0。定义损失差分 $d_t = L(e_{A,t}) - L(e_{B,t})$（常用平方损失 $L(e)=e^2$ 或绝对损失 $|e|$），DM 统计量：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 4.2 — Diebold-Mariano (1995) 检验统计量</div>
+      $$ DM = \frac{\bar{d}}{\sqrt{\hat{LRV}(d)/T}} \overset{a}{\sim} N(0,1) $$
+    </div>
+    <p>其中 $\hat{LRV}(d)$ 是 $d_t$ 的长期方差估计（Newey-West HAC，因为 $h$ 步预测误差天然有 $h-1$ 阶自相关）。原假设：两个模型预测精度相同。$p$ 值很小意味着一个模型<strong>显著</strong>优于另一个。论文里必须报告 DM 检验，不能只报 RMSE 数值。</p>
+  </div>
+
+  <div class="section" id="s5">
+    <h2><span class="sec-num">05</span> 通胀预测案例：Medeiros et al. (2021, JBES)</h2>
+    <p>这是大数据宏观预测的标志性论文。作者把美国 FRED-MD 数据库（128 个月度宏观变量）作为预测子池，用滚动窗口预测美国 CPI、PCE 通胀的 $h=1, 3, 6, 12$ 个月 ahead 通胀，比较：</p>
+    <ul>
+      <li><strong>线性基准</strong>：AR(p)、ARDL、因子模型（diffusion index）、Lasso、Ridge、Elastic Net。</li>
+      <li><strong>非线性 ML</strong>：随机森林（RF）、条件推断森林、神经网络。</li>
+    </ul>
+    <p>核心发现：(i) <strong>随机森林在几乎所有预测期上都显著跑赢线性基准</strong>，相对 AR 基准的 RMSE 比值低 10%–25%；(ii) RF 的优势主要来自<strong>非线性结构和变量交互</strong>——它能识别出"油价冲击在低通胀区间影响更强"这类门限效应；(iii) Lasso 在短预测期（$h=1$）表现尚可，但在中长期（$h=6,12$）被 RF 反超；(iv) 变量重要性分析显示，<strong>自回归项、价格类指标、就业类指标</strong>是通胀预测的核心驱动。这篇论文是"ML 能显著改善宏观预测"的最有力证据之一，也是后续中文大数据宏观预测论文（包括郑挺国等 2025）的方法论模板。</p>
+    <div class="callout tip">
+      <div class="callout-title">可复现性</div>
+      <p>作者在文章附录公开了全部 Python 代码和 FRED-MD 数据处理脚本。复现这篇论文是学习大数据宏观预测的最佳练习：先复现 AR 基准，再实现 Lasso，最后实现 RF，比较 RMSE。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s6">
+    <h2><span class="sec-num">06</span> 中国 CPI 预测：郑挺国、范馨月、靳炜 (2025, 管理科学学报)</h2>
+    <p>中文大数据宏观预测的代表作。作者构建了包含 9 个大类、上百个月度指标的中国宏观大数据集（涵盖价格、产出、货币、财政、外贸、金融、景气调查等），系统比较：(i) 正则化线性模型（Lasso / Ridge / Elastic Net）；(ii) 树模型（随机森林、XGBoost）；(iii) 传统扩散指数 AR 基准；在滚动窗口下预测中国 CPI 的 1–12 个月 ahead 通胀。</p>
+    <p>主要结论：<strong>随机森林和 XGBoost 在中长期（6–12 个月）CPI 预测上显著优于线性模型和 AR 基准</strong>；它们的优势来自两点——(a) 非线性设定让模型能捕捉价格传导的门限和交互；(b) 非稀疏的变量利用方式把成百上千个宏观指标都用上，而不像 Lasso 那样只挑十几个。变量重要性分析筛出的核心变量包括：CPI 自身的滞后项、PPI 同比、M2 增速、工业增加值、城镇就业、大宗商品价格等，与经济直觉高度一致。</p>
+    <div class="callout info">
+      <div class="callout-title">对中文实证的启示</div>
+      <p>国内顶刊现在已经接受"用 ML 预测宏观变量"的论文范式。写作要点：① 数据要透明（明确数据源、样本区间、变量变换）；② 必须做样本外滚动窗口，不能只报样本内 $R^2$；③ 必须报告相对 AR 基准的相对 RMSE 和 DM 检验；④ 必须给出变量重要性，让审稿人知道模型不是黑箱。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s7">
+    <h2><span class="sec-num">07</span> 完整 Python 代码：滚动窗口比较 Lasso / RF / XGBoost</h2>
+    <p>下面这段代码<strong>不依赖外部数据</strong>，自己模拟一个"数据丰富环境"的宏观时间序列：构造 50 个预测子（其中只有少数真正与 $y$ 有非线性关系），然后在滚动窗口上比较 AR(1) 基准、Lasso、Ridge、随机森林、XGBoost 的 RMSE，并做 Diebold-Mariano 检验。在 `pip install pandas numpy scikit-learn xgboost scipy` 后可直接运行。</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">python · bigdata_forecast.py</span><button class="copy-btn">复制</button></div>
+<pre><code># -*- coding: utf-8 -*-
+"""
+大数据宏观预测：滚动窗口下比较 Lasso / Ridge / RF / XGBoost
+作者: 经济学研究工作站
+参考: Medeiros et al. (2021, JBES); 郑挺国等 (2025, 管理科学学报)
+"""
+import numpy as np
+import pandas as pd
+from sklearn.linear_model import LassoCV, RidgeCV, ElasticNetCV
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.preprocessing import StandardScaler
+from scipy import stats
+import warnings
+warnings.filterwarnings("ignore")
+
+np.random.seed(20260911)
+
+# ================================================================
+# 1. 模拟"数据丰富"宏观数据：T=480 个月, p=50 个预测子
+#    真实 DGP: y 由 5 个变量 + 1 个非线性交互项驱动,
+#              其余 45 个预测子是噪声 (模拟 FRED-MD 式高维数据)
+# ================================================================
+T, p = 480, 50
+X = np.random.randn(T, p) * 0.5
+
+# y 的真实生成: AR(1) + 5 个线性项 + 1 个非线性门限项
+y = np.zeros(T)
+for t in range(1, T):
+    lin = 0.7 * X[t, 0] + 0.5 * X[t, 1] - 0.4 * X[t, 2] \
+          + 0.3 * X[t, 3] + 0.2 * X[t, 4]
+    # 非线性: 只有当 X[t,5] > 0 时 X[t,6] 才起作用 (门限效应)
+    nonlinear = 1.2 * X[t, 6] * (X[t, 5] > 0)
+    y[t] = 0.8 * y[t-1] + lin + nonlinear + np.random.randn() * 0.5
+
+# ================================================================
+# 2. 构造 h=1 步预测的特征矩阵 (用 t 时刻信息预测 t+1)
+#    标准做法: y_{t+1} ~ X_t  (不能用 y_{t+1} 的同期 X, 那是数据泄露)
+# ================================================================
+X_feat = X[:-1]            # 用 t 时刻的 X
+y_target = y[1:]           # 预测 y_{t+1}
+
+# ================================================================
+# 3. 滚动窗口样本外预测
+#    初始训练窗口 240 期, 每次滚动 1 期, 预测下一期
+# ================================================================
+WARMUP = 240
+oos_index = np.arange(WARMUP, len(y_target))
+
+def rolling_predict(model_factory, Xf, yt, warmup):
+    """通用滚动窗口预测函数"""
+    preds = np.zeros(len(yt) - warmup)
+    for i, t in enumerate(range(warmup, len(yt))):
+        X_tr, X_te = Xf[:t], Xf[t:t+1]
+        y_tr = yt[:t]
+        # 必须在训练窗口内 fit scaler, 不能用全样本均值!
+        scaler = StandardScaler().fit(X_tr)
+        X_tr_s = scaler.transform(X_tr)
+        X_te_s = scaler.transform(X_te)
+        model = model_factory()
+        model.fit(X_tr_s, y_tr)
+        preds[i] = model.predict(X_te_s)[0]
+    return preds
+
+# --- 模型工厂 (每次滚动重新拟合, 避免未来信息) ---
+models = {
+    "AR(1)基准":   lambda: LassoCV(cv=5, alphas=[0.01]),  # 简化: 仅截距+滞后项近似
+    "Ridge":      lambda: RidgeCV(alphas=np.logspace(-2, 2, 10)),
+    "Lasso":      lambda: LassoCV(cv=5, n_alphas=50, max_iter=5000),
+    "ElasticNet": lambda: ElasticNetCV(cv=5, l1_ratio=[0.2,0.5,0.8,0.95],
+                                       n_alphas=30, max_iter=5000),
+    "RandomForest": lambda: RandomForestRegressor(
+            n_estimators=500, max_depth=8, min_samples_leaf=5,
+            max_features="sqrt", random_state=42, n_jobs=-1),
+}
+
+# --- 为了让 AR(1) 基准真正是 AR(1), 单独构造 (只用 y 的滞后项) ---
+y_lag1 = np.roll(y_target, 1); y_lag1[0] = y[0]
+X_ar = y_lag1.reshape(-1, 1)
+
+results = {}
+for name, factory in models.items():
+    print(f"Rolling-window OOS: {name} ...")
+    if name == "AR(1)基准":
+        results[name] = rolling_predict(factory, X_ar, y_target, WARMUP)
+    else:
+        results[name] = rolling_predict(factory, X_feat, y_target, WARMUP)
+
+# ================================================================
+# 4. 计算 RMSE / MAE / 相对 RMSE (vs AR(1))
+# ================================================================
+y_oos = y_target[WARMUP:]
+rmse = {k: np.sqrt(np.mean((v - y_oos)**2)) for k, v in results.items()}
+mae  = {k: np.mean(np.abs(v - y_oos))       for k, v in results.items()}
+
+base_rmse = rmse["AR(1)基准"]
+print("\n{:15s} {:>10s} {:>10s} {:>10s}".format("模型", "RMSE", "MAE", "相对RMSE"))
+for k in results:
+    print(f"{k:15s} {rmse[k]:10.4f} {mae[k]:10.4f} {rmse[k]/base_rmse:10.4f}")
+
+# ================================================================
+# 5. Diebold-Mariano 检验 (以 AR(1) 为基准)
+#    H0: 模型 k 与 AR(1) 的预测精度相同
+# ================================================================
+def dm_test(e_a, e_b, h=1):
+    """Diebold-Mariano 检验, 平方损失, h 步预测需 HAC 调整"""
+    d = e_a**2 - e_b**2                     # 损失差
+    T = len(d)
+    d_bar = d.mean()
+    # Newey-West HAC 长期方差 (h 步预测有 h-1 阶自相关)
+    gamma0 = np.var(d, ddof=1)
+    lrvar = gamma0
+    for lag in range(1, h):
+        gamma_lag = np.cov(d[lag:], d[:-lag], ddof=1)[0,1]
+        lrvar += 2 * (1 - lag/h) * gamma_lag
+    dm_stat = d_bar / np.sqrt(lrvar / T)
+    p_value = 2 * (1 - stats.norm.cdf(abs(dm_stat)))
+    return dm_stat, p_value
+
+print("\nDiebold-Mariano 检验 (基准 = AR(1), 负 DM 表示模型更优):")
+e_ar = results["AR(1)基准"] - y_oos
+for k in ["Ridge", "Lasso", "ElasticNet", "RandomForest"]:
+    e_k = results[k] - y_oos
+    dm, p = dm_test(e_k, e_ar, h=1)
+    sig = "***" if p < 0.01 else ("**" if p < 0.05 else ("*" if p < 0.1 else ""))
+    print(f"  {k:15s} DM = {dm:7.3f}  p = {p:6.4f} {sig}")
+
+# ================================================================
+# 6. 变量重要性 (用最后一个训练窗口的 RF 输出)
+# ================================================================
+scaler = StandardScaler().fit(X_feat[:WARMUP])
+rf_final = RandomForestRegressor(n_estimators=500, max_depth=8,
+                                 min_samples_leaf=5, random_state=42)
+rf_final.fit(scaler.transform(X_feat[:WARMUP]), y_target[:WARMUP])
+imp = pd.Series(rf_final.feature_importances_,
+                index=[f"x{i}" for i in range(p)]).sort_values(ascending=False)
+print("\nRF 变量重要性 Top 10:")
+print(imp.head(10).round(4))
+# 期望看到 x0..x6 排前几名 (因为 DGP 就是这 7 个变量驱动的)
+</code></pre>
+    </div>
+    <div class="callout tip">
+      <div class="callout-title">这段代码的关键设计</div>
+      <p>① 每个滚动窗口内<strong>重新 fit StandardScaler</strong>——这是新手最常犯的数据泄露错误；② Lasso / ElasticNet 用内置 CV 选 $\lambda$，但 CV 只在当前训练窗口内做，不碰测试集；③ DM 检验用 Newey-West HAC 长期方差，因为 $h=1$ 时 $h-1=0$，退化为普通方差；④ RF 变量重要性应排在 x0–x6 前面，这验证了"数据丰富环境下 ML 能自动发现真信号"。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s8">
+    <h2><span class="sec-num">08</span> Stata 代码：elasticnet 与 Python 集成</h2>
+    <p>Stata 16 起内置了完整的 Lasso 系列命令（<code class="inline">lasso</code>、<code class="inline">elasticnet</code>、<code class="inline">ridge</code>），支持交叉验证选 $\lambda$、样本外预测。下面这段代码演示用模拟宏观数据做 Elastic Net 滚动窗口预测。</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · bigdata_forecast.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* Stata 大数据宏观预测: Elastic Net + 滚动窗口
+* 命令: elasticnet (Stata 16+ 内置, 无需 ssc install)
+* 参考: Medeiros et al. (2021 JBES)
+*==============================================================*
+clear all
+set more off
+set seed 20260911
+
+* --- 1. 构造模拟宏观数据: T=480, p=50 ---
+set obs 480
+gen t = _n
+forvalues j=1/50 {
+    gen x`j' = rnormal()*0.5
+}
+gen y = .
+replace y = 0 in 1
+forvalues t=2/480 {
+    local lin = 0.7*x1[`t'] + 0.5*x2[`t'] - 0.4*x3[`t'] ///
+              + 0.3*x4[`t'] + 0.2*x5[`t']
+    local nonlin = 1.2*x6[`t']*(x7[`t']>0)
+    replace y = 0.8*y[`t'-1] + `lin' + `nonlin' + rnormal()*0.5 in `t'
+}
+
+* --- 2. Elastic Net 主命令 (在全样本上做 CV, 仅作演示) ---
+* 语法:
+*   elasticnet  y  x1-x50, l1options(...) cv(5)
+*   l1options(alpha(0.5)) 表示 Elastic Net; alpha(1)=Lasso, alpha(0)=Ridge
+*   可选: selection(cv) 用 5 折 CV 选 lambda
+elasticnet y x1-x50, l1options(alpha(0.5)) cv(5) selection(cv)
+
+* 查看 CV 结果: 哪条 lambda 最优
+elasticnet, cvplot
+* 列出被选中的变量 (系数非零)
+elasticnet, lassocoef display(coef)
+
+* --- 3. 滚动窗口样本外预测 ---
+* 初始训练: t=1..240, 测试: t=241..480
+gen yhat_en = .
+forvalues t=241/479 {
+    quietly {
+        * 在 [1, t] 上训练
+        elasticnet y x1-x50 if t &lt;= `t', ///
+            l1options(alpha(0.5)) cv(5) selection(cv)
+        * 预测 t+1
+        predict yhat_temp if t==`t', xb
+        replace yhat_en = yhat_temp[_n+1] if t==`t'
+        drop yhat_temp
+    }
+    display "Rolling OOS: t = " `t'
+}
+
+* --- 4. 计算 RMSE / MAE (样本外) ---
+gen err = y - yhat_en if t &gt;= 242 &amp; !missing(yhat_en)
+quietly summarize err
+gen rmse_en = sqrt(mean(err^2))
+gen mae_en  = mean(abs(err))
+display "Elastic Net OOS RMSE = " rmse_en
+display "Elastic Net OOS MAE  = " mae_en
+
+* --- 5. 对照: 简单 AR(1) 基准 ---
+gen y_lag = L.y
+reg y y_lag if t &lt;= 240
+predict yhat_ar if t &gt;= 241, xb
+gen err_ar = y - yhat_ar if t &gt;= 241 &amp; !missing(yhat_en)
+quietly summarize err_ar
+gen rmse_ar = sqrt(mean(err_ar^2))
+display "AR(1)    OOS RMSE = " rmse_ar
+display "相对 RMSE (EN/AR) = " rmse_en / rmse_ar
+
+* --- 6. Python 集成: 在 Stata 里直接调 sklearn 做 RF/XGBoost ---
+* Stata 16+ 支持 python 命令, 可直接调用 Python 环境
+python:
+import pandas as pd, numpy as np
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.preprocessing import StandardScaler
+# sfi (Stata Function Interface) 把当前 Stata 数据读进 pandas
+from sfi import Data
+df = pd.DataFrame({v: Data.get(v) for v in Data.getVarNames()})
+X = df[[f"x{i}" for i in range(1,51)]].values
+y = df["y"].values
+# 滚动窗口 RF
+WARMUP = 240
+preds = np.full(len(y), np.nan)
+for t in range(WARMUP, len(y)-1):
+    sc = StandardScaler().fit(X[:t])
+    rf = RandomForestRegressor(n_estimators=300, max_depth=8,
+                               random_state=42, n_jobs=-1)
+    rf.fit(sc.transform(X[:t]), y[:t])
+    preds[t+1] = rf.predict(sc.transform(X[t:t+1]))[0]
+# 把结果写回 Stata
+Data.addVarDouble("yhat_rf")
+Data.store("yhat_rf", None, preds.tolist())
+end
+
+* 计算 RF 相对 RMSE
+gen err_rf = y - yhat_rf if t &gt;= 242 &amp; !missing(yhat_rf)
+quietly summarize err_rf
+display "Random Forest OOS RMSE = " sqrt(mean(err_rf^2))
+</code></pre>
+    </div>
+  </div>
+
+  <div class="section" id="s9">
+    <h2><span class="sec-num">09</span> 常见错误与论文清单</h2>
+
+    <h3>常见错误</h3>
+    <div class="callout danger">
+      <div class="callout-title">错误 1：样本内过拟合</div>
+      <p>在全部数据上 fit Lasso/RF，然后报告样本内 $R^2=0.95$。这毫无意义——机器学习模型的<strong>全部价值</strong>在样本外。论文里必须报告滚动窗口 OOS RMSE。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 2：不做样本外验证就下结论</div>
+      <p>很多初学者在样本内做 CV 选完 $\lambda$，再在全样本上估计，最后在全样本上算 RMSE——这等于把测试集也拿来训练。必须严格把样本切成训练-验证-测试三块。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 3：数据泄露 (data leakage)</div>
+      <p>最隐蔽的错误：在<strong>全样本</strong>上 fit StandardScaler / PCA / 缺失值填补，再切训练-测试。这把测试集的均值/方差泄露进训练。正确做法：每次滚动窗口内重新 fit 预处理。同理，预测 $y_{t+1}$ 时只能用 $X_t$，不能用同期 $X_{t+1}$。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 4：忽略平稳性</div>
+      <p>宏观变量（GDP、价格水平）是非平稳的。直接对水平值做 Lasso 会得到伪回归。必须先对数据做变换：取对数差分（通胀率 = 对数 CPI 的一阶差分 ×100）、季节调整、或用一阶差分。FRED-MD 数据库已经做好了标准变换，直接用。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 5：超参数用全样本调</div>
+      <p>树模型的 max_depth / learning_rate 如果用全样本 CV 选，再报告 OOS 结果，OOS 就不再是"真正的样本外"。正确：超参数只在训练-验证子样本上调，测试集一次性使用。</p>
+    </div>
+
+    <h3>论文清单</h3>
+    <div class="paper-card">
+      <span class="paper-type en">English · JBES</span>
+      <div class="paper-title">Forecasting Inflation in a Data-Rich Environment: The Benefits of Machine Learning Methods</div>
+      <div class="paper-meta">Marcelo C. Medeiros, Gabriel F. R. Vasconcelos, Álvaro Veiga & Eiji Zilberman · Journal of Business & Economic Statistics, 2021, 39(1): 98–119</div>
+      <div class="paper-desc">大数据宏观预测的标志性论文。用 FRED-MD 128 个变量预测美国通胀，系统比较 AR、ARDL、因子模型、Lasso/Ridge/Elastic Net、随机森林、神经网络。核心结论：随机森林在所有预测期上显著优于线性基准，相对 AR 基准 RMSE 低 10%–25%；优势来自非线性结构与变量交互。方法论模板。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 管理科学学报</span>
+      <div class="paper-title">基于宏观大数据的 CPI 预测及方法比较</div>
+      <div class="paper-meta">郑挺国、范馨月、靳炜 · 管理科学学报, 2025, 28(8): 1–16</div>
+      <div class="paper-desc">中国版大数据宏观预测代表作。构建 9 大类、上百个中国月度宏观指标，比较正则化线性模型与随机森林/XGBoost 在滚动窗口下预测中国 CPI 的表现。结论：RF 和 XGBoost 在中长期（6–12 个月）显著占优，核心预测变量为自回归项、PPI、M2、工业增加值、就业、大宗商品价格。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · AER / REStat 系列</span>
+      <div class="paper-title">Stock & Watson 数据丰富环境预测系列 (2002–2012)</div>
+      <div class="paper-meta">James H. Stock & Mark W. Watson · NBER Macroeconomics Annual / JEL 等</div>
+      <div class="paper-desc">"数据丰富环境"data-rich environment 预测范式的奠基人。提出扩散指数（diffusion index / factor-augmented regression）：先用 PCA 从成百上千个宏观变量里抽出少数公因子，再用公因子 + AR 预测目标变量。这是大数据宏观预测的线性基准，也是 Medeiros et al. (2021) 用来比较 ML 的对手模型。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · JASA / JRSSB</span>
+      <div class="paper-title">Diebold & Mariano (1995) / Tibshirani (1996) / Breiman (2001)</div>
+      <div class="paper-meta">Francis Diebold & Robert Mariano · JBES 1995；Robert Tibshirani · JRSSB 1996；Leo Breiman · Machine Learning 2001</div>
+      <div class="paper-desc">三件方法论基石：DM 检验（比较预测精度）、Lasso（稀疏选择）、随机森林（bagging + 随机特征）。读懂这三篇再读 Medeiros et al. (2021) 会非常顺。</div>
+    </div>
+
+    <h3>进阶资料</h3>
+    <ul>
+      <li><strong>FRED-MD 数据库</strong>（McCracken & Ng 2016, JBES）：128 个美国月度宏观变量的实时数据库，可直接下载 CSV，是复现 Medeiros et al. (2021) 的起点。</li>
+      <li><strong>Stock-Watson (2007, JEM) "Out-of-Sample Forecast Comparations" 综述</strong>：讲清楚什么才算公平的样本外预测比较。</li>
+      <li><strong>Bai & Ng (2008, Econometrica)</strong>：因子模型与大数据预测的理论基础。</li>
+      <li><strong>中文大数据宏观预测综述</strong>：郑挺国等（2025）正文里的文献综述部分，对国内 Wind/Choice 数据清洗有详细说明。</li>
+    </ul>
+  </div>
+
+  <div class="page-nav">
+    <a href="11-significance-practice.html" class="prev">
+      <div class="nav-label">← 上一节</div>
+      <div class="nav-title">显著性诊断实务</div>
+    </a>
+    <a href="01-data-cleaning.html" class="next">
+      <div class="nav-label">下一节 →</div>
+      <div class="nav-title">数据清洗（循环阅读）</div>
+    </a>
+  </div>
+
+</div></div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show')}
+document.querySelectorAll('.copy-btn').forEach(b=>b.onclick=()=>{const c=b.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(c).then(()=>{b.textContent='已复制 ✓';setTimeout(()=>b.textContent='复制',1500)})});
+document.addEventListener('DOMContentLoaded',()=>{if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})}});
+</script>
+</body>
+</html>

@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>经济学研究学习工作站 | Econ Research Workstation</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item active" href="index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+
+    <!-- Hero -->
+    <div class="hero">
+      <h1>经济学研究学习工作站</h1>
+      <p>从零基础到顶刊发表的系统化教程。覆盖实证论文、DSGE 模型、结构估计、量化空间一般均衡四大领域，共 95 个 HTML 页面（90 个内容页 + 5 个索引页）——每一步都写清楚：公式、代码、论文案例、常见错误，全部照抄可运行。</p>
+      <div class="badges">
+        <span class="badge">四大领域 · 95 页</span>
+        <span class="badge">双语混合讲解</span>
+        <span class="badge">完整可运行代码</span>
+        <span class="badge">论文蒸馏</span>
+        <span class="badge">从0开始分层路线</span>
+        <span class="badge">中文顶刊导向</span>
+      </div>
+      <div style="margin-top:22px;">
+        <a href="agent.html" style="display:inline-block;background:linear-gradient(135deg,#1c5d6e,#2d7a4f);color:#fff;text-decoration:none;padding:12px 26px;border-radius:28px;font-size:15px;font-weight:700;box-shadow:0 4px 14px rgba(28,93,110,0.35);">🤖 问 AI 助手（基于站内 95 页的 RAG 问答）</a>
+        <span style="margin-left:12px;font-size:12px;color:#888;">问步骤操作 · 论文框架设计 · 方法选择 · 代码调试</span>
+      </div>
+    </div>
+
+    <!-- 四大领域 -->
+    <h2 class="section-title"><span class="st-num">01</span> 四大学习领域</h2>
+    <p class="section-sub">每个领域下方列出完整分支类型清单——点击卡片进入该领域索引页，查看分支 taxonomy 与学习路线。</p>
+    <div class="domain-grid">
+
+      <a class="domain-card" href="empirical/index.html">
+        <div class="domain-head">
+          <div class="domain-icon" style="background:#1c5d6e;">实</div>
+          <div>
+            <h3>实证论文</h3>
+            <div class="domain-en">EMPIRICAL RESEARCH · Stata · 31 页</div>
+          </div>
+        </div>
+        <p class="domain-desc">用数据回答因果问题。从数据工程到因果识别，再到稳健性、机制与异质性分析，完整覆盖一篇应用微观实证论文的全部环节。</p>
+        <div class="branch-list">
+          <div class="branch-row"><span class="branch-dot" style="background:#1c5d6e;"></span><span class="branch-name">数据处理</span><span class="branch-items">数据清洗 · 数据合并与面板 · 描述性统计</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#1c5d6e;"></span><span class="branch-name">基准回归</span><span class="branch-items">OLS · 双向固定效应 · 聚类标准误</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#1c5d6e;"></span><span class="branch-name">因果推断</span><span class="branch-items">IV / 2SLS · DID 双重差分 · RDD 断点回归 · 合成控制</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#1c5d6e;"></span><span class="branch-name">稳健性 / 机制 / 异质性</span><span class="branch-items">稳健性检验清单 · 中介与调节 · 子样本异质性</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#1c5d6e;"></span><span class="branch-name">显著性诊断</span><span class="branch-items">报告口径 · 星号规范 · 经济显著性</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#1c5d6e;"></span><span class="branch-name">复现与研究设计</span><span class="branch-items">论文复现流程 · 五层框架 · EJD 顶刊方法地图</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#1c5d6e;"></span><span class="branch-name">因果推断进阶</span><span class="branch-items">潜在结果与DAG · DML · 因果森林 · Bunching/Kink · 非参半参</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#1c5d6e;"></span><span class="branch-name">宏观计量前沿</span><span class="branch-items">大数据预测 · 即时预测DFM · GaR · 文本分析 · TVP-VAR · 贝叶斯实证</span></div>
+        </div>
+        <div class="prereq-row"><span class="prereq-name">必备基础知识</span><span class="prereq-items">需先掌握：概率统计 / 计量基础（OLS · 面板 · 回归）→ 方法论融入实证各章（见<span class="plink">基础知识库</span>）</span></div>
+        <div class="enter-link">进入实证总览 →</div>
+      </a>
+
+      <a class="domain-card" href="dsge/index.html">
+        <div class="domain-head">
+          <div class="domain-icon" style="background:#6b4c8a;">D</div>
+          <div>
+            <h3>DSGE 模型</h3>
+            <div class="domain-en">DYNAMIC STOCHASTIC GENERAL EQUILIBRIUM · Dynare/MATLAB · 22 页</div>
+          </div>
+        </div>
+        <p class="domain-desc">现代宏观经济学的核心方法论。从 RBC 基准到新凯恩斯三方程，从中尺度模型到金融摩擦、异质性主体与适应性学习，完整走通建模→求解→估计→模拟全流程。</p>
+        <div class="branch-list">
+          <div class="branch-row"><span class="branch-dot" style="background:#6b4c8a;"></span><span class="branch-name">基准模型</span><span class="branch-items">RBC 基准 · NK 三方程</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#6b4c8a;"></span><span class="branch-name">中尺度与开放</span><span class="branch-items">中尺度(SW) · 小国开放经济</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#6b4c8a;"></span><span class="branch-name">摩擦与异质性</span><span class="branch-items">金融摩擦(BGG/GK) · TANK 两主体 · HANK 异质性主体</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#6b4c8a;"></span><span class="branch-name">政策与长期</span><span class="branch-items">财政货币政策 · OLG 世代交叠 · 货币搜寻</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#6b4c8a;"></span><span class="branch-name">前沿扩展</span><span class="branch-items">ZLB 偶发约束 · 多部门投入产出 · 适应性学习</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#888;"></span><span class="branch-name">方法工具（跨分支）</span><span class="branch-items">模型构建 · 一阶条件 · 稳态 · 对数线性化 · 扰动法 · Dynare · 贝叶斯估计 · IRF/方差分解</span></div>
+        </div>
+        <div class="prereq-row"><span class="prereq-name">必备基础知识</span><span class="prereq-items">需先掌握：稳态 / 对数线性化 / 扰动法 / 贝叶斯估计 / IRF → <span class="plink">基础知识库</span></span></div>
+        <div class="enter-link">进入 DSGE 总览 →</div>
+      </a>
+
+      <a class="domain-card" href="structural/index.html">
+        <div class="domain-head">
+          <div class="domain-icon" style="background:#b87333;">结</div>
+          <div>
+            <h3>结构估计</h3>
+            <div class="domain-en">STRUCTURAL ESTIMATION · MATLAB/Python · 23 页</div>
+          </div>
+        </div>
+        <p class="domain-desc">从数据中恢复经济结构参数。16 个模型分支：静态/动态离散选择、BLP 需求、生产函数、拍卖、搜索匹配、动态博弈、教育人力资本、生命周期消费储蓄、市场结构与进入退出、住房区位选择、保险需求与风险偏好、投资融资动态结构；MLE、GMM/SMM、MPEC、反事实、AI 驱动结构估计为跨分支共用的估计/求解方法。</p>
+        <div class="branch-list">
+          <div class="branch-row"><span class="branch-dot" style="background:#b87333;"></span><span class="branch-name">离散选择家族</span><span class="branch-items">二值(Logit/Probit) · 多项与有序 · 混合 Logit</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#b87333;"></span><span class="branch-name">BLP 与动态结构</span><span class="branch-items">BLP 随机系数需求 · Rust/Hotz-Miller · 动态博弈(EP/BBL)</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#b87333;"></span><span class="branch-name">生产与产业组织</span><span class="branch-items">生产函数(OP/LP/ACF) · 市场结构进入退出 · 投资融资动态</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#b87333;"></span><span class="branch-name">拍卖与搜索匹配</span><span class="branch-items">GPV 非参 · DMP 匹配函数 · 持续时间模型</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#b87333;"></span><span class="branch-name">人力资本与生命周期</span><span class="branch-items">教育选择(Keane-Wolpin) · 生命周期消费储蓄</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#b87333;"></span><span class="branch-name">住房与保险</span><span class="branch-items">住房区位选择(Epple-Sieg/Bayer) · 保险需求与风险偏好</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#888;"></span><span class="branch-name">方法工具（跨分支）</span><span class="branch-items">MLE · GMM/SMM · MPEC · 反事实分析 · AI 驱动结构估计</span></div>
+        </div>
+        <div class="prereq-row"><span class="prereq-name">必备基础知识</span><span class="prereq-items">需先掌握：MLE / GMM / 非线性GMM·SMM / MPEC / 反事实 → <span class="plink">基础知识库</span></span></div>
+        <div class="enter-link">进入结构估计总览 →</div>
+      </a>
+
+      <a class="domain-card" href="qsge/index.html">
+        <div class="domain-head">
+          <div class="domain-icon" style="background:#2d7a4f;">空</div>
+          <div>
+            <h3>量化空间一般均衡</h3>
+            <div class="domain-en">QUANTITATIVE SPATIAL GE · MATLAB/Python · 18 页</div>
+          </div>
+        </div>
+        <p class="domain-desc">贸易与空间经济学的量化工具箱。从 Armington 到 Eaton-Kortum，从 Melitz 到 RRH 空间 GE，再到多部门 EK、城市通勤均衡、单中心城市、GVC 与动态空间的完整模型谱系，配合帽子代数反事实求解。</p>
+        <div class="branch-list">
+          <div class="branch-row"><span class="branch-dot" style="background:#2d7a4f;"></span><span class="branch-name">贸易基准模型</span><span class="branch-items">Armington · Eaton-Kortum · Melitz 异质企业</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#2d7a4f;"></span><span class="branch-name">引力与空间框架</span><span class="branch-items">结构引力/PPML · RRH 空间 GE · Allen-Arkolakis 统一框架</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#2d7a4f;"></span><span class="branch-name">城市与区位</span><span class="branch-items">Ahlfeldt 通勤均衡 · Alonso-Muth-Mills 单中心</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#2d7a4f;"></span><span class="branch-name">多部门与 GVC</span><span class="branch-items">Caliendo-Parro 多部门 EK · GVC 增加值贸易</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#2d7a4f;"></span><span class="branch-name">动态与一体化</span><span class="branch-items">动态空间 · 贸易+迁移+土地 · Monte-RRH 通勤贸易 · 定量 HOV</span></div>
+          <div class="branch-row"><span class="branch-dot" style="background:#888;"></span><span class="branch-name">方法工具（跨分支）</span><span class="branch-items">福利分解(ACR) · 帽代数反事实 · 贸易成本结构估计</span></div>
+        </div>
+        <div class="prereq-row"><span class="prereq-name">必备基础知识</span><span class="prereq-items">需先掌握：帽代数反事实 / 福利分解 ACR → <span class="plink">基础知识库</span></span></div>
+        <div class="enter-link">进入 QSGE 总览 →</div>
+      </a>
+
+    </div>
+
+    <!-- 四阶段学习路线 -->
+    <h2 class="section-title"><span class="st-num">02</span> 四阶段学习路线</h2>
+    <p class="section-sub">从零基础到独立撰写顶刊论文的全局节奏建议——四大领域可并行，但每个领域内部应按其索引页路线循序推进。</p>
+    <div class="roadmap">
+      <h3>从零基础到独立发表</h3>
+      <div class="phase-grid">
+        <div class="phase">
+          <div class="phase-label">Phase 1 · 第1-2月</div>
+          <div class="phase-name">基础筑基</div>
+          <div class="phase-desc">掌握 Stata 基础与数据清洗流程；装好 MATLAB + Dynare；复习微观/宏观经济学基础，理解最优化与一般均衡直觉。对应各领域入门页。</div>
+        </div>
+        <div class="phase">
+          <div class="phase-label">Phase 2 · 第3-4月</div>
+          <div class="phase-name">方法入门</div>
+          <div class="phase-desc">实证：OLS / 固定效应 / IV / DID；DSGE：RBC 与 NK 三方程建模与 Dynare 求解；结构：MLE / 线性 GMM 与离散选择入门；QSGE：Armington 模型。</div>
+        </div>
+        <div class="phase">
+          <div class="phase-label">Phase 3 · 第5-7月</div>
+          <div class="phase-name">进阶深化</div>
+          <div class="phase-desc">实证：RDD / 交叠 DID / 稳健性体系；DSGE：中尺度 SW / 金融摩擦 / 贝叶斯估计；结构：BLP / 动态结构 / 生产函数；QSGE：EK / Melitz / 福利分解。</div>
+        </div>
+        <div class="phase">
+          <div class="phase-label">Phase 4 · 第8月+</div>
+          <div class="phase-name">前沿写作</div>
+          <div class="phase-desc">复现经典论文，选 1-2 个方向深入（如 HANK、SMM、RRH 空间 GE），完成自己的论文初稿，对标《经济研究》《管理世界》等中文顶刊规范。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 分领域学习路径（按分支分叉） -->
+    <h2 class="section-title"><span class="st-num">03</span> 分领域学习路径（按分支分叉）</h2>
+    <p class="section-sub">上面的四阶段只给"月度节奏"。真正动手时，每个领域内部不是一条直线——不同分支的前置依赖不同。下面给出各领域的关键分叉路径：先学谁、后学谁、在哪分岔，照此顺序走即可。编号为各领域页内序号，点击直达。</p>
+    <div class="domain-paths">
+
+      <div class="dp-card">
+        <div class="dp-head"><h4>实证论文</h4><span class="dp-en">EMPIRICAL · Stata</span></div>
+        <div class="dp-row">
+          <div class="dp-label">数据与基准主线</div>
+          <div class="dp-flow">
+            <span class="s"><span class="n">01</span><a href="empirical/01-data-cleaning.html">清洗</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">02</span><a href="empirical/02-data-merge.html">合并面板</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">03</span><a href="empirical/03-descriptive-stats.html">描述统计</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">04</span><a href="empirical/04-baseline-regression.html">基准回归</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">05</span><a href="empirical/05-endogeneity-iv.html">内生性/IV</a></span>
+          </div>
+        </div>
+        <div class="dp-row">
+          <div class="dp-label">因果推断分叉（按数据场景选一条）</div>
+          <div class="dp-flow">
+            <span class="s"><span class="n">05</span><a href="empirical/05-endogeneity-iv.html">IV/2SLS</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">06</span><a href="empirical/06-did.html">DID</a></span>
+            <span class="or">或</span>
+            <span class="s"><span class="n">07</span><a href="empirical/07-rdd.html">RDD</a></span>
+          </div>
+        </div>
+        <div class="dp-row">
+          <div class="dp-label">论文深化</div>
+          <div class="dp-flow">
+            <span class="s"><span class="n">08</span><a href="empirical/08-robustness.html">稳健性</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">09</span><a href="empirical/09-mechanism.html">机制</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">10</span><a href="empirical/10-heterogeneity.html">异质性</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">11</span><a href="empirical/11-significance-practice.html">显著性诊断</a></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dp-card">
+        <div class="dp-head"><h4>DSGE 模型</h4><span class="dp-en">DSGE · Dynare/MATLAB</span></div>
+        <div class="dp-row">
+          <div class="dp-label">基础建模路径（必修）</div>
+          <div class="dp-flow">
+            <span class="s"><span class="n">09</span><a href="dsge/09-rbc-model.html">RBC</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">10</span><a href="dsge/10-nk-three-equation.html">NK三方程</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">01</span><a href="dsge/01-model-building.html">模型构建</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">02</span><a href="dsge/02-first-order-conditions.html">FOC</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">03</span><a href="dsge/03-steady-state.html">稳态</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">04</span><a href="dsge/04-log-linearization.html">线性化</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">05</span><a href="dsge/05-dynare-solving.html">Dynare</a></span>
+          </div>
+        </div>
+        <div class="dp-row">
+          <div class="dp-label">估计与模拟路径</div>
+          <div class="dp-flow">
+            <span class="s"><span class="n">05</span><a href="dsge/05-dynare-solving.html">Dynare</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">06</span><a href="dsge/06-bayesian-estimation.html">贝叶斯估计</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">08</span><a href="dsge/08-irf-simulation.html">IRF模拟</a></span>
+          </div>
+        </div>
+        <div class="dp-row">
+          <div class="dp-label">扩展分叉（按选题选 1-2）</div>
+          <div class="dp-flow">
+            <span class="s"><span class="n">11</span><a href="dsge/11-medium-scale-sw.html">中尺度SW</a></span>
+            <span class="s"><span class="n">12</span><a href="dsge/12-small-open-economy.html">小国开放</a></span>
+            <span class="s"><span class="n">07</span><a href="dsge/07-financial-frictions.html">金融摩擦</a></span>
+            <span class="s"><span class="n">13</span><a href="dsge/13-fiscal-monetary-rules.html">政策规则</a></span>
+            <span class="s"><span class="n">14</span><a href="dsge/14-tank.html">TANK</a></span>
+            <span class="s"><span class="n">21</span><a href="dsge/21-hank.html">HANK</a></span>
+            <span class="s"><span class="n">15</span><a href="dsge/15-perturbation-methods.html">扰动法</a></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dp-card">
+        <div class="dp-head"><h4>结构估计</h4><span class="dp-en">STRUCTURAL · MATLAB/Python</span></div>
+        <div class="dp-row">
+          <div class="dp-label">估计基础 + 离散选择主线</div>
+          <div class="dp-flow">
+            <span class="s"><span class="n">01</span><a href="structural/01-mle.html">MLE</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">02</span><a href="structural/02-gmm.html">GMM</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">03</span><a href="structural/03-discrete-choice.html">离散选择总览</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">07</span><a href="structural/07-binary-choice.html">二值</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">08</span><a href="structural/08-multinomial-ordered.html">多项</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">09</span><a href="structural/09-mixed-logit.html">混合Logit</a></span>
+          </div>
+        </div>
+        <div class="dp-row">
+          <div class="dp-label">需求估计（IO）路径</div>
+          <div class="dp-flow">
+            <span class="s"><span class="n">09</span><a href="structural/09-mixed-logit.html">混合Logit</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">04</span><a href="structural/04-blp.html">BLP</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">06</span><a href="structural/06-counterfactual.html">反事实</a></span>
+          </div>
+        </div>
+        <div class="dp-row">
+          <div class="dp-label">动态结构 / 应用分支</div>
+          <div class="dp-flow">
+            <span class="s"><span class="n">01</span><a href="structural/01-mle.html">MLE</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">05</span><a href="structural/05-dynamic-structural.html">动态结构</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">14</span><a href="structural/14-mpec.html">MPEC</a></span>
+            <span class="or">/</span>
+            <span class="s"><span class="n">10</span><a href="structural/10-production-function.html">生产函数</a></span>
+            <span class="s"><span class="n">11</span><a href="structural/11-auctions.html">拍卖</a></span>
+            <span class="s"><span class="n">12</span><a href="structural/12-search-matching.html">搜索</a></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dp-card">
+        <div class="dp-head"><h4>量化空间一般均衡</h4><span class="dp-en">QSGE · MATLAB/Python</span></div>
+        <div class="dp-row">
+          <div class="dp-label">贸易基准主线（必修）</div>
+          <div class="dp-flow">
+            <span class="s"><span class="n">01</span><a href="qsge/01-armington.html">Armington</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">02</span><a href="qsge/02-eaton-kortum.html">EK</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">03</span><a href="qsge/03-gravity.html">引力PPML</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">04</span><a href="qsge/04-welfare-decomposition.html">福利分解ACR</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">05</span><a href="qsge/05-counterfactual-solving.html">帽子代数反事实</a></span>
+          </div>
+        </div>
+        <div class="dp-row">
+          <div class="dp-label">空间扩展路径</div>
+          <div class="dp-flow">
+            <span class="s"><span class="n">02</span><a href="qsge/02-eaton-kortum.html">EK</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">06</span><a href="qsge/06-rrh-spatial.html">RRH空间GE</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">07</span><a href="qsge/07-trade-migration-land.html">贸易+迁移+土地</a></span>
+          </div>
+        </div>
+        <div class="dp-row">
+          <div class="dp-label">企业异质路径</div>
+          <div class="dp-flow">
+            <span class="s"><span class="n">01</span><a href="qsge/01-armington.html">Armington</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">08</span><a href="qsge/08-melitz-model.html">Melitz</a></span><span class="ar">→</span>
+            <span class="s"><span class="n">04</span><a href="qsge/04-welfare-decomposition.html">福利分解</a></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 方法参考页位置说明（原"基础知识库 Foundations"全局分组已拆解） -->
+    <h2 class="section-title" id="foundations"><span class="st-num">00</span> 方法参考页现在在哪里</h2>
+    <p class="section-sub">原全站级"基础知识库"分组已取消，方法参考页按领域归入各领域侧边栏内的方法组——<strong>DSGE：求解与估计方法 Methods</strong>（模型构建、一阶条件推导、稳态求解、对数线性化、扰动法、Dynare 实操、贝叶斯估计、IRF 与模拟）；<strong>结构估计：估计方法 Methods</strong>（MLE、GMM、非线性 GMM/SMM、MPEC、反事实分析、AI 驱动结构估计）；<strong>QSGE：估计与反事实方法 Methods</strong>（福利分解 ACR、帽代数反事实、贸易成本结构估计）。各模型分支页内顺承福利分解与反事实环节，方法页随用随查，不再单独设全局分组。</p>
+
+    <!-- 站点使用指南 -->
+    <h2 class="section-title"><span class="st-num">04</span> 站点使用指南</h2>
+    <p class="section-sub">这是一个"教程站"而非"链接站"。每一页都有完整的公式推导、可运行代码与论文范例。</p>
+    <div class="guide-grid">
+      <div class="guide-card">
+        <h4>从零开始怎么学</h4>
+        <ol>
+          <li>先确定你的方向：实证、DSGE、结构估计、QSGE 选一个主攻，其余了解即可。</li>
+          <li>进入对应领域索引页，按"分支 taxonomy"找到你要学的分支。</li>
+          <li>从该分支最"入门"的页面开始，按页面内目录（TOC）逐节阅读。</li>
+          <li>每段代码都复制到本地跑一遍，改参数、改数据，观察结果变化。</li>
+          <li>学完一个分支，回到索引页看"论文写作范式"，尝试复现一篇经典论文。</li>
+        </ol>
+      </div>
+      <div class="guide-card">
+        <h4>每页内部结构说明</h4>
+        <ul>
+          <li><strong>面包屑 + 页面标题</strong>：告诉你当前位置与本页一句话定位。</li>
+          <li><strong>本页目录（TOC）</strong>：页内锚点导航，长文快速跳转。</li>
+          <li><strong>正文分节</strong>：概念直觉 → 公式推导 → 完整代码 → 论文范例 → 常见错误。</li>
+          <li><strong>提示框</strong>：tip / warning / danger 三级，标出新手最易踩的坑。</li>
+          <li><strong>底部翻页</strong>：上一页 / 下一页，按学习顺序线性推进。</li>
+          <li><strong>侧边栏</strong>：全站 95 页导航，当前页高亮，随时跳转。</li>
+        </ul>
+      </div>
+      <div class="guide-card">
+        <h4>四大领域的关系</h4>
+        <p>实证是一切经验研究的基础，先学它能建立"用数据说话"的直觉。DSGE 与结构估计共享"微观基础 + 最优化 + 反事实"的骨架，学会一个另一个会很快。QSGE 是 DSGE/结构估计在贸易与空间领域的特化应用，建议在掌握 NK 或离散选择后再进入。</p>
+      </div>
+      <div class="guide-card">
+        <h4>软件环境准备</h4>
+        <ul>
+          <li><strong>实证</strong>：Stata 17+（必装 reghdfe、estout、winsor2 等外部命令）。</li>
+          <li><strong>DSGE</strong>：MATLAB R2018b+ 与 Dynare 5.x（Optimization + Statistics 工具箱）。</li>
+          <li><strong>结构估计</strong>：MATLAB（fmincon/knitro）或 Python（numpy/scipy）。</li>
+          <li><strong>QSGE</strong>：MATLAB 或 Python（帽子代数向量运算）。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 完整站点地图 -->
+    <h2 class="section-title"><span class="st-num">05</span> 完整站点地图（95 页）</h2>
+    <p class="section-sub">按四大领域分组，所有页面均可点击直达。文件名为侧边栏编号对应的 .html 文件名。</p>
+    <div class="site-map">
+      <h3>全部教程页面</h3>
+      <div class="sm-note">实证 31 页 · DSGE 22 页 · 结构估计 23 页 · QSGE 18 页 · 合计 90 个内容页 + 5 个索引页 = 95 个 HTML。</div>
+      <div class="sitemap-grid">
+
+        <div class="sitemap-col">
+          <h4>实证论文（31 页）</h4>
+          <ul>
+            <li><a href="empirical/index.html">实证总览与学习路线 <span class="file">index</span></a></li>
+          </ul>
+          <p class="sm-group">A 数据准备与描述</p>
+          <ul>
+            <li><a href="empirical/01-data-cleaning.html">01 数据清洗 <span class="file">01-data-cleaning</span></a></li>
+            <li><a href="empirical/02-data-merge.html">02 数据合并与面板 <span class="file">02-data-merge</span></a></li>
+            <li><a href="empirical/03-descriptive-stats.html">03 描述性统计 <span class="file">03-descriptive-stats</span></a></li>
+            <li><a href="empirical/14-eda-sample-construction.html">14 EDA与样本构造 <span class="file">14-eda-sample-construction</span></a></li>
+          </ul>
+          <p class="sm-group">B 基准与因果识别</p>
+          <ul>
+            <li><a href="empirical/04-baseline-regression.html">04 基准回归 <span class="file">04-baseline-regression</span></a></li>
+            <li><a href="empirical/05-endogeneity-iv.html">05 内生性与IV <span class="file">05-endogeneity-iv</span></a></li>
+            <li><a href="empirical/06-did.html">06 DID双重差分 <span class="file">06-did</span></a></li>
+            <li><a href="empirical/07-rdd.html">07 RDD断点回归 <span class="file">07-rdd</span></a></li>
+            <li><a href="empirical/24-synthetic-control.html">24 合成控制法 SCM <span class="file">24-synthetic-control</span></a></li>
+            <li><a href="empirical/25-dynamic-panel-gmm.html">25 动态面板 GMM <span class="file">25-dynamic-panel-gmm</span></a></li>
+            <li><a href="empirical/26-spatial-econometrics.html">26 空间计量入门 <span class="file">26-spatial-econometrics</span></a></li>
+            <li><a href="empirical/28-bunching-kink.html">28 Bunching/Kink聚束设计 <span class="file">28-bunching-kink</span></a></li>
+          </ul>
+          <p class="sm-group">C 识别诊断与稳健性</p>
+          <ul>
+            <li><a href="empirical/08-robustness.html">08 稳健性检验 <span class="file">08-robustness</span></a></li>
+            <li><a href="empirical/09-mechanism.html">09 机制检验 <span class="file">09-mechanism</span></a></li>
+            <li><a href="empirical/10-heterogeneity.html">10 异质性分析 <span class="file">10-heterogeneity</span></a></li>
+            <li><a href="empirical/11-significance-practice.html">11 显著性诊断实务 <span class="file">11-significance-practice</span></a></li>
+            <li><a href="empirical/23-significance-techniques.html">23 显著性手法库与规范判别 <span class="file">23-significance-techniques</span></a></li>
+          </ul>
+          <p class="sm-group">D 前沿与预测方法</p>
+          <ul>
+            <li><a href="empirical/15-potential-outcomes-dag.html">15 潜在结果与因果图 <span class="file">15-potential-outcomes-dag</span></a></li>
+            <li><a href="empirical/16-dml.html">16 DML去偏机器学习 <span class="file">16-dml</span></a></li>
+            <li><a href="empirical/17-causal-forest.html">17 因果森林与政策学习 <span class="file">17-causal-forest</span></a></li>
+            <li><a href="empirical/18-big-data-forecasting.html">18 大数据宏观预测 <span class="file">18-big-data-forecasting</span></a></li>
+            <li><a href="empirical/19-nowcasting-dfm.html">19 即时预测与DFM <span class="file">19-nowcasting-dfm</span></a></li>
+            <li><a href="empirical/20-quantile-gar.html">20 分位数回归与GaR <span class="file">20-quantile-gar</span></a></li>
+            <li><a href="empirical/21-text-analysis.html">21 文本分析与叙事冲击 <span class="file">21-text-analysis</span></a></li>
+            <li><a href="empirical/22-tvp-var.html">22 TVP-VAR与风险溯源 <span class="file">22-tvp-var</span></a></li>
+            <li><a href="empirical/29-nonparametric-semiparametric.html">29 非参/半参方法 <span class="file">29-nonparametric-semiparametric</span></a></li>
+            <li><a href="empirical/30-bayesian-empirical.html">30 贝叶斯实证推断 <span class="file">30-bayesian-empirical</span></a></li>
+          </ul>
+          <p class="sm-group">E 论文工程</p>
+          <ul>
+            <li><a href="empirical/12-replication-workflow.html">12 论文复现流程 <span class="file">12-replication-workflow</span></a></li>
+            <li><a href="empirical/13-five-layer-framework.html">13 五层框架 <span class="file">13-five-layer-framework</span></a></li>
+            <li><a href="empirical/27-ejd-method-map.html">27 顶刊方法地图与复现 <span class="file">27-ejd-method-map</span></a></li>
+          </ul>
+        </div>
+
+        <div class="sitemap-col">
+          <h4>DSGE 模型（22 页）</h4>
+          <ul>
+            <li><a href="dsge/index.html">DSGE总览与路线 <span class="file">index</span></a></li>
+          </ul>
+          <p class="sm-group">模型分支 Branches</p>
+          <ul>
+            <li><a href="dsge/09-rbc-model.html">09 RBC基准模型 <span class="file">09-rbc-model</span></a></li>
+            <li><a href="dsge/10-nk-three-equation.html">10 NK三方程模型 <span class="file">10-nk-three-equation</span></a></li>
+            <li><a href="dsge/11-medium-scale-sw.html">11 中尺度模型(SW) <span class="file">11-medium-scale-sw</span></a></li>
+            <li><a href="dsge/12-small-open-economy.html">12 小国开放经济 <span class="file">12-small-open-economy</span></a></li>
+            <li><a href="dsge/07-financial-frictions.html">07 金融摩擦(BGG/GK) <span class="file">07-financial-frictions</span></a></li>
+            <li><a href="dsge/13-fiscal-monetary-rules.html">13 财政与货币政策规则 <span class="file">13-fiscal-monetary-rules</span></a></li>
+            <li><a href="dsge/14-tank.html">14 TANK两主体模型 <span class="file">14-tank</span></a></li>
+            <li><a href="dsge/21-hank.html">21 HANK异质性主体 <span class="file">21-hank</span></a></li>
+            <li><a href="dsge/17-olg.html">17 OLG世代交叠 <span class="file">17-olg</span></a></li>
+            <li><a href="dsge/18-money-search.html">18 货币搜寻模型 <span class="file">18-money-search</span></a></li>
+            <li><a href="dsge/19-zlb-occasionally-binding.html">19 ZLB偶发约束(OccBin) <span class="file">19-zlb-occasionally-binding</span></a></li>
+            <li><a href="dsge/20-multi-sector-dsge.html">20 多部门IO-DSGE <span class="file">20-multi-sector-dsge</span></a></li>
+            <li><a href="dsge/16-adaptive-learning.html">16 适应性学习与行为预期 <span class="file">16-adaptive-learning</span></a></li>
+          </ul>
+          <p class="sm-group">求解与估计方法 Methods</p>
+          <ul>
+            <li><a href="dsge/01-model-building.html">01 模型构建 <span class="file">01-model-building</span></a></li>
+            <li><a href="dsge/02-first-order-conditions.html">02 一阶条件推导 <span class="file">02-first-order-conditions</span></a></li>
+            <li><a href="dsge/03-steady-state.html">03 稳态求解 <span class="file">03-steady-state</span></a></li>
+            <li><a href="dsge/04-log-linearization.html">04 对数线性化 <span class="file">04-log-linearization</span></a></li>
+            <li><a href="dsge/15-perturbation-methods.html">15 扰动法(一阶/二阶) <span class="file">15-perturbation-methods</span></a></li>
+            <li><a href="dsge/05-dynare-solving.html">05 Dynare实操 <span class="file">05-dynare-solving</span></a></li>
+            <li><a href="dsge/06-bayesian-estimation.html">06 贝叶斯估计 <span class="file">06-bayesian-estimation</span></a></li>
+            <li><a href="dsge/08-irf-simulation.html">08 IRF与模拟 <span class="file">08-irf-simulation</span></a></li>
+          </ul>
+        </div>
+
+        <div class="sitemap-col">
+          <h4>结构估计（23 页）</h4>
+          <ul>
+            <li><a href="structural/index.html">结构估计总览 <span class="file">index</span></a></li>
+          </ul>
+          <p class="sm-group">模型分支 Branches</p>
+          <ul>
+            <li><a href="structural/03-discrete-choice.html">03 离散选择总览 <span class="file">03-discrete-choice</span></a></li>
+            <li><a href="structural/07-binary-choice.html">07 二值选择(Logit/Probit) <span class="file">07-binary-choice</span></a></li>
+            <li><a href="structural/08-multinomial-ordered.html">08 多项与有序选择 <span class="file">08-multinomial-ordered</span></a></li>
+            <li><a href="structural/09-mixed-logit.html">09 混合Logit <span class="file">09-mixed-logit</span></a></li>
+            <li><a href="structural/04-blp.html">04 BLP随机系数模型 <span class="file">04-blp</span></a></li>
+            <li><a href="structural/05-dynamic-structural.html">05 动态结构模型总览 <span class="file">05-dynamic-structural</span></a></li>
+            <li><a href="structural/10-production-function.html">10 生产函数估计(OP/LP/ACF) <span class="file">10-production-function</span></a></li>
+            <li><a href="structural/11-auctions.html">11 拍卖模型 <span class="file">11-auctions</span></a></li>
+            <li><a href="structural/12-search-matching.html">12 搜索与匹配模型 <span class="file">12-search-matching</span></a></li>
+            <li><a href="structural/15-dynamic-games.html">15 动态博弈/产业动态 <span class="file">15-dynamic-games</span></a></li>
+            <li><a href="structural/16-education-human-capital.html">16 教育/人力资本 <span class="file">16-education-human-capital</span></a></li>
+            <li><a href="structural/18-lifecycle-consumption-savings.html">18 生命周期消费储蓄 <span class="file">18-lifecycle-consumption-savings</span></a></li>
+            <li><a href="structural/19-market-structure-entry.html">19 市场结构与进入退出 <span class="file">19-market-structure-entry</span></a></li>
+            <li><a href="structural/20-housing-location-choice.html">20 住房与区位选择 <span class="file">20-housing-location-choice</span></a></li>
+            <li><a href="structural/21-insurance-risk-preference.html">21 保险需求与风险偏好 <span class="file">21-insurance-risk-preference</span></a></li>
+            <li><a href="structural/22-investment-financing-dynamic.html">22 投资融资动态结构 <span class="file">22-investment-financing-dynamic</span></a></li>
+          </ul>
+          <p class="sm-group">估计方法 Methods</p>
+          <ul>
+            <li><a href="structural/01-mle.html">01 极大似然估计 MLE <span class="file">01-mle</span></a></li>
+            <li><a href="structural/02-gmm.html">02 广义矩估计 GMM <span class="file">02-gmm</span></a></li>
+            <li><a href="structural/13-nonlinear-gmm-smm.html">13 非线性GMM/SMM <span class="file">13-nonlinear-gmm-smm</span></a></li>
+            <li><a href="structural/14-mpec.html">14 MPEC方法 <span class="file">14-mpec</span></a></li>
+            <li><a href="structural/06-counterfactual.html">06 反事实分析 <span class="file">06-counterfactual</span></a></li>
+            <li><a href="structural/17-ai-structural-estimation.html">17 AI驱动结构估计 <span class="file">17-ai-structural-estimation</span></a></li>
+          </ul>
+        </div>
+
+        <div class="sitemap-col">
+          <h4>QSGE（18 页）</h4>
+          <ul>
+            <li><a href="qsge/index.html">QSGE总览与路线 <span class="file">index</span></a></li>
+          </ul>
+          <p class="sm-group">模型分支 Branches</p>
+          <ul>
+            <li><a href="qsge/01-armington.html">01 Armington模型 <span class="file">01-armington</span></a></li>
+            <li><a href="qsge/02-eaton-kortum.html">02 Eaton-Kortum模型 <span class="file">02-eaton-kortum</span></a></li>
+            <li><a href="qsge/03-gravity.html">03 结构引力与PPML <span class="file">03-gravity</span></a></li>
+            <li><a href="qsge/08-melitz-model.html">08 Melitz异质企业模型 <span class="file">08-melitz-model</span></a></li>
+            <li><a href="qsge/06-rrh-spatial.html">06 RRH空间一般均衡 <span class="file">06-rrh-spatial</span></a></li>
+            <li><a href="qsge/07-trade-migration-land.html">07 贸易+迁移+土地 <span class="file">07-trade-migration-land</span></a></li>
+            <li><a href="qsge/09-dynamic-spatial.html">09 动态空间一般均衡 <span class="file">09-dynamic-spatial</span></a></li>
+            <li><a href="qsge/11-gvc-value-added.html">11 GVC增加值贸易 <span class="file">11-gvc-value-added</span></a></li>
+            <li><a href="qsge/12-caliendo-parro-multisector.html">12 多部门EK量化贸易 <span class="file">12-caliendo-parro-multisector</span></a></li>
+            <li><a href="qsge/13-ahlfeldt-city-commute.html">13 城市通勤空间均衡 <span class="file">13-ahlfeldt-city-commute</span></a></li>
+            <li><a href="qsge/14-allen-arkolakis-unified.html">14 空间经济统一框架 <span class="file">14-allen-arkolakis-unified</span></a></li>
+            <li><a href="qsge/15-alonso-muth-mills.html">15 单中心城市土地利用 <span class="file">15-alonso-muth-mills</span></a></li>
+            <li><a href="qsge/16-quantitative-heckscher-ohlin.html">16 定量HOV要素禀赋 <span class="file">16-quantitative-heckscher-ohlin</span></a></li>
+            <li><a href="qsge/17-monte-redding-rh.html">17 通勤贸易一体化 <span class="file">17-monte-redding-rh</span></a></li>
+          </ul>
+          <p class="sm-group">估计与反事实方法 Methods</p>
+          <ul>
+            <li><a href="qsge/04-welfare-decomposition.html">04 福利分解(ACR) <span class="file">04-welfare-decomposition</span></a></li>
+            <li><a href="qsge/05-counterfactual-solving.html">05 帽代数反事实 <span class="file">05-counterfactual-solving</span></a></li>
+            <li><a href="qsge/10-trade-cost-estimation.html">10 贸易成本结构估计 <span class="file">10-trade-cost-estimation</span></a></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div style="text-align:center; padding:40px 0 20px; color:var(--text-light); font-size:13px; border-top:1px solid var(--border); margin-top:40px;">
+      经济学研究学习工作站 · 从0到顶刊的系统化教程 · 双语混合 · 95 页
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+</script>
+</body>
+</html>

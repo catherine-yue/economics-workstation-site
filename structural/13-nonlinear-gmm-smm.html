@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>非线性GMM与模拟矩估计SMM | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item active" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">结构估计</a>
+      <span class="sep">/</span>
+      <span>非线性GMM与模拟矩估计SMM</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">结构估计 · 高级计算方法</span>
+      <h1>非线性GMM与模拟矩估计（SMM）</h1>
+      <p class="desc">当矩条件成为参数的非线性函数、甚至没有解析表达式时，我们如何把"让模型矩贴近数据矩"这一思想落地？本页从非线性GMM的一般框架出发，落到数值优化、标准误与模拟矩估计 SMM，并延伸到间接推断（Indirect Inference）与有效矩估计（EMM），最后给出一个可直接运行的 Python 完整实例。</p>
+    </div>
+
+    <!-- ========== 基础知识库定位 ========== -->
+    <div class="callout" style="background:#faf4ea;border:1px solid #e6d4b5;border-left:4px solid var(--accent);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">&#128218; 基础知识库 · KNOWLEDGE BASE / 非线性GMM · SMM</div>
+      <p style="margin-bottom:10px;">本页属于结构估计<strong>「基础知识库」</strong>，是 <a href="02-gmm.html">02 GMM</a> 的高级延伸。定位：<strong>先单独学会这个工具，再到模型分支里看它怎么用</strong>。当似然写不出、矩也只能靠蒙特卡洛模拟近似时，就从解析 GMM 走到非线性 GMM / SMM。本页按「是什么 → 为什么学 → 数学定义 → 直觉 → 逐步操作 → 完整代码 → 常见错误」讲透。</p>
+      <div style="font-weight:700;font-size:13.5px;color:var(--text);margin-bottom:6px;">&#128279; 本工具在哪些模型分支中使用：</div>
+      <ul style="margin:0 0 0 20px;font-size:13.5px;line-height:1.9;">
+        <li><a href="05-dynamic-structural.html">动态结构模型</a> —— 似然不可解析写出时（如带连续状态、含均衡约束的动态选择），用 SMM 匹配模拟矩。</li>
+        <li><a href="11-auctions.html">拍卖模型</a> —— 当分布假设复杂、似然不可得或计算昂贵时，用 SMM 替代 MLE 估计估值分布。</li>
+        <li><a href="../dsge/21-hank.html">HANK / 异质性主体宏观模型</a> —— 高维异质性下无解析似然，用 SMM/间接推断匹配宏观与截面矩。</li>
+      </ul>
+    </div>
+
+
+    <!-- ========== 前置条件与学习依赖 ========== -->
+    <div class="precond-box" style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>非线性数值优化（多初值、全局优化、梯度数值差分）；蒙特卡洛模拟与伪随机数生成（PRNG、种子固定、方差缩减）；SMM（模拟矩估计）的渐近方差与模拟噪声修正；间接推断（indirect inference）作为对照。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>Wooldridge 水平；理解为什么某些结构模型没有解析似然/解析矩（如宏观校准、结构动态模型），需要用模拟矩替代。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件/计算前置：</span>Python（<code class="inline">numpy</code> 模拟 + <code class="inline">scipy.optimize</code>）或 MATLAB；计算量大，建议熟悉向量化与并行。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置页面：</span>先学 <a href="02-gmm.html">02 广义矩估计 GMM</a>，掌握解析 GMM 之后再做模拟版本。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;">进阶 / 前沿</span></div>
+      </div>
+    </div>
+
+<div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">概念直觉：为什么需要非线性GMM与SMM</a></li>
+        <li><a href="#s2">非线性GMM的一般框架与目标函数推导</a></li>
+        <li><a href="#s3">数值优化：Nelder-Mead / BFGS / 模拟退火</a></li>
+        <li><a href="#s4">非线性GMM的标准误与同线性GMM对比</a></li>
+        <li><a href="#s5">模拟矩估计 SMM：目标函数与模拟噪声修正</a></li>
+        <li><a href="#s6">间接推断与有效矩估计 EMM</a></li>
+        <li><a href="#s7">完整 Python 代码：SMM 估计 ARCH/结构模型</a></li>
+        <li><a href="#s8">论文案例</a></li>
+        <li><a href="#s9">常见错误（≥3）与进阶资料</a></li>
+      </ol>
+    </div>
+
+    <!-- ============ S1 ============ -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 概念直觉：是什么、为什么、怎么用</h2>
+      <p>在上一页的线性GMM中，我们熟悉的是这样一条矩条件：$E[Z_i'(y_i - X_i'\beta)] = 0$。这里矩条件关于参数 $\beta$ 是<strong>线性</strong>的——把样本矩对 $\beta$ 整理一下，立刻就能得到一个 closed-form 的权重矩阵两步估计量。但结构估计面对的模型往往没有这么"乖"：一个动态离散选择模型里，条件选择概率 $P_i(\theta)$ 是 Bellman 方程不动点 $V(\theta)$ 的非线性函数；一个 DSGE 模型里，脉冲响应矩要先求解线性有理预期系统才能算出来。此时矩条件 $g(\theta)$ 关于参数 $\theta$ 是非线性的，甚至<strong>根本写不出解析表达式</strong>——这就是非线性GMM与模拟矩估计要解决的问题。</p>
+      <p><strong>经济学直觉</strong>仍然是 GMM 的灵魂："模型生成的矩"要尽量"贴近数据里的矩"。区别只在于：线性情形我们手算矩，非线性情形我们用<strong>数值优化器</strong>去最小化二次型目标函数；而当矩本身无法解析计算时，我们干脆用<strong>蒙特卡洛模拟</strong>去"造"出模型矩——这就是 SMM（Simulated Method of Moments）。它把"估计一个结构模型"变成了一个可以黑箱化的优化问题：给参数，模拟器吐出矩，优化器调整参数，循环直到矩匹配。</p>
+      <p><strong>怎么用</strong>的典型工作流是：① 在真实数据上算出一组可观测矩 $m_{data}$（均值、方差、回归系数、脉冲响应、资产定价矩……）；② 写出给定 $\theta$ 的模型模拟器；③ 用 $R$ 次模拟平均得到 $m_{sim}(\theta)$；④ 选定权重矩阵 $W$，最小化加权距离；⑤ 修正模拟噪声后算标准误。下面逐步展开。</p>
+      <div class="callout info">
+        <div class="callout-title">一句话定位</div>
+        <p>非线性GMM = 矩条件对 $\theta$ 非线性的 GMM，靠数值优化求解；SMM = 矩条件没有解析式、用模拟数据算矩的 GMM。二者共享同一个"加权矩距离最小化"的骨架。</p>
+      </div>
+    </div>
+
+    <!-- ============ S2 ============ -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 非线性GMM的一般框架与目标函数推导</h2>
+      <h3>2.1 矩条件的一般形式</h3>
+      <p>设总体矩条件为 $E[g(Z_i,\theta_0)] = 0$，其中 $g:\mathbb{R}^d\times\Theta\to\mathbb{R}^L$ 是一个 $L$ 维矩函数，$Z_i$ 是观测数据，$\theta\in\Theta\subset\mathbb{R}^p$ 是待估参数。与线性情形不同，$g(\cdot,\theta)$ 关于 $\theta$ 一般是非线性的。样本矩平均为</p>
+      <div class="formula-block">
+        <div class="formula-label">样本矩平均（Sample moment）</div>
+        $$g_n(\theta) = \frac{1}{n}\sum_{i=1}^{n} g(Z_i,\,\theta)$$
+      </div>
+      <h3>2.2 目标函数：逐步推导</h3>
+      <p>非线性GMM 的估计量定义为二次型目标函数的最小值。第一步，写出"矩残差"向量 $g_n(\theta)$；第二步，用对称正定权重矩阵 $W_n$（$L\times L$）把 $L$ 维矩残差拼成一个标量；第三步，关于 $\theta$ 最小化：</p>
+      <div class="formula-block">
+        <div class="formula-label">非线性GMM 目标函数</div>
+        $$\hat{\theta}_g(W_n) = \arg\min_{\theta\in\Theta}\, Q_n(\theta) \;=\; n\, g_n(\theta)' W_n\, g_n(\theta)$$
+      </div>
+      <p>推导到此为止——因为 $g(\cdot,\theta)$ 非线性，$\partial g_n/\partial\theta$ 无法再化简为一个线性投影，$Q_n(\theta)$ 一般<strong>没有解析解</strong>，必须交给数值优化器。这正是它和线性GMM最大的分水岭：线性时我们能解出 $\hat\beta = (X'ZWZ'X)^{-1}X'ZWZ'y$，非线性时我们只能写成"argmin"。</p>
+      <h3>2.3 两步（efficient）GMM</h3>
+      <p>与线性情形一样，最优权重矩阵是矩渐近方差的逆。记 $S = \lim_{n\to\infty} n\, E[g_n(\theta_0)g_n(\theta_0)']$（长期方差，可用 HAC/Newey-West 估计）。两步法：</p>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">Step 1 · 一致初估</div><div class="step-desc">用 $W_n = I$（或单位阵/身份阵）做一步GMM，得到一致但不高效的初值 $\tilde\theta$。</div></div>
+        <div class="step-item"><div class="step-title">Step 2 · 最优权重</div><div class="step-desc">用 $\tilde\theta$ 估计 $\hat S = \frac1n\sum_i g(Z_i,\tilde\theta)g(Z_i,\tilde\theta)'$，令 $W_n = \hat S^{-1}$，再最小化一次，得到高效估计 $\hat\theta$。</div></div>
+        <div class="step-item"><div class="step-title">Step 3 · 过度识别检验</div><div class="step-desc">若 $L>p$，统计量 $n\,Q_n(\hat\theta)\xrightarrow{d}\chi^2(L-p)$，即 Hansen's J 检验，检验矩条件是否被数据支持。</div></div>
+      </div>
+    </div>
+
+    <!-- ============ S3 ============ -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 数值优化：Nelder-Mead / BFGS / 模拟退火</h2>
+      <p>因为 $Q_n(\theta)$ 没有闭式解，选对优化器直接决定成败。结构模型的目标函数常常<strong>非凸、有平坦区、有数值噪声</strong>，单一算法往往不够。</p>
+      <div class="table-wrap"><table>
+        <tr><th>算法</th><th>类型</th><th>是否需要梯度</th><th>适用场景</th><th>特点 / 陷阱</th></tr>
+        <tr><td>Nelder-Mead (单纯形)</td><td>无导数直接搜索</td><td>否</td><td>低维、矩函数不可微（含模拟噪声）</td><td>鲁棒但慢；高维（$p>10$）易卡死，适合粗搜/起步</td></tr>
+        <tr><td>BFGS / L-BFGS-B</td><td>拟牛顿</td><td>数值/解析梯度</td><td>目标光滑、维数中等</td><td>快；依赖梯度质量，噪声大时会被误导</td></tr>
+        <tr><td>模拟退火 (Simulated Annealing)</td><td>全局随机搜索</td><td>否</td><td>疑似多局部极小、非凸</td><td>能跳出局部极小，但收敛慢，常作"全局起步→局部精修"的前半段</td></tr>
+        <tr><td>Powell / 共轭梯度</td><td>无导数 / 半牛顿</td><td>否 / 近似</td><td>矩函数可微但梯度难求</td><td>介于 Nelder-Mead 与 BFGS 之间的折中</td></tr>
+      </table></div>
+      <div class="callout tip">
+        <div class="callout-title">工程实践：两阶段优化（global → local）</div>
+        <p>先用 Nelder-Mead 或模拟退火在粗网格上多次随机起步（multistart），找到最有希望的盆地；再用 BFGS/L-BFGS-B 精修，并报告每次起步的收敛点是否一致。结构估计中"收敛到不同局部极小"是头号隐忧，multistart 几乎是标配。</p>
+      </div>
+    </div>
+
+    <!-- ============ S4 ============ -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 非线性GMM的标准误 & 与线性GMM对比</h2>
+      <h3>4.1 渐近方差与标准误</h3>
+      <p>记 $G = E[\partial g(Z_i,\theta_0)/\partial\theta']$（$L\times p$ 的 Jacobian，用数值差分近似），$\hat S$ 为长期方差估计。最优 GMM（$W=S^{-1}$）的渐近协方差为：</p>
+      <div class="formula-block">
+        <div class="formula-label">高效GMM 渐近方差</div>
+        $$\sqrt{n}(\hat\theta-\theta_0)\ \xrightarrow{d}\ N\!\big(0,\ (G' S^{-1} G)^{-1}\big)$$
+      </div>
+      <p>因此标准误为 $\widehat{\mathrm{Var}}(\hat\theta) = \frac1n(\hat G'\hat S^{-1}\hat G)^{-1}$，对角元开方即得。注意 $G$ 必须用<strong>数值差分</strong>估计（因为没有解析式），步长 $\delta$ 太大会有偏差、太小会被浮点噪声淹没，经验上用相对步长 $10^{-4}\sim 10^{-5}$。</p>
+      <h3>4.2 与线性GMM对比</h3>
+      <div class="table-wrap"><table>
+        <tr><th>维度</th><th>线性GMM</th><th>非线性GMM</th></tr>
+        <tr><td>矩条件</td><td>$g=Z'(y-X\beta)$，对 $\beta$ 线性</td><td>$g(Z_i,\theta)$ 对 $\theta$ 任意非线性</td></tr>
+        <tr><td>解析解</td><td>有：$\hat\beta=(X'ZWZ'X)^{-1}X'ZWZ'y$</td><td>无，必须数值优化 argmin</td></tr>
+        <tr><td>Jacobian $G$</td><td>$X'Z$（解析式）</td><td>数值差分近似</td></tr>
+        <tr><td>局部极小风险</td><td>无（二次凸问题）</td><td>有，需 multistart</td></tr>
+        <tr><td>标准误公式</td><td>同左，但 $G$ 解析可得</td><td>$(G'S^{-1}G)^{-1}/n$，$G$ 数值近似</td></tr>
+        <tr><td>过度识别检验</td><td>Hansen J，同公式</td><td>Hansen J，$nQ_n\to\chi^2(L-p)$</td></tr>
+      </table></div>
+    </div>
+
+    <!-- ============ S5 ============ -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 模拟矩估计 SMM：为什么模拟、目标函数、模拟噪声修正</h2>
+      <h3>5.1 为什么需要模拟（模型没有闭式矩条件）</h3>
+      <p>很多结构模型（带偏好冲击的动态离散选择、带习惯形成的资产定价、DSGE 的高阶矩）<strong>根本写不出</strong>$E[g(Z_i,\theta)]$ 的解析表达式。但只要模型是一个<strong>可由随机种子驱动的数据生成过程（DGP）</strong>，我们就能在给定 $\theta$ 下计算机模拟出一条长度 $n$ 的"人造样本"，再在人造样本上算与真实数据<strong>相同定义</strong>的矩。这就是 McFadden (1989)、Pakes-Pollard (1989) 的洞见：<em>用模拟器替代解析期望</em>。</p>
+      <h3>5.2 SMM 目标函数</h3>
+      <p>设数据矩为 $m_{data}$（$K\times1$），模拟 $R$ 条长度为 $n$ 的序列、在每条上算矩后平均，得模拟矩 $m_{sim}(\theta)$。SMM 估计量为：</p>
+      <div class="formula-block">
+        <div class="formula-label">SMM 目标函数（必须背下来）</div>
+        $$\hat\theta_{\text{SMM}} = \arg\min_{\theta}\ \big[m_{data} - m_{sim}(\theta)\big]'\, W\, \big[m_{data} - m_{sim}(\theta)\big]$$
+      </div>
+      <p>直觉：选择参数，让"模型造出来的样本矩"尽可能贴近"真实样本矩"。$W$ 常用数据矩协方差的逆（两步法），使估计高效。</p>
+      <h3>5.3 模拟噪声修正 $W = S + \frac{1}{R}\Sigma$</h3>
+      <p>模拟引入了额外噪声。若数据矩协方差为 $S = \mathrm{Avar}(\sqrt n\, m_{data})$，单条模拟矩的协方差为 $\Sigma$，则 $R$ 次平均后模拟矩的额外噪声为 $\Sigma/R$。<strong>渐近有效的权重矩阵必须把这部分加进去</strong>，否则标准误会偏窄：</p>
+      <div class="formula-block">
+        <div class="formula-label">模拟噪声修正后的有效权重（Lee-Ingall / McFadden 修正）</div>
+        $$W = \Big(S + \frac{1}{R}\,\Sigma\Big)^{-1}$$
+      </div>
+      <p>当 $R\to\infty$ 时修正项消失，回到普通GMM；当 $R$ 有限时，不做修正会"过度自信"。实践中常用 Newey-West/block bootstrap 同时估计 $S$ 与 $\Sigma$。</p>
+      <h3>5.4 模拟次数 $R$ 怎么选</h3>
+      <ul>
+        <li><strong>偏差角度</strong>：$R$ 越大，模拟矩越接近真实期望，估计偏差 $\to 0$。</li>
+        <li><strong>方差角度</strong>：模拟噪声方差按 $1/R$ 下降，$R$ 翻四倍误差约减半。</li>
+        <li><strong>成本角度</strong>：每次目标函数求值都要跑 $R$ 次模拟，$R$ 太大优化极慢。</li>
+        <li><strong>经验法则</strong>：$R$ 取 $50$–$500$；重要技巧是<strong>共用随机数（common random numbers）</strong>——所有 $\theta$ 用同一组 $\varepsilon_t$，使 $m_{sim}(\theta)$ 关于 $\theta$ 光滑，大幅降低梯度噪声。</li>
+      </ul>
+    </div>
+
+    <!-- ============ S6 ============ -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 间接推断（Indirect Inference）与有效矩估计 EMM</h2>
+      <h3>6.1 间接推断（Gourieroux-Monfort-Renault, 1993）</h3>
+      <p>选矩时，与其手挑"理论矩"，不如<strong>先跑一个简单的辅助模型（auxiliary model）</strong>：比如用 OLS 或线性 GARCH 在真实数据上得到辅助参数估计 $\hat\beta_{data}$（如均值方程系数、ARCH 系数）。然后在模拟数据上跑<strong>完全相同</strong>的辅助模型，得到 $\hat\beta_{sim}(\theta)$。间接推断估计量选择 $\theta$，使辅助参数在"数据"和"模拟"之间尽量一致：</p>
+      <div class="formula-block">
+        <div class="formula-label">间接推断估计量</div>
+        $$\hat\theta_{II} = \arg\min_{\theta}\ \big[\hat\beta_{data} - \hat\beta_{sim}(\theta)\big]'\, W\, \big[\hat\beta_{data} - \hat\beta_{sim}(\theta)\big]$$
+      </div>
+      <p><strong>基本思想</strong>：辅助模型不必"正确设定"（即不必是真实结构模型），只要它的参数对结构参数 $\theta$ 敏感（"包含信息"）即可。这把"选矩"难题转化成"选一个好估计过的辅助回归"，非常适合时间序列、结构化金融与宏观模型。</p>
+      <h3>6.2 有效矩估计 EMM（Gallant-Tauchen, 1996）</h3>
+      <p>EMM 是 SMM 的"高效版"：把辅助模型选为<strong>半非参数 SNP（Semi-Nonparametric）密度</strong>（一个足够灵活、能逼近任意真实似然的投影），再用 SNP 的得分函数（score）作为矩条件。当辅助 SNP 足够灵活时，EMM 渐近等价于极大似然，因此称为"有效"。它是 DSGE/结构化模型估计中"无需显式似然却逼近 MLE 效率"的经典路线。</p>
+    </div>
+
+    <!-- ============ S7 ============ -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 完整 Python 代码：SMM 估计一个 ARCH(1)/结构模型</h2>
+      <p>下面用一个可直接运行的例子：真实数据由 $\ y_t = \sigma_t\,\varepsilon_t,\ \sigma_t^2 = \omega + \alpha\,y_{t-1}^2$（ARCH(1)）生成，我们<strong>不写似然</strong>，只用三个矩（无条件均值、无条件方差、滞后二阶自相关）做 SMM 估计，并演示共用随机数与两步权重。</p>
+      <div class="code-block"><div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div><pre><code>import numpy as np
+from scipy.optimize import minimize
+
+# ============================================================
+# SMM 完整实例：用模拟矩估计 ARCH(1) 结构参数
+# 真实 DGP: y_t = sigma_t * eps_t,  sigma_t^2 = w + alpha * y_{t-1}^2
+# 待估: theta = (w, alpha)，真值取 (0.1, 0.4)
+# 我们刻意不写似然，只用 3 个矩做矩匹配
+# ============================================================
+
+rng = np.random.default_rng(2024)
+
+def simulate_arch(theta, n, R, seed_base=123):
+    """给定 theta=(w, alpha)，模拟 R 条长度 n 的 ARCH(1) 序列。
+    关键技巧：所有 theta 共用同一组随机数(common random numbers)，
+    使模拟矩关于 theta 光滑，梯度噪声大幅下降。"""
+    w, alpha = theta
+    sim_moments = np.zeros((R, 3))
+    for r in range(R):
+        # 每个 r 用固定随机流，不同 r 之间才独立（用于估计 Sigma）
+        eps = np.random.default_rng(seed_base + r).standard_normal(n)
+        y = np.zeros(n)
+        sig2 = w / (1 - alpha) if alpha < 0.99 else w
+        for t in range(1, n):
+            sig2 = w + alpha * y[t-1]**2      # ARCH(1) 方差递推
+            y[t] = np.sqrt(sig2) * eps[t]
+        # 三个与数据同定义的矩
+        m0 = np.mean(y)                       # 均值
+        m1 = np.var(y, ddof=1)                 # 方差
+        m2 = np.corrcoef(y[1:]**2, y[:-1]**2)[0, 1]  # 平方序列一阶自相关
+        sim_moments[r] = [m0, m1, m2]
+    return sim_moments.mean(axis=0), sim_moments
+
+# ---------- 1. 生成"真实数据" ----------
+w_true, a_true = 0.1, 0.4
+n_obs = 1000
+data = np.zeros(n_obs)
+np.random.seed(7)
+sig2 = w_true/(1-a_true)
+eps = np.random.standard_normal(n_obs)
+for t in range(1, n_obs):
+    sig2 = w_true + a_true*data[t-1]**2
+    data[t] = np.sqrt(sig2)*eps[t]
+
+# 数据矩（真实样本上的 3 个矩）
+m_data = np.array([data.mean(), data.var(ddof=1),
+                   np.corrcoef(data[1:]**2, data[:-1]**2)[0, 1]])
+print("数据矩 m_data =", np.round(m_data, 4))
+
+# ---------- 2. SMM 目标函数 ----------
+def mm_smm(theta, W, n, R):
+    m_sim, _ = simulate_arch(theta, n, R)
+    d = m_data - m_sim
+    return d @ W @ d                       # 加权矩距离
+
+# ---------- 3. 两步 GMM ----------
+R = 50
+# Step1: 单位权重粗估
+W1 = np.eye(3)
+res1 = minimize(mm_smm, x0=[0.2, 0.2], args=(W1, n_obs, R),
+                method='Nelder-Mead',
+                options={'xatol':1e-5, 'fatol':1e-6, 'maxiter':2000})
+theta_hat1 = res1.x
+print("Step1 粗估 theta =", np.round(theta_hat1, 4))
+
+# Step2: 用模拟矩的协方差构造最优权重
+_, sim_mat = simulate_arch(theta_hat1, n_obs, R)
+Sigma = np.cov(sim_mat.T)                  # R 条模拟矩的协方差
+# 模拟噪声修正：有效协方差 = 数据矩协方差 + (1/R)*Sigma
+# 这里用模拟协方差近似 S，并加上 (1/R)*Sigma 修正项
+W2 = np.linalg.inv(Sigma + Sigma/R)
+res2 = minimize(mm_smm, x0=theta_hat1, args=(W2, n_obs, R),
+                method='BFGS', options={'gtol':1e-6})
+theta_hat = res2.x
+print("Step2 高效 SMM theta_hat =", np.round(theta_hat, 4),
+      " 真值 = (0.1, 0.4)")
+
+# ---------- 4. 标准误（数值 Jacobian） ----------
+def numerical_jac(theta, h=1e-4):
+    """数值差分算模拟矩对 theta 的 Jacobian G (K x p)"""
+    m0, _ = simulate_arch(theta, n_obs, R)
+    G = np.zeros((3, 2))
+    for j in range(2):
+        tp = theta.copy(); tp[j] += h
+        mp, _ = simulate_arch(tp, n_obs, R)
+        G[:, j] = (mp - m0)/h
+    return G
+
+G = numerical_jac(theta_hat)
+Avar = np.linalg.inv(G.T @ W2 @ G) / n_obs   # (G'WG)^-1/n
+se = np.sqrt(np.diag(Avar))
+print("标准误 se =", np.round(se, 4))
+print("估计结果: w = %.4f (%.4f), alpha = %.4f (%.4f)"
+      % (theta_hat[0], se[0], theta_hat[1], se[1]))
+</code></div>
+      <div class="callout tip">
+        <div class="callout-title">MATLAB 对应写法</div>
+        <p>MATLAB 中把 <code class="inline">simulate_arch</code> 写成函数句柄，外层用 <code class="inline">fminsearch</code>（Nelder-Mead）起步、<code class="inline">fminunc</code>（BFGS）精修；Jacobian 用 <code class="inline">numgradient</code> 或解析导数；权重用 HAC 协方差矩阵 <code class="inline">hac</code> 估计。结构与上面 Python 完全一一对应。</p>
+      </div>
+    </div>
+
+    <!-- ============ S8 ============ -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 论文案例</h2>
+      <div class="paper-card">
+        <span class="paper-type en">English · 方法奠基</span>
+        <div class="paper-title">McFadden (1989), "A Method of Simulated Moments for Estimation of Discrete Response Models Without Numerical Integration"</div>
+        <div class="paper-meta">Econometrica, 57(5): 995–1026</div>
+        <div class="paper-desc">SMM 的开山之作。McFadden 证明当模型没有解析期望（如带随机效应的多项 probit、动态离散选择）时，可用模拟抽样的矩替代理论矩，并给出渐近正态性与模拟次数的理论结果。它把"无法积出的似然/矩"问题转化为可计算的模拟矩距离问题。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 间接推断</span>
+        <div class="paper-title">Gourieroux, Monfort & Renault (1993), "Indirect Inference"</div>
+        <div class="paper-meta">Journal of Applied Econometrics, 8(S1): S85–S118</div>
+        <div class="paper-desc">系统建立间接推断框架：用辅助模型（auxiliary model）的估计参数作为"矩"，让模拟数据复现辅助参数，从而估计结构参数。强调辅助模型无需正确设定、只要对结构参数敏感即可，成为 SMM 在时间序列/宏观领域的标准范式。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · EMM</span>
+        <div class="paper-title">Gallant & Tauchen (1996), "Which Moments to Match?"</div>
+        <div class="paper-meta">Econometric Theory, 12(4): 657–681</div>
+        <div class="paper-desc">提出有效矩估计 EMM：把灵活的半非参数 SNP 辅助密度的得分函数作为矩，证明当辅助密度足够灵活时 EMM 渐近有效（接近 MLE）。回答了"SMM 到底该匹配哪些矩"这一核心问题。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 应用</span>
+        <div class="paper-title">基于模拟矩估计的中国股市随机波动率结构模型应用</div>
+        <div class="paper-meta">《经济研究》/《金融研究》结构估计应用类论文（2010s）</div>
+        <div class="paper-desc">中文文献中常见用法：对中国股票收益率、利率期限结构建立带跳跃/随机波动率的结构模型，因似然不可得，改用 SMM/间接推断，匹配收益率偏度、峰度、已实现波动率自相关等矩，估计风险偏好与跳跃强度，再做反事实政策分析。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 宏观结构估计</span>
+        <div class="paper-title">用 SMM 估计 DSGE / 商业周期模型：中国经济波动的结构来源</div>
+        <div class="paper-meta">《经济研究》《世界经济》宏观结构估计应用论文</div>
+        <div class="paper-desc">由于 DSGE 高阶矩（如投资波动率、消费产出相关性）缺乏解析形式，中文宏观结构估计常用 SMM：模型模拟出与数据同定义的矩（产出、消费、投资、工时的标准差与相关系数），加权最小化距离，识别技术冲击、金融摩擦等结构参数的贡献。</div>
+      </div>
+    </div>
+
+    <!-- ============ S9 ============ -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 常见错误（≥3）与进阶资料</h2>
+      <h3>常见错误</h3>
+      <div class="callout danger"><div class="callout-title">错误1：忽略模拟噪声修正，标准误过窄</div>
+        <p>直接用 $W=S^{-1}$ 而不加 $(1/R)\Sigma$，相当于把"有限次模拟"当成"无穷次模拟"，标准误会系统性偏小、过度拒绝原假设。正确做法是 $W=(S+\frac1R\Sigma)^{-1}$，或增大 $R$ 使该项可忽略。</p></div>
+      <div class="callout danger"><div class="callout-title">错误2：每次求值都重新随机，导致目标函数"抖动"不光滑</div>
+        <p>若优化器每评估一次 $\theta$ 就重抽随机数，$Q_n(\theta)$ 会充满噪声，BFGS 的梯度估计彻底失效、Nelder-Mead 也会乱跳。<strong>必须固定随机种子 / 用共用随机数（CRN）</strong>，让 $m_{sim}(\theta)$ 关于 $\theta$ 光滑可导。</p></div>
+      <div class="callout danger"><div class="callout-title">错误3：单一起点、非凸问题收敛到局部极小</div>
+        <p>非线性GMM/SMM 的目标函数经常非凸。只跑一个起点就宣布"收敛"，很可能停在局部最小。务必做 multistart（随机起点 × 粗网格），比较各收敛点，再用 BFGS 精修最优点。</p></div>
+      <div class="callout warning"><div class="callout-title">错误4：矩数选择随意，既不识别也不做 J 检验</div>
+        <p>矩太少识别不足、矩太多权重矩阵 $\hat S$ 估计噪声巨大。过度识别时一定要报告 Hansen J 统计量 $nQ_n\to\chi^2(L-p)$；矩之间高度相关会让 $S^{-1}$ 接近奇异，需剔除冗余矩。</p></div>
+      <h3>进阶资料</h3>
+      <ul>
+        <li>Ljungqvist &amp; Sargent, <em>Recursive Macroeconomic Theory</em>，SMM/间接推断章节（结构估计视角）。</li>
+        <li>Cameron &amp; Trivedi, <em>Microeconometrics</em>，Ch.13 非线性GMM 与 Ch.15 模拟估计。</li>
+        <li>Adda &amp; Cooper, <em>Dynamic Economics: Quantitative Methods and Applications</em>，SMM 完整算例。</li>
+        <li>Duffie &amp; Singleton (1993), "Simulated Moments Estimation of Markov Models of Asset Prices", <em>Econometrica</em>。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="02-gmm.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">广义矩估计GMM（线性版）</div>
+      </a>
+      <a href="14-mpec.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">MPEC 方法（均衡约束优化）</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

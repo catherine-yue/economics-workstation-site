@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OLG 世代交叠模型 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item active" href="17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">DSGE 模型</a>
+      <span class="sep">/</span>
+      <span>OLG 世代交叠模型</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">DSGE · OVERLAPPING GENERATIONS</span>
+      <h1>OLG 世代交叠模型：两期 Diamond 模型、资本积累与养老金</h1>
+      <p class="desc">放弃"一个永生代表性消费者"，改用"每代人只活两期、新老两代交叠"的结构。这是研究人口老龄化、现收现付养老金、公共债务与资本积累生命周期的主力框架。本页从两期 Diamond (1965) 模型出发，完整推导家庭储蓄、资本市场出清与稳态，给出可运行的 Python 稳态求解与转轨代码，并落到养老金改革与中国老龄化应用。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-head">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-item"><span class="prereq-label">数学 / 统计基础</span>本科微积分、一阶条件求解、稳态递归方程迭代；不需要随机过程。</div>
+      <div class="prereq-item"><span class="prereq-label">经济学理论前置</span>中级宏观（Solow 模型、家庭跨期储蓄决策）；读过 <a href="09-rbc-model.html" style="color:var(--primary);">RBC 基准模型</a> 的 Euler 方程部分即可。</div>
+      <div class="prereq-item"><span class="prereq-label">软件 / 计算前置</span>Python（numpy + scipy.optimize）；本页不用 Dynare，纯递归求解。</div>
+      <div class="prereq-item"><span class="prereq-label">站内前置页面</span><a href="09-rbc-model.html" style="color:var(--primary);">09 RBC</a>（理解永生家庭储蓄决策）；OLG 与其核心区别在于"世代有限寿命"。</div>
+      <div class="prereq-item"><span class="prereq-label">难度与路线位置</span><span class="prereq-level lv-inter">进阶</span>入门级完整页。两期 OLG 直觉清晰、方程可手推；多期/随机 OLG 属前沿。建议在读完 NK 三方程后作为"人口/财政方向"的扩展选修。</div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么需要 OLG：与永生代表性家庭的根本区别</a></li>
+        <li><a href="#s2">模型假设逐条陈述</a></li>
+        <li><a href="#s3">家庭优化：年轻储蓄与老年消费</a></li>
+        <li><a href="#s4">厂商与资本市场出清</a></li>
+        <li><a href="#s5">稳态：资本积累差分方程与黄金律</a></li>
+        <li><a href="#s6">完整 Python 代码：稳态求解与转轨动态</a></li>
+        <li><a href="#s7">应用：现收现付养老金与人口老龄化</a></li>
+        <li><a href="#s8">论文案例</a></li>
+        <li><a href="#s9">常见错误与进阶资料</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么需要 OLG：与永生代表性家庭的根本区别</h2>
+      <p>前面 RBC / NK 模型用的都是<strong>永生代表性家庭（Representative Agent, RA）</strong>：同一个消费者从 $t=0$ 活到永远，在任意时刻都面对同一组跨期套利条件。这个假设在研究"人口结构"时立刻失效——一个 25 岁的中国年轻人和一个 65 岁刚退休的老人，对储蓄、利率、养老金的反应完全不同，他们不可能是"同一个永生家庭"。</p>
+      <p>OLG（Overlapping Generations）模型换了一套人口结构：<strong>每个人生存两期（年轻 + 老年），任意时刻总有两代人同时活着</strong>。年轻时工作、储蓄；年老时花掉一生储蓄。新世代不断出生、老世代不断老去死亡。这套结构有三个 RA 模型给不出的核心结论：</p>
+      <ul>
+        <li><strong>无套利的利率不一定等于时间偏好</strong>：资本积累由"年轻人今天存多少"决定，而不是由一个永生家庭的 Euler 方程决定，因此经济<strong>可能动态无效率（dynamically inefficient）</strong>——资本过度积累，利率低于人口增长率。</li>
+        <li><strong>代际转移有实际作用</strong>：现收现付（pay-as-you-go）养老金、公共债务、遗产税，都是在"现在的年轻人"和"现在的老年人"之间转移资源，RA 模型里不存在这种跨代再分配。</li>
+        <li><strong>政策不能只看稳态</strong>：改变养老金规则会让"已经老了的人"和"还没出生的人"受到不同影响，必须做<strong>转轨路径（transition path）</strong>分析，而不是直接比较两个稳态。</li>
+      </ul>
+      <div class="callout tip">
+        <div class="callout-title">一句话定位</div>
+        <p>RA 模型回答"同一个人随时间怎么动"；OLG 模型回答"不同年龄的人在同一时间怎么共存、跨代怎么转移"。研究老龄化、社保改革、国债可持续性，必须用 OLG。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 模型假设逐条陈述</h2>
+      <p>本页用最经典的 <strong>Diamond (1965) 两期 OLG</strong>。假设逐条列出，每一条都会在后文反复使用：</p>
+      <ul>
+        <li><strong>人口结构：</strong>第 $t$ 期有 $N_t$ 个年轻人出生，人口以增长率 $n$ 增长，即 $N_{t+1}=(1+n)N_t$。每个人只活两期。</li>
+        <li><strong>效用：</strong>年轻人在年轻期消费 $c_{1t}$、老年期消费 $c_{2t+1}$，效用为贴现的对数效用
+          $$U_t = \log c_{1t} + \beta \log c_{2t+1}$$
+          $\beta\in(0,1)$ 为主观贴现因子。用对数效用是为了储蓄函数有解析形式，便于手推。</li>
+        <li><strong>年轻期收入：</strong>年轻人无弹性地供给 1 单位劳动，获得工资 $w_t$；他把收入用于年轻时消费 $c_{1t}$ 和储蓄 $s_t$。</li>
+        <li><strong>老年期消费：</strong>老年人把一生储蓄本息全部花掉，面对储蓄的总回报率 $r_{t+1}$（毛利率 $1+r_{t+1}$）。</li>
+        <li><strong>生产：</strong>代表性厂商用资本 $K_t$ 和劳动 $L_t=N_t$，CRS 技术 $Y_t=F(K_t,L_t)$，资本一期后完全折旧 $\delta=1$（教学简化；推广到 $\delta\in(0,1]$ 是常规练习）。要素市场完全竞争，工资与租金等于边际产出。</li>
+        <li><strong>资本市场出清：</strong>第 $t+1$ 期的资本 $K_{t+1}$，全部来自第 $t$ 期年轻人的储蓄 $N_t s_t$。老年人在第 $t$ 期把资本卖给厂商。</li>
+      </ul>
+      <div class="callout warning">
+        <div class="callout-title">为什么资本一期后全折旧？</div>
+        <p>$\delta=1$ 让稳态差分方程简洁可手推。若取 $\delta<1$，只需把"年轻人储蓄 = 下一期资本"改成 $K_{t+1}=(1-\delta)K_t+I_t$，推导完全平行。本页代码不做此简化，直接用 $\delta<1$ 的一般式。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 家庭优化：年轻储蓄与老年消费</h2>
+      <p>年轻人在第 $t$ 期面对两期预算约束。年轻时：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 1 — 年轻期预算约束</div>
+        $$c_{1t} + s_t = w_t$$
+      </div>
+      <p>年老时，他把储蓄的本息全部用于消费：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 2 — 老年期预算约束</div>
+        $$c_{2t+1} = (1+r_{t+1})\, s_t$$
+      </div>
+      <p>把两期约束合并成一生预算约束 $c_{1t} + \dfrac{c_{2t+1}}{1+r_{t+1}} = w_t$，最大化 $U_t=\log c_{1t}+\beta\log c_{2t+1}$。代入后对 $c_{1t}$ 求一阶条件（或对 $s_t$ 求导）：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 3 — 年轻期消费的一阶条件</div>
+        $$\frac{1}{c_{1t}} = \beta\,\frac{1}{c_{2t+1}}(1+r_{t+1}) \;\Longleftrightarrow\; c_{2t+1}=\beta(1+r_{t+1})c_{1t}$$
+      </div>
+      <p>把 $c_{1t}=w_t-s_t$、$c_{2t+1}=(1+r_{t+1})s_t$ 代入，解出储蓄：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 4 — 储蓄函数（对数效用下的漂亮结果）</div>
+        $$s_t = \frac{\beta}{1+\beta}\, w_t$$
+      </div>
+      <p><strong>解读：</strong>在对数效用下，储蓄率恰好等于 $\beta/(1+\beta)$，<strong>与利率 $r_{t+1}$ 无关</strong>（收入效应与替代效应恰好抵消）。这是对数效用的便利之处——储蓄决策独立于预期利率，让资本积累方程退化成一个关于 $w_t$ 的简单差分方程。若换 CRRA 效用 $u(c)=c^{1-\sigma}/(1-\sigma)$，$s_t$ 会依赖 $r_{t+1}$，需联立求解。</p>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 厂商与资本市场出清</h2>
+      <p>厂商用 CRS 生产函数 $Y_t=K_t^\alpha L_t^{1-\alpha}$（柯布-道格拉斯，$\alpha$ 为资本份额）。完全竞争下，要素报酬等于边际产出。记人均（每年轻工人）资本 $k_t=K_t/N_t$：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 5 — 工资与利率（人均形式）</div>
+        $$w_t = (1-\alpha) k_t^\alpha, \qquad r_t = \alpha k_t^{\alpha-1}$$
+      </div>
+      <p><strong>资本市场出清</strong>是 OLG 的核心方程：第 $t+1$ 期的资本存量 $K_{t+1}$ 等于第 $t$ 期年轻人的总储蓄。用人均形式、考虑人口增长 $N_{t+1}=(1+n)N_t$：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 6 — 资本积累核心差分方程</div>
+        $$K_{t+1}=N_t s_t \;\Longleftrightarrow\; (1+n)k_{t+1}=s_t=\frac{\beta}{1+\beta}w_t=\frac{\beta}{1+\beta}(1-\alpha)k_t^\alpha$$
+      </div>
+      <p>于是人均资本的运动规律闭合为一个一维自治差分方程：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 7 — OLG 动态方程</div>
+        $$k_{t+1} = \frac{\beta(1-\alpha)}{(1+\beta)(1+n)}\, k_t^\alpha \;\equiv\; g(k_t)$$
+      </div>
+      <p><strong>解读：</strong>这就是 OLG 的"Solow 式"差分方程，但储蓄率 $s=\beta(1-\alpha)/[(1+\beta)(1+n)]$ 来自微观家庭最优化，而不是像 Solow 那样外生给定。给定初始 $k_0$，方程 7 唯一决定整条转轨路径。</p>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 稳态：资本积累差分方程与黄金律</h2>
+      <p>稳态满足 $k_{t+1}=k_t=k^*$。代入方程 7（$\delta=1$ 的教学式）：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 8 — 稳态人均资本</div>
+        $$k^* = \left[\frac{\beta(1-\alpha)}{(1+\beta)(1+n)}\right]^{1/(1-\alpha)}$$
+      </div>
+      <p>稳态利率 $r^*=\alpha(k^*)^{\alpha-1}$。关键的<strong>动态效率</strong>判据：比较稳态利率 $r^*$ 与人口增长率 $n$。黄金律资本水平满足 $r_{gold}=n$（资本的边际产出恰好补偿人口增长）。</p>
+      <ul>
+        <li>若 $r^* > n$：资本<strong>不足</strong>（动态有效），减少储蓄可让每代人都更好。</li>
+        <li>若 $r^* < n$：资本<strong>过度积累</strong>（动态无效率）——多存的钱在稳态下得不偿失，此时引入现收现付养老金（年轻人缴税、老年人领钱）<strong>可以帕累托改进</strong>。这是 Diamond (1965) 的著名结论。</li>
+      </ul>
+      <div class="callout info">
+        <div class="callout-title">为什么 RA 模型不会动态无效率？</div>
+        <p>RA 模型里永生家庭的 Euler 方程强制 $r=\rho$（纯时间偏好），资本永远不会过度积累。OLG 里没有这种强制——储蓄率由工资决定，利率可以被推到低于 $n$。这是 OLG 比 RA 丰富的地方，也是研究养老金的理论基础。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 完整 Python 代码：稳态求解与转轨动态</h2>
+      <p>下面代码实现含 $\delta<1$ 的一般形式：给定参数，(1) 求稳态 $k^*$；(2) 从任意初始 $k_0$ 模拟转轨路径；(3) 检查动态效率 $r^*$ vs $n$。普通笔记本秒级跑完。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · Diamond 两期 OLG 稳态与转轨</span><button class="copy-btn">复制</button></div>
+<pre><code>import numpy as np
+from scipy.optimize import brentq
+
+# ---------- 1. 参数校准（季度/年度均可，这里用年度教学值） ----------
+alpha = 0.33      # 资本收入份额
+beta  = 0.98      # 主观贴现因子（年）
+n     = 0.01      # 人口年增长率
+delta = 0.05      # 折旧率（这里取 &lt;1 的一般式，教学常用 1）
+
+# ---------- 2. 工资与利率（人均形式） ----------
+def wage(k):
+    return (1 - alpha) * k**alpha
+
+def rent(k):
+    return alpha * k**(alpha - 1)   # 净利率 r = MPK
+
+# ---------- 3. 资本积累差分方程（含折旧的一般式） ----------
+# 年轻人储蓄 s = beta/(1+beta) * w；
+# 人均资本运动: (1+n) k_{t+1} = s_t + (1-delta) k_t
+def k_next(k):
+    s_t = beta / (1 + beta) * wage(k)
+    return (s_t + (1 - delta) * k) / (1 + n)
+
+# ---------- 4. 求稳态 k*：解 k_next(k*) = k* ----------
+def ss_eq(k):
+    return k_next(k) - k
+
+# 搜索区间：k 从 1e-6 到 100，找根
+k_star = brentq(ss_eq, 1e-6, 100)
+r_star = rent(k_star)
+w_star = wage(k_star)
+
+print(f"稳态人均资本 k* = {k_star:.4f}")
+print(f"稳态利率   r*   = {r_star:.4f}")
+print(f"稳态工资   w*   = {w_star:.4f}")
+print(f"人口增长率 n    = {n:.4f}")
+# 动态效率判据
+if r_star > n:
+    print(f"动态有效：r*={r_star:.3f} > n={n:.3f}，资本不足")
+else:
+    print(f"动态无效率：r*={r_star:.3f} < n={n:.3f}，资本过度积累，可引入养老金帕累托改进")
+
+# ---------- 5. 转轨路径：从初始 k0 模拟 60 期 ----------
+T = 60
+k_path = np.zeros(T)
+k_path[0] = k_star * 0.3   # 从低于稳态的 30% 起步
+for t in range(1, T):
+    k_path[t] = k_next(k_path[t-1])
+
+print("\n转轨路径前 10 期人均资本：")
+for t in range(10):
+    print(f"  t={t:2d}: k={k_path[t]:.4f}  r={rent(k_path[t]):.4f}")
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">跑通后你会看到什么</div>
+        <p>$k_t$ 从初始低位单调收敛到 $k^*$，$r_t$ 从高位单调下降到 $r^*$。把这个转轨图画出来，就是"资本积累收敛"的标准教学图。把 $\beta$ 调大（更有耐心），$k^*$ 上升、$r^*$ 下降——这就是"储蓄率上升推迟消费"在 OLG 里的版本。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 应用：现收现付养老金与人口老龄化</h2>
+      <p>OLG 最重要的政策应用是<strong>养老金制度设计</strong>。设政府对年轻人工资征收比例税 $\tau$，全部转移给当期老年人。第 $t$ 期每个年轻人缴 $\tau w_t$，第 $t$ 期的老年人（共 $N_{t-1}$ 人）从 $N_t$ 个年轻人的缴款中领取养老金。人均（按年轻人计）的养老金收益为：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation 9 — 现收现付养老金的回报</div>
+        $$\text{养老金收益} = (1+n)\,\tau\, w_t, \qquad \text{回报率} = 1+n$$
+      </div>
+      <p><strong>关键洞察：</strong>现收现付养老金的"回报率"是人口增长率 $n$（而非市场利率）。当生育率下降、老龄化加剧，$n$ 下降甚至为负，现收现付体系的回报率暴跌——这正是中国、欧洲、日本养老金压力的 OLG 表述。对比市场利率 $r^*$：</p>
+      <ul>
+        <li>若 $r^* > n$：现收现付不如市场化储蓄，长寿者更愿意"自己存"。</li>
+        <li>若 $r^* < n$：现收现付在稳态下能提高每代人福利（动态无效率情形）。</li>
+      </ul>
+      <p>中国养老金改革的核心权衡——"现收现付（社会统筹）" vs "完全积累（个人账户）"——正是在 $r^*$ 与 $n$ 的此消彼长之间做选择。Auerbach-Kotlikoff (1987) 的多期 OLG 模型把两期扩展为 55 期（模拟到退休），是定量研究这类改革的标准工具。</p>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 论文案例</h2>
+      <div class="paper-card">
+        <span class="paper-type en">英文经典</span>
+        <div class="paper-title">An Exact Consumption-Loan Model of Interest with or without the Social Contrivance of Money</div>
+        <div class="paper-meta">Paul A. Samuelson · Journal of Political Economy, 1958, 66(6): 467-482</div>
+        <div class="paper-desc">OLG 模型的开山之作。Samuelson 用一个"人生两期、无耐用资产"的纯交换 OLG，推导出利率由人口/生物利率决定，并首次论证货币（或社保）如何作为"社会契约"解决代际交换。现代货币搜寻、社保经济学都源于此文。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">英文经典</span>
+        <div class="paper-title">National Debt in a Neoclassical Growth Model</div>
+        <div class="paper-meta">Peter A. Diamond · American Economic Review, 1965, 55(5): 1126-1150</div>
+        <div class="paper-desc">在 Samuelson 纯交换 OLG 中加入生产与资本积累，得到本页讲的 Diamond 模型。首次系统论证了"动态无效率"与公共债务的实际作用——发债可以把过度积累的资本挤出。是本页所有推导的原始出处。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">英文经典</span>
+        <div class="paper-title">Dynamic Fiscal Policy</div>
+        <div class="paper-meta">Alan J. Auerbach & Laurence J. Kotlikoff · Cambridge University Press, 1987</div>
+        <div class="paper-desc">把两期 OLG 扩展为 55 期（工作到退休）的可计算一般均衡模型（OLG-CGE），定量分析税收、社保、国债的代际分配。是现代财政政策、养老金改革定量评估的标准框架，也是多期 OLG 求解的教科书。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文应用</span>
+        <div class="paper-title">中国养老金改革、延迟退休与人口结构的 OLG 定量研究</div>
+        <div class="paper-meta">见《经济研究》《世界经济》《经济学(季刊)》上关于中国养老保险制度并轨、延迟退休年龄、个人账户改革的一系列 OLG 数值模拟论文</div>
+        <div class="paper-desc">国内学者用 Auerbach-Kotlikoff 式多期 OLG，校准到中国生育率下降与预期寿命延长，模拟现收现付/完全积累不同组合下的稳态福利与转轨成本。数据多用《中国统计年鉴》人口结构、人社部养老金收支、CFPS/CHARLS 微观退休行为。是中文读者最贴近中国现实的 OLG 应用。</div>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 常见错误与进阶资料</h2>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：把 OLG 当成"另一个 RBC"</div>
+        <p>OLG 的核心不是"加个冲击"，而是<strong>人口结构</strong>。若你只是在 RBC 里加"变老"却保留永生 Euler 方程，就丢失了 OLG 的全部含义。关键方程是 Equation 6 的资本市场出清（储蓄 = 下一期资本），不是 $r=\rho$。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：忽略人口增长率 $n$ 对人均资本的影响</div>
+        <p>很多学生只写 $K_{t+1}=N_t s_t$ 却忘记除以 $N_{t+1}=(1+n)N_t$，得到 $k_{t+1}=s_t$ 而非 $k_{t+1}=s_t/(1+n)$。这会让稳态资本系统性偏高、利率偏低。人均化时一定要把人口增长放进去。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 3：只比稳态、不做转轨路径</div>
+        <p>养老金改革的福利结论高度依赖转轨：改革当期的老年人拿不到好处、却要承担成本。直接比较改革前后两个稳态的福利，会高估改革收益。OLG 政策分析必须解完整转轨路径（本页代码第 5 步就是在做这件事）。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 4：把"动态无效率"当成永远存在</div>
+        <p>Diamond 模型<strong>可能</strong>动态无效率，但参数校准到美国/中国数据后，$r^*$ 通常高于 $n$（资本不足）。不要一上来就假设"现收现付一定帕累托改进"——先算 $r^*$ vs $n$，再下结论。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 5：对数效用下忘记储蓄率与利率无关</div>
+        <p>Equation 4 的 $s_t=\beta w_t/(1+\beta)$ 是对数效用的特殊结果。换成 CRRA 就不成立。写代码或推导时，不要把"储蓄与利率无关"当成普遍结论。</p>
+      </div>
+      <h3>进阶资料</h3>
+      <ul>
+        <li>Diamond (1965) 原文（本页推导出处）；Blanchard & Fischer, <em>Lectures on Macroeconomics</em> 第 3 章是 OLG 的标准教材式处理。</li>
+        <li>Auerbach-Kotlikoff (1987) 多期 OLG 数值实现；官网/RePEc 有 Fortran/Stata 复现代码，Python 可用 <code class="inline">scipy.optimize</code> 自写。</li>
+        <li>与本站其他分支的衔接：OLG 的稳态求解见 <a href="03-steady-state.html">03 稳态求解</a>；随机 OLG 与估计见 <a href="06-bayesian-estimation.html">06 贝叶斯估计</a>。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="16-adaptive-learning.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">09 · 适应性学习与行为预期</div>
+      </a>
+      <a href="18-money-search.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">11 · 货币搜寻模型</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+(function(){const path=window.location.pathname.split('/').pop();document.querySelectorAll('.nav-item').forEach(item=>{if(item.getAttribute('href')&&item.getAttribute('href').endsWith(path)){item.classList.add('active');}});})();
+</script>
+</body>
+</html>

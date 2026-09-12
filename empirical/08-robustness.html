@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>稳健性检验完整清单 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ========== 侧边栏 ========== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item active" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- ========== 主内容 ========== -->
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">实证论文</a><span class="sep">/</span>
+      <span>稳健性检验</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">Empirical · Robustness Checks</span>
+      <h1>稳健性检验完整清单</h1>
+      <p class="desc">Robustness Checks：基准回归跑出来之后，如何系统地证明你的结论不是"换一种做法就消失"。本节给出 18 项可勾选的稳健性检验清单、形式化框架与一套完整可运行的 Stata 代码体系。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">多重假设检验校正（Bonferroni / FDR / Young 等）、bootstrap 重抽样理论、聚类与自助法标准误、安慰剂检验的随机化推断。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">能批判性看待已跑通的基准 / 识别结果，理解“结论对模型设定的敏感性”。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">Stata 17+（外部命令：<code class="inline">boottest</code>、<code class="inline">estout</code>、<code class="inline">reghdfe</code>、<code class="inline">winsor2</code>、<code class="inline">ppmlhdfe</code>、<code class="inline">permute</code>，按清单选用）。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body">先学 <a href="06-did.html">06 DID 双重差分</a>；若不走 DID 路线，至少先学 <a href="04-baseline-regression.html">04 基准回归</a>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">进阶</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么必须做稳健性检验</a></li>
+        <li><a href="#s2">稳健性检验全景清单（18 项）</a></li>
+        <li><a href="#s3">替换变量与替换样本</a></li>
+        <li><a href="#s4">替换估计方法与固定效应</a></li>
+        <li><a href="#s5">安慰剂检验与随机化推断</a></li>
+        <li><a href="#s6">标准误、聚类与 Bootstrap</a></li>
+        <li><a href="#s7">时间趋势与动态效应</a></li>
+        <li><a href="#s8">逐步流程</a></li>
+        <li><a href="#s8d">Oster (2019) 系数稳定性分析</a></li>
+        <li><a href="#s8e">Cinelli–Hazlett 混杂敏感性与 RV</a></li>
+        <li><a href="#s8f">随机化推断（Fisher 精确 p）</a></li>
+        <li><a href="#s9">论文案例</a></li>
+        <li><a href="#s10">常见错误与进阶资料</a></li>
+      </ol>
+    </div>
+
+    <!-- ===== 正文 ===== -->
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么必须做稳健性检验</h2>
+      <p>稳健性检验（robustness check / sensitivity analysis）的核心问题只有一个：<strong>你的核心结论 $\hat{\beta}$，是不是只在"你精心构造的那一个回归设定"下才成立？</strong>如果换一个被解释变量、换一个样本窗口、换一种标准误聚类方式、加一阶固定效应、或者把处理时间随机打乱，系数就立刻变脸、符号翻转或失去显著性，那么读者有理由怀疑：这个结果可能是数据挖掘（data mining）或设定搜索（specification search）的产物，而不是一个可复制的因果关系。</p>
+      <p>基准回归一般写成双向固定效应形式：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (1) — 基准 DID/面板设定</div>
+        $$Y_{it}=\beta\,D_{it}+\gamma'X_{it}+\mu_i+\lambda_t+\varepsilon_{it}$$
+      </div>
+      <p>其中 $\mu_i$ 为个体固定效应，$\lambda_t$ 为时间固定效应，$D_{it}$ 为处理变量，$X_{it}$ 为控制向量。稳健性检验本质上是在<strong>不改变核心识别故事</strong>的前提下，系统性地扰动"变量构造、样本、估计量、误差结构、函数形式、时间结构"这六个维度，观察 $\hat{\beta}$ 的符号、量级与显著性是否稳定。一个健康的结果应当表现为：<em>符号稳定、量级在合理区间内波动、显著性大致维持</em>，而不是每一项检验都恰好显著。</p>
+      <div class="callout info">
+        <div class="callout-title">📌 直觉：稳健性 ≠ 所有检验都必须显著</div>
+        <p>稳健性的正确理解是"结论对合理的设定扰动不敏感"。真正可信的论文，往往会<strong>主动报告</strong>一两个系数变小或变弱的检验，并解释其原因；把每一个扰动都凑到显著，反而会被审稿人怀疑你在挑结果。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 稳健性检验全景清单（18 项）</h2>
+      <p>下表是一张可勾选的工作清单（checklist）。建议把它贴在你的 do 文件里，做完一项打一个勾，并把每一步的核心系数记录到一张汇总表中。括号内是对应 Stata 关键词。</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th style="width:36px">#</th><th>检验类别</th><th>具体做法</th><th>Stata 关键词</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>替换被解释变量</td><td>用增长率/水平值/ alternative 口径的 Y 重跑基准</td><td><code class="inline">gen</code> 新Y</td></tr>
+            <tr><td>2</td><td>替换核心解释变量</td><td>用连续处理强度替代 0/1 虚拟变量</td><td><code class="inline">reghdfe Y Xcont</code></td></tr>
+            <tr><td>3</td><td>剔除特殊样本</td><td>剔除直辖市、疫情年份、刚上市/刚退市观测</td><td><code class="inline">if</code> 条件</td></tr>
+            <tr><td>4</td><td>改变缩尾程度</td><td>1% 缩尾 → 5% 缩尾；winsor 与 trim 对比</td><td><code class="inline">winsor2</code> / <code class="inline">pctile</code></td></tr>
+            <tr><td>5</td><td>替换估计方法</td><td>OLS → 固定效应 FE → MLE/GLM/泊松</td><td><code class="inline">xtreg, fe</code> / <code class="inline">ppmlhdfe</code></td></tr>
+            <tr><td>6</td><td>剔除其他政策干扰</td><td>同时期其他政策纳入控制或子样本剔除</td><td><code class="inline">control 政策虚拟</code></td></tr>
+            <tr><td>7</td><td>控制高阶固定效应</td><td>双向 FE → 三维 FE；加入行业×年份联合 FE</td><td><code class="inline">absorb(ind#year)</code></td></tr>
+            <tr><td>8</td><td>安慰剂：随机处理组</td><td>随机抽取假处理组 500/1000 次</td><td><code class="inline">permute</code> / 循环</td></tr>
+            <tr><td>9</td><td>安慰剂：随机处理时间</td><td>把政策年份随机前移/后移</td><td><code class="inline">gen fakeyear</code></td></tr>
+            <tr><td>10</td><td>改变聚类层级</td><td>企业聚类 → 行业/地区聚类；单向→双向聚类</td><td><code class="inline">vce(cluster ind)</code></td></tr>
+            <tr><td>11</td><td>Bootstrap 标准误</td><td>自助抽样 1000 次构造置信区间</td><td><code class="inline">vce(bootstrap, reps(1000))</code></td></tr>
+            <tr><td>12</td><td>剔除时间趋势</td><td>加入个体线性时间趋势</td><td><code class="inline">xtreg ... i.id#c.t</code></td></tr>
+            <tr><td>13</td><td>非线性时间趋势</td><td>年份固定效应 / 省份×年份联合 FE</td><td><code class="inline">absorb(prov#year)</code></td></tr>
+            <tr><td>14</td><td>滞后项检验</td><td>用滞后一期的 X / D 作解释变量</td><td><code class="inline">L.D</code></td></tr>
+            <tr><td>15</td><td>提前期（预期/平行趋势）</td><td>加入处理前 lead，检验是否显著</td><td><code class="inline">F.D / pre-trend</code></td></tr>
+            <tr><td>16</td><td>更换样本区间</td><td>缩短窗口（政策前后 ±2 年）</td><td><code class="inline">if year</code> 范围</td></tr>
+            <tr><td>17</td><td>PSM 配对后回归</td><td>倾向得分匹配 + DID（PSM-DID）</td><td><code class="inline">psmatch2</code></td></tr>
+            <tr><td>18</td><td>平衡面板</td><td>仅保留连续存在的企业/地区</td><td><code class="inline">xtbalance</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 替换变量与替换样本</h2>
+      <p><strong>替换被解释变量（alternative dependent variable）</strong>检验的是"你的结论是否依赖于 Y 的某个特定度量"。例如你用全要素生产率 TFP 度量企业效率，可以再用劳动生产率、利润率、创新产出（专利/研发）作为替代 Y。若系数在所有合理度量下方向一致，说明效应不是由某一个变量构造的偶然特性驱动的。</p>
+      <p><strong>替换核心解释变量</strong>检验的是"处理强度是否真的起作用"。若基准用 0/1 的处理虚拟变量，可以改用连续的处理强度（treatment intensity）重新估计，这本身也是对"剂量—反应关系"（dose-response）的检验。</p>
+      <p><strong>剔除特殊样本</strong>针对的是样本污染：直辖市往往政策力度与经济结构特殊；2020—2022 年受疫情冲击的观测可能扭曲估计；刚上市、刚被 ST、刚退市的企业处于财务异常区间。把这些观测逐个剔除，若系数稳定，则结果不是由少数极端样本撑起的。<strong>改变缩尾程度</strong>（winsorize）则从 1% 换到 5%，并对比 winsor（缩尾，保留样本量）与 trim（截尾，删除尾部）两种做法。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 替换变量 / 替换样本 / 缩尾</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ===== 03.1 替换被解释变量 =====
+* 基准 Y = lnTFP，替代 Y = 劳动生产率 lnLP、利润率 ROA
+reghdfe lnTFP D $X, absorb(id year) vce(cluster id)
+est store m_y1
+reghdfe lnLP  D $X, absorb(id year) vce(cluster id)   // 替代Y：劳动生产率
+est store m_y2
+reghdfe ROA   D $X, absorb(id year) vce(cluster id)   // 替代Y：会计利润率
+est store m_y3
+esttab m_y1 m_y2 m_y3, keep(D) se star(* 0.1 ** 0.05 *** 0.01)
+
+* ===== 03.2 替换核心解释变量：连续处理强度 =====
+gen treat_intensity = 政策覆盖率 * 处理虚拟        // 连续处理强度
+reghdfe lnTFP treat_intensity $X, absorb(id year) vce(cluster id)
+
+* ===== 03.3 剔除特殊样本 =====
+reghdfe lnTFP D $X if 直辖市==0, absorb(id year) vce(cluster id)      // 剔除直辖市
+reghdfe lnTFP D $X if !inlist(year,2020,2021,2022), absorb(id year) vce(cluster id) // 剔除疫情年
+
+* ===== 03.4 改变缩尾程度：1% -> 5% =====
+winsor2 lnTFP, cuts(1 99)  replace suffix(_w1)      // 1% 缩尾
+winsor2 lnTFP, cuts(5 95)  replace suffix(_w5)      // 5% 缩尾
+reghdfe lnTFP_w1 D $X, absorb(id year) vce(cluster id)
+reghdfe lnTFP_w5 D $X, absorb(id year) vce(cluster id)
+
+* ===== 03.5 PSM-DID：先配对再回归 =====
+* 第一步：估计倾向得分
+gen post = (year >= policy_year)
+gen treat_post = treat * post
+psmatch2 treat $X, out(lnTFP) neighbor(1) caliper(0.05)
+* 第二步：仅在共同支撑（common support）样本上做 DID
+reghdfe lnTFP treat_post $X if _weight!=., absorb(id year) vce(cluster id)
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 替换估计方法与高阶固定效应</h2>
+      <p>当被解释变量为计数变量（如专利数）或存在大量零值时，OLS 可能因异方差或函数形式误设而产生偏差。此时应报告泊松拟极大似然估计 <code class="inline">ppmlhdfe</code>（Poisson PML），它对可加性假设更稳健、且系数可解释为半弹性。</p>
+      <p><strong>控制高阶固定效应</strong>是面板论文中最常被审稿人要求的检验。双向固定效应（个体 + 年份）假设所有个体面临相同的年份冲击；若不同行业、不同地区受到不同的时间冲击（例如行业性周期、区域性政策周期），就应当加入行业×年份、省份×年份的联合固定效应。这类设定会吸收大量变异，若系数仍稳定，则识别非常干净。</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (2) — 高阶 / 交互固定效应</div>
+        $$Y_{it}=\beta D_{it}+\gamma'X_{it}+\mu_i+\lambda_t+\underbrace{\theta_{s(i)\times t}}_{\text{行业}\times\text{年份联合FE}}+\varepsilon_{it}$$
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 估计方法 / 高阶固定效应 / 平衡面板</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ===== 04.1 替换估计方法：OLS -> FE -> Poisson PML =====
+xtset id year
+xtreg lnTFP D $X i.year, fe vce(cluster id)        // 固定效应
+ppmlhdfe patent_count D $X, absorb(id year) vce(cluster id) // 计数Y用泊松PML
+
+* ===== 04.2 高阶固定效应：行业×年份、省份×年份 =====
+reghdfe lnTFP D $X, absorb(id industry#year) vce(cluster id)   // 行业×年份
+reghdfe lnTFP D $X, absorb(id prov#year)     vce(cluster id)  // 省份×年份
+
+* ===== 04.3 剔除其他同期政策 =====
+gen other_policy = (year>=2015 & 地区=="试点")     // 构造同期另一政策虚拟
+reghdfe lnTFP D other_policy $X, absorb(id year) vce(cluster id) // 同时控制
+* 或：剔除受同期政策影响的子样本
+reghdfe lnTFP D $X if other_policy==0, absorb(id year) vce(cluster id)
+
+* ===== 04.4 平衡面板：仅保留连续存在的样本 =====
+xtbalance, range(2008 2020)                         // 需 ssc install xtbalance
+reghdfe lnTFP D $X, absorb(id year) vce(cluster id)
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 安慰剂检验与随机化推断</h2>
+      <p>安慰剂检验（placebo test / permutation test）是可信度最高的一类稳健性检验，其逻辑是：<strong>如果你的效应真的来自处理，那么在"根本没有处理"的反事实世界里，应该估计不出显著的效应。</strong>做法有两类：</p>
+      <p><strong>第一类：随机分配处理组。</strong>从所有个体中随机抽取与真实处理组数量相同的"假处理组"，重新估计，记录假系数 $\hat{\beta}^{fake}$；重复 500—1000 次，得到一个"零分布"（null distribution）。真实系数应当落在这个分布的极端尾部，且假系数的均值应接近 0。</p>
+      <p><strong>第二类：随机处理时间。</strong>保持处理组不变，但把政策发生年份随机前移或后移到一个"假年份"，检验在假年份前后是否出现断点式变化。如果假年份也出现显著效应，说明你的识别可能捕捉到了某种一般性的时间趋势，而非政策本身。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 安慰剂：随机处理组 + 随机处理时间</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ===== 05.1 安慰剂检验：随机分配处理组（1000次循环）=====
+* 真实处理组标识为 treat（0/1，按个体id层面）
+levelsof id, local(ids)
+scalar real_b = .
+reghdfe lnTFP treat_post $X, absorb(id year) vce(cluster id)
+scalar real_b = _b[treat_post]
+
+* 用 simulate 跑 1000 次随机抽样
+program drop _permute_treat
+program define _permute_treat, rclass
+    use "panel_data.dta", clear
+    * 随机抽 n_treat 个 id 作为假处理组
+    preserve
+        keep if year == first_year
+        gen u = runiform()
+        sort u
+        gen byte fake_treat = (_n <= `= n_treat')
+        keep id fake_treat
+        tempfile tmp
+        save `tmp'
+    restore
+    merge m:1 id using `tmp', nogen
+    gen fake_post  = (year >= fake_policy_year)   // 假政策年
+    gen fake_tp    = fake_treat * fake_post
+    reghdfe lnTFP fake_tp $X, absorb(id year) vce(cluster id)
+    return scalar b_fake = _b[fake_tp]
+end
+permute b_fake = r(b_fake), reps(1000) seed(20240101) saving("placebo.dta", replace): ///
+    _permute_treat
+
+* 画分布图：真实系数应落在分布远端
+use "placebo.dta", clear
+gen pval = (abs(b_fake) >= abs(real_b))
+histogram b_fake, xline(`=real_b') title("Placebo: fake coefficient distribution") ///
+    note("真实系数 = " %6.4f real_b)
+
+* ===== 05.2 安慰剂检验：随机处理时间 =====
+* 保持处理组，把政策年随机提前3年/延后3年
+gen fake_post = (year >= policy_year - 3)
+gen fake_tp   = treat * fake_post
+reghdfe lnTFP fake_tp $X, absorb(id year) vce(cluster id)   // 预期：不显著
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">✅ 报告规范</div>
+        <p>安慰剂检验应同时报告：假系数的均值（应≈0）、标准差、真实系数对应的伪 p 值（真实系数落在零分布尾部的比例），并附上系数分布直方图。只放一张图而不报告统计量，说服力很弱。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 标准误、聚类与 Bootstrap</h2>
+      <p>很多时候"不显著"或"过度显著"其实是标准误估计的问题。<strong>聚类层级（clustering level）</strong>决定了误差自相关被如何处理：Bertrand, Duflo & Mullainathan (2004) 著名地指出，DID 中若处理在组层面分配，标准误必须聚类到组层面，否则会严重低估标准误、虚高 t 值。你应当对比：企业层面聚类、行业/地区层面聚类、双向聚类（企业 + 年份）这几种设定下的显著性变化。</p>
+      <p>当聚类数偏少（少于 ~30—50 个集群）时，渐近聚类标准误会偏低，此时应使用 <strong>Wild Cluster Bootstrap</strong>（<code class="inline">boottest</code>）或小样本校正。当误差分布未知时，<strong>Bootstrap 标准误</strong>通过有放回地重复抽样 1000 次来构造经验分布，对小样本与非正态误差更稳健。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 聚类层级 / Wild Bootstrap / Bootstrap SE</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ===== 06.1 改变聚类层级：企业 -> 行业/地区 =====
+reghdfe lnTFP D $X, absorb(id year) vce(cluster id)        // 企业聚类（基准）
+reghdfe lnTFP D $X, absorb(id year) vce(cluster industry)  // 行业聚类
+reghdfe lnTFP D $X, absorb(id year) vce(cluster prov)       // 地区聚类
+
+* 双向聚类：企业 + 年份
+reghdfe lnTFP D $X, absorb(id year) vce(cluster id year)
+
+* ===== 06.2 聚类数少时：Wild Cluster Bootstrap =====
+* ssc install boottest, replace
+reghdfe lnTFP D $X, absorb(id year) vce(cluster prov)
+boottest D, reps(999) weight(webb)        // Webb 权重，集群少时更准
+
+* ===== 06.3 一般 Bootstrap 标准误 =====
+reghdfe lnTFP D $X, absorb(id year) vce(bootstrap, reps(1000) seed(20240101))
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 时间趋势与动态效应</h2>
+      <p>识别策略最怕的就是"趋势混淆"：处理组与对照组在政策前本身就处于不同的时间轨迹上。<strong>加入个体线性时间趋势</strong>（$i \times t$ 交互）可以吸收组间不同的线性趋势；<strong>加入省份×年份联合固定效应</strong>则吸收任意形式的地区特定时间冲击。如果控制这些趋势后系数消失，说明原结果可能是趋势而非政策效应。</p>
+      <p>动态效应检验（dynamic / event-study）则同时回答两个问题：处理前是否平行趋势（<strong>提前期 lead 是否显著</strong>）、处理后效应如何演化（<strong>滞后项 lag 的形态</strong>）。标准做法是事件研究法：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (3) — 事件研究 / 动态效应</div>
+        $$Y_{it}=\sum_{k=-K}^{K}\beta_k\,D_{i}\cdot \mathbf{1}\{t-t_i^*=k\}+\mu_i+\lambda_t+\varepsilon_{it}$$
+      </div>
+      <p>其中 $t_i^*$ 为个体 $i$ 的处理时点。要求处理前各 lead 的 $\beta_k\approx0$（平行趋势），处理后 $\beta_k$ 显著且呈现合理形态。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 时间趋势 / 事件研究动态效应</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ===== 07.1 加入个体线性时间趋势 =====
+xtset id year
+reghdfe lnTFP D $X i.id#c.year, vce(cluster id)   // 个体特定线性趋势
+
+* 加入非线性/联合时间趋势
+reghdfe lnTFP D $X, absorb(id prov#year) vce(cluster id)  // 省份×年份
+
+* ===== 07.2 事件研究：提前期 + 滞后项 =====
+* 以政策当年为基准期（omit），生成相对时间 d_{-K} ... d_{+K}
+gen rel_time = year - policy_year
+forvalues k = -4/4 {
+    local kk = `k' + 5          // 命名为 d1..d9
+    gen d`kk' = (rel_time == `k')
+}
+* 省略处理当年（rel_time==0，即 d5）作为基准
+reghdfe lnTFP d1 d2 d3 d4 d6 d7 d8 d9 $X, absorb(id year) vce(cluster id)
+est store event_study
+
+* 画图：提前期(d1-d4)应不显著贴近0；滞后项(d6-d9)显著
+coefplot event_study, keep(d1 d2 d3 d4 d6 d7 d8 d9) ///
+    vertical yline(0) title("Event Study: pre-trend vs post-effect")
+
+* 也可使用 eventdd / did_multiplegt 等官方推荐命令
+* ssc install eventdd
+eventdd lnTFP $X, timevar(rel_time) method(fe, vce(cluster id)) ///
+    leads(4) lags(4) baseline(-1)
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 逐步流程</h2>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 先把基准回归"钉"住</div>
+          <div class="step-desc">在论文最开始的位置固定一套基准设定（Y、X、样本、FE、聚类），之后所有稳健性检验都<strong>只改一个维度</strong>，其余保持与基准一致，便于横向对比。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 数据维度扰动（清单 1—4、16、18）</div>
+          <div class="step-desc">换 Y、换 X、剔除特殊样本、改变缩尾、换样本区间、平衡面板。这一步回答"结论是否由变量构造或样本选择驱动"。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 模型维度扰动（清单 5—7）</div>
+          <div class="step-desc">换估计量、加高阶/交互固定效应、剔除同期政策。这一步回答"结论是否依赖于特定函数形式或 FE 层级"。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4 · 误差结构扰动（清单 10—11）</div>
+          <div class="step-desc">换聚类层级、双向聚类、Wild Cluster Bootstrap、普通 Bootstrap。这一步回答"显著性是否只是标准误算错了"。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 5 · 随机化与时间结构（清单 8—9、12—15）</div>
+          <div class="step-desc">安慰剂随机处理组/时间、加时间趋势、事件研究检验平行趋势与动态效应。这一步直接服务于因果识别的可信度。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 6 · 汇总成一张稳健性表格</div>
+          <div class="step-desc">把每一步的核心系数、标准误、样本量、R² 汇总到一张表（一个设定一列），让读者一眼看到符号与量级的稳定范围。报告时<strong>如实说明</strong>哪些检验变弱了。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s8b">
+      <h2><span class="sec-num">08b</span> PSM 倾向得分匹配：从 Rosenbaum-Rubin 到平衡性检验</h2>
+      <p>PSM（Propensity Score Matching, Rosenbaum &amp; Rubin 1983）解决的是<strong>可观测混淆下的自选择偏差</strong>：处理组和对照组在可观测特征 $X$ 上系统不同，直接 OLS 把"特征差异"和"处理效应"混在一起。PSM 的核心思路是：不直接匹配高维的 $X$，而是先估计每个个体被处理的概率 $p(X)=P(D=1|X)$（即<strong>倾向得分</strong>），再按 $p(X)$ 在处理组和对照组之间匹配。</p>
+
+      <h3>08b.1 三步流程</h3>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 估计倾向得分</div>
+          <div class="step-desc">用 logit 或 probit 估计 $D_i = 1$ 的概率，得到 $\hat{p}_i$。注意：估计倾向得分时<strong>不要</strong>控制被解释变量 $Y$（这会引入 bad control）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 共同支撑（common support）</div>
+          <div class="step-desc">剔除 $\hat{p}_i$ 落在共同支撑区间之外的观测——处理组中 $\hat{p}$ 极高（找不到对照）和对照组中 $\hat{p}$ 极低（找不到处理）的观测都要删。<code class="inline">psmatch2</code> 的 <code class="inline">common</code> 选项自动完成。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 匹配并检验平衡性</div>
+          <div class="step-desc">常用匹配方法：nearest-neighbor（1:1 或 1:k）、caliper（卡尺内最近邻）、kernel（核匹配）、stratification（分层匹配）。匹配后必须做<strong>平衡性检验</strong>：每个 $X$ 在处理组 vs 对照组的标准化均值差（standardized bias）应 &lt; 10%。</div>
+        </div>
+      </div>
+
+      <h3>08b.2 完整 Stata 代码</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · psm_full.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* ===== PSM 倾向得分匹配完整流程 =====
+* 场景：评估"参加培训 D=1"对工资 lnWage 的影响
+set seed 20240109
+
+* --- 1. 估计倾向得分（logit）---
+* ssc install psmatch2, replace
+global X age educ gender married exper    // 决定是否参加培训的可观测变量
+logit D $X, robust
+predict pscore, pr                        // 倾向得分
+
+* --- 2. 看共同支撑区间 ---
+sum pscore if D==1
+local pmin_treat = r(min)
+local pmax_treat = r(max)
+sum pscore if D==0
+* 只保留 pscore 在 [max(min_treat, min_ctrl), min(max_treat, max_ctrl)] 内的观测
+
+* --- 3. 1:1 最近邻匹配 + 卡尺 ---
+psmatch2 D $X, out(lnWage) neighbor(1) caliper(0.05) common ties
+* 输出：
+*   ATT (Average Treatment effect on Treated)
+*   _weight : 匹配权重（处理组=1，对照组=匹配权重）
+*   _support: 共同支撑标识
+
+* --- 4. 平衡性检验 ---
+pstest $X, both graph
+* 输出：每个 X 匹配前后的标准化均值差
+* 经验阈值：匹配后 |bias| &lt; 10%
+* 若某个 X 匹配后偏差仍 &gt; 10%，调整匹配方法或加入高次项
+
+* --- 5. 不同匹配方法的稳健性 ---
+psmatch2 D $X, out(lnWage) neighbor(3) caliper(0.05) common   // 1:3 近邻
+psmatch2 D $X, out(lnWage) kernel bwidth(0.06) common          // 核匹配
+psmatch2 D $X, out(lnWage) strata breaks(0 .2 .4 .6 .8 1) common // 分层匹配
+
+* --- 6. teffects 替代命令（Stata 内置）---
+teffects psmatch (lnWage) (D $X, logit), atet nneighbor(3) vce(robust)
+* teffects 输出更规范，自动算 ATT / ATU / ATE
+</code></pre>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ PSM 只能解决可观测混淆</div>
+        <p>PSM 假设<strong>所有决定处理的混淆变量都可观测</strong>（unconfoundedness / selection on observables）。如果存在不可观测的自选择（如"更上进的人更愿意参加培训"），PSM 完全无效。这也是为什么顶刊常做 <strong>PSM-DID</strong>（<a href="06-did.html">06 DID 页 s3</a>）：PSM 平衡可观测，DID 消除时不变不可观测，两者互补。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s8c">
+      <h2><span class="sec-num">08c</span> Heckman 两阶段：样本选择偏差与逆米尔斯比</h2>
+      <p>当"能被观测到 Y"本身不是随机的——比如你想估计女性工资方程，但只有"选择进入劳动力市场"的女性有工资数据——OLS 在这个 self-selected 样本上估计是有偏的。<strong>Heckman (1979) 两阶段法</strong>用逆米尔斯比（Inverse Mills Ratio, IMR）修正这种选择偏差。</p>
+
+      <h3>08c.1 模型结构</h3>
+      <div class="formula-block">
+        <div class="formula-label">Eq. H.1 — 选择方程 + 结果方程</div>
+        $$
+        \begin{aligned}
+        \text{选择方程：} &\quad D_i^* = Z_i'\gamma + u_i, \quad D_i = \mathbb{1}(D_i^* &gt; 0) \\
+        \text{结果方程：} &\quad Y_i = X_i'\beta + \varepsilon_i, \quad \text{仅当 } D_i = 1 \text{ 时观测到 } Y_i
+        \end{aligned}
+        $$
+      </div>
+      <p>第一步：用全部样本跑 probit / logit 估计选择方程，得到 $\hat{\gamma}$。<strong>排除约束（exclusion restriction）</strong>：选择方程里必须至少有一个变量 $Z_i$ 影响"是否参与"但不影响 $Y$——否则 IMR 与 $X$ 高度共线，识别脆弱。</p>
+      <p>第二步：用第一步的预测值构造逆米尔斯比 $\hat{\lambda}_i = \phi(\hat{Z}_i'\hat{\gamma}) / \Phi(\hat{Z}_i'\hat{\gamma})$（参与样本）或 $\hat{\lambda}_i = -\phi(\hat{Z}_i'\hat{\gamma}) / [1-\Phi(\hat{Z}_i'\hat{\gamma})]$（非参与样本），加到结果方程里：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. H.2 — 加入 IMR 的结果方程</div>
+        $$ Y_i = X_i'\beta + \sigma_{u\varepsilon} \cdot \hat{\lambda}_i + \eta_i, \quad \text{仅在 } D_i=1 \text{ 样本上估计} $$
+      </div>
+      <p>$\hat{\lambda}_i$ 显著（t 值）说明存在样本选择偏差，Heckman 修正是必要的。</p>
+
+      <h3>08c.2 完整 Stata 代码</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · heckman_demo.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* ===== Heckman 两阶段：女性工资方程 =====
+* 场景：估计女性教育回报率，但只有"参与劳动力市场"的女性有工资数据
+
+* --- 1. 数据准备 ---
+* lwage: 对数工资（仅参与工作的女性观测到）
+* educ: 教育年限
+* exper: 工作经验
+* married / children: 婚姻、子女（影响是否参与工作，但不直接影响工资）
+* inlf: 是否参与劳动力市场
+
+* --- 2. 两步法手动估计 ---
+* 第一步：选择方程（probit）
+probit inlf educ exper married children other_income
+predict xb, xb
+gen imr_normal = normalden(xb)/normal(xb)        // IMR（参与样本）
+
+* 第二步：结果方程（仅 inlf=1 样本）
+reg lwage educ exper imr_normal if inlf==1, robust
+* imr_normal 显著 → 存在样本选择偏差
+
+* --- 3. Stata 内置 heckman 命令（MLE，推荐）---
+heckman lwage educ exper, select(inlf = educ exper married children other_income)
+* 输出：
+*   结果方程：lwage 的系数
+*   选择方程：inlf 的系数
+*   /athrho / lnsigma：rho（选择方程与结果方程误差相关）与 sigma
+*   lambda: IMR 的系数（=rho*sigma）
+*   LR test of indep. eqns. (rho=0): H0 选择与结果独立
+*   若 LR 检验 p&lt;0.05 → 必须用 Heckman
+
+* --- 4. 二值结果变量：heckprob ---
+* 若 Y 是 0/1（如"是否拥有养老保险"），用 heckprob
+heckprob own_pension educ exper, select(inlf = educ exper married children)
+
+* --- 5. 关键诊断 ---
+* 排除约束：选择方程中的 married/children 不应出现在结果方程中
+* 检查：结果方程若加入 married/children，应不显著（理论上）
+* 若找不到排除约束，Heckman 只能靠函数形式识别，结果极不可靠
+</code></pre>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">⚠ Heckman 的常见误用</div>
+        <ul>
+          <li><strong>没有排除约束还硬跑 Heckman</strong>：选择方程和结果方程用完全相同的 $X$，只能靠正态分布的函数形式识别，结果高度敏感。规范做法：至少找一个"决定参与但不影响结果"的变量。</li>
+          <li><strong>把 IMR 显著当成"一定要 Heckman"</strong>：IMR 显著只说明样本选择存在，不代表你修正得对。如果排除约束弱，Heckman 反而引入新偏误。</li>
+          <li><strong>把 Heckman 当成万能内生性修正</strong>：Heckman 只修正<strong>样本选择</strong>偏差，不修正遗漏变量或反向因果。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section" id="s8d">
+      <h2><span class="sec-num">08d</span> Oster (2019) 系数稳定性分析</h2>
+      <p>当无法用工具变量、只能靠"控制可观测变量"逼近因果效应时，一个自然的追问是：<strong>如果存在不可观测的混杂 $W_2$，它需要多强，才能把你观察到的系数 $\hat{\beta}$ 推到 0？</strong>Oster (2019, <em>JBES</em> 37(2): 187–204) 在 Altonji–Elder–Taber (2005) 基础上，用"加入控制后系数变化幅度"和"$R^2$ 上升幅度"两条信息，对不可观测混杂的偏误上界做部分识别。</p>
+
+      <h3>08d.1 原理与公式</h3>
+      <p>记两个设定：<strong>短回归</strong>（不含控制）系数 $\ddot\beta$、$R^2_{short}$；<strong>长回归</strong>（含全部可观测控制）系数 $\tilde\beta$、$R^2_{controlled}$。Oster 引入两个参数：</p>
+      <ul>
+        <li>$\delta$：不可观测混杂相对可观测控制的"选择强度比"。$\delta=1$ 表示"不可观测与可观测一样重要"；$\delta>1$ 表示需要不可观测比已控制变量更强才能推翻结论。</li>
+        <li>$R_{max}$：若真实模型被完全估计能达到的最大 $R^2$（不可能超过 1）。Oster 建议取 $R_{max}=1.3\times R^2_{controlled}$。</li>
+      </ul>
+      <p>偏误校正后的估计量（对 $\beta=0$ 的偏误上界）为：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. O.1 — Oster 偏误校正估计量</div>
+        $$ \beta^{*} = \tilde{\beta}\,-\,\delta\,\frac{(\ddot{\beta}-\tilde{\beta})\,(R_{max}-R_{controlled})}{R_{controlled}-R_{short}} $$
+      </div>
+      <p>实务报告两个量：(1) 在 $R_{max}=1.3\tilde R^2$ 下，让 $\beta^*=0$ 所需的 $\delta^*$；(2) 在 $\delta=1$（不可观测与可观测同等重要）下的识别区间 $[\beta^*, \tilde\beta]$。</p>
+      <div class="callout tip">
+        <div class="callout-title">✅ 判断标准</div>
+        <p>若 <strong>$\delta^*>1$</strong>（推翻结论需要"不可观测比已控制变量还更重要"），或在 $\delta=1$ 时识别区间<strong>不跨 0</strong>，则结论对不可观测混杂稳健。中文顶刊常见表述："$\delta$ 大于 1（或识别区间不含 0），说明遗漏变量造成的偏误较小。"</p>
+      </div>
+
+      <h3>08d.2 完整 Stata 代码（psacalc）</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · oster_psacalc.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* Oster (2019) 系数稳定性：psacalc
+* 场景：处理变量 D 对 Y 的影响，可观测控制 X
+*==============================================================*
+clear all
+set seed 20240701
+sysuse auto.dta, clear
+
+* --- 0. 两个基础设定：短回归 & 长回归 ---
+global Y price
+global D  foreign
+global X  weight length turn
+
+* 短回归：只放处理变量
+regress $Y $D
+scalar b_short   = _b[$D]
+scalar r2_short  = e(r2)
+
+* 长回归：放全部控制
+regress $Y $D $X
+scalar b_long    = _b[$D]
+scalar r2_long   = e(r2)
+
+* --- 1. psacalc（Oster 官方 Stata 命令）---
+* ssc install psacalc, replace
+regress $Y $D $X
+* 报告让 beta=0 所需的 delta*（默认 Rmax = 1.3 * R2_long）
+psacalc delta $D, rmax(0.5)
+* 若 delta* &gt; 1 => 稳健（需要不可观测比可观测更强才能归零）
+
+* 报告在 delta=1 下的 beta*（识别区间下限）
+psacalc beta $D, rmax(0.5) delta(1)
+* 识别区间 = [beta*, b_long]；若不含 0 => 稳健
+
+* --- 2. 手算 delta* 与 beta*（理解原理）---
+* delta* = (b_long - 0) * (Rmax - R2_long) / ((b_short - b_long) * (R2_long - R2_short))
+scalar Rmax = 1.3 * r2_long
+scalar dstar = (b_long - 0) * (Rmax - r2_long) / ((b_short - b_long) * (r2_long - r2_short))
+display "delta* (让 beta=0 所需) = " dstar
+
+* 在 delta=1 下的 beta*
+scalar bstar = b_long - 1 * (b_short - b_long) * (Rmax - r2_long)/(r2_long - r2_short)
+display "delta=1 时 beta* = " bstar "  ; b_long = " b_long
+* 区间 [bstar, b_long] 若不含 0，则稳健
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s8e">
+      <h2><span class="sec-num">08e</span> Cinelli–Hazlett (2020) 混杂敏感性与 RV</h2>
+      <p>Cinelli &amp; Hazlett (2020, <em>JRSS-B</em> 82(1): 39–67) 把 Oster 的思想一般化：不假设"不可观测与可观测成比例"，而是直接问——<strong>一个假设的未观测混杂 $Z$，需要分别与处理 $D$、结果 $Y$ 有多强的偏相关（partial $R^2$），才能让处理效应 $\beta$ 不显著甚至变号？</strong>这就是 <strong>部分识别（partial identification）</strong> 框架。</p>
+
+      <h3>08e.1 概念框架与 RV</h3>
+      <ul>
+        <li><strong>部分 $R^2$</strong>：未观测混杂在控制已观测变量后，能解释处理 $D$ 和结果 $Y$ 残差变异的比例（记作 $R^2_{D\sim Z|X}$、$R^2_{Y\sim Z|D,X}$）。</li>
+        <li><strong>Robustness Value (RV)</strong>：使处理效应的置信区间恰好包含 0 所需的、混杂与 $D$、与 $Y$ 的<strong>同等强度</strong>（equal strength）下限。RV 越大越稳健。直观对照：如果某个已观测重要控制的 partial $R^2$ 是 5%，而 RV=15%，那需要一个比它强得多的未观测混杂才能推翻结论。</li>
+      </ul>
+      <div class="formula-block">
+        <div class="formula-label">Eq. CH.1 — 敏感性参数空间</div>
+        $$ \text{偏误偏} \propto \frac{R^2_{Y\sim Z|D,X}\cdot R^2_{D\sim Z|X}}{1-R^2_{D\sim Z|X}},\qquad
+        \text{RV} = \min \rho \ \text{s.t.}\ \text{CI}(\beta)\ni 0 $$
+      </div>
+
+      <h3>08e.2 与 Oster 的对比</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>维度</th><th>Oster (2019)</th><th>Cinelli–Hazlett (2020)</th></tr></thead>
+          <tbody>
+            <tr><td>核心参数</td><td>$\delta$（选择强度比）+ $R_{max}$</td><td>partial $R^2$ + RV</td></tr>
+            <tr><td>建模假设</td><td>不可观测与可观测按比例（proportional selection）</td><td>不要求成比例，直接刻画混杂强度</td></tr>
+            <tr><td>输出</td><td>识别区间 $[\beta^*,\tilde\beta]$、$\delta^*$</td><td>RV、敏感性曲线/等值线、校正后 CI</td></tr>
+            <tr><td>直观解释</td><td>"需要多强的相对选择"</td><td>"需要一个多强的混杂"（可与已观测控制对照）</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>08e.3 代码：sensemakr（R 为主，Stata 可手算）</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">R · sensemakr_demo.R</span><button class="copy-btn">复制</button></div>
+<pre><code># Cinelli-Hazlett (2020) 混杂敏感性分析
+# install.packages("sensemakr")
+library(sensemakr)
+
+# 1. 先用线性回归估计处理 D 对 Y 的效应（含控制 X）
+data("darfur")
+model <- lm(peacefactor ~ directlyharmed + age + farmer_dar +
+            heron_dar + voted, data = darfur)
+
+# 2. 跑 sensemakr：处理变量 directlyharmed
+s <- sensemakr(model = model, treatment = "directlyharmed",
+               benchmark_covariates = "farmer_dar",  # 用已观测变量作强度标尺
+               kd = 1:3)                             # 混杂强度 = kd * 标尺
+summary(s)
+
+# 3. 核心输出：
+#   RV  (robustness value)：让 CI 含 0 所需的最小 partial R2
+#   若 RV 远大于任一已观测控制的 partial R2 => 结论稳健
+# 4. 画敏感性等值线图
+# plot(s, sensitivity.of = "estimate")
+</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · sensemakr 等价手算（概念版）</span><button class="copy-btn">复制</button></div>
+<pre><code>* Stata 无 sensemakr 官方命令，可手算 RV 的近似量或调用 Python/R
+* 思路：报告已观测控制的 partial R2，作为"混杂强度标尺"
+sysuse auto.dta, clear
+regress price foreign weight length turn
+* 用 partial R2 作对照：某个强控制解释了多少残差变异
+* 若 RV &gt;&gt; 任一已观测控制的 partial R2，则不可观测混杂需非常强
+* 严谨的 RV/等值线建议在 R 中用 sensemakr 完成，再把数值贴回论文
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s8f">
+      <h2><span class="sec-num">08f</span> 随机化推断（Randomization Inference / Fisher 精确 p）</h2>
+      <p>当处理是随机分配（或近似随机）时，Fisher (1935) 的思路更直接：在"处理完全无效"的零假设下，<strong>处理分配本身是随机的</strong>。于是把处理标签在样本间反复随机置换（permutation），每次重新计算检验统计量，就得到了零假设下的完整经验分布——真实统计量落在该分布的多远尾部，就是随机化 p 值。这叫 <strong>Randomization Inference (RI) / Fisher Exact p</strong>。</p>
+
+      <h3>08f.1 原理与适用场景</h3>
+      <div class="formula-block">
+        <div class="formula-label">Eq. RI.1 — Fisher 随机化 p 值</div>
+        $$ p_{RI} = \frac{1 + \#\{|\hat{\beta}^{perm}_b| \ge |\hat{\beta}^{obs}|\}}{B+1} $$
+      </div>
+      <p>与传统渐近 p 值相比，RI 不依赖大样本正态近似，因此在以下场景更可靠：</p>
+      <ul>
+        <li><strong>小样本</strong>：n 很小，CLT 还没生效。</li>
+        <li><strong>聚类少</strong>：处理在组层面分配、组数只有十来个，渐近聚类标准误失真（见 s6）。</li>
+        <li><strong>非标准分布</strong>：残差严重偏态、存在极端值，t/F 近似不准。</li>
+        <li><strong>有限总体精确性</strong>：你关心的是"这 $N$ 个单位的处理效应"而非无限总体，RI 直接在有限总体上做推断。</li>
+      </ul>
+
+      <h3>08f.2 完整 Stata 代码</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · randomization_inference.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* 随机化推断 RI：permute / ritest / 手写置换
+*==============================================================*
+clear all
+set seed 20240702
+sysuse auto.dta, clear
+
+* --- 1. 真实统计量：foreign 对 price 的效应 ---
+regress price foreign weight
+scalar b_obs = _b[foreign]
+
+* --- 2. 官方 permute：置换 foreign 标签 1000 次 ---
+permute foreign b = _b[foreign], reps(1000) seed(20240702) saving("ri_perm.dta", replace): ///
+    regress price foreign weight
+
+* 读结果：真实 b 在置换分布中的位置
+use "ri_perm.dta", clear
+gen p_ri = (abs(b) &gt;= abs(b_obs)) + 0
+quietly sum p_ri
+display "随机化 p 值 = " r(mean)
+histogram b, xline(`=b_obs') note("真实系数 = " %6.3f b_obs)
+
+* --- 3. ritest（Heß 2017，更灵活，推荐）---
+* ssc install ritest, replace
+sysuse auto.dta, clear
+ritest foreign _b[foreign], reps(1000) seed(20240702) : ///
+    regress price foreign weight
+* ritest 直接输出 RI p 值；支持 reghdfe、聚类、固定效应
+
+* --- 4. 手写 permutation test（理解原理）---
+sysuse auto.dta, clear
+gen b_perm = .
+local B = 1000
+forvalues b = 1/`B' {
+    preserve
+        gen u = runiform()
+        sort u
+        gen fake_foreign = mod(_n, 2)        // 随机重排 foreign
+        regress price fake_foreign weight
+        scalar bb = _b[fake_foreign]
+    restore
+    replace b_perm = bb in `b'
+}
+quietly count if abs(b_perm) &gt;= abs(b_obs)
+display "手写 RI p 值 = " r(N)/`B'
+</code></pre>
+      </div>
+      <div class="callout info">
+        <div class="callout-title">与 s5 安慰剂检验的关系</div>
+        <p>本页 s5 的"随机处理组安慰剂检验"在统计原理上就是 RI：把置换分布画出来、报告真实系数落在尾部的比例，本质就是 Fisher 随机化 p 值。s8f 把它形式化为一种<strong>推断方法</strong>，适用于任意检验统计量与小样本/少聚类场景；ritest 是目前最规范的实现。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 论文案例</h2>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · QJE</span>
+        <div class="paper-title">How Much Should We Trust Differences-In-Differences Estimates?</div>
+        <div class="paper-meta">Bertrand, Duflo & Mullainathan (2004), Quarterly Journal of Economics</div>
+        <div class="paper-desc">这篇经典论文系统揭示了 DID 中标准误低估的问题：当处理变量在组层面分配且误差存在序列相关时，常规标准误会让"假效应"频繁显著。论文提出用组层面聚类、Block Bootstrap 等做法修正，并比较了多种方法。是"改变聚类层级 / Bootstrap 标准误"这两类稳健性检验的方法论源头。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · AEJ: Applied</span>
+        <div class="paper-title">Star Wars: The Empirics Strike Back</div>
+        <div class="paper-meta">Brodeur, Lé, Sangnier & Zylberberg (2016), American Economic Journal: Applied Economics</div>
+        <div class="paper-desc">论文搜集上千篇已发表论文的 t 统计量，发现 t 值在 1.96 附近出现明显的堆积（"Star Wars"），提示存在 p-hacking。它是"稳健性检验必须事前规划、随机化推断、报告全部设定"这一规范立场的重要依据，也是理解为什么安慰剂检验要跑满 1000 次、分布要近似对称的关键文献。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 经济研究</span>
+        <div class="paper-title">中国农村税费改革的政策效果：基于双重差分模型的估计</div>
+        <div class="paper-meta">周黎安、陈烨（2005），《经济研究》</div>
+        <div class="paper-desc">国内 DID 实证的标杆之作。论文围绕农村税费改革这一准自然实验，系统地做了平行趋势检验、剔除特殊省份、更换样本区间、控制政策时变等一系列稳健性工作，展示了中文顶刊如何把"识别 + 稳健性"写得干净完整，是学习稳健性清单如何落地的中文范本。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 管理世界</span>
+        <div class="paper-title">国家高新区推动了地区经济发展吗？——基于双重差分方法的验证</div>
+        <div class="paper-meta">刘瑞明、赵仁杰（2015），《管理世界》</div>
+        <div class="paper-desc">论文以国家高新区设立为准自然实验，使用 PSM-DID、平行趋势、安慰剂随机抽样、改变聚类标准误、剔除异常年份等一整套稳健性手段验证政策效应。是中文期刊中"PSM-DID + 安慰剂检验 + 多维度稳健性"组合的典型样例。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Biometrika</span>
+        <div class="paper-title">The Central Role of the Propensity Score in Observational Studies for Causal Effects</div>
+        <div class="paper-meta">Paul R. Rosenbaum &amp; Donald B. Rubin · Biometrika, 1983, 70(1): 41–55</div>
+        <div class="paper-desc">PSM 的方法论奠基之作。证明在可观测混淆假设下，按倾向得分匹配等价于按高维协变量匹配。本页 s8b 的理论依据。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Econometrica</span>
+        <div class="paper-title">Sample Selection Bias as a Specification Error</div>
+        <div class="paper-meta">James J. Heckman · Econometrica, 1979, 47(1): 153–161</div>
+        <div class="paper-desc">Heckman 两阶段法的原始论文，Heckman 因此获 2000 年诺贝尔经济学奖。提出逆米尔斯比修正样本选择偏差的框架。本页 s8c 的理论依据。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · JBES</span>
+        <div class="paper-title">Unobservable Selection and Coefficient Stability: Theory and Evidence</div>
+        <div class="paper-meta">Emily Oster · Journal of Business &amp; Economic Statistics, 2019, 37(2): 187–204</div>
+        <div class="paper-desc">提出用系数变化 + R² 变化推断不可观测混杂偏误上界的框架（$\delta$ 与 $R_{max}$），配套 Stata 命令 <code class="inline">psacalc</code>。是当前中文顶刊（《经济研究》《管理世界》《财经研究》等）观测研究类论文"不可观测混杂稳健性"的标准做法。本页 s8d 的方法来源。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · JRSS-B</span>
+        <div class="paper-title">Making Sense of Sensitivity Analysis: Extending Oster's Delta-Rho Results to Control for Relevant Observables</div>
+        <div class="paper-meta">Carlos Cinelli &amp; Chad Hazlett · Journal of the Royal Statistical Society Series B, 2020, 82(1): 39–67</div>
+        <div class="paper-desc">提出 Robustness Value (RV) 与 partial R² 敏感性框架，配套 R 包 <code class="inline">sensemakr</code>。比 Oster 更灵活、不依赖"成比例选择"假设，并给出可与已观测变量强度对照的直观判据。本页 s8e 的方法来源。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Book</span>
+        <div class="paper-title">The Design of Experiments（随机化推断 / Fisher 精确检验的源头）</div>
+        <div class="paper-meta">Ronald A. Fisher · 1935</div>
+        <div class="paper-desc">随机化推断的思想源头：在"处理完全无效"的零假设下，通过置换处理分配构造精确的检验分布。本页 s8f 的理论基础。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Stata Journal</span>
+        <div class="paper-title">Randomization Inference with Stata: A Guide and Software</div>
+        <div class="paper-meta">Simon Heß · The Stata Journal, 2017, 17(3): 630–651</div>
+        <div class="paper-desc">推出 <code class="inline">ritest</code> 命令，把随机化推断标准化、可复现。小样本、少聚类、非标准分布场景下报告 RI p 值时的首选引用。本页 s8f.2 的实现依据。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 顶刊范式</span>
+        <div class="paper-title">中文顶刊中的 Oster / 随机化推断稳健性实践</div>
+        <div class="paper-meta">《经济研究》《管理世界》《财经研究》《经济学报》近年观测类论文 · 通用范式</div>
+        <div class="paper-desc">近年中文顶刊在"无工具变量的观测研究"中已普遍采用 Oster (2019) <code class="inline">psacalc</code>：取 $R_{max}=1.3\times R^2_{controlled}$，报告使 $\beta=0$ 所需的 $\delta^*$（典型表述：$\delta$ 大于 1 或识别区间不含 0 则结论稳健）；在 DID/准实验稳健性中，则用置换/ritest 报告随机化 p 值与安慰剂分布图。本页 s8d、s8f 的中文落地参照。</div>
+      </div>
+    </div>
+
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 常见错误与进阶资料</h2>
+
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 1：把"稳健性检验"当成"凑显著"的工具</div>
+        <p>逐一遍历替换变量、样本、方法，只保留显著的那几个写进论文，把不显著的扔进附录甚至丢弃——这正是 Brodeur et al. (2016) 批评的 p-hacking。正确做法是<strong>事前规划</strong>检验清单并全部报告，包括那些让系数变弱的。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 2：安慰剂检验只跑 20—50 次就画图</div>
+        <p>随机化推断的零分布需要足够多的重抽样次数（通常 ≥500，严谨的用 1000—2000）。次数太少时直方图抖动剧烈、伪 p 值估计不准，结论不可信。同时必须固定种子（seed）以保证可复现。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 3：聚类层级与处理分配层级不一致</div>
+        <p>处理是在省/行业层面分配的，却只在企业层面聚类——这正是 Bertrand et al. (2004) 证明会严重低估标准误的情形。聚类层级必须与处理的分配层级一致；聚类数太少时改用 Wild Cluster Bootstrap。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 4：平行趋势用"看图说话"代替检验</div>
+        <p>不能只画事件研究图凭视觉判断 lead 是否贴近 0，应当报告处理前各 lead 系数的联合显著性检验（例如 test d1=d2=d3=d4=0 的 F 统计量），用统计量支撑平行趋势。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 5：PSM 不做平衡性检验就报告 ATT</div>
+        <p>匹配后必须跑 <code class="inline">pstest</code> 检查每个 $X$ 的标准化均值差。如果某个变量匹配后偏差仍 &gt; 10%，说明匹配失败，ATT 不可信。中文论文常见"跑完 psmatch2 就报 ATT"的做法，审稿人现在会要求看平衡性表。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 6：Heckman 没有排除约束</div>
+        <p>选择方程和结果方程用完全相同的解释变量，仅靠正态分布函数形式识别 IMR。结果对分布假设极度敏感，换 logit 或半参数结果就变号。规范做法：找一个"影响参与但不影响结果"的变量（如家庭非劳动收入对女性参与工作的影响）。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 7：Oster 的 $R_{max}$ 取值不当</div>
+        <p>$R_{max}$ 是 Oster 分析最敏感的旋钮。随意取 $R_{max}=1$（回归注定过拟合、区间失真）或取一个极小值（人为制造"稳健"假象）都会让结论不可信。规范做法：遵循 Oster 建议取 $R_{max}=1.3\times R^2_{controlled}$，并做 $R_{max}$ 敏感性（换 1.25/1.5/2.0 倍看 $\delta^*$ 是否稳定）。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 8：混杂敏感性只看点估计、不看区间</div>
+        <p>Oster/Cinelli–Hazlett 的价值在于"偏误上界 / 置信区间"，而不是单个 $\delta$ 或点估计。只报一个 $\delta^*>1$ 却不报告识别区间 $[\beta^*,\tilde\beta]$ 是否跨 0、不报告 RV 与已观测控制的对照，等于没做敏感性分析。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 9：随机化推断不设 seed / 次数太少</div>
+        <p>置换重抽样必须 <code class="inline">set seed</code>（或 <code class="inline">seed()</code> 选项）保证可复现，否则审稿人无法核验；重抽样次数通常 ≥1000，次数太少时伪 p 值抖动大、结论不稳。同时要在文中写明置换了什么标签（处理组？处理时间？），避免与真实实验设计混淆。</p>
+      </div>
+
+      <h3>进阶资料</h3>
+      <ul>
+        <li>Bertrand, Duflo & Mullainathan (2004), <em>QJE</em> — 聚类与序列相关的方法论源头。</li>
+        <li>Oster, E. (2019), <em>JBES</em> 37(2): 187–204 — 系数稳定性与 $\delta$ / $R_{max}$，Stata 命令 <code class="inline">psacalc</code>。</li>
+        <li>Cinelli, C. & Hazlett, C. (2020), <em>JRSS-B</em> 82(1): 39–67 — RV 与 partial R² 敏感性分析，R 包 <code class="inline">sensemakr</code>。</li>
+        <li>Fisher, R. A. (1935), <em>The Design of Experiments</em> — 随机化推断 / Fisher 精确检验源头。</li>
+        <li>Heß, S. (2017), <em>Stata Journal</em> 17(3): 630–651 — <code class="inline">ritest</code> 随机化推断指南。</li>
+        <li>Brodeur et al. (2016), <em>AEJ: Applied</em> — t 统计量分布与 p-hacking 证据。</li>
+        <li>Cameron, Gelbach & Miller (2008), <em>ReStat</em> — 双向聚类与 Wild Bootstrap。</li>
+        <li>Schmidheiny & Siegloch (2019), NBER WP — 事件研究法与交错 DID 的稳健性实践。</li>
+        <li>Stata 命令：<code class="inline">reghdfe</code>、<code class="inline">ppmlhdfe</code>、<code class="inline">boottest</code>、<code class="inline">eventdd</code>、<code class="inline">coefplot</code>、<code class="inline">winsor2</code>、<code class="inline">psmatch2</code>。</li>
+      </ul>
+    </div>
+
+    <!-- 底部翻页 -->
+    <div class="page-nav">
+      <a href="07-rdd.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">RDD 断点回归</div>
+      </a>
+      <a href="09-mechanism.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">机制检验</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+(function() {
+  const path = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('href') && item.getAttribute('href').endsWith(path)) {
+      item.classList.add('active');
+    }
+  });
+})();
+</script>
+</body>
+</html>

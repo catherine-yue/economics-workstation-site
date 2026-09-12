@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>搜索与匹配模型的结构估计 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item active" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">结构估计</a>
+      <span class="sep">/</span>
+      <span>搜索与匹配模型</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">STRUCTURAL · LABOR SEARCH</span>
+      <h1>搜索与匹配模型：McCall 保留工资与 DMP 框架</h1>
+      <p class="desc">从摩擦性劳动力市场的假设出发，推导 McCall (1970) 保留工资方程与 DMP (1985) 均衡失业率，讲清匹配函数估计、失业持续期 MLE/SMM、失业保险反事实福利分析，配套 Python 数值解与 Stata 生存分析。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:10px 20px;border-radius:8px;margin:0 0 24px;font-size:14px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:18px;">&#128221;</span>
+      <span><strong>本模型共 12 个方程</strong>（含匹配函数、紧度与找工作/填位概率、工人值函数、McCall Bellman 与保留工资、空位价值、Nash 议价、Beveridge 曲线、稳态失业、持续期似然与 SMM 目标）· 文末附「方程总清单 Equation Summary」</span>
+    </div>
+
+    <div class="precond-box" style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>动态规划 Bellman 方程、Cobb-Douglas 匹配函数、生存分析 hazard/Kaplan-Meier。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>DMP 框架、贝弗里奇曲线、Nash 议价、摩擦性失业。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件前置：</span>Python 数值解 Bellman + Stata 持续期分析。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置：</span>先学 <a href="05-dynamic-structural.html">05 动态结构总览</a>，搜索模型是动态规划在劳动市场的直接应用。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;">进阶 / 前沿</span></div>
+      </div>
+    </div>
+
+<div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">经济环境与摩擦性失业假设</a></li>
+        <li><a href="#s2">McCall (1970) 保留工资模型</a></li>
+        <li><a href="#s3">DMP 匹配模型均衡推导</a></li>
+        <li><a href="#s4">估计方法：匹配函数与持续期</a></li>
+        <li><a href="#s5">数据要求</a></li>
+        <li><a href="#s6">应用解读与反事实福利</a></li>
+        <li><a href="#s7">完整代码</a></li>
+        <li><a href="#s8">论文案例与常见错误</a></li>
+      </ol>
+    </div>
+
+    <!-- ========== Section 1 ========== -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 经济环境与摩擦性失业假设</h2>
+      <p>新古典劳动市场假设工资瞬间出清、无摩擦。但现实中一个工人失业后不会立刻找到工作，一个企业有空位也不会立刻招到人——这就是<strong>摩擦性失业</strong>。搜索匹配模型把这种摩擦形式化：工人和企业在交易中遇到对方需要时间与资源，双方各自优化搜索行为，市场紧度 $\theta=v/u$ 内生决定。</p>
+      <p>核心假设：(a) 工人和企业是大量、原子化的，忽略单个主体对市场的影响；(b) 匹配是随机的，服从匹配函数 $m(u,v)=Au^\eta v^{1-\eta}$；(c) 工人求职有保留工资策略，企业有自由进入/退出空位的决策；(d) 工资通过 Nash 议价瓜分匹配剩余，而非拍卖出清。</p>
+      <p>其中"随机匹配"假设最值得解释：它不假设工人和企业按类型完全划分（如高技能工人只遇到高技能企业），而是把所有 $u$ 个失业工人和 $v$ 个空位放进同一个"匹配函数"里随机相遇。这一抽象把复杂的搜索过程压缩为一个宏观生产函数，是 DMP 可估计、可校准的关键。若想引入工人与企业的双向异质性排序（positive assortative matching），则需要 Shimer-Smith 类的扩展匹配函数，识别难度大幅上升。</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.12-01 — Cobb-Douglas Matching Function</div>
+        $$m_t = A\,u_t^{\eta}\,v_t^{1-\eta}$$
+      </div>
+      <p>其中 $A$ 是匹配效率（制度、信息、地理决定），$\eta\in(0,1)$ 是匹配弹性。规模报酬不变假设下，紧度 $\theta=v/u$ 决定工人找到工作概率 $f(\theta)=A\theta^{1-\eta}$ 与企业填位概率 $q(\theta)=A\theta^{-\eta}$。</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.12-02 — 找工作概率与填位概率（补全）</div>
+        $$f(\theta)=\frac{m}{u}=A\theta^{1-\eta},\qquad q(\theta)=\frac{m}{v}=A\theta^{-\eta}=\frac{f(\theta)}{\theta}$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$\theta=v/u$ 为市场紧度；$f(\theta)$ 为工人失业→就业 hazard；$q(\theta)$ 为企业空位→填位概率。<strong>设定理由</strong>：CRS 匹配函数下 $f(\theta)$ 随紧度上升（工人更容易找工作），$q(\theta)$ 随紧度下降（企业更难招人）。<strong>经济直觉</strong>：$f(\theta)=\theta q(\theta)$ 是对称的——每个工人找到工作的速率等于紧度乘每个空位被填的速率。</p>
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">Eq.12-03 — 工人值函数 Bellman（补全）</div>
+        $$rU=b+f(\theta)(W-U),\qquad rW=w-\delta(W-U)$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$U$ 为失业值，$W$ 为就业值；$b$ 为失业非劳动收入；$\delta$ 为外生离职率；$r$ 为利率。<strong>设定理由</strong>：失业者每期得 $b$，以 $f(\theta)$ 概率就业得"就业−失业"价值差；就业者每期得 $w$，以 $\delta$ 概率失业。<strong>经济直觉</strong>：两式相减得 $(r+\delta+f(\theta))(W-U)=w-b$，这是 Nash 议价的"匹配剩余"。</p>
+      </div>
+    </div>
+
+    <!-- ========== Section 2 ========== -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> McCall (1970) 保留工资模型</h2>
+
+      <h3>2.1 模型设定与假设解读</h3>
+      <p>McCall (1970) 是工作搜索理论起点。一个失业工人每期：(a) 失业，领失业救济 $c$；(b) 从工资分布 $F(w)$ 抽一个 offer；(c) 决定接受还是拒绝。接受则永久得 $w$（无离职）；拒绝则继续失业到下一期。工人折现因子 $\beta$。</p>
+      <ul>
+        <li><strong>为什么无限期</strong>：把失业决策看成无穷期 Bellman 问题，保留工资是平稳策略，避免有限期模型中"越接近终点越愿意接受"的非平稳性。</li>
+        <li><strong>为什么工资外生给定</strong>：工人是工资接受者，每个 offer 由外生分布 $F(w)$ 抽取，工人不与雇主讨价还价（DMP 才引入议价）。</li>
+        <li><strong>失业补偿金 $c$</strong>：是失业的"外部选项"价值，$c$ 越高保留工资越高、失业越久。</li>
+      </ul>
+
+      <h3>2.2 Bellman 方程与保留工资推导</h3>
+      <p>令 $V(w)$ 为拿到 offer $w$ 时的值函数：</p>
+      <div class="formula-block">
+        <div class="formula-label">McCall Bellman Equation</div>
+        $$\boxed{\;V(w)=\max\left\{\frac{w}{1-\beta},\;c+\beta\mathbb{E}[V(w')]\right\}\;}$$
+      </div>
+      <p>第一项"接受"：永久得 $w$，现值 $w/(1-\beta)$。第二项"拒绝"：本期得 $c$，下一期重新抽样。保留工资 $w^*$ 满足"接受"与"拒绝"无差异：</p>
+      <div class="formula-block">
+        <div class="formula-label">Reservation Wage Equation</div>
+        $$\frac{w^*}{1-\beta}=c+\beta\int V(w')\,dF(w')$$
+        <p style="margin-top:8px">化简为关于 $w^*$ 的隐式方程：</p>
+        $$\boxed{\;w^*=c+\frac{\beta}{1-\beta}\int_{w^*}^{\infty}[1-F(w)]\,dw\;}$$
+      </div>
+      <p>直觉：$c$ 越高、$\beta$ 越大（越有耐心）、$F$ 的上尾越厚，$w^*$ 越高，预期失业持续期越长。找到工作的 hazard 为 $h=1-F(w^*)$，失业持续期服从几何分布，均值 $1/h$。</p>
+      <p>保留工资方程还揭示一个比较静态：<strong>提高失业救济金 $c$ 的边际效应</strong>取决于 $\beta/(1-\beta)$ 与上尾积分的乘积。折现因子 $\beta$ 越接近 1（工人越看重未来），$c$ 对 $w^*$ 的提升越敏感——因为今天拒绝一个 offer、明天等到更高 offer 的机会成本下降了。这正是结构估计与简约式回归的区别：简约式只告诉我们"UI 提高使失业持续期延长"，结构估计能进一步告诉我们这一效应通过保留工资渠道、而非通过搜索努力渠道起作用。</p>
+
+      <div class="callout info">
+        <div class="callout-title">💡 结构估计任务</div>
+        <p>从观测到的失业持续期数据反推 $w^*$ 与 $F(w)$。为什么有人失业 1 个月、有人失业 2 年？因为保留工资不同，或在样本期"运气不好"没抽到超过 $w^*$ 的 offer。</p>
+      </div>
+    </div>
+
+    <!-- ========== Section 3 ========== -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> DMP 匹配模型均衡推导</h2>
+      <p>Diamond-Mortensen-Pissarides (DMP) 把 McCall 的单边搜索扩展为双边：企业创造空位，工人搜索，双方相遇后 Nash 议价分剩余。</p>
+
+      <h3>3.1 空位价值与自由进入</h3>
+      <p>企业填位后产出为 $p$（劳动生产率），支付工资 $w$，得匹配剩余 $p-w$。空位的 Bellman 方程：</p>
+      $$rV=-c+q(\theta)(J-V),\qquad rJ=p-w-rV$$
+      其中 $c$ 是空位维持成本，$r$ 是利率。<strong>自由进入条件</strong> $V=0$（零利润）给出空位创造方程：
+      <div class="formula-block">
+        <div class="formula-label">Vacancy Creation (Free Entry)</div>
+        $$\frac{p-w}{r+\delta}=\frac{c}{q(\theta)}$$
+      </div>
+      <p>含义：填位后的期望利润现值等于创造并维持空位的期望成本。</p>
+
+      <h3>3.2 Nash 议价与工资决定</h3>
+      <p>工人与企业按议价力 $\beta$ 瓜分匹配剩余，Nash 解：</p>
+      <div class="formula-block">
+        <div class="formula-label">Wage Bargaining</div>
+        $$w=(1-\beta)b+\beta(p+c\theta)$$
+      </div>
+      <p>其中 $b$ 是工人失业时的非劳动收入（含 $c$）。紧度 $\theta$ 越高（工人越容易找工作），工人议价力越强，工资越高。</p>
+
+      <h3>3.3 均衡失业率与 Beveridge 曲线</h3>
+      <p>稳态时失业流入（就业→失业）等于流出（失业→就业）：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.12-09 — Steady-State Unemployment</div>
+        $$\delta(1-u)=f(\theta)u \;\Longrightarrow\; \boxed{\;u^*=\frac{\delta}{\delta+f(\theta^*)}\;}$$
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">Eq.12-10 — Beveridge 曲线（补全）</div>
+        $$u=\frac{\delta}{\delta+A\,(v/u)^{1-\eta}}\;\Longleftrightarrow\;u\cdot\big[\delta+A(v/u)^{1-\eta}\big]=\delta$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$u$ 失业率，$v$ 空位率，$\theta=v/u$。<strong>设定理由</strong>：把 $f(\theta)=A\theta^{1-\eta}$ 代入稳态失业方程，即得 $u$ 与 $v$ 的负相关轨迹。<strong>经济直觉</strong>：Beveridge 曲线内移 = 匹配效率 $A$ 上升（如招聘网站）；沿曲线移动 = 需求波动（紧度 $\theta$ 变化）。这是区分"结构性失业"与"周期性失业"的核心图形。</p>
+      </div>
+      <p>这就是 Beveridge 曲线：$u$ 与 $v$（经 $\theta$）负相关。联列空位创造、工资议价、Beveridge 曲线三个方程，可解出均衡 $(\theta^*,w^*,u^*)$。推导顺序是：先由自由进入得 $\theta$ 与 $w$ 的负相关曲线（$w$ 越高企业越不愿开空位），再由 Nash 议价得 $w$ 与 $\theta$ 的正相关曲线（紧度越高工人议价力越强），两线交点决定均衡；最后代回 Beveridge 曲线得 $u^*$。这一"三方程联立"是 DMP 的标准解法，也是把摩擦性失业从"外生技术冲击"内生化的关键。</p>
+      <div class="callout tip">
+        <div class="callout-title">✓ Hosios (1990) 条件</div>
+        <p>当且仅当工人议价力 $\beta$ 等于匹配弹性 $\eta$ 时，分散均衡有效。搜索外部性（企业多开空位提高工人找到工作概率，却不被工人内化）使市场一般不在社会最优。这是 DMP 最重要的福利结论。</p>
+      </div>
+    </div>
+
+    <!-- ========== Section 4 ========== -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 估计方法</h2>
+
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库：本节用 MLE（失业持续期/删失数据似然）</div>
+        <p>4.2 的失业持续期似然（含右删失）是典型的极大似然估计。不熟悉似然构造、删失处理与标准误？先学 <a href="01-mle.html">基础知识库·MLE →</a>（4.3 的 SMM 见 <a href="13-nonlinear-gmm-smm.html">SMM 页</a>）。</p>
+      </div>
+
+      <h3>4.1 匹配函数估计</h3>
+      <p>对 $m_t=Au_t^\eta v_t^{1-\eta}$ 取对数：</p>
+      <div class="formula-block">
+        <div class="formula-label">Log-Linear Matching Function</div>
+        $$\log m_t=\log A+\eta\log u_t+(1-\eta)\log v_t+\varepsilon_t$$
+      </div>
+      <p>直接 OLS 有 simultaneity bias：$m,u,v$ 同时决定。常用工具：滞后 $\log u,\log v$、地区失业率、外生离职率。Petrongolo-Pissarides (2001, JEL) 汇总跨国估计，$\eta$ 在 0.3–0.5 之间。</p>
+      <h3>4.2 失业持续期 MLE</h3>
+      <p>对每个个体 $i$，观测失业持续期 $d_i$，右删失记 $c_i=1$（$c_i=1$ 表示调查结束仍失业）。hazard $h_i(t)$ 的似然：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.12-11 — 失业持续期似然（含右删失，补全）</div>
+        $$L_i(\theta)=h_i(d_i)^{1-c_i}\prod_{s=1}^{d_i}[1-h_i(s)]^{1-c_i}\cdot\Big[\prod_{s=1}^{d_i}[1-h_i(s)]\Big]^{c_i}$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$h_i(s)$ 为第 $s$ 期 hazard；$c_i=1$ 为右删失指示。<strong>设定理由</strong>：非删失观测贡献"在 $d_i$ 期找到工作"的密度 $h(d_i)\prod_{s<d_i}(1-h(s))$；删失观测只贡献"活到 $d_i$ 期仍未找到"的生存函数 $\prod_{s\le d_i}(1-h(s))$。<strong>经济直觉</strong>：McCall 模型给出 $h=1-F(w^*)$（常数 hazard，几何持续期），故 $d_i$ 服从几何分布，$E[d]=1/h$。</p>
+      </div>
+      <p>若 hazard 由 McCall 模型生成 $h_i(t)=f(\theta_i)[1-F(w_i^*)]$，可把结构参数 $(\beta,c,F)$ 与异质性 $\theta_i$ 分布一起 MLE。实践中常用 Cox 比例风险模型作半参对照：$h_i(t)=h_0(t)\exp(x_i'\gamma)$，它不假设 hazard 的参数形式，只识别协变量的相对风险。结构 MLE 与 Cox 的区别在于：结构估计能反推出保留工资与工资分布参数，从而做政策反事实；Cox 只能给相对风险排序。</p>
+      <h3>4.3 结构估计：校准或 SMM</h3>
+      <p>模型需数值解 Bellman 时用 SMM：给定 $\theta=(\beta,c,A,\eta,\delta)$，在电脑里模拟 1000 工人 × 1000 期，计算失业率均值、Beveridge 斜率、持续期中位数、离职率等矩，与数据矩加权最小化。</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.12-12 — SMM 目标函数（补全）</div>
+        $$\hat\theta_{SMM}=\arg\min_\theta\;\big[\hat M^{data}-M^{sim}(\theta)\big]'\,\hat W\,\big[\hat M^{data}-M^{sim}(\theta)\big]$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$\hat M^{data}$ 为数据矩向量（失业率、Beveridge 斜率、持续期中位数、离职率）；$M^{sim}(\theta)$ 为模型模拟矩；$\hat W$ 为最优权重（数据矩协方差逆）。<strong>识别条件</strong>：当 Bellman 无解析解、似然不可得时，SMM 用矩替代似然；需模拟次数 $R$ 足够大以降低模拟噪声。<strong>经济直觉</strong>：SMM 让"模型模拟出来的世界"匹配"观测到的世界"的统计特征，是动态结构模型的通用估计工具。</p>
+      </div>
+    </div>
+
+    <!-- ========== Section 5 ========== -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 数据要求</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>数据类型</th><th>变量</th><th>用于估计</th></tr></thead>
+          <tbody>
+            <tr><td>劳动力市场流量（宏观/地区）</td><td>失业人数 $u$、职位空缺 $v$、新雇佣 $m$</td><td>匹配函数 $\eta,A$</td></tr>
+            <tr><td>个人失业 spells（微观）</td><td>失业持续月数、是否仍在失业（删失）、个人特征</td><td>McCall 保留工资、持续期模型</td></tr>
+            <tr><td>工资分布</td><td>就业工资观测</td><td>$F(w)$</td></tr>
+            <tr><td>制度变量</td><td>失业补偿金 $c$、离职率 $\delta$</td><td>结构参数校准</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>常用数据源：美国 CPS (Current Population Survey) 个人层面失业 spells、JOLTS 职位空缺、英国 LFS、中国城镇调查失业率与城镇登记失业人数。中国数据需注意"城镇登记失业"严重低估真实失业（农民工不计入），Beveridge 曲线估计需用 CHIP/CLDS 微观数据补充。此外，宏观 $u,v$ 流量数据在月度频率上更可靠，季度数据会把入职与离职的高频波动平滑掉，导致 $\eta$ 估计偏小。</p>
+    </div>
+
+    <!-- ========== Section 6 ========== -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 应用解读与反事实福利</h2>
+      <p>DMP 的典型反事实问题：<strong>把失业救济 $c$ 提高 10%，会怎样？</strong></p>
+      <ul>
+        <li><strong>部分均衡</strong>：工人保留工资 $w^*$ 上升，hazard 下降，失业持续期变长。McCall 模型直接给出弹性。</li>
+        <li><strong>一般均衡</strong>：企业预期工资上升、利润下降，空位 $v$ 减少，紧度 $\theta$ 下降，进一步降低工人找工作概率。</li>
+        <li><strong>福利</strong>：若 Hosios 条件 $\beta=\eta$ 不成立，失业保险的边际福利效应符号取决于 $\beta-\eta$：工人议价力过强 ($\beta&gt;\eta$) 时市场空位本就过低，提高失业保险反而加剧无效率。</li>
+      </ul>
+      <p>最低工资政策的反事实类似：法定最低工资 $w_{min}$ 若超过均衡工资，会同时挤出低生产率匹配、提高在岗工资、减少空位创造，净福利效应必须在 DMP 一般均衡框架内计算，不能只看就业人数变化。</p>
+      <p>另一个常见反事实是<strong>匹配效率冲击</strong>（如疫情后远程办公、平台招聘 App 普及）。匹配效率 $A$ 上升使 $f(\theta)$ 与 $q(\theta)$ 同时提高，Beveridge 曲线内移，均衡失业率下降。结构估计可以量化这一效应：在估计出的 $(\eta,\beta,\delta)$ 下，把 $A$ 提高 10%，解出新的 $(\theta^{**},u^{**})$，并与 $A$ 不变时的 $u^*$ 比较。这类反事实正是 DMP 框架相对简约式回归的价值——它把政策或技术冲击通过模型结构传导到失业率，而不只是给出一个相关系数。</p>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 真实持续期依赖 vs 异质性</div>
+        <p>观测到的 hazard 随失业时长下降，有两种解释：(a) 真实持续期依赖（技能折旧、雇主偏见）；(b) 未观测异质性（高匹配概率工人先退出样本，剩下"难匹配"者）。结构估计必须用混合分布同时区分两者，否则会错误地把 composition effect 解读为真依赖。</p>
+      </div>
+    </div>
+
+    <!-- ========== Section 7 ========== -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 完整代码</h2>
+
+      <h3>7.1 Python：McCall 保留工资 + 持续期模拟 + 匹配函数估计</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python</span><button class="copy-btn">复制</button></div>
+<pre><code># ============================================================
+# McCall (1970) 保留工资数值解 + 失业持续期模拟
+# + MLE hazard + DMP 匹配函数 OLS
+# ============================================================
+import numpy as np
+from scipy.optimize import minimize_scalar
+from scipy.stats import lognorm
+import statsmodels.api as sm
+
+# ---------- 0. 参数 ----------
+beta, c = 0.95, 0.4
+mu_w, sigma_w = 0.0, 0.3
+
+# ---------- 1. 不动点迭代求保留工资 w* ----------
+V_u = c/(1-beta)
+for _ in range(2000):
+    w_star = (1-beta)*V_u
+    draws = np.random.lognormal(mu_w, sigma_w, size=20000)
+    acc = draws[draws >= w_star]
+    exp_val = (acc.sum()/(1-beta) + V_u*(draws < w_star).sum())/len(draws)
+    V_u_new = c + beta*exp_val
+    if abs(V_u_new-V_u) < 1e-6: break
+    V_u = V_u_new
+print(f"保留工资 w* = {w_star:.3f}, 失业值 V_u = {V_u:.3f}")
+
+# ---------- 2. 模拟失业持续期 ----------
+def sim_duration(w_star, T_max=200):
+    for t in range(1, T_max+1):
+        if np.random.lognormal(mu_w, sigma_w) >= w_star:
+            return t
+    return T_max
+durs = np.array([sim_duration(w_star) for _ in range(5000)])
+print(f"平均失业持续期 {durs.mean():.2f} 期, 中位数 {np.median(durs):.0f}")
+print(f"理论 hazard = {1-lognorm.cdf(w_star, sigma_w, scale=np.exp(mu_w)):.3f}")
+
+# ---------- 3. MLE 估计 hazard ----------
+def nll(logit_h, durs):
+    h = 1/(1+np.exp(-logit_h))
+    unc = durs[durs < 200]; cen = durs[durs >= 200]
+    return -(np.sum(np.log(1-h)+(unc-1)*np.log(h)) + np.sum(cen*np.log(h)))
+r = minimize_scalar(nll, args=(durs,), method='bounded', bounds=(-5,5))
+print(f"MLE hazard = {1/(1+np.exp(-r.x)):.3f}")
+
+# ---------- 4. DMP 匹配函数 OLS ----------
+np.random.seed(0); T = 100
+A_t, eta_t = 0.6, 0.4
+u = 0.05+0.02*np.sin(np.arange(T)/10)+np.random.normal(0,0.005,T)
+v = 0.04+0.01*np.cos(np.arange(T)/10)+np.random.normal(0,0.005,T)
+m = A_t*u**eta_t*v**(1-eta_t)*np.random.lognormal(0,0.05,T)
+X = sm.add_constant(np.column_stack([np.log(u), np.log(v)]))
+res = sm.OLS(np.log(m), X).fit()
+print(f"匹配函数: A={np.exp(res.params[0]):.3f}(真{A_t}), eta={res.params[1]:.3f}(真{eta_t})")
+</code></pre>
+      </div>
+
+      <h3>7.2 Stata：失业持续期生存分析</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* 失业持续期结构估计：McCall + DMP 匹配函数
+*==============================================================*
+clear all
+use "unemployment_spells.dta", clear
+* spell: 失业持续月数; fail: 1=找到工作, 0=右删失
+stset spell, fail(fail=1)
+
+* 1. Kaplan-Meier 非参
+sts graph, by(gender) title("Survival Function") ///
+    xtitle("Months") ytitle("Survival Probability")
+
+* 2. Cox 比例风险
+stcox age i.educ i.marr, robust
+estimates store cox
+
+* 3. Weibull 参数模型
+streg age i.educ i.marr, distribution(weibull) time
+estimates store weibull
+
+* 4. DMP 匹配函数（地区月度面板）
+use "local_labor_market.dta", clear
+xtset region month
+reg log_m log_u log_v, robust
+estimates store ols
+* 用滞后变量 IV 处理 simultaneity
+ivregress 2sls log_m log_v (log_u = L.log_u L2.log_u), robust
+estimates store iv
+esttab ols iv, se star(* 0.1 ** 0.05 *** 0.01) mtitles("OLS" "IV")
+</code></pre>
+      </div>
+    </div>
+
+    <!-- ========== Section 8 ========== -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 论文案例与常见错误</h2>
+
+      <h3>8.1 经典论文</h3>
+      <div class="paper-card">
+        <span class="paper-type en">English · QJE 1970</span>
+        <div class="paper-title">Economics of Information and Job Search</div>
+        <div class="paper-meta">McCall, J. J. (1970). <em>Quarterly Journal of Economics</em>, 84(1), 113–126.</div>
+        <div class="paper-desc">工作搜索理论开山之作。首次把"保留工资"形式化为 Bellman 方程，证明 i.i.d. offer 下存在唯一保留工资策略，奠定后续所有搜索结构估计的理论基础。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · ReStud 1994 / JPE 1985</span>
+        <div class="paper-title">Mortensen-Pissarides 系列：Job Creation and Job Destruction</div>
+        <div class="paper-meta">Mortensen, D. T. &amp; Pissarides, C. A. (1994). <em>ReStud</em>, 61(3), 397–415；Pissarides (1985) <em>JPE</em>。二人共获 2010 年诺奖。</div>
+        <div class="paper-desc">DMP 完整理论：匹配函数 + 自由进入 + Nash 议价 + 外生离职，推导 Beveridge 曲线与失业波动。现代宏观劳动与 DSGE 劳动市场板块的标准结构。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · JEL 2001</span>
+        <div class="paper-title">Looking into the Black Box: A Survey of the Matching Function</div>
+        <div class="paper-meta">Petrongolo, B. &amp; Pissarides, C. A. (2001). <em>Journal of Economic Literature</em>, 39(2), 390–431.</div>
+        <div class="paper-desc">汇总 20 年跨国匹配函数估计，发现 $\eta$ 在 0.3–0.5 间相对稳定、规模报酬近似常数。所有 DMP 结构估计的经验基准。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 《经济研究》</span>
+        <div class="paper-title">中国劳动力市场搜寻匹配效率研究：基于 Beveridge 曲线</div>
+        <div class="paper-meta">冯涛、张建平 (2014). 《经济研究》, 第 6 期, 130–142 页。</div>
+        <div class="paper-desc">基于中国城市调查数据估计 Cobb-Douglas 匹配函数，发现中国匹配弹性约 0.35，2002–2010 年匹配效率 $A$ 持续下降，与"民工荒"和大学生失业并存的结构性矛盾吻合。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 《经济学(季刊)》</span>
+        <div class="paper-title">失业保险金水平与失业持续期：中国城镇证据</div>
+        <div class="paper-meta">王德文、蔡昉 (2004). 《经济学(季刊)》, 3(4), 933–950 页。</div>
+        <div class="paper-desc">用 McCall 模型结构估计中国城镇工人保留工资，发现失业保险金提高 10% 使失业持续期延长约 6%，方向与国外一致但弹性较小，反映中国失业保险覆盖面有限。</div>
+      </div>
+
+      <h3>8.2 常见错误</h3>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 1：把 OLS 的 $\eta$ 直接当匹配弹性，忽略内生性</div>
+        <p>$m,u,v$ 同时决定，OLS 的 $\eta$ 严重偏误。必须用滞后工具变量或外生离职率冲击做 IV/GMM。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 2：忽略右删失 (right censoring)</div>
+        <p>调查结束时仍失业的工人，其持续期不是完整 spell。不写删失似然项会低估 hazard、高估保留工资。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 3：混淆真实持续期依赖与未观测异质性</div>
+        <p>hazard 下降可能是高 hazard 工人先退出的 composition effect。结构估计必须允许混合分布异质性，否则把选择偏差误读为"失业越久越难找到工作"。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 4：DMP 福利分析忽略 Hosios 条件</div>
+        <p>讨论失业保险政策时，分散均衡一般不在社会最优，不能直接比较政策前后失业率作福利指标。必须同时报告 $\beta$ 与 $\eta$ 的关系。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 5：把登记失业率当真实失业率估计 Beveridge 曲线</div>
+        <p>中国城镇登记失业不包含农民工和未登记失业，系统性低估真实失业。用登记数据估计的 $\eta$ 和 $A$ 有偏，应优先用 CHIP/CLDS/CPS 类微观调查构造。</p>
+      </div>
+    </div>
+
+    <!-- ========== 方程总清单 ========== -->
+    <div class="section" id="eq-summary">
+      <h2>方程总清单 / Equation Summary</h2>
+      <p>本页全部方程按出现顺序汇总如下，共 <strong>12 个</strong>。每个方程均可在正文中找到对应的变量定义、设定理由与经济直觉。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>编号</th><th>方程名称</th><th>核心公式</th><th>所在节</th></tr></thead>
+          <tbody>
+            <tr><td>Eq.12-01</td><td>Cobb-Douglas 匹配函数</td><td>$m_t=A\,u_t^\eta v_t^{1-\eta}$</td><td>01</td></tr>
+            <tr><td>Eq.12-02</td><td>找工作/填位概率（补全）</td><td>$f(\theta)=A\theta^{1-\eta}$；$q(\theta)=A\theta^{-\eta}=f(\theta)/\theta$</td><td>01（补全）</td></tr>
+            <tr><td>Eq.12-03</td><td>工人值函数 Bellman（补全）</td><td>$rU=b+f(\theta)(W-U)$；$rW=w-\delta(W-U)$</td><td>01（补全）</td></tr>
+            <tr><td>Eq.12-04</td><td>McCall Bellman 方程</td><td>$V(w)=\max\{w/(1-\beta),\,c+\beta E[V(w')]\}$</td><td>02.2</td></tr>
+            <tr><td>Eq.12-05</td><td>保留工资方程</td><td>$w^*=c+\frac{\beta}{1-\beta}\int_{w^*}^\infty[1-F(w)]dw$</td><td>02.2</td></tr>
+            <tr><td>Eq.12-06</td><td>空位创造（自由进入）</td><td>$(p-w)/(r+\delta)=c/q(\theta)$</td><td>03.1</td></tr>
+            <tr><td>Eq.12-07</td><td>Nash 议价工资</td><td>$w=(1-\beta)b+\beta(p+c\theta)$</td><td>03.2</td></tr>
+            <tr><td>Eq.12-08</td><td>稳态失业率</td><td>$\delta(1-u)=f(\theta)u\Rightarrow u^*=\delta/[\delta+f(\theta^*)]$</td><td>03.3</td></tr>
+            <tr><td>Eq.12-09</td><td>Beveridge 曲线（补全）</td><td>$u=\delta/[\delta+A(v/u)^{1-\eta}]$</td><td>03.3（补全）</td></tr>
+            <tr><td>Eq.12-10</td><td>对数线性匹配函数</td><td>$\log m_t=\log A+\eta\log u_t+(1-\eta)\log v_t+\varepsilon_t$</td><td>04.1</td></tr>
+            <tr><td>Eq.12-11</td><td>失业持续期似然（含删失，补全）</td><td>$L_i=h_i(d_i)^{1-c_i}\prod_{s=1}^{d_i}[1-h_i(s)]^{1-c_i}\cdot S_i(d_i)^{c_i}$</td><td>04.2（补全）</td></tr>
+            <tr><td>Eq.12-12</td><td>SMM 目标函数（补全）</td><td>$\hat\theta=\arg\min[M^{data}-M^{sim}(\theta)]'\hat W[M^{data}-M^{sim}(\theta)]$</td><td>04.3（补全）</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="11-auctions.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">拍卖模型的结构估计</div>
+      </a>
+      <a href="06-counterfactual.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">反事实分析</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

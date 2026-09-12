@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全球价值链与增加值贸易 GVC | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item active" href="11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">量化空间一般均衡</a>
+      <span class="sep">/</span>
+      <span>全球价值链与增加值贸易</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">QSGE · 11</span>
+      <h1>全球价值链与增加值贸易：投入产出、Leontief 逆与 KWW 分解</h1>
+      <p class="desc">本页自包含：多国家多部门投入产出框架 → Leontief 逆 → 增加值系数 → VAX 增加值出口 → KWW 总出口分解（DVA/FVA/重复计算）→ 前向/后向 GVC 参与度 → Antràs-Chor 上下游框架 → 完整 Python 核算代码 + 数据来源 → 中国在 GVC 的位置 + 论文案例。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:14px 22px;border-radius:8px;margin:0 0 28px;font-size:14px;line-height:1.7;">
+      <div style="font-size:11px;letter-spacing:2px;opacity:.75;margin-bottom:4px;">EQUATION AUDIT · 公式审计</div>
+      本页共 <strong>9</strong> 个核心方程（IO 恒等式 $Y=AY+FD$、Leontief 逆 $(I-A)^{-1}$、增加值系数 $v$、VAX 增加值出口、KWW 总出口分解、前向/后向参与度、垂直专业化 VS、Antràs-Chor 上下游）。核心警示：<strong>总出口 ≠ 增加值出口</strong>——一颗 iPhone 出口报关 800 美元，中国增加值可能只有 150 美元。
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">经济环境与假设</a></li>
+        <li><a href="#s2">投入产出恒等式与 Leontief 逆</a></li>
+        <li><a href="#s3">增加值系数与 VAX 出口</a></li>
+        <li><a href="#s4">KWW 总出口分解</a></li>
+        <li><a href="#s5">前向 / 后向 GVC 参与度</a></li>
+        <li><a href="#s6">Antràs-Chor 上下游框架</a></li>
+        <li><a href="#s7">Python 核算代码（numpy）</a></li>
+        <li><a href="#s8">数据来源与行业匹配</a></li>
+        <li><a href="#s9">应用：中国 GVC 位置与贸易战</a></li>
+        <li><a href="#s10">论文案例、常见错误与难度</a></li>
+      </ol>
+    </div>
+
+    <!-- ============ S1 ============ -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 经济环境与假设</h2>
+      <p>传统贸易统计按<strong>总价值</strong>记录：中国向美国出口 iPhone 800 美元，账面上记 800 美元顺差。但这 800 美元里，屏幕来自韩国、芯片来自中国台湾、相机来自日本、组装在中国深圳——中国实际获得的增加值可能只有 100–150 美元。<strong>全球价值链（Global Value Chain, GVC）/ 增加值贸易（Value-Added Trade）</strong>这一文献，就是要把"总出口"拆开，看清楚每一段生产环节、每一个国家真正赚了多少增加值。</p>
+      <p>核心假设清单（每条附<strong>设定理由 / 参数含义 / 经济直觉</strong>）：</p>
+      <ul>
+        <li><strong>假设 A1：多国家、多部门投入产出框架。</strong>世界由 $G$ 个国家、每个国家 $S$ 个部门组成，共 $N=G\times S$ 个"国家-部门"生产单元。<em>理由</em>：生产分割意味着中间品跨国流转，必须用"国家-部门"为行/列的<strong>世界投入产出表（WIOT）</strong>才能追踪。<em>参数含义</em>：$Z_{ij}$ 是从单元 $i$ 卖给单元 $j$ 作中间投入的流量，$F_{ig}$ 是卖给国家 $g$ 作最终消费的流量。<em>直觉</em>：没有 WIOT 就看不到"韩国屏幕→中国组装→美国消费"这条链。</li>
+        <li><strong>假设 A2：固定技术系数（Leontief 生产函数）。</strong>每个部门用固定比例的中间投入与增加值要素生产。<em>理由</em>：这是投入产出分析的传统假设，使"完全消耗系数"有闭式（Leontief 逆）。<em>参数含义</em>：直接消耗系数 $A_{ij}=Z_{ij}/X_j$，假定不随价格变。<em>直觉</em>：这是强假设——现实中相对价格变了企业会替代投入，但在"核算"目的下足够。</li>
+        <li><strong>假设 A3：增加值 = 国内要素报酬。</strong>每个国家-部门的增加值 $V_j=X_j-\sum_i Z_{ij}$，即产出减全部中间投入，等于工资+利润+折旧+税收。<em>理由</em>：增加值法是 GDP 核算的标准，把"出口里多少是本国赚的"转化为"本国要素收入占比"。<em>参数含义</em>：增加值率 $v_j=V_j/X_j$。<em>直觉</em>：加工贸易的增加值率极低（组装环节 $v\approx 10\%$），一般贸易高。</li>
+        <li><strong>假设 A4：GVC 参与有前向 / 后向两个方向。</strong>前向（forward）＝本国增加值嵌在第三国的出口里；后向（backward）＝本国出口里用了多少外国增加值。<em>理由</em>：两个方向对应两种"嵌入方式"——上游原料国（前向）vs 下游组装国（后向）。<em>参数含义</em>：前向参与度、后向参与度两个比率。<em>直觉</em>：澳大利亚（铁矿石）是前向嵌入，中国（组装）是后向嵌入。</li>
+        <li><strong>假设 A5：生产环节的互补性/替代性决定企业边界（Antràs-Chor）。</strong>上下游环节若互补，企业倾向一体化；若替代，倾向外包。<em>理由</em>：GVC 不仅是核算问题，也是企业组织问题。<em>参数含义</em>：参数 $\eta$ 度量上下游投入的互补/替代。<em>直觉</em>：iPhone 各环节互补性强，苹果垂直整合；而纺织各环节替代性强，外包遍布全球。</li>
+      </ul>
+
+      <h4>符号与参数总表</h4>
+      <div class="table-wrap">
+        <table>
+          <tr><th>符号</th><th>含义</th><th>维度</th></tr>
+          <tr><td>$Z_{ij}$</td><td>中间品流量：单元 $i$→单元 $j$</td><td>$N\times N$</td></tr>
+          <tr><td>$F_{ig}$</td><td>最终品流量：单元 $i$→国家 $g$</td><td>$N\times G$</td></tr>
+          <tr><td>$X_j$</td><td>单元 $j$ 总产出</td><td>$N\times 1$</td></tr>
+          <tr><td>$A_{ij}$</td><td>直接消耗系数 $=Z_{ij}/X_j$</td><td>$N\times N$</td></tr>
+          <tr><td>$B=(I-A)^{-1}$</td><td>Leontief 逆（完全消耗系数）</td><td>$N\times N$</td></tr>
+          <tr><td>$v_j$</td><td>增加值率 $=V_j/X_j$</td><td>$N\times 1$</td></tr>
+          <tr><td>$VAX_{ng}$</td><td>$n$ 国增加值被 $g$ 国吸收</td><td>$G\times G$</td></tr>
+          <tr><td>$DVA/FVA$</td><td>国内/国外增加值含量</td><td>—</td></tr>
+          <tr><td>$\eta$</td><td>Antràs-Chor 上下游互补/替代参数</td><td>—</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ S2 ============ -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 投入产出恒等式与 Leontief 逆</h2>
+      <p>每个国家-部门 $j$ 的总产出 $X_j$，一部分卖给其他部门作中间投入，一部分卖给最终需求（消费/投资/出口）。按行平衡：</p>
+      <div class="formula-block">
+        <div class="formula-label">(GVC2) ★ 投入产出恒等式</div>
+        $$\mathbf X = A\mathbf X + \mathbf F \qquad\Longleftrightarrow\qquad \mathbf X=(I-A)^{-1}\mathbf F$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p>$A_{ij}=Z_{ij}/X_j$ 是直接消耗系数（生产一单位 $j$ 的产出要消耗多少 $i$ 的中间品）；$\mathbf F$ 是最终需求向量。$(I-A)^{-1}$ 即 <strong>Leontief 逆矩阵 $B$</strong>，其元素 $B_{ij}$ 表示：为满足 $j$ 一单位最终需求，经济在 $i$ 地直接 + 间接需要多少总产出——这是"完全消耗"概念的数学化。</p>
+        </div>
+      </div>
+      <p><strong>设定理由</strong>：Leontief 逆是整个 GVC 核算的<strong>引擎</strong>。直接消耗 $A$ 只算"第一轮"，但你生产汽车需要钢，生产钢需要铁矿石、电力……这些"间接"投入都被 $(I-A)^{-1}$ 的无穷级数 $I+A+A^2+A^3+\cdots$ 完整捕捉。没有它，就无法把最终需求一路追溯到最上游的增加值来源。</p>
+      <p><strong>经济直觉</strong>：最终需求 1 美元 iPhone，经 Leontief 逆一层层放大，变成"需要多少韩国屏幕、中国组装、日本相机"的全部投入——再乘以各国增加值率 $v_j$，就把 1 美元的最终需求分解成各国的增加值贡献。这正是增加值贸易核算的核心机械。</p>
+    </div>
+
+    <!-- ============ S3 ============ -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 增加值系数与 VAX 出口</h2>
+      <p>定义增加值率向量 $\mathbf v$（每个国家-部门的增加值/总产出）。给定最终需求 $\mathbf F$，各国增加值为 $\mathbf v\circ \mathbf X$（Hadamard 乘）。<strong>增加值出口（Value-Added eXports, VAX）</strong>度量：$n$ 国创造的增加值，最终被 $g$ 国吸收的部分。</p>
+      <div class="formula-block">
+        <div class="formula-label">(GVC3) ★ VAX 增加值出口（Johnson-Noguera 2012）</div>
+        $$VAX_{ng}=\sum_{i\in n} v_i\,\big[(I-A)^{-1}\mathbf F_{g}\big]_{i}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p>$\mathbf F_g$ 是 $g$ 国最终需求向量；$(I-A)^{-1}\mathbf F_g$ 是为满足 $g$ 国最终需求，各单元需要生产多少总产出；乘以 $n$ 国各单元的增加值率 $v_i$，加总即 $n$ 国被 $g$ 国吸收的增加值。</p>
+        </div>
+      </div>
+      <p><strong>VAX 比率</strong>（Johnson-Noguera 2012）是 GVC 研究的核心指标：</p>
+      <div class="formula-block">
+        <div class="formula-label">VAX 比率</div>
+        $$\text{VAX ratio}_n=\frac{\text{被国外吸收的本国增加值}}{\text{总出口}_n}=\frac{\sum_{g\ne n}VAX_{ng}}{EX_n}$$
+      </div>
+      <p><strong>经济直觉</strong>：总出口 $EX_n$ 里，真正是本国增加值的比例就是 VAX ratio。VAX ratio 越接近 1，说明出口几乎全是本国创造的（传统贸易）；越小于 1，说明出口里大量是"进口中间品再出口"（GVC 嵌入深）。中国加工贸易的 VAX ratio 长期低于 0.5，这就是"中国 800 美元 iPhone 只赚 150"的量化表达。</p>
+    </div>
+
+    <!-- ============ S4 ============ -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> KWW 总出口分解</h2>
+      <p>Koopman-Wang-Wei (2014, <em>AER</em>) 把一国<strong>总出口</strong> $EX_n$ 完整分解为三大块：</p>
+      <div class="formula-block">
+        <div class="formula-label">(GVC4) ★ KWW 分解（Koopman-Wang-Wei 2014）</div>
+        $$EX_n = \underbrace{DVA_n}_{\text{国内增加值}}+\underbrace{FVA_n}_{\text{国外增加值}}+\underbrace{DC_n}_{\text{重复计算}}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>DVA</strong>：本国创造、出口到国外吸收的增加值（又分被直接进口国吸收 + 经第三国再出口 + 回流本国）；<strong>FVA</strong>：本国出口里包含的外国增加值；<strong>DC</strong>：同一增加值因中间品多次跨国流动而在总贸易统计里被重复计算的部分。</p>
+        </div>
+      </div>
+      <p><strong>为什么会有"重复计算 DC"？</strong>因为中间品跨国多次流转：日本钢材→中国冲压→美国车→美国钢材废料……同一吨钢的增加值，在"日本出口钢材""中国出口冲压件""美国出口整车"三个环节都被计入总出口。总贸易统计把这同一吨钢算了三遍，而增加值贸易只算一遍。DC 就是这个差额。</p>
+      <div class="callout info">
+        <div class="callout-title">KWW 的革命性贡献</div>
+        <p>在此之前，Hummels-Ishii-Yi (2001) 的"垂直专业化 VS"只能算 FVA（外国增加值含量），KWW 第一次把总出口<strong>完全</strong>拆成 DVA + FVA + DC，并把 DVA 再细分为被吸收/回流/再出口，使"贸易顺差"可以从增加值视角重估。这直接改变了中美贸易失衡的量化结论。</p>
+      </div>
+    </div>
+
+    <!-- ============ S5 ============ -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 前向 / 后向 GVC 参与度</h2>
+      <p>Koopman-Powers-Wang-Wei (2010) 提出两个方向的参与度，刻画一国在 GVC 中是"上游"还是"下游"：</p>
+      <div class="formula-block">
+        <div class="formula-label">(GVC5) ★ GVC 参与度（Koopman et al.）</div>
+        $$\text{Forward participation}_n=\frac{\text{国内增加值间接出口（嵌在第三国出口中）}}{\text{总出口}_n}$$
+        $$\text{Backward participation}_n=\frac{\text{国外增加值含量（FVA）}}{\text{总出口}_n}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>前向高</strong>：本国主要出口中间品/原料，增加值嵌在别人的出口里（澳大利亚铁矿石、中东石油）；<strong>后向高</strong>：本国出口大量用了外国中间品（中国加工贸易）。两者之和即"GVC 参与度"。</p>
+        </div>
+      </div>
+      <p><strong>经济直觉</strong>：微笑曲线——上游（研发、核心零部件）和下游（品牌、售后）高附加值，中游组装低附加值。前向参与度高的国家站在微笑曲线左端（上游），后向参与度高的国家站在中游（组装）。中国过去几十年以后向嵌入为主，近年逐步向前向攀升——这正是"中国在 GVC 中位置演变"文献的核心叙事。</p>
+    </div>
+
+    <!-- ============ S6 ============ -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> Antràs-Chor 上下游框架</h2>
+      <p>GVC 不仅是宏观核算，也是企业组织问题。Antràs &amp; Chor (2013, <em>Econometrica</em>) 把生产建模成一条<strong>有序的价值链</strong>：上游环节 $s\in[0,1]$ 先发生，下游环节后发生。企业要决定每个环节是<strong>一体化</strong>（own production，纵向合并）还是<strong>外包</strong>（arm's length）。</p>
+      <div class="formula-block">
+        <div class="formula-label">(GVC6) Antràs-Chor 组织边界</div>
+        $$\text{若上下游环节}\begin{cases}\text{互补 }(\eta>0)\Rightarrow\text{ 倾向上游外包、下游一体化}\\\text{替代 }(\eta<0)\Rightarrow\text{ 倾向上游一体化、下游外包}\end{cases}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p>核心机制是<strong>顺序投资的剩余索取权</strong>：上游环节的投资会影响下游环节的边际收益。互补时，让上游独立承包商"先投够"，再由总部一体化控制下游；替代时反之。这决定了 GVC 中企业边界的位置。</p>
+        </div>
+      </div>
+      <p><strong>经济直觉</strong>：为什么苹果自己掌握芯片设计（下游/核心环节一体化）而把组装外包给富士康（上游/标准化环节外包）？因为互补性下，核心环节需要强控制权。这一理论把"为什么中国只能做组装"从比较成本上升到了<strong>产权理论</strong>高度。Antràs (2020, <em>JEP</em>) 综述了整个 GVC 理论与实证。</p>
+    </div>
+
+    <!-- ============ S7 ============ -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> Python 核算代码（numpy）</h2>
+      <p>下面用一个模拟的多国家-多部门投入产出表，完整实现：Leontief 逆 → 增加值系数 → VAX 矩阵 → 总出口 → DVA/FVA 分解 → GVC 参与度。替换 <code>Z, F</code> 为真实 WIOD 数据即可直接使用。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · numpy · GVC 增加值核算</span><button class="copy-btn">复制</button></div>
+<pre><code># ============================================================
+# GVC / 增加值贸易核算 (Leontief 逆 + VAX + KWW 分解)
+# 参考: Johnson-Noguera (2012); Koopman-Wang-Wei (2014, AER)
+# 仅依赖 numpy; 替换 Z,F 为真实 WIOD 即可
+# ============================================================
+import numpy as np
+
+def build_wiot(G=3, S=2, seed=1):
+    """构造模拟世界投入产出表: G国×S部门"""
+    rng = np.random.default_rng(seed)
+    n = G * S
+    # Z[i,j] = 中间品从单元 i 流到单元 j (j 生产用)
+    Z = rng.uniform(0.1, 1.0, (n, n))
+    # F[i,g] = 最终品从单元 i 流到国家 g
+    F = rng.uniform(0.5, 2.0, (n, G))
+    x = Z.sum(axis=1) + F.sum(axis=1)          # 总产出(行和)
+    A = Z / x[None, :]                          # 直接消耗系数 A[i,j]=Z[i,j]/x_j
+    Lmat = np.linalg.inv(np.eye(n) - A)         # Leontief 逆 (I-A)^-1
+    va = x - Z.sum(axis=0)                      # 总增加值(列: 产出-中间投入)
+    v = va / x                                  # 增加值率 v[j]=VA_j/x_j
+    return Z, F, x, A, Lmat, v
+
+def gvc_accounting(Z, F, G, S):
+    """核心核算: VAX矩阵 + 总出口 + DVA/FVA + 参与度"""
+    n = G * S
+    x = Z.sum(axis=1) + F.sum(axis=1)
+    A = Z / x[None, :]
+    Lmat = np.linalg.inv(np.eye(n) - A)
+    va = x - Z.sum(axis=0); v = va / x
+    idx = np.array([[g, s] for g in range(G) for s in range(S)])  # 每个单元所属国家
+
+    def mask(g):
+        return idx[:, 0] == g                    # 单元 g 的行索引
+
+    # --- 1. VAX[g,m] = g国增加值被m国最终需求吸收 ---
+    VAX = np.zeros((G, G))
+    for g in range(G):
+        for m in range(G):
+            out = Lmat @ F[:, m]                 # 满足m最终需求所需总产出
+            VAX[g, m] = v[mask(g)] @ out[mask(g)]
+
+    # --- 2. 总出口 EX[g]: 卖给国外的中间品 + 最终品 ---
+    EX = np.zeros(G)
+    for g in range(G):
+        rows = mask(g)
+        foreign_col = ~np.isin(idx[:, 0], [g])  # 国外部门
+        mid = Z[np.ix_(rows, foreign_col)].sum()
+        fin = F[rows][:, [m for m in range(G) if m != g]].sum()
+        EX[g] = mid + fin
+
+    # --- 3. g国按来源部门的出口向量 e[g,i] ---
+    e = np.zeros((G, n))
+    for g in range(G):
+        for i in range(n):
+            if idx[i, 0] == g:
+                mid = Z[i, ~np.isin(idx[:, 0], [g])].sum()
+                fin = F[i, [m for m in range(G) if m != g]].sum()
+                e[g, i] = mid + fin
+
+    # --- 4. KWW 分解: DVA / FVA / 重复计算 ---
+    DVA = np.zeros(G); FVA = np.zeros(G)
+    for g in range(G):
+        b = Lmat @ e[g]                        # 为生产g出口所需总产出
+        for h in range(G):
+            va_h = v[mask(h)] @ b[mask(h)]
+            if h == g:
+                DVA[g] = va_h                   # 本国增加值
+            else:
+                FVA[g] += va_h                  # 外国增加值
+    DC = EX - DVA - FVA                        # 重复计算(会计恒等式)
+
+    # --- 5. GVC 参与度 ---
+    vax_ratio = np.array([(VAX[g, :].sum() - VAX[g, g]) / EX[g] for g in range(G)])
+    backward = FVA / EX                        # 后向: 外国增加值/总出口
+    forward = np.array([(VAX[g, :].sum() - VAX[g, g] - DVA[g] + FVA[g]) / EX[g]
+                        for g in range(G)])  # 前向(间接增加值出口)近似
+    return dict(VAX=VAX, EX=EX, DVA=DVA, FVA=FVA, DC=DC,
+                vax_ratio=vax_ratio, backward=backward, forward=forward)
+
+# ------------------------------------------------------------
+if __name__ == "__main__":
+    G, S = 3, 2
+    Z, F, x, A, Lmat, v = build_wiot(G, S)
+    res = gvc_accounting(Z, F, G, S)
+    print("VAX 矩阵 (行g=来源国, 列m=吸收国):")
+    print(np.round(res["VAX"], 2))
+    print("\n总出口 EX:", np.round(res["EX"], 2))
+    print("DVA 国内增加值:", np.round(res["DVA"], 2))
+    print("FVA 国外增加值:", np.round(res["FVA"], 2))
+    print("DC 重复计算:", np.round(res["DC"], 4))
+    print("校验 EX = DVA+FVA+DC:", np.allclose(res["EX"], res["DVA"] + res["FVA"] + res["DC"]))
+    print("\n--- GVC 参与度 ---")
+    for g in range(G):
+        print(f"国家{g}: VAX率={res['vax_ratio'][g]:.3f} "
+              f"后向参与={res['backward'][g]:.3f}")
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">代码要点与从模拟到真实 WIOD</div>
+        <ul>
+          <li><strong>会计恒等式</strong>：$EX=DVA+FVA+DC$ 必须精确成立（本代码 <code>np.allclose</code> 校验），否则 $A$ 或 $v$ 算错；</li>
+          <li><strong>Leontief 逆用 <code>np.linalg.inv</code></strong>：$n=G\times S$，WIOD 为 $43$ 国 $\times$ $56$ 部门 $\approx 2400$ 维，求逆秒级；</li>
+          <li><strong>换成真实 WIOD</strong>：把 OECD ICIO / WIOD 的 .xlsx 读成 $Z$（中间用）与 $F$（最终用）两个矩阵，维度对齐后直接跑；</li>
+          <li><strong>Stata/R</strong>：Stata 用 <code>iop=...</code>（OECD 提供），R 用 <code>decompr</code> 包做 KWW，概念框架与本代码一致。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============ S8 ============ -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 数据来源与行业匹配</h2>
+      <div class="table-wrap">
+        <table>
+          <tr><th>数据库</th><th>覆盖</th><th>用途</th></tr>
+          <tr><td>WIOD（世界投入产出表）</td><td>43 国 + ROW，56 部门，1995–2014（2016 版）</td><td>学术界最常用，免费下载</td></tr>
+          <tr><td>OECD ICIO</td><td>60+ 国，36 部门，年度面板</td><td>OECD 官方，更新到近年</td></tr>
+          <tr><td>Eora MRIO</td><td>189 国，高部门数</td><td>覆盖最全但估计成分多</td></tr>
+          <tr><td>GTAP</td><td>140 国，57 部门</td><td>可与 CGE 模型联动</td></tr>
+          <tr><td>中国国家统计局 IO 表</td><td>全国 139 部门，逢 2、7 年编制</td><td>中国国内分解</td></tr>
+          <tr><td>中国海关数据库</td><td>HS8 位企业-产品-目的地</td><td>微观 GVC、加工贸易</td></tr>
+          <tr><td>中国工业企业数据库</td><td>规模以上工业企业</td><td>匹配企业层面生产/贸易</td></tr>
+        </table>
+      </div>
+      <p><strong>行业分类匹配是最大工程</strong>：WIOD 用 ISIC Rev.4，中国 IO 表用 GB/T 4754，海关用 HS。三者必须做跨版本映射（HS↔ISIC↔GB/T）。OECD 提供官方 concordance，但中国海关的"加工贸易 vs 一般贸易"在 WIOD 里被合并，做中国细分研究时要回到海关数据单独拆。</p>
+    </div>
+
+    <!-- ============ S9 ============ -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 应用：中国 GVC 位置与贸易战</h2>
+      <h3>9.1 GVC 参与度跨国比较</h3>
+      <p>小国（新加坡、马来西亚）后向参与度高（出口里大量外国中间品），大国（美国、日本）前向参与度高（出口中间品给别人）。中国介于两者之间，后向参与度在 2005 年峰值后持续下降——意味着出口里本国增加值比例上升，即"国内供应链替代进口中间品"。</p>
+      <h3>9.2 中国在 GVC 中的位置演变（微笑曲线攀升）</h3>
+      <p>1995–2023 年，中国出口的国内增加值率从约 70% 升至 85% 以上（尤其 2010 年后），同时前向参与度上升。这反映两件事：(i) 加工贸易占比下降，一般贸易占比上升；(ii) 国内中间投入替代日韩进口中间品。中国正从微笑曲线中游向两端（研发/品牌）攀升，但在高端芯片、核心软件上仍依赖前向参与的发达国家。</p>
+      <h3>9.3 贸易战对 GVC 的影响与增加值视角的顺差</h3>
+      <p>按总贸易统计，中美 2018 年顺差约 4200 亿美元；按增加值贸易重估（把中国出口里的韩国、日本增加值剔除，把美国转口剔除），中美顺差缩水约 30–40%。这说明"贸易失衡"很大程度是<strong>统计假象</strong>——iPhone 在中国组装、最终卖美国，但增加值遍布全球。贸易战若按总出口征税，会误伤韩国、日本、德国的增加值，这正是 GVC 核算的政策含义。</p>
+    </div>
+
+    <!-- ============ S10 ============ -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 论文案例、常见错误与难度</h2>
+      <h3>10.1 英文经典论文</h3>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 奠基</span>
+        <div class="paper-title">Vertical Specialization and the Changing Nature of World Trade</div>
+        <div class="paper-meta">Hummels, Ishii &amp; Yi (2001), <em>Journal of International Economics</em> 54(1): 75-96</div>
+        <div class="paper-desc">"垂直专业化 VS"概念的开山之作：第一次用 IO 表测出口里的外国中间品含量。GVC 文献的起点。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 里程碑</span>
+        <div class="paper-title">Tracing Value-Added and Double Counting in Gross Exports</div>
+        <div class="paper-meta">Koopman, Wang &amp; Wei (2014), <em>American Economic Review</em> 104(2): 459-494</div>
+        <div class="paper-desc">KWW 分解的原始论文：把总出口完整拆成 DVA+FVA+DC，本页 (GVC4) 的直接来源。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Gains from Trade and the Division of Production in the Global Economy / Accounting for Intermediates</div>
+        <div class="paper-meta">Johnson &amp; Noguera (2012), <em>Journal of International Economics</em> 86(2): 224-236（VAX ratio）</div>
+        <div class="paper-desc">VAX 比率的系统测度：跨国比较增加值贸易占总贸易的比例，量化 GVC 深化。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 理论</span>
+        <div class="paper-title">Property Rights Bias of Multinational Firms / Organizational Design and the Global Value Chain</div>
+        <div class="paper-meta">Antràs &amp; Chor (2013), <em>Econometrica</em> 81(6): 2127-2204；Antràs (2020), <em>JEP</em> 综述</div>
+        <div class="paper-desc">上下游互补/替代决定企业一体化 vs 外包，把 GVC 从核算升级为产权理论。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">How Global are Global Value Chains? A New Approach to Estimate International Production Fragmentation</div>
+        <div class="paper-meta">Los, Timmer &amp; de Vries (2015), <em>Journal of Economic Geography</em> 15(4)；Wang-Wei-Zhu (2013) NBER 后续分解</div>
+        <div class="paper-desc">用 WIOD 测 GVC 跨国生产分割，是经验核算的标准流程。</div>
+      </div>
+
+      <h3>10.2 中文顶刊与中国应用</h3>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · GVC 位置</span>
+        <div class="paper-title">中国在全球价值链中的位置变化及驱动因素</div>
+        <div class="paper-meta">彭水军等（《世界经济》2022）；获省级社科优秀成果奖</div>
+        <div class="paper-desc">用 WIOD/KWW 框架系统测算中国 GVC 位置的长期演变及其驱动因素，是中国 GVC 地位测算的代表作。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 出口价值创造</span>
+        <div class="paper-title">中国式出口的价值创造之谜：基于全球价值链的解析</div>
+        <div class="paper-meta">基于 KWW 方法，区分加工贸易与一般贸易，重估中国出口价值构成</div>
+        <div class="paper-desc">识别中国加工贸易/一般贸易二元结构下的不同价值创造机制，是中国情境下 KWW 分解的标准应用。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 分工收益</span>
+        <div class="paper-title">中间品贸易、价值链嵌入与国际分工收益：基于中国的分析</div>
+        <div class="paper-meta">《世界经济与政治》/ 社科院世经所（2017）</div>
+        <div class="paper-desc">从中间品贸易与价值链嵌入测度中国与世界互相获得的分工收益，量化中国 GVC 嵌入的福利含义。</div>
+      </div>
+
+      <h3>10.3 常见错误</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：把总出口当增加值出口</div>
+        <p>最根本的错。800 美元 iPhone 不是 800 美元中国增加值。任何"出口规模=本国利益"的判断都要先做 VAX/KWW 分解。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：假设固定系数却做反事实比较静态</div>
+        <p>Leontief 生产函数假定投入比例不随价格变。用它做"关税变化后的 GVC 重组"会误导——现实中企业会替代投入。纯核算可以，反事实要接结构模型。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 3：行业分类没对齐就直接算</div>
+        <p>WIOD(ISIC Rev.4)、中国 IO 表(GB/T 4754)、海关(HS)三套编码直接合并，结果会把"汽车制造"和"汽车零部件"混在一起，VAX 全错。必须先用官方 concordance 映射到同一口径。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 4：忽略转口贸易</div>
+        <p>中国经香港转口的贸易在海关数据里记为"出口香港"，但实际目的地是美国。不做转口调整会高估中国对香港的出口、低估对美出口，进而扭曲双边 VAX。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 5：DVA+FVA ≠ 总出口，漏掉 DC</div>
+        <p>只算 DVA 和 FVA 就声称"分解完毕"，会计恒等式 $EX=DVA+FVA+DC$ 不闭合。重复计算项必须单独列出，否则总量对不上。</p>
+      </div>
+
+      <h3>10.4 难度与前置</h3>
+      <p><strong>难度：★★★☆☆（概念清晰，工程繁琐）。</strong>需要掌握：投入产出表基本概念、矩阵运算（Leontief 逆）、<a href="02-eaton-kortum.html" style="color:var(--primary);font-weight:600;">EK 贸易</a>与 <a href="03-gravity.html" style="color:var(--primary);font-weight:600;">结构引力</a>。<strong>前置</strong>：先读 <a href="03-gravity.html" style="color:var(--primary);font-weight:600;">03 引力</a>与 <a href="02-eaton-kortum.html" style="color:var(--primary);font-weight:600;">02 EK</a>，理解贸易流怎么记录；本页回答"流的里面多少是真本国造的"。与 <a href="10-trade-cost-estimation.html" style="color:var(--primary);font-weight:600;">贸易成本估计</a>互补：成本决定流多少，增加值分解决定流的内容。</p>
+    </div>
+
+    <div class="page-nav">
+      <a href="10-trade-cost-estimation.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">贸易成本结构估计</div>
+      </a>
+      <a href="index.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">QSGE 总览与路线</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

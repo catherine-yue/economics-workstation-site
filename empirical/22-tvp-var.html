@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TVP-VAR 与风险溯源 Time-Varying Parameter VAR | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item active" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">实证论文 Empirical</a><span class="sep">/</span>
+      <span>TVP-VAR 与风险溯源</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">宏观计量前沿 · 时变参数</span>
+      <h1>TVP-VAR 与风险溯源<br>Time-Varying Parameter VAR</h1>
+      <p class="desc">当大缓和、全球金融危机、疫情冲击接连重塑宏观经济结构，常系数 VAR 只能给出"平均效应"。TVP-VAR 让系数、协方差、波动率都随时间漂移，再结合 Diebold–Yilmaz 连通性指数，从方差分解里读出风险从哪里来、向哪里去。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">VAR 与 Cholesky 识别、状态空间模型、卡尔曼滤波、贝叶斯 MCMC（Gibbs 抽样、MH 步）、随机波动率（SV）模型。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">货币政策传导的体制变化（大缓和 Great Moderation、Volcker 冲击、零利率下限）、金融网络与风险溢出理论。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">MATLAB（Primiceri 工具箱 / Koop 工具箱）或 Python 3.9+（<code class="inline">numpy</code>、<code class="inline">pandas</code>、<code class="inline">statsmodels</code>；进阶用 <code class="inline">pyMC</code>）。MCMC 建议多核。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body">先掌握 <a href="05-endogeneity-iv.html">06 内生性与IV</a> 与 VAR 识别的 Cholesky / 符号约束思想，否则看不懂 TVP-VAR 的结构部分。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#fdf0ee;color:#a03a2c;">高 · 计算密集</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么需要时变参数</a></li>
+        <li><a href="#s2">TVP-VAR 模型设定</a></li>
+        <li><a href="#s3">状态空间表示与估计</a></li>
+        <li><a href="#s4">Primiceri (2005) 框架</a></li>
+        <li><a href="#s5">完整 MATLAB 代码框架</a></li>
+        <li><a href="#s6">完整 Python 代码（简化版）</a></li>
+        <li><a href="#s7">时变脉冲响应</a></li>
+        <li><a href="#s8">Diebold–Yilmaz 连通性</a></li>
+        <li><a href="#s9">风险溯源</a></li>
+        <li><a href="#s10">论文案例与常见错误</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么需要时变参数</h2>
+      <p>经典 VAR（Sims 1980）假设系数 $B_1,\dots,B_p$ 和扰动协方差 $\Sigma$ 在整个样本期内<strong>不变</strong>。这是一个极强的假设。半个世纪的美国宏观数据至少经历了三次结构性断裂：</p>
+      <ul>
+        <li><strong>大缓和（Great Moderation, ~1984–2007）</strong>：产出与通胀波动率系统性下降，货币政策对通胀的反应系数（泰勒原则）显著增强。</li>
+        <li><strong>全球金融危机（2008–2012）</strong>：金融摩擦突然活跃，利率传导渠道被零利率下限（ZLB）冻结，传统货币政策失效。</li>
+        <li><strong>疫情冲击（2020–）</strong>：供给侧停摆 + 财政货币双宽松，通胀动态与以往任何一次都不同。</li>
+      </ul>
+      <p>如果用整条样本估一个常系数 VAR，你得到的是这三个体制的"加权平均"——它既不能回答"2008 年货币政策到底有效没有"，也不能回答"沃尔克时期和格林斯潘时期的政策反应函数是否不同"。<strong>时变参数 VAR（TVP-VAR）</strong>让系数 $B_t$、结构性冲击协方差 $A_t$、波动率 $\Sigma_t$ 都按随机游走漂移，从而允许模型在每一个时点 $t$ 都有自己的"小型经济"。</p>
+      <div class="callout info">
+        <div class="callout-title">直觉对比</div>
+        <p>常系数 VAR = 用一条直线拟合整条数据；TVP-VAR = 用一条<strong>弯曲的、随时间缓慢移动的线</strong>拟合，且弯曲的幅度由数据（先验 + 似然）决定。它比"分段 VAR / Chow 检验"灵活——不需要事先知道断点在哪。</p>
+      </div>
+      <h3>TVP-VAR 与其他"结构变化"模型的取舍</h3>
+      <p>时变参数并不是唯一的建模范式，常见的三条路线各有取舍：</p>
+      <div class="table-wrap"><table>
+        <tr><th>模型</th><th>结构变化形式</th><th>优点</th><th>局限</th></tr>
+        <tr><td>常系数 VAR</td><td>不变</td><td>估计简单、推断干净</td><td>无法捕捉体制变化</td></tr>
+        <tr><td>马尔可夫区制 MS-VAR</td><td>$K$ 个离散体制之间跳变</td><td>可识别"扩张/衰退"体制</td><td>必须事先指定体制数 $K$，且体制切换是离散跳跃</td></tr>
+        <tr><td>门槛 TVAR / 阈值 VAR</td><td>按某变量阈值切换</td><td>有明确经济学解释（如信贷周期）</td><td>门槛变量外生给定</td></tr>
+        <tr><td><strong>TVP-VAR</strong></td><td>系数/协方差/波动率连续漂移</td><td>不预设断点、连续平滑、适合慢变化</td><td>计算重、参数多、MCMC 易不收敛</td></tr>
+      </table></div>
+      <p>宏观结构变化在大多数场景下是<strong>缓慢连续</strong>的（大缓和用了二十年），而非一夜之间跳变，因此 TVP-VAR 比 MS-VAR 更贴近现实。但如果你研究的是"零利率下限前后"这种明确的离散体制，MS-VAR 或 MS-DSGE 反而更合适。</p>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> TVP-VAR 模型设定</h2>
+      <p>设 $y_t$ 是 $n\times 1$ 宏观向量（如通胀、产出缺口、利率）。Primiceri (2005) 形式的 TVP-VAR 写成：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 2.1 — TVP-VAR 观测方程</div>
+        $$ y_t = X_t \beta_t + A_t^{-1}\Sigma_t \varepsilon_t,\qquad t=1,\dots,T $$
+      </div>
+      <p>其中 $X_t = I_n \otimes [1, y_{t-1}',\dots,y_{t-p}']$，$\beta_t$ 是堆叠起来的时变系数向量。三类时变参数：</p>
+      <ul>
+        <li><strong>$\beta_t$：时变 VAR 系数</strong>。它告诉你"产出对利率的反应"或"央行对通胀的反应"如何随时间变化。</li>
+        <li><strong>$A_t$：下三角单位对角矩阵</strong>，刻画同期变量之间的结构性关系（Cholesky 分解的时变对应物）。</li>
+        <li><strong>$\Sigma_t = \mathrm{diag}(\sigma_{1,t},\dots,\sigma_{n,t})$：随机波动率</strong>。它允许冲击本身的方差随时间漂移——这对金融数据尤其关键，2008 年的冲击"大小"就该比平时大。</li>
+      </ul>
+      <p>把它们都写成随机游走状态方程：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 2.2 — 状态方程（随机游走先验）</div>
+        $$ \beta_t = \beta_{t-1} + u_{t},\qquad a_t = a_{t-1} + v_{t},\qquad \log\sigma_t = \log\sigma_{t-1} + w_t $$
+      </div>
+      <p>三个状态扰动 $u_t, v_t, w_t$ 互相独立，协方差分别为 $Q, S, W$。随机游走先验意味着：参数可以任意漂移，但不会爆炸——这是 TVP-VAR 相比"每年重估一个 VAR"的关键优势。</p>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 状态空间表示与估计</h2>
+      <p>把 Eq. 2.1 当作观测方程、Eq. 2.2 当作状态方程，TVP-VAR 就是一个非线性、非高斯的状态空间模型。由于 $A_t$ 和 $\Sigma_t$ 进入观测方程的方式是非线性的，卡尔曼滤波的闭式递推不能直接用。实务中用 <strong>Bayesian MCMC（Gibbs 抽样）</strong>：把高维后验分解成若干条件后验，逐块抽样。</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 给定 $A_t,\Sigma_t$，抽 $\beta_t$</div>
+          <div class="step-desc">此时观测方程关于 $\beta_t$ 线性高斯，用卡尔曼滤波 + Carter–Kohn 前向过滤、后向抽样（FFBS）一次性抽出整条 $\{\beta_t\}_{t=1}^T$ 路径。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 给定 $\beta_t,\Sigma_t$，抽 $A_t$</div>
+          <div class="step-desc>$A_t$ 只出现在同期结构上，做变换后再次是线性高斯状态空间，同样用 FFBS 抽样下三角元素。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 给定 $\beta_t,A_t$，抽 $\Sigma_t$（随机波动率）</div>
+          <div class="step-desc>这是 SV 模块，用 Kim–Shephard–Chib (1998) 的 mixture-of-normal 近似，把对数波动率 $\log\sigma_t^2$ 的后验转化为线性高斯问题。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4 · 抽超参数 $Q,S,W$</div>
+          <div class="step-desc">它们是状态方程的协方差，用 Inverse-Wishart 共轭先验，条件后验也是 Inverse-Wishart，直接抽。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 5 · Burn-in +  thinning</div>
+          <div class="step-desc">丢弃前 20,000–50,000 次抽样（burn-in），之后每 10 次保留 1 次，得到 10,000–50,000 条 MCMC 路径，用于做后验脉冲响应。</div>
+        </div>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">MCMC 收敛是生命线</div>
+        <p>TVP-VAR 参数维度高（一个 $n=3,p=2$ 的系统，$\beta_t$ 就有 $n(np+1)=21$ 个时变系数），链很容易不收敛。必须报告：(1) 多链 Gelman–Rubin R-hat；(2) 关键参数的 trace plot；(3) 自相关图。R-hat &gt; 1.1 就重跑。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> Primiceri (2005) 框架</h2>
+      <p>Primiceri 在 <em>Review of Economic Studies</em> 2005 年的文章 "Time Varying Structural Vector Autoregressions and Monetary Policy" 把上面这套东西第一次完整地、可复现地写了出来，并用它回答了宏观经济学的一个经典问题：<strong>战后美国货币政策到底变了没有？</strong>他的三点贡献至今仍是标准做法：</p>
+      <ul>
+        <li><strong>时变系数 $\beta_t$</strong>：刻画政策反应函数和传导机制的缓慢漂移（如沃尔克时代到格林斯潘时代）。</li>
+        <li><strong>时变协方差 $A_t$</strong>：允许同期结构关系本身变化（如利率对产出的同期反馈）。</li>
+        <li><strong>随机波动率 $\Sigma_t$</strong>：允许冲击大小变化。这一点尤其重要——如果不允许波动率时变，MCMC 会把"波动率的突变"错误地归因到"系数的突变"上。</li>
+      </ul>
+      <p>同时期 Cogley &amp; Sargent (2005, <em>Review of Economic Dynamics</em>) 的 "Drifts and Volatilities" 也独立做了几乎一样的事，但不允许 $A_t$ 时变。两篇文章合在一起，奠定了 TVP-VAR 文献的基础。</p>
+      <p>识别上，Primiceri 沿用了 VAR 文献最经典的 <strong>Cholesky 短期约束</strong>：把 $A_t$ 设为下三角，按"产出—通胀—利率"排序，假设利率在当期不影响产出和通胀。这套排序对货币政策冲击识别是标准的，但审稿人会要求你做排序稳健性（换利率到最后、用符号约束替代 Cholesky）。做中文应用时，变量排序要结合中国的政策现实——DR007/MLF 这类政策利率往往被排在最后。</p>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 完整 MATLAB 代码框架</h2>
+      <p>完整 Primiceri 估计器约 1500 行 MATLAB，本页给出<strong>核心骨架</strong>，并指向官方工具箱。生产环境强烈建议直接用下面两个开源工具箱，不要自己重写 MCMC。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">matlab · tvpvar_skeleton.m</span><button class="copy-btn">复制</button></div>
+<pre><code>% ==============================================================
+% TVP-VAR 估计核心骨架（Primiceri 2005 简化版）
+% 生产环境请直接使用:
+%   - Gary Koop & Dimitris Korobilis 的 TVP-VAR 工具箱
+%     (https://sites.google.com/site/garykoop/)
+%   - Primiceri 个人主页提供的 replication code
+% 本文件只演示"如何组织数据 + 调用 FFBS + 保存后验"
+% ==============================================================
+clear; clc; rng(2024);
+
+% ---------- 0. 读数据：n x T ----------
+% y 三列: [inflation, unemployment, interest_rate]
+load us_macro.mat;
+y = us_macro;
+[T, n] = size(y);
+p = 2;                       % VAR 滞后阶数
+m = n*(n*p + 1);             % beta_t 的维度
+
+% ---------- 1. 堆叠 VAR 右侧 ----------
+Y = y(p+1:end, :);
+[T2, ~] = size(Y);
+X = zeros(T2, m);
+for t = 1:T2
+    xt = 1;
+    for lag = 1:p
+        xt = [xt, y(p+t-lag, :)];
+    end
+    X(t,:) = kron(eye(n), xt);
+end
+
+% ---------- 2. 先验（Primiceri 2005 第 4 节） ----------
+B0_hat  = (X'*X)\X'*Y(:);        % 用全样本 OLS 做初值
+beta_0  = zeros(m,1);
+Vbeta_0= 4*eye(m);               % 扩散先验
+s2      = 4;                     % 超参数尺度
+Q       = (s2+1)*eye(m)*0.01;    % 状态协方差初值
+
+% ---------- 3. MCMC 主循环（示意 5000 次） ----------
+nrep = 5000; nburn = 2000;
+beta_draws = zeros(nrep, T2, m);
+for irep = 1:nrep
+    % (a) FFBS 抽 beta_t（给定 A, Sigma）
+    %   beta_t 状态方程: beta_t = beta_{t-1} + u_t, Var=Q
+    %   观测方程: Y = X*beta + A^-1*Sigma*eps
+    beta_draws(irep,:,:) = FFBS_linear(Y, X, Q, beta_0, Vbeta_0);
+
+    % (b) 抽 A_t（下三角同期结构）
+    % A_draws(irep,:,:) = FFBS_A(...);
+
+    % (c) 抽 Sigma_t（随机波动率，KSC 1998 mixture）
+    % Sigma_draws(irep,:,:) = KSC_sv(Y, beta_draws(irep,:,:));
+
+    % (d) 抽超参数 Q（Inverse-Wishart 后验）
+    % Q = iwishrnd(...)
+
+    if mod(irep,500)==0
+        fprintf('MCMC iteration %d / %d\n', irep, nrep);
+    end
+end
+
+% ---------- 4. 后处理：剔除 burn-in ----------
+post_beta = beta_draws(nburn+1:end,:,:);
+% 平均时变系数、后验分位数
+beta_med = median(post_beta, [1 3]);
+
+% ---------- 5. 计算时变脉冲响应 ----------
+% 在每个时点 t 用后验 beta_t, A_t, Sigma_t 构造 VAR companion form,
+% 向前迭代 h=0..20, 得到 IRF(t, h, shock)
+% plot(0:20, squeeze(IRF(2008,:,3)))  % 2008 年货币政策冲击对产出
+% plot(0:20, squeeze(IRF(2020,:,3)))  % 2020 年同一冲击
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">不要自己从零写 FFBS</div>
+        <p>FFBS（Forward-Filter Backward-Sampling）和 KSC 随机波动率抽样都是数值上很微妙的环节。Gary Koop 与 Dimitris Korobilis 的 MATLAB 工具箱在论文里公开发布，被引用数千次；直接下载 <code class="inline">tvp_var/</code> 目录，把数据矩阵换成你的即可。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 完整 Python 代码：简化版 TVP-VAR</h2>
+      <p>下面用 <code class="inline">numpy</code> 实现一个<strong>简化版</strong> TVP-VAR：只让系数 $\beta_t$ 随机游走，固定 $A_t$、$\Sigma_t$，用卡尔曼滤波 + 前向过滤后向抽样。它不能替代 Primiceri 完整估计器，但足以让你理解"时变系数如何被估计出来"。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">python · tvpvar_simple.py</span><button class="copy-btn">复制</button></div>
+<pre><code># ==============================================================
+# 简化 TVP-VAR：时变系数 + 固定协方差
+# 教学用途。完整 Primiceri 估计见上节 MATLAB 工具箱。
+# 依赖: pip install numpy pandas statsmodels matplotlib
+# ==============================================================
+import numpy as np, pandas as pd, matplotlib.pyplot as plt
+from scipy import stats
+
+np.random.seed(0)
+
+# ---------- 0. 模拟一段数据：真实 beta_t 缓慢漂移 ----------
+T, n, p = 400, 2, 2
+# 真实系数随时间随机游走（演示"结构变化"）
+beta_true = np.zeros((T, n*(n*p+1)))
+beta_true[0] = np.tile([0.5, -0.2, 0.1, 0.3, 0.0, 0.2], 1)
+for t in range(1, T):
+    beta_true[t] = beta_true[t-1] + np.random.normal(0, 0.02, beta_true.shape[1])
+
+y = np.zeros((T, n))
+y[:p] = np.random.normal(0, 1, (p, n))
+for t in range(p, T):
+    xt = np.concatenate([[1.0], y[t-1], y[t-2]])      # 1 + 2*2 = 5 维
+    # 注意: 这里演示用 n=2, m=5; 与上面 beta_true 维度示意略作简化
+    y[t] = xt @ beta_true[t][:5].reshape(n, 5).T + np.random.normal(0, 0.3, n)
+
+# ---------- 1. 构造观测矩阵 X ----------
+m = n*(n*p + 1)
+X = np.zeros((T-p, m))
+Y = np.zeros((T-p, n))
+for i, t in enumerate(range(p, T)):
+    xt = np.concatenate([[1.0], y[t-1], y[t-2]])
+    X[i] = np.tile(xt, n)
+    Y[i] = y[t]
+
+# ---------- 2. 卡尔曼滤波 (线性高斯状态空间) ----------
+# 观测: Y_t = X_t * beta_t + eps,  eps ~ N(0, R)
+# 状态: beta_t = beta_{t-1} + eta, eta ~ N(0, Q)
+Q = np.eye(m) * 0.02**2          # 状态扰动方差（关键超参）
+R = np.eye(n) * 0.3**2           # 观测噪声
+beta_filt = np.zeros((T-p, m))
+P = np.eye(m) * 10               # 初始状态方差
+beta_tt = np.zeros(m)
+
+for i in range(T-p):
+    # predict
+    beta_pred = beta_tt
+    P_pred = P + Q
+    # update
+    S = X[i].reshape(1,-1) @ P_pred @ X[i].reshape(-1,1) + R
+    K = P_pred @ X[i].reshape(-1,1) / S
+    innovation = Y[i] - X[i]*0   # 简化为单变量情形（演示）
+    beta_tt = beta_pred + (K.flatten() * (Y[i,0] - X[i] @ beta_pred))
+    P = P_pred - K @ X[i].reshape(1,-1) @ P_pred
+    beta_filt[i] = beta_tt
+
+# ---------- 3. 画出"估计出的时变系数" ----------
+plt.figure(figsize=(10,5))
+plt.plot(beta_filt[:,0], label='filtered beta(1,1)')
+plt.plot(beta_true[p:,0], 'k--', label='true beta(1,1)')
+plt.legend(); plt.title('TVP-VAR filtered coefficient')
+plt.savefig('tvpvar_filtered.png', dpi=120, bbox_inches='tight')
+print("已保存 tvpvar_filtered.png")
+
+# ---------- 4. 后续：在每个时点做时变 IRF ----------
+# 对每个 t, 用 beta_filt[t] 构造 companion matrix,
+# 迭代 h 步, 得到 IRF(t, h, shock_j)
+# 比较 2008 vs 2020 的 IRF 曲线（见下一节）
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 脉冲响应的时变特征</h2>
+      <p>TVP-VAR 最有价值的产出不是 $\beta_t$ 本身，而是<strong>时变脉冲响应函数</strong> $\mathrm{IRF}_t(h)$：在每一个时点 $t$，用该时点的 $\beta_t, A_t, \Sigma_t$ 构造 companion form，向前迭代 $h=0,1,\dots,H$ 步。于是你得到一张三维图 $\mathrm{IRF}(t,h,j)$，可以横切（固定 $h$，看 $t$ 的变化）也可以纵切（固定 $t$，看 $h$ 的路径）。</p>
+      <p>典型发现：</p>
+      <ul>
+        <li><strong>货币政策效应在大缓和时期更弱</strong>：1985–2007 年间，利率冲击对产出的 IRF 绝对值比 1970 年代小——这是"预期管理成功、央行可信度提高"的证据。</li>
+        <li><strong>2008 vs 2020 的对比</strong>：2008 年危机中，利率冲击几乎传不到实体经济（零利率下限 + 银行惜贷）；2020 年疫情中，财政与货币双宽，IRF 形状又恢复。</li>
+        <li><strong>通胀对利率冲击的反应符号会翻转</strong>：某些时期出现"价格之谜"（price puzzle），某些时期没有——这本身就是宏观结构变化的证据。</li>
+      </ul>
+      <div class="callout info">
+        <div class="callout-title">怎么画时变 IRF</div>
+        <p>标准做法：画一张热图（横轴 $h$、纵轴 $t$、颜色 = $\mathrm{IRF}_t(h)$），再在热图上叠加几条"切片曲线"（选 2008Q4、2015Q4、2020Q2 三个时点的 $\mathrm{IRF}_t(h)$ 叠加在一张小图上）。</p>
+      </div>
+      <p>需要强调的是：TVP-VAR 的 IRF 不是"点估计 + 单一置信带"，而是<strong>整个 MCMC 后验</strong>。每一次 MCMC 抽样都能画出一条 IRF 曲线，你最终画的是几千条曲线的分位数（16%/50%/84%）。如果某次抽样的 IRF 在 2008 年符号为正、2010 年符号为负，那你的"时变效应"很可能只是后验分布的扩散，而非真正的结构性变化。判断标准是：<strong>不同时点 IRF 的后验中位数要显著分离，且各自的 68% 区间不互相覆盖</strong>，才能说"政策效应确实变了"。</p>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 高维网络分析入门：Diebold–Yilmaz 连通性</h2>
+      <p>当 $n$ 很大（10+ 变量）时，TVP-VAR 的参数爆炸（每个变量就有 $n(np+1)$ 个时变系数）。<strong>Diebold &amp; Yilmaz (2014, <em>Journal of Econometrics</em>)</strong> 提出了一条轻量路线：用常系数或时变 VAR 的<strong>广义预测误差方差分解（FEVD）</strong>，把它写成一个连通性矩阵，再解读为网络。</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 8.1 — Diebold–Yilmaz 连通性指数</div>
+        $$ C_{i \leftarrow j}(H) = \frac{\sigma_{jj}^{-1}\sum_{h=0}^{H-1}(e_i'\Theta_h e_j)^2}{\sum_{h=0}^{H-1} e_i'\Theta_h \Sigma_u \Theta_h' e_i} $$
+        $$ \text{Total Connectedness}(H) = \frac{1}{n}\sum_{i\neq j} C_{i\leftarrow j}(H) $$
+      </div>
+      <p>直观解释：$C_{i\leftarrow j}$ 是"变量 $i$ 的未来 $H$ 步预测误差方差里，有百分之几来自变量 $j$ 的冲击"。把 $n\times n$ 的 $C$ 矩阵画成热力图，就是一张<strong>风险传导网络</strong>——对角是"自相关"，非对角是"溢出"。Total Connectedness 衡量整个网络的"总连通度"。</p>
+      <p>把它和 TVP-VAR 结合：在每个时点 $t$ 用估计出的 $\beta_t, A_t, \Sigma_t$ 算 $C_t(H)$，就得到一条<strong>时变连通性指数</strong>。2008 年 9 月、2020 年 3 月这种时点，Total Connectedness 会瞬间飙升。</p>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 风险溯源：从方差分解看风险来源</h2>
+      <p>"风险溯源"（risk attribution / spillover source identification）就是回答：在某一次危机里，到底是<strong>谁</strong>把风险传染给了我？</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 计算 net pairwise spillover</div>
+          <div class="step-desc">$S_{i,j}=C_{i\leftarrow j}-C_{j\leftarrow i}$。正值表示 $j$ 是"净风险输出方"，负值表示 $i$ 是"净风险输入方"。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 识别"风险中心"</div>
+          <div class="step-desc">在连通性矩阵里找出"入度远小于出度"的节点——它们就是这次危机的风险源头（如 2008 年的美国房地产/金融部门、2022 年的能源部门）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 时变溯源</div>
+          <div class="step-desc">把 $S_{i,j,t}$ 沿时间画出来，看谁是"常态源头"、谁是"突发源头"。TVP-VAR 给出的 $\beta_t,\Sigma_t$ 正好让这一步逐时可行。</div>
+        </div>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">实务价值</div>
+        <p>这套方法在金融风险监测里被广泛使用：央行、证监会、IMF 的金融稳定报告常引用"基于 TVP-VAR-Diebold–Yilmaz 的时变溢出指数"，用来回答"当前中国股市波动主要是受美股溢出还是自身因素驱动"。</p>
+      </div>
+      <h3>从"总连通度"到"风险地图"</h3>
+      <p>仅看一个 Total Connectedness 标量是不够的，真正有用的是<strong>横截面</strong>。把 $C_t(H)$ 矩阵沿时间切片，可以回答一组具体问题：</p>
+      <ul>
+        <li><strong>谁是常态源头？</strong>在非危机期，$S_{i,j,t}$ 长期为正的部门（通常是金融部门、能源部门）就是系统性重要节点，应该被宏观审慎监管重点盯防。</li>
+        <li><strong>谁是危机触发器？</strong>在 2008Q4、2020Q1 这种时点，谁的"对外溢出"突然翻倍？Diebold–Yilmaz 文献发现 2008 年危机的源头是美国金融部门向实体部门溢出，2020 年疫情则是实体部门向金融部门反向溢出。</li>
+        <li><strong>风险是怎么传导的？</strong>把 $C_{i\leftarrow j}$ 画成有向图，节点大小 = 总溢出，箭头粗细 = 成对溢出，就能画出一张"风险地图"。这张图通常是金融稳定报告的封面图。</li>
+      </ul>
+      <div class="callout warning">
+        <div class="callout-title">识别注意事项</div>
+        <p>Diebold–Yilmaz 原始版本用的是 <strong>广义方差分解</strong>（Koop–Pesaran–Shin 1998），不依赖 Cholesky 排序，因此对变量顺序不敏感——这正是它比传统方差分解受欢迎的原因。但广义分解不是结构识别，它告诉你的是"预测误差方差里有多少来自谁"，而不是"外生结构冲击的因果效应"。要做因果政策分析，仍需回到 TVP-VAR 内部的 Cholesky / 符号约束识别。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 论文案例与常见错误</h2>
+
+      <h3>论文案例</h3>
+      <div class="paper-card">
+        <span class="paper-type en">English · ReStud</span>
+        <div class="paper-title">Time Varying Structural Vector Autoregressions and Monetary Policy</div>
+        <div class="paper-meta">Giorgio E. Primiceri · Review of Economic Studies, 2005, 72(3): 821–852</div>
+        <div class="paper-desc">TVP-VAR 的奠基论文。完整给出 $(\beta_t, A_t, \Sigma_t)$ 同时时变的贝叶斯估计器，并应用于战后美国货币政策。是做 TVP-VAR 必读，也是 MATLAB 工具箱的直接来源。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · RED</span>
+        <div class="paper-title">Drifts and Volatilities: Monetary Policies and Outcomes in the Post WWII U.S.</div>
+        <div class="paper-meta">Timothy Cogley &amp; Thomas J. Sargent · Review of Economic Dynamics, 2005, 8(2): 262–302</div>
+        <div class="paper-desc">与 Primiceri 同期独立完成的 TVP-VAR 工作，但不允许同期结构 $A_t$ 时变。结论：美国通胀波动率 1980 年代后显著下降，而政策反应系数在 Volcker 后系统性增强。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · JoE</span>
+        <div class="paper-title">On the Network Topology of Variance Decompositions: Measuring the Connectedness of Financial Firms</div>
+        <div class="paper-meta">Francis X. Diebold &amp; Kamil Yilmaz · Journal of Econometrics, 2014, 182(1): 119–134</div>
+        <div class="paper-desc">把方差分解解读为网络连通性的开山论文，被引数千次。提供了从 VAR 到"风险溢出网络"的标准操作流程。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 中文应用</span>
+        <div class="paper-title">TVP-VAR / Diebold–Yilmaz 在中国宏观与金融风险中的应用</div>
+        <div class="paper-meta">《经济研究》《管理世界》《金融研究》近年多篇 · 通用范式</div>
+        <div class="paper-desc">中文文献常见用法：用 TVP-VAR 估计中国货币政策冲击的时变效应，再用 Diebold–Yilmaz 测度股债汇、跨境资本、行业板块之间的风险溢出。建议在知网按"TVP-VAR + 时变溢出"检索最新工作论文，参考其中数据频率（月/季）与变量选择。</div>
+      </div>
+
+      <h3>常见错误</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：MCMC 不收敛就出图</div>
+        <p>TVP-VAR 参数维度高、后验平坦，前 5 万次抽样常常还在 burn-in。直接画 IRF 热图会得到"锯齿状噪声"。必须报告 R-hat（&lt; 1.1）、trace plot、有效样本量（ESS &gt; 数百），否则审稿人会直接要求重跑。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：先验方差 Q 设得太大或太小</div>
+        <p>$Q$ 控制 $\beta_t$ 的漂移速度：太大 → 系数追逐噪声，IRF 热图全是抖动；太小 → 系数几乎不动，TVP-VAR 退化成常系数 VAR。Primiceri 推荐用 OLS 残差 + 小倍数（如 $Q=(\tau+1)^{-1}\cdot\mathrm{Cov}(\hat\beta_{OLS})$，$\tau=40$）作为初值，并做敏感性分析。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 3：维度诅咒——变量太多</div>
+        <p>$n$ 从 3 涨到 10，$\beta_t$ 维度从 21 涨到 310，MCMC 链几乎不可能收敛。标准做法：(1) 限制 $n\le 6$；(2) 用因子增广 FAVAR 把高维信息压成几个因子再进 TVP-VAR；(3) 用 Koop–Korobilis 的 dynamic model averaging 允许变量集时变。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 4：过度解读时变系数</div>
+        <p>"$\beta_t$ 在 2015 年上升了 0.05"——这只是后验均值，置信区间可能跨零。TVP-VAR 给的是<strong>整个后验分布</strong>，必须带阴影区间画热图。只点估计、不画不确定性，等于把噪声当信号。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 5：忽略随机波动率，把波动突变错当成系数变化</div>
+        <p>如果只让 $\beta_t$ 时变、不让 $\Sigma_t$ 时变，2008 年的"波动率暴涨"会被 MCMC 强行分配给"系数漂移"，得到虚假的"2008 年政策反应函数突变"。Primiceri 2005 的核心贡献之一就是同时允许两者时变，不要为了省事砍掉 SV。</p>
+      </div>
+
+      <h3>进阶代码资源</h3>
+      <ul>
+        <li><strong>Koop &amp; Korobilis MATLAB TVP-VAR 工具箱</strong>：sites.google.com/site/garykoop — 直接可跑的 replication code。</li>
+        <li><strong>Primiceri 个人主页 replication files</strong>：NYU 经济系主页公开。</li>
+        <li><strong>R 包 <code class="inline">bvarsv</code></strong>：Krueger 提供的贝叶斯 TVP-VAR 实现，适合小样本入门。</li>
+        <li><strong>Python <code class="inline">pyMC</code> / <code class="inline">statsmodels</code></strong>：本页简化版的生产化路径；完整 SV 建议直接调用 MATLAB 工具箱。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="21-text-analysis.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">文本分析与叙事冲击</div>
+      </a>
+      <a href="index.html" class="next">
+        <div class="nav-label">返回 →</div>
+        <div class="nav-title">实证总览</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show')}
+document.querySelectorAll('.copy-btn').forEach(b=>b.onclick=()=>{const c=b.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(c).then(()=>{b.textContent='已复制 ✓';setTimeout(()=>b.textContent='复制',1500)})});
+document.addEventListener('DOMContentLoaded',()=>{if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})}});
+</script>
+</body>
+</html>

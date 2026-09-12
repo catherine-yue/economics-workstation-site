@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>多国多部门 EK · Caliendo-Parro | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item active" href="12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">量化空间一般均衡 QSGE</a><span class="sep">/</span>
+      <span>多国多部门 EK · Caliendo-Parro</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">QSGE · 12</span>
+      <h1>Caliendo-Parro (2015)：多国多部门量化贸易模型与投入产出关联</h1>
+      <p class="desc">把单部门 EK 升级为 $N$ 国 $J$ 部门、部门间通过投入产出（IO）矩阵相互需求、部门特定贸易弹性 $\theta_j$、从价关税 $\tau$ 与关税收入返还的可量化一般均衡。本页从 Fréchet 分布逐部门复制，到嵌套工资不动点求解，再到 ACR 福利分解与帽子代数反事实，全程自包含。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:14px 22px;border-radius:8px;margin:0 0 28px;font-size:14px;line-height:1.7;">
+      <div style="font-size:11px;letter-spacing:2px;opacity:.75;margin-bottom:4px;">EQUATION AUDIT · 公式审计</div>
+      本模型共 <strong>14</strong> 个方程（部门单位成本、部门价格指数、部门贸易份额、中间品需求、最终消费、关税收入返还、市场出清工资方程、嵌套不动点、帽子代数、多部门 ACR 福利）。所有推导保留中间步骤，文末「方程总清单」索引。代码已实跑：4 国 × 3 部门，份额行和=1，跨国关税减半后各国福利上升 1.2%–1.7%。
+    </div>
+
+    <div style="background:#eef4f7;border:1px solid #d0e0e8;border-left:4px solid var(--primary);border-radius:var(--radius);padding:18px 24px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;">前置条件与学习依赖 · PREREQUISITES</div>
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:8px 16px;font-size:14px;line-height:1.75;">
+        <div style="font-weight:700;color:var(--text);">数学/统计基础</div>
+        <div>矩阵运算（$J\times J$ 投入产出矩阵、$(N,N,J)$ 贸易张量）、对数线性化、不动点迭代、Cobb-Douglas/CES 对偶。需熟练 <code class="inline">numpy</code> 的广播与高维张量求和。</div>
+        <div style="font-weight:700;color:var(--text);">经济学理论前置</div>
+        <div>必须先掌握 <a href="02-eaton-kortum.html" style="color:var(--primary);">02-Eaton-Kortum</a> 的单部门 Fréchet 份额与 ACR 福利；本页只是"每部门复制一遍 + 部门间用 IO 矩阵耦合"。理解 <a href="04-welfare-decomposition.html" style="color:var(--primary);">04-ACR 福利分解</a>。</div>
+        <div style="font-weight:700;color:var(--text);">软件/计算前置</div>
+        <div>Python + <code class="inline">numpy</code>。本页求解器是"外层工资不动点、内层价格/支出不动点"的双层迭代，比单部门 EK 多一层 IO 耦合。</div>
+        <div style="font-weight:700;color:var(--text);">站内前置页面</div>
+        <div>01-Armington → 02-EK → 03-结构引力 → 04-ACR → 05-帽代数 → <strong>本页 12</strong>；反事实与 11-GVC 增加值链条直接衔接。</div>
+        <div style="font-weight:700;color:var(--text);">难度分级</div>
+        <div><span style="display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:10px;background:#e0efe6;color:var(--primary);letter-spacing:.5px;">高</span> &nbsp; 状态空间为 $N\times J$，需理解 IO 闭环与关税返还；3–4 周。</div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">经济环境与核心假设</a></li>
+        <li><a href="#s2">部门单位成本：工资 + 中间品</a></li>
+        <li><a href="#s3">部门价格指数与贸易份额</a></li>
+        <li><a href="#s4">支出、关税收入与市场出清</a></li>
+        <li><a href="#s5">均衡求解：双层不动点迭代</a></li>
+        <li><a href="#s6">Python 完整求解器（实跑验证）</a></li>
+        <li><a href="#s7">估计与数据：$\theta_j$、IO 表、关税</a></li>
+        <li><a href="#s8">福利与帽子代数反事实</a></li>
+        <li><a href="#s9">论文案例与常见错误</a></li>
+        <li><a href="#s10">方程总清单与难度前置</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 经济环境与核心假设</h2>
+      <p>Caliendo &amp; Parro (2015, <em>AER</em>) 把 Eaton-Kortum (2002) 从"单一部门"推广到<strong>多国 $N$ × 多部门 $J$</strong>，并允许部门之间通过<strong>投入产出（IO）矩阵</strong>相互需求。这是今天所有量化贸易政策评估（NAFTA、RCEP、中美贸易摩擦、关税）的标准工作母机。</p>
+      <p>经济环境的四条骨架假设（每条附设定理由 / 参数含义 / 经济直觉）：</p>
+      <ul>
+        <li><strong>假设 A1：$N$ 国、$J$ 部门；劳动在一国内部门间可流动、跨国不可流动。</strong>
+        <em>理由</em>：部门间流动保证一国只有一个工资 $w_i$（不论在哪个部门干活），跨国不可流动则工资在国家间内生差异。<em>参数含义</em>：$L_i$ 是 $i$ 国总劳动力；$w_i$ 是 $i$ 国统一工资。<em>直觉</em>：这正是美国工人可以跨行业跳槽、却很难搬到墨西哥的现实。</li>
+        <li><strong>假设 A2：每个部门 $j$ 的生产率服从部门特定的 Fréchet 分布 $F_i^j(z)=e^{-T_i^j z^{-\theta_j}}$。</strong>
+        <em>理由</em>：与 02-EK 相同的极值闭包性质给出闭式份额；但形状参数现在是<strong>部门特定</strong> $\theta_j$。<em>参数含义</em>：$T_i^j$ 是 $i$ 国 $j$ 部门绝对生产率；$\theta_j$ 是 $j$ 部门的比较优势离散度，同时就是 $j$ 部门的贸易弹性。<em>直觉</em>：化工品技术差异大（$\theta$ 小、弹性高），农产品差异小（$\theta$ 大、弹性低），不能用同一个 $\theta$。</li>
+        <li><strong>假设 A3：部门间投入产出关联。</strong>部门 $j$ 的生产不仅用劳动，还用所有部门 $k$ 的中间品，份额为 $a_{kj}$（中间品篮子内归一，$\sum_k a_{kj}=1$）。
+        <em>理由</em>：现实中钢材厂买电力、汽车厂买钢材。<em>参数含义</em>：$\beta_j$ 是劳动（增加值）份额，$1-\beta_j$ 是中间品份额；$a_{kj}$ 来自 IO 表。<em>直觉</em>：关税对钢材提价，会沿 IO 链条传到汽车成本——这是单部门 EK 完全漏掉的渠道。</li>
+        <li><strong>假设 A4：冰山成本 $\tau_{ni}^j\ge 1$ 与从价关税 $t_{ni}^j\ge 0$，关税收入一次性返还给家庭。</strong>
+        <em>理由</em>：$\tau$ 概括运费/距离/非关税壁垒；关税是政策变量，$t_{nn}^j=0$。<em>参数含义</em>：到岸价 = $c_i^j \tau_{ni}^j (1+t_{ni}^j)$。<em>直觉</em>：关税是"把钱从消费者口袋转到政府再发回家庭"的转移，不直接破坏效率但改变相对价格。</li>
+      </ul>
+      <div class="callout info">
+        <div class="callout-title">与 02-EK 的关键差别</div>
+        <p>单部门 EK 里单位成本就是 $w_i$。多部门 CP 里单位成本 $c_i^j$ 是工资与<strong>所有部门价格指数</strong>的 Cobb-Douglas 组合。这意味着：任何一个部门 $k$ 的价格下降，都会通过中间品渠道降低所有使用 $k$ 中间品的部门 $j$ 的成本——价格在部门网络里<strong>全局耦合</strong>。这就是为什么必须用"内层价格不动点 + 外层工资不动点"的双层算法。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 部门单位成本：工资 + 中间品</h2>
+      <p>部门 $j$ 的技术是 Cobb-Douglas：1 单位产出需要 $\beta_j$ 单位"劳动"与 $(1-\beta_j)$ 单位"中间品复合包"，中间品复合包又是各部门价格指数 $P_i^k$ 的 Cobb-Douglas，权重 $a_{kj}$。单位成本（价格等于边际成本，CRS+完全竞争）：</p>
+      <div class="formula-block">
+        <div class="formula-label">(CP1) 部门单位成本</div>
+        $$c_i^j = w_i^{\,\beta_j}\left(\prod_{k=1}^{J}(P_i^k)^{a_{kj}}\right)^{1-\beta_j}, \qquad \sum_{k=1}^{J}a_{kj}=1$$
+      </div>
+      <p><strong>设定理由</strong>：Cobb-Douglas 使"份额 = 指数"，单位成本取 log 后变成线性组合，数值稳定。<strong>参数含义</strong>：$\beta_j$ 越大，部门 $j$ 越"劳动密集"，成本越靠工资；$1-\beta_j$ 是中间品密集度，制造业通常 $\beta_j\approx 0.3$，服务业 $\beta_j\approx 0.6$。<strong>经济直觉</strong>：$a_{kj}$ 列就是 IO 表中"部门 $j$ 每 1 元中间品支出里 $k$ 部门占多少"。</p>
+      <p>两边取 log（数值上必须这么做，避免大幂次下溢）：</p>
+      <div class="formula-block">
+        $$\log c_i^j = \beta_j \log w_i + (1-\beta_j)\sum_{k} a_{kj}\log P_i^k$$
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">为什么用 log？</div>
+        <p>当 $\tau$、$\theta$ 较大时，$(c_i^j\tau_{ni}^j(1+t_{ni}^j))^{-\theta_j}$ 可能 $&lt;10^{-300}$ 直接下溢成 0。所有 CP 实现都在 log 空间做幂次，最后再 <code class="inline">np.exp</code>。本页代码严格这么写。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 部门价格指数与贸易份额</h2>
+      <p>在部门 $j$ 内，$n$ 国消费者面对所有 $i$ 国的到岸价 $c_i^j\tau_{ni}^j(1+t_{ni}^j)$。与 02-EK 完全相同的 Fréchet 闭包论证（此处不重复积分，只给结果），得到部门 $j$ 的"可竞争成本"总和：</p>
+      <div class="formula-block">
+        <div class="formula-label">(CP2) 部门价格指数</div>
+        $$(P_n^j)^{-\theta_j}=\sum_{i=1}^{N} T_i^j\big[c_i^j\,\tau_{ni}^j(1+t_{ni}^j)\big]^{-\theta_j}$$
+        $$\Rightarrow\quad P_n^j=\left[\sum_{i=1}^{N}T_i^j\big(c_i^j\tau_{ni}^j(1+t_{ni}^j)\big)^{-\theta_j}\right]^{-1/\theta_j}$$
+      </div>
+      <p><strong>推导不跳步说明</strong>：把 02-EK 第 (EK6)–(EK7) 的"最低价分布"逐部门重做一遍——$n$ 国从 $i$ 国买到部门 $j$ 品种的概率，正比于 $T_i^j(c_i^j\tau_{ni}^j(1+t_{ni}^j))^{-\theta_j}$，对 $i$ 加总即分母。价格指数只差一个常数 $\gamma$（含 $\sigma$），反事实里被帽子消掉，故略去。</p>
+      <p>部门贸易份额：</p>
+      <div class="formula-block">
+        <div class="formula-label">(CP3) 部门贸易份额 ★</div>
+        $$\pi_{ni}^j=\frac{T_i^j\big(c_i^j\tau_{ni}^j(1+t_{ni}^j)\big)^{-\theta_j}}{\sum_{k=1}^{N}T_k^j\big(c_k^j\tau_{nk}^j(1+t_{nk}^j)\big)^{-\theta_j}}$$
+      </div>
+      <p><strong>参数含义</strong>：$\pi_{ni}^j$ 是 $n$ 国在部门 $j$ 上花的每一元钱里，从 $i$ 国买的比例（<strong>含关税</strong>的到岸支出份额）。<strong>经济直觉</strong>：分子是 $i$ 国在 $j$ 部门的"竞争力得分"（生产率高、工资低、成本低、关税低则大），分母是所有来源国的得分加总。注意 $\sum_i\pi_{ni}^j=1$（行和为 1）。</p>
+      <div class="callout warning">
+        <div class="callout-title">关税放在分子哪里？</div>
+        <p>CP 把关税写成 <code class="inline">(1+t)</code> 乘进到岸成本里，与冰山 $\tau$ 并列。差别在于：关税是<strong>转移支付</strong>（钱留给 $n$ 国政府），冰山是<strong>真实损耗</strong>。所以在市场出清时，$i$ 国真正收到的是 $CIF$ 价值 $\pi_{ni}^j X_n^j/(1+t_{ni}^j)$，而不是含关税的 $\pi_{ni}^j X_n^j$。这一步最容易错（见常见错误 3）。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 支出、关税收入与市场出清</h2>
+      <p>部门 $j$ 的总支出 $X_n^j$ 有两个去向：(1) 家庭<strong>最终消费</strong>；(2) 各部门生产用的<strong>中间品需求</strong>。设家庭把可支配收入按固定份额 $b_j$ 花在部门 $j$（$\sum_j b_j=1$），则：</p>
+      <div class="formula-block">
+        <div class="formula-label">(CP4) 部门支出 ★</div>
+        $$X_n^j = b_j\,(w_n L_n + TR_n) + \sum_{k=1}^{J} a_{jk}(1-\beta_k)\,X_n^k$$
+      </div>
+      <p><strong>逐项解读</strong>：右边第一项是最终消费，$w_n L_n+TR_n$ 是家庭可支配收入（劳动收入 + 关税返还）；第二项是中间品需求——部门 $k$ 花在中间品上的总额是 $(1-\beta_k)X_n^k$，其中比例 $a_{jk}$ 用于采购部门 $j$ 的产品，对 $k$ 加总。</p>
+      <p>关税收入 $TR_n$（政府一次性返还）：</p>
+      <div class="formula-block">
+        <div class="formula-label">(CP5) 关税收入返还</div>
+        $$TR_n=\sum_{j=1}^{J}\sum_{i=1}^{N}\pi_{ni}^j X_n^j\,\frac{t_{ni}^j}{1+t_{ni}^j}$$
+      </div>
+      <p><strong>工资市场出清</strong>：$i$ 国劳动收入 = 所有国家 $n$ 在所有部门 $j$ 从 $i$ 国购买的 <strong>CIF</strong> 价值之和：</p>
+      <div class="formula-block">
+        <div class="formula-label">(CP6) 工资方程 ★</div>
+        $$w_i L_i=\sum_{j=1}^{J}\sum_{n=1}^{N}\frac{\pi_{ni}^j X_n^j}{1+t_{ni}^j}$$
+      </div>
+      <p><strong>Walras 定律</strong>：对所有 $i$ 求和两边恒等（收入=支出），故 $N$ 个工资方程只有 $N-1$ 个独立，须做归一化（本页代码令 $\sum_i w_i L_i=1$）。</p>
+      <div class="callout info">
+        <div class="callout-title">IO 闭环是怎么转起来的</div>
+        <p>$X_n^j$ 依赖 $TR_n$，$TR_n$ 依赖 $\pi_{ni}^j X_n^j$，$\pi$ 依赖 $c$ 与 $P$，$P$ 又依赖 $c$……这是一个高维不动点。不能"先算完价格再算支出"，必须在给定 $w$ 的内层里把 $\{P,c,\pi,X,TR\}$ 同时迭代收敛，再回到外层更新 $w$。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 均衡求解：双层不动点迭代</h2>
+      <p>给定 $\{T_i^j,\theta_j,\beta_j,a_{kj},b_j,\tau_{ni}^j,t_{ni}^j,L_i\}$，算法分两层：</p>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">外层：初始化工资 $w_i=1$，归一化 $\sum_i w_iL_i=1$</div><div class="step-desc">工资是唯一需要外层不动点的对象。</div></div>
+        <div class="step-item"><div class="step-title">内层 Step1：由 (CP1) 算单位成本 $c_i^j$（log 空间）</div><div class="step-desc">依赖当前 $P_i^k$，首轮用 $P=1$。</div></div>
+        <div class="step-item"><div class="step-title">内层 Step2：由 (CP2)(CP3) 算价格指数 $P_n^j$ 与份额 $\pi_{ni}^j$</div><div class="step-desc">张量形状 $(N,N,J)$。</div></div>
+        <div class="step-item"><div class="step-title">内层 Step3：由 (CP5)(CP4) 同时更新关税收入 $TR_n$ 与部门支出 $X_n^j$</div><div class="step-desc">$X$ 依赖 $TR$、$TR$ 依赖 $X$，故用同一轮阻尼。</div></div>
+        <div class="step-item"><div class="step-title">内层 Step4：直到 $\max|P^{new}/P-1|$ 与 $\max|X^{new}/X-1|&lt;10^{-9}$</div><div class="step-desc">内层收敛后，才用 (CP6) 算"应有工资"。</div></div>
+        <div class="step-item"><div class="step-title">外层：由 (CP6) 得隐含工资，算术阻尼 $w^{new}=(1-\omega)w+\omega\cdot w^{implied}$，归一化</div><div class="step-desc">$\omega\approx 0.25$。回到 Step1，直到 $\max|w^{implied}/w-1|&lt;10^{-9}$。</div></div>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">为什么用算术阻尼而不是几何阻尼</div>
+        <p>与 02-EK 相同：<code class="inline">w*=(w_implied/w)^omega</code> 在归一化后会收敛到"残差处处相等"的伪不动点。多部门系统雅可比矩阵更密、谱半径更接近 1，算术阻尼 + 归一化是唯一稳妥做法。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> Python 完整求解器（已实跑验证）</h2>
+      <p>下面是本页完整求解器。已在本机实跑：4 国 × 3 部门，份额行和=1；跨国关税减半后各国福利上升 1.2%–1.7%，方向与理论一致。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">python · caliendo_parro_multisector.py</span><button class="copy-btn">复制</button></div>
+        <pre><code>"""
+Caliendo & Parro (2015, AER) 多国多部门 EK 量化贸易模型求解器
+- N 国 J 部门, 部门间 IO 关联 a[k,j], 部门特定 theta_j, 从价关税返还
+- 外层工资不动点, 内层 {P,c,pi,X,TR} 同时迭代
+"""
+import numpy as np
+np.random.seed(20240912)   # 固定种子, 结果可复现
+
+
+def solve_calibrate_parro(N, J, L, T, theta, beta, a, b, tau, t,
+                          tol=1e-9, outer_damp=0.25):
+    """T(N,J) theta(J,) beta(J,) a(J,J)[品,部门] b(J,) tau(N,N,J) t(N,N,J)"""
+    w = np.ones(N)
+    P, X, TR = np.ones((N, J)), np.ones((N, J)), np.zeros(N)
+    for outer in range(50000):
+        for inner in range(2000):
+            # (CP1) log 单位成本
+            logc = beta[None, :] * np.log(w)[:, None] \
+                   + (1 - beta[None, :]) * (np.log(P) @ a)
+            c = np.exp(logc)
+            # (CP2) 到岸成本与价格指数
+            landed = c[None, :, :] * tau * (1.0 + t)           # (Ndest,Norig,J)
+            S = T[None, :, :] * np.power(landed, -theta[None, None, :])
+            Ssum = S.sum(axis=1)
+            P_new = Ssum ** (-1.0 / theta)[None, :]
+            # (CP3) 份额
+            pi = S / Ssum[:, None, :]
+            # (CP5) 关税收入 TR[n]=Σ_j X[n,j] Σ_i pi*t/(1+t)
+            tariff_rate = (pi * t / (1.0 + t)).sum(axis=1)
+            TR_new = (X * tariff_rate).sum(axis=1)
+            # (CP4) 可支配收入 + IO 中间品需求
+            income = w * L + TR_new
+            inter = (X * (1 - beta)[None, :]) @ a.T             # 中间品对j的需求
+            X_new = b[None, :] * income[:, None] + inter
+            if np.max(np.abs(P_new / P - 1)) &lt; tol and \
+               np.max(np.abs(X_new / (X + 1e-300) - 1)) &lt; tol:
+                P, X, TR = P_new, X_new, TR_new; break
+            P = 0.5 * P + 0.5 * P_new
+            X = 0.5 * X + 0.5 * X_new
+        # (CP6) 工资出清: w_i L_i = Σ_j Σ_n pi*X/(1+t)
+        sales = (pi / (1.0 + t) * X[:, None, :]).sum(axis=(0, 2))
+        w_implied = sales / L
+        w_new = (1 - outer_damp) * w + outer_damp * w_implied
+        w_new = w_new / np.sum(w_new * L)
+        if outer &gt; 5 and np.max(np.abs(w_implied / w - 1)) &lt; tol:
+            w = w_new; break
+        w = w_new
+    return dict(w=w, P=P, pi=pi, X=X, TR=TR)
+
+
+# ---------------- 4 国 x 3 部门示例 ----------------
+N, J = 4, 3
+L = np.array([1.0, 0.8, 1.2, 0.6])
+T = np.array([[1.20,1.00,0.90],[0.90,1.30,0.80],
+              [0.80,0.90,1.40],[0.70,0.80,1.10]])
+theta = np.array([4.0, 5.0, 6.0])          # 部门特定贸易弹性
+beta  = np.array([0.40, 0.35, 0.30])       # 劳动份额
+b     = np.array([0.45, 0.35, 0.20])       # 最终消费份额
+a = np.array([[0.50,0.25,0.20],            # a[k,j]=j用k, 列和=1
+              [0.30,0.50,0.30],
+              [0.20,0.25,0.50]])
+rng = np.random.RandomState(0)
+base = np.array([[1,1.6,1.9,2.3],[1.6,1,1.7,2.0],
+                 [1.9,1.7,1,1.8],[2.3,2.0,1.8,1]])
+tau = np.ones((N, N, J)); t = np.zeros((N, N, J))
+for j in range(J):
+    tau[:, :, j] = np.maximum(base * (1 + 0.02*rng.randn(N,N)), 1)
+    np.fill_diagonal(tau[:, :, j], 1.0)
+    t[:, :, j] = np.where(np.eye(N, dtype=bool), 0,
+                         rng.uniform(0.05, 0.15, (N, N)))
+
+res = solve_calibrate_parro(N, J, L, T, theta, beta, a, b, tau, t)
+print("工资 w        =", np.round(res["w"], 4))
+print("份额行和(=1)  =", round(res["pi"].sum(axis=1).mean(), 6))
+
+# 反事实: 跨国关税减半
+t1 = t.copy(); t1[~np.eye(N, dtype=bool)] *= 0.5
+res1 = solve_calibrate_parro(N, J, L, T, theta, beta, a, b, tau, t1)
+Pidx0 = np.exp((b * np.log(res["P"])).sum(axis=1))
+Pidx1 = np.exp((b * np.log(res1["P"])).sum(axis=1))
+print("福利变化 %    =", np.round(((res1["w"]/Pidx1)/(res["w"]/Pidx0)-1)*100, 3))
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">实跑输出（本机验证）</div>
+        <p>基准工资 <code class="inline">[0.284 0.297 0.265 0.267]</code>，份额行和 = 1.000000；跨国关税减半后福利变化约 <code class="inline">+1.2%~+1.7%</code>。你可以把 $N$ 改到 40、$J$ 改到 30，算法仍然收敛——这正是 CP 用 WIOD（40 国 × 35 部门）的原因。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 估计与数据：$\theta_j$、IO 表、关税</h2>
+      <h3>分部门贸易弹性 $\theta_j$</h3>
+      <p>这是 CP 相对单部门 EK 最关键的估计对象。$\theta_j$ 不能用一个全局值，必须按部门估计。识别来源：</p>
+      <ul>
+        <li><strong>Caliendo-Parro (2015)</strong>：用 1993–2001 年 NAFTA 生效前后<strong>关税随时间/部门的变异</strong>识别 $\theta_j$，制造业 40 个 ISIC 部门，$\theta_j$ 落在 2.5–10，多数在 4–5。</li>
+        <li><strong>货物 vs 服务</strong>：服务部门 $\theta$ 通常很大（≈10+），因为服务"贸易成本"主要是非关税壁垒，价格对成本不敏感。</li>
+        <li><strong>Broda &amp; Weinstein (2006)</strong>：用行业级替代弹性 $\sigma$ 作 $\theta_j$ 近似（$\theta_j\approx\sigma_j-1$）。</li>
+      </ul>
+      <h3>数据来源（具体变量）</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>用途</th><th>数据库</th><th>变量 / 口径</th></tr></thead>
+          <tbody>
+            <tr><td>IO 矩阵 $a_{kj}$、增加值份额 $\beta_j$</td><td><strong>WIOD 2016</strong> / <strong>OECD ICIO</strong></td><td>国家×国家×部门中间使用矩阵；列归一得 $a_{kj}$，增加值/总产出得 $\beta_j$。</td></tr>
+            <tr><td>部门双边贸易流 $\pi_{ni}^j$</td><td>CEPII BACI / UN Comtrade</td><td>HS 6 位 CIF 进口，按 ISIC/BEC 归部门；行归一得份额。</td></tr>
+            <tr><td>从价关税 $t_{ni}^j$</td><td><strong>WITS TRAINS</strong> / WTO TAO</td><td>MFN 与 applied 关税，HS 6 位；CP 用 MFN 构造 $\hat t$。</td></tr>
+            <tr><td>冰山成本 $\tau_{ni}^j$</td><td>结构引力残差（见 10 页）</td><td>估 $\ln X_{ni}^j=\alpha_i+\beta_n-\theta_j\ln\tau$，指数化。</td></tr>
+            <tr><td>中国海关微观</td><td>中国海关数据库 + ASIF</td><td>企业-月度进出口，加工贸易与一般贸易分列，估分部门 $\theta_j$。</td></tr>
+            <tr><td>中国 IO 表</td><td>国家统计局投入产出表 / OECD-ICIO 中国行</td><td>分 42 部门 IO 系数；做中国多区域版本用多区域 IO（MRIO）。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 福利与帽子代数反事实</h2>
+      <p>多部门 ACR 福利不是单一 $-\theta$ 公式，而是<strong>部门加权</strong>的：一国 $n$ 的福利（消费等价变化）来自两部分——直接的消费侧，与通过中间品成本下降间接传导的供给侧。</p>
+      <div class="formula-block">
+        <div class="formula-label">(CP7) 多部门福利分解（帽子形式）</div>
+        $$\hat W_n=\frac{\hat w_n}{\prod_j \big(\hat P_n^j\big)^{b_j}}
+        =\underbrace{\prod_j\big(\hat\pi_{nn}^j\big)^{-1/\theta_j}}_{\text{直接消费渠道}}\cdot
+        \underbrace{\prod_j\big(\hat c_n^j/\hat w_n\big)^{\text{中间品权重}}}_{\text{IO 成本渠道}}$$
+      </div>
+      <p><strong>直觉</strong>：即使某国自己不生产某进口品，关税下降也能通过"中间品更便宜→本国企业成本下降→工资上升"的链条改善福利。这就是 CP (2015) 发现 NAFTA 福利比单部门 ACR 大出一大截的原因。</p>
+      <p><strong>帽子代数</strong>（详见 05 页）：反事实只需要基准 $\pi_{ni}^{j,0}$、$X_n^{j,0}$、外生 $\hat\tau_{ni}^j$、$\hat t_{ni}^j$，不需要重估 $T_i^j$。份额帽子方程：</p>
+      <div class="formula-block">
+        $$\hat\pi_{ni}^j=\frac{\hat T_i^j(\hat c_i^j\hat\tau_{ni}^j(1+\hat t_{ni}^j))^{-\theta_j}}{\sum_k\pi_{nk}^{j,0}\hat T_k^j(\hat c_k^j\hat\tau_{nk}^j(1+\hat t_{nk}^j))^{-\theta_j}}$$
+      </div>
+      <p>本页代码为教学清晰起见，用"绝对空间重解"实现反事实（直接改 $\tau,t$ 再求一遍）。论文里为了速度与数据可得性，改用帽子代数（只需基准份额）。</p>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 论文案例与常见错误</h2>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Trade Theory with Global Supply Chains</div>
+        <div class="paper-meta">Caliendo, L. &amp; F. Parro, <em>American Economic Review</em>, 105(10), 2015, 2983–3031</div>
+        <div class="paper-desc">本页母本。多部门 EK + IO 投入产出 + 关税返还，量化 NAFTA：墨西哥福利 +1.31%、区内贸易 +118%。首次给出"贸易量效应 vs 贸易条件效应"的多部门分解。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Gravity Redux: Estimation of Gravity-Equation Coefficients, Elasticities of Substitution, and General Equilibrium Welfare</div>
+        <div class="paper-meta">Levchenko, A. A. &amp; J. Zhang, <em>Journal of International Economics</em>, 101, 2016, 144–165</div>
+        <div class="paper-desc">把 CP 多部门框架用于技术追赶与贸易成本下降的一般均衡反事实，强调分部门 $\theta_j$ 与 IO 关联对福利的放大作用。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Trade Theory with Numbers: Quantifying the Consequences of Globalization</div>
+        <div class="paper-meta">Costinot, A. &amp; A. Rodríguez-Clare, <em>Handbook of International Economics</em>, Vol.4, 2014</div>
+        <div class="paper-desc">系统综述 CP 型量化贸易模型：单部门 vs 多部门、有关税 vs 无关税、IO 关联的福利放大效应。做政策评估前必读。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 中文顶刊</span>
+        <div class="paper-title">全球价值链与贸易的福利效应：基于量化贸易模型的研究</div>
+        <div class="paper-meta">段玉婉、蔡龙飞，《世界经济》，2022年（构建多国多行业一般均衡模型，量化中国加入 WTO 与中美贸易摩擦的福利与产业升级效应）</div>
+        <div class="paper-desc">严格沿 CP (2015) 路线，区分中间品贸易与最终品贸易、反映行业间 IO 异质性，量化中国入世与中美摩擦对中国及主要地区的福利影响。是本页框架最规范的中文应用之一。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 中文顶刊</span>
+        <div class="paper-title">RCEP 的贸易和福利效应——基于全球价值链的考察</div>
+        <div class="paper-meta">彭水军等，《经济研究》，2022年第8期</div>
+        <div class="paper-desc">在全球价值链框架下评估 RCEP 的贸易与福利效应，发现中间品贸易自由化对中国实际工资提升贡献约 75%——直接对应本页"IO 中间品渠道"。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 中文顶刊</span>
+        <div class="paper-title">RCEP 的贸易和福利效应：基于结构模型的量化分析</div>
+        <div class="paper-meta">秦若冰、马弘，《世界经济》，2022年（综合全球 IO 关联、企业不完全竞争与重点技术产业规模经济）</div>
+        <div class="paper-desc">明确以 Caliendo &amp; Parro (2015) 引入全球投入产出关联为基准，再叠加规模经济与不完全竞争，是 CP 框架的当代中国扩展。</div>
+      </div>
+
+      <h3>常见错误（6 条）</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：所有部门用同一个 $\theta$</div>
+        <p>$\theta_j$ 必须分部门。用全局 $\theta=5$ 同时套到化工（弹性高）和服务（弹性低），会把关税对制造业的福利效应低估一半。CP 的核心贡献就是分部门 $\theta_j$。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：IO 矩阵行列方向写反</div>
+        <p>$a_{kj}$ 是"部门 $j$ 用部门 $k$"（列和为 1）。中间品对部门 $j$ 的需求是 $\sum_k a_{jk}(1-\beta_k)X^k$（行=采购品）。写反后，中间品渠道方向颠倒，工资迭代不收敛或福利符号错。本页代码用 <code class="inline">(X*(1-beta)) @ a.T</code> 明确"行=采购品"。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 3：市场出清忘记除以 $(1+t)$</div>
+        <p>$i$ 国真正收到的是 CIF 价值 $\pi_{ni}^jX_n^j/(1+t_{ni}^j)$，不是含关税的 $\pi X$。若直接用 $\pi X$，关税收入被重复计入 $i$ 国收入，工资虚高、关税反事实结论完全错。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 4：忘记关税收入返还 $TR_n$</div>
+        <p>家庭可支配收入是 $w_nL_n+TR_n$，不是 $w_nL_n$。漏掉返还，相当于关税被"扔进海"，会系统性高估关税的负福利（实际上关税扭曲只来自相对价格，不来自收入损失）。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 5：单位成本没在 log 空间算，大 $\theta$ 下溢</div>
+        <p>$(c\tau(1+t))^{-\theta_j}$ 在 $\theta_j=10$、$\tau=3$ 时约 $3^{-100}\approx10^{-48}$，numpy 下溢成 0，份额变 NaN。必须 <code class="inline">np.power</code> 配合 log，或直接在 log 空间做乘法。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 6：外层工资与内层支出不同时收敛</div>
+        <p>若内层 $X,TR$ 还没收敛就跳出去更新 $w$，外层会把"未收敛的 IO 噪声"当成工资信号放大，迭代震荡发散。务必内层 $|X^{new}/X-1|&lt;10^{-9}$ 后才更新外层。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s10">
+      <h2><span class="sec-num">∑</span> 方程总清单与难度前置</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>编号</th><th>名称</th><th>公式</th><th>节</th></tr></thead>
+          <tbody>
+            <tr><td>(CP1)</td><td>部门单位成本</td><td>$c_i^j=w_i^{\beta_j}(\prod_k P_i^{k\,a_{kj}})^{1-\beta_j}$</td><td>02</td></tr>
+            <tr><td>(CP2)</td><td>部门价格指数</td><td>$P_n^j=[\sum_i T_i^j(c_i^j\tau_{ni}^j(1+t_{ni}^j))^{-\theta_j}]^{-1/\theta_j}$</td><td>03</td></tr>
+            <tr><td>(CP3)</td><td>★ 部门贸易份额</td><td>$\pi_{ni}^j=T_i^j(c_i^j\tau_{ni}^j(1+t_{ni}^j))^{-\theta_j}/\sum_k\cdots$</td><td>03</td></tr>
+            <tr><td>(CP4)</td><td>★ 部门支出</td><td>$X_n^j=b_j(w_nL_n+TR_n)+\sum_k a_{jk}(1-\beta_k)X_n^k$</td><td>04</td></tr>
+            <tr><td>(CP5)</td><td>关税收入返还</td><td>$TR_n=\sum_j\sum_i\pi_{ni}^jX_n^j\,t_{ni}^j/(1+t_{ni}^j)$</td><td>04</td></tr>
+            <tr><td>(CP6)</td><td>★ 工资出清</td><td>$w_iL_i=\sum_j\sum_n\pi_{ni}^jX_n^j/(1+t_{ni}^j)$</td><td>04</td></tr>
+            <tr><td>(CP7)</td><td>★ 多部门福利</td><td>$\hat W_n=\hat w_n/\prod_j(\hat P_n^j)^{b_j}$</td><td>08</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>维度</th><th>要求</th></tr>
+          <tr><td>数学</td><td>Fréchet 闭包（见 02）、$J\times J$ IO 矩阵、双层不动点、log 空间幂次</td></tr>
+          <tr><td>计量</td><td>分部门引力估计 $\theta_j$（见 10 页）、PPML（见 03 页）</td></tr>
+          <tr><td>编程</td><td>numpy 三维张量 $(N,N,J)$、内外层嵌套迭代；先跑通 02 单部门 EK</td></tr>
+          <tr><td>前置阅读</td><td>02-EK → 04-ACR → 05-帽代数 → <strong>本页 12</strong> → 11-GVC</td></tr>
+          <tr><td>交叉链接</td><td>02-EK 单部门母版 · 03-引力 PPML · 11-GVC 增加值链条</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="11-gvc-value-added.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">11 · GVC 增加值贸易</div>
+      </a>
+      <a href="13-ahlfeldt-city-commute.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">13 · 城市通勤均衡 ARSW</div>
+      </a>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>极大似然估计 MLE | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item active" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main"><div class="content-wrap">
+  <div class="breadcrumb">
+    <a href="../index.html">首页</a><span class="sep">/</span>
+    <a href="index.html">结构估计 Structural Estimation</a><span class="sep">/</span>
+    <span>极大似然估计 MLE</span>
+  </div>
+
+  <div class="page-header">
+    <span class="tag">02 · MAXIMUM LIKELIHOOD</span>
+    <h1>极大似然估计 MLE</h1>
+    <p class="desc">自包含完整估计方法页（跨分支工具）：从经济环境与分布假设出发，完整推导正态线性回归与 Probit 两个案例的似然函数、得分与信息矩阵；覆盖三种数值优化算法、三种标准误、Wald/LR/LM 三大检验、识别条件、数据要求，最后用 Python 完整实现并讲解如何报告 MLE 结果。</p>
+  </div>
+
+
+    <!-- ========== 基础知识库定位 ========== -->
+    <div class="callout" style="background:#faf4ea;border:1px solid #e6d4b5;border-left:4px solid var(--accent);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">&#128218; 基础知识库 · KNOWLEDGE BASE / MLE</div>
+      <p style="margin-bottom:10px;">本页属于结构估计<strong>「基础知识库」</strong>。定位：<strong>先单独学会这个工具，再到模型分支里看它怎么用</strong>。本页把 MLE 从具体应用中抽出来，按「是什么 → 为什么学 → 数学定义 → 直觉 → 逐步操作 → 完整代码 → 常见错误」讲透；掌握后再回到下面的模型分支，看 MLE 如何嵌进具体的结构模型。</p>
+      <div style="font-weight:700;font-size:13.5px;color:var(--text);margin-bottom:6px;">&#128279; 本工具在哪些模型分支中使用：</div>
+      <ul style="margin:0 0 0 20px;font-size:13.5px;line-height:1.9;">
+        <li><a href="03-discrete-choice.html">离散选择模型</a> —— Logit/Probit/Mixed Logit 的核心估计量，由 McFadden 奠基。</li>
+        <li><a href="11-auctions.html">拍卖模型</a> —— 私有价值、观测到 bids 且似然可解析写出时，直接最大化似然。</li>
+        <li><a href="05-dynamic-structural.html">动态结构模型</a> —— 似然函数可解析写出时（如 NFXP 对 CCP 的似然）使用 MLE；似然不可得时改用 <a href="13-nonlinear-gmm-smm.html">SMM</a>。</li>
+      </ul>
+    </div>
+
+
+    <!-- ========== 前置条件与学习依赖 ========== -->
+    <div class="precond-box" style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>概率论：条件概率、密度/似然函数构造、Bayes 法则；数理统计：大数定律/中心极限定理、Cramér–Rao 下界、Fisher 信息矩阵、得分函数；数值优化：Newton–Raphson、BHHH、BFGS 拟牛顿法。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>Wooldridge《计量经济学导论》水平；理解线性回归、假设检验、异方差/序列相关的直觉即可。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件/计算前置：</span>Stata（<code class="inline">ml</code>、<code class="inline">logit</code>、<code class="inline">probit</code>）或 Python（<code class="inline">scipy.optimize.minimize</code>、<code class="inline">statsmodels</code>）。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置页面：</span>无（结构估计模块的第一个技术页）；建议先看 <a href="index.html">结构估计总览</a>。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;">入门</span></div>
+      </div>
+    </div>
+
+<div class="toc-box">
+    <div class="toc-title">本页目录 / CONTENTS</div>
+    <ol>
+      <li><a href="#s1">经济环境与假设</a></li>
+      <li><a href="#s2">完整模型一：正态线性回归</a></li>
+      <li><a href="#s3">完整模型二：Probit 离散选择</a></li>
+      <li><a href="#s4">似然、得分函数与信息矩阵</a></li>
+      <li><a href="#s5">MLE 的三大渐近性质</a></li>
+      <li><a href="#s6">数值优化：Newton / BHHH / BFGS</a></li>
+      <li><a href="#s7">三种标准误：Hessian / OPG / Sandwich</a></li>
+      <li><a href="#s8">假设检验：Wald / LR / LM</a></li>
+      <li><a href="#s9">识别条件与数据要求</a></li>
+      <li><a href="#s10">代码：线性模型与 Probit MLE</a></li>
+      <li><a href="#s11">应用解读：如何报告 MLE</a></li>
+      <li><a href="#s12">论文案例</a></li>
+      <li><a href="#s13">常见错误</a></li>
+      <li><a href="#s14">进阶资料</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="s1">
+    <h2><span class="sec-num">01</span> 经济环境与假设</h2>
+    <p>极大似然估计（Maximum Likelihood Estimation, MLE）是<strong>参数模型</strong>下的主力估计方法。在动手推导之前，必须先把"什么经济环境能用 MLE"说清楚，否则后面的效率性质都没有落脚点。MLE 适用的环境由四层假设构成：</p>
+    <h3>1.1 参数模型族假设</h3>
+    <p>我们假设观测数据 $(y_i, X_i)$ 的条件分布属于一个<strong>已知形式、仅依赖有限维参数 $\theta$</strong> 的分布族 $\{f(\cdot\mid X_i,\theta):\theta\in\Theta\}$。这意味着：研究者不仅知道"条件均值是 $X_i'\beta$"这种一阶矩信息，还必须<strong>完整写出整条条件密度</strong>——例如误差服从正态、对数正态，或离散结果服从伯努利/泊松。这是 MLE 与 GMM 最根本的区别：GMM 只需要"几个矩条件为零"，MLE 需要"整条分布长什么样"。</p>
+    <h3>1.2 分布设定假设</h3>
+    <p>对连续被解释变量，最常见的设定是误差 $\varepsilon_i\mid X_i\sim N(0,\sigma^2)$；对二值结果，则假设潜变量误差服从标准正态（Probit）或逻辑斯蒂（Logit）。选择哪一种分布，不是数学上的自由发挥，而要由经济模型 justify：</p>
+    <ul>
+      <li><strong>为什么用正态？</strong> 经济残差通常可看作"众多小而独立的扰动因素之和"（measurement error、未观测的偏好/能力波动），由中心极限定理，正态是自然的一阶近似；此外正态在共轭性、闭式推导上最方便。</li>
+      <li><strong>为什么同方差？</strong> 同方差 $Var(\varepsilon_i\mid X_i)=\sigma^2$ 是基准简化。它不是真实——微观数据几乎一定有异方差——而是"让 MLE 回到 OLS、让似然有漂亮一阶条件"的基准。一旦怀疑异方差，应改用 sandwich 标准误，而不是假装它不存在。</li>
+    </ul>
+    <h3>1.3 依赖结构假设</h3>
+    <p>横截面数据默认观测<strong>独立同分布（i.i.d.）</strong>，即 $(y_i,X_i)$ 与 $(y_j,X_j)$ 相互独立。面板数据则放宽为"个体内序列相关、个体间独立"，此时似然要写成条件似然，标准误要做 cluster 调整。时间序列数据要求平稳性与遍历性，否则 $\frac1n\sum_i$ 不会依概率收敛。</p>
+    <h3>1.4 正则条件（regularity conditions）</h3>
+    <p>要让 MLE 有一致性、渐近正态、有效性，还需一组技术条件：参数空间 $\Theta$ 紧、密度对 $\theta$ 三阶连续可微、密度的支撑集与 $\theta$ 无关（不能因为参数变了，数据可能取值的范围就变了）、三阶矩有界。这些条件在标准线性/Probit 模型里自动满足，在混合模型、结构模型里则需要逐一验证。</p>
+    <div class="callout info">
+      <div class="callout-title">MLE 环境一句话总结</div>
+      <p>当你能写出"在给定 $X$ 下 $y$ 的完整条件密度，且参数只有限维、观测大致独立"时，MLE 就是首选估计量；当你只能写出几个矩条件、写不出完整分布时，才轮到 GMM。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s2">
+    <h2><span class="sec-num">02</span> 完整模型一：正态线性回归</h2>
+    <p>我们用最经典的案例把 MLE 全流程走一遍。</p>
+    <h3>2.1 模型设定与假设逐条陈述</h3>
+    <div class="formula-block">
+      <div class="formula-label">正态线性回归模型</div>
+      $$y_i = x_i'\beta + \varepsilon_i,\qquad \varepsilon_i\mid X_i \sim N(0,\sigma^2),\quad i=1,\dots,n$$
+    </div>
+    <p>逐条解释每个假设：</p>
+    <ul>
+      <li><strong>线性于参数：</strong>$y_i$ 是 $x_i'\beta$ 的线性函数（$x_i$ 里可以放平方、交互项），误差 $\varepsilon_i$ 概括所有未被观测因素。</li>
+      <li><strong>条件正态：</strong>$\varepsilon_i\mid X_i$ 服从 $N(0,\sigma^2)$。这比"$\varepsilon_i$ 与 $X_i$ 独立"更强——不仅均值为零，整条分布形状都不随 $X$ 变。理由：残差是大量微小扰动之和，CLT 近似正态。</li>
+      <li><strong>条件同方差：</strong>$Var(\varepsilon_i\mid X_i)=\sigma^2$ 与 $X_i$ 无关。这是为了让 $\sigma^2$ 只有一个参数；异方差情形见后面 sandwich 标准误。</li>
+      <li><strong>独立：</strong>不同 $i$ 的 $\varepsilon_i$ 相互独立（横截面）。</li>
+    </ul>
+    <h3>2.2 写出条件密度</h3>
+    <p>由 $y_i\mid X_i \sim N(x_i'\beta,\sigma^2)$，单观测条件密度为：</p>
+    <div class="formula-block">
+      <div class="formula-label">单观测条件密度</div>
+      $$f(y_i\mid X_i,\beta,\sigma^2)=\frac{1}{\sqrt{2\pi\sigma^2}}\exp\!\left[-\frac{(y_i-x_i'\beta)^2}{2\sigma^2}\right]$$
+    </div>
+    <p>读作："给定 $X_i$，$y_i$ 落在观测值处的相对可能性"。指数上的 $(y_i-x_i'\beta)^2/(2\sigma^2)$ 是标准化残差平方，决定了曲线宽窄。</p>
+    <h3>2.3 似然函数与对数似然</h3>
+    <p>独立观测的联合密度是单观测密度的连乘，把它看作参数的函数就是似然函数：</p>
+    <div class="formula-block">
+      <div class="formula-label">似然函数（连乘 → 取对数）</div>
+      $$\mathcal{L}(\beta,\sigma^2)=\prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\exp\!\left[-\frac{(y_i-x_i'\beta)^2}{2\sigma^2}\right]$$
+      $$\ell(\beta,\sigma^2)=\sum_{i=1}^n\log f = -\frac n2\log(2\pi)-\frac n2\log\sigma^2-\frac{1}{2\sigma^2}\sum_{i=1}^n(y_i-x_i'\beta)^2$$
+    </div>
+    <p>对数似然的最后一项 $-\frac{1}{2\sigma^2}\sum(y_i-x_i'\beta)^2$ 就是"残差平方和"。它揭示了一个关键事实：<strong>在正态同方差假设下，最大化对数似然等价于最小化残差平方和</strong>——MLE 的一阶条件正是 OLS 的正规方程。</p>
+    <h3>2.4 一阶条件与解析解</h3>
+    <p>对 $\beta$ 求导令其为零：</p>
+    <div class="formula-block">
+      <div class="formula-label">MLE = OLS（正态线性模型的经典结论）</div>
+      $$\frac{\partial\ell}{\partial\beta}=\frac{1}{\sigma^2}\sum_{i=1}^n X_i'(y_i-X_i'\beta)=0\;\Longrightarrow\;\hat\beta_{MLE}=(X'X)^{-1}X'y=\hat\beta_{OLS}$$
+    </div>
+    <p>再对 $\sigma^2$ 求导，得 $\hat\sigma^2=\frac{1}{n}\sum(y_i-X_i'\hat\beta)^2$（注意是除以 $n$ 而非 $n-K$，这是 MLE 的小样本轻微向下偏倚，OLS 用 $n-K$ 修正）。</p>
+  </div>
+
+  <div class="section" id="s3">
+    <h2><span class="sec-num">03</span> 完整模型二：Probit 离散选择</h2>
+    <p>线性回归是 MLE 的"热身"。真正体现 MLE 威力的是<strong>没有闭式解</strong>的模型，二值选择 Probit 是入门典范。</p>
+    <h3>3.1 潜变量模型设定</h3>
+    <p>假设个体 $i$ 有一个不可观测的"净效用"或"倾向分" $y_i^*$：</p>
+    <div class="formula-block">
+      <div class="formula-label">Probit 潜变量模型</div>
+      $$y_i^* = x_i'\beta + \varepsilon_i,\qquad y_i=\mathbf{1}\{y_i^*>0\},\qquad \varepsilon_i\mid X_i\sim N(0,1)$$
+    </div>
+    <p>经济解释：$y_i^*$ 是"购买/求职/通过考试"等行为的净效用，研究者只能观测到它是否跨过零阈值——买了 ($y_i=1$) 还是没买 ($y_i=0$)。</p>
+    <h3>3.2 为什么误差用标准正态而不是 Logistic？</h3>
+    <p>这是初学者最常问的问题。回答分三层：</p>
+    <ul>
+      <li><strong>尺度归一化：</strong>潜变量 $y_i^*$ 的尺度不可识别——如果把 $\beta$ 和 $\varepsilon$ 同时乘以任意正数，观测到的 $y_i$ 不变。因此必须人为固定 $Var(\varepsilon_i)=1$（Probit）或 $Var(\varepsilon_i)=\pi^2/3$（Logit），这叫 <em>scale normalization</em>。</li>
+      <li><strong>为什么正态？</strong> 与线性模型同理：未观测偏好/能力是大量小因素之和，CLT 给正态一个理论依据；正态假设下 $\Phi(\cdot)$ 有标准化闭式，便于解释"边际效应"。</li>
+      <li><strong>与 Logistic 的差别：</strong>Logistic 尾部更厚，对极端 $x'\beta$ 处的概率预测更敏感；Probit 在中间区域（概率 0.2–0.8）与 Logit 几乎重合，只在两端有别。经济理论通常不指定尾部形状，所以 Probit 与 Logit 是"近似等价"的设定选择，不是对错问题。</li>
+    </ul>
+    <h3>3.3 选择概率与似然函数</h3>
+    <p>由潜变量设定，观测概率为：</p>
+    <div class="formula-block">
+      <div class="formula-label">Probit 选择概率</div>
+      $$P(y_i=1\mid x_i)=P(x_i'\beta+\varepsilon_i>0)=P(\varepsilon_i>-x_i'\beta)=\Phi(x_i'\beta)$$
+      $$P(y_i=0\mid x_i)=1-\Phi(x_i'\beta)$$
+    </div>
+    <p>这里 $\Phi(\cdot)$ 是标准正态 CDF。单个观测对似然的贡献是"$y_i$ 取到观测值的概率"：</p>
+    <div class="formula-block">
+      <div class="formula-label">Probit 对数似然</div>
+      $$\ell(\beta)=\sum_{i=1}^n\Big[y_i\log\Phi(x_i'\beta)+(1-y_i)\log\big(1-\Phi(x_i'\beta)\big)\Big]$$
+    </div>
+    <p>这个对数似然对 $\beta$ 求导后，一阶条件是 $\sum_i X_i'\dfrac{\phi(x_i'\beta)}{\Phi(x_i'\beta)}(y_i-\Phi(x_i'\beta))=0$——<strong>没有解析解</strong>，必须数值迭代。这正是 MLE 数值优化章节存在的原因。</p>
+  </div>
+
+  <div class="section" id="s4">
+    <h2><span class="sec-num">04</span> 似然、得分函数与信息矩阵</h2>
+    <p>上一节两个案例都写出了对数似然。本节抽象出 MLE 的三个核心对象，它们是理解标准误、检验、优化算法的共同语言。</p>
+    <h3>4.1 得分函数</h3>
+    <p><strong>得分函数（score function）</strong> $s_i(\theta)$ 是单个观测对数密度对 $\theta$ 的一阶导，它衡量"第 $i$ 个观测对 $\theta$ 应该往哪调"的边际信号：</p>
+    <div class="formula-block">
+      <div class="formula-label">得分函数 score</div>
+      $$s_i(\theta)=\frac{\partial \log f(y_i\mid X_i,\theta)}{\partial \theta},\qquad \bar{s}(\theta)=\frac{1}{n}\sum_{i=1}^n s_i(\theta)$$
+    </div>
+    <p>MLE 的一阶条件就是"样本平均得分为 0"：$\bar{s}(\hat\theta)=0$。关键恒等式（正则条件下）：<strong>真实参数处得分的期望为 0</strong>，即 $E[s_i(\theta_0)]=0$。这把 MLE 和 GMM 联系了起来——MLE 本质上是"用得分作矩条件"的 GMM。</p>
+    <h3>4.2 Fisher 信息矩阵</h3>
+    <p>信息矩阵刻画得分的波动，有两种等价写法：</p>
+    <div class="formula-block">
+      <div class="formula-label">Fisher 信息矩阵（信息矩阵恒等式）</div>
+      $$I(\theta_0)=E\!\left[s_i(\theta_0)s_i(\theta_0)'\right]=-E\!\left[\frac{\partial^2 \log f(y_i\mid X_i,\theta_0)}{\partial\theta\,\partial\theta'}\right]$$
+    </div>
+    <p>等式两边相等是<strong>信息矩阵恒等式</strong>：得分的方差 = 对数似然二阶导期望的负号。它成立的前提是模型正确设定。这个恒等式是后面三种标准误"在正确设定下渐近等价"的根源。</p>
+  </div>
+
+  <div class="section" id="s5">
+    <h2><span class="sec-num">05</span> MLE 的三大渐近性质</h2>
+    <p>在标准正则条件下，MLE 有三大渐近性质：</p>
+    <div class="step-flow">
+      <div class="step-item">
+        <div class="step-title">① 一致性 Consistency</div>
+        <div class="step-desc">$\hat\theta_{MLE}\xrightarrow{p}\theta_0$。样本量越大，估计越靠近真值。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">② 渐近正态 Asymptotic Normality</div>
+        <div class="step-desc">中心化并乘以 $\sqrt n$ 后趋于正态，协方差恰为信息矩阵的逆：</div>
+      </div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-label">MLE 渐近分布（Cramér–Rao 效率的来源）</div>
+      $$\sqrt{n}\big(\hat\theta_{MLE}-\theta_0\big)\xrightarrow{d} N\!\big(0,\;I(\theta_0)^{-1}\big)$$
+    </div>
+    <div class="step-flow">
+      <div class="step-item">
+        <div class="step-title">③ 渐近有效性 Asymptotic Efficiency</div>
+        <div class="step-desc">在所有一致渐近正态估计量里，MLE 的渐近方差达到 Cramér–Rao 下界 $I(\theta_0)^{-1}$——没有别的估计量能在大样本下更精确。这是 MLE 最吸引人的性质，也是它对分布误设最敏感的根源。</div>
+      </div>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">效率的代价</div>
+      <p>MLE 的"效率"是<strong>在模型正确设定时</strong>才成立的。一旦分布假设错了（比如真实误差厚尾，你却用了正态），MLE 不再是有效估计，甚至不再一致，渐近方差也不再是 $I^{-1}$。这正是 robust sandwich 标准误要解决的问题。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s6">
+    <h2><span class="sec-num">06</span> 数值优化：Newton / BHHH / BFGS</h2>
+    <p>解析解只在线性回归、简单指数族里存在；Probit 及绝大多数结构模型要数值优化 $\ell(\theta)$。三种主流算法都是"迭代更新"，差别在于<strong>用什么近似 Hessian</strong>。记当前迭代值 $\theta^{(t)}$，梯度 $g^{(t)}=\nabla\ell(\theta^{(t)})$。</p>
+    <h3>6.1 Newton–Raphson</h3>
+    <p>直接用真实 Hessian $H^{(t)}=\nabla^2\ell(\theta^{(t)})$：</p>
+    <div class="formula-block">
+      <div class="formula-label">Newton 更新</div>
+      $$\theta^{(t+1)}=\theta^{(t)}-H^{(t)-1}g^{(t)}$$
+    </div>
+    <p>优点：二次收敛，靠近最优解时极快。缺点：每次都要算（数值差分或解析）二阶导，维度高时代价大；且当 $\ell$ 非凹时 Hessian 可能不正定，需要做修正。</p>
+    <h3>6.2 BHHH（Berndt–Hall–Hall–Hausman）</h3>
+    <p>利用信息矩阵恒等式，用"得分外积之和"代替真实 Hessian。因为单个观测的得分 $s_i$ 容易算，外积近似 $H\approx-\sum_i s_i s_i'$ 几乎免费：</p>
+    <div class="formula-block">
+      <div class="formula-label">BHHH 更新（外积近似 Hessian）</div>
+      $$\theta^{(t+1)}=\theta^{(t)}+\Big(\sum_{i=1}^n s_i(\theta^{(t)})s_i(\theta^{(t)})'\Big)^{-1}\sum_{i=1}^n s_i(\theta^{(t)})$$
+    </div>
+    <p>这正是为什么 MLE 代码里"只写得分、不写 Hessian"也能跑——BHHH 自动用外积构造方向。产业组织的经典 MLE 代码多采用此法。</p>
+    <h3>6.3 DFP / BFGS（拟牛顿）</h3>
+    <p>用梯度信息<strong>递归地累积</strong>出 Hessian 逆的近似 $B^{(t)}$，不需要算二阶导，也不需要存整个得分矩阵：</p>
+    <div class="formula-block">
+      <div class="formula-label">拟牛顿（DFP/BFGS）更新思想</div>
+      $$B^{(t+1)}=B^{(t)}+\text{rank-2 修正},\qquad \theta^{(t+1)}=\theta^{(t)}-B^{(t)}g^{(t)}$$
+    </div>
+    <p>BFGS 是 DFP 的改进，是 <code class="inline">scipy.optimize</code> 的 <code class="inline">method='BFGS'</code> 和 <code class="inline">L-BFGS-B</code> 背后的算法，也是现代结构估计最常用的默认优化器。L-BFGS-B 进一步用"有限内存"近似 $B$，适合参数维度很高的模型。</p>
+    <div class="callout info">
+      <div class="callout-title">实践建议</div>
+      <p>日常用 <code class="inline">L-BFGS-B</code>（支持参数上下界、内存友好）。要对照标准误时，再用解析/数值 Hessian 重算一次。优化收敛判据同时看：$\|\Delta\theta\|$、$\|\nabla\ell\|$、$\Delta\ell$ 三者都很小。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s7">
+    <h2><span class="sec-num">07</span> 三种标准误：Hessian / OPG / Sandwich</h2>
+    <p>MLE 的渐近方差估计有三个"等价"的来源（正确设定下渐近相等），但小样本与模型误设时差别很大：</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>标准误</th><th>估计量</th><th>何时可信</th></tr></thead>
+        <tbody>
+          <tr><td>Hessian</td><td>$[-n^{-1}\nabla^2\ell(\hat\theta)]^{-1}$</td><td>模型正确设定；需二阶导</td></tr>
+          <tr><td>OPG（外积）</td><td>$[n^{-1}\sum_i s_i(\hat\theta)s_i(\hat\theta)']^{-1}$</td><td>模型正确设定；只需一阶导</td></tr>
+          <tr><td>Sandwich（robust）</td><td>$\hat V=A^{-1}BA^{-1}$</td><td>模型误设时仍一致；现代惯例</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Sandwich 估计量的"面包"$A$ 是负 Hessian，"菜心"$B$ 是得分外积：</p>
+    <div class="formula-block">
+      <div class="formula-label">三明治稳健标准误</div>
+      $$\hat V_{sandwich}=\underbrace{\Big(-\frac{1}{n}\nabla^2\ell(\hat\theta)\Big)^{-1}}_{A^{-1}}\;\underbrace{\Big(\frac{1}{n}\sum_i s_i s_i'\Big)}_{B}\;\underbrace{\Big(-\frac{1}{n}\nabla^2\ell(\hat\theta)\Big)^{-1}}_{A^{-1}}$$
+    </div>
+    <p>若模型正确设定，由信息矩阵恒等式 $A=B$，三明治就退化成 $A^{-1}$，即 Hessian 标准误。但模型一旦误设，只有三明治仍然一致。面板/聚类数据还要把 $B$ 换成 cluster 级别的得分外积之和（cluster-robust sandwich）。</p>
+  </div>
+
+  <div class="section" id="s8">
+    <h2><span class="sec-num">08</span> 假设检验：Wald / LR / LM</h2>
+    <p>MLE 框架下有三大渐近等价的检验方法，分别对应"用不用无约束估计量"和"用不用得分"两个维度。设原假设为 $H_0:h(\theta)=0$（$q$ 个约束）。</p>
+    <h3>8.1 Wald 检验</h3>
+    <p>只用无约束 MLE $\hat\theta_U$，衡量"约束条件被违反了多少"：</p>
+    <div class="formula-block">
+      <div class="formula-label">Wald 统计量</div>
+      $$W=n\,h(\hat\theta_U)'\Big[\nabla h(\hat\theta_U)\hat V\nabla h(\hat\theta_U)'\Big]^{-1}h(\hat\theta_U)\;\xrightarrow{d}\;\chi^2(q)$$
+    </div>
+    <p>适用：只跑了无约束模型，想事后检验几个系数是否为零。优点是只估一次模型；缺点是对参数化不不变（同样的原假设，换个等价写法可能给出不同 W）。</p>
+    <h3>8.2 似然比检验 LR</h3>
+    <p>同时估计无约束模型与受约束模型，比较两个对数似然的差距：</p>
+    <div class="formula-block">
+      <div class="formula-label">LR 统计量</div>
+      $$LR=2\big[\ell(\hat\theta_U)-\ell(\hat\theta_R)\big]\;\xrightarrow{d}\;\chi^2(q)$$
+    </div>
+    <p>适用：嵌套模型比较（如 Probit 加一组变量前后）。$LR$ 的直觉是"加上这组约束后，似然下降得多不多"。它对参数化不变，是三大检验里最对称的。</p>
+    <h3>8.3 拉格朗日乘子检验 LM（得分检验）</h3>
+    <p>只估计受约束模型 $\hat\theta_R$，看在受约束估计处得分是否仍显著非零：</p>
+    <div class="formula-block">
+      <div class="formula-label">LM 统计量</div>
+      $$LM=n\,\bar s(\hat\theta_R)'\hat V_R^{-1}\bar s(\hat\theta_R)\;\xrightarrow{d}\;\chi^2(q)$$
+    </div>
+    <p>适用：受约束模型便宜、无约束模型贵（如想检验 Probit 是否该加一个交互项，但加完要重跑优化）。LM 只跑受约束模型就能检验"是否需要更多参数"。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>检验</th><th>需要估计的模型</th><th>信息来源</th><th>典型用途</th></tr></thead>
+        <tbody>
+          <tr><td>Wald</td><td>无约束</td><td>$\hat\theta_U$ 的方差</td><td>系数显著性、线性约束</td></tr>
+          <tr><td>LR</td><td>无约束 + 受约束</td><td>两个对数似然之差</td><td>嵌套模型比较、变量联合显著性</td></tr>
+          <tr><td>LM</td><td>仅受约束</td><td>受约束处的得分</td><td>增加变量/函数形式诊断</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>三者在 $n\to\infty$ 时渐近等价，小样本下 LR 通常最可靠。</p>
+  </div>
+
+  <div class="section" id="s9">
+    <h2><span class="sec-num">09</span> 识别条件与数据要求</h2>
+    <h3>9.1 识别条件</h3>
+    <p>"识别"回答的是：原则上能不能从无限大数据里唯一反推出 $\theta_0$？MLE 可识别要求：</p>
+    <ul>
+      <li><strong>全局可识别：</strong>若 $\theta_1\neq\theta_2$，则 $f(\cdot\mid X,\theta_1)$ 与 $f(\cdot\mid X,\theta_2)$ 不能几乎处处相等——否则两组参数生成完全相同的数据分布，统计上无法区分。</li>
+      <li><strong>信息矩阵正定：</strong>$I(\theta_0)$ 必须满秩。线性回归里这对应 $X'X$ 可逆（$X$ 列满秩，不存在完全多重共线性）；Probit 里还要求协变量有足够变异，且 $y=0$ 和 $y=1$ 两类都有足够观测。</li>
+      <li><strong>正则条件：</strong>参数空间紧、密度对 $\theta$ 三阶可微、支撑集与 $\theta$ 无关。</li>
+    </ul>
+    <div class="callout danger">
+      <div class="callout-title">Probit 的"完全分离"问题</div>
+      <p>若某个协变量可以完美区分 $y=0$ 与 $y=1$（例如 $X_i=1$ 时所有 $y_i=1$），则该变量的系数估计会趋向 $\pm\infty$，似然没有有限最大值。这是数据问题，不是算法问题。解决办法：剔除该变量、合并类别，或报告分离诊断。</p>
+    </div>
+    <h3>9.2 数据要求</h3>
+    <ul>
+      <li><strong>横截面/面板：</strong>观测独立（或个体内聚类独立）。</li>
+      <li><strong>协变量变异：</strong>$X_i$ 不能在某些维度上几乎不变，否则对应系数无法识别。</li>
+      <li><strong>样本量：</strong>MLE 的性质是渐近的。线性模型 $n$ 几十就够；Probit 建议 $n\ge 500$，且每类结果至少有 100 个观测；结构模型常需 $n\ge 2000$ 才能让渐近近似可靠。</li>
+      <li><strong>分布设定与数据特征匹配：</strong>被解释变量有大量零值时不宜用正态线性模型（改用 Tobit/Poisson）；尾部很重时正态 MLE 会被极端值绑架。</li>
+    </ul>
+  </div>
+
+  <div class="section" id="s10">
+    <h2><span class="sec-num">10</span> 代码：线性模型与 Probit MLE</h2>
+    <p>下面用 <code class="inline">numpy + scipy.optimize</code> 完整实现两个 MLE。第一段：正态误差线性模型的 MLE（结果应与 OLS 一致）；第二段：Probit MLE，并比较三种标准误。</p>
+
+    <h3>10.1 线性回归的 MLE（应回到 OLS）</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div>
+<pre>
+import numpy as np
+from scipy.optimize import minimize
+
+# ---------- 1. 造模拟数据（已知真值，用于验证） ----------
+np.random.seed(2026)
+n, k = 500, 3
+beta_true = np.array([1.0, 2.0, -0.5])   # 真实系数
+sigma_true = 1.5                          # 真实扰动标准差
+
+X = np.random.randn(n, k)                 # 设计矩阵
+X[:, 0] = 1.0                             # 第 0 列设为 1 -> 截距
+u = sigma_true * np.random.randn(n)       # 正态误差
+y = X @ beta_true + u
+
+# ---------- 2. 构造对数似然（正态线性模型） ----------
+# 待估参数 theta = [beta_0,...,beta_{k-1}, log_sigma]
+def neg_loglike(theta, X, y):
+    b = theta[:-1]
+    log_s = theta[-1]
+    resid = y - X @ b
+    n_obs = len(y)
+    # 单观测对数密度：-log(s) - 0.5 log(2pi) - resid^2/(2 s^2)
+    ll = -0.5 * n_obs * np.log(2*np.pi) - n_obs * log_s \
+         - np.sum(resid**2) / (2 * np.exp(2*log_s))
+    return -ll        # minimize 负对数似然 = 最大化对数似然
+
+# ---------- 3. 数值优化 ----------
+theta0 = np.zeros(k + 1)      # 初始值
+res = minimize(neg_loglike, theta0, args=(X, y),
+               method='L-BFGS-B',
+               options={'disp': True, 'maxiter': 200})
+
+b_hat = res.x[:-1]
+sigma_hat = np.exp(res.x[-1])
+
+# 对照 OLS
+b_ols = np.linalg.lstsq(X, y, rcond=None)[0]
+
+print("MLE beta :", np.round(b_hat, 4))
+print("OLS  beta:", np.round(b_ols, 4))
+print("MLE sigma:", round(sigma_hat, 4), "| 真值:", sigma_true)
+</pre>
+    </div>
+    <p>输出应显示 <code class="inline">MLE beta</code> 与 <code class="inline">OLS beta</code> 几乎完全一致——这验证了"正态误差线性模型的 MLE 等于 OLS"这一经典结论。</p>
+
+    <h3>10.2 Probit MLE（含三种标准误）</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div>
+<pre>
+import numpy as np
+from scipy.optimize import minimize
+from scipy.stats import norm, chi2
+
+# ---------- 造模拟数据：潜变量 y* = Xb + u, u~N(0,1)，观测 y=1{y*>0} ----------
+np.random.seed(7)
+n, k = 1000, 3
+beta_true = np.array([0.0, 0.8, -0.6])   # 截距=0, 真实斜率
+X = np.column_stack([np.ones(n), np.random.randn(n, k-1)])
+y_star = X @ beta_true + np.random.randn(n)
+y = (y_star > 0).astype(float)
+
+# ---------- Probit 对数似然 ----------
+def neg_ll_probit(beta, X, y):
+    xb = X @ beta
+    Phi = norm.cdf(xb)
+    # 用 np.clip 防止 log(0)
+    ll = y * np.log(np.clip(Phi, 1e-12, 1.0)) \
+       + (1-y) * np.log(np.clip(1-Phi, 1e-12, 1.0))
+    return -ll.sum()
+
+# ---------- 数值优化 ----------
+res = minimize(neg_ll_probit, np.zeros(k), args=(X, y),
+               method='L-BFGS-B', options={'disp': True})
+b_hat = res.x
+print("Probit beta_hat:", np.round(b_hat, 4))
+print("Probit beta_true:", beta_true)
+
+# ---------- 单个观测得分 s_i = X_i' * [ (y-Phi)/(Phi(1-Phi)) * phi ] ----------
+xb = X @ b_hat
+phi = norm.pdf(xb)
+Phi = np.clip(norm.cdf(xb), 1e-12, 1-1e-12)
+w = (y - Phi) / (Phi * (1 - Phi)) * phi
+S = X * w[:, None]                       # n x k 得分矩阵
+
+# ---------- (1) OPG 标准误：(Σ s_i s_i')^-1 / n ----------
+B = S.T @ S / n
+vcov_opg = np.linalg.inv(B) / n
+se_opg = np.sqrt(np.diag(vcov_opg))
+
+# ---------- (2) 数值 Hessian（中心差分） ----------
+def neg_ll(b):
+    return neg_ll_probit(b, X, y)
+
+def numerical_hessian(f, x, h=1e-5):
+    K = len(x); H = np.zeros((K, K))
+    for i in range(K):
+        for j in range(i, K):
+            xpp = x.copy(); xpp[i]+=h; xpp[j]+=h
+            xpm = x.copy(); xpm[i]+=h; xpm[j]-=h
+            xmp = x.copy(); xmp[i]-=h; xmp[j]+=h
+            xmm = x.copy(); xmm[i]-=h; xmm[j]-=h
+            H[i,j] = (f(xpp)-f(xpm)-f(xmp)+f(xmm))/(4*h*h)
+            H[j,i] = H[i,j]
+    return H
+
+Hess = numerical_hessian(neg_ll, b_hat)   # -loglik 的 Hessian
+vcov_h = np.linalg.inv(-Hess) / n         # 信息矩阵逆
+se_h = np.sqrt(np.diag(vcov_h))
+
+# ---------- (3) Sandwich = A^-1 B A^-1 ----------
+A = -Hess / n
+Ainv = np.linalg.inv(A)
+Bmat = S.T @ S / n
+vcov_sw = Ainv @ Bmat @ Ainv
+se_sw = np.sqrt(np.diag(vcov_sw))
+
+print("\n参数      OPG se     Hessian se   Sandwich se")
+for i in range(k):
+    print(f"b{i:<3d}   {se_opg[i]:.4f}     {se_h[i]:.4f}      {se_sw[i]:.4f}")
+
+# ---------- 伪 R^2（McFadden）：1 - ll(model)/ll(null) ----------
+ll_full = -neg_ll(b_hat)
+b_null = np.array([np.log(y.mean()/(1-y.mean())), 0, 0])  # 仅截距 Probit
+ll_null = -neg_ll_probit(b_null, X, y)
+pseudo_r2 = 1 - ll_full / ll_null
+print(f"\nMcFadden pseudo R^2 = {pseudo_r2:.4f}")
+</pre>
+    </div>
+    <div class="callout tip">
+      <div class="callout-title">怎么读这三种标准误</div>
+      <p>若模型正确，三者应当很接近；若 Sandwich 明显大于前两者，说明存在异方差或分布误设，应相信 Sandwich 报告。生产代码建议用 <code class="inline">statsmodels</code> 的 <code class="inline">Probit</code>（它自动给 MLE 与 robust 标准误），上面手写版用于理解原理。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s11">
+    <h2><span class="sec-num">11</span> 应用解读：如何报告 MLE 结果</h2>
+    <p>估计出 $\hat\theta$ 只是开始，论文里 MLE 结果的报告有一套行业惯例。</p>
+    <h3>11.1 系数与边际效应</h3>
+    <p>线性回归的系数直接就是偏效应。但 <strong>Probit/Logit 的系数不能直接读</strong>——系数 $\beta_k$ 只决定潜变量尺度，对 $P(y=1)$ 的影响是非线性的：</p>
+    <div class="formula-block">
+      <div class="formula-label">Probit 平均边际效应（AME）</div>
+      $$\frac{\partial P(y=1\mid x)}{\partial x_k}=\phi(x'\beta)\,\beta_k,\qquad \text{AME}=\frac{1}{n}\sum_i \phi(x_i'\hat\beta)\hat\beta_k$$
+    </div>
+    <p>论文应报告 AME（在样本均值处或平均），而不是原始系数；系数与 AME 的关系类似"潜变量尺度"与"概率尺度"。</p>
+    <h3>11.2 标准误与显著性</h3>
+    <p>现代顶刊惯例报告 <strong>cluster-robust sandwich 标准误</strong>，而不是 Hessian/OPG。括号里写标准误，星号标显著性（* p&lt;0.1, ** p&lt;0.05, *** p&lt;0.01）。</p>
+    <h3>11.3 模型整体拟合</h3>
+    <ul>
+      <li><strong>对数似然值 $\ell(\hat\theta)$：</strong>用于嵌套模型的 LR 检验；绝对值大小本身没意义（依赖 $n$）。</li>
+      <li><strong>McFadden 伪 $R^2$：</strong>$1-\ell_{full}/\ell_{null}$，0.2–0.4 对应"不错的拟合"。</li>
+      <li><strong>AIC / BIC：</strong>$AIC=-2\ell+2K$，$BIC=-2\ell+K\log n$，用于非嵌套模型比较。</li>
+      <li><strong>LR 检验：</strong>加一组变量后，$2(\ell_{full}-\ell_{restricted})\sim\chi^2(q)$，报 p 值。</li>
+    </ul>
+    <h3>11.4 报告模板</h3>
+    <p>一张标准 MLE 结果表至少包含：系数（括号 robust se）、显著性星号、观测数 $n$、对数似然、伪 $R^2$ 或 $R^2$、LR/Wald 联合检验统计量。</p>
+  </div>
+
+  <div class="section" id="s12">
+    <h2><span class="sec-num">12</span> 论文案例</h2>
+    <div class="paper-card">
+      <span class="paper-type en">英文 · 理论奠基</span>
+      <div class="paper-title">Conditional Logit Analysis of Qualitative Choice Behavior</div>
+      <div class="paper-meta">D. McFadden, in Zarembka (ed.), <em>Frontiers in Econometrics</em>, 1974.</div>
+      <div class="paper-desc">Probit/Logit MLE 的奠基性推导，展示如何从潜变量正态设定出发写出选择密度，再用 MLE 估计，后获 2000 年诺贝尔经济学奖。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">英文 · 教材</span>
+      <div class="paper-title">Econometric Analysis of Cross Section and Panel Data (2nd ed.)</div>
+      <div class="paper-meta">J. M. Wooldridge, MIT Press, 2010. — Ch.13–14 是 MLE 的标准参考。</div>
+      <div class="paper-desc">系统给出 MLE 一致性、渐近正态、有效性的假设链，以及 MLE 标准误的三种形式与 robust 化，写法严谨、可读性高。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 结构估计应用</span>
+      <div class="paper-title">中国工业企业全要素生产率估计：1999—2007</div>
+      <div class="paper-meta">鲁晓东、连玉君，《经济学（季刊）》，2012，11(2): 541–558.</div>
+      <div class="paper-desc">以生产函数估计为核心，比较 OLS、固定效应、OP、LP 等（半）结构估计方法。其 OLS/FE 估计量本质上是高斯误差下的 MLE/组内 MLE，是理解 MLE 设定敏感性的好案例。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 结构估计应用</span>
+      <div class="paper-title">中国制造业企业全要素生产率研究</div>
+      <div class="paper-meta">杨汝岱，《经济研究》，2015，50(2): 61–74.</div>
+      <div class="paper-desc">用 OP/LP/ACF 等结构估计方法估计生产函数与 TFP，讨论了估计中同时性偏误、选择偏误的 MLE 修正思路，是中文顶刊里 MLE 思想的典型应用。</div>
+    </div>
+  </div>
+
+  <div class="section" id="s13">
+    <h2><span class="sec-num">13</span> 常见错误</h2>
+    <div class="callout danger">
+      <div class="callout-title">错误 1：对数似然溢出 / underflow</div>
+      <p>直接算 $\prod f$ 会瞬间变成 0；概率取对数前又对 0 取 log 会 NaN。务必先取对数再连加，概率处用 <code class="inline">np.clip(p, 1e-12, 1)</code>。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 2：只报 Hessian 标准误</div>
+      <p>当模型可能误设（几乎总是），Hessian 标准误会低估真实方差。顶刊惯例是 cluster-robust sandwich；把 Hessian 当作"诊断"而非"报告"。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 3：没收敛就报结果</div>
+      <p>优化器返回 success=False、或梯度范数仍很大，说明 $\hat\theta$ 不是真正的 MLE。务必检查 <code class="inline">res.success</code>、最终梯度、多次随机初始值是否收敛到同一点。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 4：把"似然最大"当成"模型最好"</div>
+      <p>加参数总会提高似然。模型比较要靠 BIC/AIC、out-of-sample fit 或嵌套模型的似然比检验，而不是比较 $\ell$ 的绝对值。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 5：Probit 系数当偏效应读</div>
+      <p>Probit/Logit 的 $\hat\beta_k$ 是潜变量尺度上的斜率，不是 $P(y=1)$ 的变化。必须算 $\partial P/\partial x_k=\phi(x'\beta)\beta_k$（或 AME）再解释。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 6：忽略完全分离/准完全分离</div>
+      <p>二值结果被某个协变量完美预测时，Probit 系数发散、似然无最大值。若优化结果有异常大的系数或标准误，先检查是否存在完全分离。</p>
+    </div>
+    <div class="callout info">
+      <div class="callout-title">错误 7：小样本下直接信渐近正态</div>
+      <p>MLE 的 $t$ 统计量在小样本下偏离 $t$ 分布，Probit 尤其敏感。样本量小时应报告 bootstrap 标准误或置信区间，而不是仅靠正态近似。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s14">
+    <h2><span class="sec-num">14</span> 进阶资料</h2>
+    <ul>
+      <li>Cameron &amp; Trivedi, <em>Microeconometrics Using Stata</em> / <em>Methods and Applications</em> —— MLE 实操与诊断。</li>
+      <li>Newey &amp; McFadden (1994), <em>Large Sample Estimation and Hypothesis Testing</em>, <em>Handbook of Econometrics</em> Vol.4 —— 渐近理论的权威综述。</li>
+      <li>Gourieroux &amp; Monfort, <em>Statistics and Econometric Models</em> —— 得分、信息矩阵、准 MLE（QMLE）。</li>
+      <li>软件：Python <code class="inline">statsmodels</code>（Probit/Logit/GLM 自带 MLE 与 robust 标准误）；Julia <code class="inline">Optim.jl</code> + <code class="inline">ForwardDiff.jl</code>（自动求导）。</li>
+    </ul>
+  </div>
+
+  <div class="page-nav">
+    <a href="index.html" class="prev"><div class="nav-label">← 上一节</div><div class="nav-title">结构估计总览</div></a>
+    <a href="02-gmm.html" class="next"><div class="nav-label">下一节 →</div><div class="nav-title">广义矩估计 GMM</div></a>
+  </div>
+</div></div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

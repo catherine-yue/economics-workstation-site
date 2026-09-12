@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>显著性诊断与规范推断 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item active" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">实证论文</a>
+      <span class="sep">/</span>
+      <span>显著性诊断与规范推断</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">实证论文 · 诊断与诚信推断</span>
+      <h1>显著性诊断与规范推断 Significance Diagnostics &amp; Honest Inference</h1>
+      <p class="desc">这一页不教你如何把 p 值"调"到 0.049。它教你像医生查病因一样，先诊断"为什么不显著"——是功效不足、效应量太小、噪声太大、模型误设，还是测量误差——再判断哪些修正是合法的"治病"，哪些应当如实报告、绝不动手。每一种根因都配可照抄运行的 Stata 诊断代码。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">假设检验逻辑（一类错误 α、二类错误 β、功效 power）、置信区间解释、多重比较与假阳性、效应量（Cohen's d、偏 η²）、等价检验（TOST）原理。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">需已掌握<a href="04-baseline-regression.html">基准回归</a>、<a href="08-robustness.html">稳健性检验</a>与<a href="05-endogeneity-iv.html">内生性</a>；本页重在"诊断流程"与"报告伦理"，不引入新理论。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">Stata 17+，外部命令：<code class="inline">power</code>、<code class="inline">esize</code>、<code class="inline">tostt</code>、<code class="inline">estat</code>、<code class="inline">dfbeta</code>、<code class="inline">qreg</code>、<code class="inline">multproc</code>、<code class="inline">reghdfe</code>、<code class="inline">estout</code>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body">先学 <a href="04-baseline-regression.html">04 基准回归</a> 与 <a href="08-robustness.html">08 稳健性检验</a>，再做系统诊断；异质性分组逻辑见 <a href="10-heterogeneity.html">11 异质性分析</a>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 姊妹页（互为补充）</div>
+          <div class="prereq-body">姊妹页 <a href="23-significance-techniques.html">24 显著性操作手法库与学术规范判别</a>：系统梳理 23 种可能改变显著性的操作手法（样本/变量/模型/推断/时间），逐一判别"合法稳健性 vs p-hacking 红线"，含红线条目留一系数删样本。先用本页诊断病因，再去姊妹页核对每一步操作的合法性。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑥ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#f5ebe0;color:#b87333;">前沿 · 方法论</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#philosophy">诊断哲学：像医生一样找病因</a></li>
+        <li><a href="#tree">诊断逻辑树：十大根因（含 Stata）</a></li>
+        <li><a href="#realvsnull">区分"真不显著"与"检测不到"</a></li>
+        <li><a href="#ethics">研究伦理与规范推断</a></li>
+        <li><a href="#fix">合法改进路径（仅在诊断之后）</a></li>
+        <li><a href="#cn">中文顶刊语境下的应对</a></li>
+      </ol>
+    </div>
+
+    <!-- ============ 诊断哲学 ============ -->
+    <div class="section" id="philosophy">
+      <h2><span class="sec-num">00</span> 诊断哲学：先查病因，再决定开什么药</h2>
+      <p>一个病人走进诊室，主诉是"头疼"。合格的医生不会立刻开最强的止痛药——他会先量血压、测体温、问病史、做影像，判断头疼是因为感冒、高血压、眼压过高还是颅内占位，然后再决定治疗方案。统计学上的"不显著"，就是你回归表里那个 <code class="inline">p=0.34</code>。它只是一个<em>症状</em>，不是<em>诊断</em>。看到症状就直接开药（换缩尾比例、删几个行业、把标准误算小一点、反复换样本直到星号出现），在医学上叫"对症乱治"，在实证研究里有一个专门的名字：<strong>p-hacking</strong>。</p>
+      <p>这一页的全部立场，可以用一句话概括：<strong>统计上不显著，绝不等于"没有效应"</strong>。它至少可能来自十种完全不同的原因——你的样本太小、根本没有足够功效把真实效应从噪声里分辨出来；效应量本来就经济意义很小，统计上自然测不显著；你的残差方差太大、聚类层级选错，标准误被算宽了；自变量之间高度共线，单个系数被稀释；一两个杠杆点牵着 OLS 走；真实关系是非线性的，你却硬套线性；核心变量测错了，产生向零衰减的偏误；遗漏了关键变量，偏误方向未知；平均效应被正负异质性相互抵消；或者你跑了二十个检验，其中一个"显著"纯属运气。这十种病因的治疗方案完全不同，用错药比不治更糟。</p>
+      <p>那么，"合法改进"和 p-hacking 的根本区别到底在哪？区别只在一句话：<strong>你改模型，是因为病因诊断告诉你必须改，还是因为你希望 p 值变小？</strong>前者是"修病因"——你发现核心变量测量粗糙，于是去构造更精确的度量；你发现 IV 第一阶段太弱，于是去寻找更干净的外生来源；你发现残差序列相关，于是按数据真实结构改标准误。这些改动在<em>诊断之前就有独立的理由</em>，并且无论改完后显著与否，你都会如实报告。后者是"调 p 值"——你没有任何理论或诊断依据，只是在反复试：换样本、换阈值、换聚类、换控制变量，直到某一个规格恰好 <em>p&lt;0.05</em>，然后把这一个写进正文、其余删稿。判断标准非常朴素：<em>如果这个改动放在结果是显著的情况下，你还会做吗？</em>如果答案是否定的，那它就不是诊断，是操纵。</p>
+
+      <div class="callout danger">
+        <div class="callout-title">⛔ 本页的红线</div>
+        <p>本页<strong>不提供、也绝不教授任何"把不显著调成显著"的技巧</strong>。所有"改进"都必须先有诊断依据、可被论文读者检验、且全规格如实报告。Brodeur, Lé, Sangnier &amp; Zylberberg (2016, <em>QJE</em>) 系统考察顶刊 250 余项实验与准实验，发现已发表文献中 p 值在 0.05 边界存在显著"堆积"——这正是研究者在众多规格中只挑显著者留下的指纹。Ioannidis (2005, <em>PLOS Medicine</em>) 更尖锐地指出，相当比例的"显著"结论可能是假阳性。你每多试一个规格而不报告，就离那个可疑分布更近一步。</p>
+      </div>
+
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">第一步：记录"原始病历"</div>
+          <div class="step-desc">在动任何手脚之前，把基准系数、标准误、p 值、95% 置信区间、样本量、R² 全部落盘。后续每一次诊断都要和这张原始表对比。没有基线，你无法判断改动是在治病还是在过拟合噪声。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第二步：沿诊断树逐根排查（第一部分）</div>
+          <div class="step-desc">按功效→效应量→噪声→共线性→影响点→函数形式→测量误差→遗漏变量→异质性→多重检验的顺序，逐一做客观诊断检验，而不是凭感觉改模型。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第三步：下诊断结论（第二部分）</div>
+          <div class="step-desc">区分到底是"真没有效应"（可窄置信区间 + TOST 等价检验背书）还是"当前精度检测不到"（置信区间很宽、功效低）。这两种结论的写法完全不同。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第四步：合法治疗或诚实报告（第四、五部分）</div>
+          <div class="step-desc">若诊断出可修复的病因，按"修病因"路径改进；若走完所有诊断仍只是方向稳定的不显著，则按规范如实报告 null result，并用理论、经济显著性和置信区间回应审稿压力。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 诊断逻辑树 ============ -->
+    <div class="section" id="tree">
+      <h2><span class="sec-num">01</span> 诊断逻辑树：十大根因，逐条检验 + Stata 代码</h2>
+      <p>下面十个根因，按"诊断成本从低到高、经济判断从弱到强"排列。每一条都先给<strong>诊断方法</strong>（用什么统计量/检验去识别它），再给<strong>可照抄运行的 Stata 代码</strong>（全部用模拟数据演示），最后给<strong>解读</strong>（看到结果该怎么下结论）。请务必按顺序做：先排除便宜、客观的病因，再进入需要经济学判断的部分。</p>
+
+      <!-- 根因1 -->
+      <h3>根因 1：功效不足 / 样本量太小</h3>
+      <p>这是最常见、也最被低估的病因。如果你预期效应是"处理组均值提高 0.2 个标准差"，却只有 200 个观测，那么即使效应真实存在，你能把它检测出来的概率（功效）可能不到 30%——换句话说，你有七成机会跑出一个"不显著"，这和"没有效应"毫无关系。诊断工具有三：一是 <code class="inline">power</code> 命令做解析功效分析，反推你想要的最小可测效应（MDE）需要多大样本；二是<em>仿真功效</em>——自己生成大量与真实数据同结构的模拟数据、按你实际用的模型跑回归，统计"真实效应被检出"的频率；三是直接看置信区间宽度。</p>
+      <p><strong>怎么读</strong>：置信区间很宽（比如 [-0.2, 0.6]），说明你的估计精度差，"不显著"主要是没测准，而不是没效应——此时该做的是扩样本或换更高效的设计，而不是换模型。反过来，如果 CI 很窄地贴着 0（比如 [-0.02, 0.03]），那功效充足、精度够，"不显著"才更接近"真没效应"。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 根因1_功效分析.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 根因1：功效不足 / 样本量小
+* 诊断：(a) 解析 power 分析  (b) 仿真功效  (c) CI 宽度
+*==============================================================
+clear all
+set more off
+set seed 20260911
+
+* --- 1.1 解析功效：两独立样本均值检验，要检出 d=0.3 的中等效应 ---
+* 80% 功效、5% 双侧、两组等样本，各需多少观测？
+power twomeans 0, diff(0.3) sd(1) power(0.8) alpha(0.05)
+* 输出会告诉你每组约需 N≈176（合计约352）。
+* 若你真实数据每组只有 N=60，功效必然不足。
+
+* 单比例检验示例：处理组通过率从50%升到58%
+power oneproportion .5, .58 power(0.8) alpha(0.05)
+
+* --- 1.2 仿真功效：用你"实际使用的模型"算真实 power ---
+* 思路：重复1000次"造数据→跑回归→看是否显著"，数检出率
+clear
+set obs 1000
+gen power_flag = .
+forvalues r=1/1000 {
+    preserve
+    quietly set obs 200                 // 模拟你手头只有200个观测
+    gen x = rnormal()
+    gen y = 0.3*x + rnormal(0, 1.5)     // 真实斜率=0.3，噪声较大
+    quietly reg y x
+    quietly gen sig = (abs(_b[x]/_se[x]) > 1.96)
+    scalar p_r = sig[1]
+    restore
+    qui replace power_flag = p_r in `r'
+}
+sum power_flag
+* 若均值只有0.4，说明在N=200、噪声1.5下，你只有40%概率检出0.3的效应
+* 这就是"跑不显著"的客观原因，而非效应不存在
+
+* --- 1.3 用置信区间宽度判断精度 ---
+clear
+set obs 200
+gen x = rnormal()
+gen y = 0.3*x + rnormal(0, 1.5)
+reg y x
+* 看 [_b[_cons]?] 重点看 x 的 [95% Conf. Interval]：
+* 若区间横跨正负且很宽 -> 精度不足，结论是"检测不到"，不是"无效应"
+reg y x, level(95)
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">✓ 一句话诊断</div>
+        <p>功效不足时，<strong>正确做法是增加样本或提高设计效率</strong>（更干净的识别、更强的第一阶段），而不是在原样本里反复换规格。把"功效只有 40%"写进论文，比硬报一个 p=0.12 的"不显著结论"诚实得多。</p>
+      </div>
+
+      <!-- 根因2 -->
+      <h3>根因 2：效应量本来就小</h3>
+      <p>另一个极端：你的样本很大、功效充足，CI 也窄，但点估计本身就很小。这时"不显著"（或"显著但没意义"）反映的是<strong>经济实质</strong>问题，而不是统计技术问题。诊断要分两步：第一，把效应量<em>标准化</em>，和文献可比；第二，做<strong>等价检验 TOST</strong>（two one-sided tests），正式回答"这个效应是不是小到可以忽略"。</p>
+      <p>TOST 的逻辑和常规检验正好相反：常规检验是"能否拒绝零"，TOST 是"能否拒绝'效应大到有实际意义'这个备择"。你先定一个"实质等价边界" Δ（比如效应小于 0.1 个标准差就算经济上可忽略），如果系数的 90% CI 整个落在 [-Δ, Δ] 之内，你就能在 5% 水平上<em>等价于零</em>——这才是严谨地声称"没有有意义的效应"。没有 TOST，"p=0.2 所以无效应"只是一句不成立的话。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 根因2_效应量与TOST.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 根因2：效应量本来就小 / 经济显著性
+* 诊断：标准化效应量 + 经济量级换算 + TOST 等价检验
+*==============================================================
+clear all
+set seed 8888
+set obs 5000                          // 大样本：功效充足，专门暴露"小效应"
+gen x = rnormal()
+gen y = 0.05*x + rnormal(0, 1)        // 真实斜率极小(0.05)，但N大
+reg y x
+
+* --- 2.1 标准化效应量（x加1SD，y变几个SD）---
+* 用标准化变量直接读：
+gen z_x = (x-r(mean))/r(sd)
+gen z_y = (y-r(mean))/r(sd)
+reg z_y z_x
+* 系数即标准化效应；Cohen's d 经验：0.2小 / 0.5中 / 0.8大
+
+* --- 2.2 经济显著性：系数 × x 的标准差 = 实际影响 ---
+* 若 x 是"政策冲击强度"，乘它的标准差看 y 变化占 y 均值多少
+sum y
+scalar y_mean = r(mean)
+display "x加1个SD，y变化占y均值的 " %4.1f  (_b[x]*sd(x)/y_mean*100) " %"
+
+* --- 2.3 TOST 等价检验：正式判断"是否小到可忽略" ---
+* 需 ssc install tostt ；等价边界 Δ 设为 0.1 个标准化效应
+* 等价于：检验系数是否落在 [-0.1, 0.1] 内
+tostt z_y == z_x, eqv(0.1)
+* 解读：TOST 的 p<0.05 => 可以认为效应"等价于可忽略"（真null）
+*       TOST 的 p>0.05 => 无法排除有实际意义的效应（检测不到）
+
+* 对比：统计显著但经济不显著 的情况
+* N=5000 时，0.05 的斜率可能 t 检验显著；
+* 但 TOST 若通过，说明它统计显著却实质可忽略
+</code></pre>
+      </div>
+      <div class="callout info">
+        <div class="callout-title">ℹ 两种尴尬情形，都要会写</div>
+        <p><strong>统计不显著但经济显著</strong>：系数 0.06、p=0.11，但意味着处理使企业投资率提高 3 个百分点（经济上不小）——应报告 CI 并强调经济量级。<strong>统计显著但经济不显著</strong>：系数 0.001、p=0.02，但换算后只占均值 0.2%——应坦承"统计可检出但实际意义有限"。这两种都不是"调模型"能解决的，是研究本身的实质结论。</p>
+      </div>
+
+      <!-- 根因3 -->
+      <h3>根因 3：方差过大 / 噪声（标准误算错了）</h3>
+      <p>很多"不显著"既不是没效应、也不是效应小，而是<strong>标准误被错误地估宽了或估窄了</strong>。残差存在异方差、序列相关、组内相关时，默认的同方差标准误会失真。诊断就是把几种标准误放在一张表里对比：普通 OLS、异方差稳健（robust）、聚类标准误（个体 / 行业 / 年份 / 双向聚类），看系数的 t 值怎么变。哪一种最保守、为什么，要讲清楚。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 根因3_标准误对比.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 根因3：异方差 / 序列相关 / 聚类层级
+*==============================================================
+clear all
+set seed 2024
+set obs 2000
+gen id = ceil(_n/5)
+gen year = 2010 + mod(_n,10)
+gen industry = ceil(runiform()*20)       // 20个行业
+gen x = rnormal()
+* 让同行业内残差相关 + 异方差，模拟真实面板
+gen u = rnormal()
+gen y = 0.5*x + 0.7*rnormal(industry) + exp(0.5*x)*rnormal(0,0.5)
+
+* --- 3.1 异方差 / 序列相关检验 ---
+reg y x
+estat imtest, white          // White 异方差检验；p<0.05 即存在异方差
+estat hettest                 // Breusch-Pagan 检验
+* 面板序列相关：
+xtset id year
+xtserial y x                 // Wooldridge 面板序列相关检验
+
+* --- 3.2 四种标准误同表对比 ---
+reg y x, vce(ols)                                   ; est store s_ols
+reg y x, vce(robust)                                ; est store s_rob
+reg y x, vce(cluster id)                            ; est store s_id
+reg y x, vce(cluster industry)                      ; est store s_ind
+* 双向聚类（行业+年份）
+reghdfe y x, absorb(industry year) vce(cluster industry year) ; est store s_two
+
+esttab s_ols s_rob s_id s_ind s_two, keep(x) b(%9.3f) ///
+    se star(* 0.1 ** 0.05 *** 0.01) mtitles("OLS" "robust" "聚个体" "聚行业" "双向")
+</code></pre>
+      </div>
+      <p><strong>解读</strong>：聚类层级越粗（行业 → 行业+年份双向），标准误通常越大、越保守。如果系数在 OLS 下显著、聚行业后掉出显著区间，说明你的原始"显著"是建立在忽略组内相关之上的，这是<em>更诚实</em>的结果，不是坏事。聚类数少于约 40~50 时普通聚类标准误偏窄，要用 <code class="inline">boottest</code> 做 wild cluster bootstrap。</p>
+
+      <!-- 根因4 -->
+      <h3>根因 4：多重共线性</h3>
+      <p>控制变量之间高度相关时，单个系数的标准误会被人为撑大，于是"不显著"——但整体 F 检验可能仍然显著。诊断靠 VIF、条件数和相关矩阵。注意：VIF 高<em>不意味着</em>要删核心解释变量，更不意味着效应不存在；它意味着你无法把两个纠缠变量的效应分开，要回到理论上判断谁该留。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 根因4_共线性.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 根因4：多重共线性
+*==============================================================
+clear all
+set seed 5150
+set obs 1000
+gen x1 = rnormal()
+gen x2 = 0.9*x1 + rnormal(0,0.2)      // x2 与 x1 几乎线性相关
+gen x3 = rnormal()                     // 独立控制
+gen y  = 0.4*x1 + 0.2*x3 + rnormal(0,1)
+
+reg y x1 x2 x3
+estat vif                              // VIF；>10 警惕，>30 严重
+estat coldiag2                         // 条件数；>30 提示共线问题
+pwcorr x1 x2 x3, sig                   // 相关系数矩阵
+
+* 处理：不是删 x1（核心解释），而是检查理论依据、合并维度或换设定
+* 例：若理论上 x1 才是核心，把 x2 从控制变量里去掉重跑
+reg y x1 x3
+estat vif
+</code></pre>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠ 关键认知</div>
+        <p>VIF 高导致的不显著，是"数据里没有足够变异把效应分开"，不是"x1 没用"。正确动作是回到理论：哪个变量有独立的经济学含义？是否可以构造一个合成指标？绝不是"删掉让 p 变大的那个控制变量"。</p>
+      </div>
+
+      <!-- 根因5 -->
+      <h3>根因 5：异常值与杠杆点（先诊断影响，不要上来就 winsor）</h3>
+      <p>OLS 最小化平方误差，意味着<em>离群点拥有不成比例的话语权</em>。但新手的第一反应往往是"先缩个 1% 尾看看"——这跳过了最关键的一步：<strong>先诊断这个异常点到底有没有驱动你的系数</strong>。用 leverage（x 方向的杠杆）、Cook's D（删掉它整个拟合变多少）、DFBETA（删掉它核心系数变多少）、DFITS 来精确定位"谁在牵着回归走"。只有诊断显示某观测确实左右系数，再决定缩尾或剔除；并且三档阈值（1%/5%/10%）要并列报告，不能挑显著的那档。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 根因5_影响诊断.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 根因5：异常值与杠杆点 —— 先诊断影响，再谈缩尾
+*==============================================================
+clear all
+set seed 13579
+set obs 1500
+gen id = _n
+gen x = rnormal()
+replace x = 15 in 1/5                  // 故意埋5个超级杠杆点
+gen y = 0.3*x + rnormal(0,1.5)        // 真实斜率0.3
+
+reg y x
+* 影响诊断统计量
+predict lev, leverage                  // 杠杆；>2k/N 警惕
+predict cook, cooksd                  // Cook's D；>4/N 高影响
+predict dfit, dfits                   // DFITS
+dfbeta                                // 逐点计算删去该点后 x 系数的变化
+* 列出真正高影响的观测，人工判断是不是数据错误
+list id x y lev cook if cook > 4/_N
+
+* 对比：逐点删去最影响点后系数如何变（看是不是被这5个点带偏）
+reg y x if cook < 4/_N                 // 剔除高影响点后，斜率应回归0.3
+
+* 三档缩尾并列（scc install winsor2），绝不挑显著的那一档
+winsor2 x, cuts(1 99) gen(x1)
+winsor2 x, cuts(5 95) gen(x5)
+reg y x  ; est store raw
+reg y x1 ; est store w1
+reg y x5 ; est store w5
+esttab raw w1 w5, keep(x x1 x5) b(%9.3f) se star(*.1 **.05 ***.01)
+</code></pre>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">✗ 不要上来就 winsor</div>
+        <p>从 1%、2%、3%、5% 里挑一个让 p&lt;0.05 的阈值写进正文、其余删稿，正是 Simmons, Nelson &amp; Simonsohn (2011, <em>Psychological Science</em>) 证明的假阳性制造机。阈值必须在分析前基于惯例或数据分布预定，且多档对比要一起报告。</p>
+      </div>
+
+      <!-- 根因6 -->
+      <h3>根因 6：函数形式误设</h3>
+      <p>如果真实关系是 U 型、倒 U 型或有阈值效应，你硬套一条直线，平均斜率自然接近零——这是一种"假不显著"。诊断工具：Ramsey RESET 检验（检验拟合值的高次项是否联合显著，显著即线性设定不足）、加二次项看是否显著、画 lowess 半参数图看真实形状。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 根因6_函数形式.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 根因6：函数形式误设
+*==============================================================
+clear all
+set seed 31313
+set obs 1200
+gen x = rnormal(-2, 2)
+gen y = 1 - 0.4*x^2 + rnormal(0,1)     // 真实是倒U型
+
+* 线性误设：平均斜率≈0，假不显著
+reg y x
+estat ovtest                           // Ramsey RESET；p<0.05 说明线性设定被拒绝
+
+* 正确设定：加二次项
+gen x2 = x^2
+reg y x x2
+test x2                                // 二次项显著 => 非线性
+
+* 半参数肉眼检查
+lowess y x, bwidth(0.3)                // 看曲线是否弯曲
+
+* 读边际效应：在 x 均值处 dE[y]/dx
+sum x
+margins, dydx(x) at(x=r(mean))         // 报告均值处的斜率，而非笼统"不显著"
+</code></pre>
+      </div>
+
+      <!-- 根因7 -->
+      <h3>根因 7：测量误差（衰减偏误）</h3>
+      <p>核心解释变量测不准，OLS 系数会被系统性地<em>向零拉</em>（attenuation bias），真实效应 0.4 你只能估出 0.2，于是"假不显著"。诊断：判断测量误差是否经典（与真值独立）、估算信度（reliability，即真实方差占观测方差的比例）；若有可信的信度系数或外生工具变量，可用 IV 修正衰减。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 根因7_测量误差.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 根因7：测量误差导致衰减偏误
+*==============================================================
+clear all
+set seed 9090
+set obs 1500
+gen z = rnormal()                      // 外生工具
+gen x_true = 0.8*z + rnormal()         // 真值
+gen err = rnormal()
+gen x_obs = x_true + 0.8*err          // 观测值=真值+测量误差
+gen y = 0.5*x_true + err               // 真实效应0.5
+
+* OLS 应被衰减到约 0.5*(信度)
+reg y x_obs                            // 系数明显<0.5
+est store ols_atten
+
+* 信度 = Var(x_true)/Var(x_obs)，经典误差下 OLS 系数≈真实×信度
+* IV 用 z 修正（z 只通过 x_true 影响 y）
+ivregress 2sls y (x_obs = z)
+est store iv_fix
+estat firststage                       // 第一阶段 F 应>10
+esttab ols_atten iv_fix, b(%9.3f) se star(*.1 **.05 ***.01)
+</code></pre>
+      </div>
+      <div class="callout info">
+        <div class="callout-title">ℹ 方向判断</div>
+        <p>经典测量误差（与真值独立）<em>总是</em>把系数推向 0。所以如果你理论预期一个正效应、OLS 却不显著且偏小，先怀疑测量误差；但前提是排除反向因果和遗漏变量——它们的偏误方向不定，不能一概说"误差让我变小"。</p>
+      </div>
+
+      <!-- 根因8 -->
+      <h3>根因 8：遗漏变量 / 选择偏误</h3>
+      <p>遗漏变量 O 同时与 x、y 相关时，OLS 估计是有偏的，偏误方向由公式决定：$\beta_{偏误}=\beta_{真实}+\gamma\cdot\frac{Cov(X,u)}{Var(X)}$，其中 $\gamma$ 是 O 对 y 的效应。诊断：FE vs RE 用 Hausman 检验；更重要的是<em>手工做偏误方向分析</em>——理论上判断遗漏变量把你的系数推大了还是拉小了。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 根因8_遗漏变量.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 根因8：遗漏变量 / 选择偏误
+*==============================================================
+clear all
+set seed 424242
+set obs 1200
+gen id = ceil(_n/6)
+gen x = rnormal()
+gen omit = rnormal()                    // 遗漏变量
+gen y = 0.4*x + 0.6*omit + rnormal()   // 真实效应0.4
+gen x2 = x + 0.8*omit                  // x 与 omit 相关，制造遗漏偏误
+
+* 不控制 omit：偏误方向 = sign(0.6 * Cov(x,omit)/Var(x)) > 0 => 高估
+reg y x2                                // 系数应>0.4（被推大）
+est store omit
+* 控制 omit 后回到0.4
+reg y x2 omit
+est store ctrl
+esttab omit ctrl, keep(x2) b(%9.3f) se
+
+* Hausman：固定效应 vs 随机效应（面板语境）
+xtset id
+xtreg y x, fe
+est store fe
+xtreg y x, re
+est store re
+hausman fe re                           // p<0.05 => 应选FE
+</code></pre>
+      </div>
+      <p><strong>解读</strong>：若理论上遗漏变量会<em>推高</em>你的系数，那么 OLS 不显著意味着真实效应可能比你估的还小；若遗漏变量会<em>拉低</em>你的系数（如测量误差式的衰减方向），则不显著可能是"被压下去的真效应"。这个方向分析，比盲目加控制变量重要得多。</p>
+
+      <!-- 根因9 -->
+      <h3>根因 9：异质性掩盖（诊断性分析，不是事后挑样本）</h3>
+      <p>平均效应为零，可能是正负效应在不同子群里相互抵消，或效应只分布在被解释变量的某个分位上。合法的诊断是：分组维度<em>事前由理论决定</em>（国企/民企、高/低融资约束），用交互项做正式的组间差异检验，用分位数回归看效应在分布上的形状。<strong>绝不</strong>是事后遍历十几个维度、挑一组显著的写进正文。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 根因9_异质性.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 根因9：异质性掩盖
+* 关键：分组维度必须事前声明，且用交互项做组间检验
+*==============================================================
+clear all
+set seed 555
+set obs 1000
+gen x = rnormal()
+gen err = rnormal()
+* 构造"只对高端有效"的数据生成过程
+gen y = 0.1*x + 0.6*x*(err>0) + err
+
+* OLS 平均效应可能不显著
+reg y x
+est store ols
+
+* 分位数回归：看效应在分布上的形状
+qreg y x, q(0.1)  ; est store q10
+qreg y x, q(0.5)  ; est store q50
+qreg y x, q(0.9)  ; est store q90
+esttab ols q10 q50 q90, keep(x) b(%9.3f) se mtitles("OLS" "Q10" "Q50" "Q90")
+
+* 事前理论分组（此处模拟高/低融资约束），交互项正式检验
+gen fc = runiform()
+xtile fc_hi = fc, nq(2)
+gen x_hi = x*fc_hi
+reg y x fc_hi x_hi
+test x_hi                              // 这才回答"两组是否真的不同"
+</code></pre>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">✗ "一个显著一个不显著 ≠ 两组不同"</div>
+        <p>分别跑两个子样本回归，一组带星号、一组不带，就声称"效应在 A 组更强"——这是审稿人最常抓的错误。两个独立回归的星号差异，在统计上不等于系数差异；必须加交互项并 <code class="inline">test</code> 交互项。更不能按规模、年龄、地区、行业、年份随意切，直到切出一组显著。</p>
+      </div>
+
+      <!-- 根因10 -->
+      <h3>根因 10：多重检验问题</h3>
+      <p>你做了 10 个机制检验、20 个异质性，即使全部是纯噪声，5% 水平下也会"期望"出现 10×0.05=0.5 个假阳性；做 20 个就期望 1 个。诊断第一步是诚实数一数：你一共做了多少个检验？校正方法：Bonferroni（最严，α 除以检验数）、Benjamini-Hochberg 控制错误发现率（FDR/q 值）、Westfall-Young（bootstrap，最灵活）。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · 根因10_多重检验.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================
+* 根因10：多重检验 / 假阳性膨胀
+*==============================================================
+clear
+set obs 20
+gen testname = ""
+gen p_raw = .
+forvalues i=1/20 {
+    replace testname = "test`i'" in `i'
+    replace p_raw = runiform()/3 in `i'     // 演示：模拟一批"看起来显著"的p
+}
+* 单检验下，20个里约1个(<.05)是假阳性
+
+* FDR (Benjamini-Hochberg)：控制"被拒绝中假阳性的比例"
+multproc, p(p_raw) method(bh)
+* Bonferroni：最保守，alpha/20
+multproc, p(p_raw) method(bonferroni)
+
+* 解读：看哪些"原始显著"在校正后仍然存活
+* 若校正后所剩无几，说明你正文里的星号很可能来自多重比较
+</code></pre>
+      </div>
+    </div>
+
+    <!-- ============ 真不显著 vs 检测不到 ============ -->
+    <div class="section" id="realvsnull">
+      <h2><span class="sec-num">02</span> 区分"真不显著"与"检测不到"</h2>
+      <p>走完诊断树，你最终要回答一个二选一的问题：我的"不显著"，到底是<em>真的没有有意义的效应</em>，还是<em>当前数据精度根本检测不到</em>？这两个结论在论文里是完全不同的两句话，搞错了就是过度解读。</p>
+
+      <h3>2.1 两种情形的判别特征</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>维度</th><th>真 null（效应≈0）</th><th>检测不到（精度不足）</th></tr></thead>
+          <tbody>
+            <tr><td>置信区间宽度</td><td>窄，紧贴 0</td><td>宽，横跨正负</td></tr>
+            <tr><td>区间右端点</td><td>远小于"有意义效应"阈值</td><td>仍包含经济上很大的效应</td></tr>
+            <tr><td>事前功效</td><td>充足（≥80%）</td><td>偏低（如 30%~50%）</td></tr>
+            <tr><td>TOST 等价检验</td><td>p&lt;0.05，落在等价界内</td><td>p&gt;0.05，无法排除实质效应</td></tr>
+            <tr><td>效应量</td><td>标准化后可忽略</td><td>点估计可能不小，只是噪声大</td></tr>
+            <tr><td>正确写法</td><td>"我们的数据与一个可忽略的效应一致"</td><td>"我们无法在现有精度下拒绝零，也无法拒绝一个 X% 的效应"</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>关键工具是前面用过的 <strong>TOST</strong>。常规 p 值只能告诉你"无法拒绝零"，这是个<em>弱</em>结论；TOST 却能在指定的实质等价界 Δ 下，告诉你"能否拒绝效应大到有意义"。只有 TOST 通过（90% CI 整个落在 [-Δ, Δ] 内），你才有资格说"没有有意义的效应"；否则，你最多只能说"没有足够证据说它有"。</p>
+
+      <h3>2.2 诚实报告 null result 的经典做法</h3>
+      <p>英文文献里，诚实报告 null 已成为方法论自觉：例如大量 AEA RCT 注册研究专门公开其"无效应"的预注册结果，避免只有显著结果才发表的"文件抽屉"偏差；Cameron &amp; Miller 等也反复强调用置信区间而非星号说话。在中文顶刊实践中，《经济研究》《管理世界》近年越来越接受"识别干净、安慰剂通过、结论是 null 或弱效应"的论文，前提是作者把<em>功效分析、置信区间、等价性讨论</em>写足，而不是用一句"结果不显著，可能是因为……"草草带过。</p>
+      <div class="callout tip">
+        <div class="callout-title">✓ 诚实 null 的写法模板</div>
+        <p>"基准估计系数为 0.0X（标准误 0.YY），95% 置信区间为 [a, b]。在 5% 水平上不显著。TOST 检验在等价界 Δ=0.1 个标准差下 p=0.04（通过），说明我们的数据与一个经济上可忽略的效应一致；事前功效分析显示在 80% 功效下本设计可检出 X% 的效应。安慰剂与平行趋势检验均未发现竞争性解释。"</p>
+      </div>
+    </div>
+
+    <!-- ============ 研究伦理 ============ -->
+    <div class="section" id="ethics">
+      <h2><span class="sec-num">03</span> 研究伦理与规范推断</h2>
+      <p>这是全页最重要的一章。它决定了你前面所有诊断，是"科学"还是"自欺"。</p>
+
+      <h3>3.1 合法稳健性分析 vs p-hacking 对照表</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>行为</th><th>合法稳健性分析</th><th>p-hacking</th></tr></thead>
+          <tbody>
+            <tr><td>动机</td><td>检验结论对合理变动是否稳健</td><td>搜寻一个恰好显著的规格</td></tr>
+            <tr><td>阈值/规格</td><td>事前依据惯例或理论设定</td><td>事后从多个里挑显著的那个</td></tr>
+            <tr><td>报告</td><td>所有规格全报告（含不显著）</td><td>只报告星号规格，其余删稿</td></tr>
+            <tr><td>删样本</td><td>有明确经济理由（ST、金融等）</td><td>删到显著为止</td></tr>
+            <tr><td>分组</td><td>维度事前声明 + 交互项检验</td><td>事后遍历维度挑显著子组</td></tr>
+            <tr><td>标准误</td><td>依数据真实相关结构选择</td><td>挑最容易显著的那种</td></tr>
+            <tr><td>多重检验</td><td>做 FDR/Bonferroni 校正</td><td>不提检验次数、不校正</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>3.2 花园分叉路径：即使不刻意造假，也会膨胀假阳性</h3>
+      <p>Gelman &amp; Loken (2013) 的"花园分叉路径"（garden of forking paths）是最值得反复体会的概念：你未必存心 p-hacking，但研究中充满<em>看似都合理</em>的自由度——样本截止到哪一年、是否剔除那个可疑观测、用 robust 还是聚类、加几个控制、什么时候停手加样本……每一个选择单独看都无可指摘，可它们叠加起来，假阳性率就远超标称的 5%。Brodeur et al. (2016) 在顶刊观察到的 p 值在 0.05 边界堆积，正是这种自由度的宏观指纹。Simmons, Nelson &amp; Simonsohn (2011) 用仿真证明：只要允许在"是否加第二个因变量、是否再补样本、用哪种控制"等几个自由度上自由选择，5% 的假阳性率可以膨胀到 60% 以上。</p>
+      <div class="callout danger">
+        <div class="callout-title">⛔ 即使没有恶意，也要防</div>
+        <p>花园分叉路径的可怕之处在于：你<em>真心觉得</em>每一步都是合理的。防御只有制度化三招——<strong>预注册</strong>（pre-registration，在看数据前把分析计划公开写下来，AEA RCT Registry 等平台已推广到非实验研究）；<strong>规格曲线</strong>（specification curve，把所有合理规格的系数画成一条分布，而不是只摘一个）；以及<strong>全报告原则</strong>——跑过的规格、不显著的稳健性、剔除的样本，都进附录，让读者自己判断。</p>
+      </div>
+
+      <h3>3.3 论文里如何如实报告不显著</h3>
+      <ul>
+        <li><strong>报置信区间，不只报 p 值</strong>：每个星号旁边都配 [a, b]，让读者判断宽度。</li>
+        <li><strong>报效应量与经济显著性</strong>：标准化系数、占被解释变量均值的百分比、x 加 1 个 SD 的实际影响。</li>
+        <li><strong>报事前功效分析</strong>：说明本设计的 MDE，避免读者误以为你"明明大样本却不显著"。</li>
+        <li><strong>把不显著的稳健性结果放附录</strong>：不要只留显著的那几张表。</li>
+        <li><strong>结论强度贴着证据走</strong>：p=0.2 不能写成"X 对 Y 没有影响"，只能写"未发现统计上可辨别的效应"。</li>
+      </ul>
+      <p>再次强调：<strong>本页不教任何"调显著"的技巧</strong>。任何让你"先看结果再决定怎么做"的建议，都与本节立场相悖。</p>
+    </div>
+
+    <!-- ============ 合法改进路径 ============ -->
+    <div class="section" id="fix">
+      <h2><span class="sec-num">04</span> 合法改进路径：仅在诊断之后，且都是"修病因"</h2>
+      <p>诊断出病因后，确实有合法的"治疗"手段。但请反复自问：下面每一条，<em>是不是诊断结果指向的、并且无论改完显著与否我都会做？</em>如果是，它就是修病因；如果不是，它就是调 p 值。</p>
+      <ul>
+        <li><strong>改进度量</strong>：诊断发现核心变量测量粗糙或操作化不当，于是构造更精确、更贴合理论的变量。——修的是"测量不准"这个病因。</li>
+        <li><strong>更优识别策略</strong>：诊断发现 IV 第一阶段太弱、DID 平行趋势存疑，于是寻找更强的外生工具、更干净的处理时点、更贴合的 RDD。——修的是"识别不净"这个病因，而不是换一个容易显著的设定。</li>
+        <li><strong>数据质量修复</strong>：诊断发现合并错误、编码错误、测量误差、样本错配，于是清洗数据、修正口径。——修的是"数据本身错了"。</li>
+        <li><strong>更恰当的模型设定</strong>：RESET 或分位数诊断显示真实关系非线性，于是加理论支持的函数形式；发现 FE 层级不对，于是按经济结构重设固定效应。——修的是"模型与理论不符"。</li>
+      </ul>
+      <p>注意这四类改进的共性：<em>它们的合理性独立于"会不会变显著"</em>。哪怕改完仍然不显著，你依然会做、依然要在论文里解释为什么这样做是对的。这就是"治病"和"止痛药"的分界线。</p>
+      <div class="callout warning">
+        <div class="callout-title">⚠ 反面自检</div>
+        <p>如果你对某条改动的第一反应是"这样应该能显著"，而不是"诊断显示这里有病"，停下来。把它和第二、三节的对照表逐条核对。研究伦理的全部内容，就是这一句自我提问。</p>
+      </div>
+    </div>
+
+    <!-- ============ 中文顶刊语境 ============ -->
+    <div class="section" id="cn">
+      <h2><span class="sec-num">05</span> 中文顶刊语境下的应对</h2>
+      <p>现实是：国内《经济研究》《管理世界》的部分审稿意见里，仍残留"主要系数必须显著、方向必须符合故事"的期待。但这不是你去 p-hacking 的理由——恰恰相反，<strong>审稿人真正反感的，是"一碰就碎"的伪稳健，而不是"方向稳定但不显著、论证充分"的诚实结果</strong>。</p>
+      <h3>5.1 审稿人对不显著结果的常见态度</h3>
+      <p>成熟审稿人关心三件事：识别是否干净、结论是否稳健、解释是否克制。如果你的结果换五个规格就消失，无论 p 多小都会被质疑；反之，如果 CI 报告清楚、功效分析到位、安慰剂和平行趋势都通过、你也诚实地承认效应偏弱或 null，很多审稿人是接受的。危险信号是：星号忽隐忽现、稳健性表只放显著列、把"一个显著一个不显著"写成"组间异质性"。</p>
+      <h3>5.2 如何用"理论 + 经济显著性 + CI"回应"必须显著"的压力</h3>
+      <ul>
+        <li><strong>理论先行</strong>：在引言和假说部分就把预期效应讲清楚，说明 null 或弱效应本身也有理论含义（如政策边界、摩擦存在）。</li>
+        <li><strong>经济显著性兜底</strong>：把系数换算成"企业投资率提升 X 个百分点""全要素生产率提高 Y%"，说明统计不显著不等于经济不重要。</li>
+        <li><strong>置信区间说话</strong>：用 CI 宽度区分"真无效应"和"精度不足"，主动做 TOST 与功效分析，化被动为主动。</li>
+        <li><strong>稳健性全展示</strong>：把 10~20 个合理规格做成一张敏感性表，让审稿人自己看到哪些铁打、哪些脆弱——这比藏起来更有说服力。</li>
+      </ul>
+      <h3>5.3 诚实但有说服力的写作</h3>
+      <p>不要用"结果不显著，可能是因为样本期较短"这种被动找补的句式，而要换成诊断式陈述："在 X 诊断下，系数方向稳定、大小合理；置信区间为 [a,b]，等价检验支持一个经济上可忽略的效应；功效分析显示本设计的 MDE 为 X%。因此我们谨慎地将这一结果解释为……"。把"不显著"从一个需要掩饰的尴尬，写成一个被你充分诊断、证据能支持的实质性结论——这才是规范推断的最高标准。</p>
+    </div>
+
+    <div class="page-nav">
+      <a href="10-heterogeneity.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">异质性分析：分组、交互项与组间差异</div>
+      </a>
+      <a href="index.html" class="next">
+        <div class="nav-label">实证总览 →</div>
+        <div class="nav-title">实证论文路线图与总览</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>教育与人力资本结构估计（Keane-Wolpin） | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item active" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">结构估计</a>
+      <span class="sep">/</span>
+      <span>教育与人力资本（Keane-Wolpin）</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">STRUCTURAL · HUMAN CAPITAL · LIFECYCLE</span>
+      <h1>教育与人力资本的结构估计：Mincer、Keane-Wolpin 与生命周期动态选择</h1>
+      <p class="desc">个人一生都在做"上学还是工作"的跨期选择：今天多读一年书，明天工资更高但今天没挣钱。Keane and Wolpin (1997 JPE) 把 Mincer (1974) 工资方程嵌入有限期动态规划，用反向归纳求解一生最优教育-工作路径。本页讲清生命周期 Bellman、CCP、能力偏差与 IV、信贷约束建模，并给出可运行的 3 期教育-工作模型 Python 求解器与 Stata Mincer 估计代码。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:10px 20px;border-radius:8px;margin:0 0 24px;font-size:14px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:18px;">&#128221;</span>
+      <span><strong>本页与动态博弈页的对照</strong>：上一页是无限期、多企业博弈；本页是<strong>有限期、单 agent 生命周期</strong>。有限期意味着可以用反向归纳从最后一期倒推，不需要求无限期不动点——这是两类动态结构模型最实用的区别。</span>
+    </div>
+
+    <!-- 前置条件 -->
+    <div style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>有限期动态规划（反向归纳）、logit/极值分布（见 <a href="07-binary-choice.html">07 二值选择</a>）、Mincer 工资方程、IV 与 Heckman 选择模型。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>劳动经济学：人力资本理论（Becker 1964）、教育回报率、Mincer 1974 收入方程；生命周期劳动供给。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件/计算前置：</span>Python（numpy 反向归纳 + 模拟）；Stata（<code>heckman</code>、<code>ivregress</code>）；理解面板数据结构。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置页面：</span><a href="05-dynamic-structural.html">05 动态结构模型总览</a>（Bellman/CCP/NFXP 通用框架）+ <a href="07-binary-choice.html">07 二值选择</a>（logit 基础）。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--warning);color:#fff;font-size:12px;font-weight:600;">中高</span>　比单 agent 无限期 Rust 模型略易（反向归纳无需收敛循环），但劳动经济学建模细节（能力、信贷约束、选择偏误）较多。</div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">经济环境与假设</a></li>
+        <li><a href="#s2">完整推导：生命周期 Bellman 与 CCP</a></li>
+        <li><a href="#s3">求解方法：反向归纳、NFXP、CCP 两步法</a></li>
+        <li><a href="#s4">完整代码：3 期教育-工作模型（Python + Stata）</a></li>
+        <li><a href="#s5">估计与数据</a></li>
+        <li><a href="#s6">模拟与反事实</a></li>
+        <li><a href="#s7">论文案例</a></li>
+        <li><a href="#s8">常见错误</a></li>
+        <li><a href="#s9">难度、前置与交叉链接</a></li>
+      </ol>
+    </div>
+
+    <!-- ========== 第1节 ========== -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 经济环境与假设</h2>
+      <p>Keane and Wolpin (1997, <em>Journal of Political Economy</em>，以下简称 <strong>KW 框架</strong>) 把个人一生（生命周期）建模为一个<strong>有限期动态离散选择问题</strong>：从高中毕业（约 16 岁）到退休（约 65 岁），个人在每个年龄选择"上学 / 工作 / 家庭生产（休闲）"，选择会改变下一期的教育水平与工作经验，进而影响未来工资。</p>
+
+      <h3>1.1 生命周期与离散选择</h3>
+      <ul>
+        <li><strong>时间</strong>：$t=1,2,\dots,T$，$T$ 为终止期（退休/死亡）。<strong>设定理由</strong>：生命周期有明确终点，与 EP 产业动态的无限期形成对照——这使得<strong>反向归纳</strong>成为自然解法。</li>
+        <li><strong>选择集</strong> $d_t\in\{S,W,H\}$：上学(Schooling)、市场工作(Work)、家庭生产(Home)。简化版可二值化为"上学 vs 工作"。</li>
+        <li><strong>状态变量</strong>：
+          <ul>
+            <li>$s_t$：教育年限（或教育水平离散分箱：高中/大专/本科）；</li>
+            <li>$e_t$：市场工作经验（累计工作年数）；</li>
+            <li>$\mu$：不可观察的能力禀赋（fixed 或有限混合分布）；</li>
+            <li>$\epsilon_{t,d}$：每期每选择的 i.i.d. Type-I 极值工资/偏好冲击。</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>1.2 工资方程（Mincer 型）</h3>
+      <p>当个人选择工作 $d_t=W$ 时，他当期获得市场工资。KW 沿用并扩展了 Mincer (1974) 的经典对数工资方程：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 1.1 — Mincer 工资方程（本页核心公式之一）</div>
+        $$\ln w_t = \alpha_0 + \alpha_1 s_t + \alpha_2 e_t + \alpha_3 e_t^2 + \mu + \epsilon_{w,t}$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$\alpha_1$ 是<strong>多受一年教育的对数工资增量</strong>，即教育回报率的核心参数；$\alpha_2,\alpha_3$ 是经验的线性与二次系数（刻画工资-经验曲线的倒 U 形）；$\mu$ 是不可观察能力；$\epsilon_{w,t}$ 是 i.i.d. 工资冲击。<strong>设定理由</strong>：Mincer 方程是劳动经济学最成功的简化形式——它把"人力资本投资的回报"压缩为工资对教育与经验的对数线性关系。<strong>经济直觉</strong>：$\alpha_1>0$ 意味着教育是一种人力资本投资，提高未来工资；$e_t^2$ 的负系数 $\alpha_3<0$ 捕捉经验回报随年龄递减（临近退休学习速度下降）。</p>
+      </div>
+
+      <h3>1.3 教育成本：心理成本与信贷约束</h3>
+      <p>上学不仅放弃了当期工作收入（<strong>机会成本</strong>），还面临：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 1.2 — 教育效用与信贷约束</div>
+        $$U_S(s_t, \text{assets}_t) = -\eta s_t + \lambda\cdot\mathbf{1}\{\text{assets}_t &lt; c^{\text{tuition}}(s_t)\} + \epsilon_{S,t}$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$-\eta s_t$ 为<strong>心理成本</strong>（上学越久越痛苦，$\eta>0$）；$c^{\text{tuition}}(s)$ 为学费；$\mathbf{1}\{\text{assets}<c^{\text{tuition}}\}$ 为信贷约束哑变量；$\lambda$ 为信贷约束的额外惩罚（$\lambda>0$ 时被约束者效用下降）。<strong>设定理由</strong>：如果没有信贷约束，穷人家孩子只要教育回报率高就会借钱上学；现实中流动性约束使他们被迫辍学——这是 Kane (1994)、Cameron-Heckman (1998) 争论的核心。<strong>经济直觉</strong>：$\lambda$ 衡量"家庭财富对大学入学率的影响中有多少是信贷约束造成的"，而非能力/偏好差异。</p>
+      </div>
+
+      <h3>1.4 终止期</h3>
+      <p>在退休期 $T$ 之后，个人不再工作，享受一个由最终教育水平、经验、养老金决定的<strong>终端价值</strong> $V_T^{\text{term}}(s_T,e_T,\mu)$。终端价值的设定直接影响早期上学决策——这是有限期模型的关键。常见做法：$V_T^{\text{term}} = \rho_0 + \rho_1 s_T + \rho_2 e_T$，把退休养老金/闲暇效用简化为教育与经验的线性函数。</p>
+    </div>
+
+    <!-- ========== 第2节 ========== -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 完整推导：生命周期 Bellman 与 CCP</h2>
+
+      <h3>2.1 有限期 Bellman 方程</h3>
+      <p>个人在时期 $t$ 的状态为 $(s_t,e_t,\mu,\epsilon_t)$，选择 $d_t$ 最大化剩余一生的贴现效用和：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 2.1 — 生命周期 Bellman 方程（有限期，本页核心公式之二）</div>
+        $$V_t(s_t,e_t,\mu,\epsilon_t) = \max_{d_t\in\{S,W,H\}}\Big\{U_{d_t}(s_t,e_t,\mu) + \epsilon_{d_t,t} + \beta\,\mathbb{E}\big[V_{t+1}(s_{t+1},e_{t+1},\mu,\epsilon_{t+1})\mid s_t,e_t,d_t\big]\Big\}$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$U_W = \ln w_t$（工作拿工资效用），$U_S=-\eta s_t+\cdots$（上学心理成本，见 Eq.1.2），$U_H=\text{home value}$（家庭生产/休闲效用）。状态转移：若上学则 $s_{t+1}=s_t+1, e_{t+1}=e_t$；若工作则 $s_{t+1}=s_t, e_{t+1}=e_t+1$；若家庭生产则两者不变。<strong>与无限期 EP 模型的区别</strong>：这里没有"未来的稳态"——$V_{T+1}$ 直接由终端价值函数给出，不存在不动点收敛问题，只需从 $t=T$ 倒推。</p>
+      </div>
+
+      <h3>2.2 反向归纳求解</h3>
+      <p>有限期问题的标准解法是<strong>反向归纳（backward induction）</strong>：从最后一期 $T$ 开始，先算 $V_T$；再用 $V_T$ 算 $V_{T-1}$；依此类推直到 $V_1$。由于 $\epsilon_{d,t}$ 是 i.i.d. Type-I 极值分布，对 $\epsilon$ 的积分有解析的 log-sum-exp 形式（见 <a href="05-dynamic-structural.html">05 动态结构</a>页 Eq.3.2）：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 2.2 — 反向归纳递推式</div>
+        $$v_t(s,e,d;\mu) = U_d(s,e;\mu) + \beta\sum_{s',e'}P(s',e'\mid s,e,d)\,\log\sum_{d'}\exp v_{t+1}(s',e',d';\mu)$$
+        $$V_t(s,e,\mu) = \log\sum_{d\in\{S,W,H\}}\exp v_t(s,e,d;\mu)$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">从 $t=T$ 开始：$v_T(s,e,d;\mu)=U_d(s,e;\mu)+V_T^{\text{term}}(s',e';\mu)$，然后逐期倒推。<strong>计算复杂度</strong>：状态为 $(s,e)$ 二维网格（如教育 0–20 年、经验 0–50 年），每期只需做一次 log-sum-exp，比无限期 VFI 快得多——这是 KW 类模型能容纳几十个选择、上百个状态的原因。</p>
+      </div>
+
+      <h3>2.3 选择概率（CCP，Hotz-Miller）</h3>
+      <p>给定 $v_t(s,e,d;\mu)$，个人在时期 $t$、状态 $(s,e)$、能力 $\mu$ 下选择 $d$ 的概率是 logit 形式：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 2.3 — 条件选择概率 CCP</div>
+        $$\Pr(d_t=d\mid s_t=s,e_t=e,\mu)=\frac{\exp v_t(s,e,d;\mu)}{\sum_{d'\in\{S,W,H\}}\exp v_t(s,e,d';\mu)}$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">这与 <a href="05-dynamic-structural.html">05 动态结构</a>页 Eq.3.3 完全一致，区别只在时间下标：有限期下 $v_t$ 逐期计算。<strong>经济直觉</strong>：CCP 把"选择上学的概率"分解为当期效用差与未来价值差——一个人上大学，可能是因为当期心理成本低，也可能是因为未来大学工资溢价高，结构模型把这两者分开。</p>
+      </div>
+
+      <h3>2.4 教育回报率的结构解释</h3>
+      <p>Mincer 方程里的 $\alpha_1$ 在结构模型中被赋予了<strong>因果解释</strong>：控制了能力 $\mu$、经验 $e_t$、未观察选择偏误后，$\alpha_1$ 才是"多受一年教育的工资因果效应"。这与 OLS 直接回归得到的"教育系数"不同——后者混杂了能力偏差（见 §5.3）。结构模型通过以下渠道识别 $\alpha_1$：(1) 个体在不同 $(s,e)$ 下的实际选择行为；(2) 工资面板中工资-教育共变；(3) 排除约束（如学费政策变化影响上学决策但不直接影响工资）。</p>
+
+      <h3>2.5 信贷约束的建模</h3>
+      <p>如 Eq. 1.2 所示，信贷约束通过在上学效用中加入一个哑变量惩罚 $\lambda\mathbf{1}\{\text{assets}<c^{\text{tuition}}\}$ 进入模型。识别 $\lambda$ 依赖一个关键排除约束：<strong>家庭资产/收入影响上学决策，但不直接影响工资方程</strong>（除了通过教育年限）。Cameron and Heckman (1998) 与 Carneiro, Heckman and Vytlacil (2011) 争论的核心正在于此：如果家庭背景通过"家庭文化/能力代际传递"直接影响工资，那么资产-上学关系就不能全部解释为信贷约束。</p>
+    </div>
+
+    <!-- ========== 第3节 ========== -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 求解方法</h2>
+
+      <h3>3.1 有限期动态规划：反向归纳（backward induction）</h3>
+      <p>这是 KW 类模型的<strong>默认解法</strong>。步骤见 §2.2：从 $t=T$ 倒推到 $t=1$。优点：(1) 不需要收敛循环；(2) 精确解；(3) 自动给出每期每个状态的选择概率。局限：状态空间仍需离散化；若加入连续状态（如资产 $A_t$），需用插值（linear interpolation/cubic spline）在网格间近似。</p>
+
+      <h3>3.2 NFXP（Rust 1987）嵌套固定点</h3>
+      <p>与 <a href="05-dynamic-structural.html">05 动态结构</a>页相同：外层优化器（MLE）在每一步调用内层"给定 $\theta$，反向归纳求 CCP"，再计算似然。对有限期模型，内层比无限期快得多（无收敛循环），所以 NFXP 在 KW 类模型中仍然常用。</p>
+
+      <h3>3.3 CCP 两步法（Hotz-Miller 1993）</h3>
+      <p>对生命周期模型也可用 Hotz-Miller 两步法：(1) 从面板数据非参数估计每期每个状态的经验选择频率 $\hat P(d\mid s,e,t)$；(2) 用 CCP 逆推（Eq. 6.1 of 05 页）反推 $v_t$；(3) 第二阶段估计结构参数 $\theta$。优点：避免在每次外层迭代时全解反向归纳；局限：需要数据在每个 $(s,e,t)$ 上都有足够观测——生命周期面板中老状态（如 50 岁、经验 30 年）数据稀疏。</p>
+    </div>
+
+    <!-- ========== 第4节 ========== -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 完整代码：3 期教育-工作模型</h2>
+
+      <h3>4.1 Python：反向归纳求解器 + 模拟</h3>
+      <p>下面实现一个<strong>3 期简化版</strong>：每个体在 $t=1,2,3$ 三期，状态为教育水平 $s\in\{0,1\}$（高中/大学）与经验 $e\in\{0,1,2\}$，每期选择"上学"或"工作"。Type-I 极值冲击 → log-sum-exp 反向归纳。纯 numpy + scipy，秒级运行。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">python · 3期教育-工作选择模型（中文注释）</span><button class="copy-btn">复制</button></div>
+        <pre><code>"""
+Keane-Wolpin 简化版 —— 3 期教育-工作选择模型反向归纳
+=====================================================
+状态:
+  s ∈ {0,1}   教育水平 (0=高中, 1=大学)
+  e ∈ {0,1,2} 工作经验
+决策:
+  d = 0 工作: 当期拿工资, s不变, e+1
+  d = 1 上学: 当期付心理成本, s+1 (封顶1), e不变
+工资方程 (Mincer):
+  ln w = a0 + a1*s + a2*e + a3*e^2
+终端价值 (t=3 之后):
+  terminal(s,e) = gamma*s + delta*e   (退休/养老金)
+冲击: 每期每选择 i.i.d. Type-I 极值 -&gt; log-sum-exp
+"""
+import numpy as np
+from scipy.special import logsumexp
+
+# ---------- 1. 参数 ----------
+BETA   = 0.9               # 贴现因子
+A0     = 1.0               # 工资常数项
+A1     = 0.15              # 教育回报率 (多一年/一级教育的工资增量)
+A2     = 0.03              # 经验线性项
+A3     = -0.002            # 经验二次项 (经验回报递减)
+ETA    = 0.8               # 上学心理成本
+GAMMA  = 3.0               # 终端价值中教育的权重
+DELTA  = 1.0               # 终端价值中经验的权重
+T      = 3                 # 总期数
+
+# ---------- 2. 状态网格 ----------
+S_GRID = [0, 1]            # 教育水平
+E_GRID = [0, 1, 2]         # 经验
+N_S, N_E = len(S_GRID), len(E_GRID)
+
+def terminal_value(s, e):
+    """退休后终端价值 (养老金/闲暇)"""
+    return GAMMA * s + DELTA * e
+
+def wage_util(s, e):
+    """工作的当期效用 = Mincer 对数工资"""
+    return A0 + A1 * s + A2 * e + A3 * e**2
+
+# ---------- 3. 反向归纳 ----------
+# V[t][s_idx, e_idx] = 期 t 开始时 (ex-ante) 的价值
+# cv[t][d, s_idx, e_idx] = 选择 d 的 choice-specific value
+V = {}
+cv = {}
+
+for t in range(T, 0, -1):
+    V[t] = np.zeros((N_S, N_E))
+    cv[t] = np.zeros((2, N_S, N_E))   # 2 个选择: 0=工作, 1=上学
+    for si, s in enumerate(S_GRID):
+        for ei, e in enumerate(E_GRID):
+            # --- 选择 d=0: 工作 ---
+            # 当期工资效用
+            u_work = wage_util(s, e)
+            # 下期状态: s 不变, e+1 (封顶)
+            s_next, e_next = s, min(e + 1, 2)
+            if t == T:
+                fut_work = terminal_value(s_next, e_next)
+            else:
+                fut_work = V[t+1][S_GRID.index(s_next), E_GRID.index(e_next)]
+            cv[t][0, si, ei] = u_work + BETA * fut_work
+
+            # --- 选择 d=1: 上学 ---
+            # 当期心理成本 (负效用)
+            u_school = -ETA
+            # 下期状态: s+1 (封顶), e 不变
+            s_next, e_next = min(s + 1, 1), e
+            if t == T:
+                fut_school = terminal_value(s_next, e_next)
+            else:
+                fut_school = V[t+1][S_GRID.index(s_next), E_GRID.index(e_next)]
+            cv[t][1, si, ei] = u_school + BETA * fut_school
+
+            # ex-ante 价值 = logsumexp over d (EV1 冲击解析积分)
+            V[t][si, ei] = logsumexp([cv[t][0, si, ei], cv[t][1, si, ei]])
+
+# ---------- 4. 计算 CCP: 每期每状态选择"上学"的概率 ----------
+def ccp_study(t, s, e):
+    si, ei = s, e
+    # P(study) = exp(v_school) / (exp(v_work)+exp(v_school))
+    v_w = cv[t][0, si, ei]
+    v_s = cv[t][1, si, ei]
+    return np.exp(v_s) / (np.exp(v_w) + np.exp(v_s))
+
+print("=== 各期各状态下'上学'的概率 P(study) ===")
+print("      s=0,e=0  s=0,e=1  s=1,e=0  s=1,e=1")
+for t in range(1, T+1):
+    row = [ccp_study(t, s, e) for (s, e) in [(0,0),(0,1),(1,0),(1,1)]]
+    print(f"t={t}:  " + "  ".join(f"{p:6.3f}" for p in row))
+
+# ---------- 5. 模拟一个体的一生路径 ----------
+def simulate_one(seed=42):
+    rng = np.random.default_rng(seed)
+    s, e = 0, 0     # 初始: 高中毕业, 无经验
+    path = []
+    for t in range(1, T+1):
+        p_study = ccp_study(t, s, e)
+        d = int(rng.random() &lt; p_study)   # 抽选择
+        path.append((t, s, e, d))
+        # 状态转移
+        if d == 0:   # 工作
+            e = min(e + 1, 2)
+        else:        # 上学
+            s = min(s + 1, 1)
+    return path
+
+print("\n=== 模拟 20 个个体的教育-工作路径 ===")
+print("(t, s, e, d=1表示上学)")
+for i in range(5):
+    path = simulate_one(seed=i)
+    print(f"个体{i}: " + " -> ".join(f"(t{t},s{s},e{e},{'上学' if d==1 else '工作'})"
+                                       for (t,s,e,d) in path))
+
+# ---------- 6. 教育回报率的结构含义 ----------
+# 比较: 若 A1=0 (教育无用), 与基准 A1=0.15 相比, 上学概率应大幅下降
+print("\n=== 经济直觉 ===")
+print(f"基准 A1={A1}: 第1期 s=0,e=0 时 P(study) = {ccp_study(1,0,0):.3f}")
+print("若 A1 下降到 0.0 (教育无工资溢价), 上学动机应主要来自终端价值 GAMMA。")
+</code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">✓ Python 代码说明</div>
+        <p>反向归纳从 $t=3$ 倒推到 $t=1$，每期每个 $(s,e)$ 计算两个选择的 choice-specific value，再用 logsumexp 得 ex-ante 价值。运行后应能观察到：(1) 越到后期上学概率越低（剩余未来短，不值得付心理成本）；(2) $s=0$（未上大学）时上学概率高于 $s=1$（已上大学）——因为教育是一次投资，越早完成越好。扩展方向：加能力 $\mu$ 的有限混合分布（heterogeneous types）、加连续资产状态、做 MLE 外层估计 $(\alpha_1,\eta)$。</p>
+      </div>
+
+      <h3>4.2 Stata：Mincer 方程的简化估计（OLS / Heckman / IV）</h3>
+      <p>结构模型估计之外，经典劳动经济学用三步处理 Mincer 方程的内生性。下面是可直接在 Stata 运行的简化模板（假设数据已整理为 <code>cfps_wage.dta</code>，含变量 <code>lnw, edu, exp, exp2, participation, college_proximity, mom_edu, father_income</code>）：</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · Mincer 方程 OLS / Heckman / IV</span><button class="copy-btn">复制</button></div>
+        <pre><code>*==============================================================
+*  Mincer 工资方程: OLS / Heckman 选择修正 / 工具变量
+*  数据: cfps_wage.dta (中国家庭追踪调查微观样本)
+*  变量:
+*    lnw        对数小时工资
+*    edu        受教育年限
+*    exp        潜在工作经验 (年龄-教育-6)
+*    exp2       经验平方/100
+*    participation  劳动参与哑变量 (1=工作)
+*    college_proximity  Card(1995) 式IV: 成长地附近有无大学
+*    mom_edu, father_income  家庭背景 (用于 Heckman 排除约束)
+*==============================================================
+
+clear all
+set more off
+use "cfps_wage.dta", clear
+
+* --- (0) 构造变量 ---
+gen exp2 = exp^2 / 100
+lab var lnw            "对数小时工资"
+lab var edu            "受教育年限"
+lab var exp            "潜在经验"
+lab var exp2           "经验平方/100"
+
+* --- (1) OLS 基准 Mincer 方程 (含能力偏差, 仅作对照) ---
+reg lnw edu exp exp2 i.province i.year, robust
+estimates store OLS
+* 系数 edu 是"简单教育回报率", 但混杂能力偏差
+
+* --- (2) Heckman 选择模型: 修正"只有工作者才观察到工资"的选择偏误 ---
+* 第一阶段: 劳动参与方程 (排除变量 mom_edu, father_income 不进工资方程)
+* 第二阶段: 工资方程 (加逆 Mills ratio lambda)
+heckman lnw exp exp2 i.province i.year, ///
+    select(participation = edu mom_edu father_income exp exp2) ///
+    robust
+estimates store Heckman
+* 若 lambda 显著, 说明存在选择偏误, Heckman 修正必要
+
+* --- (3) 工具变量 IV: Card(1995) college proximity 作教育的 IV ---
+* 排他性约束: 成长地附近有无大学影响上学成本 (相关性),
+*             但不直接影响成年后的工资 (外生性)
+ivregress 2sls lnw exp exp2 i.province i.year ///
+    (edu = college_proximity), robust
+estimates store IV
+estat firststage          // 检查弱工具变量 (F>10)
+estat overid              // 过度识别检验 (若有多个IV)
+
+* --- (4) 对比三种估计的教育回报率 ---
+estimates table OLS Heckman IV, ///
+    b(%9.4f) star(0.1 0.05 0.01) keep(edu)
+* 典型结果: OLS 偏低(能力偏差方向取决于假设),
+*           Heckman/IV 通常给出更高的"边际"教育回报率
+</code></pre>
+      </div>
+    </div>
+
+    <!-- ========== 第5节 ========== -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 估计与数据</h2>
+
+      <h3>5.1 数据需求</h3>
+      <p>KW 类生命周期结构模型需要<strong>个体-年份面板</strong>，且每期观察到：(1) 教育水平（最高学历/在校状态）；(2) 工作经验（累计工作年数）；(3) 工资/收入；(4) 决策（上学/工作/家庭生产）；(5) 家庭背景（父母教育、家庭收入、地区）——这些既是信贷约束的代理变量，也是 Heckman/IV 的排除约束来源。</p>
+
+      <h3>5.2 常用数据来源</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>数据集</th><th>国家</th><th>覆盖内容</th><th>典型应用</th></tr></thead>
+          <tbody>
+            <tr><td><strong>NLSY79 / NLSY97</strong></td><td>美国</td><td>1979/1997 年队列，追踪到现在：教育、工资、工作经历、家庭背景、AFQT 能力测试</td><td>Keane-Wolpin 1997 原文即用 NLSY79；能力偏差经典数据</td></tr>
+            <tr><td><strong>PSID</strong></td><td>美国</td><td>1968 起追踪家庭：收入、消费、生育、迁移</td><td>生命周期劳动供给、生育与教育联合决策</td></tr>
+            <tr><td><strong>CFPS</strong></td><td>中国</td><td>北京大学中国家庭追踪调查：2010 起每两年，成人问卷含教育、收入、工作、家庭背景</td><td>中国教育回报率、城乡差异、代际流动性</td></tr>
+            <tr><td><strong>CHFS</strong></td><td>中国</td><td>中国家庭金融调查：资产、收入、信贷约束信息更全</td><td>信贷约束与大学入学决策</td></tr>
+            <tr><td><strong>CHARLS</strong></td><td>中国</td><td>中国健康与养老追踪调查：45 岁以上样本</td><td>退休、健康、晚期生命周期决策</td></tr>
+            <tr><td><strong>CLDS</strong></td><td>中国</td><td>中山大学中国劳动力动态调查</td><td>劳动力市场动态、教育与就业</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>5.3 能力偏差（ability bias）与工具变量</h3>
+      <p>Mincer OLS 估计 $\hat\alpha_1^{OLS}$ 的核心问题是<strong>能力偏差</strong>：能力高的人既更可能上学（$s_t$ 高），又在任何教育水平下工资都更高（$\mu$ 与 $s_t$ 相关）。OLS 把能力带来的工资溢价错误地记到了教育头上，$\hat\alpha_1^{OLS}$ 有偏。三大经典修正策略：</p>
+      <ul>
+        <li><strong>工具变量 IV（Card 1995）</strong>：用"成长地附近有无大学"（college proximity）作教育的 IV——就近上大学降低了上学的货币与心理成本（相关性），但不直接影响成年后的工资（外生性）。Card (1995 NBER 工作论文，后收入 <em>Aspects of Labor Market Behavior</em> 纪念 John Vanderkamp 文集）用 NLSY 数据估计 IV 教育回报率通常<strong>高于</strong> OLS——这暗示 OLS 的能力偏差方向比预想更复杂（IV 识别的是"边际个体"的回报率，通常高于平均个体）。</li>
+        <li><strong>Heckman 选择模型</strong>：工资只在工作者中观察到，非随机样本产生选择偏误。第一阶段估计劳动参与方程，把逆 Mills ratio 加入工资方程修正。</li>
+        <li><strong>结构模型（KW）</strong>：直接把能力 $\mu$ 建模为有限混合分布的未观察异质性，用动态选择数据识别不同类型个体的教育回报率——这是 Carneiro-Heckman-Vytlacil (2011) 强调的"异质性处理效应"路径。</li>
+      </ul>
+
+      <h3>5.4 Mincer 方程的估计与解释</h3>
+      <p>回到 Eq. 1.1，OLS 回归 $\ln w$ 对 $s,e,e^2$ 后：$\hat\alpha_1$ 是"多受一年教育的对数工资增量"，近似等于教育回报率（% 工资差异）。中国近年用 CFPS 的估计值大致在 <strong>7%–10%</strong> 区间（每年多受教育），高于多数发达国家，反映中国教育回报随市场化改革上升。</p>
+    </div>
+
+    <!-- ========== 第6节 ========== -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 模拟与反事实</h2>
+      <p>估计出 $(\alpha_1,\eta,\lambda,\dots)$ 后，KW 框架可做三类政策反事实：</p>
+      <ul>
+        <li><strong>学费补贴</strong>：把上学成本 $-\eta s_t$ 改为 $-(\eta-\tau)s_t$（$\tau$ 为补贴率），重新反向归纳求解，模拟：大学入学率上升多少？平均教育年限提高几年？一生收入现值增加多少？这是评估中国"义务教育免费"、"助学贷款"、"师范生免费"等政策的标准工具。</li>
+        <li><strong>信贷约束放松</strong>：把 Eq. 1.2 中 $\lambda$ 设为 0（或提高资产门槛），看家庭资产对入学率的影响消失多少——这直接度量"信贷约束"而非"能力/偏好差异"对大学入学率的解释力。Cameron-Heckman (1998) 的经典结论是：<strong>信贷约束对大学入学率的直接影响被早期 OLS 高估了</strong>，真正的瓶颈在更早的童年能力形成。</li>
+        <li><strong>教育回报率的反事实模拟</strong>：改变 $\alpha_1$（如"大学扩招后工资溢价下降"），模拟个体如何改变一生教育-工作路径，加总到宏观收入分布。</li>
+        <li><strong>生命周期收入路径</strong>：对估计后的模型，模拟典型个体（按其类型 $\mu$）在不同政策下的一生工资曲线，对比"多读一年大学 vs 早工作一年"的净现值差。</li>
+      </ul>
+      <div class="callout info">
+        <div class="callout-title">💡 反事实与选择偏误的区别</div>
+        <p>结构模型的反事实优势在于：它能回答"如果政策改变，个人的<em>选择行为</em>会如何变"，而不只是"在现有选择分布下政策的机械效应"。这是结构估计相对纯简化形式 IV/DID 的核心价值。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第7节 ========== -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 论文案例</h2>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · 1974 专著</span>
+        <div class="paper-title">Schooling, Experience, and Earnings</div>
+        <div class="paper-meta">Jacob Mincer · NBER Book, 1974</div>
+        <div class="paper-desc">Mincer 工资方程的开山之作。把对数工资表达为教育年限与经验的函数，奠定了劳动经济学半个世纪的实证传统。本页 Eq. 1.1 直接来自这本书。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · NBER / Vanderkamp Festschrift 1995</span>
+        <div class="paper-title">Aspects of the Economics of Labor: Using Geographic Variation in College Proximity to Estimate the Return to Schooling</div>
+        <div class="paper-meta">David Card · NBER Working Paper #4483, 1995; published in Aspects of Labor Market Behavior (1995)</div>
+        <div class="paper-desc">用"成长地附近有无大学"作教育的工具变量，是劳动经济学最著名的 IV 应用。发现 IV 估计的教育回报率高于 OLS，引发关于"边际个体回报率"与"平均个体回报率"的长期讨论。本页 §5.3 与 Stata 代码直接借鉴此文。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · JPE 1997</span>
+        <div class="paper-title">The Career Decisions of Young Men</div>
+        <div class="paper-meta">Michael Keane, Kenneth Wolpin · Journal of Political Economy, 1997, 105(3): 474-522</div>
+        <div class="paper-desc">本页框架的命名来源。用 NLSY79 数据估计青年男性的教育-职业-工作选择生命周期模型，证明了大规模离散选择动态结构模型在计算上是可行的，并量化了教育补贴政策的效应。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · JPE 1979</span>
+        <div class="paper-title">Education and Selection in the Labor Market</div>
+        <div class="paper-meta">Robert Willis, Sherwin Rosen · Journal of Political Economy, 1979, 87(5): S7-S36</div>
+        <div class="paper-desc">把自选择（self-selection）引入教育回报估计：能力比较优势使不同能力的人选择不同教育水平，OLS 混淆了"教育的因果效应"与"谁选择了教育"。是 Heckman 选择模型的先驱。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · JPE 1998</span>
+        <div class="paper-title">Returns to Education for the Young Cohort: Evidence from the 1980s</div>
+        <div class="paper-meta">Stephen Cameron, James Heckman · Journal of Political Economy, 1998, 106(3): 463-496</div>
+        <div class="paper-desc">质疑"信贷约束是大学入学率差距主因"的流行观点，用结构分解发现家庭收入对大学入学的影响主要通过早期能力形成（童年阶段），而非大学时的流动性约束。引发关于信贷约束建模的长期争论。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · JEP 2011</span>
+        <div class="paper-title">Understanding the Returns to Education</div>
+        <div class="paper-meta">Pedro Carneiro, James Heckman, Edward Vytlacil · Journal of Economic Perspectives, 2011, 25(1): 33-56</div>
+        <div class="paper-desc">系统综述教育回报率的异质性：平均处理效应（ATE）、处理组效应（TT）、边际处理效应（MTE）各不相同，IV 识别的只是特定边际群体的回报。对如何解释 OLS/IV/结构估计的"教育回报率"差异给出权威框架。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · 2002</span>
+        <div class="paper-title">Intergenerational Education and the Rise in the College Premium</div>
+        <div class="paper-meta">Christian Belzil, Jorgen Hansen · 相关发表于 International Economic Review 等 2002 年前后</div>
+        <div class="paper-desc">用动态结构模型估计教育回报率的风险与异质性：把教育选择当作在工资不确定性下的期权决策，发现风险规避与工资方差对教育需求的影响不可忽略。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 经济学(季刊) 2010</span>
+        <div class="paper-title">迁移、自选择与收入分配——来自中国城乡的证据</div>
+        <div class="paper-meta">邢春冰 · 《经济学(季刊)》，2010, 9(2): 633-660</div>
+        <div class="paper-desc">用中国城乡微观数据估计迁移的自选择效应与教育回报在迁移者中的差异。是 Willis-Rosen 式自选择框架在中国劳动力市场的本土化应用，讨论了户籍制度下教育-迁移-收入的联合决策。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 北京大学教育评论</span>
+        <div class="paper-title">扩招"大跃进"、教育机会与大学毕业生就业</div>
+        <div class="paper-meta">邢春冰, 李实 · 《北京大学教育评论》等 2011 年前后</div>
+        <div class="paper-desc">利用 1999 年大学扩招这一准自然实验，比较扩招前后不同人群的高等教育机会与大学毕业生就业。发现扩招使东部城镇家庭受益更多，农村、西部、少数民族女性受益较少——是中国情境下"教育机会公平"的经典结构/简化形式结合研究。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 北京师范大学学报 / CFPS 应用</span>
+        <div class="paper-title">中国教育收益率的动态趋势与城乡性别差异（CFPS 系列）</div>
+        <div class="paper-meta">基于 CFPS 2010–2020 六期面板的明瑟方程研究（含元分析综述）</div>
+        <div class="paper-desc">国内学者用 CFPS 追踪数据动态估计中国教育收益率：整体呈 U 型变化，城镇高于农村、女性高于男性；用 IV 法得到的教育回报率普遍高于 OLS。这些研究是 Mincer 框架在中国的系统应用，为 KW 式结构估计提供了简化形式参照。</div>
+      </div>
+    </div>
+
+    <!-- ========== 第8节 ========== -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 常见错误与陷阱</h2>
+
+      <div class="callout danger">
+        <div class="callout-title">✗ 错误 1：忽略能力偏差，把 OLS $\hat\alpha_1$ 当因果效应</div>
+        <p>这是 Mincer 方程最经典的错误。能力 $\mu$ 同时影响教育选择与工资，OLS 估计的 $\alpha_1$ 既包含"教育的因果效应"，又包含"能力导致的工资溢价"。在没有 IV、Heckman 或结构模型控制能力的情况下，不能把 $\hat\alpha_1$ 解释为"多读一年书带来的因果工资增长"。</p>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">✗ 错误 2：忽略选择偏误——只在工作者样本上跑 Mincer</div>
+        <p>工资只在参与劳动力市场的人身上观察到；不工作的人（全职主妇、失业者、在校学生）被系统地排除。这是 Heckman 选择问题。直接跑 OLS 会把"谁选择工作"的自选择效应混进 $\hat\alpha_1$。必须用 Heckman 两阶段、IV 或结构模型处理。</p>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">✗ 错误 3：Mincer 方程函数形式误设</div>
+        <p>标准 Mincer 用 $\ln w = \alpha_0+\alpha_1 s+\alpha_2 e+\alpha_3 e^2$，经验用二次项。常见错误：(a) 不加 $e^2$，导致工资-经验关系被错误线性化；(b) 用"年龄"而非"经验"作经验变量（年龄包含教育，造成多重共线性）；(c) 教育用离散哑变量而非连续年限，丢失信息。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 陷阱 4：忽略信贷约束，把家庭收入-入学关系全归因于能力</div>
+        <p>反之亦然——Cameron-Heckman (1998) 警告：家庭收入与大学入学率的关系<strong>不能</strong>全部解释为信贷约束，很大一部分来自童年能力形成的长期影响。如果 Eq. 1.2 中 $\lambda$ 的排除约束（"家庭资产不直接影响工资"）不成立，结构估计会高估信贷约束。必须用政策变化（如助学贷款改革）作为额外识别来源。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 陷阱 5：终止期 $V_T^{\text{term}}$ 设定不合理</div>
+        <p>有限期模型的早期决策完全受终端价值驱动。如果终端价值函数形式错设（如退休后不享受教育溢价），反向归纳倒推出来的早期上学决策就是错的。常见做法是把终端价值校准为养老金规则、或直接用退休后实际工资数据估计，不能拍脑袋设常数。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 陷阱 6：把 $\beta$ 当自由参数估计</div>
+        <p>与单 agent 动态模型一样，生命周期模型的贴现因子 $\beta$ 与教育成本参数高度共线。实践中校准 $\beta=0.95$ 左右（对应 5% 年贴现率），不参与估计。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 陷阱 7：IV 排他性约束失效而不检验</div>
+        <p>Card (1995) 的 college proximity IV 要求"附近有无大学不直接影响工资"。但如果"靠近大学的地区本身劳动力市场就更好"，IV 就不成立。必须做过度识别检验、安慰剂检验（用 placebo IV）、并在论文中论证排他性。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第9节 ========== -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 难度、前置与交叉链接</h2>
+      <h3>9.1 学习路径建议</h3>
+      <ol>
+        <li>先读 <a href="05-dynamic-structural.html">05 动态结构模型总览</a>，掌握 Bellman 方程、CCP、Hotz-Miller 的通用框架。</li>
+        <li>读 <a href="07-binary-choice.html">07 二值选择</a>，复习 logit 与极值分布。</li>
+        <li>读 Mincer (1974) 专著导论 + Card (1995) 原文附录，理解 IV 识别。</li>
+        <li>运行本页 §4 的 Python 反向归纳代码，亲手观察 CCP 随年龄变化。</li>
+        <li>用 Stata 跑 §4.2 的 Mincer 三步估计，比较 OLS/Heckman/IV 的教育回报率差异。</li>
+        <li>进阶：读 Keane-Wolpin (1997) 附录，理解如何把模型扩展到 30+ 期、3 个选择、多维状态。</li>
+      </ol>
+      <h3>9.2 交叉链接</h3>
+      <ul>
+        <li><a href="05-dynamic-structural.html">05 动态结构模型总览</a>（Bellman/CCP 通用理论）</li>
+        <li><a href="07-binary-choice.html">07 二值选择（Logit/Probit）</a>（CCP 的静态基础）</li>
+        <li><a href="15-dynamic-games.html">15 动态博弈与产业动态（EP）</a>（动态结构在 IO 的另一分支，对照无限期 vs 有限期）</li>
+        <li><a href="06-counterfactual.html">06 反事实分析</a>（学费补贴、信贷约束放松的一般化方法论）</li>
+        <li><a href="01-mle.html">01 MLE</a>（NFXP 外层似然估计）</li>
+      </ul>
+      <h3>9.3 难度评级</h3>
+      <p><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--warning);color:#fff;font-size:12px;font-weight:600;">中高</span>　反向归纳本身比无限期 VFI 简单，但劳动经济学建模细节（能力异质性、信贷约束、选择偏误、IV 排他性）需要较强的理论功底。是结构估计在劳动经济学/家庭经济学应用的标准入门分支。</p>
+    </div>
+
+    <div class="page-nav">
+      <a href="15-dynamic-games.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">动态博弈与产业动态（EP）</div>
+      </a>
+      <a href="10-production-function.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">生产函数估计（OP/LP/ACF）</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

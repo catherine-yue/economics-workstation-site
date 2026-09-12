@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>零利率下限与偶发约束：OccBin 与全局求解 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item active" href="19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">DSGE模型</a><span class="sep">/</span>
+      <span>ZLB与偶发约束</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">DSGE · 非线性求解 · 货币政策边界 · 完整模型分支</span>
+      <h1>零利率下限（ZLB）与偶发约束：OccBin 分段线性解与全局非线性求解</h1>
+      <p class="desc">Occasionally Binding Constraint（偶发约束）是 2008 年后 DSGE 文献的核心难题：名义利率不能为负，当 Taylor 规则建议的利率跌破下限时，央行被"卡在地板上"。这一页从 NK 三方程出发，把 $i_t=\max(\underline i, i_t^\ast)$ 写成互补松弛条件，推导出约束绑定/松弛两种状态与预期驱动的通缩陷阱；随后进入本页重点——求解方法：分段线性的 <strong>OccBin（Guerrieri-Iacoviello 2015）</strong>与全局非线性的<strong>值函数迭代 / 政策函数迭代 / 投影法</strong>，给出完整可运行的 Dynare .mod（含 occbin 块）与完整 Python 全局求解器（中文注释），最后落到 ZLB 时期数据识别、财政乘数放大、前瞻性指引效应与福利分析。</p>
+      <div class="callout info" style="margin-top:16px;margin-bottom:0">
+        <div class="callout-title">📐 本页方程清单（审计口径）</div>
+        <p style="margin-bottom:6px">本页在 NK 三方程（Eq.N10–N12）基础上增加 <strong>ZLB 约束与两套状态方程</strong>：影子利率定义（Eq.Z1）、ZLB 补余松弛（Eq.Z2）、松弛态 Taylor 规则（Eq.Z3）、绑定态利率钉住（Eq.Z4）、通缩稳态（Eq.Z5）、自然利率触发机制（Eq.Z6）、财政乘数桥（Eq.Z7）、期望桥（Eq.Z8）。每个公式按 <code class="inline">Eq.Zx</code> 编号。</p>
+      </div>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-head">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-item"><span class="prereq-label">数学 / 统计基础</span>前向理性预期、欧拉方程；本页新增<strong>分段函数与互补松弛（complementary slackness）</strong>概念、离散状态的数值网格与迭代收敛判据。</div>
+      <div class="prereq-item"><span class="prereq-label">经济学理论前置</span>必须先吃透 <a href="10-nk-three-equation.html">10 NK 三方程</a>：本页 IS 曲线、NKPC、Taylor 规则全部沿用，只在利率上加一个下界。</div>
+      <div class="prereq-item"><span class="prereq-label">软件 / 计算前置</span>MATLAB + Dynare ≥4.6（occbin 内建）；Python 3 + numpy/scipy（全局求解器，本页给出）。</div>
+      <div class="prereq-item"><span class="prereq-label">站内前置页面</span>10 NK 三方程（内核）、15 扰动法（一阶/二阶，理解为何线性近似在 ZLB 失效）、13 财政与货币政策规则。</div>
+      <div class="prereq-item"><span class="prereq-label">难度与路线位置</span><span class="prereq-level lv-frontier">进阶→前沿</span>本页是 DSGE 数值方法的分水岭：一阶线性近似到此为止，必须上分段或全局方法。</div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">概念直觉：为什么 ZLB 让线性模型失效</a></li>
+        <li><a href="#s2">经济环境与假设：NK 三方程 + 利率下界</a></li>
+        <li><a href="#s3">完整推导：互补松弛与两种状态</a></li>
+        <li><a href="#s4">ZLB 陷阱：预期驱动的通缩稳态</a></li>
+        <li><a href="#s5">求解方法 I：OccBin 分段线性解</a></li>
+        <li><a href="#s6">求解方法 II：全局非线性方法</a></li>
+        <li><a href="#s7">Dynare .mod：完整 OccBin 工程</a></li>
+        <li><a href="#s8">Python 全局求解器：政策函数迭代</a></li>
+        <li><a href="#s9">估计与数据：ZLB 时期与影子利率</a></li>
+        <li><a href="#s10">模拟与结果：IRF、财政乘数与前瞻指引</a></li>
+        <li><a href="#s11">论文、常见错误与交叉链接</a></li>
+      </ol>
+    </div>
+
+    <!-- S1 -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 概念直觉：为什么 ZLB 让线性模型失效</h2>
+      <p>在前一页的 NK 三方程世界里，央行可以无限制地调利率：通胀低了就降息、产出差了就降息，实际利率总能把总需求拉回正轨。但现实中有一个硬约束——<strong>名义利率不能大幅低于零</strong>（更准确说是有效下界 ELB，约为 $-0.5\%\sim0\%$）。原因很直观：持有现金（通货）的名义回报是 0，如果银行存款利率是 $-2\%$，理性人会把钱取出来压在床垫下，银行体系就被挤兑了。于是名义利率存在一个下界 $\underline i$：</p>
+      <div class="formula-block">
+        <div class="formula-label">直觉性约束</div>
+        $$i_t \ge \underline i \qquad(\text{季度口径，}\underline i\approx 0)$$
+      </div>
+      <p>问题出在求解。标准 DSGE 用<strong>对数线性化 + 一阶扰动</strong>（见 <a href="15-perturbation-methods.html">15 扰动法</a>），它假设模型在一个稳态附近"光滑"，政策函数是状态变量的线性函数。但 ZLB 是一个<strong>不等式、分段、偶尔才绑定</strong>的约束：平时利率离零很远，约束形同虚设；一旦自然利率暴跌（2008 金融危机、2020 疫情），Taylor 规则建议的利率跌破零，央行被迫停在 $\underline i$。政策函数在"绑定 vs 松弛"两个区域之间<strong>不光滑、有拐点</strong>，一阶泰勒展开根本跨不过去。</p>
+      <div class="callout warning">
+        <div class="callout-title">核心矛盾："偶尔绑定"≠"永远绑定"</div>
+        <p>这类约束叫 <strong>Occasionally Binding Constraint（OBC，偶发约束）</strong>：大部分时间不绑定，小部分时间绑定。它不同于"永远绑定"（直接改方程即可）或"永远松弛"（标准线性模型），难点在于<strong>经济体会预期到自己将来可能撞上下界</strong>，这种"对未来绑不绑的预期"会反过来影响今天的消费、定价与通胀——<strong>预期效应是 OBC 模型最反直觉、也是最重要的部分</strong>。</p>
+      </div>
+    </div>
+
+    <!-- S2 -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 经济环境与假设：NK 三方程 + 利率下界</h2>
+      <p>我们直接复用 <a href="10-nk-three-equation.html">10 NK 三方程</a>的内核，只把 Taylor 规则换成"带地板的版本"。先回顾三大线性化核心（全部变量为偏离稳态的季度口径）：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.N10/N11 · IS 曲线与 NKPC（沿用三方程页）</div>
+        $$\hat y_t = E_t\hat y_{t+1} - \tfrac{1}{\sigma}\big(\hat i_t - E_t\hat\pi_{t+1} - \hat r_t^n\big)$$
+        $$\hat\pi_t = \beta E_t\hat\pi_{t+1} + \kappa\hat y_t$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>变量：</strong>$\hat y_t$ 产出缺口；$\hat\pi_t$ 通胀；$\hat i_t$ 名义利率；$\hat r_t^n$ 自然利率。<strong>参数：</strong>$\sigma$ 风险厌恶、$\kappa$ NKPC 斜率、$\beta$ 贴现。<strong>直觉：</strong>实际利率 $(\hat i_t-E_t\hat\pi_{t+1})$ 越高，当期需求越弱；正产出缺口推通胀。</p>
+      </div>
+      <p>关键修改在政策规则。央行希望按 Taylor 规则设定一个"意愿利率" $i_t^\ast$（<strong>shadow rate，影子利率</strong>），但受零下限约束，实际利率取二者较大值：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.Z1 · 影子利率与实际利率的 max 关系（ZLB 核心）</div>
+        $$i_t^\ast = \phi_\pi \hat\pi_t + \phi_y \hat y_t + \hat\nu_t, \qquad \boxed{\hat i_t = \max\big(\underline i,\ i_t^\ast\big)}$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>设定理由：</strong>$\max$ 把"央行想做的事"（Taylor 规则）和"能做的事"（不低于零）分开。$i_t^\ast$ 是<strong>影子利率</strong>——如果不受约束央行会设的利率；$\hat i_t$ 是实际成交的政策利率。<strong>参数：</strong>$\phi_\pi,\phi_y$ Taylor 系数；$\hat\nu_t$ 货币政策冲击；$\underline i$ 下界（对数线性模型里设为 0，对应"利率不能再降"）。<strong>经济直觉：</strong>当 $i_t^\ast>\underline i$，约束松弛，$\hat i_t=i_t^\ast$；当 $i_t^\ast<\underline i$，约束绑定，$\hat i_t=\underline i$，央行"想降降不动"。</p>
+      </div>
+      <div class="callout info">
+        <div class="callout-title">影子利率（shadow rate）≠ 实际利率</div>
+        <p>$\hat i_t$ 是可观测的政策利率（到了 ZLB 就一直贴在 0 附近）；$i_t^\ast$ 是<strong>不可观测的、被约束压住的"应有"利率</strong>。量化宽松（QE）等非常规政策相当于在不抬高 $\hat i_t$ 的情况下压低 $i_t^\ast$。文献里用 Wu-Xia、Krippner 影子利率把它从收益率曲线上"估"出来（见 §9）。<strong>把影子利率当实际利率用，是新手第一大错。</strong></p>
+      </div>
+      <p>自然利率 $\hat r_t^n$ 被建模为高度持续的 AR(1)，它就是把经济推入 ZLB 的"扳机"：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.Z6 · 自然利率冲击过程（ZLB 的触发源）</div>
+        $$\hat r_t^n = \rho_r \hat r_{t-1}^n + \varepsilon_t^r, \qquad \varepsilon_t^r\sim\mathcal N(0,\sigma_r^2)$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>设定理由：</strong>2008 后大缓和时代估计的 $\rho_r$ 高达 0.9~0.95，意味着自然利率暴跌后要很多年才能回升——这段时间 ZLB 一直绑着。<strong>直觉：</strong>当 $\hat r_t^n$ 大幅为负（家庭想储蓄、企业不想投资），即使 $\hat i_t=0$，实际利率 $-\hat\pi_{t+1}$ 仍然太高，需求疲软。</p>
+      </div>
+    </div>
+
+    <!-- S3 -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 完整推导：互补松弛与两种状态</h2>
+      <p>$\max(\underline i,i_t^\ast)$ 这个式子，在优化理论里对应一个<strong>不等式约束 + 拉格朗日乘子</strong>。把它写严谨，就是 KKT 条件里的<strong>互补松弛（complementary slackness）</strong>。</p>
+
+      <h3>3.1 从 max 到互补松弛条件</h3>
+      <p>引入一个非负的"绑定乘子" $\mu_t\ge 0$，度量 ZLB 有多紧。$\max(\underline i,i_t^\ast)$ 等价于下面两条约束同时成立：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.Z2 · ZLB 的互补松弛条件（KKT 形式）</div>
+        $$\hat i_t \ge \underline i, \qquad i_t^\ast \le \hat i_t, \qquad \boxed{\mu_t\ge 0,\ \ \mu_t\cdot(\hat i_t - i_t^\ast)=0}$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>含义：</strong>乘子 $\mu_t$ 只能在约束绑定的地方非零。互补项 $\mu_t(\hat i_t-i_t^\ast)=0$ 是关键：① 若约束<strong>松弛</strong>（$i_t^\ast>\underline i$），则 $\hat i_t=i_t^\ast$，乘子 $\mu_t=0$；② 若约束<strong>绑定</strong>（$i_t^\ast<\underline i$），则 $\hat i_t=\underline i$，乘子 $\mu_t>0$。<strong>直觉：</strong>"不绑就不惩罚，绑了才惩罚"——这正是分段线性求解器（OccBin）的数学原型。</p>
+      </div>
+
+      <h3>3.2 状态 A：约束松弛（normal regime）</h3>
+      <p>当 $i_t^\ast>\underline i$，乘子为零，模型退回标准三方程：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.Z3 · 松弛态方程组</div>
+        $$\hat y_t = E_t\hat y_{t+1} - \tfrac{1}{\sigma}\big(\hat i_t - E_t\hat\pi_{t+1} - \hat r_t^n\big)$$
+        $$\hat\pi_t = \beta E_t\hat\pi_{t+1} + \kappa\hat y_t$$
+        $$\hat i_t = \phi_\pi \hat\pi_t + \phi_y \hat y_t + \hat\nu_t \quad(\text{Taylor 规则完全生效})$$
+      </div>
+
+      <h3>3.3 状态 B：约束绑定（ZLB regime）</h3>
+      <p>当 $i_t^\ast<\underline i$，利率被钉在地板上，Taylor 规则的反应系数<strong>暂时失效</strong>：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.Z4 · 绑定态方程组</div>
+        $$\hat y_t = E_t\hat y_{t+1} - \tfrac{1}{\sigma}\big(\underline i - E_t\hat\pi_{t+1} - \hat r_t^n\big)$$
+        $$\hat\pi_t = \beta E_t\hat\pi_{t+1} + \kappa\hat y_t$$
+        $$\hat i_t = \underline i \quad(\text{利率被钉死，}\phi_\pi,\phi_y\text{ 不再起作用})$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>关键推导：</strong>把 $\hat i_t=\underline i$（在对数线性模型 $\underline i=0$）代入 IS 曲线，实际利率变成 $-\hat\pi_{t+1}-\hat r_t^n$。此时央行<strong>无法通过降息对冲</strong>：$\hat r_t^n$ 越负，$\hat y_t$ 越往下掉；而且因为 $E_t\hat\pi_{t+1}$ 出现在分母符号里，<strong>通缩预期会自我加强</strong>——这就是 ZLB 陷阱的数学种子。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">为什么线性化模型在这里直接报错/失真</div>
+        <p>状态 A 与状态 B 是<strong>两套不同的方程</strong>（第三式一个是 Taylor 规则、一个是常数）。一阶扰动法只在一个稳态附近展开，假设政策函数处处光滑，<strong>根本不知道有"切换"这回事</strong>。若强行在原点做一阶线性近似，Dynare 会把 $\hat i_t=\max(0,\cdot)$ 线性化成 $\hat i_t=i_t^\ast$（因为稳态 $\hat i=0$ 处 max 的子梯度选错），等于<strong>假装 ZLB 不存在</strong>，2008 那种大冲击的 IRF 完全算错。</p>
+      </div>
+    </div>
+
+    <!-- S4 -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> ZLB 陷阱：预期驱动的通缩稳态</h2>
+      <p>ZLB 最深刻的含义不是"政策暂时失效"，而是它<strong>打开了第二个均衡</strong>。Eggertsson-Woodford（2003）、Benhabib-Schmitt-Grohé-Uribe（2001）证明：在 ZLB 下，理性预期模型存在一个<strong>预期驱动的通缩稳态（deflationary / liquidity-trap steady state）</strong>。</p>
+      <h3>4.1 稳态的两条候选</h3>
+      <p>长期稳态下 $E_t\hat y_{t+1}=\hat y_t=0$、$E_t\hat\pi_{t+1}=\hat\pi_t=\bar\pi$。把稳态代入，系统有两个不动点：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.Z5 · 两个稳态的推导</div>
+        <p>① <strong>目标稳态（正常）：</strong>$\bar\pi=0,\ \bar i=\bar r^n$，Taylor 原理 $\phi_\pi>1$ 保证它确定。</p>
+        <p>② <strong>通缩稳态（陷阱）：</strong>此时 $\hat i_t=\underline i$ 绑定，IS 稳态要求 $\underline i-\bar\pi=\bar r^n$。在名义下界 $\underline i=0$ 下得 $\bar\pi=-\bar r^n<0$——<strong>通胀为负，利率贴着零，产出低于自然水平，且自我维持</strong>。</p>
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>直觉：</strong>如果所有人都预期"央行救不了、价格会跌"，企业就降价→实际利率上升（因为 $i=0$ 降不动）→需求更弱→企业更降价，预期自我实现。日本 1999 年后的"失去的二十年"就是这个均衡的现实版。</p>
+      </div>
+      <h3>4.2 自然利率冲击如何触发 ZLB</h3>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">第 1 步：自然利率暴跌</div>
+          <div class="step-desc">$\varepsilon_t^r<0$ 使 $\hat r_t^n$ 大幅为负（去杠杆、需求不足、储蓄过剩）。此时 Taylor 规则"想要"的 $i_t^\ast=\phi_\pi\hat\pi_t+\phi_y\hat y_t$ 跌破 $\underline i$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第 2 步：央行撞上下界</div>
+          <div class="step-desc">$\hat i_t=\underline i$，无法再降息。实际利率 $\hat i_t-E_t\hat\pi_{t+1}$ 相对自然利率仍然偏高，产出缺口转负。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第 3 步：预期恶化放大衰退</div>
+          <div class="step-desc">负产出缺口→通胀下降→$E_t\hat\pi_{t+1}$ 下降→实际利率进一步上升→产出更差。<strong>因为央行知道将来一段时间还会卡在 ZLB，今天的降息空间被预期"预先封死"。</strong></div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第 4 步：缓慢退出</div>
+          <div class="step-desc">只要 $\hat r_t^n$ 慢慢回升到足够高，$i_t^\ast$ 重新越过 $\underline i$，约束解除，模型回到状态 A，经济缓慢爬回目标稳态。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S5 -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 求解方法 I：OccBin 分段线性解（Guerrieri-Iacoviello 2015）</h2>
+      <p>处理 OBC 有两条路线：<strong>分段线性</strong>（便宜、可估计、够用）和<strong>全局非线性</strong>（贵但精确）。本节讲第一条，也是 Dynare 内建的 <code class="inline">occbin</code> 工具箱。</p>
+
+      <h3>5.1 核心思想：把"切换"本身当成状态</h3>
+      <p>OccBin（<strong>Occ</strong>asionally <strong>Bin</strong>ding）不做全局近似，而是承认模型在<strong>两个 regime</strong> 间切换：用两套线性方程（松弛态 Eq.Z3 / 绑定态 Eq.Z4），并在每一<strong>个时点、每一条模拟路径</strong>上判断约束绑没绑定，用一个<strong>确定性的前向迭代</strong>把"今天绑不绑"与"明天预期绑不绑"联立求解。</p>
+      <div class="formula-block">
+        <div class="formula-label">OccBin 的求解逻辑（时间迭代）</div>
+        $$\text{给定未来 }T\text{ 期一定会离开 ZLB} \Rightarrow \text{从 }T\text{ 倒推每期}\Rightarrow \text{选择使约束满足的 regime}$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555">它假设：足够远的未来，经济一定回到松弛态（ZLB 是临时的）。于是从未来已知端点往回推，逐期判断"这一期按绑还是松算"。这是一种<strong>分段线性 + 预期一致</strong>的局部解，速度快到可以做贝叶斯估计。</p>
+      </div>
+
+      <h3>5.2 与一阶扰动的本质区别</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>维度</th><th>一阶扰动（标准 Dynare）</th><th>OccBin 分段线性</th><th>全局非线性</th></tr></thead>
+        <tbody>
+          <tr><td>政策函数</td><td>处处光滑线性</td><td>分段线性，按 regime 切换</td><td>真正非线性（凸/凹、拐点）</td></tr>
+          <tr><td>ZLB 处理</td><td><strong>直接忽略 max</strong>，算错</td><td>显式声明约束，逐期判断</td><td>网格上迭代自然体现</td></tr>
+          <tr><td>预期效应</td><td>无（不知将来会绑）</td><td>有（倒推未来 regime）</td><td>有（政策函数含全状态空间）</td></tr>
+          <tr><td>计算成本</td><td>毫秒级</td><td>秒~分钟级，可估计</td><td>分钟~小时级，难估计</td></tr>
+          <tr><td>精度</td><td>小波动、远离 ZLB</td><td>大冲击、临时 ZLB</td><td>深 ZLB、多重稳态、长持续</td></tr>
+        </tbody>
+      </table></div>
+
+      <h3>5.3 Dynare 的 occbin 命令长什么样</h3>
+      <p>OccBin 在 Dynare 里通过 <code class="inline">occbin;</code> 块声明约束，并<strong>写两个 model 块</strong>：第一个是"约束不绑"的参考模型（Taylor 规则生效），第二个是"约束绑定"的受限模型（利率钉在 $\underline i$）。§7 给出完整可运行工程。</p>
+    </div>
+
+    <!-- S6 -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 求解方法 II：全局非线性方法</h2>
+      <p>当 ZLB 很深、持续很久，或想认真研究通缩稳态、多重均衡时，OccBin 的"假设终将脱离 ZLB"就不够了，必须上<strong>全局求解（global solution）</strong>：在整个状态空间上迭代出真正的非线性政策函数。</p>
+
+      <h3>6.1 值函数迭代（VFI, Value Function Iteration）</h3>
+      <p>把代表性家庭的值函数 $V(s)$ 在状态 $s$（这里是自然利率状态 $\hat r^n$）的网格上迭代：猜一个 $V(s)$，对每个网格点求解 Bellman 方程取最大，更新 $V$，直到收敛。优点是<strong>收敛性有理论保证</strong>（压缩映射）；缺点是 curse of dimensionality——状态一多网格指数爆炸，NK 三方程全局还能算，中尺度模型就不行了。</p>
+
+      <h3>6.2 政策函数迭代（PFI / 时间迭代）</h3>
+      <p>不迭代值函数，直接迭代<strong>政策函数</strong> $g(s)$：猜 $\hat y(\cdot),\hat\pi(\cdot)$ 作为"明天"的策略，用 IS/NKPC/ZLB 三式解出"今天"的最优 $\hat y,\hat\pi$，更新策略函数直到收敛。它比 VFI 快一个量级，且天然处理 max 约束——今天算 $\hat i_t=\max(\underline i,\phi_\pi\hat\pi_t+\phi_y\hat y_t)$ 就行，不需要光滑假设。<strong>注意：纯前望 NK 在深 ZLB 绑定区局部特征根略大于 1，朴素逐点时间迭代可能数值发散；本页 §8 的代码改用"全网格残差一次性求根"的更稳实现，思想仍是在网格上逼近政策函数。</strong></p>
+
+      <h3>6.3 投影法（Projection / Chebyshev）</h3>
+      <p>把政策函数用 Chebyshev 多项式基展开 $\hat y(s)\approx\sum_k a_k T_k(s)$，用<strong>残差正交条件</strong>（配点法 collocation）定系数 $a_k$。状态少时精度高、光滑；但状态空间一高，配点与基函数系数也会爆炸，且不擅长"有拐点"的政策函数（ZLB 的 max 就是拐点）。</p>
+
+      <h3>6.4 参数化期望（PEA, Parameterized Expectations）</h3>
+      <p>Marcet 提出：不近似政策函数，而近似<strong>期望项</strong> $E_t[\hat y_{t+1}],E_t[\hat\pi_{t+1}]$ 为状态的多项式。模拟长序列、用最小二乘更新多项式系数，迭代收敛。适合有随机模拟需求、且期望项维数低的模型。</p>
+      <div class="callout tip">
+        <div class="callout-title">方法选择决策树</div>
+        <p>① 只是想让 IRF 在大冲击下别爆炸、要做贝叶斯估计 → <strong>OccBin</strong>（首选，便宜）。② 状态少（≤3）、ZLB 深且想研究多重稳态/福利 → <strong>PFI/VFI 全局</strong>。③ 政策函数光滑、想要高精度导数 → 投影法。④ 模型大但期望项低维 → PEA。文献主流：OccBin 做估计，全局方法做"理论性质"分析。</p>
+      </div>
+    </div>
+
+    <!-- S7 -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> Dynare .mod：完整 OccBin 工程</h2>
+      <p>下面是一个<strong>完整可运行</strong>的 OccBin .mod，存为 <code class="inline">zlb_occbin.mod</code>。结构：第一个 <code class="inline">model;</code> 块写"无约束"的 Taylor 规则版；<code class="inline">occbin;</code> 块声明下界约束；第二个 <code class="inline">model(linear);</code> 块写"绑定"版（利率钉死）。运行 <code class="inline">dynare zlb_occbin.mod</code>。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Dynare / zlb_occbin.mod（完整 OccBin 工程）</span><button class="copy-btn">复制</button></div>
+        <pre><code>// ============================================================
+// zlb_occbin.mod  ——  NK 三方程 + 名义利率零下限（OccBin）
+// 运行：dynare zlb_occbin.mod
+// 思想：两套 model 块分别对应 "约束松弛" 与 "约束绑定"
+//       occbin 块声明 i >= i_lb，绑定时把 i 钉到下界
+// ============================================================
+
+var  y pi i rn ;
+varexo eps_rn ;
+
+parameters beta sigma varphi epsilon theta kappa ...
+           phi_pi phi_y rho_rn i_lb;
+
+// ---------- 深参数校准（与 NK 三方程页一致） ----------
+beta    = 0.99;
+sigma   = 1.0;
+varphi  = 1.0;
+epsilon = 6.0;
+theta   = 0.75;
+kappa   = (1-theta)*(1-beta*theta)/theta*(sigma+varphi)/(1+epsilon*varphi);
+phi_pi  = 1.5;
+phi_y   = 0.125;
+rho_rn  = 0.90;
+i_lb    = 0.0;          // 零下界（对数线性模型里取 0）
+
+// ============================================================
+// 【model 块 1】约束【松弛】：Taylor 规则完全生效
+// ============================================================
+model;
+// (1) IS 曲线
+y = y(+1) - (1/sigma)*( i - pi(+1) - rn );
+// (2) NKPC
+pi = beta*pi(+1) + kappa*y;
+// (3) Taylor 规则（无下界的"影子"意愿利率）
+i = phi_pi*pi + phi_y*y;
+// (4) 自然利率 AR(1)
+rn = rho_rn*rn(-1) + eps_rn;
+end;
+
+// ============================================================
+// 【occbin 块】声明偶发约束：名义利率不能低于 i_lb
+// ============================================================
+occbin;
+var i;                          // 被约束的变量
+parameters i_lb;                // 下界参数
+constraints;
+  i >= i_lb;                    // 不等式约束
+restrictions;
+  i = i_lb;                     // 一旦绑定，把 i 钉到下界（替换 Taylor 规则）
+end;
+
+// ============================================================
+// 【model 块 2】约束【绑定】：利率钉死在 i_lb
+// 只把第三式换成 i = i_lb，其余与块1相同
+// ============================================================
+model(linear);
+y = y(+1) - (1/sigma)*( i - pi(+1) - rn );
+pi = beta*pi(+1) + kappa*y;
+i = i_lb;                       // 关键区别：不再按 Taylor 规则调
+rn = rho_rn*rn(-1) + eps_rn;
+end;
+
+// ---------- 初始值（正常稳态原点） ----------
+initval;
+ y = 0; pi = 0; i = 0; rn = 0;
+end;
+steady;
+
+// ---------- 自然利率冲击（一次性大负冲击推入 ZLB） ----------
+shocks;
+var eps_rn; stderr = 0.01;
+end;
+
+// 给一个大的负自然利率冲击（-3%），观察经济如何撞入并走出 ZLB
+// periods=80：模拟 80 个季度；replic：确定性模拟路径
+shocks;
+var eps_rn = (-0.03);   // 第 1 期一个 -3% 的自然利率冲击
+end;
+
+occbin_setup(display_occbin);
+simul(periods=80);
+
+// 想对比"无约束"版本：把 occbin 块与第二个 model 块删掉，
+// 直接 stoch_simul 跑块1即可，会看到利率被允许降到负值（错误！）</code></pre>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">Dynare 版本注意</div>
+        <p>不同 Dynare 版本的 OccBin 语法略有差异：≥4.6 用 <code class="inline">occbin;</code> 块 + 双 <code class="inline">model</code> 块；更早版本用 <code class="inline">occbin_setup;</code> / <code class="inline">occbin_solver;</code> 命令式写法。Guerrieri-Iacoviello 官方 replication 文件 <code class="inline">occbin_example.mod</code> 是最权威的对照。若报"inconsistent model blocks"，多半是两个 model 块的变量声明没对齐。</p>
+      </div>
+    </div>
+
+    <!-- S8 -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> Python 全局求解器：状态网格 + 联立求根</h2>
+      <p>下面是一个<strong>完整可运行</strong>的全局求解器，用 numpy/scipy 在自然利率 $\hat r^n$ 网格上求政策函数。状态取自然利率，用 Rouwenhorst 离散 AR(1)；控制 $\hat y,\hat\pi$，利率直接取 $\max(\underline i,\cdot)$。我们把全网格的 IS/NKPC/ZLB 残差<strong>堆叠成一个大方程组，一次性求根</strong>——这比朴素的时间迭代更稳，能避免深 ZLB 区的数值发散。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python / zlb_global_solve.py（全局非线性求解器：网格+联立求根）</span><button class="copy-btn">复制</button></div>
+        <pre><code># ============================================================
+# zlb_global_solve.py  ——  NK三方程 + ZLB 的全局非线性求解
+# 方法：在状态 rn 网格上，把每个网格点的 IS/NKPC/ZLB 残差
+#       全部堆叠成一个大的非线性方程组，用 fsolve 一次性求根。
+# 说明：纯前望 NK 在"深 ZLB 绑定区"局部特征根>1，朴素的
+#       时间迭代会发散；直接联立求根能稳定收敛到全局政策函数。
+# 状态：自然利率 rn（AR(1)，用 Rouwenhorst 离散）
+# 控制：产出缺口 y, 通胀 pi, 名义利率 i
+# 依赖：numpy, scipy
+# ============================================================
+import numpy as np
+from scipy.optimize import fsolve
+
+# ---------- 1. 深参数（与 Dynare 一致） ----------
+beta    = 0.99      # 贴现因子
+sigma   = 1.0       # 风险厌恶
+kappa   = 0.0245    # NKPC 斜率（由深参数推出）
+phi_pi  = 1.5       # Taylor 通胀系数
+phi_y   = 0.125     # Taylor 产出系数
+rho_rn  = 0.90      # 自然利率持续性
+sd_rn   = 0.01      # 自然利率 innovation 标准差
+i_lb    = 0.0       # 名义利率零下界（对数线性口径）
+
+# ---------- 2. 用 Rouwenhorst 把 AR(1) 离散成状态网格 ----------
+N = 21                              # 自然利率网格点数
+p = (1 + rho_rn) / 2.0              # Rouwenhorst 相邻转移概率
+def rouwenhorst(N, p, q):
+    # 递归生成 N 点马尔可夫链转移矩阵 Pi
+    Pi = np.array([[p, 1-p], [1-q, q]])
+    for _ in range(N-2):
+        a = np.zeros((Pi.shape[0]+1, Pi.shape[1]+1))
+        a[:-1, :-1] += p*Pi
+        a[:-1, 1:]  += (1-p)*Pi
+        a[1:, :-1]  += (1-q)*Pi
+        a[1:, 1:]   += q*Pi
+        a[1:-1, :] /= 2
+        Pi = a
+    return Pi
+Pi = rouwenhorst(N, p, p)
+# 状态网格：对称中心 0，跨约 3.5 个无条件标准差
+g = 3.5*sd_rn/np.sqrt(1-rho_rn**2)
+rn_grid = np.linspace(-g, g, N)
+
+# ---------- 3. 定义残差方程组（把 N 个网格点全部堆叠） ----------
+# 未知向量 x = [y(0..N-1), pi(0..N-1)]，共 2N 个未知量
+def residuals(x):
+    y  = x[:N]          # 各网格点的产出缺口政策值
+    pi = x[N:]          # 各网格点的通胀政策值
+    # 期望项：E[y']=Pi@y, E[pi']=Pi@pi（对明天政策函数求期望，
+    #         天然包含"将来可能撞 ZLB"的前向预期）
+    Ey  = Pi @ y
+    Epi = Pi @ pi
+    r = np.zeros(2*N)
+    for j in range(N):
+        # 意愿（影子）利率与实际利率：ZLB 取 max(i_lb, 意愿)
+        i_star = phi_pi*pi[j] + phi_y*y[j]
+        i = i_star if i_star >= i_lb else i_lb   # 关键的分段 max
+        # IS 曲线残差：y_j = Ey_j - (1/sigma)(i_j - Epi_j - rn_j)
+        r[j]   = y[j] - Ey[j] + (1/sigma)*(i - Epi[j] - rn_grid[j])
+        # NKPC 残差：pi_j = beta*Epi_j + kappa*y_j
+        r[N+j] = pi[j] - beta*Epi[j] - kappa*y[j]
+    return r
+
+# ---------- 4. 初始猜测：无约束线性解附近 ----------
+# 无约束时 y 对 rn 的导数约为 2.78（由深参数推出），pi 约 0.625*y
+x0 = np.concatenate([2.78*rn_grid, 0.625*2.78*rn_grid])
+
+# ---------- 5. 直接联立求根（全局政策函数） ----------
+sol, info, ier, msg = fsolve(residuals, x0, full_output=True, xtol=1e-11)
+y_policy  = sol[:N]
+pi_policy  = sol[N:]
+print(f"[求解] fsolve 收敛状态 ier={ier}")
+
+# ---------- 6. 后处理：实际利率政策函数与绑定标记 ----------
+i_star  = phi_pi*pi_policy + phi_y*y_policy
+i_policy = np.maximum(i_lb, i_star)            # 实际利率（含 ZLB）
+binding  = i_policy <= i_lb + 1e-9             # 哪些状态 ZLB 绑定
+
+# ---------- 7. 打印关键结果 ----------
+print("\n=== 全局政策函数（自然利率由低到高） ===")
+print(f"{'rn':>8}{'y':>10}{'pi':>10}{'i(实际)':>10}{'ZLB绑定?':>10}")
+for j in [0, N//4, N//2, 3*N//4, N-1]:
+    print(f"{rn_grid[j]:8.4f}{y_policy[j]:10.4f}{pi_policy[j]:10.4f}"
+          f"{i_policy[j]:10.4f}{str(binding[j]):>10}")
+print("\n经济直觉：")
+print("· rn 很负（深衰退）时 y 大幅为负、i 被钉在 0（ZLB 绑定）；")
+print("· 因为央行降不动息，通缩+衰退被前向预期放大；")
+print("· rn 回到 0 附近，约束松弛，i 随 Taylor 规则正常变动。")</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">怎么读这个求解器</div>
+        <p>① <strong>全局网格</strong>：在自然利率 $r^n$ 的整个网格上求政策函数 $\hat y(\cdot),\hat\pi(\cdot)$，而不是只在原点线性化——这是"全局"二字的含义。② <strong>分段 max</strong>：每个网格点的实际利率 $i=\max(\underline i,\phi_\pi\hat\pi+\phi_y\hat y)$，绑不绑由解本身内生决定。③ <strong>期望</strong>：$E[y_{t+1}]=\sum_k\pi_{jk}y_{k}$ 用转移矩阵对"明天政策函数"加权，<strong>天然包含了"将来可能撞 ZLB"的前向预期</strong>。④ 用 <code class="inline">fsolve</code> 把全网格残差一次性求根，比朴素时间迭代更稳（深 ZLB 绑定区局部特征根 &gt;1，单步迭代会发散）。收敛后 $\hat y(\cdot),\hat\pi(\cdot),\hat i(\cdot)$ 就是全局非线性政策函数，可直接画 IRF、算福利。</p>
+      </div>
+    </div>
+
+    <!-- S9 -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 估计与数据：ZLB 时期识别与影子利率</h2>
+      <h3>9.1 主要 ZLB 时期的经验识别</h3>
+      <div class="table-wrap"><table>
+        <thead><tr><th>经济体</th><th>ZLB/ELB 时期</th><th>政策利率代理</th><th>数据含义</th></tr></thead>
+        <tbody>
+          <tr><td>美国</td><td>2008Q4 – 2015Q4</td><td>Federal Funds Rate ≈ 0–0.25%</td><td>大衰退后七年零利率；2015.12 首次加息退出</td></tr>
+          <tr><td>欧元区</td><td>2014 – 2022</td><td>DFR（存款便利利率）略低于 0</td><td>ELB（有效下界）而非严格零；2022 通胀回升后退出</td></tr>
+          <tr><td>日本</td><td>1999 – 至今</td><td>无担保隔夜拆借利率 ≈ 0（后转负）</td><td>史上最长 ZLB，通缩稳态的现实样本</td></tr>
+          <tr><td>美国（疫情）</td><td>2020Q1 – 2022</td><td>Fed Funds Rate 回零</td><td>短暂二次撞 ZLB</td></tr>
+        </tbody>
+      </table></div>
+      <h3>9.2 影子利率数据：Wu-Xia 与 Krippner</h3>
+      <p>ZLB 期间名义利率贴地，<strong>用 $i_t$ 当政策立场会严重低估宽松程度</strong>（QE、前瞻指引都在压低长端/影子利率）。文献用影子利率补全这段：</p>
+      <ul>
+        <li><strong>Wu-Xia Shadow Rate（Wu-Xia 2016）</strong>：用无套利 AFNS 收益率曲线模型，从整个收益率曲线反推出"若没有零约束，短端利率本该是多少"。ZLB 期间它为<strong>负</strong>，正好度量 QE 的额外宽松。数据公布于亚特兰大联储网站。</li>
+        <li><strong>Krippner（2013）Shadow Rate</strong>：同样基于期权定价框架（shadow-rate / term-structure model），方法略异但结论一致，圣路易斯联储 FRED 上有序列 <code>BWAMESS</code> / <code>KRNSR</code> 等。</li>
+      </ul>
+      <div class="callout danger">
+        <div class="callout-title">常见误用：影子利率 ≠ 可借贷的实际利率</div>
+        <p>影子利率是<strong>从收益率曲线反推的"应有短端利率"</strong>，不是任何人实际借贷的价格，不能直接塞进预算约束当 $i_t$ 用。它的正确用法是：① 作为<strong>政策立场的度量</strong>（画图、做 VAR）；② 估计 DSGE 时作为 ZLB 期间"无约束政策利率"的代理观测。<strong>把影子利率当观测利率硬塞进观测方程，量纲与传导都会错。</strong></p>
+      </div>
+      <h3>9.3 贝叶斯估计中如何处理 OBC</h3>
+      <p>标准贝叶斯 DSGE 用卡尔曼滤波，但 ZLB 让模型非线性、非高斯，卡尔曼不再适用。三条主流路线：</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">路线 A：OccBin + 粒子滤波</div>
+          <div class="step-desc">用 OccBin 求分段线性解，再用<strong>粒子滤波（particle filter）</strong>替代卡尔曼算似然（Guerrieri-Iacoviello 的做法）。能直接对 ZLB 时期数据做贝叶斯估计。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">路线 B：分段估计 / 删去 ZLB 样本</div>
+          <div class="step-desc">粗糙但常见：只用 ZLB <strong>之前</strong>的样本估计参数，再在 ZLB 样本上做条件预测 / 反事实。缺点是丢掉了 2008 后的信息。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">路线 C：影子利率补全观测</div>
+          <div class="step-desc">把 2008–2015 年的观测政策利率换成 Wu-Xia 影子利率，让观测方程在样本期"连续"，再用标准卡尔曼。简单但把影子利率当观测，需做稳健性。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S10 -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 模拟与结果：IRF、财政乘数与前瞻指引</h2>
+      <h3>10.1 绑定 vs 无约束 IRF 的对比</h3>
+      <p>对一个同样大的负自然利率冲击，OccBin 解与"假装无约束"解的 IRF 差异巨大：</p>
+      <ul>
+        <li><strong>无约束（错误）：</strong>名义利率自由降到 $-2\%$，实际利率下降，产出只是小幅下滑——<strong>严重低估衰退</strong>。</li>
+        <li><strong>绑定（正确）：</strong>利率钉在 0，无法降息；产出缺口大幅为负、通胀转负；而且因为预期"未来几期还绑着"，<strong>同期跌幅被放大</strong>，复苏更慢。</li>
+      </ul>
+      <h3>10.2 财政乘数在 ZLB 处放大（Christiano-Eichenbaum-Rebelo 2011）</h3>
+      <p>这是 ZLB 文献最著名的定量结论。正常时期政府支出乘数约 0.5~1（部分挤出）；但在 ZLB：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq.Z7 · 为什么 ZLB 处财政乘数 &gt; 1</div>
+        $$\Delta G\uparrow \Rightarrow \hat y\uparrow \Rightarrow \hat\pi\uparrow \Rightarrow E_t\hat\pi_{t+1}\uparrow \Rightarrow \underbrace{(\underline i - E_t\hat\pi_{t+1})}_{\text{实际利率}}\downarrow$$
+        <p style="margin:8px 0 0;font-size:13.5px;color:#555"><strong>传导链：</strong>政府花钱→产出上升→通胀上升→由于 $\hat i_t=\underline i$ 降不动，<strong>通胀上升直接压低实际利率</strong>→进一步刺激私人消费投资→乘数自我放大。CER(2011) 校准出 ZLB 处乘数可达 2 甚至更大。<strong>直觉：正常时期政府发债会推高利率挤私人；ZLB 时利率被钉死，"挤出"变成"挤入"。</strong></p>
+      </div>
+      <h3>10.3 前瞻性指引（Forward Guidance）效应与"谜题"</h3>
+      <p>央行承诺"在经济复苏后仍维持低利率"。由 IS 曲线 $y=E_t y_{t+1}-\frac1\sigma(i-E\pi_{t+1}-r^n)$，<strong>远期未来的利率承诺，会通过 $E_t y_{t+1}$ 一直传导到今天</strong>。但标准模型预测：<strong>越远的指引效应越大（远期指引谜题 forward guidance puzzle）</strong>——这在理论上不合理（应该越远越弱），是线性 NK 模型的著名缺陷，需引入折扣预期、有限承诺等修正（Del-Negro-Macro 2015）。</p>
+      <h3>10.4 福利分析</h3>
+      <p>ZLB 造成的福利损失远超正常波动：① 无法对冲大需求冲击，产出缺口与通胀波动都被放大；② 通缩稳态一旦预期形成，可能长期困在低水平均衡。政策含义由此而来：<strong>提高通胀目标（给名义利率更多降息空间）、财政货币协同、果断 QE 管理预期</strong>，都是为了降低"撞 ZLB 的概率与代价"。</p>
+    </div>
+
+    <!-- S11 -->
+    <div class="section" id="s11">
+      <h2><span class="sec-num">11</span> 论文、常见错误与交叉链接</h2>
+      <h3>11.1 必读论文</h3>
+      <div class="paper-card">
+        <span class="paper-type en">English · 奠基</span>
+        <div class="paper-title">The Zero Bound on Interest Rates and Optimal Monetary Policy</div>
+        <div class="paper-meta">Eggertsson G.B. &amp; Woodford M., <em>Brookings Papers on Economic Activity</em>, 2003(1)</div>
+        <div class="paper-desc">ZLB 现代理论的奠基之作。系统推导零下界下的最优货币政策、"承诺更低久利率"（forward guidance）的价值，与"通缩陷阱"机制。本页 §4、§10 的理论骨架。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 财政乘数</span>
+        <div class="paper-title">When Is the Government Spending Multiplier Large?</div>
+        <div class="paper-meta">Christiano L., Eichenbaum M. &amp; Rebelo S., <em>Journal of Political Economy</em>, 2011, 119(1)</div>
+        <div class="paper-desc">证明 ZLB 处政府支出乘数可远大于 1（甚至 &gt;2），核心机制即 Eq.Z7：财政支出推通胀→压低实际利率→挤入私人需求。本页 §10.2 的出处。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 求解方法</span>
+        <div class="paper-title">OccBin: A Toolkit for Solving Dynamic Models with Occasionally Binding Constraints Easily</div>
+        <div class="paper-meta">Guerrieri L. &amp; Iacoviello M., <em>Journal of Economic Dynamics and Control</em>, 2015, 59</div>
+        <div class="paper-desc">OccBin 工具箱的原始论文。讲清分段线性、双 model 块、预期一致倒推的算法，附 Dynare 实现。本页 §5、§7 的方法来源。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 影子利率</span>
+        <div class="paper-title">Measuring the Stance of Monetary Policy in Zero Lower Bound Environments / Measuring the Macroeconomic Impact of Monetary Policy at the ZLB</div>
+        <div class="paper-meta">Krippner L., <em>Economics Letters</em> 2013；Wu J.C. &amp; Xia F.D., <em>J. Money, Credit &amp; Banking</em>, 2016, 48(2-3)</div>
+        <div class="paper-desc">两支影子利率的代表。从收益率曲线反推 ZLB 期间"应有短端利率"，是本页 §9.2 数据的来源。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · ZLB 与金融稳定</span>
+        <div class="paper-title">零利率下限、货币政策与金融稳定</div>
+        <div class="paper-meta">杨光、李力、郝大鹏，《财经研究》2017 年第 43 卷第 1 期，第 41–50 页</div>
+        <div class="paper-desc">国内较早把 ZLB 约束嵌入 DSGE、系统讨论"零利率下货币政策与金融稳定"权衡的论文，方法上采用分段/不等式约束求解，是中文 ZLB-DSGE 的代表。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 供求冲击与中国波动</span>
+        <div class="paper-title">零利率下限约束、供求冲击与中国经济波动</div>
+        <div class="paper-meta">刘尧成、庄雅淳，《首都经济贸易大学学报》2019 年第 1 期，第 24–32 页</div>
+        <div class="paper-desc">构建 DSGE，分"是否存在零利率下限"两情形比较供求冲击对产出、通胀、实际利率波动的影响，强调"费雪效应"在 ZLB 下改变冲击方向。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 混合型货币政策框架</span>
+        <div class="paper-title">零利率下限约束、宏观经济波动与混合型货币政策框架</div>
+        <div class="paper-meta">杨源源、于津平、高洁超，《财贸经济》2020 年</div>
+        <div class="paper-desc">把 ZLB 不等式约束（采用 Holden-Paetz 2012 的处理）嵌入中国"数量型+价格型"混合型货币政策框架，讨论低利率环境下的政策搭配，方法与本页互补松弛一致。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 负利率与存款利率下限</span>
+        <div class="paper-title">存款利率零下限与负利率传导机制</div>
+        <div class="paper-meta">孙国峰、何晓贝，中国人民银行工作论文 2018 年第 2 号</div>
+        <div class="paper-desc">用 DSGE 论证：存款利率零下限如何阻碍负利率政策传导；在信用货币体系下银行可不依赖存款放贷，故负利率可穿透零区间。是中文界讨论"利率下界传导"最有影响力的工作论文之一。</div>
+      </div>
+
+      <h3>11.2 常见错误（6 条）</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：在 ZLB 处继续用一阶线性化（log-linearize around origin）</div>
+        <p>一阶扰动在 $\hat i=\max(0,\cdot)$ 的拐点处线性化失败，会把利率"允许降到负值"，大衰退 IRF 完全失真。<strong>只要要研究 ZLB，就必须 OccBin 或全局方法。</strong></p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：写 occbin 时两个 model 块变量/方程不对齐</div>
+        <p>松弛块与绑定块除了"被约束那一行"，其余变量声明与方程数必须严格一致，否则 Dynare 报"inconsistent models"。常见漏改：绑定块忘了把自然利率 AR(1) 也抄进去。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 3：忽略"预期将来会绑 ZLB"的前向效应</div>
+        <p>若只用"今天绑不绑"的静态判断、不从未来倒推，就丢掉了 OBC 最核心的预期机制——而这恰恰是 ZLB 放大衰退、财政乘数变大的来源。OccBin 倒推、PFI 迭代都在补这一项。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 4：把影子利率当成可借贷的实际利率塞进预算约束</div>
+        <p>Wu-Xia / Krippner 影子利率是收益率曲线反推的"应有利率"，是政策立场度量，不是任何主体的借贷成本。错当观测利率直接进模型，传导与似然全错。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 5：忽视 forward guidance puzzle，盲目相信远期指引</div>
+        <p>标准线性 NK 预测"越远的承诺效应越大"，这是模型缺陷（预期没有被充分贴现），不是政策真理。报告前瞻指引效应时必须加有限承诺/折扣预期修正，否则结论不可信。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 6：贝叶斯估计 ZLB 样本仍用卡尔曼滤波</div>
+        <p>OBC 使模型非线性、似然非高斯，卡尔曼滤波的"正态/线性"假设失效。须改用粒子滤波，或分段估计 / 影子利率补全，否则后验与方差分解有偏。</p>
+      </div>
+
+      <h3>11.3 进阶资料与交叉链接</h3>
+      <ul>
+        <li>Woodford M. (2003), <em>Interest and Prices</em> 第 2 章 —— 利率下界的理论基石。</li>
+        <li>Holden T. &amp; Paetz M. (2012), "Efficient simulation of ergodic distributions for DSGE models with occasionally binding constraints" —— 另一套 OBC 解法，中文文献常用。</li>
+        <li>Werning I. (2012), "Managing a Liquidity Trap: Monetary and Fiscal Policy", NBER w17514。</li>
+        <li>Del Negro M. 等 (2015) "The Forward Guidance Puzzle", Staff Papers, FRBNY。</li>
+        <li>交叉链接：本页内核见 <a href="10-nk-three-equation.html">10 NK 三方程</a>；扰动法局限见 <a href="15-perturbation-methods.html">15 扰动法</a>；财政乘数与规则见 <a href="13-fiscal-monetary-rules.html">13 财政与货币政策规则</a>；求解方法谱系见 <a href="index.html">DSGE 总览</a>。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="18-money-search.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">货币搜寻模型</div>
+      </a>
+      <a href="20-multi-sector-dsge.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">多部门 / 投入产出 DSGE</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

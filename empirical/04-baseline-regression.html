@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基准回归：OLS / 固定效应 / 聚类标准误 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item active" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">实证论文</a>
+      <span class="sep">/</span>
+      <span>基准回归</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">实证 · 04</span>
+      <h1>基准回归：OLS、固定效应与聚类标准误</h1>
+      <p class="desc">从最朴素的 cross-section OLS 出发，一步步搭建面板数据上的双向固定效应（two-way FE）模型，理解 clustered standard errors 为什么是实证论文的"默认配置"，并学会用 reghdfe + esttab 把结果干净地导出为三线表。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">线性代数（OLS 矩阵形式 y=Xβ+ε 与 (X′X)⁻¹ 求逆）、高斯-马尔可夫假设、中心极限定理与大样本推断。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">计量经济学（Wooldridge 第 1–4 章水平：简单 / 多元回归、假设检验、异方差与加权最小二乘）。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">Stata 17+（外部命令：<code class="inline">reghdfe</code>、<code class="inline">ftools</code>、<code class="inline">estout</code>；基础 <code class="inline">regress</code>、<code class="inline">xtreg</code>、<code class="inline">cluster</code> 选项）。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body">先学 <a href="03-descriptive-stats.html">03 描述性统计</a>，理解样本分布再跑回归。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8f3ec;color:#2d7a4f;">入门</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么需要固定效应：从 OLS 到面板</a></li>
+        <li><a href="#s2">形式化：双向固定效应模型</a></li>
+        <li><a href="#s3">聚类标准误的直觉与公式</a></li>
+        <li><a href="#s4">FE / RE 选择：F 检验与 Hausman 检验</a></li>
+        <li><a href="#s5">完整 Stata 代码（reghdfe + esttab）</a></li>
+        <li><a href="#s6">论文案例精读</a></li>
+        <li><a href="#s7">常见错误与陷阱</a></li>
+        <li><a href="#s8">进阶资料</a></li>
+      </ol>
+    </div>
+
+    <!-- ============ S1 ============ -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么需要固定效应：从 OLS 到面板</h2>
+      <p>实证研究的第一步永远是问："我手上的变异（variation）到底来自哪里？"如果你只有一期横截面数据，<code class="inline">regress y x</code> 就是全部武器。但当你拿到了面板数据（panel data）——同一个体 $i$ 在多期 $t$ 被重复观测——你立刻拥有了两样新东西：<strong>个体间变异（between variation）</strong>和<strong>个体内变异（within variation）</strong>。OLS 把这两种变异混在一起用，于是只要个体存在<strong>不随时间变化、但又与解释变量相关的不可观测特征</strong>（unobserved time-invariant heterogeneity），估计就会产生遗漏变量偏误（omitted variable bias）。</p>
+      <p>固定效应模型（fixed effects, FE）的核心思想极其朴素：与其去"控制"那些看不见的特质，不如直接给每个个体一个"专属截距" $\alpha_i$。这样一来，回归识别用的全部是同一个体在不同时点上的纵向变化（within transformation），任何不随时间变化的混淆因素（例如企业所在地的文化、个体的性别、创始人的能力）都被这个 $\alpha_i$ 一次性吸收掉了。进一步地，如果你还担心所有个体在同一时点受到共同冲击（year shock、宏观周期、政策大年），你再加一组<strong>时间固定效应</strong> $\gamma_t$，这就是<strong>双向固定效应（two-way fixed effects, TWFE）</strong>。</p>
+      <p>需要立刻提醒的是：FE 只能吃掉<strong>不随时间变化</strong>的混淆变量。如果遗漏变量是时变的（time-varying confounder），FE 毫无办法——这正是后面 IV、DID、RDD 这些"识别策略"要登场的原因。</p>
+    </div>
+
+    <!-- ============ S2 ============ -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 形式化：双向固定效应模型</h2>
+      <p>本页最重要的一个回归方程，几乎所有现代面板实证论文的"主回归表"都是围绕它搭建的：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 2.1 — Two-way Fixed Effects 基准模型</div>
+        $$ y_{it} = \beta_0 + \beta_1 x_{it} + \alpha_i + \gamma_t + \mathbf{Z}_{it}'\boldsymbol{\delta} + \varepsilon_{it} $$
+      </div>
+      <p>其中：$i$ 为个体（firm / county / state / person），$t$ 为年份；$\alpha_i$ 是个体固定效应（吸收一切个体层面不随时间变化的特征）；$\gamma_t$ 是时间固定效应（吸收所有个体共同面临的年份冲击）；$\mathbf{Z}_{it}$ 是一组时变控制变量；我们真正关心的系数是 $\beta_1$。</p>
+      <p>Stata 中实现这一模型，命令经历了三代：</p>
+      <ul>
+        <li><code class="inline">xtreg y x i.year, fe</code>：传统 FE 命令，但吸收大量虚拟变量时极慢，且标准误处理不够灵活；</li>
+        <li><code class="inline">areg y x i.year, absorb(id)</code>：用 LSDV（least squares dummy variable）的思路一次性吸收 $\alpha_i$，比 xtreg 快；</li>
+        <li><code class="inline">reghdfe y x, absorb(id year) vce(cluster id)</code>：目前论文中事实标准。它通过 Frisch–Waugh–Lovell 定理（FWL）把高维固定效应"扫出去"，再对残差做 OLS，速度快、内存省，并且可以任意叠加多组高维 FE（例如 industry × year、firm × province）。</li>
+      </ul>
+      <h3>Frisch–Waugh–Lovell（FWL）定理：虚拟变量、交乘项与固定效应的统一视角</h3>
+      <p>reghdfe 能"无形地"吸收上万个虚拟变量，背后的数学基石是 <strong>Frisch–Waugh–Lovell 定理</strong>（Frisch & Waugh 1933；Lovell 1963；Angrist & Pischke 2009 给出了现代因果解释）。定理说：在多元回归 $y = x\beta + D\gamma + \varepsilon$ 中（$D$ 是一组虚拟变量，如个体 FE 或时间 FE），系数 $\hat{\beta}$ 等价于"先用 $D$ 把 $y$ 和 $x$ 分别投影取残差，再用 $x$ 的残差对 $y$ 的残差做一元 OLS"：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 2.2 — FWL 定理：系数的"偏除"（partialing-out）解释</div>
+        $$ \hat{\beta} = \frac{\widetilde{x}'\,\widetilde{y}}{\widetilde{x}'\,\widetilde{x}},\qquad \widetilde{y}=M_D y,\ \widetilde{x}=M_D x $$
+      </div>
+      <p>其中 $M_D=I-D(D'D)^{-1}D'$ 是把 $D$ 张成空间投影出去的残差生成矩阵。这一视角把三件看似不同的事统一了起来：<strong>(1) 虚拟变量回归</strong>——加一组个体虚拟变量，本质上就是先把 $y$ 和 $x$ 都按组内均值"去掉"（within transformation）；<strong>(2) 交乘项 / 调节效应</strong>——交互项系数同样可以理解为"把主效应残差化之后再估计"；<strong>(3) 固定效应</strong>——$\alpha_i$、$\gamma_t$ 不过是更庞大的虚拟变量组，reghdfe 反复做的去均值就是 $M_D$ 投影。三者不是三套技巧，而是同一个 FWL 偏除定理在不同维度上的应用。</p>
+      <div class="callout info">
+        <div class="callout-title">实务含义</div>
+        <p>当你写 <code class="inline">reghdfe y x, absorb(id year)</code> 时，Stata 并没有真的生成 id×year 上万列虚拟变量再做 OLS，而是内部用迭代去均值（FWL 投影）把它们扫出去，只对剩下的 $\tilde{x}$、$\tilde{y}$ 做 OLS。这既是 reghdfe 又快又省内存的原因，也是理解"为什么加了固定效应后系数只用组内变异识别"的关键。</p>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">为什么 reghdfe 是事实标准？</div>
+        <p>当你要在 3000 家企业 × 20 年的数据里同时吸收 firm FE、industry × year FE、province FE 时，构造 dummy variable 矩阵会产生数万个虚拟变量，直接 OLS 会慢到无法接受。reghdfe 用内部的 Mata 算法反复"去均值"（within transformation），不需要真正生成这些哑变量，所以再复杂的高维 FE 也能在秒级跑完。</p>
+      </div>
+    </div>
+
+    <!-- ============ S3 ============ -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 聚类标准误的直觉与公式</h2>
+      <p>教科书 OLS 假设误差项同方差、且观测之间相互独立。但在面板数据里，这两个假设几乎一定被违反：同一个体 $i$ 在 $t$ 期和 $t+1$ 期的扰动项高度相关（serial correlation），同一年份不同地区的扰动也相关（cross-sectional dependence）。如果继续用普通 OLS 标准误，你会把标准误算得<strong>过小</strong>，t 值虚高，从而把不显著的结果"洗"成显著——这是顶刊审稿人最容易一眼抓出来的硬伤。</p>
+      <p><strong>Cluster-robust standard errors</strong>（Liang–Zeger 1986；Arellano 1987；后来 Cameron–Gelbach–Miller 2011 系统化为 multi-way clustering）的思想是：在同一 cluster 内部，误差可以任意相关；只要求不同 cluster 之间相互独立。对系数 $\hat{\beta}$ 的协方差矩阵，cluster-robust 估计为：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 3.1 — Cluster-Robust Variance (one-way cluster)</div>
+        $$ \widehat{\mathrm{Var}}_{cluster}(\hat{\beta}) = (X'X)^{-1} \left[ \sum_{g=1}^{G} X_g' \hat{u}_g \hat{u}_g' X_g \right] (X'X)^{-1} \cdot \frac{G}{G-1}\cdot\frac{N-1}{N-K} $$
+      </div>
+      <p>其中 $g$ 是 cluster index（例如 firm、county、state），$G$ 是 cluster 数量，$\hat{u}_g$ 是该 cluster 内所有观测的残差向量。注意最后那两个自由度修正因子——cluster 数量 $G$ 太少时（经验阈值 &lt; 40–50），cluster robust 标准误会严重偏小，必须用 wild cluster bootstrap 做推断。</p>
+      <div class="callout warning">
+        <div class="callout-title">聚类层级到底怎么选？</div>
+        <p>经验法则：<strong>聚类到"政策/处理"发生的层面</strong>。如果政策在州级层面实施，就 cluster 到 state；如果处理变量在企业层面变化，cluster 到 firm。Cameron & Miller (2015) 强烈建议同时报告多向聚类（例如同时 cluster firm 和 year，Stata 里写 <code class="inline">vce(cluster firm year)</code>，需要 reghdfe 较新版本）。但 cluster 层级越多，每一层的 cluster 数量越少，渐近理论越不稳——cluster 到 year 时通常只有 20–30 个年份，必须配合 wild bootstrap。</p>
+      </div>
+    </div>
+
+    <!-- ============ S4 ============ -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> FE / RE 选择：F 检验与 Hausman 检验</h2>
+      <p>在写主回归之前，你需要决定用固定效应还是随机效应（random effects, RE）。两者的关键差异在于对 $\alpha_i$ 的假设：FE 允许 $\alpha_i$ 与 $x_{it}$ 任意相关；RE 则强制 $Cov(\alpha_i, x_{it})=0$。RE 更有效率（更省方差），但这个零相关假设极其强。</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 混合 OLS vs FE — F 检验</div>
+          <div class="step-desc"><code class="inline">xtreg y x, fe</code> 的输出末尾会给出 F test that all u_i=0。如果拒绝原假设，说明个体效应 $\alpha_i$ 联合显著存在，必须用 FE，不能用 pooled OLS。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · FE vs RE — Hausman 检验</div>
+          <div class="step-desc"><code class="inline">xtreg y x, fe</code> 后 <code class="inline">estimates store fe</code>；<code class="inline">xtreg y x, re</code> 后 <code class="inline">estimates store re</code>；再 <code class="inline">hausman fe re</code>。显著拒绝原假设（$H_0: Cov(\alpha_i,x)=0$）→ 选 FE；不拒绝 → 理论上 RE 更有效。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 实务判断</div>
+          <div class="step-desc">现在顶刊的实务是：只要数据是企业/地区/个体面板，<strong>默认直接上 FE / TWFE</strong>，不再纠结 Hausman。因为一旦 $\alpha_i$ 与 $x$ 有任何相关，RE 就是有偏的；FE 是稳健的、不会被审稿人攻击的"安全选项"。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ S5 ============ -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 完整 Stata 代码（reghdfe + esttab）</h2>
+      <p>下面这段代码用 Stata 自带的 <code class="inline">nlswork</code> 面板数据（全国青年纵向调查）演示：从 OLS 起步，逐步加入个体 FE、时间 FE、聚类标准误，最后用 esttab 一键导出三线表。整段代码可以直接在 Stata 中运行。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">stata · baseline_regression.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* 基准回归完整演示：OLS -> FE -> TWFE -> 聚类标准误 -> esttab 导出
+* 数据：Stata 自带 nlswork（面板：id 为工人，year 为年份）
+*==============================================================*
+clear all
+set more off
+capture log close
+log using "baseline_regression.log", replace
+
+* --- 0. 安装所需外部命令（首次运行取消注释） ---
+* ssc install reghdfe, replace
+* ssc install ftools,   replace
+* ssc install estout,   replace
+* ssc install esttab,  replace
+
+* --- 1. 加载数据并构造面板 ---
+sysuse nlswork.dta, clear
+xtset idcode year                 // 声明面板：个体 id，时间 year
+
+* 关键变量：
+*   ln_wage   被解释变量：工资对数
+*   grade     个体受教育年限（时变程度小）
+*   age       年龄
+*   tenure    在当前雇主的 tenure
+*   south / smsa / race   常用控制变量
+
+* --- 2. 模型 (1)：朴素 Pooled OLS（不推荐，仅作对照） ---
+regress ln_wage grade age i.south i.smsa
+estimates store m1
+
+* --- 3. 模型 (2)：单向个体固定效应 xtreg, fe ---
+xtreg ln_wage grade age i.south i.smsa i.year, fe
+estimates store m2
+
+* --- 4. 模型 (3)：areg 吸收 id，加年份 FE ---
+areg ln_wage grade age i.south i.smsa i.year, absorb(idcode)
+estimates store m3
+
+* --- 5. 模型 (4)：reghdfe 双向固定效应 + 双向聚类 ---
+reghdfe ln_wage grade age i.south i.smsa, ///
+    absorb(idcode year) vce(cluster idcode)
+estimates store m4
+
+* --- 6. 模型 (5)：再加一维行业聚类（多向聚类） ---
+reghdfe ln_wage grade age i.south i.smsa, ///
+    absorb(idcode year) vce(cluster idcode year)
+estimates store m5
+
+* --- 7. Hausman 检验：FE vs RE ---
+xtreg ln_wage grade age i.south i.smsa i.year, fe
+estimates store FE
+xtreg ln_wage grade age i.south i.smsa i.year, re
+estimates store RE
+hausman FE RE, sigmamore
+
+* --- 8. 用 esttab 导出论文级三线表 ---
+* 横向并排展示 5 个模型；括号中放标准误；显示星号；删除虚拟变量行
+esttab m1 m2 m3 m4 m5 using "table_baseline.rtf", replace ///
+    b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) ///
+    stats(N r2 r2_a, fmt(0 3 3) labels("观测值" "R^2" "调整 R^2")) ///
+    drop(*.year *.smsa *.south) ///
+    mtitles("Pooled OLS" "xtreg FE" "areg" "reghdfe 单向聚类" "reghdfe 双向聚类") ///
+    title("表 X：受教育年限对工资的影响") ///
+    nogaps compress
+
+log close
+</code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">esttab 常用语法速查</div>
+        <p><code class="inline">b()</code> 指定系数格式；<code class="inline">se()</code> 在括号里放标准误（要放 t 值就写 <code class="inline">t()</code>）；<code class="inline">star()</code> 自定义星号阈值；<code class="inline">stats()</code> 在表底追加 N / R² 等；<code class="inline">drop()</code> 把虚拟变量从表里隐藏；<code class="inline">mtitles()</code> 给每一列起名字；<code class="inline">nogaps compress</code> 输出紧凑的三线表。导出为 .rtf 后可直接在 Word 里"选择性粘贴→无格式文本"贴进论文。</p>
+      </div>
+    </div>
+
+    <!-- ============ S6 ============ -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 论文案例精读</h2>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Textbook</span>
+        <div class="paper-title">Mostly Harmless Econometrics: An Empiricist's Companion</div>
+        <div class="paper-meta">Joshua D. Angrist & Jörn-Steffen Pischke · Princeton University Press, 2009</div>
+        <div class="paper-desc">实证微观的"圣经"。Chapter 2 系统讲解 OLS 的因果解释、固定效应的组内变换（within transformation）、以及为什么 clustered standard errors 是 applied econometrics 的默认配置。所有论文级的 TWFE 写法都可以追溯到这本书。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · 经典定理</span>
+        <div class="paper-title">Partial Regression Coefficients（Frisch–Waugh–Lovell 定理）</div>
+        <div class="paper-meta">Ragnar Frisch & Frederick V. Waugh (1933)；Michael C. Lovell (1963)；现代表述见 Angrist & Pischke (2009)</div>
+        <div class="paper-desc">FWL 定理证明：多元回归中任一系数，等于"把其他所有自变量投影出去（残差化）之后再做一元回归"的斜率。它是虚拟变量回归、组内变换（within）、交乘项与高维固定效应（reghdfe / areg 的 absorb）的统一数学基础，也是理解"为什么加了固定效应后系数只用组内变异识别"的钥匙。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · AER</span>
+        <div class="paper-title">Minimum Wages and Employment: A Case Study of the Fast-Food Industry in New Jersey and Pennsylvania</div>
+        <div class="paper-meta">David Card & Alan B. Krueger · American Economic Review, 1994</div>
+        <div class="paper-desc>DID 的开山之作，但其 Table 中对新泽西 / 宾州快餐店的工资、就业回归，本质上就是用 TWFE + cluster robust standard errors 的思路：固定效应吸收了餐厅不随时间变化的特征，聚类在餐厅层面处理误差相关。是理解 FE + cluster 联合使用的最佳范本。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 《经济研究》</span>
+        <div class="paper-title">《数字经济与中国企业出口韧性》（类似主题）</div>
+        <div class="paper-meta">《经济研究》近年多篇实证文章 · 通用范式</div>
+        <div class="paper-desc">《经济研究》《管理世界》上大量的"X 对 Y 的影响"类文章，主回归表的标准范式就是：被解释变量列在表头，解释变量系数 + 括号内 cluster 标准误，控制变量列出个体/时间 FE、行业 FE，并在表注中明确"括号内为企业层面聚类标准误，***、**、* 分别表示 1%、5%、10% 显著性水平"。这正是本节代码产出的那张表。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 《管理世界》</span>
+        <div class="paper-title">《高铁开通与区域经济增长》类准自然实验文章</div>
+        <div class="paper-meta">《管理世界》系列 · 通用范式</div>
+        <div class="paper-desc">这类文章几乎一律采用 reghdfe 同时控制"城市固定效应 + 年份固定效应 + 城市×年份联合趋势"，标准误聚类到城市层面，并在稳健性部分切换到省层面 cluster。是中文顶刊里 TWFE 用法最规范的一类。</div>
+      </div>
+    </div>
+
+    <!-- ============ S7 ============ -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 常见错误与陷阱</h2>
+
+      <div class="callout danger">
+        <div class="callout-title">错误 1：不做聚类，直接报告普通 OLS 标准误</div>
+        <p>面板数据的误差几乎必然存在组内相关。审稿人看到你 <code class="inline">reg y x i.id i.year</code> 后面没写 cluster，会直接怀疑你的 t 值是"虚高"。正确做法：在 reghdfe / xtreg 后立刻加上 <code class="inline">vce(cluster id)</code>，并在表注中说明聚类层级。</p>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">错误 2：cluster 层级选错（聚到了错误的单位）</div>
+        <p>例如处理变量是省级政策，却 cluster 到企业层面。企业层面 cluster 假设"同省不同企业之间误差独立"，这显然不成立。经验法则：<strong>cluster 到处理变量被分配的层级</strong>（level of treatment assignment）。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">错误 3：cluster 数量太少仍在用渐近标准误</div>
+        <p>如果你只有 10 个省份、20 个年份，cluster robust 渐近标准误会严重偏小。此时必须用 <code class="inline">boottest</code>（Roodman 2019）做 wild cluster bootstrap，而不是硬报 t 值。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">错误 4：把"时不变变量"放进 FE 模型</div>
+        <p>性别、出生地这种变量在个体 FE 下会被 $\alpha_i$ 完全吸收，系数无法识别。Stata 会直接 omit。写论文时要意识到：FE 模型中只能识别"随个体和时间都变化"的变量。</p>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-title">错误 5：把 R² 当作模型好坏的指标</div>
+        <p>加入海量 FE 后 within R² 会显著上升，但这并不意味着因果识别更好。读者关心的是 $\hat{\beta}_1$ 的因果解释，不是模型拟合度。</p>
+      </div>
+    </div>
+
+    <!-- ============ S8 ============ -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 进阶资料</h2>
+      <ul>
+        <li><strong>Frisch, R. & F. V. Waugh (1933) / Lovell, M. C. (1963)</strong> — FWL 定理原始文献：残差化（partialing-out）视角统一理解虚拟变量、交乘项与固定效应；</li>
+        <li><strong>Cameron, A. C. & D. L. Miller (2015)</strong> — "A Practitioner's Guide to Cluster-Robust Inference", <em>Journal of Human Resources</em>：多向聚类的标准参考。</li>
+        <li><strong>Correia, S. (2017)</strong> — reghdfe 作者在 Stata Journal 的原文：讲解 FWL 定理与高维 FE 的算法。</li>
+        <li><strong>Roodman, D. et al. (2019)</strong> — "Fast and wild: Bootstrap inference in Stata using boottest", <em>Stata Journal</em>：cluster 数量少时的稳健推断。</li>
+        <li><strong>伍德里奇《计量经济学导论：现代观点》</strong>第 14 章：面板数据 FE/RE 的中文教材。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="03-descriptive-stats.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">描述性统计</div>
+      </a>
+      <a href="05-endogeneity-iv.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">内生性与 IV / 2SLS</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

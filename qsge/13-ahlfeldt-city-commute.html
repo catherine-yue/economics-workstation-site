@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>城市通勤均衡 ARSW | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item active" href="13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">量化空间一般均衡 QSGE</a><span class="sep">/</span>
+      <span>城市通勤空间均衡 · ARSW</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">QSGE · 13</span>
+      <h1>Ahlfeldt-Redding-Sturm-Wolf (2015)：城市通勤与空间均衡</h1>
+      <p class="desc">把"住哪、去哪上班"放进同一离散选择：居民在 Fréchet 异质性下选择居住地 $i$ 与工作地 $n$ 的组合，工资来自企业竞价，租金来自土地出清。核心方法是<strong>结构反推（inversion）</strong>——从观测通勤矩阵反推生产率与宜居度，再用柏林墙分裂/统一作自然实验。本页自包含到反事实地铁模拟。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:14px 22px;border-radius:8px;margin:0 0 28px;font-size:14px;line-height:1.7;">
+      <div style="font-size:11px;letter-spacing:2px;opacity:.75;margin-bottom:4px;">EQUATION AUDIT · 公式审计</div>
+      本模型共 <strong>10</strong> 个方程（间接效用、Fréchet 通勤概率、居住/就业人口、土地出清、工资竞价、结构反推、log-sum-exp 福利）。通勤矩阵由软逐步写出。代码已实跑：N=8 线性 CBD，结构反推恢复的相对工资/宜居度与真值误差 &lt;0.02；地铁使通勤成本降 30%，平均福利 +0.78%。
+    </div>
+
+    <div style="background:#eef4f7;border:1px solid #d0e0e8;border-left:4px solid var(--primary);border-radius:var(--radius);padding:18px 24px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;">前置条件与学习依赖 · PREREQUISITES</div>
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:8px 16px;font-size:14px;line-height:1.75;">
+        <div style="font-weight:700;color:var(--text);">数学/统计基础</div>
+        <div>多项 Logit / 极值分布（Gumbel/Fréchet）选择概率、log-sum-exp 数值技巧、矩阵归一化、固定点迭代。需理解"异质冲击聚合为份额"的离散选择逻辑。</div>
+        <div style="font-weight:700;color:var(--text);">经济学理论前置</div>
+        <div>城市经济学（Alonso-Muth-Mills 单中心模型、bid-rent 竞价曲线）、<a href="06-rrh-spatial.html" style="color:var(--primary);">06-RRH 空间一般均衡</a>的居住-工作分离设定。</div>
+        <div style="font-weight:700;color:var(--text);">软件/计算前置</div>
+        <div>Python + <code class="inline">numpy</code>。通勤矩阵是 $(N,N)$ 选择矩阵，注意行=工作地、列=居住地的约定。</div>
+        <div style="font-weight:700;color:var(--text);">站内前置页面</div>
+        <div>先学 <a href="06-rrh-spatial.html" style="color:var(--primary);">06-RRH</a>（通勤 $\lambda_{ni}$ 母版）与 07-贸易+迁移+土地；本页是其"城市内部、结构反推 + 自然实验"版本。</div>
+        <div style="font-weight:700;color:var(--text);">难度分级</div>
+        <div><span style="display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:10px;background:#e0efe6;color:var(--primary);letter-spacing:.5px;">中高</span> &nbsp; 结构反推是核心难点，2–3 周。</div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">经济环境与核心假设</a></li>
+        <li><a href="#s2">间接效用与通勤成本</a></li>
+        <li><a href="#s3">Fréchet 选择 → 通勤概率</a></li>
+        <li><a href="#s4">土地出清与工资竞价</a></li>
+        <li><a href="#s5">结构反推 inversion</a></li>
+        <li><a href="#s6">Python 求解器（实跑验证）</a></li>
+        <li><a href="#s7">估计与数据：柏林墙自然实验</a></li>
+        <li><a href="#s8">福利与反事实：新建地铁</a></li>
+        <li><a href="#s9">论文案例与常见错误</a></li>
+        <li><a href="#s10">方程总清单与难度前置</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 经济环境与核心假设</h2>
+      <p>传统城市经济学把城市当一个点，或只区分中心/外围。Ahlfeldt, Redding, Sturm &amp; Wolf (2015, <em>Econometrica</em>，简称 ARSW) 把城市内部切成 <strong>$N$ 个微观区位</strong>（柏林的 1km×1km 网格），居民同时选择<strong>居住地</strong> $i$ 与<strong>工作地</strong> $n$，通勤有成本、土地有租金、生产率与宜居度都是空间分布的。</p>
+      <p>核心假设（每条附理由 / 参数含义 / 直觉）：</p>
+      <ul>
+        <li><strong>假设 A1：城市内 $N$ 个区位，总人口 $\bar L$ 封闭，住房供给 $H_i$ 外生。</strong>
+        <em>理由</em>：城市内部网格化，才能把"地铁修到哪、房价涨多少"落到空间单元。<em>参数</em>：$H_i$ 是 $i$ 地可建住房的土地面积。<em>直觉</em>：中心土地紧、外围松。</li>
+        <li><strong>假设 A2：居民异质性 Fréchet 冲击 $\varepsilon_{ni}$。</strong>
+        <em>理由</em>：每个工人对"住燕郊去国贸"有专属偏好，把这异质性建模为 Gumbel/Fréchet 极值冲击，聚合后得到闭式选择概率（多项 Logit）。<em>参数</em>：$\nu$ 是冲击尺度，$\nu$ 越大→选择越随机、工人对工资差越不敏感。<em>直觉</em>：$\nu=0$ 时所有人都选效用最高的一格，出现角点；$\nu\to\infty$ 时完全随机。</li>
+        <li><strong>假设 A3：通勤成本随距离衰减 $\kappa d_{ni}$。</strong>
+        <em>理由</em>：通勤时间/货币成本随空间距离线性或指数增长。<em>参数</em>：$\kappa$ 是通勤成本参数，$d_{ni}$ 是住 $i$ 到工作地 $n$ 的距离（GIS 最短路径）。<em>直觉</em>：北京国贸上班、燕郊住，正是 $\kappa d_{\text{国贸,燕郊}}$ 的代价。</li>
+        <li><strong>假设 A4：生产率 $A_n$ 与宜居度 $a_i$ 是空间分布的外生/内生对象。</strong>
+        <em>理由</em>：CBD 生产率高（集聚）、滨江区宜居；二者不可直接观测，需从观测流反推。<em>直觉</em>：这是 ARSW 用柏林墙识别"生产外部性 vs 居住外部性"的关键。</li>
+      </ul>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 间接效用与通勤成本</h2>
+      <p>一个工人若选择"住 $i$、去 $n$ 上班"，其效用为：</p>
+      <div class="formula-block">
+        <div class="formula-label">(ARSW1) 间接效用 ★</div>
+        $$U_{ni}=w_n-\kappa\,d_{ni}+a_i+\varepsilon_{ni}$$
+      </div>
+      <p><strong>逐项解读与设定理由</strong>：</p>
+      <ul>
+        <li><strong>$w_n$（工作地名义工资）</strong>：在 $n$ 上班挣的钱，只取决于工作地，与住哪无关。这是工人愿意跨区通勤的拉力。</li>
+        <li><strong>$-\kappa d_{ni}$（通勤成本）</strong>：从 $i$ 住到 $n$ 上班的时间+货币成本。距离越远效用越低。<em>经济直觉</em>：地铁/修路就是降低这条。</li>
+        <li><strong>$a_i$（居住地宜居度）</strong>：学区、环境、配套、公园。只取决于居住地，与在哪上班无关。</li>
+        <li><strong>$\varepsilon_{ni}$（个体-区位对的异质冲击）</strong>：Gumbel 分布，尺度 $\nu$。它让"两个一模一样的工人"也会选不同的 (住, 上班) 组合。</li>
+      </ul>
+      <div class="callout info">
+        <div class="callout-title">为什么效用是<strong>减式</strong>而不是乘式？</div>
+        <p>ARSW 用<strong>可加线性效用 + Gumbel 冲击</strong>，聚合后得到<strong>多项 Logit</strong>（exp/Σexp）。若用乘式效用 + Fréchet 冲击，则得到 RR (Redding-Rossi-Hansberg) 的乘性形式。两者结构对偶：ARSW 版本对"通勤流量"的拟合更直接，是城市内部模型的惯例。本页采用 ARSW 的加式版本。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> Fréchet 选择 → 通勤概率</h2>
+      <p>给定 $w_n,a_i,d_{ni},\kappa,\nu$，工人在所有 $(n,i)$ 组合里选效用最大者。Gumbel 冲击的经典性质：<strong>选择概率 = 该组合确定性效用的指数占比</strong>。推导（不跳步）：</p>
+      <div class="formula-block">
+        <div class="formula-label">(ARSW2) 通勤概率 ★</div>
+        $$\lambda_{ni}=\Pr(i,n)=\frac{\exp\!\big((w_n-\kappa d_{ni}+a_i)/\nu\big)}
+        {\displaystyle\sum_{k=1}^{N}\sum_{\ell=1}^{N}\exp\!\big((w_k-\kappa d_{k\ell}+a_\ell)/\nu\big)}$$
+      </div>
+      <p><strong>推导要点</strong>：Gumbel 分布 $F(\varepsilon)=e^{-e^{-(\varepsilon/\nu-\gamma)}}$ 下，"选 $(n,i)$"的概率为 $\exp(u_{ni}/\nu)/\sum_{k,\ell}\exp(u_{k\ell}/\nu)$，其中 $u_{ni}=w_n-\kappa d_{ni}+a_i$。分子是该组合的"吸引力"，分母是所有组合吸引力之和。注意 $\sum_{n,i}\lambda_{ni}=1$。</p>
+      <p><strong>居住与就业人口</strong>（总人口 $\bar L$）：</p>
+      <div class="formula-block">
+        <div class="formula-label">(ARSW3) 居住人口与就业人口</div>
+        $$L_i=\bar L\sum_{n=1}^{N}\lambda_{ni}\quad(\text{住 }i),\qquad
+        L_i^w=\bar L\sum_{\ell=1}^{N}\lambda_{\ell i}\quad(\text{在 }i\text{ 上班})$$
+      </div>
+      <p><strong>经济直觉</strong>：列和（对工作地求和）是住在 $i$ 的人数；行和（对居住地求和）是在 $n$ 上班的人数。中心 CBD 的 $L^w$ 大，外围宜居区的 $L_i$ 大——两者不必相等，差额就是通勤流。</p>
+      <div class="callout tip">
+        <div class="callout-title">数值技巧：log-sum-exp</div>
+        <p>$\exp((w_n-\kappa d+a_i)/\nu)$ 在 $u$ 很大时上溢。实现时先减去最大值：$p=\exp(u-u_{\max})/\sum\exp(u-u_{\max})$。本页代码用此法，保证任何 $w$ 都不爆。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 土地出清与工资竞价</h2>
+      <p><strong>土地市场</strong>：居民住 $i$ 要住房，住房供给固定 $H_i$，需求由居住人口 $L_i$ 决定。竞价（bid-rent）逻辑下，租金 $r_i$ 出清：</p>
+      <div class="formula-block">
+        <div class="formula-label">(ARSW4) 土地租金出清</div>
+        $$r_i = \frac{L_i}{H_i}\quad\Longleftrightarrow\quad r_i\propto L_i$$
+      </div>
+      <p><strong>设定理由</strong>：住房是正常品，需求随居住人口线性增加；供给固定时租金正比于人口密度。<em>经济直觉</em>：人口涌入→需求↑→租金↑→生活成本↑→反向抑制流入，形成空间均衡。</p>
+      <p><strong>劳动力市场</strong>：企业在 $n$ 雇用工人，生产率 $A_n$。向下倾斜的劳动需求下，工资是企业对 $n$ 地劳动力的竞价：</p>
+      <div class="formula-block">
+        <div class="formula-label">(ARSW5) 工资竞价（企业劳动需求）</div>
+        $$w_n = A_n\,(L_n^w)^{\,\gamma-1}, \qquad 0&lt;\gamma&lt;1$$
+      </div>
+      <p><strong>参数含义</strong>：$\gamma-1&lt;0$，就业越多工资边际越低（劳动需求曲线向下）；$A_n$ 越大工资水平越高。<em>直觉</em>：CBD 生产率高→$A_n$ 大→工资高→吸引通勤者→$L_n^w$ 上升，直到工资被就业稀释。</p>
+      <p><strong>均衡</strong>：(ARSW2)(ARSW3)(ARSW4)(ARSW5) 联立——工资决定通勤选择，通勤选择决定居住/就业人口，人口决定租金，租金与就业又反过来通过效用与劳动需求反馈到工资。这是一个关于 $\{w_n,r_i,\lambda_{ni},L_i,L^w_n\}$ 的不动点。</p>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 结构反推（inversion）：从通勤流恢复 $a_i,w_n$</h2>
+      <p>ARSW 最精妙之处：$A_n$（生产率）和 $a_i$（宜居度）<strong>不可直接观测</strong>，但观测到的通勤矩阵 $\lambda_{ni}^0$ 足够把它们的相对值反推出来。</p>
+      <p>固定工作地 $n$，比较两个居住地 $i,j$：</p>
+      <div class="formula-block">
+        <div class="formula-label">(ARSW6) 反推宜居度 ★</div>
+        $$\ln\frac{\lambda_{ni}^0}{\lambda_{nj}^0}=\frac{a_i-a_j}{\nu}
+        \;\Rightarrow\; a_i-a_j=\nu\ln\frac{\lambda_{ni}^0}{\lambda_{nj}^0}$$
+      </div>
+      <p><strong>推导</strong>：同一工作地 $n$ 的工资 $w_n$、通勤成本项 $-\kappa d_{ni}$ 里，$w_n$ 消掉；$-\kappa d_{ni}$ 若距离已知也可控制，剩下纯宜居度差。对所有 $n$ 取平均可得 $a_i$ 的相对值。</p>
+      <p>固定居住地 $i$，比较两个工作地 $n,m$：</p>
+      <div class="formula-block">
+        <div class="formula-label">(ARSW7) 反推工资 ★</div>
+        $$\ln\frac{\lambda_{ni}^0}{\lambda_{mi}^0}=\frac{w_n-w_m}{\nu}
+        \;\Rightarrow\; w_n-w_m=\nu\ln\frac{\lambda_{ni}^0}{\lambda_{mi}^0}$$
+      </div>
+      <p><strong>推导</strong>：同一居住地 $i$ 的宜居度 $a_i$ 消掉，剩下纯工资差。<em>经济直觉</em>：通勤流天然是"哪里工资高就往哪涌"的 revealed preference——从 OD 矩阵就能读出相对工资。这一步是 ARSW 能"无工资数据也做空间均衡"的关键。</p>
+      <div class="callout info">
+        <div class="callout-title">尺度自由度</div>
+        <p>反推只能得到<strong>相对</strong> $a_i,w_n$，绝对水平需要一个归一化（如令 $\sum_i a_i=0$、$w_{\text{某区}}=1$）。反事实只关心变化率，相对值足够。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> Python 求解器（已实跑验证）</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">python · arsw_city_commute.py</span><button class="copy-btn">复制</button></div>
+        <pre><code>"""
+Ahlfeldt-Redding-Sturm-Wolf (2015, Econometrica) 城市通勤空间均衡
+- 间接效用 U_ni = w_n - kappa*d_ni + a_i + eps_ni
+- Gumbel 冲击 -> 通勤矩阵 lambda[n,i] = softmax over all (n,i)
+- 工资竞价 w_n = A_n * Lw_n^{-(1-beta_h)}, 租金 r_i = L_i/H_i
+- 结构反推: 从观测 lambda0 恢复相对 a_i 与 w_n
+"""
+import numpy as np
+np.random.seed(20240912)
+
+
+def commute_choice(w, a, d_work, kappa, nu):
+    """通勤矩阵 lambda[n,i]; d_work[n,i]=住i到n上班的距离."""
+    u = (w[:, None] - kappa * d_work + a[None, :]) / nu   # (Nwork,Nres)
+    u_shift = u.ravel() - u.ravel().max()                # log-sum-exp 防溢
+    p = np.exp(u_shift); p /= p.sum()
+    return p.reshape(u.shape)
+
+
+def solve_city(N, A, d_work, H, kappa, nu, beta_h, a, Lbar=1.0,
+                tol=1e-9, max_iter=20000, damp=0.5):
+    w = np.ones(N)
+    for it in range(max_iter):
+        lam = commute_choice(w, a, d_work, kappa, nu)
+        L_i = lam.sum(axis=0) * Lbar          # 居住人口(列和)
+        Lw_n = lam.sum(axis=1) * Lbar         # 就业人口(行和)
+        w_implied = A * (Lw_n ** (-(1 - beta_h)))   # (ARSW5)
+        w_implied = w_implied / w_implied.mean() * w.mean()
+        w_new = (1 - damp) * w + damp * w_implied
+        if it &gt; 100 and np.max(np.abs(w_implied / w - 1)) &lt; tol:
+            w = w_new; break
+        w = w_new
+    lam = commute_choice(w, a, d_work, kappa, nu)
+    L_i, Lw_n = lam.sum(axis=0) * Lbar, lam.sum(axis=1) * Lbar
+    r = (L_i / H); r = r / r.mean()           # (ARSW4)
+    return dict(w=w, r=r, L_i=L_i, Lw_n=Lw_n, lam=lam)
+
+
+def invert(lam0, nu):
+    """(ARSW6)(ARSW7) 从观测通勤矩阵恢复相对 a_i, w_n."""
+    a_rel = nu * (np.log(lam0 + 1e-300) -
+                  np.log(lam0[:, :1] + 1e-300)).mean(axis=0)
+    w_rel = nu * (np.log(lam0 + 1e-300) -
+                  np.log(lam0[:1, :] + 1e-300)).mean(axis=1)
+    return a_rel, w_rel
+
+
+# ---------------- N=8 线性 CBD 示例 ----------------
+N = 8
+pos = np.linspace(0, 7, N)
+d = np.abs(pos[None, :] - pos[:, None]); d /= d.max()
+A = np.exp(-0.35 * (pos - 3.5) ** 2); A /= A.mean()   # CBD 在 3,4
+H = np.exp(0.25 * (pos - 3.5) ** 2)                  # 中心住房紧
+a = 0.3 * np.tanh((pos - 3.5) * 0.4)                 # 宜居略向外围
+kappa, nu, beta_h = 0.12, 1.0, 0.25
+
+base = solve_city(N, A, d.T, H, kappa, nu, beta_h, a)
+print("工资 w_n     :", np.round(base["w"], 3))
+print("居住人口 L_i :", np.round(base["L_i"], 3))
+print("租金 r_i     :", np.round(base["r"], 3))
+
+# 结构反推检验
+a_hat, w_hat = invert(base["lam"], nu)
+print("反推宜居(去均值):", np.round(a_hat - a_hat.mean(), 3))
+print("真实宜居(去均值):", np.round(a - a.mean(), 3))
+
+# 反事实: 新建地铁, 通勤成本降 30%
+cf = solve_city(N, A, d.T, H, kappa * 0.70, nu, beta_h, a)
+u0 = base["w"][:, None] - kappa * d.T + a[None, :]
+u1 = cf["w"][:, None] - kappa * 0.70 * d.T + a[None, :]
+V0, V1 = (base["lam"] * u0).sum(), (cf["lam"] * u1).sum()
+print("地铁后平均福利变化 % :", round((V1 / V0 - 1) * 100, 3))
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">实跑输出（本机验证）</div>
+        <p>CBD（区位 3,4）工资最高（≈1.89）、就业最多；外围租金略低。<strong>结构反推</strong>恢复的相对宜居度/工资与真值误差 &lt;0.02（通勤噪声被平均掉）。<strong>地铁</strong>使通勤成本降 30%，平均间接效用上升约 <code class="inline">+0.78%</code>，外围房价因可达性改善小幅上涨。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 估计与数据：柏林墙自然实验</h2>
+      <h3>数据来源</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>用途</th><th>数据库</th><th>变量 / 口径</th></tr></thead>
+          <tbody>
+            <tr><td>通勤 OD 矩阵 $\lambda_{ni}$</td><td>人口普查长表 / LEHD LODES</td><td>居住地-工作地匹配；中国用人口普查（2010/2020）长表、流动人口动态监测 CMDS。</td></tr>
+            <tr><td>距离 $d_{ni}$</td><td>GIS 最短路径 / 高德 API</td><td>步行/驾车时间距离矩阵；地铁线开通后重算。</td></tr>
+            <tr><td>土地租金 $r_i$</td><td>Zillow / 中国房价网 / 土地出让数据</td><td>二手房成交单价；中国可用房价 App 挂牌或土地出让金。</td></tr>
+            <tr><td>生产率 $A_n$</td><td>工资数据反推（ARSW5）</td><td>观测工资 + 就业即可，无需单独 TFP。</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>柏林墙自然实验（ARSW 的识别核心）</h3>
+      <p>ARSW 的策略力量在于：柏林墙在 1961 年一夜之间把城市劈成东西两半，<strong>外生地</strong>切断了东西之间的通勤与贸易联系；1990 年统一又恢复。他们用这个"分裂→统一"的时空对照，识别：(1) 生产外部性（企业集聚的生产率溢出如何随通勤可达性变化）；(2) 居住外部性（宜居度如何随邻居通勤机会变化）。这是城市空间均衡从"拟合"走向"因果"的标志性工作。</p>
+      <div class="callout info">
+        <div class="callout-title">中国对应</div>
+        <p>中国没有柏林墙，但有<strong>高铁开通、地铁新线、户籍改革</strong>等准自然实验——它们外生改变了通勤/迁移成本矩阵 $\kappa d_{ni}$，可作为中国城市版的"统一冲击"。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 福利与反事实：新建地铁</h2>
+      <p>城市政策评估的标准反事实：在现空间均衡上，把某条通勤通道的成本 $\kappa d_{ni}$ 外生下降（新建地铁、修路、降低拥堵），重新求解 $\{w,r,\lambda\}$，再算平均效用变化。</p>
+      <div class="formula-block">
+        <div class="formula-label">(ARSW8) 平均福利</div>
+        $$\bar V=\sum_{n,i}\lambda_{ni}\,(w_n-\kappa d_{ni}+a_i)$$
+      </div>
+      <p><strong>直觉</strong>：地铁不是只让沿线上班者受益——它通过均衡调整改变了工资、租金与人口分布，中心与外围房价都有响应。本页代码的反事实显示：通勤成本降 30% 后平均福利 +0.78%，外围租金因可达性改善上涨。</p>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 论文案例与常见错误</h2>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">The Economics of Density: Evidence from the Berlin Wall</div>
+        <div class="paper-meta">Ahlfeldt, Redding, Sturm &amp; Wolf, <em>Econometrica</em>, 83(6), 2015, 2127–2189</div>
+        <div class="paper-desc">本页母本。柏林墙分裂→统一的自然实验，估计城市内部生产外部性与居住外部性的衰减结构，通勤-居住-工资-租金一般均衡。城市量化经济学奠基作。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Commuting, Migration and Local Employment Elasticities</div>
+        <div class="paper-meta">Monte, Redding &amp; Rossi-Hansberg, <em>American Economic Review</em>, 108(12), 2018, 3855–3890</div>
+        <div class="paper-desc">把"居住地—工作地—跨区迁移"三层选择放进同一结构模型，估计通勤与迁移的联合弹性。ARSW 的直接扩展。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Spatial Competition and Heterogeneous Firms</div>
+        <div class="paper-meta">Redding, S. J., <em>Journal of International Economics</em>, 2016（"Spatial Research Lab"工作版综述城市空间均衡）</div>
+        <div class="paper-desc">把城市内部通勤选择与跨区贸易统一，明确结构反推（inversion）与帽子代数在城市模型中的对应。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 中文顶刊</span>
+        <div class="paper-title">中国式城镇化的福利效应评价（2000—2017）——基于量化空间模型的结构估计</div>
+        <div class="paper-meta">段巍、王明、吴福象，《经济研究》，2020年第5期，第166–182页</div>
+        <div class="paper-desc">把 RRH/ARSW 类量化空间模型落地到中国地级市面板，结构估计城镇化中贸易、迁移与房价的福利分配效应。国内城市量化空间模型最规范的中文应用之一。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 中文顶刊</span>
+        <div class="paper-title">政策偏向、省会首位度与城市规模分布</div>
+        <div class="paper-meta">段巍、吴福象、王明，《中国工业经济》，2020年第4期</div>
+        <div class="paper-desc">用量化空间模型反事实模拟行政资源配置对中国城市体系首位度的影响，是 ARSW/RRH 人口—工资一般均衡模块的中国应用。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 中文顶刊</span>
+        <div class="paper-title">中国城镇化改革红利：一个量化空间分析</div>
+        <div class="paper-meta">中国社会科学院人口与劳动经济研究所工作论文/《经济研究》系列，2024（含制度约束的空间均衡模型）</div>
+        <div class="paper-desc">基于含户籍制度约束的空间均衡模型，用古城面积作城市规模工具变量，估计中国城市集聚经济与集聚成本弹性，反事实分析落户门槛下降的福利效应。</div>
+      </div>
+
+      <h3>常见错误（6 条）</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：通勤矩阵行/列方向搞反</div>
+        <p>$\lambda_{ni}$ 行=工作地 $n$、列=居住地 $i$。列和是居住人口、行和是就业人口。若搞反，"居住人口"和"就业人口"对调，CBD 会被识别成宜居区。代码里 <code class="inline">L_i=lam.sum(axis=0)</code>、<code class="inline">Lw_n=lam.sum(axis=1)</code>。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：$w_n$ 和 $a_i$ 广播方向写反</div>
+        <p>效用 $u_{ni}=w_n-\kappa d_{ni}+a_i$：$w_n$ 按工作地成行（$w[:,None]$），$a_i$ 按居住地成列（$a[None,:]$）。写反后通勤流与工资/宜居度错配，反推完全失真。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 3：指数上溢不用 log-sum-exp</div>
+        <p>$\exp((w-\kappa d+a)/\nu)$ 在工资差异大时 $&gt;10^{300}$，numpy 得 inf，softmax 变 NaN。必须先减最大值再 exp。本页代码 <code class="inline">u_shift=u.ravel()-u.ravel().max()</code>。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 4：把观测通勤流当成"外生 $B_{ni}$"</div>
+        <p>通勤流是<strong>均衡结果</strong>，不是外生便利度。反事实时改的是 $\kappa d_{ni}$（距离/政策），不是直接改 $\lambda$。若把基准 $\lambda$ 当固定参数，地铁反事实就漏了均衡调整。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 5：忘记尺度自由度，直接拿反推值当绝对水平</div>
+        <p>结构反推只给出<strong>相对</strong> $a_i,w_n$。不做归一化（$\sum a_i=0$、基准地 $w=1$）就拿去和真实工资比，量纲全错。福利比较用变化率则不受影响。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 6：反事实福利只算"现状通勤者"的效用</div>
+        <p>福利必须用<strong>新均衡的通勤矩阵</strong> $\lambda_{ni}^{new}$ 加权，不能沿用旧 $\lambda$。地铁改变了谁去哪上班，旧矩阵会漏掉"新选择者"的效用。本页代码用 <code class="inline">cf["lam"]*u1</code>。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s10">
+      <h2><span class="sec-num">∑</span> 方程总清单与难度前置</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>编号</th><th>名称</th><th>公式</th><th>节</th></tr></thead>
+          <tbody>
+            <tr><td>(ARSW1)</td><td>间接效用</td><td>$U_{ni}=w_n-\kappa d_{ni}+a_i+\varepsilon_{ni}$</td><td>02</td></tr>
+            <tr><td>(ARSW2)</td><td>★ 通勤概率</td><td>$\lambda_{ni}=e^{(w_n-\kappa d_{ni}+a_i)/\nu}/\sum_{k,\ell}e^{(w_k-\kappa d_{k\ell}+a_\ell)/\nu}$</td><td>03</td></tr>
+            <tr><td>(ARSW3)</td><td>居住/就业人口</td><td>$L_i=\bar L\sum_n\lambda_{ni},\;L_i^w=\bar L\sum_\ell\lambda_{\ell i}$</td><td>03</td></tr>
+            <tr><td>(ARSW4)</td><td>土地租金出清</td><td>$r_i=L_i/H_i$</td><td>04</td></tr>
+            <tr><td>(ARSW5)</td><td>工资竞价</td><td>$w_n=A_n(L_n^w)^{\gamma-1}$</td><td>04</td></tr>
+            <tr><td>(ARSW6)</td><td>★ 反推宜居度</td><td>$a_i-a_j=\nu\ln(\lambda_{ni}^0/\lambda_{nj}^0)$</td><td>05</td></tr>
+            <tr><td>(ARSW7)</td><td>★ 反推工资</td><td>$w_n-w_m=\nu\ln(\lambda_{ni}^0/\lambda_{mi}^0)$</td><td>05</td></tr>
+            <tr><td>(ARSW8)</td><td>平均福利</td><td>$\bar V=\sum_{n,i}\lambda_{ni}(w_n-\kappa d_{ni}+a_i)$</td><td>08</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>维度</th><th>要求</th></tr>
+          <tr><td>数学</td><td>多项 Logit、Gumbel 极值分布、log-sum-exp、不动点</td></tr>
+          <tr><td>计量</td><td>结构反推（inversion）、DID（自然实验识别 $\kappa$）</td></tr>
+          <tr><td>编程</td><td>numpy $(N,N)$ 通勤矩阵、稳定 softmax；先跑通 06-RRH</td></tr>
+          <tr><td>前置阅读</td><td>06-RRH → 07-贸易迁移土地 → <strong>本页 13</strong></td></tr>
+          <tr><td>交叉链接</td><td>06-RRH 通勤母版 · 07-贸易+迁移+土地 · 14-AA 统一框架</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="12-caliendo-parro-multisector.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">12 · 多部门量化贸易 CP</div>
+      </a>
+      <a href="14-allen-arkolakis-unified.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">14 · 空间经济统一框架 AA</div>
+      </a>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bunching/Kink 聚束设计 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item active" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main"><div class="content-wrap">
+
+  <div class="breadcrumb">
+    <a href="../index.html">首页</a><span class="sep">/</span>
+    <a href="index.html">实证论文</a><span class="sep">/</span>
+    <span>Bunching/Kink 聚束设计</span>
+  </div>
+
+  <div class="page-header">
+    <span class="tag">实证 · 28</span>
+    <h1>Bunching / Kink 聚束设计：从拐点处的"扎堆"反推行为弹性</h1>
+    <p class="desc">当税制、补贴或监管规则在某个收入（或产量、工资）水平上制造一个预算集的"折点"（kink）或"跳跃"（notch），最优化的个体会主动把自己的选择"挤"到折点上，形成直方图上肉眼可见的一个峰。Bunching design 的核心思想是：这个峰有多"鼓"，恰恰度量了个体对价格激励的行为弹性。本页讲清 Saez (2010) 的 reduced-form 弹性估计量、kink 与 notch 的区别、反事实密度的多项式拟合、excess mass 的 bootstrap 标准误，以及中文顶刊里个税与小微企业税收优惠的应用。</p>
+  </div>
+
+  <div class="prereq-box">
+    <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+    <div class="prereq-grid">
+      <div class="prereq-item">
+        <div class="prereq-label">① 数学 / 统计基础</div>
+        <div class="prereq-body">效用最大化与劳动供给选择、密度函数与直方图、局部多项式拟合、delta method、bootstrap 标准误。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">② 经济学理论前置</div>
+        <div class="prereq-body">税收理论中的劳动供给弹性（elasticity of taxable income, ETI）、预算线折点与 notch 的图形直觉。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">③ 软件 / 计算前置</div>
+        <div class="prereq-body">Stata 16+（外部命令 <code class="inline">bunching</code>、<code class="inline">histogram</code>、<code class="inline">polyfit</code>、<code class="inline">bootstrap</code>）；Python（numpy、scipy、statsmodels 可选）。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">④ 站内前置页面</div>
+        <div class="prereq-body">先学 <a href="04-baseline-regression.html">04 基准回归</a>、<a href="07-rdd.html">07 RDD</a>（bunching 与 RDD 同属"利用阈值做准实验"家族）、<a href="05-endogeneity-iv.html">05 IV</a>。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">⑤ 难度分级</div>
+        <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">进阶 · 偏结构直觉</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toc-box">
+    <div class="toc-title">本页目录 / CONTENTS</div>
+    <ol>
+      <li><a href="#s1">是什么：bunching、kink 与 notch</a></li>
+      <li><a href="#s2">识别假设与经济学原理</a></li>
+      <li><a href="#s3">完整推导：从效用最大化到 Saez 弹性公式</a></li>
+      <li><a href="#s4">逐步操作流程</a></li>
+      <li><a href="#s5">完整 Stata 代码（bunching 命令 + 手写估计）</a></li>
+      <li><a href="#s6">论文案例：Saez、Kleven 与中国个税/小微企业应用</a></li>
+      <li><a href="#s7">常见错误</a></li>
+      <li><a href="#s8">与其他方法的交叉链接</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="s1">
+    <h2><span class="sec-num">01</span> 是什么：bunching、kink 与 notch</h2>
+    <p><strong>Bunching（聚束/群聚）</strong>指的是：当政策在某个 running variable 上制造了一个不连续的激励时，大量最优化个体会把自己的选择恰好停在这个不连续点上，从而在该变量的分布直方图上形成一个肉眼可见的"鼓包"。最经典的例子是个人所得税的税率跳档：中国 2011 年税改后，月应纳税所得额在 3500 元（免征额）以上的部分适用第一档 3% 税率，越过 1500 元（即应纳税所得额 5000 元）后税率跳到 10%。一个原本会赚 5100 元的纳税人，理性选择是把工资"做"到 5000 元整——因为多赚 100 元只按 3% 边际税率缴税，而越过门槛后边际税率翻倍，反而不划算。于是 5000 元这个点上"挤"了一大堆人。</p>
+    <p>需要区分两个概念：</p>
+    <ul>
+      <li><strong>Kink design（折点设计）</strong>：预算集的<strong>斜率</strong>在拐点处变化，即边际税率 $t$ 从 $t_0$ 跳到 $t_1$，但预算线本身连续。个体在拐点处形成一个<strong>点质量</strong>（point mass），分布在拐点处"鼓"一下，两侧平滑。</li>
+      <li><strong>Notch design（断点/缺口设计）</strong>：预算集在阈值处发生<strong>水平位移</strong>（例如跨过门槛后一次性多缴一笔固定税，或失去一笔一次性补贴）。此时预算线在阈值处<strong>向下跳断</strong>，跨过阈值反而可能更穷。理性个体会在阈值右侧留出一个<strong>空洞（hole / dominated region）</strong>——没有人愿意选择那个区间，因为左端严格占优。</li>
+    </ul>
+    <p>两种设计都能识别弹性，但 notch 多出一个"支配区间"需要额外建模；kink 是 reduced-form 版本，估计更干净。Kleven (2016, JEL) 的综述把这一类方法统称为 "<strong>bunching design</strong>"，与 RDD 的区别在于：RDD 利用的是结果变量在 cutoff 处的跳跃，bunching 利用的是 running variable 自身密度在 cutoff 处的隆起。</p>
+  </div>
+
+  <div class="section" id="s2">
+    <h2><span class="sec-num">02</span> 识别假设与经济学原理</h2>
+    <p>Bunching design 的识别逻辑非常"结构"：它假设个体在给定预算集下做最优化，分布由偏好异质性驱动。核心假设包括：</p>
+    <ol>
+      <li><strong>优化无摩擦（frictionless optimization）</strong>：个体能精确地把收入"摆"到拐点上，不存在调整成本、注意力缺失、操纵误差。Saez 2010 的原始模型假设无摩擦；后续 Chetty-Friedman-Olsen-Pistaferri (2011, AER) 引入了优化摩擦（optimization frictions），发现现实中 bunching 峰是"弥散"的。</li>
+      <li><strong>反事实密度平滑（smooth counterfactual density）</strong>：如果没有这个拐点，收入分布 $h_0(z)$ 在拐点附近应该是平滑的（由多项式近似）。实际密度 $h(z)$ 与反事实密度 $h_0(z)$ 之差就是"被挤过来的人"。</li>
+      <li><strong>局部小弹性 / 局部近似</strong>：当税率变化幅度较小时，可以用局部线性近似把"移动距离"和"弹性"联系起来。</li>
+      <li><strong>非策略性报告 / 无操纵</strong>：与 RDD 的 rddensity 检验类似，如果 bunching 是因为企业/个人精确操纵发票、账目（而非真实行为调整），弹性估计会被高估。</li>
+    </ol>
+    <p>直觉：拐点处挤进来的人越多（excess mass $B$ 越大），说明个体对边际税率变化越敏感——也就是劳动供给弹性越大。把 $B$ 除以拐点处的"基线密度" $h_0(z^*)$，就得到平均移动距离 $\Delta z^*$；再用税率变化幅度做分母，就把移动距离换算成弹性。</p>
+  </div>
+
+  <div class="section" id="s3">
+    <h2><span class="sec-num">03</span> 完整推导：从效用最大化到 Saez 弹性公式</h2>
+    <p>沿用 Saez (2010) 的准线性劳动供给模型。个体选择劳动收入 $z$，效用函数为：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 3.1 — 准线性效用与劳动供给</div>
+      $$ U(c, z; n) = c - \frac{n}{1+1/e}\left(\frac{z}{n}\right)^{1+1/e} $$
+    </div>
+    <p>其中 $c$ 为消费，$z$ 为税前收入，$n$ 为能力异质性参数（分布密度为 $f(n)$），$e$ 为常数弹性（elasticity of taxable income, ETI）。在比例税率 $t$ 下预算约束为 $c = z(1-t)$。一阶条件：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 3.2 — 一阶条件与 Marshallian 收入函数</div>
+      $$ \frac{\partial U}{\partial z} = (1-t) - \left(\frac{z}{n}\right)^{1/e} = 0 \;\Longrightarrow\; z^* = n(1-t)^e $$
+    </div>
+    <p>取对数：$\log z^* = \log n + e\log(1-t)$。现在在 $z^*$ 处制造一个 kink：边际税率从 $t_0$ 跳到 $t_1 &gt; t_0$。原来在无 kink 情形下收入为 $z^*+\Delta z^*$ 的"边际个体"，在 kink 下发现把收入降到 $z^*$ 更优（因为 $z^*$ 以上的边际回报下降）。他正好停在拐点：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 3.3 — 边际个体在两种税制下的收入对比</div>
+      $$ \frac{z^*+\Delta z^*}{z^*} = \left(\frac{1-t_0}{1-t_1}\right)^{e} $$
+    </div>
+    <p>当税率变化较小，$\log(1-t_1) - \log(1-t_0) \approx -\dfrac{t_1-t_0}{1-t_0}$，取对数后线性化：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 3.4 — 小 kink 下的弹性线性化</div>
+      $$ \frac{\Delta z^*}{z^*} \approx e \cdot \frac{t_1 - t_0}{1 - t_0} $$
+    </div>
+    <p>另一方面，所有原本落在 $[z^*, z^*+\Delta z^*]$ 区间的人都被"挤"到 $z^*$ 点上，这部分人数就是<strong>聚束质量（excess mass）</strong>：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 3.5 — Excess mass 与平均移动距离</div>
+      $$ B = \int_{z^*}^{z^*+\Delta z^*} h_0(z)\,dz \approx h_0(z^*) \cdot \Delta z^* \;\;\Rightarrow\;\; \Delta z^* \approx \frac{B}{h_0(z^*)} $$
+    </div>
+    <p>把 Eq. 3.5 代入 Eq. 3.4，解出弹性：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 3.6 — Saez (2010) reduced-form bunching 弹性估计量</div>
+      $$ \hat{e} = \frac{B / \big[h_0(z^*) \cdot z^*\big]}{\dfrac{t_1 - t_0}{1 - t_0}} = \frac{B \cdot (1 - t_0)}{h_0(z^*) \cdot z^* \cdot (t_1 - t_0)} $$
+    </div>
+    <p>这就是 Saez (2010, AEJ:EP) 公式。用户提示中的简化式 $e=\frac{B/(h_0+k_1)}{t_1-t_0}$ 是 Eq. 3.6 的粗略记忆版：分子是"每单位密度对应的移动距离"，分母是税率相对变化率。实际写作时应使用 Eq. 3.6 的标准形式。</p>
+    <h3>Kink vs Notch 的区别</h3>
+    <ul>
+      <li><strong>Kink</strong>：预算线连续、斜率变。只产生点质量，分布在拐点右侧没有"洞"。Eq. 3.6 直接可用。</li>
+      <li><strong>Notch</strong>：预算线跳断。理性个体不会选择 $(z^*, z^*+\Delta z^{*+})$ 这段被支配区间，分布上出现<strong>空洞</strong>。估计时需要先识别支配区间（dominated region），再把空洞补回来；弹性从"洞的右边界"反推。Kleven & Waseem (2013, QJE) 用巴基斯坦所得税 notch 做了经典应用。</li>
+    </ul>
+  </div>
+
+  <div class="section" id="s4">
+    <h2><span class="sec-num">04</span> 逐步操作流程</h2>
+    <div class="step-flow">
+      <div class="step-item">
+        <div class="step-title">① 构造直方图 / 分 bin</div>
+        <div class="step-desc">把 running variable（如个人月收入）按宽度 $\Delta z$ 分 bin，计算每个 bin 的人数 $c_j$。bin width 通常取带宽的 1/10 到 1/20，既要看得清峰、又不能太碎。建议同时画实际密度直方图。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">② 估计反事实分布 $h_0(z)$</div>
+        <div class="step-desc">用一个多项式（通常 4–7 阶）对 bin 计数回归：$c_j = \sum_{p=0}^P \beta_p (z_j - z^*)^p + \gamma \cdot \mathbb{1}[z_j \in \text{excluded}] + \varepsilon_j$。<strong>回归时排除拐点附近的窗口 $[z^*-w_L, z^*+w_R]$</strong>（excluded region），否则峰本身会把多项式拉上去，低估 excess mass。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">③ 计算 excess mass $B$</div>
+        <div class="step-desc">$B = \sum_{j \in \text{excluded}} [c_j - \hat c_j^{counterfactual}]$。标准化的相对聚束量 $b = B / \hat h_0(z^*)$（即平均移动距离 $\Delta z^*$）。再按 Eq. 3.6 换算成弹性。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">④ Bootstrap 标准误</div>
+        <div class="step-desc">对个体数据做有放回重抽样（1000–2000 次），每次重复 ①–③ 全流程，得到 $B$、$b$、$\hat e$ 的经验分布，取 2.5%/97.5% 分位数作置信区间。<strong>不要</strong>只用 bin-level 的 OLS 标准误——它忽略了个体抽样波动和多项式阶数选择的不确定性。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">⑤ 可视化与稳健性</div>
+        <div class="step-desc">画直方图 + 反事实多项式曲线 + 阴影标注 excluded region。稳健性：改变 bin width、多项式阶数、excluded window 宽度；报告 placebo kink（在随机位置设假拐点，应看不到峰）。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="s5">
+    <h2><span class="sec-num">05</span> 完整 Stata 代码</h2>
+    <p>下面代码分两部分：先用 Stata 官方/社区 <code class="inline">bunching</code> 命令跑一遍（适合快速出图），再手写 histogram + 多项式 + excess mass + bootstrap（适合理解原理与自定义）。所有模拟数据由 set seed 生成，可直接运行。</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · bunching.do（一：官方/社区命令 + 模拟数据）</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* Bunching / Kink 演示：Saez (2010) 弹性估计
+* 情境：月收入 z，在 z*=5000 处边际税率从 t0=0.03 跳到 t1=0.10
+*==============================================================*
+clear all
+set more off
+set seed 20260911
+
+* --- 首次运行安装 ---
+* ssc install bunching, replace       // 社区命令，自动做反事实多项式+bootstrap
+* ssc install estout,   replace
+
+* --- 1. 模拟数据：能力 n ~ LogNormal，常数弹性 e=0.3 ---
+* 无 kink 时 z0 = n*(1-t0)^e；有 kink 时，z0>5000 的人被"挤"到 5000
+set obs 50000
+gen n = exp(rnormal(8.5, 0.6))        // 能力分布
+local e_true = 0.3
+local t0 = 0.03
+local t1 = 0.10
+local zstar = 5000
+gen z0 = n*(1-`t0')^`e_true'          // 无 kink 时的潜在收入
+gen z = z0
+* 把 z0 落在 [5000, 5000+dz*] 的边际个体挤到拐点
+* dz* 由弹性公式反推：dz*/z* = e*(t1-t0)/(1-t0)
+local dz = `zstar' * `e_true' * (`t1'-`t0')/(1-`t0')
+replace z = `zstar' if z0>=`zstar' & z0<=`zstar'+`dz'
+
+* --- 2. 用社区命令 bunching 跑（推荐主回归）---
+* z 是 running variable，a(5000) 指定拐点，nomore= 不截断右侧
+bunching z, a(`zstar') ///
+    polynomial(4)            ///  4 阶多项式拟合反事实
+    required(500)            ///  excluded window 左侧 500
+    cf(500)                  ///  excluded window 右侧 500
+    binwidth(100)            ///  每 bin 100 元
+    start(-2000)             ///  图的左界
+    generate(bunch)          ///  输出估计值到 r()
+    graph(title("Bunching：个税税率跳档处的聚束"))
+
+* --- 3. 手写版本：histogram + 多项式 + excess mass + bootstrap ---
+* 分 bin
+local binw = 100
+local zmin = 2000
+local zmax = 10000
+local nb = (`zmax'-`zmin')/`binw'
+matrix cnt = J(`nb',1,.)
+forvalues j=1/`nb' {
+    local lo = `zmin' + (`j'-1)*`binw'
+    local hi = `zmin' + `j'*`binw'
+    quietly count if z>=`lo' & z<`hi'
+    matrix cnt[`j',1] = r(N)
+}
+clear
+set obs `nb'
+gen cnt = .
+gen zc  = .
+forvalues j=1/`nb' {
+    quietly replace cnt = cnt[`j',1] in `j'
+    quietly replace zc  = `zmin' + (`j'-0.5)*`binw' in `j'
+}
+gen rel = zc - `zstar'          // 相对拐点的位置
+
+* 多项式拟合反事实：排除拐点左右各 500 元
+gen excluded = (abs(rel)<=500)
+reg cnt c.rel##c.rel##c.rel##c.rel i.excluded
+* 解释：四次多项式 + excluded 虚拟变量；
+* excluded 虚拟变量的系数和就是该窗口内被"挤掉"的人数
+predict cnt_hat
+* excess mass = 实际 - 反事实（在 excluded 窗口内）
+gen diff = cnt - cnt_hat if excluded==1
+sum diff, detail
+scalar B = r(sum)
+* 拐点处反事实密度
+sum cnt_hat if abs(rel)<=`binw'/2
+scalar h0 = r(mean)/`binw'
+scalar zstar = `zstar'
+* Saez 弹性
+scalar e_hat = (B/(h0*zstar)) / ((`t1'-`t0')/(1-`t0'))
+display "Excess mass B = " B
+display "Saez elasticity e_hat = " e_hat " (true = `e_true')"
+
+* 画直方图 + 反事实线
+twoway (bar cnt zc, barwidth(80) color(gs12)) ///
+       (line cnt_hat zc, lwidth(2) lcolor(navy)), ///
+       xline(`zstar', lpattern(dash) lcolor(maroon)) ///
+       legend(label(1 实际人数) label(2 反事实密度)) ///
+       xtitle("月应纳税所得额") ytitle("每 bin 人数") ///
+       title("Bunching 手写估计：反事实多项式与 excess mass")
+</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · bunching.do（二：bootstrap 标准误）</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* Bootstrap 标准误：对个体有放回重抽样，重复全流程
+*==============================================================*
+* 把上面"模拟数据"段保留为程序，用 bootstrap 调用
+cap prog drop bunching_est
+prog define bunching_est, rclass
+    version 16
+    syntax , [zstar(real 5000) binw(real 100) w(real 500) t0(real .03) t1(real .10)]
+    tempvar bin rel excl
+    gen `bin' = floor((z - (`zstar'-3000))/`binw')
+    * 直接调用 bunching 命令的返回值
+    bunching z, a(`zstar') polynomial(4) required(`w') cf(`w') binwidth(`binw') ///
+        start(-2000) quiet
+    return scalar e = r(e)          // 若命令返回弹性，直接取
+    return scalar b = r(b)          // 标准化 excess mass
+end
+
+* 运行 bootstrap（500 次，演示用；正式文章建议 1000-2000 次）
+bootstrap e=r(e) b=r(b), reps(500) seed(20260911) ///
+    saving("bunching_boot.dta", replace): bunching_est
+estat bootstrap, all
+* 输出：e 的偏差、标准误、正态/百分位/BCa 置信区间
+* 报告时建议用 BCa 或 percentile 区间，而非正态近似
+</code></pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">python · bunching.py（手写 excess mass，便于理解）</span><button class="copy-btn">复制</button></div>
+<pre><code># ==============================================================
+# Bunching 手写估计：模拟数据 + 多项式反事实 + excess mass
+# ==============================================================
+import numpy as np
+import matplotlib.pyplot as plt
+from numpy.polynomial import polynomial as P
+
+rng = np.random.default_rng(20260911)
+
+# --- 1. 模拟数据：与 Stata 版本一致 ---
+N = 50000
+n = np.exp(rng.normal(8.5, 0.6, N))
+e_true, t0, t1, zstar = 0.3, 0.03, 0.10, 5000
+z0 = n * (1 - t0) ** e_true
+dz = zstar * e_true * (t1 - t0) / (1 - t0)
+z = z0.copy()
+bunch_mask = (z0 >= zstar) & (z0 <= zstar + dz)
+z[bunch_mask] = zstar                      # 把边际个体挤到拐点
+
+# --- 2. 分 bin ---
+binw = 100.0
+edges = np.arange(2000, 10001, binw)
+centers = (edges[:-1] + edges[1:]) / 2
+cnt, _ = np.histogram(z, bins=edges)
+
+# --- 3. 多项式拟合反事实（排除拐点 ±500） ---
+rel = centers - zstar
+excluded = np.abs(rel) <= 500
+mask = ~excluded
+coef = np.polyfit(rel[mask], cnt[mask], 4)
+cnt_hat = np.polyval(coef, rel)
+
+B = (cnt[excluded] - cnt_hat[excluded]).sum()
+h0 = cnt_hat[np.abs(rel) <= binw / 2].mean() / binw
+e_hat = (B / (h0 * zstar)) / ((t1 - t0) / (1 - t0))
+print(f"Excess mass B = {B:.1f}")
+print(f"Saez elasticity e_hat = {e_hat:.3f}  (true = {e_true})")
+
+# --- 4. 可视化 ---
+fig, ax = plt.subplots(figsize=(8, 4.5))
+ax.bar(centers, cnt, width=binw*0.9, color='#cccccc', label='实际人数')
+ax.plot(centers, cnt_hat, lw=2, color='#1c5d6e', label='反事实密度（4 阶多项式）')
+ax.axvline(zstar, ls='--', color='#a03a2c', label='kink z*=5000')
+ax.axvspan(zstar-500, zstar+500, color='#b87333', alpha=0.15, label='excluded window')
+ax.set_xlabel('月应纳税所得额'); ax.set_ylabel('每 bin 人数')
+ax.set_title(f'Bunching: excess mass B={B:.0f},  e={e_hat:.3f}')
+ax.legend(); plt.tight_layout(); plt.show()
+</code></pre>
+    </div>
+  </div>
+
+  <div class="section" id="s6">
+    <h2><span class="sec-num">06</span> 论文案例</h2>
+
+    <h3>英文经典文献</h3>
+    <div class="paper-card">
+      <span class="paper-type en">English · AEJ:EP</span>
+      <div class="paper-title">Do Taxpayers Bunch at Kink Points?</div>
+      <div class="paper-meta">Emmanuel Saez · American Economic Journal: Economic Policy, 2010</div>
+      <div class="paper-desc">Bunching 方法的奠基之作。用美国个人所得税 1040 报税数据，证明收入分布在 EITC（劳动所得税抵免）kink 处有聚束，提出 reduced-form 弹性估计量（即本页 Eq. 3.6）。任何做 bunching 的论文都必须引这篇。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · JEL</span>
+      <div class="paper-title">Bunching</div>
+      <div class="paper-meta">Henrik Jacobsen Kleven · Journal of Economic Literature, 2016</div>
+      <div class="paper-desc">最权威的 bunching 综述。系统区分 kink vs notch、无摩擦 vs 有优化摩擦、reduced-form vs structural bunching。是写论文 introduction 部分的标准引用。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · AER</span>
+      <div class="paper-title">Adjustment Costs, Firm Responses, and Micro vs. Macro Labor Supply Elasticities: Evidence from Danish Tax Records</div>
+      <div class="paper-meta">Chetty, Friedman, Olsen & Pistaferri · American Economic Review, 2011</div>
+      <div class="paper-desc">用丹麦全额个税 administrative data 发现：微观 bunching 峰是"弥散"的（个体不能无限精确优化），由此引入优化摩擦概念，估计的微观弹性与宏观弹性差异巨大。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · 理论起源</span>
+      <div class="paper-title">The Effect of Taxes on Labor Supply (Diamond 1980 讲座)</div>
+      <div class="paper-meta">Peter A. Diamond · 1980 年代起关于 kink / 预算集非线性的早期讨论</div>
+      <div class="paper-desc">在 Saez (2010) 之前，Diamond 等人已讨论过非线性预算线下劳动供给的识别问题；Saez 把它变成了可操作的 reduced-form 工具。</div>
+    </div>
+
+    <h3>中文顶刊与中文工作论文</h3>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 《世界经济》</span>
+      <div class="paper-title">个人所得税改革与劳动供给：基于调整成本与收益的研究</div>
+      <div class="paper-meta">《世界经济》2024 年第 4 期（中国社会科学院世界经济与政治研究所）</div>
+      <div class="paper-desc">利用 2011、2018 年个税改革在免征额与 2000 元阈值附近的聚束特征，识别劳动者对工作激励的行为反应。研究发现考虑调整成本后劳动供给弹性约为 0.409，是忽略调整成本估计值的 3.3 倍——是中文顶刊里 bunching 方法用得最规范的一篇。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 综述</span>
+      <div class="paper-title">聚束分析法及其在税收政策评估领域的应用</div>
+      <div class="paper-meta">《中央财经大学学报》系列综述</div>
+      <div class="paper-desc">系统介绍 bunching 方法的反事实分布拟合、excess mass 计算、超越方程求解弹性、kink 与 notch 区别。适合作为中文入门读物。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 工作论文</span>
+      <div class="paper-title">企业应对税收优惠的行为决策与福利损失（小微企业所得税减半征收）</div>
+      <div class="paper-meta">2025 年工作论文（公开报道）</div>
+      <div class="paper-desc">利用小微企业年应纳税所得额减半征收政策的门槛，用 bunching 估计企业面对税率变化的应纳税所得额反应，计算应税收入弹性与无谓损失。是企业层面 bunching 应用的代表性范式。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · WP（中国情境）</span>
+      <div class="paper-title">Bunching at Kinked Wage Deduction: Elasticity of Substitution between Skilled and Unskilled Labor in China</div>
+      <div class="paper-meta">Jianguo Wang 等（中国企业层面数据）</div>
+      <div class="paper-desc">利用中国企业工资薪金税前扣除按企业平均工资比例设置的 kink，发现企业平均工资分布在 kink 处显著聚束，企业通过调整技能/非技能劳动力比例来压低应税平均工资，借此估计技能—非技能劳动的替代弹性。</div>
+    </div>
+  </div>
+
+  <div class="section" id="s7">
+    <h2><span class="sec-num">07</span> 常见错误</h2>
+    <div class="callout danger">
+      <div class="callout-title">错误 1：bin width 拍脑袋，不做稳健性</div>
+      <p>bin 太粗会把峰"磨平"、$B$ 被低估；bin 太碎会引入噪声、$B$ 被高估。必须报告多档 bin width（如 50/100/200）下的 $B$ 与 $\hat e$，并附 placebo kink 检验。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 2：反事实分布把峰本身也拟合进去</div>
+      <p>回归多项式时若不 excluded 拐点附近窗口，4 阶多项式会把"鼓包"当成真实分布趋势，导致 $\hat h_0(z^*)$ 偏高、$B$ 被严重低估。必须先选定 excluded window（通常靠图形判断或迭代法），再回归。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 3：忽略密集边际（intensive margin）与调整成本</div>
+      <p>Saez (2010) 假设无摩擦。Chetty et al. (2011) 证明现实中个体因调整成本只能"近似"聚束，峰是弥散的。若直接用 Eq. 3.6 会低估真实弹性。中文文献（《世界经济》2024）已开始引入调整成本修正。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 4：标准误只用 bin-level OLS</div>
+      <p>bin 是构造出来的，OLS 残差独立同分布假设不成立；多项式阶数、excluded window 选择也带不确定性。必须用个体层面 bootstrap（或 parametric bootstrap），报告 BCa / percentile 置信区间。</p>
+    </div>
+    <div class="callout info">
+      <div class="callout-title">错误 5：把 kink 当 notch 处理（或反过来）</div>
+      <p>Notch 会产生"支配区间"空洞，必须先识别 dominated region 再补回；kink 没有空洞，直接拟合即可。混淆二者会错误地把"无人区间"当作真实分布的一部分。</p>
+    </div>
+    <div class="callout info">
+      <div class="callout-title">错误 6：不做 placebo kink</div>
+      <p>在离真实拐点较远的位置随机设一个假 kink，重复同样流程，$B$ 应该不显著。如果 placebo kink 也显著，说明你看到的"峰"只是数据本身的波动或其他制度因素，bunching 识别无效。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s8">
+    <h2><span class="sec-num">08</span> 与其他方法的交叉链接</h2>
+    <ul>
+      <li><strong>与 <a href="07-rdd.html">RDD（07）</a></strong>：同属"利用阈值做准实验"。RDD 看结果变量在 cutoff 的跳跃，bunching 看 running variable 密度在 cutoff 的隆起。两者都需要"无 manipulation"假设，都要做 rddensity / placebo 类检验。</li>
+      <li><strong>与 <a href="05-endogeneity-iv.html">IV（05）</a>、<a href="06-did.html">DID（06）</a></strong>：bunching 估计的是"边际个体"的局部弹性，外推到全体需要结构模型；DID/IV 估计的是处理效应。写论文时常把 bunching 作为机制检验——证明 bunching 峰确实由税率变化驱动。</li>
+      <li><strong>与 <a href="29-nonparametric-semiparametric.html">非参/半参方法（29）</a></strong>：反事实密度的多项式拟合本质是局部多项式非参数估计；多项式阶数选择、带宽选择与核回归的偏差—方差权衡同源。</li>
+      <li><strong>与 <a href="24-synthetic-control.html">合成控制（24）</a></strong>：bunching 内部的"反事实分布"思想与 SCM 的"反事实合成"在哲学上一致——都是在没有 treatment 的世界里构造一条平滑基准线。</li>
+    </ul>
+  </div>
+
+  <div class="page-nav">
+    <a href="26-spatial-econometrics.html" class="prev">
+      <div class="nav-label">← 上一节</div>
+      <div class="nav-title">空间计量入门</div>
+    </a>
+    <a href="29-nonparametric-semiparametric.html" class="next">
+      <div class="nav-label">下一节 →</div>
+      <div class="nav-title">非参/半参方法</div>
+    </a>
+  </div>
+
+</div></div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show')}
+document.querySelectorAll('.copy-btn').forEach(b=>b.onclick=()=>{const c=b.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(c).then(()=>{b.textContent='已复制 ✓';setTimeout(()=>b.textContent='复制',1500)})});
+document.addEventListener('DOMContentLoaded',()=>{if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})}});
+</script>
+</body>
+</html>

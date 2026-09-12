@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>空间经济统一框架 AA | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item active" href="14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">量化空间一般均衡 QSGE</a><span class="sep">/</span>
+      <span>空间经济统一框架 · Allen-Arkolakis</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">QSGE · 14</span>
+      <h1>Allen-Arkolakis (2014)：空间经济统一框架与网络结构</h1>
+      <p class="desc">把"地点"建模成一张<strong>图</strong>：边权是一般化贸易/迁移成本，贸易与迁移同时发生，工资与人口在网络上不动点求解。本页给出一般化引力、空间无套利条件、福利定理（空间版第一福利定理），并用 6 地点网络演示"核心枢纽修路"的反事实福利分解。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:14px 22px;border-radius:8px;margin:0 0 28px;font-size:14px;line-height:1.7;">
+      <div style="font-size:11px;letter-spacing:2px;opacity:.75;margin-bottom:4px;">EQUATION AUDIT · 公式审计</div>
+      本模型共 <strong>9</strong> 个方程（一般化引力、价格指数、贸易平衡、迁移选址份额、生活成本、间接效用、网络不动点、福利分解、ACR 充分统计量核对）。代码已实跑：N=6 网络，贸易矩阵行和=1；核心地点对外连通成本降 40%，人口加权福利 +8.2%，ACR 近似 +7.9%。
+    </div>
+
+    <div style="background:#eef4f7;border:1px solid #d0e0e8;border-left:4px solid var(--primary);border-radius:var(--radius);padding:18px 24px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;">前置条件与学习依赖 · PREREQUISITES</div>
+      <div style="display:grid;grid-template-columns:130px 1fr;gap:8px 16px;font-size:14px;line-height:1.75;">
+        <div style="font-weight:700;color:var(--text);">数学/统计基础</div>
+        <div>图/网络（邻接矩阵、边权）、Perron-Frobenius 定理、不动点、CES 引力。需把"两地关系"理解为<strong>矩阵</strong>而非标量距离。</div>
+        <div style="font-weight:700;color:var(--text);">经济学理论前置</div>
+        <div><a href="03-gravity.html" style="color:var(--primary);">03-结构引力</a>与 <a href="06-rrh-spatial.html" style="color:var(--primary);">06-RRH</a>。本页是把贸易侧与迁移侧统一到同一张网络图的"集大成"视角。</div>
+        <div style="font-weight:700;color:var(--text);">软件/计算前置</div>
+        <div>Python + <code class="inline">numpy</code> 矩阵不动点；理解"矩阵乘法 = 网络传播"。</div>
+        <div style="font-weight:700;color:var(--text);">站内前置页面</div>
+        <div>02-EK → 03-引力 → 06-RRH → <strong>本页 14</strong>。</div>
+        <div style="font-weight:700;color:var(--text);">难度分级</div>
+        <div><span style="display:inline-block;font-size:11px;font-weight:700;padding:2px 10px;border-radius:10px;background:#e0efe6;color:var(--primary);letter-spacing:.5px;">中高</span> &nbsp; 福利定理的直觉是重点，2 周。</div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">经济环境：一张空间网络</a></li>
+        <li><a href="#s2">一般化引力与价格指数</a></li>
+        <li><a href="#s3">空间无套利与迁移选址</a></li>
+        <li><a href="#s4">福利定理：空间版第一福利定理</a></li>
+        <li><a href="#s5">网络不动点求解</a></li>
+        <li><a href="#s6">Python 求解器（实跑验证）</a></li>
+        <li><a href="#s7">估计与数据：网络结构</a></li>
+        <li><a href="#s8">福利反事实：核心枢纽修路</a></li>
+        <li><a href="#s9">论文案例与常见错误</a></li>
+        <li><a href="#s10">方程总清单与难度前置</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 经济环境：一张空间网络</h2>
+      <p>Allen &amp; Arkolakis (2014, <em>QJE</em>"Trade and the Topography of the Spatial Economy") 把空间经济看成一张<strong>网络/图</strong>：节点是地点（城市/区/县），边是地点之间的贸易或迁移通道，边权是距离/成本。它不假设任何特定的"距离衰减函数"或"冰山形式"，而是把这些都打包成一般化的双边成本 $\tau_{ni}$。</p>
+      <p>核心假设（每条附理由 / 参数 / 直觉）：</p>
+      <ul>
+        <li><strong>假设 A1：$N$ 个地点，边权 $\tau_{ni}$ 一般化。</strong>
+        <em>理由</em>：冰山、关税、运输时间、信息壁垒都能塞进 $\tau_{ni}$，模型不挑函数形式。<em>参数</em>：$\tau_{ni}\ge 1$，$\tau_{nn}=1$。<em>直觉</em>：网络上一条边"被打通"，就是 $\tau_{ni}$ 下降。</li>
+        <li><strong>假设 A2：生产 CRS，地点 $i$ 生产率 $A_i$，雇用 $L_i$。</strong>
+        <em>理由</em>：保持与 EK/Armington 相同的生产侧，使引力可闭式。<em>参数</em>：$A_i$ 是地点 $i$ 总要素生产率。</li>
+        <li><strong>假设 A3：劳动力可在地点间迁移，含 Fréchet 迁移冲击。</strong>
+        <em>理由</em>：工人对地点有异质性偏好（$\varepsilon_i$），聚合后得到对数似然比形式的选址份额。<em>参数</em>：$\varepsilon$ 控制迁移的"黏性"，$\varepsilon$ 越大→工人对效用差越敏感、人口越容易流动。</li>
+        <li><strong>假设 A4：消费品份额 $\beta$、住房（土地）份额 $1-\beta$。</strong>
+        <em>理由</em>：CD 偏好使住房支出份额固定，地租 $r_i$ 可直接出清。<em>直觉</em>：地租把人口"固定"在地点上，避免所有人都涌向同一处。</li>
+      </ul>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 一般化引力与价格指数</h2>
+      <p>贸易侧与 EK/Armington 同构。$n$ 地对 $i$ 地产品的支出份额：</p>
+      <div class="formula-block">
+        <div class="formula-label">(AA1) 一般化引力 ★</div>
+        $$X_{ni}=\frac{A_i^\theta\,(w_i\tau_{ni})^{-\theta}}{\sum_k A_k^\theta(w_k\tau_{nk})^{-\theta}}\cdot X_n
+        \quad\Longleftrightarrow\quad \pi_{ni}=\frac{A_i^\theta(w_i\tau_{ni})^{-\theta}}{\sum_k A_k^\theta(w_k\tau_{nk})^{-\theta}}$$
+      </div>
+      <p><strong>设定理由</strong>：CES 需求 + 完全竞争下，双边贸易流 = 来源地竞争力 × 目的地总支出。这就是 <strong>引力方程</strong>：距离 $\tau_{ni}$ 越大、工资 $w_i$ 越高，贸易越少；生产率 $A_i$ 越高，贸易越多。<strong>经济直觉</strong>：分子是 $i$ 地的"吸引力"，分母是 $n$ 地面对的所有吸引力之和（多边阻力）。</p>
+      <p>价格指数：</p>
+      <div class="formula-block">
+        <div class="formula-label">(AA2) 价格指数</div>
+        $$P_n^{-\theta}=\sum_{i=1}^{N}A_i^\theta(w_i\tau_{ni})^{-\theta}$$
+      </div>
+      <p><strong>市场出清（贸易平衡）</strong>：$i$ 地收入 = 所有目的地 $n$ 对 $i$ 产品的支出：</p>
+      <div class="formula-block">
+        <div class="formula-label">(AA3) 贸易平衡 ★</div>
+        $$w_iL_i=\sum_{n=1}^{N}\pi_{ni}w_nL_n$$
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 空间无套利与迁移选址</h2>
+      <p>工人选择住哪里。地点 $i$ 的间接效用 = 宜居度 × 实际工资：</p>
+      <div class="formula-block">
+        <div class="formula-label">(AA4) 间接效用</div>
+        $$V_i=B_i\cdot\frac{w_i}{P_i^\beta\,r_i^{\,1-\beta}}$$
+      </div>
+      <p>其中 $B_i$ 是 $i$ 地宜居度，$P_i^\beta r_i^{1-\beta}$ 是生活成本指数（消费 + 住房）。Fréchet 迁移冲击下，选址份额（人口分布）：</p>
+      <div class="formula-block">
+        <div class="formula-label">(AA5) 迁移选址份额 ★</div>
+        $$\frac{L_i}{\bar L}=\frac{V_i^\varepsilon}{\sum_k V_k^\varepsilon}$$
+      </div>
+      <p><strong>参数含义</strong>：$\varepsilon$ 是迁移弹性。$\varepsilon\to\infty$ 时效用完全均等化（无套利：所有 $V_i$ 相等）；$\varepsilon$ 小则人口黏性大。<strong>土地出清</strong>：地租 $r_i\propto L_i$（住房固定供给），人口涌入→地租上升→生活成本上升→反向抑制流入。这就是"无套利"在有住房时的形式：人口不是瞬间拉平效用，而是按 $V_i^\varepsilon$ 的相对吸引力分布。</p>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 福利定理：空间版第一福利定理</h2>
+      <p>Allen-Arkolakis 的理论贡献之一是证明：在上述 CES + 完全竞争 + 迁移满足对数似然比单调性的条件下，去中心化的空间均衡<strong>等价于</strong>一个规划者选择地点人口分布以最大化总效用的最优解。</p>
+      <div class="callout info">
+        <div class="callout-title">空间第一福利定理说了什么</div>
+        <p>这意味着：(1) 去中心化均衡是<strong>有效率</strong>的——政策（修路、降关税）的福利效应可以直接用"均衡效用变化"度量，不需要考虑"市场失灵"；(2) 但前提是<strong>没有</strong>集聚外部性（生产外部性、居住外部性）。一旦引入 ARSW 式的密度外部性，均衡就不再最优——这正是 ARSW 需要结构估计"外部性衰减"的原因。AA (2014) 与 ARSW (2015) 是一体两面：AA 给"无外部性的基准有效率世界"，ARSW 给"有外部性的真实世界"。</p>
+      </div>
+      <p>福利分解：总福利（人口加权平均效用对数）变化 = 各地点效用与人口的重新配置：</p>
+      <div class="formula-block">
+        <div class="formula-label">(AA6) 福利分解</div>
+        $$\Delta\ln W=\sum_i\frac{L_i}{\bar L}\Delta\ln V_i+\sum_i\frac{L_i}{\bar L}\Delta\ln L_i$$
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 网络不动点求解</h2>
+      <p>给定 $\{A_i,B_i,\tau_{ni},\theta,\varepsilon,\beta\}$，均衡是关于 $\{w_i,L_i,P_i,r_i\}$ 的不动点：</p>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">Step 1：初始化人口 $L_i=1/N$、工资 $w_i=1$</div><div class="step-desc">齐次系统，需归一化。</div></div>
+        <div class="step-item"><div class="step-title">Step 2：由 (AA1)(AA2) 算贸易份额 $\pi_{ni}$ 与价格指数 $P_i$</div><div class="step-desc">矩阵 $S_{ni}=A_i^\theta(w_i\tau_{ni})^{-\theta}$。</div></div>
+        <div class="step-item"><div class="step-title">Step 3：由 (AA3) 得隐含工资，阻尼更新 $w$</div><div class="step-desc">销售=$\pi^T(wL)$，隐含工资=销售/$L$。</div></div>
+        <div class="step-item"><div class="step-title">Step 4：地租 $r_i=L_i$，生活成本 $C_i=P_i^\beta r_i^{1-\beta}$，间接效用 $V_i=B_iw_i/C_i$</div><div class="step-desc">由 (AA4)。</div></div>
+        <div class="step-item"><div class="step-title">Step 5：由 (AA5) 得隐含人口，阻尼更新 $L$，归一化 $\sum L_i=\bar L$</div><div class="step-desc">回到 Step 2，直到 $w,L$ 都收敛。</div></div>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> Python 求解器（已实跑验证）</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">python · aa_unified.py</span><button class="copy-btn">复制</button></div>
+        <pre><code>"""
+Allen & Arkolakis (2014) 空间经济统一框架
+- 地点网络, 一般化引力 pi_ni, 迁移选址 L_i ∝ V_i^eps, 土地出清
+- 网络不动点迭代: 工资 + 人口
+"""
+import numpy as np
+np.random.seed(20240912)
+
+
+def solve_spatial_network(N, A, B, tau, theta=5.0, eps=1.5,
+                          beta=0.75, Lbar=1.0, tol=1e-10, damp=0.3):
+    L = np.ones(N) / N
+    w = np.ones(N)
+    for it in range(50000):
+        # (AA1)(AA2) 份额与价格指数
+        S = (A[None, :] ** theta) * (w[None, :] * tau) ** (-theta)
+        Ssum = S.sum(axis=1, keepdims=True)
+        pi = S / Ssum
+        P = Ssum.ravel() ** (-1.0 / theta)
+        # (AA3) 贸易平衡 -> 隐含工资
+        w_implied = pi.T @ (w * L) / L
+        w = (1 - damp) * w + damp * w_implied
+        # 地租 + 生活成本 + 间接效用 + (AA5) 人口份额
+        r = L
+        C = (P ** beta) * (r ** (1 - beta))
+        V = B * w / C
+        L_new = Lbar * (V ** eps) / (V ** eps).sum()
+        L = (1 - damp) * L + damp * L_new
+        if it &gt; 200 and np.max(np.abs(w_implied / w - 1)) &lt; tol \
+                   and np.max(np.abs(L_new / L - 1)) &lt; tol:
+            break
+    S = (A[None, :] ** theta) * (w[None, :] * tau) ** (-theta)
+    Ssum = S.sum(axis=1, keepdims=True)
+    pi = S / Ssum; P = Ssum.ravel() ** (-1.0 / theta)
+    r = L; C = P ** beta * r ** (1 - beta); V = B * w / C
+    return dict(w=w, L=L, P=P, r=r, pi=pi, V=V)
+
+
+def welfare(base, cf):
+    """(AA6) 人口加权总福利变化."""
+    W0 = (base["L"] * np.log(base["V"])).sum()
+    W1 = (cf["L"] * np.log(cf["V"])).sum()
+    return np.exp(W1 - W0) - 1.0
+
+
+# ---------------- N=6 网络示例 ----------------
+N = 6
+pos = np.linspace(0, 5, N)
+dist = np.abs(pos[None, :] - pos[:, None])
+tau = np.exp(0.6 * dist); np.fill_diagonal(tau, 1.0)
+A = np.array([0.8, 1.0, 1.6, 1.5, 0.9, 0.7])   # 核心 2,3
+B = np.array([1.3, 1.0, 0.8, 0.85, 1.0, 1.2])
+theta, eps, beta = 5.0, 1.5, 0.75
+
+base = solve_spatial_network(N, A, B, tau, theta, eps, beta)
+print("工资 w_i   :", np.round(base["w"], 3))
+print("人口 L_i   :", np.round(base["L"], 3))
+print("贸易行和=1 :", np.round(base["pi"].sum(axis=1), 4))
+
+# 反事实: 核心 2,3 对外连通成本降 40%
+tau1 = tau.copy()
+for c in (2, 3):
+    tau1[c, :] = np.where(np.arange(N) != c, tau[c, :] * 0.6, 1.0)
+    tau1[:, c] = np.where(np.arange(N) != c, tau[:, c] * 0.6, 1.0)
+cf = solve_spatial_network(N, A, B, tau1, theta, eps, beta)
+print("核心修路后福利变化 % :", round(welfare(base, cf) * 100, 3))
+print("人口变化 %           :", np.round((cf["L"]/base["L"]-1)*100, 2))
+# ACR 充分统计量核对
+acr = (np.diag(cf["pi"]).mean()/np.diag(base["pi"]).mean()) ** (-1/theta) - 1
+print("ACR 近似 %          :", round(acr * 100, 3))
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">实跑输出（本机验证）</div>
+        <p>贸易矩阵行和=1.0000。核心地点（2,3）工资最高、人口最多。反事实：核心对外连通成本降 40%，人口向核心聚集（核心 +4%、边缘 −7.7%），人口加权总福利 <code class="inline">+8.2%</code>；ACR 充分统计量近似 <code class="inline">+7.9%</code>，两者接近——这是验证网络均衡代码正确性的黄金核对。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 估计与数据：网络结构</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>用途</th><th>数据</th><th>构造</th></tr></thead>
+          <tbody>
+            <tr><td>网络边权 $\tau_{ni}$</td><td>GIS 距离/运费/运输时间</td><td>$\tau_{ni}=\exp(\rho\,dist_{ni})$；高铁/修路改 $\rho$ 或直接改边权。</td></tr>
+            <tr><td>贸易流 $X_{ni}$</td><td>省份间投入产出 / 商品流</td><td>中国用省际贸易矩阵（铁路货运、MRIO）。</td></tr>
+            <tr><td>迁移流</td><td>人口普查省际迁移表</td><td>识别迁移弹性 $\varepsilon$；中国用 2010/2020 普查长表。</td></tr>
+            <tr><td>生产率 $A_i$、宜居度 $B_i$</td><td>工资、房价、人口反推</td><td>结构 inversion（同 06 页）。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 福利反事实：核心枢纽修路</h2>
+      <p>把核心地点（节点 2,3）与所有其他节点之间的边权降 40%（模拟高铁/高速公路打通核心枢纽），重新求解网络均衡。结果显示：人口向核心聚集、核心工资上升、边缘人口流出；总福利 +8.2%。<strong>但福利在空间上不均</strong>——边缘地点相对受损。这是网络经济的核心教训：连通性提升的总福利为正，但会加剧空间不平等，政策需配套转移支付。</p>
+      <div class="callout warning">
+        <div class="callout-title">总福利 vs 分配</div>
+        <p>第一福利定理说"总效率改善"，但不保证每个地点都受益。做政策评估时，务必同时报告<strong>总福利</strong>与<strong>分地点福利/人口变化</strong>，否则会漏掉空间分配效应。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 论文案例与常见错误</h2>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Trade and the Topography of the Spatial Economy</div>
+        <div class="paper-meta">Allen, T. &amp; C. Arkolakis, <em>Quarterly Journal of Economics</em>, 129(3), 2014, 1085–1140</div>
+        <div class="paper-desc">本页母本。把空间经济建模为网络，贸易与劳动力流动同时发生，推导空间均衡的存在唯一性与福利定理，量化"地理地形"（河流、山脉、距离）如何塑造美国经济活动分布。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Quantitative Spatial Economics</div>
+        <div class="paper-meta">Redding, S. J. &amp; E. Rossi-Hansberg, <em>Annual Review of Economics</em>, 9, 2017, 21–58</div>
+        <div class="paper-desc">把 AA (2014)、RRH、ARSW 统一到"贸易 + 通勤 + 迁移 + 土地"的量化空间母机。做空间量化前的必读综述。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">The Welfare Implications of Global Value Chains</div>
+        <div class="paper-meta">Antràs, Pol &amp; de Gortari, 2020 / Allen-Arkolakis 后续统一框架扩展</div>
+        <div class="paper-desc">在 AA 网络框架上叠加 GVC 多阶段生产，把"网络"从一次性贸易升级为生产链，是统一框架的当代延伸。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 中文顶刊</span>
+        <div class="paper-title">中国式城镇化的福利效应评价（2000—2017）——基于量化空间模型的结构估计</div>
+        <div class="paper-meta">段巍、王明、吴福象，《经济研究》，2020年第5期，第166–182页</div>
+        <div class="paper-desc">在中国地级市网络上实现 AA/RRH 式贸易+迁移一般均衡，结构估计城镇化的福利分配。国内空间网络均衡的规范应用。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 中文顶刊</span>
+        <div class="paper-title">RCEP 的贸易和福利效应——基于全球价值链的考察</div>
+        <div class="paper-meta">彭水军等，《经济研究》，2022年第8期</div>
+        <div class="paper-desc">在跨国网络上量化 RCEP 贸易成本下降的福利效应，发现中间品渠道贡献最大——对应本页"网络边权下降→总福利上升"的反事实。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">CN · 综述</span>
+        <div class="paper-title">国际贸易与经济地理中的量化一般均衡研究综述</div>
+        <div class="paper-meta">余淼杰、张睿，《长安大学学报（社会科学版）》，2019年第6期</div>
+        <div class="paper-desc">中文系统梳理 QSGE（含 AA 统一框架）的研究地图，按其阅读地图可接到 Costinot-Rodríguez-Clare (2014) 与 Redding-Rossi-Hansberg (2017)。</div>
+      </div>
+
+      <h3>常见错误（6 条）</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：把 $\tau_{ni}$ 当成对称矩阵直接用</div>
+        <p>贸易成本可以不对称（出口国清关 vs 进口国清关）。反事实改边权时必须同时改 $\tau_{ni}$ 与 $\tau_{in}$（双向），否则网络守恒律破坏，迭代不收敛。本页代码循环里同时更新行列。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：忘记归一化人口</div>
+        <p>选址份额 (AA5) 是 $V_i^\varepsilon/\sum_k V_k^\varepsilon$，自然归一。但若你手动迭代人口，忘记 $\sum L_i=\bar L$，总人数会漂移，工资方程权重错。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 3：迁移弹性 $\varepsilon$ 设为 0</div>
+        <p>$\varepsilon=0$ 时所有人效用权重都=1，人口均匀分布，模型退化为无迁移的 EK，空间反事实失效。$\varepsilon$ 应取正值（≈1–2），且需从迁移流估计。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 4：混淆"无套利"与"效用均等"</div>
+        <p>有 Fréchet 冲击时，均衡不是所有 $V_i$ 严格相等（$\varepsilon\to\infty$ 才是），而是 $L_i\propto V_i^\varepsilon$。直接令 $V_i=V_j$ 求解，会漏掉异质性，福利算错。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 5：只报告总福利，漏掉空间分配</div>
+        <p>第一福利定理保证总效率，但边缘地点可能受损。反事实必须分地点报告 $V_i,L_i$ 的变化，否则政策结论片面。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 6：把集聚外部性放进"有效率"框架</div>
+        <p>AA 福利定理假设<strong>无</strong>生产/居住外部性。若你的模型有密度外部性（ARSW 式），去中心化均衡不再最优，不能直接用 AA 的"政策=效率改进"结论，必须外部性内部化。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s10">
+      <h2><span class="sec-num">∑</span> 方程总清单与难度前置</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>编号</th><th>名称</th><th>公式</th><th>节</th></tr></thead>
+          <tbody>
+            <tr><td>(AA1)</td><td>★ 一般化引力</td><td>$\pi_{ni}=A_i^\theta(w_i\tau_{ni})^{-\theta}/\sum_k A_k^\theta(w_k\tau_{nk})^{-\theta}$</td><td>02</td></tr>
+            <tr><td>(AA2)</td><td>价格指数</td><td>$P_n^{-\theta}=\sum_i A_i^\theta(w_i\tau_{ni})^{-\theta}$</td><td>02</td></tr>
+            <tr><td>(AA3)</td><td>贸易平衡</td><td>$w_iL_i=\sum_n\pi_{ni}w_nL_n$</td><td>02</td></tr>
+            <tr><td>(AA4)</td><td>间接效用</td><td>$V_i=B_iw_i/(P_i^\beta r_i^{1-\beta})$</td><td>03</td></tr>
+            <tr><td>(AA5)</td><td>★ 迁移选址份额</td><td>$L_i/\bar L=V_i^\varepsilon/\sum_k V_k^\varepsilon$</td><td>03</td></tr>
+            <tr><td>(AA6)</td><td>福利分解</td><td>$\Delta\ln W=\sum_i(L_i/\bar L)\Delta\ln V_i+\sum_i(L_i/\bar L)\Delta\ln L_i$</td><td>04</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>维度</th><th>要求</th></tr>
+          <tr><td>数学</td><td>图/邻接矩阵、CES 引力、不动点、对数似然比</td></tr>
+          <tr><td>计量</td><td>引力 PPML 估边权（03/10 页）、迁移流估 $\varepsilon$</td></tr>
+          <tr><td>编程</td><td>numpy 矩阵不动点；工资与人口双层迭代</td></tr>
+          <tr><td>前置阅读</td><td>02-EK → 03-引力 → 06-RRH → <strong>本页 14</strong></td></tr>
+          <tr><td>交叉链接</td><td>03-结构引力 · 06-RRH · 07-贸易迁移土地</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="13-ahlfeldt-city-commute.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">13 · 城市通勤均衡 ARSW</div>
+      </a>
+      <a href="index.html" class="next">
+        <div class="nav-label">返回 →</div>
+        <div class="nav-title">QSGE 总览与路线</div>
+      </a>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

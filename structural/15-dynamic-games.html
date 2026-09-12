@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>动态博弈与产业动态（Ericson-Pakes） | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item active" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">结构估计</a>
+      <span class="sep">/</span>
+      <span>动态博弈与产业动态（Ericson-Pakes）</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">STRUCTURAL · DYNAMIC GAMES · INDUSTRIAL DYNAMICS</span>
+      <h1>动态博弈与产业动态：Ericson–Pakes 框架、BBL 与 MPEC</h1>
+      <p class="desc">当一个市场里有 N 家企业同时做投资、进入、退出决策时，每家企业的 Bellman 方程里都嵌着对手的均衡策略——这就是 Ericson–Pakes (1995) 的马尔可夫完美均衡（MPE）框架。本页讲清 EP 环境设定、MPE 不动点、BBL 两步估计、Su–Judd (2012) MPEC 重写，并给出可直接运行的 2 企业 EP 模型 Python VFI 求解器。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:10px 20px;border-radius:8px;margin:0 0 24px;font-size:14px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:18px;">&#128221;</span>
+      <span><strong>与单 agent 动态结构（Rust）的关键区别</strong>：每家企业的 Bellman 方程里不仅有自己的状态，还有对手状态；均衡要求所有企业的策略函数互为最优反应。求解从"单不动点"升级为"不动点的不动点"——这是本页全部方法论的出发点。</span>
+    </div>
+
+    <!-- 前置条件 -->
+    <div style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>单 agent 动态规划（先读 <a href="05-dynamic-structural.html">05 动态结构模型总览</a> 的 Rust/NFXP/Hotz-Miller）、博弈论中的 Markov Perfect Equilibrium、压缩映射与不动点定理。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>产业组织（IO）：企业投资、进入/退出、沉没成本、市场集中度演化；Hopenhayn (1992) 竞争均衡进入退出模型；Pakes 系列动态产业模型。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件/计算前置：</span>Python（numpy 向量化 + scipy 优化）；理解嵌套迭代与维数灾难；MPEC 见 <a href="14-mpec.html">14 MPEC 方法</a>。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置页面：</span><a href="05-dynamic-structural.html">05 动态结构模型</a>（单 agent）→ 本页（多 agent 博弈）；<a href="14-mpec.html">14 MPEC</a> 是本页求解方法之一的工具页。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--danger);color:#fff;font-size:12px;font-weight:600;">困难（前沿）</span>　单 agent 动态结构已属前沿，动态博弈再叠加均衡约束，是结构估计计算负担最重的分支之一。</div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">经济环境与假设</a></li>
+        <li><a href="#s2">完整推导：Bellman、MPE 与 EP 存在性</a></li>
+        <li><a href="#s3">求解方法：VFI、BBL 两步法与 MPEC</a></li>
+        <li><a href="#s4">完整 Python：2 企业 EP 模型 VFI 求解器</a></li>
+        <li><a href="#s5">估计与数据</a></li>
+        <li><a href="#s6">模拟与反事实</a></li>
+        <li><a href="#s7">论文案例</a></li>
+        <li><a href="#s8">常见错误</a></li>
+        <li><a href="#s9">难度、前置与交叉链接</a></li>
+      </ol>
+    </div>
+
+    <!-- ========== 第1节 ========== -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 经济环境与假设</h2>
+      <p>Ericson and Pakes (1995, <em>Review of Economic Studies</em>) 提出的动态产业模型（以下简称 <strong>EP 框架</strong>）回答一个问题：<em>在一个由异质企业构成、企业可以投资改善自身生产率、可以选择进入或退出市场的行业里，市场结构与企业规模分布会如何随时间演化？</em>它把单 agent 的 Rust 动态规划推广到多企业博弈环境。</p>
+
+      <h3>1.1 时间、企业与状态空间</h3>
+      <ul>
+        <li><strong>时间</strong>：离散时间 $t=0,1,2,\dots$，无限期（infinite horizon）。无限期假设的设定理由：产业没有"最后一期"，企业做投资决策时面向永久的未来利润流，这与有限期生命周期模型（见<a href="16-education-human-capital.html">教育与人力资本页</a>）形成对照。</li>
+        <li><strong>企业数量</strong>：行业内有 $N_t$ 家在位企业，$N_t$ 本身是内生的（企业进入退出会改变它）。EP 原版假设行业最多容纳 $\bar N$ 家企业。</li>
+        <li><strong>企业状态变量</strong>：每家在位企业 $j$ 在 $t$ 期有一个离散的生产率/质量/资本状态 $a_{jt}\in\mathcal{A}=\{0,1,\dots,\bar a\}$。经济直觉：$a_{jt}$ 可以理解为"质量阶梯"上的位置——数值越高，边际成本越低或产品质量越高。它是企业<strong>可观察</strong>的状态变量，对应数据中可测的 TFP 分箱、资本存量分箱或质量评级。</li>
+        <li><strong>行业状态</strong>：整个行业的状态是所有在位企业状态的向量 $s_t=(a_{1t},\dots,a_{N_t t})$。为了求解可行，实证上通常利用对称性假设，把行业状态压缩为状态的分布（histogram）而非完整向量。</li>
+      </ul>
+
+      <h3>1.2 状态转移与投资</h3>
+      <p>企业 $j$ 每期选择投资 $x_{jt}\ge 0$，投资成本为 $c(x)$（递增、凸，如 $c(x)=\gamma x$）。给定投资，企业自身状态按马尔可夫过程演化：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 1.1 — 企业自身状态转移</div>
+        $$P(a_{jt+1}=a' \mid a_{jt}=a,\; x_{jt}=x) = \Pr\big(a' = a + \xi(x) - \eta\big), \qquad \xi(x)\in\{0,1\}$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$\xi(x)=1$ 表示投资"成功"使状态上一阶，概率随 $x$ 上升（如 $\Pr(\xi=1)=x/(1+x)$）；$\eta\in\{0,1\}$ 为外生的折旧/技术过时冲击。<strong>设定理由</strong>：用"成功/失败"二元过程代替连续 Brownian 运动，使状态空间保持离散、Bellman 可网格求解。<strong>参数含义</strong>：$x$ 越大成功概率越高；$\eta$ 捕捉技术进步使旧资本贬值。<strong>经济直觉</strong>：研发不是确定性提升生产率，而是"买彩票"——投得多中奖概率大，但仍可能失败。</p>
+      </div>
+
+      <h3>1.3 进入与退出</h3>
+      <ul>
+        <li><strong>退出</strong>：每期期初，在位企业观察到一个退出清算价值（scrap value）$\Phi$（如厂房设备残值），比较"继续经营的期望价值"与 $\Phi$ 后决定是否退出。</li>
+        <li><strong>进入</strong>：每期有一批潜在进入者，各自抽取一个进入成本 $c^e$（i.i.d. 分布），若"进入后的期望价值 $\ge c^e$"则支付沉没成本并以初始状态 $a^0$ 进入行业。</li>
+      </ul>
+
+      <h3>1.4 需求与利润函数</h3>
+      <p>企业当期利润取决于自身状态与对手状态分布。常见两种需求设定：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 1.2 — 利润函数（对数需求 /  Bertrand 竞争）</div>
+        $$\pi(a_t, s_t) = \max_{p_t}\big\{ (p_t - mc(a_t))\cdot D(p_t; \{p_{jt}\}_{j\ne t}) \big\},\qquad D(p)=\exp(\alpha_0-\alpha_1 p + \dots)$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$mc(a)$ 为边际成本（$a$ 越高成本越低），$D(\cdot)$ 为对数需求或 CES 需求。<strong>设定理由</strong>：利润被压缩为状态的静态缩减式函数（reduced-form），把价格博弈解析地解出，只留动态部分。<strong>参数含义</strong>：$\alpha_1$ 是需求价格弹性的倒数度量。<strong>经济直觉</strong>：状态 $a$ 高的企业（低成本/高质量）在当期定价博弈中获得更高利润份额——这是投资的当期回报。</p>
+      </div>
+
+      <h3>1.5 共同知识与理性预期</h3>
+      <p>EP 框架假设：(1) 所有企业知道整个行业状态 $s_t$；(2) 所有企业知道状态转移规则与利润函数；(3) 所有企业对对手的未来行为持<strong>理性预期</strong>——即正确预期对手会按均衡策略行事。这与静态古诺博弈的共同知识假设一致，但多了动态维度：企业今天投资，不仅影响明天自己的成本，还通过改变明天的行业结构影响明天对手的行为。</p>
+    </div>
+
+    <!-- ========== 第2节 ========== -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 完整推导：Bellman、MPE 与 EP 存在性</h2>
+
+      <h3>2.1 在位企业的 Bellman 方程</h3>
+      <p>考虑一家代表性在位企业，状态为自身生产率 $a$，行业中对手的状态分布为 $\bar s$。它的期望折现利润价值函数满足：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 2.1 — 多企业 Bellman 方程（本页核心公式之一）</div>
+        $$V(a,\bar s) = \max\left\{\Phi,\;\; \max_{x\ge 0}\Big[\pi(a,\bar s) - c(x) + \beta\,\mathbb{E}\big[V(a',\bar s')\mid a,\bar s, x\big]\Big]\right\}$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$\Phi$ 为退出清算价值（等式左侧花括号第一项）；$\pi(a,\bar s)$ 为当期利润；$c(x)$ 为投资成本；$\beta$ 为贴现因子；$\bar s'$ 为下一时期对手状态的分布。<strong>与 Rust 单 agent 方程的区别</strong>：期望值里的 $\bar s'$ 不仅取决于本企业的投资 $x$，还取决于<strong>所有对手企业的均衡投资/进入/退出决策</strong>——这就是"博弈"的数学含义。</p>
+      </div>
+
+      <h3>2.2 最优投资策略、进入价值与退出价值</h3>
+      <p>由 Eq. 2.1 得到三个决策规则：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 2.2 — 策略函数、进入价值与退出边界</div>
+        $$x^*(a,\bar s) = \arg\max_{x\ge 0}\Big\{\pi(a,\bar s)-c(x)+\beta\,\mathbb{E}[V(a',\bar s')\mid a,\bar s,x]\Big\}$$
+        $$\chi(a,\bar s)=\mathbf{1}\{V(a,\bar s)>\Phi\}\quad(\text{继续=1，退出=0}),\qquad V^e(\bar s)=\mathbb{E}_{c^e}\big[\max\{0,\;V(a^0,\bar s)-c^e\}\big]$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$x^*$ 为投资策略函数；$\chi$ 为退出指示；$V^e$ 为潜在进入者的进入期权价值（对进入成本 $c^e$ 分布取期望）。<strong>经济直觉</strong>：$V^e$ 刻画"行业有吸引力"——当在位企业价值高时，更多潜在进入者的 $c^e$ 被超过，行业企业数上升，这是内生产业结构的来源。</p>
+      </div>
+
+      <h3>2.3 行业均衡：对称马尔可夫完美均衡（MPE）</h3>
+      <p>EP 框架的均衡是一个<strong>不动点</strong>：给定对手的策略函数 $\{x^*,\chi^*, V^e\}$，每家企业解自己的 Bellman 方程得到最优策略；要求这些最优策略恰好等于给定的对手策略。正式定义：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 2.3 — 对称马尔可夫完美均衡（MPE）</div>
+        $$\text{一组策略函数 } \big(x^*(a,\bar s),\,\chi^*(a,\bar s),\,V^e(\bar s)\big) \text{ 构成 MPE，当且仅当：}$$
+        $$\forall (a,\bar s):\quad x^*(a,\bar s),\,\chi^*(a,\bar s) \text{ 是 Eq.2.1 在对手按 } (x^*,\chi^*,V^e) \text{ 演化下的最优解}$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">"对称"指所有在位企业使用同一策略函数（只依赖自身与对手状态分布，不依赖企业身份）；"马尔可夫"指策略只依赖当期状态，不依赖历史。<strong>经济直觉</strong>：MPE 是动态版的纳什均衡——每个人都在对手按均衡策略行动的假设下做最优反应，且这个假设在均衡处自我实现。</p>
+      </div>
+
+      <h3>2.4 Ericson–Pakes (1995) 存在性定理</h3>
+      <p>EP 在合理的技术条件下证明了 MPE 的存在性：(1) 状态空间有限离散；(2) 利润函数连续有界；(3) 投资成本连续；(4) 转移概率关于投资单调。在此条件下，均衡策略函数构成的算子是上半连续映射，由 Kakutani 不动点定理保证至少一个 MPE 存在。<strong>关键警示</strong>：存在性不等于唯一性——EP 模型<strong>可能存在多个 MPE</strong>，这是后续估计最大的识别难题之一（见第 8 节常见错误）。</p>
+
+      <h3>2.5 与单 agent 动态结构（Rust）的本质区别</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>维度</th><th>单 agent（Rust 1987）</th><th>多 agent 博弈（EP 1995）</th></tr></thead>
+          <tbody>
+            <tr><td>状态空间</td><td>自身状态 $x$（如 bus 里程）</td><td>自身状态 $a$ + 对手状态分布 $\bar s$</td></tr>
+            <tr><td>Bellman 方程</td><td>单个不动点</td><td>每家企业一个，且互相嵌套</td></tr>
+            <tr><td>均衡约束</td><td>无（单人优化）</td><td>所有企业策略互为最优反应（MPE 不动点）</td></tr>
+            <tr><td>识别</td><td>$\beta$ 与 flow utility 部分不可识别</td><td>叠加多均衡问题、交互参数识别</td></tr>
+            <tr><td>求解</td><td>VFI / NFXP</td><td>需在 VFI 外层再加"均衡不动点"循环</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ========== 第3节 ========== -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 求解方法：VFI、BBL 两步法与 MPEC</h2>
+
+      <h3>3.1 同构（homogeneous）方法：值函数迭代与策略函数迭代</h3>
+      <p>"同构"指<strong>把整个 MPE 一次求解</strong>——从猜测的均衡策略出发，反复迭代直到策略函数不再变化。Pakes and McGuire (1994, <em>RAND</em>) 给出了 EP 模型的第一个可计算算法：</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1：猜测策略</div>
+          <div class="step-desc">初始猜测每家企业的投资策略 $x^{(0)}(a,\bar s)$ 与退出规则 $\chi^{(0)}(a,\bar s)$（可设为全零投资、不退出）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2：给定策略，构造行业状态转移</div>
+          <div class="step-desc">由所有人的策略 $\{x^{(k)},\chi^{(k)}\}$，计算从当前行业状态 $s$ 到下一状态 $s'$ 的转移概率矩阵（含对手投资的期望与进入者数量）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3：解 Bellman 方程</div>
+          <div class="step-desc">在给定的行业状态转移下，对代表性企业用 VFI 解 Eq. 2.1，得到新的价值函数 $V^{(k)}$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4：策略改进</div>
+          <div class="step-desc">由 $V^{(k)}$ 重新求 argmax，得到新策略 $x^{(k+1)},\chi^{(k+1)}$。若与 $x^{(k)},\chi^{(k)}$ 一致则收敛（找到 MPE）；否则回 Step 2。</div>
+        </div>
+      </div>
+      <p>这本质是<strong>双层不动点</strong>：内层 VFI 解企业 Bellman，外层迭代均衡策略。Pakes–McGuire 用这个算法求了一个 2–3 企业的随机扰动 EP 模型。</p>
+
+      <h3>3.2 异构（heterogeneous）方法：BBL 两步法</h3>
+      <p>Bajari, Benkard and Levin (2007, <em>Econometrica</em>，简称 <strong>BBL</strong>) 提出了<strong>不需要每次都全解 MPE</strong> 的两步估计法，是动态博弈估计的里程碑：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 3.1 — BBL 两步法</div>
+        $$\textbf{第一步（异质型第一阶段）：}\quad \hat P(d\mid s),\;\;\hat P(s'\mid s,d) \leftarrow \text{从数据直接估计}$$
+        $$\textbf{第二步（结构参数估计）：}\quad \hat\theta_{BBL}=\arg\min_{\theta}\sum_{m=1}^{M}\Big[\hat g_m - g_m(\theta;\hat P)\Big]^2$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：第一阶段用核估计/多项式 sieve 从面板数据直接估计每个状态下的<strong>经验策略函数</strong> $\hat P(d\mid s)$（企业实际怎么投资/进入/退出）与<strong>状态转移</strong> $\hat P(s'\mid s,d)$。第二阶段：给定候选结构参数 $\theta$，用第一阶段估计的 $\hat P$ <em>模拟</em>出企业在"偏离均衡策略"时的长期价值，要求真实均衡策略 $\hat P$ 在 $\theta$ 下是最优的——用<strong>不等式矩</strong>（偏离策略的价值不得高于均衡策略）或最小距离目标估计 $\theta$。<strong>经济直觉</strong>：BBL 把"求解 MPE"从估计的内循环里去掉了——数据里观察到的策略已经是均衡策略，我们只需要找一组 $\theta$ 让这套观察到的策略在理论上确实最优。</p>
+      </div>
+      <p>BBL 的巨大优势：(1) 不需要在每次外层迭代时重解 MPE，把计算量降低一个数量级；(2) 适用于似然函数写不出来的复杂模型；(3) 天然适合高维状态空间。局限：(a) 第一阶段非参数估计需要每个状态都有足够数据（仍受维数灾难困扰）；(b) 标准误必须把第一阶段不确定性传给第二阶段；(c) 若第一阶段策略函数误设，第二阶段估计量不一致。</p>
+
+      <h3>3.3 MPEC 方法（Su & Judd 2012）</h3>
+      <p>Su and Judd (2012, <em>Econometrica</em>，即站内 <a href="14-mpec.html">14 MPEC 方法</a>页的主题) 把"均衡不动点"从优化器的内循环改写成<strong>等式约束</strong>，一次性求解。对 EP 模型，MPEC 形式为：</p>
+      <div class="formula-block">
+        <div class="formula-label">Eq. 3.2 — EP 模型的 MPEC 重写</div>
+        $$\min_{\theta,\{V(a,\bar s),x^*(a,\bar s)\}}\; \ell(\theta; \text{data})$$
+        $$\text{s.t.}\quad V(a,\bar s) = \max\Big\{\Phi,\;\pi(a,\bar s;\theta)-c(x^*;\theta)+\beta\sum_{s'}P(s'\mid a,\bar s,x^*;\theta)\,V(a',s')\Big\}\quad\forall(a,\bar s)$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：优化变量同时包含结构参数 $\theta$ 和全状态价值函数 $V$（$V$ 不是内层迭代出来的，而是自由变量）；等式约束要求 $V$ 恰好满足 Bellman 方程。目标函数仍是数据似然/矩。<strong>求解器</strong>：用 IPOPT / KNITRO 这类内点法 NLP 求解器一次性求解。<strong>相对 NFXP 的优势</strong>：(1) 避免"每次外层迭代都重解内层不动点"的嵌套开销；(2) 求解器可利用稀疏性；(3) 数值更稳定。代价：优化变量维度巨大（$|\mathcal{X}|\times$ 状态数），且对初值敏感。</p>
+      </div>
+      <p><strong>MPEC 概念伪代码</strong>（在教学代码中用 scipy 约束优化实现思路）：</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">python · MPEC 概念伪代码</span><button class="copy-btn">复制</button></div>
+        <pre><code># MPEC 伪代码框架（完整可用 IPOPT/casadi 实现）
+# 决策变量: z = [theta (p维), V 展开 (N_states 维), x_star 展开]
+# 目标: 负对数似然 -sum log P(d_obs | s_obs; V(theta))
+# 约束:
+#   (1)  Bellman 等式约束: 对每个状态 (a, sb),
+#        V[a,sb] = max(Phi, pi(a,sb;theta) - c(x*) + beta * sum_s' P(s'|...) V)
+#   (2)  一阶互补条件:  x* = argmax_x {...}  (KKT 条件)
+#
+# 求解流程:
+# 1. 给定初值 z0 = [theta0, V0, x0]
+# 2. 调用 IPOPT:
+#      min_z  neg_loglik(z)
+#      s.t.   Bellman_eq_constraint(z) == 0
+#             KKT_complementarity(z) == 0
+#             theta_lb <= theta <= theta_ub
+# 3. IPOPT 利用问题的稀疏结构（每个 Bellman 约束只涉及少数状态）
+#    用内点法一次性收敛, 无需外层-内层嵌套。
+#
+# 实践要点:
+# - 用自动微分(casadi/jax)提供解析 Jacobian, 否则数值雅可比慢且不准
+# - 多初值网格搜索缓解非凸问题陷入局部解
+# - 本页 04 节的 VFI 代码是 MPEC 的" warm start "解
+</code></pre>
+      </div>
+    </div>
+
+    <!-- ========== 第4节 ========== -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 完整 Python：2 企业 EP 模型 VFI 求解器</h2>
+      <p>下面实现一个简化版 EP 模型：<strong>2 家对称企业</strong>，每家企业生产率状态 $a\in\{0,\dots,4\}$，选择离散投资水平 $x\in\{0,1,2\}$。我们用"策略函数迭代（Howard policy iteration）"求对称 MPE：内层解给定策略下的价值函数，外层做策略改进。代码纯 numpy，普通笔记本秒级运行。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">python · EP 2企业 MPE 求解器（中文注释）</span><button class="copy-btn">复制</button></div>
+        <pre><code>"""
+Ericson-Pakes (1995) 简化版 —— 2 对称企业动态博弈 MPE 求解
+============================================================
+模型设定:
+  - 2 家对称企业, 每家状态 a ∈ {0,1,...,NA-1} (生产率/质量阶梯)
+  - 每家每期选择投资 x ∈ {0,1,2}, 投资成本 c(x) = [0.0, 0.5, 1.5]
+  - 投资"成功"概率 q(x) = [0.0, 0.3, 0.6], 成功则 a 上一阶
+    未成功则 a 下一阶 (模拟折旧/技术过时), 截断在边界
+  - 当期利润 pi(a, ao) = a - 0.6*ao - 0.1  (自身状态高有利, 对手高不利)
+  - 贴现因子 beta = 0.9
+对称 MPE: 两家企业使用同一策略表 pol[a, ao] (自身a, 对手ao -> 投资x)
+"""
+import numpy as np
+
+# ---------- 1. 参数与网格 ----------
+NA = 5                 # 每家企业状态数 (0..4)
+NX = 3                 # 投资水平数 (0,1,2)
+BETA = 0.9             # 贴现因子
+INV_COST = np.array([0.0, 0.5, 1.5])          # 各投资水平成本
+SUCC_PROB = np.array([0.0, 0.3, 0.6])         # 各投资水平"成功"概率
+
+# ---------- 2. 利润函数 ----------
+def profit(a, ao):
+    """企业在自身状态 a、对手状态 ao 时的当期利润"""
+    return (a - 0.6 * ao - 0.1)
+
+# ---------- 3. 状态转移 ----------
+def own_trans(a, x):
+    """给定自身 a、投资 x, 返回下一状态 a' 的 (a'取值, 概率) 列表"""
+    q = SUCC_PROB[x]
+    moves = []
+    # 成功: a+1
+    a_up = min(a + 1, NA - 1)
+    moves.append((a_up, q))
+    # 失败: a-1 (折旧)
+    a_dn = max(a - 1, 0)
+    moves.append((a_dn, 1.0 - q))
+    return moves
+
+# ---------- 4. 给定策略, 计算期望未来价值 ----------
+def expected_continuation(V, a, ao, x, pol):
+    """
+    计算企业在 (a, ao) 选 x 时的 beta * E[V(a', ao')]
+    自身按 x 转移; 对手按其均衡策略 pol[ao, a] 转移 (对称)
+    """
+    cont = 0.0
+    for a_next, p_a in own_trans(a, x):
+        # 对手的投资由其策略决定: 对手看到的是 (自身ao, 对手=a)
+        x_opp = int(pol[ao, a])
+        for ao_next, p_ao in own_trans(ao, x_opp):
+            cont += p_a * p_ao * V[a_next, ao_next]
+    return BETA * cont
+
+# ---------- 5. 策略函数迭代 (Howard policy iteration) ----------
+def solve_mpe(tol=1e-8, max_outer=50, max_inner=500):
+    # 初始化: 所有人都不投资
+    pol = np.zeros((NA, NA), dtype=int)
+    V = np.zeros((NA, NA))
+
+    for outer in range(max_outer):
+        # --- 内层: 给定当前策略 pol, 迭代解价值函数 V ---
+        for it in range(max_inner):
+            V_new = np.zeros_like(V)
+            for a in range(NA):
+                for ao in range(NA):
+                    x_now = int(pol[a, ao])
+                    flow = profit(a, ao) - INV_COST[x_now]
+                    V_new[a, ao] = flow + expected_continuation(V, a, ao, x_now, pol)
+            diff = np.max(np.abs(V_new - V))
+            V = V_new
+            if diff &lt; tol:
+                break
+
+        # --- 外层: 策略改进 (policy improvement) ---
+        pol_new = np.zeros((NA, NA), dtype=int)
+        for a in range(NA):
+            for ao in range(NA):
+                # 对每个投资水平计算总价值, 取 argmax
+                vals = np.zeros(NX)
+                for x in range(NX):
+                    vals[x] = profit(a, ao) - INV_COST[x] \
+                              + expected_continuation(V, a, ao, x, pol)
+                pol_new[a, ao] = int(np.argmax(vals))
+
+        if np.array_equal(pol_new, pol):
+            print(f"[MPE 收敛] 外层迭代 {outer} 次后策略稳定")
+            break
+        pol = pol_new
+
+    return V, pol
+
+# ---------- 6. 求解并输出 ----------
+V, pol = solve_mpe()
+
+print("\n=== 均衡策略表 pol[a, ao] ===")
+print("行=自身状态 a, 列=对手状态 ao, 值=均衡投资水平 x*")
+print("     ao=0  ao=1  ao=2  ao=3  ao=4")
+for a in range(NA):
+    print(f"a={a}  " + "  ".join(f"{int(pol[a, j]):>3d}" for j in range(NA)))
+
+print("\n=== 均衡价值函数 V(a, ao) ===")
+print("     ao=0    ao=1    ao=2    ao=3    ao=4")
+for a in range(NA):
+    print(f"a={a}  " + "  ".join(f"{V[a, j]:6.2f}" for j in range(NA)))
+
+# ---------- 7. 均衡统计: 高状态企业投资更多? ----------
+mean_inv_by_a = pol.mean(axis=1)
+print("\n=== 平均均衡投资随自身状态 ===")
+for a in range(NA):
+    print(f"  a={a}: 平均投资 x = {mean_inv_by_a[a]:.2f}")
+print("经济直觉: 若 a 大的企业投资更多, 说明领先者'百尺竿头',")
+print("这与 EP 框架的'追赶/逃避' (escape-the-competition) 机制一致。")
+</code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">✓ 代码说明</div>
+        <p>这段代码完整实现了 2 企业对称 MPE 的策略函数迭代：内层在给定对手策略时迭代解价值函数（压缩映射收敛），外层做策略改进，直到策略表不再变化。运行后会打印均衡投资策略表——读者应能观察到：(1) 当对手状态很低时，本企业投资动机弱（"躺着赚钱"）；(2) 当对手逼近时投资上升（escape the competition）。扩展方向：加入退出（与 $\Phi$ 比较）、进入（潜在进入者比较 $V(a^0,\bar s)-c^e$）、把对称假设放松为异质企业。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第5节 ========== -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 估计与数据</h2>
+
+      <h3>5.1 数据需求</h3>
+      <p>动态博弈估计需要<strong>企业-年份面板</strong>，且每个企业每年要观察到：(1) 状态变量（可由 TFP 分箱、资本分箱代理 $a_{jt}$）；(2) 决策变量（投资额 $x_{jt}$、是否进入、是否退出）；(3) 结果变量（产出、价格、利润）。这比单 agent Rust 模型的数据要求更高——必须能识别"同一市场内多家企业的联合动态"。</p>
+
+      <h3>5.2 常用数据来源</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>数据集</th><th>国家</th><th>覆盖内容</th><th>典型应用</th></tr></thead>
+          <tbody>
+            <tr><td><strong>US Census LBD / ASM</strong></td><td>美国</td><td>长期数据库(LBD)追踪企业进入退出；ASM 提供投资、产出、资本</td><td>EP 类企业动态、生产率分解（Olley-Pakes）</td></tr>
+            <tr><td><strong>中国工业企业数据库 ASIF</strong></td><td>中国</td><td>1998–2007（后续有扩展）全部规模以上工业企业：产值、资本、就业、出口、进入退出</td><td>中国企业进入退出、出口沉没成本、TFP 分解</td></tr>
+            <tr><td><strong>Compustat</strong></td><td>美国</td><td>上市企业财务：投资、资本、研发</td><td>研发投资博弈、专利竞争</td></tr>
+            <tr><td><strong>海关数据库</strong></td><td>中国</td><td>企业-产品-目的地层面出口交易</td><td>出口市场进入/退出动态（Das-Roberty-Tybout 式）</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>5.3 BBL 第一阶段估计</h3>
+      <p>第一步从面板数据估计两组"简化形式"对象：</p>
+      <ul>
+        <li><strong>策略函数 $\hat P(x\mid s)$</strong>：在每个观察到的行业状态 $s$ 下，企业选择投资水平 $x$ 的经验频率。状态稀疏时用核估计（kernel）或多项式 sieve 平滑。对应到中国数据：以"行业-年份-企业 TFP 分位"为状态，统计"该状态下企业投资率"。</li>
+        <li><strong>状态转移 $\hat P(s'\mid s,x)$</strong>：给定当期状态与投资，下一期状态的经验转移频率。通常用离散 transition matrix 或连续状态下的 OLS/局部线性回归。</li>
+      </ul>
+
+      <h3>5.4 BBL 第二阶段估计</h3>
+      <p>第二阶段用两种方式之一估计结构参数 $\theta$：</p>
+      <ul>
+        <li><strong>不等式方法（inequalities）</strong>：对大量"偏离策略" $\tilde x$（如多投 10%、少投 20%），用第一阶段估计的 $\hat P$ <em>模拟</em>该偏离下的长期价值流。均衡条件要求：$\forall \tilde x,\; V^*(s;\theta,\hat P) \ge V^{\tilde x}(s;\theta,\hat P)$。把违反不等式的次数/幅度作为矩，做最小化。</li>
+        <li><strong>最小距离（minimum distance / SMM）</strong>：用模型模拟出"投资率-状态"曲线、"进入率-市场利润"曲线，与数据对应曲线做距离最小化。</li>
+      </ul>
+
+      <h3>5.5 计算挑战：维度灾难（curse of dimensionality）</h3>
+      <div class="callout warning">
+        <div class="callout-title">⚠ 维度灾难</div>
+        <p>若每家企业状态有 $K$ 个分箱、行业有最多 $\bar N$ 家企业，则行业状态空间大小约为 $K^{\bar N}$。$K=5,\bar N=10$ 时已是天文数字。标准应对：(1) 利用对称性把状态压缩为<strong>状态的分布向量</strong>（histogram state）；(2) 用<strong>随机样本模拟</strong>（Pakes-McGuire 2001 的 synchronous arm 方法）在状态子集中求解；(3) BBL/CCP 两步法避免全状态空间迭代；(4) 近些年用神经网络值函数近似（neural Bellman）突破。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第6节 ========== -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 模拟与反事实</h2>
+      <p>估计出结构参数后，EP 框架的价值在于回答<strong>政策反事实</strong>：</p>
+      <ul>
+        <li><strong>合并模拟（merger simulation）</strong>：把两家企业合并为一家（行业状态减少一个对手），重新求解 MPE，比较合并前后的均衡投资率、价格、消费者剩余。这是反垄断评估的标准工具（见站内 <a href="06-counterfactual.html">反事实分析</a>页）。</li>
+        <li><strong>政策反事实</strong>：
+          <ul>
+            <li><strong>投资补贴</strong>：把 $c(x)$ 乘以 $(1-s)$，重新求解 MPE，看企业投资率、行业生产率分布如何移动；</li>
+            <li><strong>进入壁垒变化</strong>：把进入成本分布 $c^e$ 平移，看行业进入率、稳态企业数、企业规模分布；</li>
+            <li><strong>退出税/环保管制</strong>：改变退出清算价值 $\Phi$，看企业退出选择与行业出清速度。</li>
+          </ul>
+        </li>
+        <li><strong>行业动态演化</strong>：从任意初始状态出发模拟 $T$ 期 MPE 路径，观察企业规模分布是否收敛到稳态、周转率（churn rate = 进入+退出 / 平均企业数）、领先企业的"在位优势"能维持多久。</li>
+      </ul>
+      <div class="callout info">
+        <div class="callout-title">💡 反事实的注意事项</div>
+        <p>BBL 两步法<strong>估计快但反事实慢</strong>：第一阶段估计的 $\hat P$ 是"基准政策下的均衡策略"，反事实政策改变后必须<strong>重新求解新政策下的 MPE</strong>，不能直接用旧的 $\hat P$。这一点常被初学者忽略。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第7节 ========== -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 论文案例</h2>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Review of Economic Studies 1995</span>
+        <div class="paper-title">Markov-Perfect Industry Dynamics: A Framework for Empirical Work</div>
+        <div class="paper-meta">Richard Ericson, Ariel Pakes · Review of Economic Studies, 1995, 62(1): 53-82</div>
+        <div class="paper-desc">动态产业博弈的奠基框架。给出了状态转移、投资、进入退出的完整结构，并证明了 MPE 的存在性。所有后续 IO 动态结构论文（含本页）都建立在这篇之上。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · RAND Journal 1994</span>
+        <div class="paper-title">Markov Perfect Industry Dynamics: A Numerical Model and Policy Experiment</div>
+        <div class="paper-meta">Ariel Pakes, Paul McGuire · RAND Journal of Economics, 1994, 25(4): 555-589</div>
+        <div class="paper-desc">第一个可计算的 EP 数值算法。展示了如何在离散网格上迭代求解 MPE，并做了政策实验。是所有后续计算方法（含本页 Python 代码）的原型。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Econometrica 2007</span>
+        <div class="paper-title">Estimating Models of Complex Games: A Simulation Estimator for Dynamic Games</div>
+        <div class="paper-meta">Patrick Bajari, Lanier Benkard, Jonathan Levin · Econometrica, 2007, 75(5): 1331-1370</div>
+        <div class="paper-desc">BBL 两步法原文。提出用第一阶段非参数估计的策略函数与转移概率，第二阶段用不等式矩/最小距离估计结构参数，彻底摆脱了每次重解 MPE 的计算负担。是现代动态博弈估计的标准工具。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Econometrica 2007</span>
+        <div class="paper-title">Sequential Estimation of Dynamic Discrete Games</div>
+        <div class="paper-meta">Victor Aguirregabiria, Pedro Mira · Econometrica, 2007, 75(1): 1-53</div>
+        <div class="paper-desc">把 NPL（nested pseudo-likelihood）算法推广到动态博弈，证明了在多 agent 环境下 CCP 两步估计的一致性。与 BBL 并列构成动态博弈"两步估计"两大方法。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Econometrica 2012</span>
+        <div class="paper-title">MPEC: Estimation of Structural Models Without Fixed Point Optimization</div>
+        <div class="paper-meta">Che-Lin Su, Kenneth L. Judd · Econometrica, 2012, 80(2): 581-610</div>
+        <div class="paper-desc">MPEC 方法原文。把 Bellman 不动点写成等式约束，用 IPOPT 一次性求解。站内 <a href="14-mpec.html">14 MPEC 方法</a>页是这篇的中文教学版。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Handbook of Industrial Organization 2007</span>
+        <div class="paper-title">Stochastic Dynamic Games in Industry Organization: A Framework and Examples</div>
+        <div class="paper-meta">Ulrich Doraszelski, Ariel Pakes · Handbook of Industrial Organization, Vol. 3, Ch. 30</div>
+        <div class="paper-desc">EP 框架最权威的现代综述。系统整理了 MPE 计算方法、多均衡问题、行业动态的数值实验，是进入该领域的必读手册章节。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 世界经济 2011</span>
+        <div class="paper-title">异质性、沉没成本与中国企业出口决定：来自中国微观企业的经验证据</div>
+        <div class="paper-meta">张杰等 · 《世界经济》，2011 年第 4 期</div>
+        <div class="paper-desc">基于中国工业企业微观数据，用动态 Probit/沉没成本框架检验中国企业出口决定的动态特征：前期出口状态对当期出口决策有显著正效应，证实出口市场存在沉没成本。这是 EP 类"进入/退出/沉没成本"动态框架在中国出口行为上的本土化应用。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 经济研究 / 管理世界</span>
+        <div class="paper-title">中国制造业企业进入退出与生产率动态演化（OP/DOP 分解系列）</div>
+        <div class="paper-meta">杨汝岱、聂辉华等 · 基于 1998–2007 中国工业企业数据库的系列研究</div>
+        <div class="paper-desc">国内学者沿用 Olley-Pakes (1996) 的进入退出-生产率分解思路（与 EP 框架同宗），用中国 ASIF 数据库系统分解：存量企业内部效率提升、存量间资源再配置、新企业进入、旧企业退出对加总 TFP 增长的贡献。典型发现：中国制造业新进入企业存在"超增长效应"，进入退出是生产率动态演化的重要力量。</div>
+      </div>
+    </div>
+
+    <!-- ========== 第8节 ========== -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 常见错误与陷阱</h2>
+
+      <div class="callout danger">
+        <div class="callout-title">✗ 错误 1：忽略多均衡问题</div>
+        <p>EP 模型可能存在多个 MPE，不同 MPE 下的行业动态（企业数、周转率）完全不同。如果求解器收敛到的均衡不是"数据实际所处的均衡"，估计出的结构参数和反事实分析全部无效。<strong>应对</strong>：(1) 用多个初值反复求解，报告找到的均衡集合；(2) 估计阶段直接承认多均衡，用"似然上界/下界"或 BBL 的不等式矩避免选择单一均衡（BBL 的优势正在于此——它不需要先知道均衡）。</p>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">✗ 错误 2：维度灾难下盲目加状态变量</div>
+        <p>初学者为了"更真实"往状态空间里加资本、年龄、地区、所有制……结果状态空间爆炸，VFI 跑不动，BBL 第一阶段在每个状态上几乎没数据。<strong>应对</strong>：先用尽可能小的状态空间（2–3 维）验证模型能复现关键数据矩（投资率、进入率），再逐步扩展；多余的异质性放进"不可观察异质性"（fixed effect / finite mixture），不要全部进状态向量。</p>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title">✗ 错误 3：BBL 第一阶段策略函数误设</div>
+        <p>BBL 的一致性依赖第一阶段 $\hat P(d\mid s)$ 正确设定。如果用了错误的函数形式（如线性概率而非 logit）、带宽过大/过小、或忽略了未观察异质性，第二阶段估计出的 $\theta$ 是错的，且没有简单诊断。<strong>应对</strong>：第一阶段做过度识别检验；对比参数化与非参数化第一阶段结果；报告带宽敏感性。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 陷阱 4：忽略进入/退出选择的内生性</div>
+        <p>如果只用存活企业样本估计投资方程，会产生<strong>选择偏误</strong>——只有"好状态"的企业存活下来，存活样本系统性偏向高生产率，投资参数估计有偏。EP 框架把进入退出内生化正是为了处理这个问题；简化版估计时若忽略退出选择，等于丢掉了模型的核心识别来源。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 陷阱 5：MPEC 初值敏感</div>
+        <p>MPEC 重写后的问题是非凸的（Bellman 约束使目标非凸），IPOPT 从不同初值出发可能收敛到不同的局部解。常见错误：只试一个初值就报告"收敛了"。<strong>应对</strong>：(1) 用 VFI/PFI 的解作为 MPEC 的热启动（warm start）；(2) 跑 10–20 个初值网格，报告最优解；(3) 检查约束残差是否真的接近零。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 陷阱 6：把 $\beta$ 当自由参数估计</div>
+        <p>与单 agent Rust 模型一样，$\beta$ 在动态博弈中与 flow profit 参数高度共线，似然曲面平坦。实践中通常把 $\beta$ 校准为 0.9–0.95（对应 5–11% 年贴现率），不参与估计；如需估计 $\beta$，必须加额外识别约束（如实验性的政策变化、跨期利率变化）。</p>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠ 陷阱 7：反事实仍用旧均衡策略</div>
+        <p>改了补贴/进入成本后，行业均衡策略会移动——企业的最优投资函数变了。如果直接拿基准 MPE 的 $\hat P$ 去"模拟"新政策，等于假设企业行为不变，反事实结果毫无意义。必须重新求解新政策下的 MPE。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第9节 ========== -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 难度、前置与交叉链接</h2>
+      <h3>9.1 学习路径建议</h3>
+      <ol>
+        <li>先读 <a href="05-dynamic-structural.html">05 动态结构模型总览</a>，彻底掌握单 agent Rust 模型、Bellman 方程、VFI、NFXP、Hotz-Miller。</li>
+        <li>读本页 §1–§2，理解从"单人优化"到"多人博弈 + 均衡约束"的升级。</li>
+        <li>运行本页 §4 的 Python 代码，亲手观察 MPE 策略表的形状。</li>
+        <li>读 <a href="14-mpec.html">14 MPEC 方法</a>，理解如何把 Eq. 2.1 写成等式约束。</li>
+        <li>读 Bajari-Benkard-Levin (2007) 原文附录，理解两步法的矩构造。</li>
+        <li>扩展到 <a href="10-production-function.html">10 生产函数估计</a>（OP/LP/ACF），它是 EP 框架"状态变量 $a_{jt}$ 如何从数据中估计"的姊妹技术。</li>
+      </ol>
+      <h3>9.2 交叉链接</h3>
+      <ul>
+        <li><a href="05-dynamic-structural.html">05 动态结构模型总览</a>（单 agent 基础）</li>
+        <li><a href="14-mpec.html">14 MPEC 方法</a>（本页 §3.3 的工具页）</li>
+        <li><a href="10-production-function.html">10 生产函数估计 OP/LP/ACF</a>（企业状态 $a_{jt}$ 的估计）</li>
+        <li><a href="06-counterfactual.html">06 反事实分析</a>（本页 §6 的一般化方法论）</li>
+        <li><a href="16-education-human-capital.html">16 教育与人力资本</a>（动态结构在劳动经济学的另一分支，与本页对照学习）</li>
+      </ul>
+      <h3>9.3 难度评级</h3>
+      <p><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--danger);color:#fff;font-size:12px;font-weight:600;">困难 · 前沿</span> 本页要求同时掌握动态规划、博弈论、数值计算与结构估计，建议在学完站内结构估计组全部前序页面后再进入。研究级应用通常需要合作者中有 IO 计算专家。</p>
+    </div>
+
+    <div class="page-nav">
+      <a href="14-mpec.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">MPEC 方法（工具页）</div>
+      </a>
+      <a href="16-education-human-capital.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">教育与人力资本（Keane-Wolpin）</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

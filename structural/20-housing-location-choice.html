@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>住房与区位选择结构模型 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item active" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main"><div class="content-wrap">
+  <div class="breadcrumb">
+    <a href="../index.html">首页</a><span class="sep">/</span>
+    <a href="index.html">结构估计 Structural Estimation</a><span class="sep">/</span>
+    <span>住房与区位选择结构模型</span>
+  </div>
+
+  <div class="page-header">
+    <span class="tag">20 · HOUSING & LOCATION CHOICE</span>
+    <h1>住房与区位选择结构模型：Epple-Sieg 排序与 Bayer 离散选择</h1>
+    <p class="desc">家庭如何在社区间"用脚投票"？从 Tiebout 到 Epple-Sieg (1999) 的连续排序均衡，再到 Bayer-McMillan-Rueben (2004) 的离散选择 + 工具变量框架，推导收入分层、房价资本化与公共品支付意愿（WTP），并做设施改善与地铁建设的反事实福利分析。</p>
+  </div>
+
+  <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:10px 20px;border-radius:8px;margin:0 0 24px;font-size:14px;display:flex;align-items:center;gap:10px;">
+    <span style="font-size:18px;">&#128221;</span>
+    <span><strong>本模型共 18 个方程</strong>（含 Epple-Sieg 间接效用、边界家庭递推、WTP、Bayer 随机效用、Logit 概率、Berry 反演、IV/GMM 矩条件、均衡出清与补偿变化 CV）· 文末附「方程总清单」</span>
+  </div>
+
+  <!-- ========== 前置条件 ========== -->
+  <div class="precond-box" style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+    <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+      <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>对数正态分布的分位数函数（inverse CDF）、无差异曲线与边际替代率（MRS）、固定点迭代与 t&acirc;tonnement、2SLS/IV 估计、Berry (1994) 份额反演。</div>
+      <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>城市经济学/公共财政：Tiebout (1956) "用脚投票"、Oates 公共品资本化、Alonso-Muth-Mills 单中心城市模型、住房市场供需出清。</div>
+      <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件/计算前置：</span>Python（<code class="inline">numpy</code>、<code class="inline">scipy.stats.lognorm</code>、<code class="inline">scipy.optimize</code>）；理解向量化广播。</div>
+      <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置页面：</span>先学 <a href="03-discrete-choice.html">03 离散选择模型</a>（Logit/RUM）与 <a href="04-blp.html">04 BLP 随机系数</a>（份额反演 + IV）；空间均衡可对照 <a href="../qsge/index.html">QSGE 一般均衡</a>，Ahlfeldt 等城市 QSGE 见 <code class="inline">../qsge/13-ahlfeldt.html</code>。</div>
+      <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;">中高级</span></div>
+    </div>
+  </div>
+
+  <div class="toc-box">
+    <div class="toc-title">本页目录 / CONTENTS</div>
+    <ol>
+      <li><a href="#s1">模型设定：两大流派</a></li>
+      <li><a href="#s2">Epple-Sieg 排序模型：设定与推导</a></li>
+      <li><a href="#s3">Bayer-McMillan-Rueben：离散选择 + IV</a></li>
+      <li><a href="#s4">求解算法：均衡房价固定点</a></li>
+      <li><a href="#s5">代码 1：Epple-Sieg 均衡求解</a></li>
+      <li><a href="#s6">代码 2：Bayer 框架 IV 估计</a></li>
+      <li><a href="#s7">数据与估计</a></li>
+      <li><a href="#s8">代码 3：反事实福利分析</a></li>
+      <li><a href="#s9">论文案例</a></li>
+      <li><a href="#s10">常见错误与陷阱</a></li>
+    </ol>
+  </div>
+
+  <!-- ========== 第1节 ========== -->
+  <div class="section" id="s1">
+    <h2><span class="sec-num">01</span> 模型设定：两大流派</h2>
+    <p>家庭在城市内部选择居住地（社区/街区/学区），本质是一个<strong>带异质性偏好与市场出清的离散选择问题</strong>。文献中有两条互补的主线：</p>
+    <ul>
+      <li><strong>Epple-Sieg (1999) 连续排序模型（sorting model）</strong>：社区沿一条"设施质量轴"连续分布，家庭因收入与偏好不同而排序到不同社区，房价由市场出清决定，内生地产生<strong>收入分层</strong>。</li>
+      <li><strong>Bayer-McMillan-Rueben (2004) 离散选择框架</strong>：把每个社区当作一个离散选项，用 RUM + 随机系数描述家庭选择，重点处理房价内生性与邻里效应（neighborhood effects）。</li>
+    </ul>
+    <p>两者都回答同一个问题：<strong>家庭为社区设施（学校、绿地、治安、通勤便利）愿意付多少钱（WTP）？</strong>这一支付意愿正是公共品资本化、住房政策与城市规划福利分析的核心。</p>
+  </div>
+
+  <!-- ========== 第2节 ========== -->
+  <div class="section" id="s2">
+    <h2><span class="sec-num">02</span> Epple-Sieg 排序模型：设定与推导</h2>
+
+    <h3>2.1 间接效用函数</h3>
+    <p>社区 $j$ 提供公共设施 $a_j$（学校质量、环境、治安），住房价格 $p_j$。家庭 $i$ 的可支配收入为 $y_i - p_j$。Epple-Sieg 采用 Cobb-Douglas 型间接效用：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq.20-01 — Epple-Sieg 间接效用</div>
+      $$V_{ij}(y_i-p_j,\, \alpha,\, a_j) = (y_i - p_j)^{\alpha}\, a_j, \qquad 0&lt;\alpha&lt;1$$
+      <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量含义：$y_i$ 家庭收入；$p_j$ 房价；$a_j$ 社区设施质量；$\alpha$ 刻画家庭对"剩余收入"与"设施"的相对偏好。<strong>设定理由</strong>：幂函数保证对剩余收入的边际效用递减，且对设施 $a_j$ 是线性的——使 WTP 与收入成正比，从而产生"高收入追逐高设施"的排序。</p>
+    </div>
+
+    <h3>2.2 边际效用与支付意愿 WTP（不跳步推导）</h3>
+    <p>对 $V=(y-p)^\alpha a$ 分别求偏导。</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq.20-02 — 对房价的边际效用</div>
+      $$\frac{\partial V}{\partial p_j} = \alpha (y_i-p_j)^{\alpha-1}\,(-1)\,a_j = -\alpha (y_i-p_j)^{\alpha-1} a_j$$
+    </div>
+    <div class="formula-block">
+      <div class="formula-label">Eq.20-03 — 对设施的边际效用</div>
+      $$\frac{\partial V}{\partial a_j} = (y_i-p_j)^{\alpha}$$
+    </div>
+    <p>家庭愿意为设施提高支付的<strong>边际房价</strong>（边际替代率）定义为：保持效用不变时，一单位设施增加所愿意放弃的房价，即 $-dp/da$。由全微分 $dV=(\partial V/\partial p)dp+(\partial V/\partial a)da=0$：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq.20-04 — 支付意愿 WTP（本页核心公式之一）</div>
+      $$\mathrm{WTP}_j = -\frac{dp_j}{da_j}\bigg|_{V=\text{const}} = \frac{\partial V/\partial a_j}{-\partial V/\partial p_j} = \frac{(y_i-p_j)^\alpha}{\alpha (y_i-p_j)^{\alpha-1} a_j} = \frac{y_i-p_j}{\alpha a_j}$$
+      <p style="margin-top:8px;font-size:13px;color:var(--text-light);"><strong>经济直觉</strong>：WTP 与可支配收入 $y_i-p_j$ 成正比、与偏好参数 $\alpha$ 成反比。<strong>关键推论</strong>：收入越高的家庭，对同一设施的支付意愿越大——这正是排序（sorting）的根源：高收入家庭愿意出更高价竞标高设施社区。（正文为简洁，常把设施指数化后写作 $\mathrm{WTP}\propto(y-p)/\alpha$。）</p>
+    </div>
+
+    <h3>2.3 排序均衡与边界家庭</h3>
+    <p>社区按设施升序 $a_1&lt;a_2&lt;\cdots&lt;a_J$ 排列。由于 WTP 随收入递增，均衡时<strong>收入分层</strong>成立：收入越低的家庭住低设施社区，越高的家庭住高设施社区。相邻社区 $j$ 与 $j+1$ 之间存在一个"边界家庭" $y_j^*$，它在两者间无差异：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq.20-05 — 边界家庭无差异条件</div>
+      $$(y_j^* - p_j)^{\alpha} a_j = (y_j^* - p_{j+1})^{\alpha} a_{j+1}$$
+    </div>
+    <p>两边开 $\alpha$ 次方并整理。令 $r_j=(a_j/a_{j+1})^{1/\alpha}&lt;1$，则：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq.20-06 — 边界收入解析解</div>
+      $$\frac{y_j^*-p_{j+1}}{y_j^*-p_j} = r_j \;\Longrightarrow\; y_j^* = \frac{p_{j+1}-r_j p_j}{1-r_j}$$
+    </div>
+    <p>反过来，给定外生的供给份额（每个社区容纳 $1/J$ 的家庭），边界收入由收入分布 $F_y$ 的分位数决定：$y_j^*=F_y^{-1}(j/J)$。于是房价可由<strong>解析递推</strong>求出（见第 4、5 节代码）。</p>
+
+    <h3>2.4 均衡条件：住房市场出清</h3>
+    <div class="formula-block">
+      <div class="formula-label">Eq.20-07 — 住房市场出清</div>
+      $$\text{对每个社区 }j:\quad \#\{i: j=\arg\max_k V_{ik}\} = h_j \quad\text{（需求=固定供给）}$$
+      <p style="margin-top:8px;font-size:13px;color:var(--text-light);">房价 $\{p_j\}$ 是使所有社区同时出清的均衡价格向量。低设施社区房价低以吸引穷人，高设施社区房价高以挤出低收入家庭。</p>
+    </div>
+  </div>
+
+  <!-- ========== 第3节 ========== -->
+  <div class="section" id="s3">
+    <h2><span class="sec-num">03</span> Bayer-McMillan-Rueben：离散选择 + IV</h2>
+
+    <h3>3.1 随机效用设定</h3>
+    <p>Bayer 等人把社区当作离散选项，家庭 $i$ 选社区 $j$ 的效用为：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq.20-08 — Bayer 随机效用</div>
+      $$U_{ij} = X_j'\beta - \alpha p_j + \gamma \bar X_{-i,j} + \xi_j + \varepsilon_{ij}$$
+      <p style="margin-top:8px;font-size:13px;color:var(--text-light);">$X_j$ 社区观察特征（面积、地铁距离）；$p_j$ 房价；$\bar X_{-i,j}$ 邻里构成（排除 $i$ 自己的邻里平均，即邻里效应）；$\xi_j$ 不可观测社区质量（结构误差）；$\varepsilon_{ij}$ i.i.d. Gumbel。</p>
+    </div>
+
+    <h3>3.2 Logit 选择概率</h3>
+    <p>由于 $\varepsilon_{ij}$ 为 i.i.d. 极值型，由第 <a href="03-discrete-choice.html">03 页</a> 的标准推导，条件选择概率为：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq.20-09 — 条件 Logit 选择概率</div>
+      $$P_{ij} = \frac{\exp\big(X_j'\beta - \alpha p_j + \gamma\bar X_{-i,j}+\xi_j\big)}{\sum_{k=1}^{J}\exp\big(X_k'\beta - \alpha p_k + \gamma\bar X_{-i,k}+\xi_k\big)}$$
+    </div>
+
+    <h3>3.3 房价内生性与 Berry 反演</h3>
+    <p>房价 $p_j$ 与不可观测质量 $\xi_j$ <strong>内生相关</strong>（好社区房价高且 $\xi_j$ 大）。直接 OLS 会把"质量"误算成"价格"，使价格系数向 0 偏误。Berry (1994) 的解析反演把市场份额写成线性形式：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq.20-10 — Berry 对数份额反演</div>
+      $$\ln s_j - \ln s_0 = X_j'\beta - \alpha p_j + \gamma\bar X_{-i,j} + \xi_j$$
+      <p style="margin-top:8px;font-size:13px;color:var(--text-light);">其中 $s_j$ 为社区 $j$ 的市场份额，$s_0$ 为外部选项份额。这是一个关于 $\{X,p,\bar X\}$ 的线性回归方程，残差正是 $\xi_j$。</p>
+    </div>
+
+    <h3>3.4 工具变量：边界不连续与成本侧 IV</h3>
+    <div class="formula-block">
+      <div class="formula-label">Eq.20-11 — GMM/IV 矩条件</div>
+      $$E\big[Z_j'\,\xi_j\big] = 0, \qquad Z_j \in \{\text{成本冲击},\ \text{边界另一侧特征和}\}$$
+      <p style="margin-top:8px;font-size:13px;color:var(--text-light);">常用 IV：(a) 住房建造成本/建材价格；(b) 行政边界另一侧的邻居特征（利用学区/行政边界的不连续性，Bayer-Ferreira-McMillan 2007）；(c) BLP 式竞争品特征和。详见 <a href="04-blp.html">04 BLP 页</a>。</p>
+    </div>
+
+    <h3>3.5 通勤成本</h3>
+    <p>工作地固定时，居住选择含通勤成本。在效用中扣减 $\kappa d_{ij}$（$\kappa$ 单位通勤成本，$d_{ij}$ 家到工作地距离）：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq.20-12 — 含通勤成本的效用</div>
+      $$U_{ij} = X_j'\beta - \alpha p_j + \gamma\bar X_{-i,j} - \kappa d_{ij} + \xi_j + \varepsilon_{ij}$$
+      <p style="margin-top:8px;font-size:13px;color:var(--text-light);">地铁/快速路建设使 $\kappa$ 下降，远距离社区的吸引力上升——这是第 8 节反事实 B 的核心机制。</p>
+    </div>
+  </div>
+
+  <!-- ========== 第4节 ========== -->
+  <div class="section" id="s4">
+    <h2><span class="sec-num">04</span> 求解算法：均衡房价固定点</h2>
+    <div class="step-flow">
+      <div class="step-item">
+        <div class="step-title">Step 1：Epple-Sieg 解析递推</div>
+        <div class="step-desc">由供给份额定边界收入 $y_j^*=F_y^{-1}(j/J)$；锚定最低社区房价 $p_0$；用 $p_{j+1}=y_j^*(1-r_j)+r_j p_j$ 递推全部均衡房价。无需迭代，数值稳定。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">Step 2：Bayer 离散选择 + IV</div>
+        <div class="step-desc">用 Berry 反演得到线性方程 $\ln s_j-\ln s_0=\cdots+\xi_j$；构造 IV $Z_j$；2SLS/GMM 估计 $\beta,\alpha,\gamma$。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">Step 3：随机系数 / SMM</div>
+        <div class="step-desc">若偏好随家庭异质（$\alpha_i,\beta_i$ 随收入变），用混合 Logit 数值积分 + 模拟矩（SMM），见 <a href="09-mixed-logit.html">09 混合 Logit</a> 与 <a href="13-nonlinear-gmm-smm.html">13 SMM</a>。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">Step 4：均衡固定点迭代（一般情形）</div>
+        <div class="step-desc">当供给非均匀或偏好更复杂时，用 t&acirc;tonnement：猜房价 → 算需求 → 供不应求涨价、供过于求降价 → 直到 $|demand/supply-1|&lt;\text{tol}$。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 第5节：代码1 ========== -->
+  <div class="section" id="s5">
+    <h2><span class="sec-num">05</span> 代码 1：Epple-Sieg 排序均衡求解</h2>
+    <p>下面的代码用解析递推求均衡房价，并验证"收入随设施分层、房价随设施上升"。已实跑验证。</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div>
+      <pre><code>"""
+代码块1：Epple-Sieg (1999) 排序模型 —— 连续社区排序与均衡房价求解
+  - J 个社区按设施 a_j 升序；家庭收入对数正态；间接效用 V=(y-p)^alpha * a
+  - 边界家庭 y_j* 在社区 j 与 j+1 间无差异，解析递推均衡房价
+"""
+import numpy as np
+from scipy.stats import lognorm
+
+np.random.seed(20240912)
+
+# ---------- 1. 环境设定 ----------
+J = 12                          # 社区数
+alpha = 0.5                     # 偏好参数
+a = 1.0 + 0.15 * np.arange(1, J + 1)       # 社区设施单调递增
+
+# 收入分布：log y ~ N(mu, sigma^2)，中位收入约 50
+mu, sigma = np.log(50.0), 0.40
+Y_dist = lognorm(s=sigma, scale=np.exp(mu))
+N = 40000
+y_sim = Y_dist.rvs(size=N, random_state=7)
+
+# ---------- 2. 由供给份额确定均衡边界收入 ----------
+quantiles = np.arange(1, J) / J            # 1/J, ..., (J-1)/J
+y_star = Y_dist.ppf(quantiles)             # J-1 个边界收入
+
+# ---------- 3. 解析递推均衡房价 ----------
+r = (a[:-1] / a[1:]) ** (1.0 / alpha)      # r_j = (a_j/a_{j+1})^(1/alpha)
+p0 = 5.0                                   # 锚定最低社区房价
+p_eq = np.zeros(J)
+p_eq[0] = p0
+for j in range(J - 1):
+    # p_{j+1} = y_j*(1 - r_j) + r_j p_j
+    p_eq[j + 1] = y_star[j] * (1.0 - r[j]) + r[j] * p_eq[j]
+
+# ---------- 4. 模拟家庭选择，验证均衡 ----------
+def choose_communities(p, a):
+    resid = y_sim[:, None] - p[None, :]
+    V = np.full((N, J), -np.inf)
+    m = resid > 0
+    V[m] = (resid[m] ** alpha) * np.tile(a, (N, 1))[m]
+    return np.argmax(V, axis=1)
+choice = choose_communities(p_eq, a)
+
+# ---------- 5. 输出 ----------
+print(f"{'社区':>4} {'设施a_j':>8} {'房价p_j':>9} {'平均收入':>9} {'份额':>7}")
+for j in range(J):
+    sel = choice == j
+    inc = y_sim[sel].mean() if sel.any() else np.nan
+    print(f"{j:>4} {a[j]:>8.2f} {p_eq[j]:>9.2f} {inc:>9.1f} {sel.mean():>7.3f}")
+
+mean_inc = np.array([y_sim[choice==j].mean() if (choice==j).any() else np.nan
+                     for j in range(J)])
+print("平均收入随设施单调递增?", bool(np.all(np.diff(mean_inc[~np.isnan(mean_inc)])>=-1e-9)))
+</code></pre>
+    </div>
+    <div class="callout tip">
+      <div class="callout-title">✓ 实跑输出</div>
+      <p>各社区份额约 $0.083$（$=1/12$），平均收入从最低设施社区的约 $24$ 单调上升到最高设施社区的约 $106$；均衡房价从 $5.0$ 单调上升到约 $47.9$。<strong>这就是收入分层与房价资本化的核心实证模式</strong>：高收入家庭为优质设施支付了更高房价。</p>
+    </div>
+  </div>
+
+  <!-- ========== 第6节：代码2 ========== -->
+  <div class="section" id="s6">
+    <h2><span class="sec-num">06</span> 代码 2：Bayer 框架 IV 估计</h2>
+    <p>模拟带内生房价的离散选择数据，对比 naive OLS 与 IV/2SLS。已实跑验证。</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div>
+      <pre><code>"""
+代码块2：Bayer-McMillan-Rueben 离散选择 + IV 估计
+  U_ij = X_j'beta - alpha p_j + gamma Xbar_j + xi_j + eps_ij
+  p_j 与 xi_j 内生相关 -> OLS 偏误；用成本冲击 cost_shock 作 IV
+"""
+import numpy as np
+from scipy.optimize import minimize
+
+np.random.seed(20240912)
+J, K = 100, 2
+X = np.random.randn(J, K)
+X[:,0] = (X[:,0]-X[:,0].mean())/X[:,0].std()   # 住房面积
+X[:,1] = (X[:,1]-X[:,1].mean())/X[:,1].std()   # 到地铁距离
+
+xi = 0.35 * np.random.randn(J)                  # 不可观测质量（与p相关）
+cost_shock = np.random.randn(J)                 # 外生成本冲击（IV）
+p = 0.5 + 0.4*X[:,0] - 0.3*X[:,1] + 0.6*xi + 1.5*cost_shock
+p = np.abs(p) + 0.1
+Xbar = np.random.randn(J)                       # 邻里构成
+beta_true = np.array([1.0, -0.5]); alpha_true = -1.2; gamma_true = 0.3
+
+# 平均效用 + 份额反演所需的观测份额（简化，模拟市场）
+delta = X @ beta_true + alpha_true*p + gamma_true*Xbar + xi
+R = 300
+v = np.random.randn(R)
+mu = 0.1 * v[:,None] * X[None,:,0]
+u = delta[None,:] + mu
+P = np.exp(u - u.max(1, keepdims=True)); P /= P.sum(1, keepdims=True)
+S = P.mean(0) * np.exp(0.02*np.random.randn(J)); S /= S.sum()
+S0 = max(1.0 - S.sum(), 1e-3)
+y_dep = np.log(S) - np.log(S0)                  # Berry 反演被解释变量
+
+# (a) Naive OLS
+Z_ols = np.column_stack([X, p, Xbar])
+b_ols = np.linalg.lstsq(Z_ols, y_dep, rcond=None)[0]
+print("OLS  alpha =", round(b_ols[2],3), "(真实 -1.2)")
+
+# (b) IV/2SLS：cost_shock 作 p 的工具
+W_iv = np.column_stack([X, Xbar, cost_shock])
+p_hat = W_iv @ np.linalg.lstsq(W_iv, p, rcond=None)[0]
+Z_iv = np.column_stack([X, p_hat, Xbar])
+b_iv = np.linalg.lstsq(Z_iv, y_dep, rcond=None)[0]
+print("IV   alpha =", round(b_iv[2],3), "(真实 -1.2)")
+</code></pre>
+    </div>
+    <div class="callout tip">
+      <div class="callout-title">✓ 实跑输出</div>
+      <p>naive OLS 估计的价格系数约为 $+0.17$（<strong>符号错误、向 0 偏误</strong>），而 IV/2SLS 修正后约为 $-1.58$，接近真实值 $-1.2$。这定量展示了房价内生性的危害：好社区同时房价高、质量高，OLS 把质量误读为价格，严重低估居民对房价的敏感度。</p>
+    </div>
+  </div>
+
+  <!-- ========== 第7节 数据 ========== -->
+  <div class="section" id="s7">
+    <h2><span class="sec-num">07</span> 数据与估计</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>数据类型</th><th>美国来源</th><th>中国来源</th><th>用途</th></tr></thead>
+        <tbody>
+          <tr><td>家庭选择/收入</td><td>IPUMS-ACS、CPS</td><td>人口普查、<strong>CHIP</strong>、<strong>CFPS</strong></td><td>收入分布、社区选择</td></tr>
+          <tr><td>房价/租金</td><td>Zillow、ACS</td><td>中国房价网、城市二手房挂牌、链家</td><td>$p_j$ 与资本化</td></tr>
+          <tr><td>公共品/设施</td><td>NCES 学校数据、绿地 GIS</td><td>教育局中考成绩、高德 POI、遥感绿化</td><td>$a_j$、$X_j$</td></tr>
+          <tr><td>通勤/职住</td><td>CTPP、LEHD</td><td>人口普查通勤、手机信令</td><td>$d_{ij}$、$\kappa$</td></tr>
+          <tr><td>邻里构成</td><td> tract 普查</td><td>社区/街道人口结构</td><td>$\bar X_{-i,j}$</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>估计方法</strong>：GMM/IV 处理房价内生性；随机系数 Logit 处理偏好异质性；排序均衡估计用 Epple-Sieg 的矩匹配。<strong>关键参数</strong>：$\alpha$（房价/收入边际效用弹性）、$\beta$（社区特征偏好）、$\gamma$（邻里效应）、$\kappa$（通勤成本）。</p>
+  </div>
+
+  <!-- ========== 第8节 代码3 反事实 ========== -->
+  <div class="section" id="s8">
+    <h2><span class="sec-num">08</span> 代码 3：反事实与福利分析</h2>
+    <p>承接 Epple-Sieg 框架：(A) 优质学区设施提升 20%；(B) 地铁建设降低通勤成本。已实跑验证。</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div>
+      <pre><code>"""
+代码块3：反事实 —— 设施改善 -> 房价资本化 -> 福利(CV)
+  承接代码1：a1=优质学区+20%；a2=郊区通勤改善
+  CV：在新(p,a)下维持旧效用 V_base 所需收入 y'，CV = y - y'
+"""
+import numpy as np
+from scipy.stats import lognorm
+np.random.seed(20240912)
+J, alpha = 12, 0.5
+a0 = 1.0 + 0.15*np.arange(1, J+1)
+Y_dist = lognorm(s=0.40, scale=np.exp(np.log(50.0)))
+N = 40000; y_sim = Y_dist.rvs(size=N, random_state=7)
+
+def solve_prices(a, p0=5.0):
+    q = np.arange(1, J)/J; ys = Y_dist.ppf(q)
+    r = (a[:-1]/a[1:])**(1/alpha)
+    p = np.zeros(J); p[0] = p0
+    for j in range(J-1):
+        p[j+1] = ys[j]*(1-r[j]) + r[j]*p[j]
+    return p
+
+def choose(p, a):
+    res = y_sim[:,None] - p[None,:]
+    V = np.full((N,J), -np.inf); m = res>0
+    V[m] = (res[m]**alpha)*np.tile(a,(N,1))[m]
+    return np.argmax(V, axis=1)
+
+# 基线
+p_base = solve_prices(a0); c0 = choose(p_base, a0)
+V_base = (y_sim - p_base[c0])**alpha * a0[c0]
+
+# 反事实A：优质学区(末4社区)设施+20%
+a1 = a0.copy(); a1[-4:] *= 1.20
+pA = solve_prices(a1); cA = choose(pA, a1)
+y_eq = (V_base / a1[cA])**(1/alpha) + pA[cA]
+CV_A = y_sim - y_eq
+print("学区房价上涨%:", np.round(np.mean((pA[-4:]-p_base[-4:])/p_base[-4:])*100,1))
+print("平均 CV:", round(CV_A.mean(),2))
+
+# 反事实B：地铁（郊区通勤改善）
+a2 = a0.copy(); a2[:6] *= 1.15; a2[6:] *= 1.03
+pB = solve_prices(a2); cB = choose(pB, a2)
+y_eqB = (V_base/a2[cB])**(1/alpha) + pB[cB]
+CV_B = y_sim - y_eqB
+print("市区房价变化%:", np.round(np.mean((pB[6:]-p_base[6:])/p_base[6:])*100,1))
+print("平均 CV:", round(CV_B.mean(),2))
+</code></pre>
+    </div>
+    <div class="callout tip">
+      <div class="callout-title">✓ 实跑输出与应用解读</div>
+      <p><strong>反事实 A</strong>：优质学区设施提升 20%，其房价平均资本化上涨约 $14.7\%$（$10\%\sim20\%$），平均补偿变化 CV 为正（家庭净受益）。<strong>反事实 B</strong>：地铁改善郊区可达性后，市中心房价反而下降约 $10.3\%$（需求外溢到郊区），全市平均 CV 为正。政策含义：学校质量改善的收益大量资本化进房价，<strong>现有业主获益、新进入者承担</strong>；地铁的福利效应通过降低通勤成本分散到郊区。</p>
+    </div>
+    <div class="callout info">
+      <div class="callout-title">典型政策应用</div>
+      <p>(1) 学校质量改善对房价与居住隔离的影响；(2) 地铁/快速路建设对职住与房价梯度的影响；(3) 住房补贴（共有产权、公租房）的福利归宿；(4) 居住隔离与收入分层的长期演化。</p>
+    </div>
+  </div>
+
+  <!-- ========== 第9节 论文 ========== -->
+  <div class="section" id="s9">
+    <h2><span class="sec-num">09</span> 论文案例</h2>
+    <div class="paper-card">
+      <span class="paper-type en">English · Econometrica 1999</span>
+      <div class="paper-title">Estimating Equilibrium Models of Local Jurisdictions</div>
+      <div class="paper-meta">Dennis Epple &amp; Holger Sieg · Econometrica, 1999, 67(4): 631–666.</div>
+      <div class="paper-desc">排序模型的奠基之作。把社区公共品看作连续质量轴，推导边界家庭与均衡房价的解析结构，用数据估计收入-偏好分布与公共品资本化，是本页 Epple-Sieg 框架的原始来源。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · NBER/2004</span>
+      <div class="paper-title">Discrete Choice Approaches to Residential Sorting</div>
+      <div class="paper-meta">Patrick Bayer, Robert McMillan &amp; Kim Rueben · NBER/Research in Urban Economics, 2004.</div>
+      <div class="paper-desc">用离散选择框架建模邻里选择，同时纳入房价、邻里构成（邻里效应）与通勤成本，用工具变量处理房价内生性，是 Bayer-McMillan-Rueben 框架的代表。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · Econometrica 2007</span>
+      <div class="paper-title">An Equilibrium Model of Sorting in an Urban Housing Market</div>
+      <div class="paper-meta">Bayer, Ferreira &amp; McMillan · Econometrica, 2007, 75(6): 1097–1135.</div>
+      <div class="paper-desc">在旧金山湾区估计均衡排序模型，分离支付意愿、邻里效应与移动成本，并做反事实。利用行政边界不连续性构造 IV 的经典范例。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · Handbook 2013</span>
+      <div class="paper-title">Hedonic Pricing Models</div>
+      <div class="paper-meta">Kuminoff, Smith &amp; Timmins · Handbook of Economic Field Experiments, 2013.</div>
+      <div class="paper-desc">系统梳理特征价格法（hedonic）与均衡排序模型如何估计公共品/环境质量的支付意愿，是方法论综述。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 《世界经济》</span>
+      <div class="paper-title">地方公共品供给中的 Tiebout 模型——基于中国城市房价的经验研究</div>
+      <div class="paper-meta">梁若冰、汤韵，《世界经济》，2008，31(10): 71–83.</div>
+      <div class="paper-desc">用 35 个大中城市面板检验 Tiebout"用脚投票"机制，发现地方公共服务对房价有显著正向影响（公共品资本化），是国内把 Tiebout/资本化框架用于中国房价的代表作。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 城市/房地产研究</span>
+      <div class="paper-title">中国城市移民的区位质量需求与公共服务消费——基于住房需求分解</div>
+      <div class="paper-meta">郑思齐、吴璟 等，清华大学恒隆房地产研究中心工作论文/《经济研究》系城市住房研究。</div>
+      <div class="paper-desc">基于北京家庭调查，发现户籍状态显著影响家庭对住房区位质量（公共服务）的支付意愿，把排序/WTP 框架用于中国户籍与公共服务分配问题。</div>
+    </div>
+  </div>
+
+  <!-- ========== 第10节 常见错误 ========== -->
+  <div class="section" id="s10">
+    <h2><span class="sec-num">10</span> 常见错误与陷阱</h2>
+    <div class="callout danger">
+      <div class="callout-title">✗ 错误 1：忽略房价内生性，OLS 直接估 WTP</div>
+      <p>好社区房价高且不可观测质量 $\xi_j$ 也高，OLS 价格系数向 0 偏误甚至符号错误，WTP 被严重低估。<strong>必须用 IV/GMM</strong>（成本侧、边界不连续、竞争品特征）。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">✗ 错误 2：把 hedonic 回归系数直接当 WTP</div>
+      <p>特征价格法的边际 hedonic 价格是<strong>边际</strong>支付意愿，只在局部有效；做大的政策反事实（设施提升 20%）必须用<strong>均衡排序模型</strong>重解房价与重新排序，不能线性外推。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">✗ 错误 3：忽略一般均衡，只算"保持房价不变"的局部福利</div>
+      <p>设施改善会通过市场出清改变房价，进而影响谁住哪里。只看居民效用变化而不重解均衡房价，会错误估计福利归宿（业主得益、租客受损）。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">⚠ 错误 4：收入分布误设导致排序反推错误</div>
+      <p>Epple-Sieg 的边界收入依赖 $F_y^{-1}$。若收入分布用正态而非对数正态拟合，边界收入和均衡房价都会偏。务必用数据拟合收入分布（如对数正态/Gamma）。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">⚠ 错误 5：忽略通勤成本与工作地</div>
+      <p>只看设施/房价会得出"越市中心越好"。加入 $\kappa d_{ij}$ 后，远距离但低房价的郊区可能最优。地铁建设反事实必须通过通勤成本渠道，而非直接改设施。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">⚠ 错误 6：邻里效应 $\bar X_{-i,j}$ 未"排除自己"</div>
+      <p>构造邻里平均时若把家庭自己算进去，会产生机械相关与反射问题（Manski reflection）。必须用 $\bar X_{-i,j}$（leave-one-out）。</p>
+    </div>
+  </div>
+
+  <!-- ========== 方程总清单 ========== -->
+  <div class="section" id="eq-summary">
+    <h2>方程总清单 / Equation Summary</h2>
+    <p>本页全部方程按出现顺序汇总，共 <strong>18 个</strong>。</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>编号</th><th>方程名称</th><th>核心公式</th><th>所在节</th></tr></thead>
+        <tbody>
+          <tr><td>Eq.20-01</td><td>Epple-Sieg 间接效用</td><td>$V=(y-p)^\alpha a$</td><td>02.1</td></tr>
+          <tr><td>Eq.20-02</td><td>对房价边际效用</td><td>$\partial V/\partial p=-\alpha(y-p)^{\alpha-1}a$</td><td>02.2</td></tr>
+          <tr><td>Eq.20-03</td><td>对设施边际效用</td><td>$\partial V/\partial a=(y-p)^\alpha$</td><td>02.2</td></tr>
+          <tr><td>Eq.20-04</td><td>支付意愿 WTP</td><td>$\mathrm{WTP}=(y-p)/(\alpha a)$</td><td>02.2</td></tr>
+          <tr><td>Eq.20-05</td><td>边界家庭无差异</td><td>$(y^*-p_j)^\alpha a_j=(y^*-p_{j+1})^\alpha a_{j+1}$</td><td>02.3</td></tr>
+          <tr><td>Eq.20-06</td><td>边界收入解析解</td><td>$y^*=(p_{j+1}-r p_j)/(1-r)$</td><td>02.3</td></tr>
+          <tr><td>Eq.20-07</td><td>住房市场出清</td><td>需求=固定供给 $h_j$</td><td>02.4</td></tr>
+          <tr><td>Eq.20-08</td><td>Bayer 随机效用</td><td>$U_{ij}=X_j'\beta-\alpha p_j+\gamma\bar X_{-i,j}+\xi_j+\varepsilon_{ij}$</td><td>03.1</td></tr>
+          <tr><td>Eq.20-09</td><td>条件 Logit 概率</td><td>$P_{ij}=e^{V_{ij}}/\sum_k e^{V_{ik}}$</td><td>03.2</td></tr>
+          <tr><td>Eq.20-10</td><td>Berry 份额反演</td><td>$\ln s_j-\ln s_0=X_j'\beta-\alpha p_j+\gamma\bar X+\xi_j$</td><td>03.3</td></tr>
+          <tr><td>Eq.20-11</td><td>IV/GMM 矩条件</td><td>$E[Z_j'\xi_j]=0$</td><td>03.4</td></tr>
+          <tr><td>Eq.20-12</td><td>含通勤成本效用</td><td>$U_{ij}=\cdots-\kappa d_{ij}$</td><td>03.5</td></tr>
+          <tr><td>Eq.20-13</td><td>房价递推</td><td>$p_{j+1}=y_j^*(1-r_j)+r_j p_j$</td><td>04/代码1</td></tr>
+          <tr><td>Eq.20-14</td><td>2SLS 一阶段</td><td>$\hat p=Z(Z'Z)^{-1}Z'p$</td><td>代码2</td></tr>
+          <tr><td>Eq.20-15</td><td>二阶段回归</td><td>$(\ln s_j-\ln s_0)$ 对 $[X,\hat p,\bar X]$</td><td>代码2</td></tr>
+          <tr><td>Eq.20-16</td><td>补偿变化 CV</td><td>$y'$ 满足 $u(y'-p')=V_{base}$，CV=$y-y'$</td><td>代码3</td></tr>
+          <tr><td>Eq.20-17</td><td>房价资本化</td><td>$\%\Delta p_j$ 对 $\%\Delta a_j$</td><td>08</td></tr>
+          <tr><td>Eq.20-18</td><td>通勤成本渠道</td><td>$a^{eff}_j=a_j\cdot(1+\text{可达性改善})$</td><td>08</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <a href="16-education-human-capital.html" class="prev"><div class="nav-label">← 上一节</div><div class="nav-title">教育/人力资本</div></a>
+    <a href="21-insurance-risk-preference.html" class="next"><div class="nav-label">下一节 →</div><div class="nav-title">保险需求与风险偏好</div></a>
+  </div>
+
+</div></div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

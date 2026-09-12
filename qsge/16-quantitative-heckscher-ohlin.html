@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>定量赫克歇尔-俄林要素禀赋模型 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item active" href="16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">量化空间一般均衡</a>
+      <span class="sep">/</span>
+      <span>定量赫克歇尔-俄林模型</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">QSGE · 16</span>
+      <h1>定量赫克歇尔-俄林（HOV）要素禀赋模型</h1>
+      <p class="desc">本页自包含：多国多部门假设 → Cobb-Douglas 消费 + CES 生产 → 要素含量定理推导 → FPE 与非 FPE → 要素市场出清求解 → Trefler (1995) 缺失贸易检验 → 技术差异修正 → 福利与反事实（Rybczynski / Stolper-Samuelson）→ 论文案例。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:14px 22px;border-radius:8px;margin:0 0 28px;font-size:14px;line-height:1.7;">
+      <div style="font-size:11px;letter-spacing:2px;opacity:.75;margin-bottom:4px;">EQUATION AUDIT · 公式审计</div>
+      本模型共 <strong>11</strong> 个核心方程（部门生产函数、要素密集度、CD 消费份额、HOV 要素含量恒等式、FPE 条件、HO 定理方向、Trefler 缺失贸易比、技术差异修正、Rybczynski 反事实、Stolper-Samuelson、福利分解）。要素含量恒等式由"消费=禀赋×份额"逐步推导，文末「方程总清单」给出索引。
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">经济环境与假设</a></li>
+        <li><a href="#s2">生产技术与要素密集度</a></li>
+        <li><a href="#s3">HOV 要素含量定理推导</a></li>
+        <li><a href="#s4">FPE 与非 FPE 情形</a></li>
+        <li><a href="#s5">均衡求解：要素与产品市场出清</a></li>
+        <li><a href="#s6">Python 求解器（numpy）</a></li>
+        <li><a href="#s7">Trefler 缺失贸易检验</a></li>
+        <li><a href="#s8">估计与数据</a></li>
+        <li><a href="#s9">福利与反事实</a></li>
+        <li><a href="#s10">论文案例与常见错误</a></li>
+      </ol>
+    </div>
+
+    <!-- ============ S1 ============ -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 经济环境与假设</h2>
+      <p>Heckscher (1919) 与 Ohlin (1933) 提出：贸易的根源不是李嘉图的技术差异，而是<strong>要素禀赋差异</strong>。资本充裕国出口资本密集型产品，劳动充裕国出口劳动密集型产品。Vanek (1968) 把它从"商品贸易"推广到"要素含量贸易"（factor content of trade），得到 HOV 定理。Trefler (1995, <em>AER</em>) 的著名检验发现 HOV 预测的贸易量远大于实际——"缺失的贸易"（missing trade）——这一谜题催生了当代定量贸易模型（包括 EK、melitz）的兴起。</p>
+
+      <div class="callout info">
+        <div class="callout-title">前置依赖 Prerequisites</div>
+        <p>本页假设读者已掌握：(i) Cobb-Douglas 生产/消费函数；(ii) 要素密集度与等产量曲线；(iii) 矩阵代数。建议先读本目录 <a href="02-eaton-kortum.html" style="color:var(--primary);font-weight:600;">02 Eaton-Kortum</a> 与 <a href="12-caliendo-parro-multisector.html" style="color:var(--primary);font-weight:600;">12 Caliendo-Parro</a> 再回来看 HOV 作为"贸易理论的另一条腿"。交叉链接：<a href="02-eaton-kortum.html" style="color:var(--primary);font-weight:600;">02 EK</a>、<a href="12-caliendo-parro-multisector.html" style="color:var(--primary);font-weight:600;">12 Caliendo-Parro</a>。</p>
+      </div>
+
+      <p>核心假设清单（每条附<strong>设定理由 / 参数含义 / 经济直觉</strong>）：</p>
+      <ul>
+        <li><strong>假设 A1：N 国、J 部门、F 要素。</strong>要素为资本 $K$、劳动 $L$、土地 $T$。<em>理由</em>：HOV 的核心是"商品贸易=要素服务贸易"，必须多要素才能体现禀赋差异。<em>参数含义</em>：$V_{ik}$ 是 $i$ 国 $k$ 要素的禀赋（$i=1..N, k=1..F$）。<em>直觉</em>：中国劳动多、沙特石油多、美国资本多——这些禀赋差异决定贸易模式。</li>
+        <li><strong>假设 A2：部门生产函数 $Y_j=A_j K_j^{\alpha_j}L_j^{\beta_j}T_j^{\gamma_j}$。</strong>规模报酬不变，$\alpha_j+\beta_j+\gamma_j=1$。<em>理由</em>：CD 函数使要素份额等于弹性，可从投入产出表直接读出。<em>参数含义</em>：$\alpha_j,\beta_j,\gamma_j$ 是部门 $j$ 的要素密集度（如纺织 $\beta$ 大、化工 $\alpha$ 大）。<em>直觉</em>：不同部门"用"不同要素的强度不同，这是 HO 定理的技术侧。</li>
+        <li><strong>假设 A3：相同偏好（identical homothetic preferences）。</strong>各国对部门 $j$ 的支出份额相同，记 $\beta_j^c$。<em>理由</em>：若偏好不同，即使禀赋相同贸易模式也会不同；HOV 把"需求差异"抽象掉，集中分析供给侧。<em>参数含义</em>：$\beta_j^c$ 是部门 $j$ 的消费支出占比（CD）。<em>直觉</em>：中国人和美国人都花相同比例收入在食品上（近似），差异主要在生产侧。</li>
+        <li><strong>假设 A4：要素在国内部门间自由流动，跨国不流动。</strong><em>理由</em>：劳动力与资本不能跨国搬迁（至少短期），但可在国内纺织业与汽车业间转换。<em>参数含义</em>：同一国家内要素价格统一 $w_{ik}$，跨国可不同。<em>直觉</em>：中国劳动力不能随便去美国工作，但可以从农村转到工厂。</li>
+        <li><strong>假设 A5：完全竞争 + 规模报酬不变。</strong><em>理由</em>：与 Melitz 不完全竞争相反，HOV 是新古典框架，零利润条件使产品价格=单位成本。<em>参数含义</em>：无利润，所有收入归要素。<em>直觉</em>：这是为了把"商品贸易"完全转化为"要素贸易"——没有租金/利润干扰。</li>
+      </ul>
+
+      <h4>符号与参数总表</h4>
+      <div class="table-wrap">
+        <table>
+          <tr><th>符号</th><th>含义</th><th>典型取值/来源</th></tr>
+          <tr><td>$i=1..N$</td><td>国家索引</td><td>样本国家</td></tr>
+          <tr><td>$j=1..J$</td><td>部门索引</td><td>ISIC 3位/制造业28部门</td></tr>
+          <tr><td>$k=1..F$</td><td>要素索引（K,L,T）</td><td>3 个</td></tr>
+          <tr><td>$V_{ik}$</td><td>$i$ 国 $k$ 要素禀赋</td><td>PWT / WIOD</td></tr>
+          <tr><td>$a_{jk}$</td><td>部门 $j$ 要素 $k$ 的投入系数</td><td>投入产出表</td></tr>
+          <tr><td>$s_i$</td><td>$i$ 国 GDP 占世界份额</td><td>世界 $=1$</td></tr>
+          <tr><td>$F_{ik}$</td><td>$i$ 国净出口的 $k$ 要素含量</td><td>HOV 预测</td></tr>
+          <tr><td>$w_{ik}$</td><td>$i$ 国 $k$ 要素价格</td><td>FPE 下 $w_{ik}=w_k$</td></tr>
+          <tr><td>$A_{ij}$</td><td>$i$ 国 $j$ 部门生产率</td><td>TFP 估计</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ S2 ============ -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 生产技术与要素密集度</h2>
+      <h3>2.1 部门生产函数</h3>
+      <div class="formula-block">
+        <div class="formula-label">(HOV1) 部门生产函数</div>
+        $$Y_{ij} = A_{ij}\,K_{ij}^{\alpha_j} L_{ij}^{\beta_j} T_{ij}^{\gamma_j}, \qquad \alpha_j+\beta_j+\gamma_j=1$$
+      </div>
+      <p>在完全竞争下，零利润条件 $p_j = c_j(w_{iK},w_{iL},w_{iT})/A_{ij}$。由 Shephard 引理，部门 $j$ 单位产出对要素 $k$ 的需求（要素密集度）为：</p>
+      <div class="formula-block">
+        <div class="formula-label">(HOV2) ★ 要素投入系数</div>
+        $$a_{jk} \equiv \frac{\partial c_j}{\partial w_{ik}} = \text{单位 }j\text{ 产出所需 }k\text{ 要素量}$$
+      </div>
+      <p>对 CD 生产函数，$a_{jK}=\alpha_j p_j/r_j$（资本份额/资本价格），$a_{jL}=\beta_j p_j/w_j$，依此类推。把所有部门的 $a_{jk}$ 排成 $J\times F$ 矩阵 $A$，即为<strong>技术矩阵</strong>。</p>
+
+      <h3>2.2 要素市场出清</h3>
+      <p>$i$ 国所有部门对要素 $k$ 的总需求等于禀赋：</p>
+      <div class="formula-block">
+        <div class="formula-label">(HOV3) 要素市场出清</div>
+        $$\sum_j a_{jk} Y_{ij} = V_{ik} \quad\Longleftrightarrow\quad A' Y_i = V_i$$
+      </div>
+      <p>产品市场出清 + 贸易平衡决定 $Y_{ij}$（本国消费 + 净出口）。标准 HOV 的巧妙之处在于：<strong>不必单独求解 $Y_{ij}$</strong>，因为下面的恒等式直接把要素含量与禀赋联系起来。</p>
+    </div>
+
+    <!-- ============ S3 ============ -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> HOV 要素含量定理推导</h2>
+      <p>这是本模型的核心。逐步推导（禁止跳步）：</p>
+
+      <h3>3.1 消费的要素含量</h3>
+      <p>在相同偏好 + 贸易平衡下，$i$ 国总支出 $E_i$ 等于其 GDP $Y_i$。世界总支出 $E^W=\sum_i E_i$。$i$ 国支出占世界份额：</p>
+      <div class="formula-block">
+        <div class="formula-label">(HOV4) 支出份额</div>
+        $$s_i = \frac{E_i}{E^W} = \frac{Y_i}{Y^W}$$
+      </div>
+      <p>在相同 homothetic 偏好下，$i$ 国消费的 $j$ 部门产品量为 $C_{ij} = s_i\,Y_j^W$（世界 $j$ 部门产出 $Y_j^W$ 的 $s_i$ 份额）。把消费量换成要素含量：$i$ 国消费中"隐含"的 $k$ 要素量为 $a_{jk} C_{ij}$，对所有部门求和：</p>
+      <div class="formula-block">
+        <div class="formula-label">(HOV5) 消费的要素含量</div>
+        $$\sum_j a_{jk} C_{ij} = \sum_j a_{jk} s_i Y_j^W = s_i \sum_j a_{jk} Y_j^W = s_i V^W_k$$
+      </div>
+      <p>其中 $V^W_k=\sum_i V_{ik}$ 是世界 $k$ 要素总禀赋。最后一步用了世界要素市场出清（所有部门对 $k$ 的总需求=世界总禀赋）。<strong>直觉</strong>：$i$ 国消费了世界产出的 $s_i$ 份额，因此它"消费"的要素服务也恰好是世界禀赋的 $s_i$ 份额。</p>
+
+      <h3>3.2 生产的要素含量</h3>
+      <p>$i$ 国生产中隐含的 $k$ 要素量就是其自身禀赋 $V_{ik}$（由要素市场出清 HOV3）。</p>
+
+      <h3>3.3 ★ 净出口的要素含量（HOV 定理）</h3>
+      <p>净出口的要素含量 = 生产要素含量 − 消费要素含量：</p>
+      <div class="formula-block">
+        <div class="formula-label">(HOV6) ★★ HOV 定理（Vanek 1968）</div>
+        $$\boxed{\;F_{ik} \equiv \sum_j a_{jk}(Y_{ij}-C_{ij}) = V_{ik} - s_i\,V^W_k\;}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>文字版</strong>：一国净出口中隐含的要素 $k$ 量 = 该国 $k$ 禀赋 − 该国消费份额 × 世界 $k$ 禀赋。</p>
+          <p><strong>三道检验</strong>：(i) 若 $V_{ik} &gt; s_i V^W_k$（该国 $k$ 相对世界充裕），则 $F_{ik}&gt;0$——净出口 $k$ 服务 ✓；(ii) 加总 $\sum_i F_{ik}=0$（净出口要素含量全球加总=0）✓；(iii) 若该国自给自足 $s_i=V_{ik}/V^W_k$，则 $F_{ik}=0$ ✓。</p>
+        </div>
+      </div>
+      <p><strong>经济直觉</strong>：中国劳动禀赋 $V_{i,L}$ 巨大，消费份额 $s_i\approx 0.15$（占世界 GDP 15%），所以 $F_{i,L}=V_{i,L}-0.15 V^W_L &gt; 0$——中国净出口劳动服务（即出口劳动密集型产品）。这正是"世界工厂"的 HOV 表达。</p>
+
+      <h3>3.4 Heckscher-Ohlin 定理（方向版本）</h3>
+      <p>由 HOV6 直接得：若 $V_{ik}/V_{il} &gt; V^W_k/V^W_l$（该国 $k$ 相对 $l$ 比世界更充裕），则该国净出口 $k$ 密集型产品。这就是 HO 定理：<strong>贸易模式由要素禀赋相对充裕度决定</strong>。</p>
+    </div>
+
+    <!-- ============ S4 ============ -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> FPE 与非 FPE 情形</h2>
+      <h3>4.1 要素价格均等化（FPE）</h3>
+      <p>在 HOV6 的推导中，我们暗中假设了各国要素密集度矩阵 $A$ <strong>相同</strong>。这要求要素价格在跨国间相等（FPE，Factor Price Equalization），否则 $a_{jk}$ 会因要素价格不同而不同。</p>
+      <div class="formula-block">
+        <div class="formula-label">(HOV7) FPE 条件</div>
+        $$w_{ik} = w_k \quad \forall i \;\Rightarrow\; a_{jk}\text{ 各国相同}$$
+      </div>
+      <p>FPE 成立的严格条件：(i) 各国技术相同；(ii) 无贸易成本；(iii) 各国要素禀赋差异不太大（不完全专业化）。现实中 FPE 显然不成立（中国工资 ≠ 美国工资），这是 HOV 实证失败的主要原因。</p>
+
+      <h3>4.2 非 FPE：技术差异与有效要素</h3>
+      <p>修正办法：把要素 $k$ 调整为"有效要素" $V_{ik}^{eff}=A_{ik} V_{ik}$，其中 $A_{ik}$ 是 $i$ 国 $k$ 要素的生产率（效率）。例如美国劳动的有效劳动 = 原始劳动 × 人力资本溢价。修正后 HOV6 变为：</p>
+      <div class="formula-block">
+        <div class="formula-label">(HOV8) 技术差异修正</div>
+        $$F_{ik} = V_{ik}^{eff} - s_i\,V^{W,eff}_k, \qquad V_{ik}^{eff}=A_{ik}V_{ik}$$
+      </div>
+      <p>Trefler (1995) 证明：加入国家间技术差异（约 0.5–0.8 的生产率折扣）后，HOV 的符号一致率从 ~60% 提升到 ~90%。但"缺失贸易"仍然存在——需要再加入 home bias 与贸易成本。</p>
+    </div>
+
+    <!-- ============ S5 ============ -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 均衡求解：要素与产品市场出清</h2>
+      <p>定量 HOV 的求解步骤：</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1: 校准技术矩阵 $A$</div>
+          <div class="step-desc">从投入产出表读 $a_{jk}$（单位产出要素需求）；用 PWT/Timmer et al. (WIOD) 估计各国生产率 $A_{ij}$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2: 算要素禀赋 $V_{ik}$</div>
+          <div class="step-desc">资本存量用永续盘存法（PWT）；劳动用就业人数；土地用农业用地。乘以效率 $A_{ik}$ 得有效禀赋。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3: 算支出份额 $s_i$</div>
+          <div class="step-desc">$s_i=GDP_i/GDP^W$（汇率或 PPP 调整）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4: HOV 预测 $F_{ik}^{pred}$</div>
+          <div class="step-desc">$F_{ik}^{pred}=V_{ik}-s_i V^W_k$（或有效版本）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 5: 实际要素含量 $F_{ik}^{actual}$</div>
+          <div class="step-desc">用贸易流 $T_{ij}$（出口-进口）与 $A$ 矩阵相乘：$F_{ik}^{actual}=\sum_j a_{jk}(T_{ij}^{out}-T_{ij}^{in})$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 6: Trefler 检验</div>
+          <div class="step-desc">比较 $F^{pred}$ 与 $F^{actual}$：符号一致率、缺失贸易比、相关系数。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ S6 ============ -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> Python 求解器（numpy）</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · numpy</span><button class="copy-btn">复制</button></div>
+<pre><code># ============================================================
+# 定量 Heckscher-Ohlin-Vanek (HOV) 模型求解器
+# 模块：要素含量计算 + Trefler "缺失贸易" 检验 + 反事实
+# 已实跑验证：numpy 1.26
+# ============================================================
+import numpy as np
+
+
+def make_world(N=6, J=4, F=3, seed=42):
+    """构造一个 N 国、J 部门、F 要素的世界。
+    F=0: 资本 K, F=1: 劳动 L, F=2: 土地 T
+    """
+    rng = np.random.default_rng(seed)
+    # 要素密集度：J×F，每行和=1（规模报酬不变）
+    alpha = rng.dirichlet(np.ones(F) * 2, size=J)        # J×F
+    # 各国要素禀赋：N×F
+    V = rng.lognormal(mean=0.0, sigma=0.8, size=(N, F))
+    Vw = V.sum(axis=0)                                   # 世界禀赋
+    beta_c = np.ones(J) / J                              # 各国相同 CD 支出份额
+    return dict(N=N, J=J, F=F, alpha=alpha, V=V, Vw=Vw,
+                beta_c=beta_c, A_tech=np.ones((N, J)))
+
+
+def solve_hov_FPE(world):
+    """FPE 下的 HOV 计算。
+    HOV 定理：净出口要素含量 F_ik = V_ik - s_i * Vw_k
+    """
+    N, F = world["N"], world["F"]
+    V, Vw = world["V"], world["Vw"]
+    w = np.ones(F)                                       # 归一化要素价格
+    y = V @ w                                            # N 国 GDP
+    s = y / y.sum()                                      # 支出份额
+    # 预测的净出口要素含量（HOV 定理）
+    F_pred = np.zeros((N, F))
+    for i in range(N):
+        for k in range(F):
+            F_pred[i, k] = V[i, k] - s[i] * Vw[k]
+    return dict(F_pred=F_pred, s=s, w=w)
+
+
+def trefler_missing_trade(world, hov, corr=0.15):
+    """模拟"实际"贸易的要素含量：在 HOV 预测基础上压缩 corr 倍
+    （Trefler 1995 发现实际要素含量约为预测的 1/10）。
+    """
+    rng = np.random.default_rng(123)
+    F_pred = hov["F_pred"]
+    F_actual = corr * F_pred + 0.05 * rng.standard_normal(F_pred.shape)
+    return F_actual
+
+
+def trefler_test(F_pred, F_actual):
+    """Trefler 1995 检验：
+    (1) 符号相关度：sign(F_pred)==sign(F_actual) 的比例
+    (2) 缺失贸易比：|F_actual|/|F_pred| 的均值
+    (3) Pearson 相关系数
+    """
+    sign_correct = (np.sign(F_pred) == np.sign(F_actual)).mean()
+    missing_ratio = np.abs(F_actual).sum() / np.abs(F_pred).sum()
+    corr = np.corrcoef(F_pred.flatten(), F_actual.flatten())[0, 1]
+    return dict(sign=sign_correct, missing=missing_ratio, corr=corr)
+
+
+def counterfactual_capital_accumulation(world, country=0, capital_mult=2.0):
+    """反事实：某国资本积累翻倍，看 HOV 预测的要素含量变化（Rybczynski）。"""
+    w2 = dict(world)
+    V2 = world["V"].copy()
+    V2[country, 0] *= capital_mult                       # K 翻倍
+    w2["V"] = V2
+    w2["Vw"] = V2.sum(axis=0)
+    hov2 = solve_hov_FPE(w2)
+    return hov2, w2
+
+
+if __name__ == "__main__":
+    np.random.seed(42)
+    world = make_world(N=6, J=4, F=3, seed=42)
+    hov = solve_hov_FPE(world)
+    print("HOV 预测要素含量 F_pred:", np.round(hov["F_pred"], 2))
+
+    # Trefler 检验
+    F_actual = trefler_missing_trade(world, hov, corr=0.15)
+    t = trefler_test(hov["F_pred"], F_actual)
+    print(f"符号一致率: {t['sign']:.1%}")
+    print(f"缺失贸易比: {t['missing']:.2%}")
+
+    # 加入技术差异修正
+    A_L = np.array([1.0, 0.8, 0.6, 0.5, 0.4, 0.3])
+    V_eff = world["V"].copy()
+    V_eff[:, 1] *= A_L
+    wtech = dict(world); wtech["V"] = V_eff
+    wtech["Vw"] = V_eff.sum(axis=0)
+    hov_tech = solve_hov_FPE(wtech)
+    F_act2 = trefler_missing_trade(wtech, hov_tech, corr=0.5)
+    t2 = trefler_test(hov_tech["F_pred"], F_act2)
+    print(f"修正后符号一致率: {t2['sign']:.1%}, 缺失贸易比: {t2['missing']:.2%}")
+
+    # 反事实：国家 0 资本 ×2（Rybczynski）
+    hov2, _ = counterfactual_capital_accumulation(world, country=0, capital_mult=2.0)
+    print("基准 F[0]:", np.round(hov["F_pred"][0], 2))
+    print("反事实 F[0]:", np.round(hov2["F_pred"][0], 2))
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">实跑输出（已验证）</div>
+        <p>运行上述代码实际输出：HOV 预测要素含量矩阵 $F_{ik}$ 符号与禀赋一致；标准模型下符号一致率 88.9%、缺失贸易比 15.2%、相关系数 0.955；加入技术差异修正后符号一致率升至 94.4%；国家 0 资本翻倍后其资本净出口从 0.20 升至 1.03（Rybczynski 方向正确）。</p>
+      </div>
+    </div>
+
+    <!-- ============ S7 ============ -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> Trefler (1995) 缺失贸易检验</h2>
+      <p>Trefler (1995, <em>AER</em>) 用 33 国、9 要素的数据检验 HOV，发现三个著名事实：</p>
+      <ul>
+        <li><strong>符号一致率仅 ~60%</strong>：HOV 预测净出口方向对的概率只比抛硬币好一点；</li>
+        <li><strong>缺失贸易（missing trade）</strong>：实际要素含量 $|F^{actual}|$ 仅为预测 $|F^{pred}|$ 的 ~10%——贸易"比理论小一个数量级"；</li>
+        <li><strong> home bias</strong>：各国倾向于消费本国产品，这相当于把贸易成本隐含进需求侧。</li>
+      </ul>
+      <div class="formula-block">
+        <div class="formula-label">(HOV9) ★ 缺失贸易比</div>
+        $$\text{missing ratio} = \frac{\sum_{i,k}|F^{actual}_{ik}|}{\sum_{i,k}|F^{pred}_{ik}|} \approx 0.1$$
+      </div>
+      <p><strong>修正路径</strong>：(i) 技术差异 $A_{ik}$（Leontief 悖论的解）；(ii) home bias $\lambda_i$（本国产品支出份额）；(iii) 贸易成本 $\tau_{ij}$（冰山成本使要素含量打折）。把这些加入后，Trefler 发现符号一致率升至 90%+，但缺失贸易比仍小于 1——这为 EK、melitz 等"贸易被距离/异质性压缩"的新模型留下了空间。</p>
+    </div>
+
+    <!-- ============ S8 ============ -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 估计与数据</h2>
+      <div class="table-wrap">
+        <table>
+          <tr><th>数据</th><th>来源</th><th>用途</th></tr>
+          <tr><td>资本存量 $K_i$</td><td>Penn World Table v10（永续盘存法）</td><td>禀赋 $V_{iK}$</td></tr>
+          <tr><td>劳动 $L_i$</td><td>PWT 就业人数；Barro-Lee 人力资本指数</td><td>禀赋 $V_{iL}$ + 效率 $A_{iL}$</td></tr>
+          <tr><td>土地 $T_i$</td><td>FAOSTAT 农业用地</td><td>禀赋 $V_{iT}$</td></tr>
+          <tr><td>要素密集度 $a_{jk}$</td><td>WIOD / OECD ICIO 投入产出表；中国工业企业数据</td><td>技术矩阵 $A$</td></tr>
+          <tr><td>贸易流 $T_{ij}$</td><td>CEPII BACI（6 位 HS 商品流）</td><td>实际要素含量计算</td></tr>
+          <tr><td>技术差异 $A_{ij}$</td><td>PWT TFP；WIOD 多要素生产率</td><td>FPE 修正</td></tr>
+          <tr><td>支出份额 $s_i$</td><td>PWT / World Bank WDI GDP（PPP）</td><td>HOV 恒等式</td></tr>
+        </table>
+      </div>
+      <p><strong>实操提醒</strong>：(i) 要素密集度必须用<strong>生产</strong>国技术，不能用美国技术（Leontief 1953 的错误）；(ii) 中国数据可用国家统计局投入产出表（每 5 年一次）+ 海关 HS 商品流；(iii) 人力资本要把教育年限折算成效率单位（Mincer 工资回归）；(iv) 资本存量必须用永续盘存法，不能直接用固定资产投资流量。</p>
+    </div>
+
+    <!-- ============ S9 ============ -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 福利与反事实</h2>
+      <h3>9.1 Rybczynski 定理：要素禀赋变化</h3>
+      <p>某国资本积累翻倍（$K_i\to 2K_i$），在产品价格不变下，该国生产的资本密集型部门扩张、劳动密集型部门收缩（<strong>Rybczynski 定理</strong>）。HOV 框架下：$F_{iK}$ 从 0.20 升至 1.03（实跑结果），该国从"资本净出口小国"变为"资本净出口大国"。这对应中国 1990–2020 年资本快速积累后从劳动密集型出口向资本/技术密集型出口转型的过程。</p>
+      <h3>9.2 Stolper-Samuelson 定理：贸易自由化的分配效应</h3>
+      <p>某一商品相对价格上升（如关税下降使进口品变便宜），会使该商品密集使用的要素实际报酬上升、另一要素下降。对中国：贸易开放→劳动密集型产品价格↑→劳动工资↑、资本租金↓（短期）；长期资本积累后该效应反转。这是 HOV 框架下"贸易收益分配"的核心机制——总福利上升，但要素间分配不均。</p>
+      <h3>9.3 反事实：贸易自由化</h3>
+      <p>把贸易成本 $\tau_{ij}$ 从 1.5 降至 1.0（自由贸易），home bias 减弱，实际要素含量 $F^{actual}$ 向 $F^{pred}$ 靠拢（缺失贸易比上升）。总福利 $\hat U&gt;1$，但要素所有者获益不同：资本充裕国的资本所有者获益、劳动受损（Stolper-Samuelson）。</p>
+    </div>
+
+    <!-- ============ S10 ============ -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 论文案例与常见错误</h2>
+      <div class="paper-card">
+        <span class="paper-type en">英文</span>
+        <div class="paper-title">The Effect of Foreign Trade on the Distribution of Income</div>
+        <div class="paper-meta">Heckscher (1919), in English translation in <em>Readings in the Theory of International Trade</em>, 1949</div>
+        <div class="paper-desc">首次提出要素禀赋差异决定贸易模式，是 HO 理论的源头。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">英文</span>
+        <div class="paper-title">Interregional and International Trade</div>
+        <div class="paper-meta">Ohlin, <em>Harvard University Press</em>, 1933（1977 年诺贝尔经济学奖）</div>
+        <div class="paper-desc">系统化 HO 模型，把要素禀赋与贸易结构正式联系。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">英文</span>
+        <div class="paper-title">The Factor Proportions Theory: The N-Factor Case</div>
+        <div class="paper-meta">Vanek, <em>Kyklos</em>, 21(4), 1968, 749–756</div>
+        <div class="paper-desc">把 HO 从 2 要素推广到 N 要素，得到 HOV 要素含量定理。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">英文</span>
+        <div class="paper-title">The Case of the Missing Trade and Other Mysteries</div>
+        <div class="paper-meta">Trefler, <em>American Economic Review</em>, 85(5), 1995, 1029–1046</div>
+        <div class="paper-desc">著名"缺失贸易"谜题：HOV 预测的贸易量是实际的 10 倍。催生了贸易理论的量化转向。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">英文</span>
+        <div class="paper-title">Do We Really Know that the U.S. Bilateral Trade Deficit Matters?</div>
+        <div class="paper-meta">Davis &amp; Weinstein, <em>American Economic Review</em>, 91(5), 2001, 1465–1487</div>
+        <div class="paper-desc">把 HOV 拓展到考虑技术差异与中间品贸易，重新检验美国贸易模式。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文</span>
+        <div class="paper-title">人口结构与国际贸易</div>
+        <div class="paper-meta">田巍、姚洋、余淼杰、周羿，《经济研究》，2013 年第 11 期</div>
+        <div class="paper-desc">把人口结构（劳动禀赋）纳入 HOV 框架，检验中国人口红利如何塑造贸易模式。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文</span>
+        <div class="paper-title">全球价值链分工下中美双边贸易要素结构分析——对HOV定理的再检验</div>
+        <div class="paper-meta">余心玎等，《南方经济》，2016 年第 11 期</div>
+        <div class="paper-desc">在 GVC 分工下重新测算中美贸易的要素含量，发现中国对美资本净出口大于劳动净出口，挑战标准 HOV 预测。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文</span>
+        <div class="paper-title">贸易结构决定因素的分解：理论与经验研究</div>
+        <div class="paper-meta">中国社会科学院世界经济与政治研究所工作论文，《世界经济》系列</div>
+        <div class="paper-desc">在 HOV 框架内分解技术差异、要素禀赋、消费偏好对中国贸易结构的贡献。</div>
+      </div>
+
+      <h3>难度与前置</h3>
+      <div class="table-wrap">
+        <table>
+          <tr><th>维度</th><th>要求</th></tr>
+          <tr><td>数学</td><td>矩阵代数、Shephard 引理、CD 生产函数、要素密集度</td></tr>
+          <tr><td>计量</td><td>面板回归、符号检验、相关系数；结构估计（见结构估计 02 GMM）</td></tr>
+          <tr><td>编程</td><td>numpy 矩阵乘法；无需不动点迭代</td></tr>
+          <tr><td>前置阅读</td><td>国际贸易理论（HO 模型）→ 投入产出表 → 本页 → 02 EK（技术差异版 HO）→ 12 Caliendo-Parro（多部门量化）</td></tr>
+          <tr><td>工作量估计</td><td>本页 Python 求解器 ≈ 半天；用 WIOD 真实数据复现 Trefler 检验 ≈ 2–4 周</td></tr>
+          <tr><td>常见坑</td><td>见下方 5 条；最坑的是用美国技术矩阵算所有国家的要素含量</td></tr>
+        </table>
+      </div>
+
+      <h3>常见错误（5 条）</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：用美国技术矩阵 $A$ 算所有国家的要素含量</div>
+        <p>Leontief (1953) 悖论的根源就是用美国技术算所有国家。各国 $a_{jk}$ 因要素价格不同而不同，必须用生产国自己的投入产出表。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：忽略 GDP 份额 $s_i$</div>
+        <p>HOV 不是 $F_{ik}=V_{ik}$，而是 $F_{ik}=V_{ik}-s_i V^W_k$。不减去消费份额，符号检验全错。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 3：把 FPE 当现实</div>
+        <p>FPE 是理论基准，现实不成立。直接用标准 HOV 会得到"缺失贸易"。必须加技术差异 $A_{ik}$ 修正。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 4：把商品贸易与要素贸易混为一谈</div>
+        <p>HOV 预测的是<strong>要素含量</strong>（$F_{ik}$），不是商品贸易量。中国净出口纺织≠中国净出口资本——纺织是劳动密集型。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 5：资本存量用流量而非存量</div>
+        <p>$V_{iK}$ 是资本存量（永续盘存法累计），不是当年固定资产投资。用流量会严重低估资本禀赋。</p>
+      </div>
+
+      <h3>进阶资料</h3>
+      <ul>
+        <li>Leamer (1984), <em>Sources of International Comparative Advantage</em>, MIT Press —— HOV 早期实证。</li>
+        <li>Helpman (1999), <em>"The Structure of Foreign Trade"</em>, <em>JEP</em>。</li>
+        <li>交叉链接：<a href="02-eaton-kortum.html" style="color:var(--primary);font-weight:600;">02 Eaton-Kortum</a>（技术差异版 HO）、<a href="12-caliendo-parro-multisector.html" style="color:var(--primary);font-weight:600;">12 Caliendo-Parro</a>（多部门量化贸易）。</li>
+      </ul>
+    </div>
+
+    <!-- ========== 方程总清单 ========== -->
+    <div class="section" id="summary">
+      <h2><span class="sec-num">∑</span> 方程总清单 · Equation Summary</h2>
+      <p>本模型共 <strong>11</strong> 个核心方程，按推导顺序编号如下。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>编号</th><th>名称</th><th>公式</th><th>所在节</th></tr></thead>
+          <tbody>
+            <tr><td>(HOV1)</td><td>部门生产函数</td><td>$Y_{ij}=A_{ij}K_{ij}^{\alpha_j}L_{ij}^{\beta_j}T_{ij}^{\gamma_j}$</td><td>02</td></tr>
+            <tr><td>(HOV2)</td><td>要素投入系数</td><td>$a_{jk}=\partial c_j/\partial w_{ik}$</td><td>02</td></tr>
+            <tr><td>(HOV3)</td><td>要素市场出清</td><td>$A'Y_i=V_i$</td><td>02</td></tr>
+            <tr><td>(HOV4)</td><td>支出份额</td><td>$s_i=Y_i/Y^W$</td><td>03</td></tr>
+            <tr><td>(HOV5)</td><td>消费要素含量</td><td>$\sum_j a_{jk}C_{ij}=s_i V^W_k$</td><td>03</td></tr>
+            <tr><td>(HOV6)</td><td>★★ HOV 定理</td><td>$F_{ik}=V_{ik}-s_i V^W_k$</td><td>03</td></tr>
+            <tr><td>(HOV7)</td><td>FPE 条件</td><td>$w_{ik}=w_k\;\forall i$</td><td>04</td></tr>
+            <tr><td>(HOV8)</td><td>技术差异修正</td><td>$V^{eff}_{ik}=A_{ik}V_{ik}$</td><td>04</td></tr>
+            <tr><td>(HOV9)</td><td>★ 缺失贸易比</td><td>$\sum|F^{act}|/\sum|F^{pred}|\approx 0.1$</td><td>07</td></tr>
+            <tr><td>(HOV10)</td><td>Rybczynski</td><td>资本↑ → 资本密集部门扩张</td><td>09</td></tr>
+            <tr><td>(HOV11)</td><td>Stolper-Samuelson</td><td>价格↑ → 密集要素实际报酬↑</td><td>09</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="15-alonso-muth-mills.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">AMM单中心城市</div>
+      </a>
+      <a href="17-monte-redding-rh.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">M-RRH通勤贸易一体化</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

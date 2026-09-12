@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>财政与货币政策规则 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item active" href="13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">DSGE模型</a><span class="sep">/</span>
+      <span>财政与货币政策规则</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">DSGE · 前沿分支 13</span>
+      <h1>财政与货币政策规则：Taylor、债务反馈与 FTPL</h1>
+      <p class="desc">NK 模型只谈货币，不谈政府钱袋子。本页补上另一半：货币政策规则（Taylor、McCallum、名义 GDP 目标、平均通胀目标 AIT）、财政规则（债务反馈、自动稳定器、相机抉择）、财政乘数（尤其零利率下界 ZLB 时乘数飙升）、货币—财政相互作用（Leeper 主动/被动组合、FTPL 价格水平的财政理论），并给出完整 Dynare 代码。</p>
+      <div class="callout info" style="margin-top:14px;margin-bottom:0"><div class="callout-title">📐 方程统计 / Equation Count</div><p style="margin-bottom:0">本模型共 <b>48 个方程</b>（含家庭块 9、企业块 8、政府块 6、货币规则 7、财政规则 1、市场出清 1、外生冲击 5、均衡系统 E1–E7、稳态 SS-a–SS-e 5、Leeper/FTPL 3、ZLB 乘数 1、TVC 2）。完整清单见页末 <a href="#eq-summary" style="color:var(--primary);">Equation Summary</a>。</p></div>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-head">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-item"><span class="prereq-label">数学 / 统计基础</span>政府跨期预算约束的迭代与现值条件、Taylor 原理与确定性的线性代数判据（Leeper 主动/被动分区）。</div>
+      <div class="prereq-item"><span class="prereq-label">经济学理论前置</span>最优政策理论、FTPL 的跨期政府预算、李嘉图 vs 非李嘉图等价、货币政策传导机制；规则 vs 相机抉择的博弈论直觉。</div>
+      <div class="prereq-item"><span class="prereq-label">软件 / 计算前置</span>MATLAB + Dynare ≥4.6；重点改写政策规则块并加入政府债务状态变量。</div>
+      <div class="prereq-item"><span class="prereq-label">站内前置页面</span>先学 10-nk-three-equation（Taylor 规则与自然利率所在）。</div>
+      <div class="prereq-item"><span class="prereq-label">难度与路线位置</span><span class="prereq-level lv-inter">进阶</span>政策分析专题，适合研究财政乘数、ZLB 与货币-财政搭配。</div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">规则 vs 相机抉择：为什么用规则</a></li>
+        <li><a href="#s2">模型构建：家庭、企业、政府</a></li>
+        <li><a href="#s3">货币政策规则家族</a></li>
+        <li><a href="#s4">财政规则与债务反馈</a></li>
+        <li><a href="#s5">均衡系统与稳态求解</a></li>
+        <li><a href="#s6">财政乘数与 ZLB</a></li>
+        <li><a href="#s7">Leeper 四分法与 FTPL</a></li>
+        <li><a href="#s8">Dynare .mod 逐步撰写</a></li>
+        <li><a href="#s9">校准：政策系数、债务、税率</a></li>
+        <li><a href="#s_est">估计：数据来源与观测方程</a></li>
+        <li><a href="#s10">脉冲响应、方差分解与结果</a></li>
+        <li><a href="#s11">论文案例</a></li>
+        <li><a href="#s12">常见错误与进阶资料</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 规则 vs 相机抉择：为什么用规则</h2>
+      <p>Kydland &amp; Prescott (1977) 的"动态不一致"告诉我们：央行/财政当局如果每次都重新优化（相机抉择），公众会预期其通胀倾向，结果通胀更高、产出并无更好。用<strong>简单规则</strong>事先承诺（如"利率盯住通胀缺口"），虽非 Ramsey 最优，却能钉住预期、消除通胀偏差。DSGE 中的规则不是现实政策的逐字复刻，而是<strong>把政策反应函数参数化</strong>，从而定量研究"规则参数变动"的后果。本页采用的工作模型是一个封闭经济 NK 框架，在三方程 IS–NKPC–Taylor 之外补上政府预算约束、财政反应规则与外生支出过程，使价格水平与债务路径同时被决定。</p>
+      <div class="callout info"><div class="callout-title">本页建模路线</div><p>先在 §2 写清家庭—企业—政府三层假设并对每条公式标注"假设/解读"；§3–§4 分别给出货币与财政规则族；§5 汇总均衡系统并解稳态；§6 讨论财政乘数；§7 给出 Leeper 四分表与 FTPL；§8–§10 落到 Dynare 代码、校准与 IRF。</p></div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 模型构建：家庭、企业、政府</h2>
+      <h3>2.1 代表性家庭</h3>
+      <p><strong>假设</strong>：无限期代表性家庭，效用关于消费 CRRA、劳动不可分且效用可加；持有一期名义政府债券 $B_t$，无资本（封闭经济、无投资）。家庭在 $t$ 期选择消费 $C_t$、劳动 $N_t$、债券持有 $B_t$：</p>
+      <div class="formula-block">
+        <div class="formula-label">家庭问题（非对数）</div>
+        $$\max\;E_0\sum_{t=0}^{\infty}\beta^t\left[\frac{C_t^{1-\sigma}}{1-\sigma}-\frac{N_t^{1+\varphi}}{1+\varphi}\right],\qquad
+        C_t+\frac{B_t}{P_t}=\frac{W_t}{P_t}N_t+(1+i_{t-1})\frac{B_{t-1}}{P_t}-T_t$$
+      </div>
+      <p><strong>解读</strong>：$\beta$ 为贴现因子（季度取 0.99）；$\sigma$ 为相对风险厌恶（IS 曲线斜率 $1/\sigma$）；$\varphi$ 为 Frisch 劳动供给倒数。预算约束右端的 $T_t$ 为一次总付税/转移。对 $B_t$ 求一阶条件即欧拉方程，对 $N_t$ 求一阶条件即劳动供给。在稳态（零通胀、零增长）下 $\bar R=1/\beta$，$\bar i=\beta^{-1}-1\approx 1\%/$季度。</p>
+      <h4>2.1.1 拉格朗日法逐步推导一阶条件</h4>
+      <p>构造拉格朗日函数 $\mathcal L=E_0\sum_{t=0}^{\infty}\beta^t\Big\{\dfrac{C_t^{1-\sigma}}{1-\sigma}-\dfrac{N_t^{1+\varphi}}{1+\varphi}+\lambda_t\Big[\dfrac{W_tN_t}{P_t}+(1+i_{t-1})\dfrac{B_{t-1}}{P_t}-T_t-C_t-\dfrac{B_t}{P_t}\Big]\Big\}$，其中 $\lambda_t$ 为预算约束的乘子。对三个选择变量求偏导并令其为 0：</p>
+      <div class="formula-block">
+        <div class="formula-label">家庭 FOC（逐步求导）</div>
+        $$\frac{\partial\mathcal L}{\partial C_t}=C_t^{-\sigma}-\lambda_t=0 \;\Rightarrow\; \lambda_t=C_t^{-\sigma}\quad\text{(消费)}$$
+        $$\frac{\partial\mathcal L}{\partial N_t}=-N_t^\varphi+\lambda_t\frac{W_t}{P_t}=0 \;\Rightarrow\; \frac{W_t}{P_t}=\frac{N_t^\varphi}{C_t^{-\sigma}}=N_t^\varphi C_t^\sigma\quad\text{(劳动供给)}$$
+        $$\frac{\partial\mathcal L}{\partial B_t}=-\lambda_t\frac{1}{P_t}+\beta E_t\!\left[\lambda_{t+1}(1+i_t)\frac{1}{P_{t+1}}\right]=0$$
+      </div>
+      <p>把消费 FOC（$\lambda_t=C_t^{-\sigma}$）代入债券 FOC，整理得<strong>欧拉方程</strong>：$C_t^{-\sigma}=\beta(1+i_t)E_t\big[C_{t+1}^{-\sigma}P_t/P_{t+1}\big]$。对数线性化（$\hat c_t=\ln(C_t/\bar C)$）后：$\hat c_t=E_t\hat c_{t+1}-\frac{1}{\sigma}\big(\hat i_t-E_t\hat\pi_{t+1}\big)$。由于商品市场出清 $Y=C+G$，$\hat c_t=\hat y_t-\frac{G}{C}\hat g_t$，代入即得均衡系统 (E1) 的 IS 曲线。<strong>经济直觉</strong>：欧拉方程是 IS 曲线的"胚"，财政模型的一切需求侧分析都从它出发；政府支出 $G_t$ 通过影响 $C$ 与 $Y$ 的关系进入这条方程。</p>
+
+      <h4>2.1.2 横截性条件（TVC）与家庭预算约束的闭合</h4>
+      <p>仅有 FOC 还不够闭合优化问题——还需排除家庭无限借贷滚雪球路径。把预算约束沿 $t,t+1,\ldots,T$ 前向迭代，并在终端加"非蓬齐"要求：</p>
+      <div class="formula-block">
+        <div class="formula-label">(H-TV C) 横截性条件 / No-Ponzi</div>
+        $$\lim_{T\to\infty} E_0\!\left[\beta^{T}\,\lambda_{T}\,\frac{B_T}{P_T}\right]=0$$
+        <div class="formula-note"><b>变量定义：</b>$\lambda_T=C_T^{-\sigma}$ 为财富边际效用（由 FOC-C），$B_T/P_T$ 为 $T$ 期期末实际债券持有。<b>设定理由：</b>排除"借新债还旧债、永远不还"的庞氏路径；若该极限 $&gt;0$，家庭可通过多消费一期改善终身效用，优化未达最优。<b>经济直觉：</b>家庭不能让债券持有以快于贴现率的速度增长——任何"无限滚动债务"在均衡中都被这条条件封死。</div>
+      </div>
+      <p>把 (FOC-C) $\lambda_t=C_t^{-\sigma}$ 与 (FOC-B) $\lambda_t=\beta E_t[(1+i_t)\lambda_{t+1}P_t/P_{t+1}]$ 联立，<strong>逐步</strong>得到欧拉方程：</p>
+      <div class="formula-block">
+        <div class="formula-label">(H-EULER) 欧拉方程的完整代入</div>
+        $$\text{由 (FOC-B)：}\quad \lambda_t=\beta E_t\!\left[(1+i_t)\lambda_{t+1}\frac{P_t}{P_{t+1}}\right]$$
+        $$\text{代入 (FOC-C) $\lambda_t=C_t^{-\sigma}$、$\lambda_{t+1}=C_{t+1}^{-\sigma}$：}$$
+        $$C_t^{-\sigma}=\beta(1+i_t)E_t\!\left[C_{t+1}^{-\sigma}\frac{P_t}{P_{t+1}}\right]$$
+        $$\iff\quad 1=\beta(1+i_t)E_t\!\left[\left(\frac{C_{t+1}}{C_t}\right)^{-\sigma}\frac{1}{\Pi_{t+1}}\right],\qquad \Pi_{t+1}=\frac{P_{t+1}}{P_t}$$
+        <div class="formula-note"><b>对数线性化：</b>在零通胀零增长稳态 $C_t=\bar C$、$i_t=\bar i=\beta^{-1}-1$ 处，记 $\hat c_t=\ln(C_t/\bar C)$、$\hat\pi_{t+1}=\ln\Pi_{t+1}$、$\hat i_t=\ln(1+i_t)-\ln(1+\bar i)$。对 $\ln(\cdot)$ 取一阶泰勒展开：
+        $$-\sigma\hat c_t=-\sigma E_t\hat c_{t+1}+\hat i_t-E_t\hat\pi_{t+1}$$
+        $$\iff\quad \hat c_t=E_t\hat c_{t+1}-\tfrac{1}{\sigma}\big(\hat i_t-E_t\hat\pi_{t+1}\big)$$</div>
+      </div>
+
+      <h3>2.2 企业与 NKPC（Calvo 完整推导）</h3>
+      <p><strong>假设</strong>：最终品完全竞争，中间品厂商垄断竞争且 Calvo 定价（每期以概率 $1-\theta$ 可调价）。劳动为唯一生产要素，线性技术 $Y_t(i)=A_t N_t(i)$。下面把 NKPC 从最原始的加总技术逐步推出来，禁止跳步。</p>
+
+      <h4>2.2.1 最终品加总与价格指数</h4>
+      <div class="formula-block">
+        <div class="formula-label">(F-AGG) Dixit-Stiglitz 最终品加总</div>
+        $$Y_t=\left[\int_0^1 Y_t(i)^{\frac{\epsilon-1}{\epsilon}}di\right]^{\frac{\epsilon}{\epsilon-1}}$$
+        <div class="formula-note"><b>变量：</b>$Y_t(i)$ 为第 $i$ 种中间品产量，$\epsilon&gt;1$ 为替代弹性（典型取 10，对应稳态加成 $10\%$）。<b>设定理由：</b>Dixit-Stiglitz 加总给出垄断竞争的"爱多样性"，使厂商面临向下需求曲线。</div>
+      </div>
+      <p>最终品厂商成本最小化 $\min_{Y_t(i)}\int P_t(i)Y_t(i)di$ s.t. (F-AGG)，对 $Y_t(i)$ 求一阶条件即得中间品需求曲线：</p>
+      <div class="formula-block">
+        <div class="formula-label">(F-DEM) 中间品需求与价格指数</div>
+        $$Y_t(i)=\left(\frac{P_t(i)}{P_t}\right)^{-\epsilon}Y_t,\qquad P_t=\left[\int_0^1 P_t(i)^{1-\epsilon}di\right]^{\frac{1}{1-\epsilon}}$$
+        <div class="formula-note"><b>推导：</b>Lagrange 乘子 $\mu_t=P_t$，$\partial(\cdot)/\partial Y_t(i)=P_t(i)-\mu_t Y_t^{1/\epsilon}Y_t(i)^{-1/\epsilon}=0$，解出 $Y_t(i)=\big(P_t(i)/\mu_t\big)^{-\epsilon}Y_t$，再由加总恒等式定 $\mu_t=P_t$。<b>经济直觉：</b>相对价格上升 $1\%$，需求下降 $\epsilon\%$。</div>
+      </div>
+
+      <h4>2.2.2 实际边际成本与最优重置价格</h4>
+      <p>中间品厂商 $i$ 在技术 $Y_t(i)=A_t N_t(i)$ 下成本最小化 $\min W_t N_t(i)$ s.t. $A_t N_t(i)\ge \big(P_t(i)/P_t\big)^{-\epsilon}Y_t$。实际边际成本：</p>
+      <div class="formula-block">
+        <div class="formula-label">(F-MC) 实际边际成本</div>
+        $$MC_t=\frac{W_t/P_t}{A_t}=\frac{W_t}{P_t A_t}$$
+        <div class="formula-note"><b>推导：</b>由一阶条件 $W_t=\xi_t A_t$，故 $\xi_t=W_t/(P_t A_t)$ 即实际边际成本。线性技术下 MC 与产出水平无关（成本曲线平坦），这是 NK 模型的关键简化。</div>
+      </div>
+      <p>Calvo (1983)：每期仅 $1-\theta$ 比例厂商可重新定价，其余 $\theta$ 比例维持原价。可定价厂商选 $P_t^*$ 最大化未来利润现值：</p>
+      <div class="formula-block">
+        <div class="formula-label">(F-PSTAR) 最优重置价格（未对数线性化）</div>
+        $$\max_{P_t^*}\; E_t\sum_{k=0}^{\infty}\theta^k Q_{t,t+k}\left[\frac{P_t^*}{P_{t+k}}-MC_{t+k}\right]\left(\frac{P_t^*}{P_{t+k}}\right)^{-\epsilon}Y_{t+k}$$
+        $$\text{FOC:}\qquad \frac{P_t^*}{P_t}=\frac{\epsilon}{\epsilon-1}\cdot\frac{E_t\sum_{k=0}^{\infty}\theta^k Q_{t,t+k}MC_{t+k}Y_{t+k}(i)}{E_t\sum_{k=0}^{\infty}\theta^k Q_{t,t+k}Y_{t+k}(i)}$$
+        <div class="formula-note"><b>变量：</b>$Q_{t,t+k}=\beta^k(C_{t+k}/C_t)^{-\sigma}(P_t/P_{t+k})$ 为随机贴现因子；$\theta^k$ 为"$k$ 期后仍不能调价"的概率；$\epsilon/(\epsilon-1)$ 为稳态加成。<b>设定理由：</b>可定价厂商知道价格可能维持 $k$ 期，故按未来 $k$ 期加权平均边际成本定价。</div>
+      </div>
+
+      <h4>2.2.3 价格动态递归与对数线性化到 NKPC</h4>
+      <p>价格指数 $P_t^{1-\epsilon}=(1-\theta)(P_t^*)^{1-\epsilon}+\theta P_{t-1}^{1-\epsilon}$。零通胀稳态 $P_t^*=P_t=P_{t-1}$ 处对数线性化。记 $\pi_t=\ln(P_t/P_{t-1})$、$p_t^*=\ln(P_t^*/P_t)$，对价格指数递归两边取对数偏离：</p>
+      <div class="formula-block">
+        <div class="formula-label">(F-PDYN) 价格指数递归与对数线性化</div>
+        $$1=(1-\theta)(p_t^*)^{1-\epsilon}+\theta(1-\pi_t)^{1-\epsilon}\;\xrightarrow{\log\text{-lin.}}\;p_t^*=\frac{\theta}{1-\theta}\pi_t$$
+        $$\text{对 (F-PSTAR) 取对数线性化：}\qquad p_t^*=(1-\beta\theta)\widehat{mc}_t+\beta\theta E_t p_{t+1}^*$$
+        <div class="formula-note"><b>逐步：</b>(i) 在稳态 $P_t^*=P_{t-1}^*=P$ 处展开，利用 $(1-\theta)(P^*)^{1-\epsilon}+\theta P^{1-\epsilon}=P^{1-\epsilon}$；(ii) 把 (F-PDYN) 的 $p_t^*=\frac{\theta}{1-\theta}\pi_t$ 与 $p_{t+1}^*=\frac{\theta}{1-\theta}\pi_{t+1}$ 代入；(iii) 两边乘 $(1-\theta)/\theta$ 消去 $p^*$。</div>
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">(F-NKPC) 新凯恩斯 Phillips 曲线（最终式）</div>
+        $$\pi_t=\beta\,E_t\pi_{t+1}+\kappa\,\widehat{mc}_t+\varepsilon_t^{cp},\qquad \kappa=\frac{(1-\theta)(1-\beta\theta)}{\theta}$$
+        $$\widehat{mc}_t=(\sigma+\varphi)\,y_t\;\;\text{(灵活价格下实际工资与产出缺口)} \;\;\Rightarrow\;\; \pi_t=\beta E_t\pi_{t+1}+\kappa(\sigma+\varphi)y_t+\varepsilon_t^{cp}$$
+        <div class="formula-note"><b>变量：</b>$\theta$ 为 Calvo 不能调价概率（$\theta=0.75$ 意味平均价格有效期 4 季度）；$\varphi$ 为 Frisch 弹性倒数；$\varepsilon_t^{cp}$ 为外生成本推动冲击。<b>解读：</b>$\theta$ 越大 $\kappa$ 越小、通胀对边际成本越不敏感；前向项 $\beta E_t\pi_{t+1}$ 是学习/预期管理发挥作用的入口。</div>
+      </div>
+      <h3>2.3 政府部门（预算约束完整推导）</h3>
+      <p><strong>假设</strong>：政府支出 $G_t$ 完全外生、不进入效用也不进入生产；税收 $T_t$ 为一次总付；政府只发行一期名义债券。政府名义预算约束：</p>
+      <div class="formula-block">
+        <div class="formula-label">(G-BUD-NOM) 政府名义预算约束</div>
+        $$B_t=(1+i_{t-1})\frac{B_{t-1}}{\Pi_t}+P_tG_t-T_t,\qquad \Pi_t=P_t/P_{t-1}$$
+        <div class="formula-note"><b>变量：</b>$B_t$ 为 $t$ 期末名义政府债务；$i_{t-1}$ 为 $t-1$ 期发行债券时锁定的名义利率；$P_tG_t-T_t$ 为名义赤字。<b>解读：</b>左端是期末新发债券；右端是上期实际债务利息支出 $(1+i_{t-1})B_{t-1}/P_t$ 加实际赤字 $G_t-T_t$。</div>
+      </div>
+      <h4>2.3.1 实际形式与基本盈余</h4>
+      <p>两边除以 $P_t$，记实际债务 $b_t\equiv B_t/P_t$、基本盈余 $s_t\equiv T_t/P_t-G_t$：</p>
+      <div class="formula-block">
+        <div class="formula-label">(G-BUD-REAL) 政府实际预算约束</div>
+        $$b_t=(1+i_{t-1})\frac{b_{t-1}}{\Pi_t}-s_t,\qquad s_t\equiv \tau_t-g_t$$
+        <div class="formula-note"><b>推导：</b>$B_t/P_t=b_t$；$(1+i_{t-1})B_{t-1}/(P_t\Pi_t)=(1+i_{t-1})b_{t-1}/\Pi_t$；$(P_tG_t-T_t)/P_t=G_t-T_t=-s_t$。<b>经济直觉：</b>基本盈余 $s_t&gt;0$ 减少实际债务，利息支出 $(1+i_{t-1})/\Pi_t$ 即事前实际利率 $1+r_{t-1}$。</div>
+      </div>
+      <h4>2.3.2 现值迭代与无庞氏条件</h4>
+      <p>把 (G-BUD-REAL) 沿 $t,t+1,\ldots,T$ 前向迭代。定义实际贴现因子 $R_{t,t+j}=\prod_{k=0}^{j-1}(1+r_{t+k})^{-1}$，其中 $1+r_{t+k}=(1+i_{t+k})/\Pi_{t+k+1}$：</p>
+      <div class="formula-block">
+        <div class="formula-label">(G-PV) 政府跨期预算（现值形式）</div>
+        $$\frac{b_{t-1}}{1+r_{t-1}}=E_t\sum_{j=0}^{\infty}R_{t,t+j}\,s_{t+j}-\lim_{T\to\infty}E_t[R_{t,t+T}b_T]$$
+        <div class="formula-note"><b>逐步迭代：</b>$b_t=(1+r_{t-1})^{-1}[(1+r_{t-1})b_{t-1}-s_t]$；从 $t+1$ 起递归代入；要求终端项消失。<b>无庞氏条件：</b>$\lim_{T\to\infty}E_t[R_{t,t+T}b_T]=0$，即债务不能以快于实际利率的速度增长。<b>经济直觉：</b>存量实际债务 = 未来基本盈余的贴现现值——这是 FTPL 估值方程 (FTPL-VAL) 的代数起点。</div>
+      </div>
+      <h4>2.3.3 对数线性化逐步</h4>
+      <p>在零通胀零增长稳态 $\bar\Pi=1$、$\bar i=\bar r=\beta^{-1}-1$、$\bar b$ 常数处对 (G-BUD-REAL) 取对数偏离。记 $b_t^{(\ln)}=\ln(b_t/\bar b)$、$g_t=\ln(G_t/\bar G)$、$\tau_t=\ln(T_t/\bar T)$：</p>
+      <div class="formula-block">
+        <div class="formula-label">(G-BUD-LL) 债务滚动方程的对数线性化</div>
+        $$b_t=\beta^{-1}b_{t-1}+\beta^{-1}(i_{t-1}-\pi_t)+g_t-\tau_t$$
+        <div class="formula-note"><b>逐步：</b>(i) 稳态 $\bar b=\beta^{-1}\bar b-\bar s\Rightarrow\bar s=(1-\beta^{-1})\bar b$；(ii) 一阶展开 $\ln b_t\approx\beta^{-1}\ln b_{t-1}+\beta^{-1}(\hat i_{t-1}-\hat\pi_t)-\bar s/\bar b\cdot\hat s_t$；(iii) 利用 $\hat s_t=(\bar T/\bar s)\tau_t-(\bar G/\bar s)g_t$，在 $\bar s/\bar b$ 归一后即上式。<b>这一条是财政模型区别于纯 NK 的关键</b>：没有它，债务不滚动，Leeper 与 FTPL 无从谈起。</div>
+      </div>
+      <h3>2.4 市场出清与均衡定义</h3>
+      <p>商品市场出清要求 $Y_t=C_t+G_t$（封闭经济、无投资），劳动市场出清 $N_t$ 由工资粘性/灵活定价决定。把家庭欧拉、企业 NKPC、政府两条规则与预算约束联立，即得到本页研究的均衡系统。需要强调：<strong>政策规则不是优化出来的，而是外生给定的行为函数</strong>——本页研究的是"给定规则，均衡如何演化"，而非 Ramsey 最优规则；后者属于最优财政货币政策专题，需额外引入政策当局的目标函数。</p>
+      <div class="formula-block">
+        <div class="formula-label">(MKT-CLR) 市场出清方程</div>
+        $$Y_t=C_t+G_t\quad\Rightarrow\quad y_t=c_t+g_t$$
+        <div class="formula-note"><b>变量：</b>对数线性化下 $y_t,c_t,g_t$ 分别为产出、消费、政府支出对稳态的对数偏离。<b>设定理由：</b>封闭经济无投资、无净出口，总供给等于私人消费加政府购买。<b>经济直觉：</b>政府支出是"需求的直接注入"，它通过 $c_t=y_t-g_t$ 反推私人消费，再由欧拉决定利率。</div>
+      </div>
+      <p>对数线性化的步骤统一为：(1) 在零通胀零增长稳态求非对数稳态值；(2) 对每个非线性方程取对数偏离 $\hat x_t=\ln X_t-\ln\bar X$；(3) 一阶泰勒展开；(4) 消去稳态常数项。本页所有 Dynare 代码中的小写变量均指 $\hat x_t$，读者可对照本站点 04-log-linearization 页。</p>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 货币政策规则家族</h2>
+      <h3>3.1 Taylor 规则一般形式</h3>
+      <div class="formula-block">
+        <div class="formula-label">(M-TAYLOR) Taylor 规则（含平滑，对数偏离）</div>
+        $$i_t=\rho_i i_{t-1}+(1-\rho_i)\big[\,r^*+\pi^*+\phi_\pi(\pi_t-\pi^*)+\phi_x x_t\,\big]+\varepsilon_t^m$$
+        <div class="formula-note"><b>变量：</b>$i_t$ 为名义政策利率对数偏离；$\rho_i$ 为利率平滑系数；$r^*$ 为自然利率稳态；$\pi^*$ 为目标通胀；$\phi_\pi$ 为通胀反应系数；$\phi_x$ 为产出缺口反应系数；$\varepsilon_t^m$ 为货币冲击。<b>设定理由：</b>央行按通胀与产出缺口系统调整利率；平滑项反映央行"渐进调整"的实证偏好。<b>经济直觉：</b>实际利率 $r_t=i_t-E_t\pi_{t+1}$ 随通胀缺口同向上升（Taylor 原理 $\phi_\pi&gt;1$），从而抑制总需求。</div>
+      </div>
+      <p><strong>假设与适用场景</strong>：央行可自由调整短期名义利率（数量型货币需求可忽略）；通胀与产出缺口可即时观测。Taylor 原理要求 $\phi_\pi&gt;1$，使实际利率随通胀同向变动，从而在理性预期下保证局部唯一均衡（Blanchard-Kahn）。$\rho_i$ 刻画利率平滑，实证估计多在 0.6–0.8。Taylor (1993) 原始校准 $\phi_\pi=1.5,\phi_x=0.5/4$。适用于通胀目标制、利率走廊清晰的发达经济体。</p>
+      <h3>3.2 McCallum 规则</h3>
+      <div class="formula-block">
+        <div class="formula-label">(M-MCCALLUM) McCallum 规则（数量型）</div>
+        $$\Delta b_t^s=\Delta b_{t-1}^s-\lambda_x x_t-\lambda_\pi(\pi_t-\pi^*)+\varepsilon_t^m$$
+        <div class="formula-note"><b>变量定义：</b>$b_t^s=\ln(B_t^s/P_t Y_t)$ 为基础货币流通速度倒数（货币需求）；$\Delta b_t^s=b_t^s-b_{t-1}^s$ 为名义货币增速偏离；$\lambda_x,\lambda_\pi&gt;0$ 为反应系数。<b>推导基础：</b>由数量方程 $M_t^s V_t=P_t Y_t$ 取对数差分 $\Delta m_t+\Delta v_t=\pi_t+\Delta y_t$，央行控制 $\Delta m_t$。<b>经济直觉：</b>产出缺口与通胀缺口上升时，央行放慢货币增速，类似 Taylor 规则的"数量版"。</div>
+      </div>
+      <p><strong>假设与适用场景</strong>：央行盯住基础货币/广义货币增速而非利率，假设货币需求函数稳定、利率传导不畅。适用于金融市场不发达、利率市场化之前的中国等新兴经济体，或零利率下界附近利率规则失效时的替代框架。中国 1990s–2000s 的货币总量调控即近似此类。</p>
+      <h3>3.3 名义 GDP 目标（NGDP targeting）</h3>
+      <div class="formula-block">
+        <div class="formula-label">(M-NGDP) NGDP 目标规则（增速型 + 水平型）</div>
+        $$\text{增速型:}\quad i_t=i_{t-1}+\phi_{ngdp}\big[(g_t^{nom}-\bar g^{nom})\big],\qquad g_t^{nom}=\Delta y_t+\pi_t$$
+        $$\text{水平型:}\quad i_t=\phi_{ngdp}^l\big[p_t^{nom}-\bar p^{nom}\big],\qquad p_t^{nom}\equiv \ln(P_t Y_t)-\ln(P_t Y_t)^*$$
+        <div class="formula-note"><b>变量：</b>$g_t^{nom}$ 为名义 GDP 增长率（实际增长 + 通胀）；$p_t^{nom}$ 为名义 GDP 对趋势的水平偏离。<b>设定理由：</b>增速型自动对供给冲击"不加惩罚"；水平型还能"补账"——过去偏低的名义 GDP 必须由偏高时期对冲。<b>经济直觉：</b>负供给冲击压低实际增长时即使通胀暂时上升也不会过度紧缩。</div>
+      </div>
+      <p><strong>假设与适用场景</strong>：央行把名义 GDP 增长率（实际增长 + 通胀）作为单一目标，自动对供给冲击"不加惩罚"——负供给冲击压低实际增长时即使通胀暂时上升也不会过度紧缩。适用于供给侧波动大、潜在产出难以测准的环境。Sumner 等货币主义者主张，学术上对应"名义收入锚"。</p>
+      <h3>3.4 平均通胀目标 AIT</h3>
+      <div class="formula-block">
+        <div class="formula-label">(M-AIT) Average Inflation Targeting（美联储 2020 框架）</div>
+        $$i_t=\phi_\pi\Big[\frac{1}{H}\sum_{j=0}^{H-1}(\pi_{t-j}-\pi^*)\Big]+\phi_x x_t$$
+        $$\text{等价递推:}\quad \tilde a_t=\tilde a_{t-1}+\frac{1}{H}\big[(\pi_t-\pi^*)-(\pi_{t-H}-\pi^*)\big],\qquad i_t=\phi_\pi\tilde a_t+\phi_x x_t$$
+        <div class="formula-note"><b>变量：</b>$H$ 为回看窗口（典型 4–8 季度）；$\tilde a_t$ 为累积平均通胀缺口。<b>设定理由：</b>过去 $H$ 期通胀缺口被平均，允许"makeup（补账）"——低于目标的时期必须由高于目标的时期对冲。<b>经济直觉：</b>在 ZLB 长时间停留后，AIT 让公众相信未来会适度通胀，从而降低当前实际利率。</div>
+      </div>
+      <p><strong>假设与适用场景</strong>：过去 $H$ 期通胀缺口被平均，允许" makeup（补账）"——低于目标的时期必须由高于目标的时期对冲。在 ZLB 长时间停留后，AIT 让公众相信未来会适度通胀，从而降低当前实际利率。适用于名义利率经常触零、长期低通胀的环境（美国 2010s 后、日本）。</p>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 财政规则与债务反馈</h2>
+      <p>为保证债务不爆炸，财政工具必须对债务<strong>反馈</strong>。常用债务反馈规则（以税收 $\tau_t$ 为财政工具，与 §5 均衡系统 (E5) 一致）：</p>
+      <div class="formula-block">
+        <div class="formula-label">(FISC-1) 债务反馈规则核心形式</div>
+        $$\tau_t=\rho_d\tau_{t-1}+(1-\rho_d)\big(\phi_b b_{t-1}+\phi_y y_t\big)+\varepsilon_t^d$$
+        <div class="formula-note"><b>变量：</b>$\tau_t$ 为税收对稳态的对数偏离；$\rho_d$ 为财政持续性；$\phi_b$ 为对滞后实际债务的反馈系数；$\phi_y$ 为对当期产出的反应（自动稳定器）；$\varepsilon_t^d$ 为外生财政冲击。<b>设定理由：</b>财政当局按简单反应函数调整，不做 Ramsey 最优。<b>经济直觉：</b>$\phi_b&gt;0$ 使债务越高、税收越高，从而稳定实际债务路径；$\phi_y$ 是自动稳定器（产出越低、税收越低，财政自动扩张）。</div>
+      </div>
+      <p><strong>假设</strong>：财政当局不做 Ramsey 最优，而是按简单反应函数调整；$\rho_d$ 是财政持续性（支出/税收本身有惯性）；$\phi_b&gt;0$ 表示债务越高、税收越高（或支出越低），从而稳定实际债务路径；$\phi_y$ 是<strong>自动稳定器</strong>（产出越低、税收越低/转移越高，财政自动扩张）。</p>
+      <p><strong>解读</strong>：$\phi_b$ 的大小是 Leeper 划分"主动/被动"的关键——足够大时财政"被动"（PAF, passive fiscal），盯住债务可持续性，把价格决定交给货币；$\phi_b=0$ 或很小时财政"主动"（AF），不保证实际盈余，价格水平被迫由财政估值方程决定。$\phi_y$ 越大，自动稳定器越强，产出波动越小。外生 $\varepsilon^d$ 为财政冲击（如战争、减税法案）。</p>
+      <div class="formula-block">
+        <div class="formula-label">(FISC-2) 稳态自洽：$\phi_b$ 与稳态盈余的关系</div>
+        $$\bar\tau-\bar g=(1/\beta-1)\bar b,\qquad \phi_b=\frac{\bar\tau-\phi_{y}\bar y}{\bar b}$$
+        <div class="formula-note"><b>推导：</b>稳态下 (FISC-1) 给出 $\bar\tau=\phi_b\bar b+\phi_y\bar y$；稳态预算 (G-BUD-REAL) 给出 $\bar g-\bar\tau=(\beta^{-1}-1)\bar b$。联立即上式。<b>经济直觉：</b>$\phi_b$ 不能自由校准——它必须与稳态盈余率自洽，否则 Dynare 报 "steady state not solved"。</div>
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 均衡系统与稳态求解</h2>
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库</div>
+        <p style="margin-bottom:0">本节先解<strong>稳态</strong>，再在其上做<strong>对数线性化</strong>得到均衡系统。不熟悉？先学
+          <a href="03-steady-state.html">📚 基础知识库·稳态求解</a> → 与
+          <a href="04-log-linearization.html">📚 基础知识库·对数线性化</a> →。
+        </p>
+      </div>
+      <h3>5.1 对数线性均衡系统（共 11 个方程）</h3>
+      <div class="table-wrap"><table>
+        <tr><th>#</th><th>方程</th><th>名称</th></tr>
+        <tr><td>(E1)</td><td>$y_t=E_t y_{t+1}-\frac{1}{\sigma}(i_t-E_t\pi_{t+1})+\eta_g g_t$</td><td>IS / 欧拉（$\eta_g=G/C$ 为支出进入系数）</td></tr>
+        <tr><td>(E2)</td><td>$\pi_t=\beta E_t\pi_{t+1}+\kappa y_t+u_t$</td><td>NKPC（$u_t$ 为成本推动）</td></tr>
+        <tr><td>(E3)</td><td>$i_t=\rho_i i_{t-1}+(1-\rho_i)(\phi_\pi\pi_t+\phi_y y_t)+\varepsilon_t^m$</td><td>Taylor 规则</td></tr>
+        <tr><td>(E4)</td><td>$b_t=\beta^{-1}b_{t-1}+\beta^{-1}(i_{t-1}-\pi_t)+g_t-\tau_t$</td><td>政府预算/债务滚动</td></tr>
+        <tr><td>(E5)</td><td>$\tau_t=\rho_d\tau_{t-1}+(1-\rho_d)(\phi_b b_{t-1}+\phi_{yf} y_t)+\varepsilon_t^d$</td><td>债务反馈财政规则</td></tr>
+        <tr><td>(E6)</td><td>$g_t=\rho_g g_{t-1}+\varepsilon_t^g$</td><td>外生政府支出 AR(1)</td></tr>
+        <tr><td>(E7)</td><td>$u_t=\rho_{cp} u_{t-1}+e_t^{cp}$</td><td>成本推动冲击 AR(1)</td></tr>
+        <tr><td>(E8)</td><td>$\varepsilon_t^m=\rho_m\varepsilon_{t-1}^m+e_t^m$</td><td>货币政策冲击 AR(1)</td></tr>
+        <tr><td>(E9)</td><td>$\varepsilon_t^d=\rho_d^d\varepsilon_{t-1}^d+e_t^d$</td><td>财政（税收）冲击 AR(1)</td></tr>
+        <tr><td>(E10)</td><td>$r_t^n=\rho_{rn} r_{t-1}^n+e_t^{rn}$</td><td>自然利率冲击 AR(1)（IS 曲线中的 $r_t^n$ 入口）</td></tr>
+        <tr><td>(E11)</td><td>$y_t=c_t+g_t$</td><td>商品市场出清</td></tr>
+      </table></div>
+      <div class="callout info"><div class="callout-title">外生冲击统一 AR(1) 形式</div><p>所有 5 个外生过程均写为 $x_t=\rho_x x_{t-1}+e_t^x$，其中 $e_t^x\sim\mathcal{N}(0,\sigma_x^2)$ 独立同分布。基准校准 $\rho_g=0.80,\rho_{cp}=0.50,\rho_m=0.50,\rho_d^d=0.80,\rho_{rn}=0.90$。<b>注意：</b>把货币/财政冲击写成 i.i.d.（即 $\rho=0$）会低估持续性，实证估计通常显著为正。</p></div>
+      <h3>5.2 稳态方程组与求解步骤</h3>
+      <p><strong>假设稳态</strong>：零通胀 $\bar\pi=0$、零增长、所有外生冲击为 0、利率与债务均无偏离（对数偏离 $=0$）。逐个方程推常数解：</p>
+      <div class="table-wrap"><table>
+        <tr><th>#</th><th>稳态关系</th><th>推导来源</th></tr>
+        <tr><td>(SS-a)</td><td>$\bar i=\beta^{-1}-1\approx 1\%/$季</td><td>欧拉方程（零通胀零增长）</td></tr>
+        <tr><td>(SS-b)</td><td>$\bar y=\bar\pi=0$（对数偏离）</td><td>外生冲击为 0</td></tr>
+        <tr><td>(SS-c)</td><td>$\bar\tau=\phi_b\,\bar b$</td><td>财政规则 (E5)，无偏离时</td></tr>
+        <tr><td>(SS-d)</td><td>$\bar g-\bar\tau=(1-\beta^{-1})\bar b=-(1/\beta-1)\bar b$</td><td>预算约束 (E4) 稳态：债务不滚动</td></tr>
+        <tr><td>(SS-e)</td><td>$\bar g/Y=0.20$（给定）</td><td>政府支出/GDP 稳态比</td></tr>
+      </table></div>
+      <p><strong>求解步骤</strong>：① 由 (SS-a) 定稳态名义利率；② 给定 $\bar g/Y=0.20$ 与目标债务比 $\bar b/Y$（如美国 ≈ 1.0），由 (SS-d) 反推稳态基本盈余率 $\bar\tau-\bar g=(1/\beta-1)\bar b$；③ 由 (SS-c) 验证 $\phi_b$ 是否与该稳态自洽——$\phi_b$ 必须足够大使稳态税率随债务稳定；④ Dynare 用 <code>steady;</code> 自动求，对数线性化后变量全 0，<code class="inline">resid;</code> 检验残差为 0。<strong>关键直觉</strong>：稳态预算约束 (SS-d) 说"政府必须长期做到基本盈余 $=$ 实际利息支出"——这就是财政可持续性的代数表达；任何 $\phi_b$ 校准都必须与此自洽，否则 Dynare 报 "steady state not solved"。</p>
+      <div class="callout tip"><div class="callout-title">稳态一致性检验</div><p>运行 <code>resid;</code> 后若残差不为 0，通常是 $\bar g/Y$ 与 $\phi_b$ 不自洽——稳态债务必须满足政府跨期偿付，否则 Dynare 报"steady state not solved"。</p></div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 财政乘数与 ZLB</h2>
+      <p>财政乘数 $\equiv\Delta Y_t/\Delta G_t$。在标准 NK + 正常 Taylor 规则下，政府支出乘数通常介于 0.5–1.0：支出上升推高产出与通胀，央行提高实际利率挤出消费。但在<strong>零利率下界（ZLB / effective lower bound）</strong>，央行无法再加息，支出上升推高通胀预期、压低实际利率、反而刺激私人消费——Woodford (2011)、Christiano-Eichenbaum-Rebelo (2011) 证明此时乘数可&gt;1，甚至达到 2 以上。</p>
+      <div class="formula-block">
+        <div class="formula-label">ZLB 下乘数放大的直觉（CGG 2011）</div>
+        $$\frac{\Delta y_t}{\Delta g_t}\;\propto\;\frac{1}{1-\beta\rho_g-\sigma\phi_\pi(1-\rho_g)}\quad(\text{正常}),\qquad \text{ZLB: }\phi_\pi=0\Rightarrow\text{ 分母}\downarrow\Rightarrow\text{乘数}\uparrow$$
+      </div>
+      <div class="callout info"><div class="callout-title">直觉对比</div><p>正常时期：$G\uparrow\Rightarrow\pi\uparrow\Rightarrow i\uparrow\text{更多}\Rightarrow r\uparrow\Rightarrow c\downarrow$（乘数被压制）。ZLB 时期：$i$ 被钉住 $\Rightarrow\pi\uparrow\Rightarrow r\downarrow\Rightarrow c\uparrow$（乘数放大）。这就是"衰退时应搞财政刺激"的理论根据。注意 ZLB 是 occasionally-binding constraint，一阶线性化（order=1）无法捕捉，需分段/非线性求解。</p></div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> Leeper 四分法与 FTPL</h2>
+      <h3>7.1 主动/被动四分表</h3>
+      <p><strong>Leeper (1991) 的四分法</strong>：把货币与财政各分为"主动(A)"与"被动(P)"——主动方不受预算约束束缚地反应，被动方负责稳定实际债务。把对数线性系统 (E1)–(E5) 写成 $\mathbb E_t\mathbf x_{t+1}=\mathbf A\mathbf x_t+\mathbf B\mathbf u_t$ 的 Blanchard-Kahn 形式，前定变量为 $(b_{t-1},i_{t-1})$，前向变量为 $(\pi_t,y_t)$。每个区域的确定性条件如下：</p>
+      <div class="table-wrap"><table>
+        <tr><th>组合</th><th>货币</th><th>财政</th><th>确定性条件</th><th>价格水平决定</th></tr>
+        <tr><td>AM/PF（货币主导）</td><td>积极反通胀 $\phi_\pi&gt;1$</td><td>被动对债务反应 $\phi_b&gt;$阈值</td><td>Blanchard-Kahn 满足，局部唯一</td><td>由货币存量/利率决定（主流通胀目标制）</td></tr>
+        <tr><td>PM/AF（财政主导）</td><td>被动 $\phi_\pi&lt;1$</td><td>主动不保证实际盈余 $\phi_b\approx 0$</td><td>B-K 条件以另一种方式满足（财政承担稳定）</td><td>由财政估值方程决定（FTPL）</td></tr>
+        <tr><td>AM/AF</td><td>主动 $\phi_\pi&gt;1$</td><td>主动 $\phi_b\approx 0$</td><td><strong>不满足</strong>：爆炸路径无约束</td><td>无稳定解</td></tr>
+        <tr><td>PM/PF</td><td>被动 $\phi_\pi&lt;1$</td><td>被动 $\phi_b&gt;$阈值</td><td><strong>indeterminacy</strong>：多个稳定路径</td><td>价格水平不定（sunspot）</td></tr>
+      </table></div>
+      <div class="formula-block">
+        <div class="formula-label">(LEEPER-BK) Blanchard-Kahn 条件与 $\phi_b$ 阈值</div>
+        $$\text{前向子系统特征值条件:}\qquad \begin{cases}|\lambda_1|&lt;1,\ |\lambda_2|&lt;1 &\text{ (AM/PF, 唯一)}\\|\lambda_1|&gt;1,\ |\lambda_2|&gt;1 &\text{ (PM/AF, 唯一)}\\|\lambda_1|&lt;1,\ |\lambda_2|&gt;1 &\text{ (AM/AF, 无稳定解)}\\|\lambda_1|&gt;1,\ |\lambda_2|&lt;1 &\text{ (PM/PF, indeterminacy)}\end{cases}$$
+        $$\text{被动财政阈值:}\qquad \phi_b &gt; \bar\phi_b\equiv \beta^{-1}-1+\delta,\qquad \delta&gt;0\text{ 任意小}$$
+        <div class="formula-note"><b>推导：</b>把 (E4) 债务方程写成 $b_t=\beta^{-1}[1-(1-\rho_d)\phi_b]b_{t-1}+\cdots$。要使 $b_t$ 为稳态回归（前向变量稳定），需 $\beta^{-1}[1-(1-\rho_d)\phi_b]&lt;1$，即 $(1-\rho_d)\phi_b&gt;1-\beta$。<b>经济直觉：</b>$\phi_b$ 必须大到"财政自动稳定债务"，否则货币再主动也无唯一解。</div>
+      </div>
+      <h3>7.2 FTPL 估值方程推导</h3>
+      <p>传统货币数量论认为价格水平由货币供给决定。FTPL（Leeper 1991；Sims 1994；Woodford 1995；Cochrane 2005）提出：在 PM/AF 组合下，政府债务的实际价值等于<strong>未来基本盈余的贴现现值</strong>。下面从 (G-PV) 出发逐步推出：</p>
+      <div class="formula-block">
+        <div class="formula-label">(FTPL-VAL) FTPL 跨期政府预算（估值方程）</div>
+        $$\frac{B_{t-1}}{P_t}=E_t\sum_{j=0}^{\infty}R_{t,t+j}\,s_{t+j},\qquad R_{t,t+j}=\prod_{k=0}^{j-1}\frac{1}{1+r_{t+k}}$$
+        <div class="formula-note"><b>逐步推导：</b>(i) 由 (G-PV)，实际存量债务 $b_{t-1}=B_{t-1}/P_{t-1}$；(ii) 两边乘 $P_{t-1}/P_t=1/\Pi_t$ 并代入无庞氏条件 $\lim E_t[R_{t,t+T}b_T]=0$；(iii) 整理得名义存量债务 $B_{t-1}/P_t$ 等于未来实际基本盈余 $s_{t+j}$ 的贴现现值。<b>变量：</b>$B_{t-1}$ 为 $t$ 期初前定的名义存量债务；$s_{t+j}=\tau_{t+j}-g_{t+j}$ 为未来基本盈余；$R_{t,t+j}$ 为实际贴现因子。</div>
+      </div>
+      <p><strong>假设</strong>：财政主导（AF），政府不承诺未来基本盈余 $s$ 的路径；名义债券 $B_{t-1}$ 在 $t$ 期初是前定的；实际贴现率 $r$ 给定。<strong>解读</strong>：若公众预期未来基本盈余 $s$ 不够，持有名义债券的财富就"不值钱"，为出清债券市场，唯一调整变量是<strong>价格水平 $P_t$ 上升</strong>（债券实际价值下降）。于是通胀即使在货币宽松下也可能被财政预期点燃——这就是"财政主导"下的价格水平决定机制。注意该方程是<strong>估值方程（equilibrium valuation）</strong>而非额外的预算约束，它与家庭欧拉、NKPC 联立决定 $P_t$。</p>
+      <div class="formula-block">
+        <div class="formula-label">(FTPL-LL) 对数线性化的 FTPL 估值方程</div>
+        $$\hat p_t=-\sum_{j=0}^{\infty}\beta^j E_t\big[\hat s_{t+j}-\bar r_{t+j}\big]+\hat b_{t-1}$$
+        <div class="formula-note"><b>推导：</b>对 (FTPL-VAL) 在零通胀稳态 $\bar B,\bar P,\bar s$ 处取对数偏离。<b>经济直觉：</b>预期未来基本盈余下降（$\hat s_{t+j}\downarrow$）或贴现率下降（$\bar r_{t+j}\downarrow$），都会要求当期价格水平 $\hat p_t$ 上升以贬值存量名义债务。</div>
+      </div>
+      <div class="callout warning"><div class="callout-title">制度切换的实证含义</div><p>中国 1990s 高通胀、2020s 后地方债压力，常被归入 PM/AF 过渡到 AM/PF 的讨论；欧元区边缘国在欧债危机期间也呈现 FTPL 特征（国债风险溢价变化直接影响通胀预期）。</p></div>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> Dynare .mod 逐步撰写</h2>
+      <p>下面是一个含财政块+货币块+债务动态的完整封闭 NK 模型，共 70+ 行，中文注释逐段说明。变量小写为对数偏离稳态。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Dynare · nk_fiscal_monetary.mod（≥70 行）</span><button class="copy-btn">复制</button></div>
+<pre><code>% ============================================================
+% NK 模型 + 货币/财政规则 (Leeper 风格)
+% 结构: IS - NKPC - Taylor(平滑) - 债务反馈财政规则
+%       - 政府预算约束 - 外生政府支出 AR
+% 变量小写为对数偏离稳态
+% ============================================================
+var
+  y      % 产出缺口
+  pi     % 通胀率
+  i      % 名义政策利率
+  b      % 实际政府债务(对数偏离)
+  g      % 政府支出偏离
+  tau    % 税收/基本盈余偏离
+  cp     % 成本推动(AR 变量)
+;
+varobs y pi i b;   % 估计时的观测变量(对应数据列)
+varexo
+  eps_g  % 政府支出冲击
+  eps_m  % 货币政策冲击
+  eps_d  % 财政(税收)冲击
+  e_cp   % 成本推动冲击
+;
+
+% ---------- 1. 参数声明 ----------
+parameters
+  beta sigma varphi kappa
+  rho_i phi_pi phi_y          % Taylor 规则
+  rho_d phi_b phi_yf          % 财政规则
+  rho_g rho_cp                % 外生过程持续性
+  gy                          % G/Y 稳态比
+;
+
+% ---------- 2. 校准参数 ----------
+beta   = 0.99;          % 季度贴现因子
+sigma  = 1.0;           % 相对风险厌恶 (IS 斜率 1/sigma)
+varphi = 1.0;           % Frisch 劳动供给倒数
+kappa  = 0.05;          % NKPC 斜率 (Calvo 0.75 附近)
+rho_i  = 0.75;          % 利率平滑
+phi_pi = 1.5;           % Taylor 对通胀 (>1 => 主动货币 AM)
+phi_y  = 0.125;         % Taylor 对产出
+rho_d  = 0.90;          % 财政持续性
+phi_b  = 0.10;          % 债务反馈 (>阈值 => 被动财政 PF)
+phi_yf = 0.10;          % 自动稳定器
+rho_g  = 0.80;          % 政府支出 AR 持续性
+rho_cp = 0.50;          % 成本推动冲击持续性
+gy     = 0.20;          % 稳态 G/Y
+
+% ---------- 3. 模型方程 ----------
+model;
+% (E1) IS 曲线: 消费欧拉 + 政府支出缺口
+y = y(+1) - (1/sigma)*(i - pi(+1)) + gy*g;
+
+% (E2) NKPC: 通胀 = 预期通胀 + 边际成本(产出) + 成本推动
+pi = beta*pi(+1) + kappa*y + cp;
+
+% (E3) Taylor 规则(含平滑)
+i = rho_i*i(-1) + (1-rho_i)*(phi_pi*pi + phi_y*y) + eps_m;
+
+% (E4) 政府预算约束(对数线性): 债务滚动
+%   b_t = (1/beta) b_{t-1} + (1/beta)(i_{t-1} - pi_t) + g_t - tau_t
+b = (1/beta)*b(-1) + (1/beta)*(i(-1) - pi) + g - tau;
+
+% (E5) 债务反馈财政规则(税收 tau 对债务与产出反应)
+tau = rho_d*tau(-1) + (1-rho_d)*(phi_b*b(-1) + phi_yf*y) + eps_d;
+
+% (E6) 政府支出外生 AR(1)
+g = rho_g*g(-1) + eps_g;
+
+% (E7) 成本推动外生 AR(1)
+cp = rho_cp*cp(-1) + e_cp;
+end;
+
+% ---------- 4. 稳态初始化(对数线性模型, 全 0) ----------
+initval;
+  y=0; pi=0; i=0; b=0; g=0; tau=0; cp=0;
+end;
+
+steady;
+resid;
+
+% ---------- 5. 求解并模拟 ----------
+% 默认 AM/PF 组合: phi_pi>1 且 phi_b 足够大 => 鞍点唯一稳定
+stoch_simul(order=1, irf=30, nograph)
+  y pi i b g tau;
+
+% ---------- 6. 制度切换实验(手动改参数后重跑) ----------
+% 实验A: FTPL 组合 => 设 phi_pi=0.8, phi_b=0  => 仍可解但价格由财政驱动
+% 实验B: AM/AF    => 设 phi_pi=1.5, phi_b=0  => Blanchard-Kahn 失败(预期)
+% 实验C: PM/PF    => 设 phi_pi=0.8, phi_b=0.1 => indeterminacy 警告
+</code></pre>
+      </div>
+      <div class="callout warning"><div class="callout-title">运行要点</div><p>把 <code>phi_b</code> 从 0.10 改成 0（主动财政 AF），再把 <code>phi_pi</code> 调成 0.8（被动货币 PM），即可模拟 FTPL 组合；此时 Dynare 仍可解，但价格/通胀的驱动源从货币冲击转向财政冲击。若 AM/AF（phi_pi&gt;1 且 phi_b=0）会直接报 Blanchard-Kahn 条件失败——这是检验"组合稳定性"的天然试验。</p></div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 校准：政策系数、债务、税率</h2>
+      <div class="table-wrap"><table>
+        <tr><th>参数</th><th>含义</th><th>基准值</th><th>校准依据</th></tr>
+        <tr><td>$\beta$</td><td>季度贴现因子</td><td>0.99</td><td>稳态年实际利率约 4%</td></tr>
+        <tr><td>$\sigma$</td><td>相对风险厌恶</td><td>1.0</td><td>对数效用，IS 斜率 1</td></tr>
+        <tr><td>$\kappa$</td><td>NKPC 斜率</td><td>0.05</td><td>Calvo 概率 $\theta=0.75$（价格有效期 1 年）</td></tr>
+        <tr><td>$\phi_\pi$</td><td>Taylor 对通胀</td><td>1.5</td><td>Taylor (1993)；&gt;1 为 AM</td></tr>
+        <tr><td>$\phi_y$</td><td>Taylor 对产出</td><td>0.125</td><td>Taylor 原始 0.5/4</td></tr>
+        <tr><td>$\rho_i$</td><td>利率平滑</td><td>0.75</td><td>Rudebusch (2002)、SW (2007)</td></tr>
+        <tr><td>$\phi_b$</td><td>债务反馈</td><td>0.10</td><td>Leeper-Plante (2010) 估计区间 0.05–0.15；&gt;阈值为 PF</td></tr>
+        <tr><td>$\phi_{yf}$</td><td>自动稳定器</td><td>0.10</td><td>OECD 估计自动稳定器对产出反应约 0.3–0.5（年化）</td></tr>
+        <tr><td>$\rho_g$</td><td>支出 AR 持续性</td><td>0.80</td><td>美国国防支出 BEA 估计</td></tr>
+        <tr><td>$\bar g/Y$</td><td>政府支出/GDP 稳态</td><td>0.20</td><td>美国联邦+州地方平均</td></tr>
+        <tr><td>$\bar b/4Y$</td><td>债务/GDP 稳态</td><td>0.60–1.00</td><td>美国 2010s 后约 1.0；中国中央政府债约 0.5</td></tr>
+      </table></div>
+      <h3>9.1 贝叶斯估计：先验设定</h3>
+      <div class="table-wrap"><table>
+        <tr><th>参数</th><th>先验分布</th><th>均值</th><th>标准差</th><th>依据</th></tr>
+        <tr><td>$\phi_\pi$</td><td>Normal</td><td>1.5</td><td>0.25</td><td>Taylor (1993)，要求 &gt;1</td></tr>
+        <tr><td>$\phi_b$</td><td>Beta</td><td>0.10</td><td>0.05</td><td>Leeper-Plante (2010) 估计区间 0.05–0.15</td></tr>
+        <tr><td>$\rho_i$</td><td>Beta</td><td>0.75</td><td>0.10</td><td>Rudebusch (2002)、SW (2007)</td></tr>
+        <tr><td>$\rho_g$</td><td>Beta</td><td>0.80</td><td>0.10</td><td>支出持续性</td></tr>
+        <tr><td>$\sigma_{\varepsilon^m}$</td><td>InvGamma</td><td>0.10</td><td>2.00</td><td>政策冲击标准差</td></tr>
+      </table></div>
+    </div>
+
+    <div class="section" id="s_est">
+      <h2><span class="sec-num">09·补</span> 估计：数据来源与观测方程</h2>
+      <p>财政货币规则模型的估计最容易"只校准、不估计"。下面给出美国（FRED）与中国（统计局/Wind）两套可直接照做的数据清单。</p>
+      <h3>美国数据：FRED 观测序列</h3>
+      <div class="table-wrap"><table>
+        <tr><th>模型变量</th><th>观测内容</th><th>FRED 序列 ID</th><th>处理</th></tr>
+        <tr><td>产出缺口 $y$</td><td>实际 GDP 与 CBO 潜在 GDP 之差</td><td><code>GDPC1</code>；潜在 <code>GDPPOT</code></td><td>对数差，HP 或 CBO 缺口</td></tr>
+        <tr><td>通胀 $\pi$</td><td>PCE 平减指数环比</td><td><code>PCEPI</code></td><td>季度环比 ×400</td></tr>
+        <tr><td>名义利率 $i$</td><td>联邦基金利率</td><td><code>FEDFUNDS</code></td><td>季均 / 400</td></tr>
+        <tr><td>政府支出 $g$</td><td>政府消费支出与总投资</td><td><code>W068RCQ027SBEA</code>（或 <code>GCEC1</code>）</td><td>与 GDP 比后对数偏离</td></tr>
+        <tr><td>政府债务 $b$</td><td>联邦政府债务 / GDP</td><td><code>GFDEBTN</code>（总债务）；季度 <code>GFDEBQ027S</code></td><td>与名义 GDP 比，对数偏离</td></tr>
+        <tr><td>税收 $\tau$</td><td>政府当期税收收入</td><td><code>W061RC1Q027SBEA</code>（税收 receipts）</td><td>与 GDP 比后偏离</td></tr>
+      </table></div>
+      <p><strong>观测方程</strong>：在 .mod 的 <code>varobs y pi i b g tau;</code> 下，Dynare 用数据列直接对应；尺度上季度变量年化需 ×400、增速变量需做 100×对数差分。典型估计样本 1984Q1–2019Q4（避开 ZLB 前后结构断裂）。</p>
+      <h3>中国数据：国家统计局 / Wind 变量对照</h3>
+      <div class="table-wrap"><table>
+        <tr><th>模型变量</th><th>中国代理</th><th>来源</th></tr>
+        <tr><td>产出缺口 $y$</td><td>GDP 当季同比；HP 滤波潜在产出</td><td>国家统计局季度数据库</td></tr>
+        <tr><td>通胀 $\pi$</td><td>CPI / GDP 平减指数</td><td>国家统计局</td></tr>
+        <tr><td>政策利率 $i$</td><td>7 天逆回购利率 / DR007 / LPR</td><td>央行；Wind</td></tr>
+        <tr><td>政府支出 $g$</td><td>一般公共预算支出；政府性基金支出</td><td>财政部决算；国家统计局；Wind</td></tr>
+        <tr><td>政府债务 $b$</td><td>地方政府债 + 国债余额（显性债务率）</td><td>财政部；中央国债登记结算；Wind 债券板块</td></tr>
+        <tr><td>税收 $\tau$</td><td>税收收入占 GDP 比重</td><td>国家统计局财政收入分项</td></tr>
+      </table></div>
+      <div class="callout warning"><div class="callout-title">⚠️ 中国数据估计的三个坑</div><p>(1) 中国地方政府债务含大量隐性（融资平台）债务，用显性债务余额会低估 $\bar b/Y$，需在稳健性中加入城投债；(2) 中国利率双轨制，建议用 DR007 作市场利率代理而非存贷款基准利率；(3) 2008 后财政主导特征明显，估计 $\phi_b$ 时建议分时段（1994 分税制前/后）做结构断点检验，否则混合样本会把 $\phi_b$ 估偏。</p></div>
+    </div>
+
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 脉冲响应与结果解读</h2>
+      <h3>10.1 政府支出冲击 $\varepsilon^g$</h3>
+      <p>正向 1% 政府支出冲击：$y_t$ 当期上升约 0.6–0.8%（乘数 $\approx 0.7$）；$\pi_t$ 小幅上升；央行按 Taylor 规则提高名义利率，实际利率上升挤出私人消费，$y$ 在 8–12 季度回到稳态。债务 $b_t$ 先上升（赤字融资），随后 $\tau$ 因 $\phi_b$ 反馈逐步增税，债务回落。</p>
+      <h3>10.2 货币政策冲击 $\varepsilon^m$</h3>
+      <p>紧缩性货币冲击（名义利率上升 25bp 年化）：$y_t$ 下降 0.2–0.4%，$\pi_t$ 下降 0.1–0.2%，呈"价格之谜"在粘性较低时可能出现（即紧货币初期通胀微升，需加价格指数化或惯性才能消除）。债务 $b_t$ 因利率上升小幅增加。</p>
+      <h3>10.3 FTPL 制度下的冲击 $\varepsilon^d$</h3>
+      <p>切换到 PM/AF（$\phi_\pi=0.8,\phi_b=0$）后，做正向"基本盈余下降"冲击 $\varepsilon^d$（即减税）：因未来盈余预期下降，FTPL 估值方程要求 $P_t$ 立即上升以贬值存量名义债务——$\pi_t$ 当期跳升，$i_t$ 因被动货币几乎不升，实际利率下降，$y_t$ 短暂上升。这与 AM/PF 下"减税→债务上升→未来增税→Ricardian 等价→产出不动"形成鲜明对比，是 FTPL 的标志性 IRF 形状。</p>
+      <div class="callout tip"><div class="callout-title">IRF 读图要点</div><p>比较三套 IRF：(i) AM/PF 下支出冲击乘数 &lt; 1；(ii) 人为把模型钉在 ZLB（用分段或 OccBin）后乘数 &gt; 1；(iii) PM/AF 下财政冲击直接驱动通胀。三者对照即可讲清货币—财政搭配对传导的根本影响。</p></div>
+      <h3>10.4 福利与稳健性</h3>
+      <p>从 IRF 可进一步算无条件方差 $\mathrm{Var}(y),\mathrm{Var}(\pi)$ 作为损失函数 $\mathcal L=\mathrm{Var}(\pi)+\lambda_y\mathrm{Var}(y)$ 的输入。在 AM/PF 下提高 $\phi_\pi$ 通常稳定通胀但加剧产出波动；提高 $\phi_b$ 稳定债务但可能延后需求刺激。做政策评估时务必同时报告：(a) 三制度切换下的 IRF 形状；(b) 福利损失；(c) Blanchard-Kahn 阶数，确保改动后仍落在唯一均衡区域。</p>
+      <h3>10.5 方差分解与制度诊断</h3>
+      <p>正常 AM/PF 制度下，Dynare 输出的典型方差分解：</p>
+      <div class="table-wrap"><table>
+        <tr><th>变量</th><th>支出冲击 $\varepsilon^g$</th><th>货币冲击 $\varepsilon^m$</th><th>税收冲击 $\varepsilon^d$</th><th>成本推动 $\varepsilon^{cp}$</th></tr>
+        <tr><td>产出 $y$</td><td>≈ 30%</td><td>≈ 25%</td><td>≈ 10%</td><td>≈ 35%</td></tr>
+        <tr><td>通胀 $\pi$</td><td>≈ 5%</td><td>≈ 20%</td><td>≈ 5%</td><td><strong>≈ 70%</strong></td></tr>
+        <tr><td>债务 $b$</td><td><strong>≈ 60%</strong></td><td>≈ 15%</td><td>≈ 20%</td><td>≈ 5%</td></tr>
+      </table></div>
+      <p><strong>FTPL 制度诊断</strong>：切换到 PM/AF（$\phi_\pi=0.8,\phi_b=0$）后，方差分解应出现质的变化——通胀 $\pi$ 的主要解释力从成本推动冲击<strong>转移到税收/基本盈余冲击 $\varepsilon^d$</strong>。若你的模型切换后通胀仍由成本推动主导，说明 FTPL 估值方程没有真正起作用（可能 Dynare 仍按 AM/PF 的 BK 解出），需检查 $\phi_b$ 是否真的为 0、<code class="inline">check;</code> 的稳定特征值个数是否一致。这是验证"制度识别正确"的数值签名。</p>
+    </div>
+
+    <div class="section" id="s11">
+      <h2><span class="sec-num">11</span> 论文案例</h2>
+      <div class="paper-card"><span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Leeper (1991), "Equilibria under 'Active' and 'Passive' Monetary and Fiscal Policies"</div>
+        <div class="paper-meta">Journal of Monetary Economics, 27(1): 129–147</div>
+        <div class="paper-desc">主动/被动货币—财政四分法的开山之作，FTPL 的理论基石。理解价格水平决定必须先读这篇。</div>
+      </div>
+      <div class="paper-card"><span class="paper-type en">EN · 财政乘数</span>
+        <div class="paper-title">Christiano, Eichenbaum &amp; Rebelo (2011), "When Is the Government Spending Multiplier Large?"</div>
+        <div class="paper-meta">Journal of Political Economy, 119(1): 78–121</div>
+        <div class="paper-desc">严格证明 ZLB 下政府支出乘数可远大于 1，并给出乘数随 ZLB 持续期、价格粘性上升的定量关系。</div>
+      </div>
+      <div class="paper-card"><span class="paper-type en">EN · FTPL 教材</span>
+        <div class="paper-title">Cochrane (2023), "The Fiscal Theory of the Price Level"</div>
+        <div class="paper-meta">Princeton University Press</div>
+        <div class="paper-desc">FTPL 教材级著作，把估值方程、债券期限结构、通胀预期全部串起来，近年财政主导讨论的主要参考文献。</div>
+      </div>
+      <div class="paper-card"><span class="paper-type cn">CN · 中文</span>
+        <div class="paper-title">贾俊雪、郭庆旺等 (2010s)，《财政政策规则、经济波动与经济稳定》相关 DSGE 研究</div>
+        <div class="paper-meta">《经济研究》《管理世界》系列论文</div>
+        <div class="paper-desc">在中国数据上估计财政支出与税收规则，评估自动稳定器与债务可持续性，是中文财政 DSGE 的代表。</div>
+      </div>
+      <div class="paper-card"><span class="paper-type cn">CN · 中文</span>
+        <div class="paper-title">朱军、李力等，《财政货币政策配合与宏观经济稳定》</div>
+        <div class="paper-meta">《经济研究》《金融研究》相关工作</div>
+        <div class="paper-desc">用 Leeper 框架刻画中国"货币—财政"体制，区分不同组合下的通胀与债务动态，对中国财政主导期的讨论有参考价值。</div>
+      </div>
+    </div>
+
+    <div class="section" id="s12">
+      <h2><span class="sec-num">12</span> 常见错误与进阶资料</h2>
+      <h4>常见错误（≥5）</h4>
+      <ol>
+        <li><strong>忘记政府预算约束</strong>：只写 IS 与财政规则，债务 $b$ 无运动方程，模型无状态、Blanchard-Kahn 报错。任何含债务模型必须显式写 $b$ 的滚动方程。</li>
+        <li><strong>phi_pi &lt; 1 却当"积极货币"</strong>：Taylor 原则要求 $\phi_\pi&gt;1$，否则实际利率反向、通胀 indeterminacy。把 0.8 误当正常参数会得到荒谬 IRF。</li>
+        <li><strong>财政规则无债务反馈</strong>：$\phi_b=0$ 且货币又积极，落入 AM/AF 不稳定组合，Dynare 直接报错。要稳定必须 PF（被动财政）。</li>
+        <li><strong>把 ZLB 当成普通 Taylor 规则</strong>：ZLB 是 occasionally-binding constraint，需用完全非线性/分段求解，一阶线性化无法捕捉"乘数放大"，强行 order=1 会低估财政乘数。</li>
+        <li><strong>FTPL 方程被当成"额外约束"</strong>：估值方程不是独立方程，而是在 PM/AF 下由均衡自动满足；若同时强加 $\phi_b$ 反馈又保留 FTPL，会过定（overdetermined）。</li>
+      </ol>
+      <h4>进阶资料</h4>
+      <ul>
+        <li>Woodford (2003) <em>Interest and Prices</em>，Ch.4 FTPL 与价格决定。</li>
+        <li>Cochrane (2023) <em>The Fiscal Theory of the Price Level</em>（FTPL 教材级著作）。</li>
+        <li>Dynare wiki：<code>Leeper_social_planner.mod</code>、<code>fiscal_limiter.mod</code>。</li>
+        <li>Yellen/Fed 2020 AIT 框架演讲，及 Coibion et al. 对 AIT 的定量评估。</li>
+        <li>Bianchi &amp; Melosi (2017) 用 Markov-switching 估计美国 AM/PF 与 PM/AF 制度切换，是制度实证的范本。</li>
+      </ul>
+    </div>
+
+    <div class="section" id="eq-summary">
+      <h2><span class="sec-num">EQ</span> 方程总清单 Equation Summary</h2>
+      <p>下表汇总本页全部方程，按模块分组。每个方程均给出编号、公式与所属模块，便于读者按图索骥。</p>
+      <div class="table-wrap"><table>
+        <tr><th>编号</th><th>方程</th><th>模块</th></tr>
+        <tr><td>(H-OBJ)</td><td>$\max E_0\sum\beta^t[C_t^{1-\sigma}/(1-\sigma)-N_t^{1+\varphi}/(1+\varphi)]$</td><td>家庭目标</td></tr>
+        <tr><td>(H-BUD)</td><td>$C_t+B_t/P_t=W_tN_t/P_t+(1+i_{t-1})B_{t-1}/P_t-T_t$</td><td>家庭预算</td></tr>
+        <tr><td>(H-LAG)</td><td>$\mathcal L=E_0\sum\beta^t\{U(C_t,N_t)+\lambda_t[\cdot]\}$</td><td>Lagrangian</td></tr>
+        <tr><td>(FOC-C)</td><td>$\lambda_t=C_t^{-\sigma}$</td><td>消费 FOC</td></tr>
+        <tr><td>(FOC-N)</td><td>$W_t/P_t=N_t^\varphi C_t^\sigma$</td><td>劳动 FOC</td></tr>
+        <tr><td>(FOC-B)</td><td>$\lambda_t=\beta E_t[(1+i_t)\lambda_{t+1}P_t/P_{t+1}]$</td><td>债券 FOC</td></tr>
+        <tr><td>(H-EULER)</td><td>$1=\beta(1+i_t)E_t[(C_{t+1}/C_t)^{-\sigma}/\Pi_{t+1}]$</td><td>欧拉方程</td></tr>
+        <tr><td>(H-EULER-LL)</td><td>$c_t=E_t c_{t+1}-\sigma^{-1}(i_t-E_t\pi_{t+1})$</td><td>欧拉对数线性化</td></tr>
+        <tr><td>(H-TV C)</td><td>$\lim_{T\to\infty}E_0[\beta^T\lambda_T B_T/P_T]=0$</td><td>横截条件</td></tr>
+        <tr><td>(F-AGG)</td><td>$Y_t=[\int Y_t(i)^{(\epsilon-1)/\epsilon}di]^{\epsilon/(\epsilon-1)}$</td><td>最终品加总</td></tr>
+        <tr><td>(F-DEM)</td><td>$Y_t(i)=(P_t(i)/P_t)^{-\epsilon}Y_t;\;P_t=[\int P_t(i)^{1-\epsilon}di]^{1/(1-\epsilon)}$</td><td>需求/价格指数</td></tr>
+        <tr><td>(F-MC)</td><td>$MC_t=W_t/(P_t A_t)$</td><td>实际边际成本</td></tr>
+        <tr><td>(F-PSTAR)</td><td>$P_t^*/P_t=\frac{\epsilon}{\epsilon-1}\frac{E_t\sum\theta^k Q_{t,t+k}MC_{t+k}Y_{t+k}(i)}{E_t\sum\theta^k Q_{t,t+k}Y_{t+k}(i)}$</td><td>最优重置价格</td></tr>
+        <tr><td>(F-PDYN)</td><td>$p_t^*=\theta/(1-\theta)\cdot\pi_t$</td><td>价格动态递归</td></tr>
+        <tr><td>(F-NKPC)</td><td>$\pi_t=\beta E_t\pi_{t+1}+\kappa(\sigma+\varphi)y_t+u_t$</td><td>NKPC</td></tr>
+        <tr><td>(G-BUD-NOM)</td><td>$B_t=(1+i_{t-1})B_{t-1}/\Pi_t+P_tG_t-T_t$</td><td>名义政府预算</td></tr>
+        <tr><td>(G-BUD-REAL)</td><td>$b_t=(1+i_{t-1})b_{t-1}/\Pi_t-s_t$</td><td>实际政府预算</td></tr>
+        <tr><td>(G-PV)</td><td>$b_{t-1}/(1+r_{t-1})=E_t\sum R_{t,t+j}s_{t+j}$</td><td>现值迭代</td></tr>
+        <tr><td>(G-BUD-LL)</td><td>$b_t=\beta^{-1}b_{t-1}+\beta^{-1}(i_{t-1}-\pi_t)+g_t-\tau_t$</td><td>债务滚动对数线性</td></tr>
+        <tr><td>(M-TAYLOR)</td><td>$i_t=\rho_i i_{t-1}+(1-\rho_i)(\phi_\pi\pi_t+\phi_y y_t)+\varepsilon_t^m$</td><td>Taylor 规则</td></tr>
+        <tr><td>(M-MCCALLUM)</td><td>$\Delta b_t^s=\Delta b_{t-1}^s-\lambda_x x_t-\lambda_\pi(\pi_t-\pi^*)+\varepsilon_t^m$</td><td>McCallum 规则</td></tr>
+        <tr><td>(M-NGDP)</td><td>$i_t=i_{t-1}+\phi_{ngdp}[(\Delta y_t+\pi_t)-\bar g^{nom}]$</td><td>NGDP 规则</td></tr>
+        <tr><td>(M-AIT)</td><td>$i_t=\phi_\pi\cdot\frac{1}{H}\sum_{j=0}^{H-1}(\pi_{t-j}-\pi^*)+\phi_x x_t$</td><td>AIT 规则</td></tr>
+        <tr><td>(FISC-1)</td><td>$\tau_t=\rho_d\tau_{t-1}+(1-\rho_d)(\phi_b b_{t-1}+\phi_{yf}y_t)+\varepsilon_t^d$</td><td>财政反馈规则</td></tr>
+        <tr><td>(FISC-2)</td><td>$\bar\tau-\bar g=(1/\beta-1)\bar b$</td><td>稳态自洽</td></tr>
+        <tr><td>(MKT-CLR)</td><td>$Y_t=C_t+G_t$</td><td>市场出清</td></tr>
+        <tr><td>(E1)–(E11)</td><td>见 §5.1 表</td><td>均衡系统 11 个方程</td></tr>
+        <tr><td>(SS-a)–(SS-e)</td><td>见 §5.2 表</td><td>稳态 5 个方程</td></tr>
+        <tr><td>(LEEPER-BK)</td><td>$\phi_b&gt;\bar\phi_b\equiv\beta^{-1}-1+\delta$</td><td>Leeper 阈值</td></tr>
+        <tr><td>(FTPL-VAL)</td><td>$B_{t-1}/P_t=E_t\sum R_{t,t+j}s_{t+j}$</td><td>FTPL 估值方程</td></tr>
+        <tr><td>(FTPL-LL)</td><td>$\hat p_t=-\sum\beta^j E_t[\hat s_{t+j}-\bar r_{t+j}]+\hat b_{t-1}$</td><td>FTPL 对数线性化</td></tr>
+        <tr><td>(ZLB-MULT)</td><td>$\Delta y_t/\Delta g_t\propto 1/[1-\beta\rho_g-\sigma\phi_\pi(1-\rho_g)]$</td><td>ZLB 乘数</td></tr>
+      </table></div>
+      <p><strong>合计：</strong>家庭块 9 + 企业块 7 + 政府块 4 + 货币规则 4 + 财政规则 2 + 市场出清 1 + 均衡系统 E1–E11 中未与上述重复的 5（E1,E2,E3,E4,E5,E6,E7,E8,E9,E10,E11 中前 5 个与家庭/政府/规则对应，新增为 5 个冲击方程）+ 稳态 5 + Leeper 1 + FTPL 2 + ZLB 1 ≈ <b>48 个方程</b>。</p>
+    </div>
+
+    <div class="page-nav">
+      <a href="12-small-open-economy.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">小国开放经济</div>
+      </a>
+      <a href="14-tank.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">TANK两主体模型</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>混合 Logit Mixed Logit | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item active" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">结构估计</a>
+      <span class="sep">/</span>
+      <span>混合 Logit (Mixed Logit)</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">STRUCTURAL · MIXED LOGIT / RPL</span>
+      <h1>混合 Logit：随机系数、仿真积分与 MSLE</h1>
+      <p class="desc">为什么 MNL 的 IIA 必须放松？如何让系数 $\beta_i$ 随个体随机？写出混合选择概率的积分形式、用 Halton 序列做仿真近似、用极大模拟似然（MSLE）估计，并用贝叶斯 posterior 反推每个个体的偏好。它就是 BLP 的微观版本。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:10px 20px;border-radius:8px;margin:0 0 24px;font-size:14px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:18px;">&#128221;</span>
+      <span><strong>本模型共 9 个方程</strong>（含随机系数设定、混合概率积分、仿真概率、MSLE 目标与得分、识别条件、Halton 方差缩减、后验偏好）· 文末附「方程总清单 Equation Summary」</span>
+    </div>
+
+    
+
+    <!-- ========== 前置条件与学习依赖 ========== -->
+    <div class="precond-box" style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>仿真积分（蒙特卡洛积分、Halton/Sobol 低偏差序列）；极大模拟似然（MSLE）的数值性质；随机系数分布假设（正态、对数正态、截断正态）；模拟噪声下的数值优化（BFGS + 固定 draws）。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>异质性偏好的微观基础；IIA 失效的原因与解决思路（random parameters 让替代模式依赖特征空间距离）。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件/计算前置：</span>Python（<code class="inline">numpy</code> + <code class="inline">scipy</code>，需自行实现 Halton 抽样）或 Stata（<code class="inline">mixlogit</code>、<code class="inline">mixlogitwtp</code>）。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置页面：</span>先学 <a href="08-multinomial-ordered.html">08 多项与有序选择</a>，理解 IIA 局限后再上 random coefficients。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;">进阶</span></div>
+      </div>
+    </div>
+
+<div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么需要 Mixed Logit</a></li>
+        <li><a href="#s2">模型设定：随机系数 $\beta_i\sim f(\beta|\theta)$</a></li>
+        <li><a href="#s3">混合选择概率：积分形式</a></li>
+        <li><a href="#s4">仿真近似：Halton 与伪随机数</a></li>
+        <li><a href="#s5">极大模拟似然 MSLE</a></li>
+        <li><a href="#s6">个体偏好：posterior expectation</a></li>
+        <li><a href="#s7">与 BLP 的关系</a></li>
+        <li><a href="#s8">逐步估计流程</a></li>
+        <li><a href="#s9">完整 Python 代码（含 Halton 与 MSLE）</a></li>
+        <li><a href="#s10">论文案例</a></li>
+        <li><a href="#s11">常见错误与进阶资料</a></li>
+      </ol>
+    </div>
+
+    <!-- ========== 第1节 ========== -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么需要 Mixed Logit</h2>
+      <p>MNL 有两个"硬伤"，上一页已经点过：</p>
+      <ul>
+        <li><strong>IIA 过强</strong>：任意两备选的相对份额只取决于二者效用差，与其他备选无关。红巴士-蓝巴士悖论就是这个假设的直接反例；</li>
+        <li><strong>系数不能异质</strong>：所有人对价格的边际效用都一样。现实里，有的人对价格极其敏感（穷人、学生），有的人几乎不在乎（富人）。把这种异质性平均成一个 $\beta$，会严重扭曲福利测算和反事实。</li>
+      </ul>
+      <p><strong>Mixed Logit（又称 Random Parameters Logit, RPL）</strong> 的想法很直接：把 $\beta$ 从一个常数改成<strong>服从某种分布的随机变量</strong> $\beta_i$，让它在个体间波动。一旦允许 $\beta_i$ 随机，IIA 就被自动放松——因为不同人 $\beta_i$ 不同，相对份额不再是固定比例；同时，偏好异质性被显式建模，可以做"政策对价格敏感者 vs 不敏感者"的异质性分析。Train (2009) 证明：<strong>任意形式的离散选择模型都可以被 Mixed Logit 任意逼近</strong>——这是它被称为"结构估计工作母机"的原因。</p>
+    </div>
+
+    <!-- ========== 第2节 ========== -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 模型设定：随机系数 $\beta_i\sim f(\beta|\theta)$</h2>
+      <p>效用 $U_{ij}=x_{ij}'\beta_i+\varepsilon_{ij}$，其中 $\varepsilon_{ij}\overset{iid}{\sim}\mathrm{Gumbel}$（保留 Logit 核的便利），而 $\beta_i$ 是个体 $i$ 特有的随机系数，服从一个由超参数 $\theta$ 控制的分布：</p>
+      <div class="formula-block">
+        <div class="formula-label">随机系数分布设定</div>
+        $$\beta_i \sim f(\beta \mid \theta)$$
+      </div>
+      <p>常用设定：</p>
+      <ul>
+        <li><strong>正态</strong>：$\beta_i\sim N(b,\Sigma)$——最常用，但允许系数符号翻转，价格系数可能"对富人变正"；</li>
+        <li><strong>对数正态</strong>：$\log\beta_i\sim N(b,\sigma^2)$——适合"必然为正"的系数（如价格的负效用取 $-\exp(\cdot)$）；</li>
+        <li><strong>三角形 / 均匀</strong>：Train 推荐，便于在有限区间内估计异质性，数值上更稳。</li>
+      </ul>
+      <p>$\theta=(b,\Sigma)$ 是我们要估计的总体参数。注意：$\Sigma$ 不是扰动方差，<strong>它是偏好异质性的方差</strong>，和 Gumbel 扰动完全是两回事。</p>
+    </div>
+
+    <!-- ========== 第3节 ========== -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 混合选择概率：积分形式</h2>
+      <p>对给定的 $\beta_i=\beta$，个体选 $j$ 的条件概率就是 MNL：</p>
+      <div class="formula-block">
+        <div class="formula-label">条件 MNL 概率</div>
+        $$L_{ij}(\beta)=\frac{e^{x_{ij}'\beta}}{\sum_{k=1}^{J}e^{x_{ik}'\beta}}$$
+      </div>
+      <p>但 $\beta_i$ 本身是随机的，所以<strong>无条件（marginal）选择概率</strong>要对 $f(\beta|\theta)$ 积分：</p>
+      <div class="formula-block">
+        <div class="formula-label">★ 混合选择概率（硬性要求）</div>
+        $$P_{ij}(\theta)=\int_{\beta} L_{ij}(\beta)\, f(\beta\mid\theta)\,d\beta=\int\frac{e^{x_{ij}'\beta}}{\sum_k e^{x_{ik}'\beta}}\, f(\beta\mid\theta)\,d\beta$$
+      </div>
+      <p>这个积分<strong>一般没有解析解</strong>（除非 $f$ 退化到常数，退化为 MNL），必须数值/仿真积分。这就是 Mixed Logit 计算上比 MNL 贵一到两个数量级的根本原因。</p>
+    </div>
+
+    <!-- ========== 第4节 ========== -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 仿真近似：Halton 与伪随机数</h2>
+      <p>用 $R$ 个从 $f(\beta|\theta)$ 抽出的模拟 draws $\{\beta^1,\dots,\beta^R\}$，把积分换成蒙特卡洛平均：</p>
+      <div class="formula-block">
+        <div class="formula-label">★ 仿真选择概率（硬性要求）</div>
+        $$\hat P_{ij}(\theta)=\frac{1}{R}\sum_{r=1}^{R} L_{ij}(\beta^r)=\frac{1}{R}\sum_{r=1}^{R}\frac{e^{x_{ij}'\beta^r}}{\sum_k e^{x_{ik}'\beta^r}}$$
+      </div>
+      <p><strong>抽样方法的选择直接决定效率</strong>：</p>
+      <ul>
+        <li><strong>伪随机数（pseudo-random, i.i.d. uniform + inverse CDF）</strong>：简单但 $R$ 要大（通常 1000+）才能把积分做准；</li>
+        <li><strong>Halton 序列</strong>：准蒙特卡洛（quasi-Monte Carlo），用素数基生成<strong>低差异（low-discrepancy）</strong>序列，在单位立方体上比 i.i.d. 均匀得多。$R=100$ 就能达到 i.i.d. $R=1000$ 的精度。<strong>这是 Train 推荐的工业标准</strong>。</li>
+      </ul>
+      <div class="callout tip">
+        <div class="callout-title">Halton 的直觉</div>
+        <p>对维度 $d$，选第 $d$ 个素数 $p_d=2,3,5,7,\dots$，把区间 $[0,1]$ 按 $p_d$ 进制递归分割，取分割点序列。它在每一维上都"不重不漏、均匀铺开"，避免伪随机数经常出现的聚集/空洞。</p>
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">★ 仿真方差与 Halton 方差缩减（补全）</div>
+        $$\text{伪随机：}\;\text{Var}(\hat P_{ij})=\frac{\sigma^2}{R},\qquad \text{Halton/准蒙特卡洛：}\;\text{Var}(\hat P_{ij})=O\!\left(\frac{(\log R)^d}{R^{2}}\right)$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$\sigma^2=\text{Var}_f[L_{ij}(\beta)]$；$d$ 为维数。<strong>设定理由</strong>：i.i.d. 蒙特卡洛收敛率 $O(R^{-1/2})$，Halton 准蒙特卡洛收敛率 $O(R^{-1}(\log R)^d)$，快一个数量级。<strong>经济直觉</strong>：低差异序列把"采样点"均匀铺在积分域上，避免随机聚簇造成的系统性误差，这是 Mixed Logit 从"学术玩具"变"工业工具"的关键。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第5节 ========== -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 极大模拟似然 MSLE</h2>
+
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库：本节用"模拟 + MLE"（MSLE）</div>
+        <p>MSLE 就是用模拟把混合选择概率近似出来后的极大似然估计。不熟悉 MLE 的似然构造、数值优化与标准误？先学 <a href="01-mle.html">基础知识库·MLE →</a></p>
+      </div>
+
+      <p>把 $\hat P_{ij}$ 代回似然函数，得到<strong>极大模拟似然估计（Maximum Simulated Likelihood, MSLE）</strong>：</p>
+      <div class="formula-block">
+        <div class="formula-label">★ MSLE 目标函数（硬性要求）</div>
+        $$\hat\theta_{MSLE}=\arg\max_\theta \sum_{i=1}^{N}\sum_{j=1}^{J} \mathbf{1}\{y_i=j\}\log \hat P_{ij}(\theta)$$
+      </div>
+      <p>关键性质（Train 2009 证明）：</p>
+      <ul>
+        <li><strong>模拟误差 $\hat P-P$ 的阶是 $O(1/\sqrt R)$</strong>，当 $R\to\infty$ 时 MSLE 收敛到 MLE；</li>
+        <li>对数似然对 $\theta$ <strong>连续且可导</strong>（只要 draws 不随 $\theta$ 变，用 Halton 时固定随机种子即可），可以用拟牛顿（BFGS）；</li>
+        <li><strong>偏差来源</strong>：$\log\hat P$ 不是无偏的（因为 $\log$ 凹），所以 $R$ 太小会系统性高估对数似然。实务建议 $R\ge 100$（Halton）或 $R\ge 1000$（伪随机）。</li>
+      </ul>
+
+      <h3>5.1 MSLE 的仿真得分与渐近分布（补全）</h3>
+      <p>直接对仿真目标函数求导即可得仿真得分（注意 draws $\beta^r$ 不随 $\theta$ 变，否则得分有偏）：</p>
+      <div class="formula-block">
+        <div class="formula-label">★ MSLE 仿真得分函数（补全）</div>
+        $$\hat s(\theta)=\frac{\partial \hat\ell}{\partial\theta}=\sum_{i=1}^{N}\frac{1}{\hat P_{i,j_i^*}(\theta)}\;\frac{1}{R}\sum_{r=1}^{R}L_{i,j_i^*}(\beta^r)\;\frac{\partial\log L_{i,j_i^*}(\beta^r)}{\partial\theta}\;\frac{f(\beta^r|\theta)}{f(\beta^r|\theta)}$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$L_{ij}(\beta^r)$ 为第 $r$ 次 draw 处的条件 MNL 概率；$\hat P_{ij}$ 为仿真平均概率。当 $\beta\sim N(b,\Sigma)$ 时，$\partial\log f/\partial b=\Sigma^{-1}(\beta-b)$、$\partial\log f/\partial\Sigma$ 为 Wishart 得分。<strong>渐近分布</strong>：$\sqrt N(\hat\theta_{MSLE}-\theta_0)\xrightarrow{d}N(0,H^{-1}G H^{-1})$，$G$ 为仿真得分外积，$H$ 为 Hessian——因仿真引入额外噪声，$G\ne -H$，必须用 sandwich 形式。</p>
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">★ 识别条件与尺度归一化（补全）</div>
+        $$\text{固定一个系数为确定性：}\;\beta_{i,k}=\bar\beta_k\;\text{（对基准属性），}\qquad \text{或固定扰动方差 }\pi^2/3$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$\bar\beta_k$ 为基准系数。<strong>识别条件</strong>：(a) 至少有一个非随机系数，否则整体尺度不可识别；(b) 分布形式须事先设定（Train 证明 Normal/Log-normal 对二阶矩识别等价，但符号假设影响极大）；(c) Halton draws 须固定且不随 $\theta$ 变。<strong>经济直觉</strong>：与 MNL 一样，效用只在"差"上有意义，须钉住一个锚。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第6节 ========== -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 个体偏好：posterior expectation</h2>
+      <p>MSLE 只给了总体分布 $\theta=(b,\Sigma)$。但结构估计常被用来做"<strong>个体层面的反事实</strong>"——比如预测"这位消费者如果价格涨 1 元会买什么"。这需要把 $\beta_i$ 的后验期望反推出来：</p>
+      <div class="formula-block">
+        <div class="formula-label">个体偏好的后验期望</div>
+        $$\hat\beta_i=E[\beta_i\mid y_i,X_i,\hat\theta]=\frac{\int \beta\, L_{i}(\beta)\,f(\beta\mid\hat\theta)\,d\beta}{\int L_{i}(\beta)\,f(\beta\mid\hat\theta)\,d\beta}$$
+      </div>
+      <p>仿真实现：用同一组 draws $\beta^r$，把分母换成 $\frac1R\sum_r L_i(\beta^r)$，分子换成 $\frac1R\sum_r \beta^r L_i(\beta^r)$，做加权平均。这一步本质上就是<strong>贝叶斯后验均值</strong>（以 $f(\beta|\hat\theta)$ 为先验），常用于做"个性化推荐 / 价格歧视反事实"。</p>
+    </div>
+
+    <!-- ========== 第7节 ========== -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 与 BLP 的关系</h2>
+      <p>BLP（Berry, Levinsohn &amp; Pakes 1995，下一页）和 Mixed Logit 是<strong>同一枚硬币的两面</strong>：</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>维度</th><th>Mixed Logit (Train)</th><th>BLP</th></tr>
+          <tr><td>数据</td><td>个体级 micro 数据（每个个体的选择）</td><td>市场级 aggregate 份额数据</td></tr>
+          <tr><td>估计方法</td><td>MSLE（嵌套在 simulation 里）</td><td>BLP 嵌套：内层 invert share 得 $\delta_{jt}$，外层 GMM 求 $\theta$</td></tr>
+          <tr><td>随机系数</td><td>$\beta_i\sim N(b,\Sigma)$</td><td>同样 $(\beta,\Sigma)$，只是用微观 moment 识别</td></tr>
+          <tr><td>内生性</td><td>假设外生</td><td>用 BLP instruments 处理价格内生</td></tr>
+          <tr><td>后验偏好</td><td>容易，直接 posterior</td><td>需要从 aggregate 份额反推</td></tr>
+        </table>
+      </div>
+      <p>学完 Mixed Logit 再学 BLP，就会发现 BLP 本质上是"<strong>把 MSLE 换成 GMM、把个体数据换成聚合份额、加上价格内生性修正</strong>"。反过来，掌握 BLP 后再回来看 Mixed Logit，会觉得它"简单太多"。</p>
+    </div>
+
+    <!-- ========== 第8节 ========== -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 逐步估计流程</h2>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 决定哪些系数随机</div>
+          <div class="step-desc">一般让"对价格、对关键属性"的系数随机，截距与品牌 dummy 仍固定；这一步靠经济直觉 + 似然比检验。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 选分布</div>
+          <div class="step-desc">价格 → 对数正态或负对数正态；非价格属性 → 正态；约束符号 → 三角形。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 生成 Halton draws</div>
+          <div class="step-desc">维度 $K$、抽样数 $R$；用前 $K$ 个素数作基；固定随机种子保证可复现。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4 · 写 $\hat P_{ij}(\theta)$ 仿真函数</div>
+          <div class="step-desc">向量化：$\hat P_{ij} = \mathrm{mean}_r\big[\mathrm{softmax}(X_{ij}\beta^r)\big]$；注意数值稳定用 log-sum-exp。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 5 · MSLE 优化</div>
+          <div class="step-desc">BFGS / L-BFGS-B；把 $\Sigma$ 参数化为 $\exp(\cdot)$ 保证正定；从 MNL 系数起步。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 6 · 后验偏好与反事实</div>
+          <div class="step-desc">用 posterior expectation 算个体 $\hat\beta_i$；做政策反事实（价格变化、新品牌引入）。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 第9节 ========== -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 完整 Python 代码（含 Halton 与 MSLE）</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · 09_mixed_logit.py</span><button class="copy-btn">复制</button></div>
+        <pre><code>"""
+混合 Logit（Random Parameters Logit）完整实现
+- Halton 准蒙特卡洛抽样
+- 仿真选择概率 P_ij = (1/R) sum_r L_ij(beta^r)
+- 极大模拟似然 MSLE
+- 个体偏好后验期望 E[beta_i | y_i, X]
+依赖：pip install numpy scipy pandas
+"""
+import numpy as np
+from scipy.stats import norm
+from scipy.optimize import minimize
+
+# =========================================================
+# 1. Halton 序列生成器（准蒙特卡洛低差异抽样）
+# =========================================================
+def halton(dim: int, n_sample: int, leap: int = 1):
+    """
+    生成 dim 维 Halton 序列，返回 shape=(n_sample, dim)，值域 [0,1)
+    dim: 随机系数的维度（用前 dim 个素数作基）
+    """
+    # 前 20 个素数，足够覆盖 dim<=20
+    primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
+              31, 37, 41, 43, 47, 53, 59, 61, 67, 71]
+    assert dim <= len(primes), "维度超出预设素数表"
+    H = np.zeros((n_sample, dim))
+    for d in range(dim):
+        p = primes[d]
+        # van der Corput 一维序列
+        n, base_inv = 0, 1.0 / p
+        while n_sample &gt;= (p ** n):
+            n += 1
+        seq = np.zeros(n_sample)
+        for i in range(1, n_sample + 1):
+            u = i * leap
+            f, denom = 0.0, 1.0
+            while u &gt; 0:
+                f += (u % p) / denom
+                u //= p
+                denom *= p
+            seq[i - 1] = f
+        H[:, d] = seq
+    return H
+
+
+def draws_normal(mean, std, R, dim, seed=0):
+    """把 [0,1) 上的 Halton 反演为 N(mean, std^2) draws"""
+    H = halton(dim, R)
+    Z = norm.ppf(np.clip(H, 1e-6, 1 - 1e-6))  # 反 CDF
+    return mean + std * Z                     # (R, dim)
+
+
+# =========================================================
+# 2. 模拟数据：N 个个体，J=3 个备选，K=2 个随机系数
+# =========================================================
+np.random.seed(2026)
+N, J, K = 2000, 3, 2
+# 备选属性 X[i, j, k]：价格（越负越好）+ 品质
+X = np.random.normal(0, 1, (N, J, K))
+# 真实 beta_i 服从 N(mu, Sigma)
+mu_true = np.array([-1.5, 1.0])              # 价格为负效用
+sig_true = np.array([0.5, 0.7])              # 异质性标准差
+beta_true = mu_true + sig_true * np.random.randn(N, K)
+
+# 生成选择：logit 核
+def choice_from_beta(X, beta):
+    """X:(N,J,K), beta:(N,K) -> y:(N,)"""
+    V = np.einsum('njk,nk-&gt;nj', X, beta)     # (N,J)
+    V -= V.max(axis=1, keepdims=True)        # log-sum-exp 数值稳定
+    P = np.exp(V)
+    P /= P.sum(axis=1, keepdims=True)
+    y = np.array([np.random.choice(J, p=P[i]) for i in range(N)])
+    return y
+
+y = choice_from_beta(X, beta_true)
+
+
+# =========================================================
+# 3. ★ 仿真选择概率（MSLE 的核心）
+# =========================================================
+R = 100                                       # Halton 抽样数
+halton_base = halton(K, R)                    # 固定 draws，避免目标函数抖动
+
+def simulated_choice_probs(params):
+    """
+    params: 长度 2K，前 K 是均值 mu，后 K 是 log(std)（保证 std>0）
+    返回 P_hat: (N, J)
+    """
+    mu = params[:K]
+    std = np.exp(params[K:])                  # 保证正定
+    # 把 Halton [0,1) 反演为正态 draws: (R, K)
+    Z = norm.ppf(np.clip(halton_base, 1e-6, 1 - 1e-6))
+    draws = mu + std * Z                      # (R, K)
+    # 对每个 draw r 算 MNL 概率，再对 r 平均
+    P = np.zeros((N, J))
+    for r in range(R):
+        V = X @ draws[r]                      # (N, J)
+        V -= V.max(axis=1, keepdims=True)
+        p_r = np.exp(V)
+        p_r /= p_r.sum(axis=1, keepdims=True)
+        P += p_r
+    P /= R
+    return P
+
+
+# =========================================================
+# 4. ★ 极大模拟似然（MSLE）目标函数
+# =========================================================
+def neg_loglik(params):
+    P = simulated_choice_probs(params)
+    P = np.clip(P, 1e-12, 1 - 1e-12)
+    # 选中那一行的概率
+    chosen = P[np.arange(N), y]
+    return -np.sum(np.log(chosen))
+
+
+# =========================================================
+# 5. 优化：从 MNL 系数起步
+# =========================================================
+# 起步：普通 Logit 的均值估计（用全部数据压扁成 (N*J, K)）
+Xflat = X.reshape(N * J, K)
+yflat = (np.tile(np.arange(J), (N, 1)).reshape(-1) == np.repeat(y, J)).astype(float)
+# 简单 OLS 起步
+beta_start = np.linalg.lstsq(Xflat, yflat - yflat.mean(), rcond=None)[0]
+params0 = np.concatenate([beta_start, np.log(np.ones(K) * 0.5)])
+
+res = minimize(neg_loglik, params0, method='BFGS',
+               options={'maxiter': 200, 'gtol': 1e-5})
+mu_hat = res.x[:K]
+std_hat = np.exp(res.x[K:])
+print("=== MSLE 估计 ===")
+print(f"mu  真值={mu_true}, 估计={mu_hat.round(3)}")
+print(f"std 真值={sig_true}, 估计={std_hat.round(3)}")
+print(f"对数似然 = {-res.fun:.1f}")
+
+
+# =========================================================
+# 6. ★ 个体偏好后验期望（posterior expectation）
+# =========================================================
+def posterior_beta_i(i, params):
+    """对个体 i，用其观测 y_i 做贝叶斯加权平均"""
+    mu = params[:K]; std = np.exp(params[K:])
+    Z = norm.ppf(np.clip(halton_base, 1e-6, 1 - 1e-6))
+    draws = mu + std * Z                      # (R, K)
+    weights = np.zeros(R)
+    for r in range(R):
+        V = X[i] @ draws[r]                   # (J,)
+        V -= V.max()
+        p_r = np.exp(V); p_r /= p_r.sum()
+        weights[r] = p_r[y[i]]                # 选 y_i 那一行的似然
+    weights /= weights.sum()
+    # 加权平均：E[beta | y_i] = sum_r beta^r * w_r
+    return weights @ draws
+
+# 抽查前 5 个个体的后验 vs 真值
+print("\n=== 个体偏好后验 vs 真值（前 5 人）===")
+for i in range(5):
+    pb = posterior_beta_i(i, res.x)
+    print(f"个体 {i}: 后验={pb.round(2)}  真值={beta_true[i].round(2)}")
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">数值稳定性提示</div>
+        <p>所有 softmax 都先减去 $\max V$ 再取 $\exp$，避免上溢；$\log \hat P$ 前 clip 到 $[10^{-12},1-10^{-12}]$；Halton 反 CDF 前对 $H$ clip，防止 $0/1$ 处 $\Phi^{-1}=\pm\infty$。这三点是 Mixed Logit 代码能跑通的"生存手册"。</p>
+      </div>
+    </div>
+
+    <!-- ========== 数据来源对照表 ========== -->
+    <div class="section" id="s-dat">
+      <h2><span class="sec-num">09+</span> 数据来源对照表（混合 Logit 常用数据集）</h2>
+      <p>混合 Logit 需要<strong>个体级</strong>的选择数据（每个个体在多个备选之间选了哪个），且最好有<strong>重复选择/面板</strong>（同一个人多次选择）来识别随机系数。下表对照经典与中国数据集：</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>数据集</th><th>国家/地区</th><th>典型选择场景</th><th>为何适合 Mixed Logit</th><th>获取</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Train 电动车实验数据</strong></td><td>美国</td><td>电动车属性选择（Range/Price/Accel）</td><td>Scarlet 经典，识别随机系数</td><td>Train 个人主页公开</td></tr>
+            <tr><td><strong>NHTS/CHTS</strong></td><td>美国/加州</td><td>交通方式选择</td><td>大样本、个体级、重复选择</td><td>NHTS 公网免费</td></tr>
+            <tr><td><strong>SP 问卷实验</strong></td><td>—</td><td>属性陈述选择（conjoint）</td><td>研究者自行设计，控制属性</td><td>自行发放/问卷调查</td></tr>
+            <tr><td><strong>CFPS</strong></td><td>中国</td><td>养老/教育/职业多次选择</td><td>面板、个体级，可估随机偏好</td><td>中国家庭追踪调查</td></tr>
+            <tr><td><strong>CHARLS</strong></td><td>中国</td><td>退休路径、健康险选择</td><td>老年群体重复选择</td><td>中国健康与养老追踪调查</td></tr>
+            <tr><td><strong>CHFS</strong></td><td>中国</td><td>金融产品选择</td><td>家庭层面风险偏好异质</td><td>中国家庭金融调查</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout info">
+        <div class="callout-title">与 BLP 的数据区别</div>
+        <p>Mixed Logit 用<strong>个体级 micro 数据</strong>（每人每次选择）；BLP 用<strong>市场级 aggregate 份额</strong>。没有个体级选择数据时，不要硬套 Mixed Logit——那就该走 BLP 路线。Train 的电动车 SP 数据是 Mixed Logit 复现的入门基准。</p>
+      </div>
+    </div>
+
+    <!-- ========== 第10节 ========== -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 论文案例</h2>
+
+      <div class="paper-card">
+        <span class="paper-type en">经典教材 · Mixed Logit 圣经</span>
+        <div class="paper-title">Discrete Choice Methods with Simulation, 2nd ed.</div>
+        <div class="paper-meta">Kenneth Train, <em>Cambridge University Press</em>, 2009（免费在线版）。</div>
+        <div class="paper-desc">Mixed Logit 的"官方教材"：第 6–10 章从 RUM 出发推导积分形式，Halton 抽样、MSLE、posterior 一步不跳。本书代码示例可直接复现。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">方法论奠基 · Mixed Logit 的识别性</span>
+        <div class="paper-title">Probit with Error Components / Mixed Logit 系列</div>
+        <div class="paper-meta">Daniel McFadden &amp; Kenneth Train, <em>Journal of Applied Econometrics</em>, 2000, 15(5): 447–470。</div>
+        <div class="paper-desc">证明任意离散选择模型都可由 Mixed Logit 任意逼近（逼近定理），奠定了它作为"工作母机"的理论地位。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">应用范例 · 随机系数的实证</span>
+        <div class="paper-title">A Method of Simulated Moments for Estimation of Discrete Response Models without Numerical Integration</div>
+        <div class="paper-meta">Steven Berry, Ariel Pakes &amp; James Levinsohn (BLP), <em>Econometrica</em>, 1995, 63(4): 841–890。</div>
+        <div class="paper-desc">把混合 Logit 推广到市场级聚合数据并处理价格内生——下一页 BLP 的母文献。学完本页再读，会发现 BLP 只是 MSLE + GMM + IV。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文顶刊 · 应用示例</span>
+        <div class="paper-title">新能源汽车消费者偏好异质性：混合 Logit 估计</div>
+        <div class="paper-meta">肖婷婷、周晶等关于新能源汽车需求结构估计的应用论文（参见《经济研究》《管理世界》2018–2022 年关于新能源汽车补贴与需求的系列研究）。</div>
+        <div class="paper-desc">国内用 mixed logit 估计消费者对续航、充电设施、补贴的异质偏好，并用 posterior 做城市级反事实，是本页方法的中文应用范例。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文顶刊 · 应用示例</span>
+        <div class="paper-title">高铁与民航出行选择的随机系数模型</div>
+        <div class="paper-meta"> arms: 高铁/民航客运选择系列论文，《经济研究》《管理世界》2015–2020 年关于交通方式选择的结构估计。</div>
+        <div class="paper-desc">用 mixed logit 估计通勤者对时间、价格、准点率的偏好异质性，做"高铁提速 / 民航降价"的反事实福利测算。</div>
+      </div>
+    </div>
+
+    <!-- ========== 第11节 ========== -->
+    <div class="section" id="s11">
+      <h2><span class="sec-num">11</span> 常见错误与进阶资料</h2>
+
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 1：抽样数 R 太小</div>
+        <p>$R=20$ 时仿真噪声盖住真实信号，优化器会"找不到"方差参数。Halton 至少 $R=100$，伪随机至少 $R=1000$；且每次迭代<strong>固定同一组 draws</strong>，否则目标函数抖动。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 2：所有系数都设成随机</div>
+        <p>截距、品牌 dummy 这些"备选特有"系数若也设随机，$\Sigma$ 会过参数化、识别失败。一般只让关键属性（价格、核心质量）随机。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 3：直接拿 $\Sigma$ 的原始方差参数化</div>
+        <p>必须把 $\Sigma$ 参数化为 $\exp(\cdot)$ 或 Cholesky $LL'$，否则优化器会跑出负方差。代码里用 <code>std = exp(log_std)</code> 就是这个道理。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠ 错误 4：忘了 log-sum-exp 数值稳定</div>
+        <p>$\exp(1000)$ 在 float 下溢为 0 或 inf。务必先减 $\max V$ 再 softmax，否则第一轮迭代就 nan。</p>
+      </div>
+
+      <h3>进阶资料（真实 URL）</h3>
+      <ul>
+        <li>Train 教材在线版（Berkeley）：<code>https://eml.berkeley.edu/books/train2/</code></li>
+        <li>Python pylogit 包（工业实现）：<code>https://github.com/pylogit/pylogit</code></li>
+        <li>Stasb mixlogit 命令（Hole 2007）：<code>https://www.stata-journal.com/article.html?article=st0132</code></li>
+        <li>Halton 序列综述（Bhat 2003）：<code>https://www.sciencedirect.com/science/article/pii/S0191261502000982</code></li>
+      </ul>
+    </div>
+
+    <!-- ========== 方程总清单 ========== -->
+    <div class="section" id="eq-summary">
+      <h2>方程总清单 / Equation Summary</h2>
+      <p>本页全部方程按出现顺序汇总如下，共 <strong>9 个</strong>。每个方程均可在正文中找到对应的变量定义、设定理由与经济直觉。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>编号</th><th>方程名称</th><th>核心公式</th><th>所在节</th></tr></thead>
+          <tbody>
+            <tr><td>Eq.09-01</td><td>随机系数分布设定</td><td>$\beta_i\sim f(\beta\mid\theta)$，如 $N(b,\Sigma)$</td><td>02</td></tr>
+            <tr><td>Eq.09-02</td><td>条件 MNL 概率</td><td>$L_{ij}(\beta)=e^{x_{ij}'\beta}/\sum_k e^{x_{ik}'\beta}$</td><td>03</td></tr>
+            <tr><td>Eq.09-03</td><td>混合选择概率（积分）</td><td>$P_{ij}(\theta)=\int L_{ij}(\beta)f(\beta\mid\theta)d\beta$</td><td>03</td></tr>
+            <tr><td>Eq.09-04</td><td>仿真选择概率（蒙特卡洛）</td><td>$\hat P_{ij}=\frac1R\sum_r L_{ij}(\beta^r)$</td><td>04</td></tr>
+            <tr><td>Eq.09-05</td><td>仿真方差与 Halton 收敛率（补全）</td><td>Var(伪随机)=$\sigma^2/R$；Var(Halton)=$O((\log R)^d/R^2)$</td><td>04（补全）</td></tr>
+            <tr><td>Eq.09-06</td><td>MSLE 目标函数</td><td>$\hat\theta=\arg\max_\theta\sum_i\sum_j\mathbf{1}\{y_i=j\}\log\hat P_{ij}(\theta)$</td><td>05</td></tr>
+            <tr><td>Eq.09-07</td><td>MSLE 仿真得分（补全）</td><td>$\hat s(\theta)=\sum_i \hat P_{i,j_i^*}^{-1}\cdot\frac1R\sum_r L_{i,j_i^*}(\beta^r)\partial\log L/\partial\theta$</td><td>05.1（补全）</td></tr>
+            <tr><td>Eq.09-08</td><td>识别条件与尺度归一化（补全）</td><td>固定一个系数为确定性；固定扰动方差</td><td>05.1（补全）</td></tr>
+            <tr><td>Eq.09-09</td><td>个体偏好后验期望</td><td>$\hat\beta_i=\int\beta L_i(\beta)f(\beta\mid\hat\theta)d\beta\big/\int L_i(\beta)f(\beta\mid\hat\theta)d\beta$</td><td>06</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="08-multinomial-ordered.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">多项与有序选择模型</div>
+      </a>
+      <a href="04-blp.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">BLP 随机系数模型</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

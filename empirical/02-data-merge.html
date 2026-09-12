@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据合并与面板整理 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item active" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">实证论文</a>
+      <span class="sep">/</span>
+      <span>02 数据合并与面板整理</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">实证论文 · Empirical · 03</span>
+      <h1>数据合并与面板整理：从零散表到公司-年份面板</h1>
+      <p class="desc">merge 1:1 / 1:m / m:1 三种连接、append 纵向追加、reshape 在 long/wide 之间切换、xtset 面板设定、xtdescribe 检查平衡度、行业代码跨年度匹配——把多张表整合成一张可回归的分析样本。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">关系型数据库思想（主键 / 外键、1:1 / 1:m / m:1 连接）、面板数据结构（公司-年份的长格式 long 与宽格式 wide）。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">无专门理论要求；理解面板数据的组织逻辑即可。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">Stata 17+（<code class="inline">merge</code>、<code class="inline">append</code>、<code class="inline">reshape</code>、<code class="inline">xtset</code>、<code class="inline">xtdescribe</code>；本页不依赖额外外部命令）。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body">先学 <a href="01-data-cleaning.html">01 数据清洗</a>，再做合并与面板整理。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8f3ec;color:#2d7a4f;">入门</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么"合并"是面板数据的核心工程问题</a></li>
+        <li><a href="#s2">merge 三种连接：1:1 / 1:m / m:1</a></li>
+        <li><a href="#s3">理解 _merge：1 / 2 / 3 三种结果</a></li>
+        <li><a href="#s4">多关键字匹配与行业代码对齐</a></li>
+        <li><a href="#s5">append：纵向堆叠不同年份</a></li>
+        <li><a href="#s6">reshape long/wide：把宽表拉长、长表压扁</a></li>
+        <li><a href="#s7">xtset 面板设定与 xtdescribe</a></li>
+        <li><a href="#s8">平衡 vs 非平衡面板的转换</a></li>
+        <li><a href="#s9">论文案例：合并策略如何影响识别</a></li>
+        <li><a href="#s10">常见错误与调试</a></li>
+        <li><a href="#s11">进阶学习资料</a></li>
+      </ol>
+    </div>
+
+    <!-- S1 -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么"合并"是面板数据的核心工程问题</h2>
+      <p>在中文实证研究里，你几乎永远不会从一个 .dta 文件开始。你会有一堆<strong>来源不同、粒度不同、时间覆盖不同</strong>的表：CSMAR 的财务报表表、Wind 的股价表、国家统计局的行业层面表、手工收集的政策冲击表。把它们整合成"公司 i × 年份 t"的矩形面板，是描述性统计和回归之前必须完成的工程。</p>
+      <p>合并错了，后面所有结论都会错。最常见的两类错误：(1) <strong>merge 模式选错</strong>，把一对一的表按多对一合并，结果同一行被复制成多行，样本量莫名其妙翻倍；(2) <strong>关键字段没对齐</strong>，股票代码在不同年份编码规则变了，导致匹配率（match rate）看起来正常但其实是张冠李戴。本节把这两件事拆透。</p>
+    </div>
+
+    <!-- S2 -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> merge 三种连接：1:1 / 1:m / m:1</h2>
+      <p>Stata 的 <code class="inline">merge</code> 命令按"两边关键字段的唯一性"分三种模式。理解这三种模式的关键，是先问自己一个问题：<strong>主数据集（master）和被合并数据集（using）里，每个关键键值是唯一的还是会重复？</strong></p>
+      <ul>
+        <li><strong>1:1</strong>：两边每个键值都唯一。典型场景：公司基本信息表（每家公司一行）与公司治理结构表（每家公司一行）合并。</li>
+        <li><strong>m:1</strong>：master 里一个键值多行，using 里每个键值一行。典型场景：你已经有公司-年份面板，要给每一行"贴上"行业代码（行业表是公司层面的，每家公司一行）。</li>
+        <li><strong>1:m</strong>：master 里每个键值一行，using 里多行。很少用，方向与 m:1 相反——通常把 using 放前面反过来写。</li>
+      </ul>
+      <div class="callout danger">
+        <div class="callout-title">Stata 不支持 m:m（多对多）</div>
+        <p>很多新手上手会写 <code class="inline">merge m:m id using ...</code>。Stata 明确拒绝这种写法——它的官方文档把 m:m 称为"deprecated and dangerous"。正确做法是先想清楚两边的真正粒度，然后降级成 1:1 / 1:m / m:1。</p>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 三种 merge 模式演示</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  02-merge-modes.do
+*--------------------------------------------------------------*
+clear all
+set more off
+
+* ---------- 构造演示数据 ----------
+* master: 公司-年份面板（已清洗好的财务数据）
+clear
+input stkcd year roe
+1 2010 0.05
+1 2011 0.08
+2 2010 0.03
+2 2011 0.04
+3 2010 0.09
+end
+save "master_fin.dta", replace
+
+* using-A: 公司基本信息表（每家公司一行）—— 1:1 / m:1 都可以用
+clear
+input stkcd industry province
+1 "C3" "Guangdong"
+2 "C4" "Beijing"
+end
+save "using_info.dta", replace
+
+* using-B: 行业层面宏观变量（每个行业-年份一行）
+clear
+input industry year ind_growth
+"C3" 2010 0.12
+"C3" 2011 0.15
+"C4" 2010 0.08
+"C4" 2011 0.09
+end
+save "using_indmacro.dta", replace
+
+* ---------- 1:1 合并：公司基本信息 ----------
+* 因为 master 里 stkcd-year 唯一、using 里 stkcd 唯一，
+* 这里用 m:1 stkcd（master 多行、using 一行）最自然
+use "master_fin.dta", clear
+merge m:1 stkcd using "using_info.dta"
+* _merge 取值：
+*   1 = 主数据集独有（using 没匹配到）
+*   2 = 被合并数据集独有（master 没这行）
+*   3 = 两边都有（完美匹配）
+
+* 查看匹配情况
+tab _merge
+
+* 删掉"using 独有"的行（对我们没意义）
+keep if _merge == 1 | _merge == 3
+drop _merge
+
+* ---------- 多关键字 m:1：行业 × 年份 ----------
+* 这次要合并的是"行业-年份"层面的宏观变量，
+* 主数据集中没有 industry，需要先在 master 里加 industry 列。
+* 为演示，我们直接重建 master：
+use "master_fin.dta", clear
+gen industry = ""
+replace industry = "C3" if stkcd == 1
+replace industry = "C4" if stkcd == 2
+replace industry = "C4" if stkcd == 3
+
+* 按 (industry, year) 两个关键字合并
+merge m:1 industry year using "using_indmacro.dta"
+tab _merge
+drop _merge
+list
+</code></pre>
+      </div>
+    </div>
+
+    <!-- S3 -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 理解 _merge：1 / 2 / 3 三种结果</h2>
+      <p>每次 merge 之后，Stata 会自动生成一个叫 <code class="inline">_merge</code> 的变量，告诉你每一行的来源。读懂 _merge 的分布，是判断合并是否成功的关键。</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>_merge 取值</th><th>含义</th><th>实务含义</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code class="inline">_merge == 1</code></td><td>主数据集 (master) 有、using 没有</td><td>这一行没找到对方的数据，新变量会是缺失</td></tr>
+            <tr><td><code class="inline">_merge == 2</code></td><td>using 有、master 没有</td><td>被合并表里多出的行，对主样本无意义，通常直接删</td></tr>
+            <tr><td><code class="inline">_merge == 3</code></td><td>两边都有（完美匹配）</td><td>理想情况，新变量成功贴到对应行上</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>一个经验法则：合并完先 <code class="inline">tab _merge</code>，把 _merge==3 的占比作为"匹配率"。如果你的匹配率不到 80%，要回头检查关键字段是否对齐（股票代码是否带前导零、行业代码是否跨年份换了标准）。</p>
+      <div class="formula-block">
+        <div class="formula-label">匹配率（match rate）的写法</div>
+        $$\text{Match rate} = \frac{\#\{\_merge = 3\}}{\#\{\text{所有主数据集观测}\}}$$
+      </div>
+    </div>
+
+    <!-- S4 -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 多关键字匹配与行业代码对齐</h2>
+      <p>真实研究里最常见的匹配痛点，是<strong>行业代码跨年份不一致</strong>。中国证监会 2001 年、2012 年两次修订《上市公司行业分类指引》，旧代码（如"C8"医药）和新代码（如"C27"医药）的映射并不一一对应。直接按 industry 合并，会把 2011 年的"C8"贴到 2012 年的"C8"上，而后者在新口径下可能已经变成了别的行业。</p>
+
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 建立行业代码映射表</div>
+          <div class="step-desc">手工或从证监会官网下载一张 <code class="inline">industry_map.dta</code>：每行一对 (old_code, new_code, broad_category)。这一步是一次性体力活，但收益巨大。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 按年份分别 merge</div>
+          <div class="step-desc">在 2011 及以前用老代码表，2012 年及以后用新代码表，分别合并，再纵向 append 回来。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 用 broad_category 做稳健性</div>
+          <div class="step-desc">主回归用三位行业代码，稳健性检验里用一位大类（制造业 C 全部归一类）。</div>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 行业代码对齐的常见套路</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  04-industry-match.do
+*--------------------------------------------------------------*
+* 假设 master 里有 stkcd year industry
+* 2011 年及以前用老版（CSRC 2001），2012 起用新版（CSRC 2012）
+
+* 1) 把年份分段
+gen old_code_flag = (year &lt;= 2011)
+
+* 2) 准备两张映射表（省略手工构造代码，假设已经在 industry_map_2001.dta 和 industry_map_2012.dta 里）
+* use industry_map_2001.dta, clear
+* keep if old_code_flag == 1
+* merge m:1 industry using ...
+
+* 3) 一个更实用的写法：把行业代码截断成"证监会一位大类"
+*    旧代码形如 "C8"，新代码形如 "C27"
+gen ind1 = substr(industry, 1, 1)        // 把 C8 / C27 都变成 "C"
+* 三位行业大类：旧版取前两位，新版取前一位加两位数字
+gen ind3 = ""
+replace ind3 = substr(industry, 1, 2) if year &lt;= 2011
+replace ind3 = substr(industry, 1, 3) if year &gt;= 2012
+
+* 4) 行业 × 年份固定效应：用 ind3 × year
+egen ind_year = group(ind3 year)
+* 之后 reghdfe y x, absorb(ind_year firm) 即可
+</code></pre>
+      </div>
+    </div>
+
+    <!-- S5 -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> append：纵向堆叠不同年份</h2>
+      <p><code class="inline">append</code> 与 <code class="inline">merge</code> 完全不同：<strong>merge 是横向拼接（增加列），append 是纵向堆叠（增加行）</strong>。当你按年份分别下载了 2007–2020 年的财务表，每个文件结构相同，就用 append 把它们摞起来。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · append 纵向堆叠</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  05-append.do
+*--------------------------------------------------------------*
+clear all
+set more off
+
+* 假设 data/raw/ 下有 fin_2007.dta ... fin_2020.dta
+* 标准做法：先清空，再 append using
+use "data/raw/fin_2007.dta", clear
+forvalues y = 2008/2020 {
+    append using "data/raw/fin_`y'.dta"
+}
+describe
+count
+
+* 关键检查：append 后变量名应当完全一致
+* 如果有"2015 年新增了一个变量 R&D"，旧年份该变量会自动变成缺失
+* 用 misstable summarize 检查一下
+</code></pre>
+      </div>
+    </div>
+
+    <!-- S6 -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> reshape long/wide：宽表与长表互转</h2>
+      <p>很多下载下来的数据是 <strong>wide 形式</strong>：每家公司一行，每年一个变量列（如 roe_2007 roe_2008 ... roe_2020）。但 Stata 的面板命令（xtset、xtreg、reghdfe）要求 <strong>long 形式</strong>：每行是一个 (公司, 年份) 观测。<code class="inline">reshape</code> 命令就是在这两种形态之间切换的瑞士军刀。</p>
+      <div class="formula-block">
+        <div class="formula-label">long vs wide 的语法核心</div>
+        $$\text{wide: } x_{i,2007}, x_{i,2008}, \dots \quad \Longleftrightarrow \quad \text{long: } (i, t, x_{i,t})$$
+        <span style="font-size:13px; color:#666;">id = 公司标识，j = 年份（reshape 里的"时变变量名"）。</span>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · reshape 长表 ⇄ 宽表</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  06-reshape.do
+*--------------------------------------------------------------*
+clear all
+set more off
+
+* ---------- 第一步：构造一个 wide 表 ----------
+* 每家公司一行，roe_2010 ... roe_2012 三列
+clear
+input stkcd roe_2010 roe_2011 roe_2012
+1 0.05 0.08 0.06
+2 0.03 0.04 0.05
+3 0.09 0.10 0.11
+end
+list
+
+* ---------- wide -&gt; long（最常用！） ----------
+* reshape long 告诉 Stata：
+*   "把 roe_&lt;j&gt; 拆成 (j, roe)"
+* 语法：reshape long 变量前缀, i(id) j(timevar)
+reshape long roe, i(stkcd) j(year)
+list, sepby(stkcd)
+* 现在是 (stkcd, year, roe) 的长表
+
+* ---------- long -&gt; wide（反向操作） ----------
+reshape wide roe, i(stkcd) j(year)
+list
+</code></pre>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">reshape 的两个高频报错</div>
+        <p><strong>报错 1："data have multiple observations within (stkcd) that are not unique"</strong> —— 说明你的 (i, j) 组合已经重复了，先 duplicates drop。<br>
+        <strong>报错 2："j variable (year) contains negative values"</strong> —— reshape 要求 j 是正整数年份。如果原始列名是 roe_2010，Stata 会自动把 2010 解析成 year；如果是 roe_a roe_b，需要先把字母 j 编码成数字。</p>
+      </div>
+    </div>
+
+    <!-- S7 -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> xtset 面板设定与 xtdescribe</h2>
+      <p>一旦你有了 (stkcd, year) 长表，下一步就是告诉 Stata"这是一个面板数据"：<code class="inline">xtset panelvar timevar</code>。这一步做完，所有 xt 开头的命令（xtreg、xtsum、xtdescribe、xtsum 等）才能识别面板结构。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · xtset 与 xtdescribe</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  07-xtset.do
+*--------------------------------------------------------------*
+webuse nlswork, clear      // Stata 自带的面板：员工-年份
+
+* 1) xtset：声明 panelvar = idcode, timevar = year
+xtset idcode year
+
+* 2) xtdescribe：检查面板的"形状"
+*    输出会告诉你：
+*    - 总共多少个组（公司/个人）
+*    - 时间跨度
+*    - 是否平衡（balanced）
+*    - 每个组有多少期观测
+xtdescribe
+
+* 3) xtsum：面板版的 summarize（组内/组间/总体方差分解）
+xtsum ln_wage age tenure
+
+* 4) 看一下"时间有没有跳跃"
+*    比如某个员工 1980 年之后跳到 1985 年，xtset 会警告
+list idcode year in 1/30
+</code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">xtdescribe 输出怎么读</div>
+        <p>重点看三块：① "n = 4711" 是组（公司）个数；② "T = 12" 是时间维度；③ Distribution of T_i 表格——如果大多数组都有 12 期、少数只有几期，说明是<strong>非平衡面板（unbalanced panel）</strong>。现代实证方法（reghdfe、xtreg fe）都默认支持非平衡，你不需要强行把它变成平衡。</p>
+      </div>
+    </div>
+
+    <!-- S8 -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 平衡 vs 非平衡面板的转换</h2>
+      <p><strong>平衡面板（balanced panel）</strong>指每个公司都恰好有 T 期观测；<strong>非平衡面板（unbalanced panel）</strong>指有的公司只观察到几年、有的公司观察了全部年份。中国上市公司面板几乎从来不是平衡的——IPO、退市、合并报表口径变化都会让某个公司"消失"几年。</p>
+      <p>什么时候需要转成平衡面板？通常只有两种情况：(1) 跑差分 GMM / 系统 GMM（xtabond2），这些方法对非平衡面板敏感；(2) 做一些特殊的稳健性检验。主回归一般用非平衡面板即可，无需强求平衡。</p>
+      <div class="formula-block">
+        <div class="formula-label">平衡面板的定义</div>
+        $$\text{Balanced} \iff \text{每个 } i \text{ 都恰好观测到 } t = 1, 2, \dots, T \text{ 全部期}$$
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 转成平衡面板</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+*  08-balanced.do
+*--------------------------------------------------------------*
+webuse nlswork, clear
+xtset idcode year
+xtdescribe    // 此时是非平衡
+
+* 方法：只保留"恰好观察满所有年份"的公司
+* 1) 每个公司有多少期？
+bysort idcode: gen n_years = _N
+* 2) 总年数是多少？
+quietly levelsof year, local(allyears)
+scalar T_total = `: word count `allyears''
+* 3) 保留恰好等于 T_total 的公司
+keep if n_years == T_total
+xtset idcode year
+xtdescribe    // 现在应当是 "balanced"
+</code></pre>
+      </div>
+    </div>
+
+    <!-- S9 -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 论文案例：合并策略如何影响识别</h2>
+      <div class="paper-card">
+        <span class="paper-type en">English · 经典</span>
+        <div class="paper-title">Does Foreign Direct Investment Increase the Productivity of Domestic Firms? In Search of Spillovers Through Backward Linkages</div>
+        <div class="paper-meta">Beata Smarzynska Javorcik · American Economic Review · 2004</div>
+        <div class="paper-desc">用立陶宛企业面板 + 投入产出表，构造上下游 FDI 暴露变量。其数据工程的核心就是本节讲的 merge：把企业层面（公司-年份）数据与行业层面（行业-年份）的投入产出系数按 m:1 industry year 合并。匹配率与行业代码对齐直接决定了下游溢出估计的可信度。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 经典</span>
+        <div class="paper-title">The Collapse of the International Trade</div>
+        <div class="paper-meta">Mary Amiti &amp; David Weinstein · Quarterly Journal of Economics · 2011</div>
+        <div class="paper-desc">用日本企业-银行-贷款三层网络数据研究信贷冲击的传导。要把企业财务面板、银行-贷款关系面板、银行资产负债表面板三张表，按"企业 × 主银行 × 年份"三层关键字 merge 在一起。是 m:m 场景"如何降级成多次 m:1"的教科书案例。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文顶刊 · 标杆</span>
+        <div class="paper-title">高铁开通与企业生产率</div>
+        <div class="paper-meta">黄群慧、余泳泽、张松林 · 《中国工业经济》 · 2018 年（及后续龙玉等 2017 《经济研究》系列）</div>
+        <div class="paper-desc">把中国工业企业数据库（或上市公司数据库）的公司-年份面板，与手工收集的"城市 × 年份 × 是否通高铁"政策表，按"城市 × 年份"多关键字 merge。其匹配策略、平衡/非平衡面板选择、行业代码对齐，几乎就是本节代码的论文版本。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文顶刊 · 标杆</span>
+        <div class="paper-title">《最低工资与企业加成率》</div>
+        <div class="paper-meta">赵瑞丽、孙楚仁、陈勇兵 · 《世界经济》 · 2018 年第 6 期（相关：孙楚仁等 2019 《经济研究》最低工资系列）</div>
+        <div class="paper-desc">把中国工业企业数据库与全国 2000+ 个县级最低工资标准表，按"县 × 年份"多关键字 merge。演示了多关键字 merge 的真实复杂度：同一公司可能跨县迁址，需要用"公司注册地址 × 生效年份"做动态匹配。</div>
+      </div>
+    </div>
+
+    <!-- S10 -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 常见错误与调试</h2>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：merge 后忘记 drop _merge</div>
+        <p>第二次再 merge 同名关键字时，Stata 会抱怨"_merge already defined"。规范做法：每次 merge 后 <code class="inline">drop _merge</code>，或者用 <code class="inline">merge ... , keep(match master) noreport</code> 一次性处理。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 2：股票代码前导零丢失</div>
+        <p>Stata 读 Excel 时会把 "000001" 读成数字 1，下次与字符串型股票代码 merge 永远匹配不上。预防：(1) 导入时用 <code class="inline">import excel ..., cellranges(...) clear</code> 后立刻 <code class="inline">tostring stkcd, format(%06.0f) replace</code>；(2) merge 前两边都用 <code class="inline">gen stkcd_str = string(stkcd, "%06.0f")</code> 标准化。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 3：append 后年份变量被错误合并</div>
+        <p>append 要求两边变量类型一致。如果某一年的 year 是字符串、另一年是数值，append 后整个 year 变成字符串，xtset 报错。预防：append 前 <code class="inline">describe</code> 一遍，或在每个文件里就强制 <code class="inline">destring year, replace</code>。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 4：reshape 后忘记 xtset</div>
+        <p>reshape 只是改变数据形状，不会自动告诉 Stata 面板结构。做完 reshape 必须 <code class="inline">xtset stkcd year</code>，否则后面 xtreg / reghdfe 报错 "not sorted" 或直接把数据当截面跑。</p>
+      </div>
+    </div>
+
+    <!-- S11 -->
+    <div class="section" id="s11">
+      <h2><span class="sec-num">11</span> 进阶学习资料</h2>
+      <ul>
+        <li><strong>Stata 官方</strong>：<code class="inline">help merge</code>、<code class="inline">help append</code>、<code class="inline">help reshape</code>、<code class="inline">help xtset</code>、<code class="inline">help xtdescribe</code>。其中 merge 的 PDF 手册附录里有非常详细的"为什么 m:m 是错的"。</li>
+        <li><strong>教材</strong>：Cameron &amp; Trivedi, <em>Microeconometrics Using Stata</em> 第 2 章（data management）；陈强《高级计量经济学及 Stata 应用》第 11 章"面板数据"。</li>
+        <li><strong>网络资源</strong>：Stata 官方 <a href="https://www.stata.com/support/faqs/data-management/" target="_blank">Data Management FAQs</a>，覆盖 merge / reshape 几乎所有常见坑。</li>
+        <li><strong>中文实战</strong>：中国工业企业数据库匹配指南（杨汝岱 2015）；CSMAR 数据中心"上市公司财务指标"代码手册。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="01-data-cleaning.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">01 数据清洗</div>
+      </a>
+      <a href="03-descriptive-stats.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">03 描述性统计</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+(function() {
+  const path = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('href') && item.getAttribute('href').endsWith(path)) {
+      item.classList.add('active');
+    }
+  });
+})();
+</script>
+</body>
+</html>

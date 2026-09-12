@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生产函数估计 OP/LP/ACF | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item active" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">结构估计</a>
+      <span class="sep">/</span>
+      <span>生产函数估计 OP/LP/ACF</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">STRUCTURAL · TFP</span>
+      <h1>生产函数估计：Olley-Pakes、Levinsohn-Petrin 与 Ackerberg-Caves-Frazer</h1>
+      <p class="desc">从企业生产决策的经济假设出发，讲清 OLS 的同时性与选择偏误，再按 OP→LP→ACF 三步法逐一推导假设、识别条件、估计步骤、Stata/Python 实现，最后落到 TFP 的后续应用与常见错误。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:10px 20px;border-radius:8px;margin:0 0 24px;font-size:14px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:18px;">&#128221;</span>
+      <span><strong>本模型共 11 个方程</strong>（含 CD 生产函数、马尔可夫生产率过程、同时性/选择偏误、OP/LP 代理反演、OP/LP/ACF 矩条件、TFP 残差计算）· 文末附「方程总清单 Equation Summary」</span>
+    </div>
+
+    <div class="precond-box" style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>面板数据计量、半参数两步估计、GMM 矩条件、probit/多项式拟合。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>企业理论、全要素生产率（TFP）、投入选择内生性、企业进入退出。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件前置：</span>Stata（<code class="inline">opreg</code>、<code class="inline">levpet</code>、<code class="inline">acfest</code>）；Python 手写对照。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置：</span>先学 <a href="02-gmm.html">02 GMM</a>，本页识别逻辑与其相通。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;">进阶</span></div>
+      </div>
+    </div>
+
+<div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">经济环境与假设</a></li>
+        <li><a href="#s2">内生性：同时性偏误与选择偏误</a></li>
+        <li><a href="#s3">OP (1996) 三步法全流程</a></li>
+        <li><a href="#s4">LP (2003) 中间投入代理</a></li>
+        <li><a href="#s5">ACF (2015) 函数相关性批判</a></li>
+        <li><a href="#s6">识别条件与矩条件</a></li>
+        <li><a href="#s7">数据要求与来源</a></li>
+        <li><a href="#s8">应用解读：TFP 与后续分析</a></li>
+        <li><a href="#s9">完整代码：Stata + Python</a></li>
+        <li><a href="#s10">论文案例与常见错误</a></li>
+      </ol>
+    </div>
+
+    <!-- ========== Section 1 ========== -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 经济环境与假设</h2>
+      <p>生产函数估计是产业组织、宏观与贸易实证中最基础也最棘手的问题。我们关心企业层面的全要素生产率（TFP）以及资本、劳动、中间投入的产出弹性。考虑一个 Cobb-Douglas 生产函数（对数形式）：</p>
+
+      <div class="formula-block">
+        <div class="formula-label">Cobb-Douglas Production Function (log form)</div>
+        $$Y_{it}=A_{it}K_{it}^{\beta_k}L_{it}^{\beta_l}M_{it}^{\beta_m}$$
+        <p style="margin-top:8px">取对数：</p>
+        $$y_{it} = \beta_0 + \beta_k k_{it} + \beta_l l_{it} + \beta_m m_{it} + \omega_{it} + \eta_{it}$$
+      </div>
+
+      <p>其中 $y_{it}$ 是企业 $i$ 在 $t$ 期的产出（对数），$k_{it}, l_{it}, m_{it}$ 分别是资本、劳动、中间投入（均取对数）。误差项被分解为两部分：$\omega_{it}$ 是企业可观测但计量经济学家不可观测的<strong>生产率冲击</strong>，$\eta_{it}$ 是独立同分布的测量误差或意外冲击。我们的目标是一致估计 $\beta_k, \beta_l, \beta_m$，再用 $\hat{\omega}_{it}=y_{it}-\hat{\beta}_0-\hat{\beta}_k k_{it}-\hat{\beta}_l l_{it}-\hat{\beta}_m m_{it}$ 作为 TFP。</p>
+
+      <h3>1.1 市场结构假设：完全竞争 vs 垄断竞争</h3>
+      <p>OP/LP/ACF 框架默认企业在产品市场上是<strong>价格接受者或面对给定需求曲线</strong>，产出 $Y_{it}$ 用实物量或经行业价格平减的销售额衡量。若企业有市场势力（markup $\mu &gt; 1$），则用收入产出 $r_{it}=p_{it}+y_{it}$ 估计会把 markup 混进 TFP，得到的是 revenue-TFP 而非 physical-TFP。Foster-Haltiwanger-Syverson (2008) 区分了这两者：在同质性行业中两者接近，在差异化行业中 revenue-TFP 与 markup 共变，后续回归需谨慎。劳动市场同理：默认工资外生给定；若企业有买方势力，$\beta_l$ 的估计也会失真。</p>
+
+      <h3>1.2 要素调整成本假设：自由要素与准固定要素</h3>
+      <p>这是整个框架的关键时序假设。<strong>劳动 $l_{it}$ 与中间投入 $m_{it}$ 是"自由"或"可变"要素</strong>：企业在 $t$ 期观察到 $\omega_{it}$ 后即可无成本调整，因此 $l_{it}, m_{it}$ 与 $\omega_{it}$ 同期相关。<strong>资本 $k_{it}$ 是"准固定"要素</strong>：它由前期投资累积，$k_{it}=(1-\delta)k_{i,t-1}+i_{i,t-1}$，在 $t$ 期期初就已确定，企业在选择 $k_{it}$ 时只能看到 $t-1$ 期及以前的生产率信息。这一"资本前定"假设是后文矩条件 $E[\xi_{it}\,|\,k_{it}]=0$ 的根基——资本对当期生产率创新正交，但对当期 $\omega_{it}$ 本身不正交（因为资本累积基于预期）。</p>
+
+      <h3>1.3 生产率过程假设：一阶马尔可夫</h3>
+      <p>假设生产率遵循一阶马尔可夫过程：</p>
+      <div class="formula-block">
+        <div class="formula-label">Productivity Process</div>
+        $$\omega_{it} = E[\omega_{it}\mid \omega_{i,t-1}] + \xi_{it}, \qquad \mathbb{E}[\xi_{it}\mid \omega_{i,t-1}]=0$$
+      </div>
+      <p>$\xi_{it}$ 是当期"未预期到"的生产率创新。企业在 $t-1$ 期做投资决策时只知道 $\omega_{i,t-1}$，不知道 $\xi_{it}$，所以 $k_{it}$ 与 $\xi_{it}$ 正交。这给了我们识别 $\beta_k$ 的外生变化。若马尔可夫阶数错了（如实际是 AR(2)），矩条件会失效。</p>
+
+      <h3>1.4 企业进入与退出假设</h3>
+      <p>企业在每期期初决定是否继续经营。设保留值 $\underline{\omega}_{it}(k_{it})$，当 $\omega_{it} \ge \underline{\omega}_{it}(k_{it})$ 时存活（$\chi_{it}=1$），否则退出。资本越多的企业"留下"所需的最低生产率越低（资本是沉没缓冲），因此在存活样本中 $\omega_{it}$ 的分布是左截断的，且截断点随 $k_{it}$ 变化。这就是选择偏误的来源。</p>
+    </div>
+
+    <!-- ========== Section 2 ========== -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 内生性：同时性偏误与选择偏误</h2>
+
+      <h3>2.1 同时性偏差 (Simultaneity Bias)</h3>
+      <p>企业在每期知道自己的 $\omega_{it}$，并据此选择当期劳动 $l_{it}$ 与中间投入 $m_{it}$。因此 $\omega_{it}$ 与 $l_{it}, m_{it}$ 相关：</p>
+      <div class="formula-block">
+        <div class="formula-label">Simultaneity Bias</div>
+        $$E[\omega_{it}\mid l_{it}]\neq 0, \qquad E[\omega_{it}\mid m_{it}]\neq 0$$
+      </div>
+      <p>用 OLS 直接回归，劳动与中间投入系数被<strong>向上偏误</strong>：高生产率企业多雇劳动，OLS 把"生产率带来的高产出"错记为"劳动的高边际产出"。资本 $k_{it}$ 因前定而内生性较弱。</p>
+
+      <h3>2.2 选择偏差 (Selection / Attrition Bias)</h3>
+      <p>低生产率企业更可能退出。若样本只含存活企业，则给定资本下 $\omega_{it}$ 分布左截断：</p>
+      <div class="formula-block">
+        <div class="formula-label">Selection Bias (OP 1996)</div>
+        $$E[\omega_{it}\mid k_{it},\chi_{it}=1]\neq 0$$
+      </div>
+      <p>这种截断使 $k_{it}$ 与残差负相关，OLS <strong>低估</strong>资本系数 $\beta_k$。OP 用美国电信设备业数据发现：OLS 估计的规模报酬远小于 1，修正后接近常数——差别主要来自选择偏误。</p>
+
+      <div class="callout info">
+        <div class="callout-title">💡 代理变量思想</div>
+        <p>OP/LP/ACF 的核心是：找一个企业确实根据 $\omega_{it}$ 调整、且计量经济学家能观测的变量（投资 $i_{it}$ 或中间投入 $m_{it}$），把它 invert 出来作为 $\omega_{it}$ 的代理，从而把 $\omega_{it}$ 从误差项中"替"出来，再用马尔可夫创新的正交矩识别资本系数。</p>
+      </div>
+    </div>
+
+    <!-- ========== Section 3 ========== -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> Olley-Pakes (1996)：投资作为代理变量</h2>
+
+      <h3>3.1 单调性假设</h3>
+      <p>OP 的关键假设：企业最优投资 $i_{it}$ 是当期 $\omega_{it}$ 与资本 $k_{it}$ 的严格递增函数（控制 $k$ 后）：</p>
+      <div class="formula-block">
+        <div class="formula-label">Investment Proxy (OP)</div>
+        $$i_{it}=i(\omega_{it},k_{it}) \;\Longrightarrow\; \omega_{it}=i^{-1}(i_{it},k_{it})\equiv h(i_{it},k_{it})$$
+      </div>
+      <p>严格单调性要求 $i_{it}&gt;0$（投资为零时逆函数不存在）。代入生产函数得：</p>
+      $$y_{it}=\beta_l l_{it}+\phi(i_{it},k_{it})+\eta_{it},\qquad \phi(i_{it},k_{it})=\beta_0+\beta_k k_{it}+h(i_{it},k_{it})$$
+
+      <h3>3.2 三步法</h3>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">第一步：非参估计 $\beta_l$</div>
+          <div class="step-desc">用三次多项式（或核回归）对 $(i_{it},k_{it})$ 拟合 $\phi(\cdot)$，回归 $y_{it}$ 对 $l_{it}$ 与多项式项，得到 $\hat{\beta}_l$。此时 $k$ 与 $\omega$ 被吸收进 $\phi$，不识别 $\beta_k$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第二步：生存概率 Probit</div>
+          <div class="step-desc">用 $(i_{i,t-1},k_{i,t-1})$ 与资本变化估计存活概率 $\hat{P}_{it}=\Pr(\chi_{it}=1\mid \cdot)$，供第三步控制选择偏误。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第三步：识别 $\beta_k$</div>
+          <div class="step-desc">假设 $\omega_{it}=E[\omega_{it}\mid\omega_{i,t-1}]+\xi_{it}$，用多项式展开条件期望，构造创新 $\xi_{it}$。用矩 $E[\xi_{it}\cdot k_{it}]=0$，并把 $\hat{P}_{it}$ 作为控制项进入非线性最小二乘，识别 $\beta_k$ 同时纠正选择。</div>
+        </div>
+      </div>
+
+      <div class="callout warning">
+        <div class="callout-title">⚠️ OP 的零投资问题</div>
+        <p>逆函数要求 $i_{it}&gt;0$。现实中大量企业某年投资为零（lumpy investment），必须剔除，样本损失严重；且投资与资本高度共线。这正是 LP 的出发点。</p>
+      </div>
+    </div>
+
+    <!-- ========== Section 4 ========== -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> Levinsohn-Petrin (2003)：中间投入代理</h2>
+      <p>LP 用<strong>中间投入 $m_{it}$</strong> 代替投资作为代理变量：</p>
+      <div class="formula-block">
+        <div class="formula-label">Intermediate Input Proxy (LP)</div>
+        $$m_{it}=m(\omega_{it},k_{it}) \;\Longrightarrow\; \omega_{it}=m^{-1}(m_{it},k_{it})\equiv h^*(m_{it},k_{it})$$
+      </div>
+      <p>经济学理由：中间投入几乎恒为正，避免 OP 零投资丢样本；中间投入调整成本低、对 $\omega$ 反应更连续平滑。三步法结构与 OP 平行：</p>
+      <ul>
+        <li><strong>第一阶段</strong>：用 $(m_{it},k_{it})$ 的四阶多项式非参逼近 $\phi(m_{it},k_{it})$，OLS 得 $\hat{\beta}_l$。</li>
+        <li><strong>第二阶段</strong>：对候选 $(\beta_k^*,\beta_m^*)$，构造 $\hat{\omega}_{it}=\hat{\phi}_{it}-\beta_k^* k_{it}-\beta_m^* m_{it}$，对 $\omega_{i,t-1}$ 非参回归得 $E[\omega_{it}\mid\omega_{i,t-1}]$，从而得创新 $\xi_{it}(\beta^*)$。</li>
+        <li><strong>第三阶段</strong>：用矩 $E[\xi_{it}\cdot k_{it}]=0$ 与 $E[\xi_{it}\cdot m_{i,t-1}]=0$ 最小化，得 $\hat{\beta}_k,\hat{\beta}_m$。</li>
+      </ul>
+      <div class="callout tip">
+        <div class="callout-title">✓ OP vs LP 怎么选？</div>
+        <p>零投资比例高时 LP 更稳健；关心进入/退出行为时 OP 的生存校正更直接。Wooldridge (2009) 证明两者都可写成单步 GMM，渐近等价且标准误更稳健。</p>
+      </div>
+    </div>
+
+    <!-- ========== Section 5 ========== -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> Ackerberg-Caves-Frazer (2015)：函数相关性批判</h2>
+      <p>ACF 指出 OP/LP 第一阶段存在根本的<strong>函数相关性 (functional dependence)</strong>：若 $l_{it}$ 也是 $(\omega_{it},k_{it})$ 的函数 $l_{it}=l(\omega_{it},k_{it})$，则 $\beta_l l_{it}$ 会被 $\phi(m_{it},k_{it})$ 完全吸收，<strong>第一阶段 $\beta_l$ 根本不可识别</strong>。</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">第一阶段：只估 $\hat{\phi}_{it}=\beta_0+h^*(m_{it},k_{it})$</div>
+          <div class="step-desc">不把 $l_{it}$ 放入回归，仅得到 $\hat{\phi}_{it}$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第二阶段：给定候选 $(\beta_l^*,\beta_k^*,\beta_m^*)$ 构造 $\hat{\omega}_{it}$</div>
+          <div class="step-desc">对 $\omega_{i,t-1}$ 非参回归得 $E[\omega_{it}\mid\omega_{i,t-1}]$，构造创新 $\xi_{it}$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">第三阶段：GMM 同时识别所有系数</div>
+          <div class="step-desc">常用矩 $E[\xi_{it}\cdot k_{it}]=0$、$E[\xi_{it}\cdot l_{i,t-1}]=0$、$E[\xi_{it}\cdot m_{i,t-1}]=0$。$\beta_l$ 用滞后劳动作工具，因当期 $l_{it}$ 可能与 $\xi_{it}$ 相关。</div>
+        </div>
+      </div>
+      <h3>5.1 Value-added vs Gross Output</h3>
+      <p>ACF 强调：若生产函数是 gross output（总产出），必须把 $m_{it}$ 放进生产函数本身，不能先减 $m$ 得 value-added 再估计——因为 $m_{it}$ 既是要素又是代理变量，两步处理会出错。推荐直接估计 gross output 生产函数。</p>
+    </div>
+
+    <!-- ========== Section 6 ========== -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 识别条件与矩条件</h2>
+
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库：本节用 GMM / 矩条件估计生产函数</div>
+        <p>OP/LP/ACF 的估计本质就是构造条件矩 $E[\xi_{it}\mid \cdot]=0$ 再做 GMM，并做 Hansen J 过度识别检验。不熟悉矩条件、最优权重矩阵、J 检验？先学 <a href="02-gmm.html">基础知识库·GMM →</a></p>
+      </div>
+
+      <p>整套方法的识别依赖三个互相关联的假设，缺一不可：</p>
+      <ol>
+        <li><strong>单调性</strong>：$i(\omega,k)$ 或 $m(\omega,k)$ 在控制 $k$ 后关于 $\omega$ 严格单调，逆函数存在。若企业存在产能约束、投资不可逆，单调性会被破坏。</li>
+        <li><strong>当期自由/前定要素的时序</strong>：$l_{it},m_{it}$ 同期响应 $\omega_{it}$；$k_{it}$ 前定于 $\omega_{it}$ 的创新 $\xi_{it}$。这是 $E[\xi_{it}\cdot k_{it}]=0$ 的来源。</li>
+        <li><strong>一阶马尔可夫</strong>：$\omega_{it}$ 的条件期望只依赖 $\omega_{i,t-1}$，滞后二阶及以上与创新正交，提供了 $l_{i,t-1},m_{i,t-1}$ 作为额外工具。</li>
+      </ol>
+
+      <h3>6.1 生产率创新的构造（补全）</h3>
+      <div class="formula-block">
+        <div class="formula-label">★ 马尔可夫生产率创新（补全）</div>
+        $$\omega_{it}=g(\omega_{i,t-1})+\xi_{it},\qquad E[\xi_{it}\mid\omega_{i,t-1}]=0$$
+        $$\xi_{it}(\beta)=\hat\omega_{it}(\beta)-\hat g(\hat\omega_{i,t-1}),\qquad \hat\omega_{it}(\beta)=\hat\phi_{it}-\beta_k k_{it}-\beta_l l_{it}\;(\text{ACF})$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$g(\cdot)=E[\omega_{it}\mid\omega_{i,t-1}]$ 为非参条件期望；$\xi_{it}$ 为不可预期的生产率冲击。<strong>识别条件</strong>：$E[\xi_{it}\mid\omega_{i,t-1}]=0$ 是马尔可夫假设的矩表达，所有工具变量合法性都源于此。</p>
+      </div>
+
+      <h3>6.2 各方法矩条件（补全，禁止"常用矩汇总"跳步）</h3>
+      <div class="formula-block">
+        <div class="formula-label">★ OP 矩条件（补全）</div>
+        $$E\big[\xi_{it}(\beta)\cdot k_{it}\big]=0,\qquad E\big[\xi_{it}(\beta)\cdot i_{i,t-1}\big]=0$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$k_{it}$ 为前定资本；$i_{i,t-1}$ 为滞后投资。<strong>识别条件</strong>：$k_{it}$ 在前定投资决策时已确定，与 $\xi_{it}$ 正交；$\beta_l$ 由第一阶段非参识别，$\beta_k$ 由本矩识别。</p>
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">★ LP 矩条件（补全）</div>
+        $$E\big[\xi_{it}(\beta)\cdot k_{it}\big]=0,\qquad E\big[\xi_{it}(\beta)\cdot m_{i,t-1}\big]=0$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$m_{i,t-1}$ 为滞后中间投入。<strong>识别条件</strong>：当期 $m_{it}$ 内生（同期响应 $\omega_{it}$），故不能作自己的工具；滞后 $m_{i,t-1}$ 已在 $\omega_{i,t-1}$ 信息集内、与 $\xi_{it}$ 正交。</p>
+      </div>
+      <div class="formula-block">
+        <div class="formula-label">★ ACF 矩条件（补全）</div>
+        $$E\big[\xi_{it}(\beta)\cdot k_{it}\big]=0,\qquad E\big[\xi_{it}(\beta)\cdot l_{i,t-1}\big]=0,\qquad E\big[\xi_{it}(\beta)\cdot m_{i,t-1}\big]=0$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$l_{i,t-1}$ 为滞后劳动。<strong>识别条件</strong>：ACF 第一阶段不识别 $\beta_l$（函数相关批判），故 $\beta_l$ 必须用滞后劳动 $l_{i,t-1}$ 作工具识别——当期 $l_{it}$ 可能与 $\xi_{it}$ 相关，不可用。<strong>经济直觉</strong>：这是 ACF 修复 OP/LP 第一阶段偏误的核心矩。</p>
+      </div>
+
+      <p>常用矩条件汇总：$E[\xi_{it}\mid k_{it}]=0$、$E[\xi_{it}\mid l_{i,t-1}]=0$、$E[\xi_{it}\mid m_{i,t-1}]=0$、$E[\xi_{it}\mid k_{i,t-1}]=0$。过度识别检验（Hansen J）可用来检验工具外生性。Wooldridge (2009) 把这些矩写成单步 GMM，标准误由 sandwich 矩阵直接给出，避免两步渐近修正。</p>
+    </div>
+
+    <!-- ========== Section 7 ========== -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 数据要求与来源</h2>
+      <p>估计 OP/LP/ACF 需要<strong>企业面板数据</strong>，至少包含：</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>变量</th><th>含义</th><th>用途</th></tr></thead>
+          <tbody>
+            <tr><td>$y_{it}$</td><td>产出（增加值或总产出，行业价格平减）</td><td>被解释变量</td></tr>
+            <tr><td>$k_{it}$</td><td>资本存量（永续盘存法构造）</td><td>状态变量，准固定</td></tr>
+            <tr><td>$l_{it}$</td><td>劳动（人数或工时，最好按技能加权）</td><td>自由要素</td></tr>
+            <tr><td>$m_{it}$</td><td>中间投入（原材料+能源+服务，平减）</td><td>LP/ACF 代理变量</td></tr>
+            <tr><td>$i_{it}$</td><td>投资（资本形成）</td><td>OP 代理变量</td></tr>
+            <tr><td>$\chi_{it}$</td><td>存活/退出虚拟变量</td><td>OP 第二阶段选择校正</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>常用数据源：<strong>中国工业企业数据库</strong>（1998–2007，规模以上工业企业，杨汝岱、聂辉华等大量研究基于此）、<strong>美国 Census LRD/ASM</strong>（OP、LP 原始论文所用）、智利/哥伦比亚制造业面板（LP 原文用智利）。中国数据需注意：2008 年后工业企业库口径变化、规模以下企业"消失"不等于退出，退出定义要谨慎；资本存量用永续盘存法 $K_{it}=(1-\delta)K_{i,t-1}+I_{it}$ 构造。此外，OP 要求 $i_{it}&gt;0$ 的样本截断会损失约 15%–30% 的观测，LP 用中间投入则几乎不损失样本——这一点在比较方法时必须同时报告样本量。</p>
+    </div>
+
+    <!-- ========== Section 8 ========== -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 应用解读：TFP 与后续分析</h2>
+      <p>估计出 $\hat{\beta}$ 后，TFP 残差 $\hat{\omega}_{it}$ 是后续研究的核心变量。常见用法：</p>
+      <div class="formula-block">
+        <div class="formula-label">★ TFP 残差计算（补全）</div>
+        $$\hat{\omega}_{it}=y_{it}-\hat\beta_l\,l_{it}-\hat\beta_k\,k_{it}-\hat\beta_m\,m_{it}\qquad\text{（gross output，含中间投入）}$$
+        $$\widehat{\text{TFP}}_{it}=\exp(\hat\omega_{it})\quad\text{（水平），}\qquad \Delta\hat\omega_{it}=\hat\omega_{it}-\hat\omega_{i,t-1}\quad\text{（增长）}$$
+        <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量定义：$y_{it}$ 为对数产出；$\hat\beta$ 为 OP/LP/ACF 估计系数。<strong>设定理由</strong>：TFP 是索洛剩余的结构估计版——扣除可观测要素贡献后的"技术水平"。<strong>经济直觉</strong>：同样的 $k,l,m$ 下产出越高，$\hat\omega$ 越大，企业越"高效"；它是资源误置、出口自选择、政策评估的核心被解释变量。</p>
+      </div>
+      <ul>
+        <li><strong>TFP 增长分解</strong>：Olley-Pakes 分解 $\Delta \bar{\omega}=\Delta \bar{\omega}_{unweighted}+\Delta \sum(s_{it}-\bar{s})(\omega_{it}-\bar{\omega})$，把总量 TFP 增长拆成"企业自身进步"与"资源再配置 (reallocation)"。中国制造业研究普遍发现 reallocation 贡献远大于平均进步。</li>
+        <li><strong>与出口/创新/外资的关系</strong>：用 $\hat{\omega}_{it}$ 对出口虚拟变量、专利、外资份额回归，考察"自我选择"（高效率企业出口）与"学习效应"（出口提升效率）。</li>
+        <li><strong>资源误置</strong>：Hsieh-Klenow (2009) 框架用 $\hat{\omega}$ 的离散度衡量 misallocation，反事实"如果消除误置 TFP 能提升多少"。</li>
+        <li><strong>政策评估</strong>：用 $\hat{\omega}_{it}$ 作为企业绩效变量，评估国企改革、开发区、减税政策的因果效应。</li>
+        <li><strong>跨国/跨行业比较</strong>：把 $\hat{\omega}$ 标准化（行业-年份均值归零）后比较中国与美国、印度的 TFP 分布离散度，是 Hsieh-Klenow 框架的标准做法。</li>
+      </ul>
+      <div class="callout info">
+        <div class="callout-title">💡 解读提醒</div>
+        <p>报告 TFP 时务必说明用的是 OLS / OP / LP / ACF 哪一种，以及是 value-added 还是 gross output。三种方法估计的 $\beta_l$ 常差异显著（OP/LP 第一阶段高估、ACF 修正后更接近理论值），TFP 水平也随之平移。建议正文主回归用 ACF，附录报告 OLS/OP/LP 作稳健性。</p>
+      </div>
+    </div>
+
+    <!-- ========== Section 9 ========== -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 完整代码：Stata + Python</h2>
+
+      <h3>9.1 Stata：opreg / levpet / acfest</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* 生产函数估计：OP / LP / ACF 完整示例
+* 数据：企业面板 id-year，变量 y(增加值/总产出) k l m
+* 安装：ssc install opreg, replace
+*       ssc install levpet, replace
+*       ssc install acfest, replace
+*==============================================================*
+clear all
+set more off
+use "firm_panel.dta", clear
+
+xtset id year
+gen ln_y  = ln(value_added)
+gen ln_k  = ln(capital)
+gen ln_l  = ln(labor)
+gen ln_m  = ln(material)
+gen ln_inv= ln(investment)
+
+* --- 0. OLS 参照 ---
+reg ln_y ln_k ln_l, robust
+estimates store ols
+
+* --- 1. Olley-Pakes (1996) ---
+opreg ln_y = ln_l, state(ln_k) proxy(ln_inv) exit(exit_flag) ///
+    vce(boot, reps(50))
+estimates store op
+
+* --- 2. Levinsohn-Petrin (2003) ---
+levpet ln_y, free(ln_l) state(ln_k) proxy(ln_m) valueadded
+estimates store lp_va
+
+* gross output 形式
+levpet ln_y_gross, free(ln_l) state(ln_k) proxy(ln_m)
+estimates store lp_go
+
+* --- 3. Ackerberg-Caves-Frazer (2015) ---
+acfest ln_y_gross, free(ln_l) state(ln_k) proxy(ln_m) ///
+    vce(boot, reps(100)) tech(nr)
+estimates store acf
+
+* --- 4. 导出 TFP 对比 ---
+predict tfp_ols, xb
+gen tfp_op = ln_y - _b[ln_l]*ln_l - _b[ln_k]*ln_k
+predict tfp_acf, omega
+esttab ols op lp_va acf, se star(* 0.1 ** 0.05 *** 0.01) ///
+    mtitles("OLS" "OP" "LP(VA)" "ACF")
+</code></pre>
+      </div>
+
+      <h3>9.2 Python：ACF 三步法手写实现</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python</span><button class="copy-btn">复制</button></div>
+<pre><code># ============================================================
+# ACF (2015) 生产函数估计的最小可运行实现
+# 第一阶段: (m,k) 多项式拟合 phi_hat (不含 l)
+# 第二/三阶段: GMM 同时估计 (beta_l, beta_k, beta_m)
+# ============================================================
+import numpy as np
+import pandas as pd
+from scipy.optimize import minimize
+import statsmodels.api as sm
+
+def acf_estimate(df, y='y', l='l', k='k', m='m', id_col='id', t_col='t'):
+    df = df.sort_values([id_col, t_col]).reset_index(drop=True)
+    # 第一阶段: phi(m,k) = beta0 + h*(m,k)，排除 l
+    Xp = _poly2d(df[m].values, df[k].values, degree=4)
+    Xp = sm.add_constant(Xp)
+    df['phi_hat'] = sm.OLS(df[y].values, Xp).fit().fittedvalues
+
+    def obj(params, df):
+        bl, bk, bm = params
+        df = df.copy()
+        df['w'] = df['phi_hat'] - bl*df[l] - bk*df[k] - bm*df[m]
+        df['wl'] = df.groupby(id_col)['w'].shift(1)
+        v = df.dropna(subset=['wl']).copy()
+        x = v['wl'].values; yv = v['w'].values
+        Xq = np.column_stack([np.ones_like(x), x, x**2, x**3])
+        c, *_ = np.linalg.lstsq(Xq, yv, rcond=None)
+        xi = yv - Xq @ c
+        kt = v[k].values
+        ll = v.groupby(id_col)[l].shift(1).reindex(v.index).values
+        ml = v.groupby(id_col)[m].shift(1).reindex(v.index).values
+        Z = np.column_stack([np.ones_like(kt), kt, ll, ml])
+        g = np.nanmean(xi[:, None]*Z, axis=0)
+        return g @ np.eye(len(g)) @ g
+
+    init = sm.OLS(df[y], sm.add_constant(df[[l,k,m]])).fit().params
+    x0 = [init[l], init[k], init[m]]
+    r = minimize(obj, x0, args=(df,), method='L-BFGS-B',
+                 bounds=[(0,1)]*3)
+    bl, bk, bm = r.x
+    df['tfp'] = df[y] - bl*df[l] - bk*df[k] - bm*df[m]
+    return dict(beta_l=bl, beta_k=bk, beta_m=bm, tfp=df['tfp'].values)
+
+def _poly2d(x1, x2, degree=4):
+    terms = []
+    for i in range(1, degree+1):
+        for j in range(i+1):
+            terms.append((x1**j)*(x2**(i-j)))
+    return np.column_stack(terms)
+
+# ---- 模拟数据: 1000 企业 x 10 年 ----
+np.random.seed(42); N, T = 1000, 10
+ids = np.repeat(np.arange(N), T); ts = np.tile(np.arange(1,T+1), N)
+bl, bk, bm = 0.60, 0.20, 0.15
+omega = np.zeros(N*T)
+for t in range(1, T):
+    omega[t::T] = 0.8*omega[t-1::T] + np.random.normal(0,0.1,N)
+k = np.log1p(np.cumsum(np.random.exponential(0.1,N*T),axis=0)/T)
+l = 0.5*omega + np.random.normal(0,0.1,N*T)
+m = 0.3*omega + 0.2*k + np.random.normal(0,0.05,N*T)
+y = bl*l + bk*k + bm*m + omega + np.random.normal(0,0.02,N*T)
+d = pd.DataFrame({'id':ids,'t':ts,'y':y,'l':l,'k':k,'m':m})
+res = acf_estimate(d)
+print(f"bl={res['beta_l']:.3f}(0.60) bk={res['beta_k']:.3f}(0.20) bm={res['beta_m']:.3f}(0.15)")
+</code></pre>
+      </div>
+    </div>
+
+    <!-- ========== Section 10 ========== -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 论文案例与常见错误</h2>
+
+      <h3>10.1 经典论文</h3>
+      <div class="paper-card">
+        <span class="paper-type en">English · ECMA 1996</span>
+        <div class="paper-title">The Dynamics of Productivity in the Telecommunications Equipment Industry</div>
+        <div class="paper-meta">Olley, G. S. &amp; Pakes, A. (1996). <em>Econometrica</em>, 64(6), 1263–1297.</div>
+        <div class="paper-desc">结构估计生产函数开山之作。用美国电信设备业 1972–1984 面板，首次以投资为代理变量、三步法纠正同时性与选择偏误。发现放松管制后 TFP 上升主要来自 reallocation（低效率企业退出、高效率企业扩张）。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · ReStud 2003</span>
+        <div class="paper-title">Estimating Production Functions Using Inputs to Control for Unobservables</div>
+        <div class="paper-meta">Levinsohn, J. &amp; Petrin, A. (2003). <em>Review of Economic Studies</em>, 70(2), 317–341.</div>
+        <div class="paper-desc">用中间投入替代投资，避免零投资样本损失。基于智利制造业面板，证明 LP 规模报酬接近 1。目前贸易与宏观实证最常用命令。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · ECMA 2015</span>
+        <div class="paper-title">Identification Properties of Recent Production Function Estimators</div>
+        <div class="paper-meta">Ackerberg, D., Caves, K. &amp; Frazer, G. (2015). <em>Econometrica</em>, 83(6), 2411–2451.</div>
+        <div class="paper-desc">系统批判 OP/LP 函数相关性：第一阶段劳动系数不可识别。提出修正，把劳动识别推迟到第二阶段，用滞后劳动作工具。建议同时报告 OLS/OP/LP/ACF 作稳健性。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 《经济研究》</span>
+        <div class="paper-title">中国制造业企业全要素生产率研究：1998–2007</div>
+        <div class="paper-meta">杨汝岱 (2015). 《经济研究》, 第 2 期, 54–66 页。</div>
+        <div class="paper-desc">基于工业企业数据库用 OP/LP/ACF 估计中国制造业 TFP，发现 TFP 增长主要由资源再配置驱动；国企 TFP 显著低于民企但 2000 年后收敛。中文文献 ACF 框架代表作。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 《世界经济》</span>
+        <div class="paper-title">中国制造业企业资源配置效率</div>
+        <div class="paper-meta">聂辉华、贾瑞雪 (2011). 《世界经济》, 第 2 期, 42–58 页。</div>
+        <div class="paper-desc">用 OP 估计 1999–2007 中国制造业 TFP，发现资源误置程度远高于美国，国企、出口企业、开发区企业误置程度差异显著。</div>
+      </div>
+
+      <h3>10.2 常见错误</h3>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 1：gross output 数据却按 value-added 设定估计</div>
+        <p>数据是总产出时必须把 $m_{it}$ 放进生产函数本身，不能先减 $m$ 得增加值。否则把中间投入的直接贡献错记为 TFP（ACF 2015 §5）。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 2：忽略进入/退出，非平衡面板直接跑 OP</div>
+        <p>OP 第二阶段 Probit 是纠正选择偏误的关键。中国工业企业库中"消失"的企业不一定真退出（可能规模以下），必须明确定义退出并用 <code class="inline">exit()</code> 选项。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 3：用 OLS TFP 做后续回归却声称用了结构估计</div>
+        <p>OLS TFP 有同时性偏误，其方差分解、与出口/创新的回归结果不可信。后续回归必须用 OP/LP/ACF 的 $\hat{\omega}_{it}$，并说明方法。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 4：多项式阶数随意、不做敏感性分析</div>
+        <p>$\phi(\cdot)$ 用 3 阶还是 4 阶显著影响 $\hat{\beta}_k$。ACF 建议至少报告 3 阶与 4 阶两版。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 5：忽略资本存量构造方法</div>
+        <p>$k_{it}$ 是 OP/LP/ACF 的状态变量，永续盘存法的基期资本、折旧率、投资平减指数选择会直接影响 $\hat{\beta}_k$。中国文献常用张军等 (2004) 的折旧率假设，需在数据部分写清。</p>
+      </div>
+    </div>
+
+    <!-- ========== 方程总清单 ========== -->
+    <div class="section" id="eq-summary">
+      <h2>方程总清单 / Equation Summary</h2>
+      <p>本页全部方程按出现顺序汇总如下，共 <strong>11 个</strong>。每个方程均可在正文中找到对应的变量定义、设定理由与经济直觉。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>编号</th><th>方程名称</th><th>核心公式</th><th>所在节</th></tr></thead>
+          <tbody>
+            <tr><td>Eq.10-01</td><td>Cobb-Douglas 生产函数（对数）</td><td>$y_{it}=\beta_0+\beta_l l_{it}+\beta_k k_{it}+\omega_{it}+\eta_{it}$</td><td>01</td></tr>
+            <tr><td>Eq.10-02</td><td>一阶马尔可夫生产率过程</td><td>$\omega_{it}=E[\omega_{it}\mid\omega_{i,t-1}]+\xi_{it}$</td><td>01.3</td></tr>
+            <tr><td>Eq.10-03</td><td>同时性偏差</td><td>$E[\omega_{it}\mid l_{it},k_{it}]\ne 0$ 致 OLS 有偏</td><td>02.1</td></tr>
+            <tr><td>Eq.10-04</td><td>选择偏差（OP）</td><td>$\Pr(\chi_{it}=1\mid\omega_{it},k_{it})$ 与 $\omega$ 正相关</td><td>02.2</td></tr>
+            <tr><td>Eq.10-05</td><td>OP 投资代理反演</td><td>$i_{it}=i(\omega_{it},k_{it})\Rightarrow\omega_{it}=h(i_{it},k_{it})$</td><td>03.1</td></tr>
+            <tr><td>Eq.10-06</td><td>LP 中间投入代理反演</td><td>$m_{it}=m(\omega_{it},k_{it})\Rightarrow\omega_{it}=h^*(m_{it},k_{it})$</td><td>04</td></tr>
+            <tr><td>Eq.10-07</td><td>马尔可夫生产率创新（补全）</td><td>$\xi_{it}(\beta)=\hat\omega_{it}(\beta)-\hat g(\hat\omega_{i,t-1})$</td><td>06.1（补全）</td></tr>
+            <tr><td>Eq.10-08</td><td>OP 矩条件（补全）</td><td>$E[\xi_{it} k_{it}]=0$；$E[\xi_{it} i_{i,t-1}]=0$</td><td>06.2（补全）</td></tr>
+            <tr><td>Eq.10-09</td><td>LP 矩条件（补全）</td><td>$E[\xi_{it} k_{it}]=0$；$E[\xi_{it} m_{i,t-1}]=0$</td><td>06.2（补全）</td></tr>
+            <tr><td>Eq.10-10</td><td>ACF 矩条件（补全）</td><td>$E[\xi_{it} k_{it}]=0$；$E[\xi_{it} l_{i,t-1}]=0$；$E[\xi_{it} m_{i,t-1}]=0$</td><td>06.2（补全）</td></tr>
+            <tr><td>Eq.10-11</td><td>TFP 残差计算（补全）</td><td>$\hat\omega_{it}=y_{it}-\hat\beta_l l_{it}-\hat\beta_k k_{it}-\hat\beta_m m_{it}$</td><td>08（补全）</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="05-dynamic-structural.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">动态结构模型总览</div>
+      </a>
+      <a href="11-auctions.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">拍卖模型的结构估计</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

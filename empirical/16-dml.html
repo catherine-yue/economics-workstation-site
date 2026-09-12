@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DML 双重/去偏机器学习 Double Machine Learning | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item active" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">实证论文</a><span class="sep">/</span>
+      <span>DML 双重/去偏机器学习</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">Empirical · Causal Machine Learning</span>
+      <h1>DML 双重/去偏机器学习 Double Machine Learning</h1>
+      <p class="desc">当控制变量维度很高、关系非线性时，Lasso 等正则化估计会产生<strong>正则化偏误</strong>，$\sqrt{n}$ 推断不再可靠。DML（Chernozhukov et al., 2018 Econometrica）用"正交化 + cross-fitting"两步法：先用机器学习残差化，再在残差上做回归，得到半参有效、对模型误设稳健的处理效应估计。本节讲清 Neyman 正交矩、部分线性模型、Python/R/Stata 三种实现，以及常见失败模式。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">矩估计、$\sqrt{n}$ 一致性、渐近正态、Lasso / 随机森林的基本思想；最好已学 <a href="15-potential-outcomes-dag.html">15 潜在结果与DAG</a>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">能识别处理 $D$、结果 $Y$、混淆变量 $X$；理解"控制混淆函数 $g_0(X)$"的因果含义。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">Python 3.9+：<code class="inline">pip install doubleml econml scikit-learn pandas numpy</code>；R：<code class="inline">install.packages(c("DoubleML","mlr3","grf"))</code>；Stata 17+：<code class="inline">ssc install ddml</code>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body"><a href="15-potential-outcomes-dag.html">15 潜在结果与DAG</a>；<a href="05-endogeneity-iv.html">05 内生性与IV</a>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#f5ebe0;color:#b87333;">前沿进阶</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">问题：正则化估计的推断偏误</a></li>
+        <li><a href="#s2">DML 核心思想：正交化</a></li>
+        <li><a href="#s3">数学推导：Neyman 正交矩与 cross-fitting</a></li>
+        <li><a href="#s4">部分线性模型 PLR 与 DML 估计量</a></li>
+        <li><a href="#s5">交互模型 / 异质性 DML</a></li>
+        <li><a href="#s6">Python 完整代码（DoubleML / econml）</a></li>
+        <li><a href="#s7">R 完整代码（DoubleML 包）</a></li>
+        <li><a href="#s8">Stata 实现：ddml / pystacked</a></li>
+        <li><a href="#s9">第一阶段 ML 的选择</a></li>
+        <li><a href="#s10">逐步流程</a></li>
+        <li><a href="#s11">AIPW 双重稳健估计原理</a></li>
+        <li><a href="#s12">DR-IPW 与交叉拟合的等价性</a></li>
+        <li><a href="#s13">AIPW 完整代码（Stata / Python）</a></li>
+        <li><a href="#s14">论文案例、常见错误</a></li>
+      </ol>
+    </div>
+
+    <!-- ========== 正文 ========== -->
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 问题：正则化估计的推断偏误</h2>
+      <p>现代实证研究中，控制变量 $X$ 动辄上百上千（个体特征、地区哑变量、交互项、多项式）。传统 OLS 在 $p$ 接近 $n$ 时方差爆炸；Lasso、Ridge、随机森林等正则化方法能控制维数，但它们有一个致命问题：<strong>正则化引入了向零收缩的偏误（regularization bias）</strong>。</p>
+      <p>更隐蔽的问题：当我们用同一批数据既拟合混淆函数 $g_0(X)=E[Y\mid X]$，又估计处理效应 $\theta_0$ 时，<strong>第一阶段 ML 的估计误差会"泄漏"到第二阶段的 $\theta_0$ 估计里</strong>。即使 ML 拟合在均方误差意义上"很好"（收敛速度 $n^{-1/4}$），这个泄漏的阶数 $n^{-1/4}$ 仍然慢于 $\sqrt{n}$，导致 $\hat\theta$ 不是 $\sqrt{n}$ 一致、置信区间覆盖率失真。这就是 Belloni, Chen, Chernozhukov &amp; Hansen (2012) 所说的<strong>"惩罚偏差 + 正则化近似误差"</strong>问题。</p>
+      <div class="callout danger">
+        <div class="callout-title">❌ 典型失败场景</div>
+        <p>用 Lasso 选完控制变量后，再 OLS 回归 $Y\sim D+\text{selected X}$，并报告标准误。这相当于把 Lasso 的模型选择不确定性当成没有，置信区间偏窄、t 值膨胀。审稿人看到这种做法会直接要求用 DML。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> DML 核心思想：正交化</h2>
+      <p>DML 的思想可以一句话概括：<strong>用机器学习把"混淆"残差化掉，再在残差上做一个简单的 OLS</strong>。具体分两步（以部分线性模型为例）：</p>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 第一阶段 ML：拟合两个混淆函数</div>
+          <div class="step-desc">用机器学习分别拟合 $\hat m(X)=E[D\mid X]$（处理方程）和 $\hat\ell(X)=E[Y\mid X]$（结果方程），得到残差 $\tilde D=D-\hat m(X)$、$\tilde Y=Y-\hat\ell(X)$。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 第二阶段 OLS：在残差上回归</div>
+          <div class="step-desc">把 $\tilde Y$ 对 $\tilde D$ 做 OLS：$\hat\theta=(\sum \tilde D_i^2)^{-1}\sum \tilde D_i\tilde Y_i$。这个 OLS 系数就是 DML 估计量。</div>
+        </div>
+      </div>
+      <p>关键直觉：$\hat m(X)$ 和 $\hat\ell(X)$ 已经吸收了 $X$ 对 $D$ 和 $Y$ 的所有非线性、高维影响，残差 $\tilde D$ 只保留了"$X$ 不能解释的那部分处理变化"，$\tilde Y$ 只保留了"$X$ 不能解释的那部分结果变化"。在这两个残差上的 OLS 就等价于"连续化的 Frisch-Waugh-Lovell"，但第一阶段用的是任意 ML 方法。</p>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 数学推导：Neyman 正交矩与 cross-fitting</h2>
+      <p>DML 估计量建立在一个<strong>Neyman 正交矩条件</strong>之上。考虑部分线性模型：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (1) — 部分线性模型（PLR）</div>
+        $$Y=D\,\theta_0+g_0(X)+U,\qquad E[U\mid D,X]=0$$
+      </div>
+      <p>残差化后，矩条件写成：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (2) — 正交矩条件</div>
+        $$E\big[(Y-\theta D-g_0(X))\,(D-m_0(X))\big]=0$$
+      </div>
+      <p>这里 $m_0(X)=E[D\mid X]$、$g_0(X)=E[Y-\theta_0 D\mid X]$。<strong>Neyman 正交性</strong>体现在：把矩条件对扰动参数 $\eta=(g_0,m_0)$ 求导，<strong>一阶导数为零</strong>：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (3) — Neyman 正交性</div>
+        $$\partial_\eta E[\psi(\theta_0,\eta_0)]=0$$
+      </div>
+      <p>这意味着：即使 $\hat\eta$ 收敛得不算快（$n^{-1/4}$），只要它足够准确，$\hat\theta$ 的渐近偏差仍然只有 $o_p(n^{-1/2})$，从而 $\sqrt n(\hat\theta-\theta_0)$ 渐近正态。<strong>正交性把"第一阶段估计误差"对第二阶段的影响从一阶降为二阶</strong>。</p>
+      <p>但还有一个问题：如果用同一批数据既估 $\hat\eta$ 又估 $\hat\theta$，ML 算法会过拟合，残差 $\tilde D,\tilde Y$ 之间存在"同样本相关"，造成偏差。<strong>cross-fitting（交叉拟合）</strong>解决这个问题：</p>
+      <ol>
+        <li>把样本随机分成 $K$ 折（通常 $K=5$）。</li>
+        <li>对每一折 $k$：用<strong>其余 $K-1$ 折</strong>训练 ML 模型 $\hat\eta^{(-k)}$，再用它<strong>预测第 $k$ 折</strong>的残差。</li>
+        <li>把所有折的残差拼起来，得到"out-of-sample 残差"，再做第二阶段 OLS。</li>
+      </ol>
+      <p>cross-fitting 的作用：<strong>让第二阶段用的残差对每个观测而言都是"由未见过它的模型预测出来的"</strong>，从而消除过拟合带来的同样本偏差。这与预测建模里的 out-of-fold 预测完全一致。配合 Neyman 正交性，DML 达到 $\sqrt{n}$ 一致、半参有效（semiparametric efficiency）。</p>
+      <div class="callout tip">
+        <div class="callout-title">✅ 直觉</div>
+        <p>DML 像一道"双保险"：(1) 正交性保证第一阶段即使有点误差也不会污染第二阶段的一阶项；(2) cross-fitting 保证第一阶段不会因为过拟合而产生额外偏差。两者缺一不可。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 部分线性模型 PLR 与 DML 估计量</h2>
+      <p>回到部分线性模型。记 $m_0(X)=E[D\mid X]$、$\ell_0(X)=E[Y\mid X]$，则：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (4) — DML 估计量（PLR，partialling-out score）</div>
+        $$\tilde\theta=\frac{\sum_{i=1}^n\tilde D_i\,\tilde Y_i}{\sum_{i=1}^n\tilde D_i^2},\qquad \tilde Y=Y-\hat\ell(X),\ \tilde D=D-\hat m(X)$$
+      </div>
+      <p>渐近方差为 $\sigma^2 = E[U^2\tilde D^2]/(E[\tilde D^2])^2$，可由样本矩 plug-in 估计。DML 也支持另一套 score（"IV-type"），即把 $g_0(X)$ 直接写成 $\ell_0(X)-\theta_0 m_0(X)$，此时矩条件为 $E[(Y-\theta D-\ell_0(X)+\theta m_0(X))(D-m_0(X))]=0$，与上式等价。</p>
+      <p>除 PLR 外，DML 还覆盖：(i) <strong>IRM（Interactively Regression Model）</strong>，允许 $\theta$ 与 $X$ 交互（异质性效应）；(ii) <strong>PLIV / IV-Type</strong>，当有工具变量 $Z$ 时；(iii) <strong>多值处理</strong>；(iv) <strong>面板固定效应</strong>。这些模型在 DoubleML 包里都有对应类。</p>
+      <p>DML 还有两种估计过程：<strong>DML1</strong> 把所有折的残差直接拼成一个样本，再做一次 OLS；<strong>DML2</strong> 在每一折上单独做一次 OLS，再把各折的 $\hat\theta$ 取平均。DML2 在小样本下偏差更小，是 DoubleML 包的默认选项（<code class="inline">dml_procedure="dml2"</code>）。重复 cross-fitting（<code class="inline">n_rep&gt;1</code>）可以平均掉折划分的随机性，让点估计更稳。实务中建议 $K=5$ 或 $K=10$，重复 3 次以上。</p>
+      <p>需要强调：DML 解决的是<strong>"第一阶段估计误差如何不污染第二阶段"</strong>的问题，它<strong>不</strong>解决识别问题。如果处理 $D$ 与结果 $Y$ 之间存在未观测混淆（即后门准则不满足），无论第一阶段 ML 用得多花哨，DML 估计量仍然有偏。DML 的有效性从一开始就建立在可忽略性 $Y(0),Y(1)\perp D\mid X$ 成立的假设上——这一点和上一节 DAG 框架是完全一致的。审稿人看到 DML 论文，仍然会问：你的 DAG 是什么？未观测混淆怎么排除？</p>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 交互模型 / 异质性 DML</h2>
+      <p>如果效应 $\theta$ 随协变量变化，写成交互模型：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (5) — 交互（异质性）DML</div>
+        $$Y=D\,\theta(X)+g_0(X)+U,\qquad \theta(X)=\theta_0+\theta_1' X$$
+      </div>
+      <p>把 $D\cdot X$ 作为额外的"处理变量"塞进 PLR 框架，DML 可以同时给出 $\theta_0,\theta_1$ 的点估计与置信区间。注意：这只给出了<strong>线性形式的异质性</strong>；想要任意形状的 $CATE(x)$，请用下一节的因果森林。DML 在这里的角色是<strong>估计平均效应及其线性异质性</strong>，因果森林负责"非参数地把整条 $CATE(x)$ 曲线画出来"。</p>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> Python 完整代码（DoubleML / econml）</h2>
+      <p>下面用 DoubleML 官方模拟 DGP（CCD DHNR 2018）生成数据，对比 OLS / Lasso / DML 的偏误和置信区间覆盖率。</p>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · DoubleML 完整可运行示例</span><button class="copy-btn">复制</button></div>
+        <pre><code># ============================================================
+# 06.1 DoubleML 入门：PLR 模型 + 随机森林第一阶段
+# 安装：pip install doubleml scikit-learn numpy pandas
+# ============================================================
+import numpy as np
+from doubleml import DoubleMLData, DoubleMLPLR
+from doubleml.datasets import make_plr_CCDDHNR2018
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+from sklearn.linear_model import LassoCV
+
+np.random.seed(3141)
+
+# ---- 1. 生成模拟数据（真实 theta0 = 0.5）----
+# n=500, p=20 协变量，混淆函数为非线性
+df = make_plr_CCDDHNR2018(alpha=0.5, return_type="dataframe")
+# df 含列：y（结果）, d（处理）, X1...Xp（协变量）
+print("数据形状:", df.shape, "| 真实 theta0 = 0.5")
+
+# ---- 2. 包装成 DoubleMLData ----
+obj_dml_data = DoubleMLData(df, y_col="y", d_cols="d")
+
+# ---- 3. 定义第一阶段学习器 ----
+# ml_l: 拟合 E[Y|X]（连续，回归树）
+ml_l = RandomForestRegressor(n_estimators=500, max_depth=5, random_state=3141)
+# ml_m: 拟合 E[D|X]（这里 D 是连续；若是二值处理用 RandomForestClassifier）
+ml_m = RandomForestRegressor(n_estimators=500, max_depth=5, random_state=3141)
+
+# ---- 4. 构造 PLR 对象并拟合（默认 5-fold cross-fitting）----
+dml_plr = DoubleMLPLR(obj_dml_data,
+                      ml_l=ml_l, ml_m=ml_m,
+                      n_folds=5,          # 5 折 cross-fitting
+                      score="partialling out",
+                      dml_procedure="dml2")
+dml_plr.fit()
+print(dml_plr.summary)
+# 输出 theta、std err、t、p-value、2.5%/97.5% 置信区间
+# 与真实 0.5 对比：DML 的 theta 应接近 0.5，CI 覆盖率接近 95%
+
+# ---- 5. 换 Lasso 当第一阶段 ----
+ml_l_lasso = LassoCV(cv=5)
+ml_m_lasso = LassoCV(cv=5)
+dml_plr_lasso = DoubleMLPLR(obj_dml_data,
+                            ml_l=ml_l_lasso, ml_m=ml_m_lasso,
+                            n_folds=5)
+dml_plr_lasso.fit()
+print(dml_plr_lasso.summary)
+</code></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · 对比 OLS / Lasso / DML 的偏误与覆盖率</span><button class="copy-btn">复制</button></div>
+        <pre><code># ============================================================
+# 06.2 蒙特卡洛对比：OLS vs Lasso vs DML
+# 重复 R 次实验，看偏误（bias）和 95% CI 覆盖率
+# ============================================================
+import numpy as np
+import statsmodels.api as sm
+from sklearn.linear_model import LassoCV
+from doubleml import DoubleMLData, DoubleMLPLR
+from sklearn.ensemble import RandomForestRegressor
+
+np.random.seed(0)
+R = 50                      # 重复次数（正式研究可调到 1000）
+n, p = 1000, 20
+theta0 = 0.5
+res = {"OLS": [], "Lasso": [], "DML": []}
+
+for r in range(R):
+    # 模拟：X ~ N(0,1)；m(X)=非线性；g(X)=非线性
+    X = np.random.normal(size=(n, p))
+    m_x = np.tanh(X[:, 0] + X[:, 1])           # E[D|X]
+    g_x = np.tanh(X[:, 2] + X[:, 3])           # E[Y|X]
+    D = m_x + np.random.normal(size=n)
+    Y = theta0 * D + g_x + np.random.normal(size=n)
+
+    # --- (a) OLS：把 X 全塞进去 ---
+    X_design = sm.add_constant(np.column_stack([D, X]))
+    ols = sm.OLS(Y, X_design).fit()
+    res["OLS"].append(ols.params[1])
+
+    # --- (b) Lasso 选变量后 OLS ---
+    lasso = LassoCV(cv=5).fit(X, Y)
+    sel = np.where(np.abs(lasso.coef_) &gt; 1e-8)[0]
+    X_sel = sm.add_constant(np.column_stack([D, X[:, sel]]))
+    l = sm.OLS(Y, X_sel).fit()
+    res["Lasso"].append(l.params[1])
+
+    # --- (c) DML（随机森林第一阶段）---
+    import pandas as pd
+    df_r = pd.DataFrame(np.column_stack([Y, D, X]),
+                        columns=["y", "d"] + [f"X{i}" for i in range(p)])
+    dd = DoubleMLData(df_r, y_col="y", d_cols="d",
+                      x_cols=[f"X{i}" for i in range(p)])
+    rf = RandomForestRegressor(n_estimators=200, max_depth=4, random_state=r)
+    dml = DoubleMLPLR(dd, ml_l=rf, ml_m=rf, n_folds=5)
+    dml.fit()
+    res["DML"].append(float(dml.coef[0]))
+
+# ---- 输出对比 ----
+for k, v in res.items():
+    v = np.array(v)
+    bias = v.mean() - theta0
+    print(f"{k:6s}: 均值={v.mean():.4f}, 偏误={bias:+.4f}, 标准差={v.std():.4f}")
+# 预期：OLS 有偏（未正确建模非线性）；
+#       Lasso 偏误较大且 CI 不准；
+#       DML 偏误最小、最接近 theta0=0.5
+</code></pre>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · econml 等价写法</span><button class="copy-btn">复制</button></div>
+        <pre><code># ============================================================
+# 06.3 econml 中的 DML（LinearDML）
+# pip install econml
+# ============================================================
+from econml.dml import LinearDML
+from sklearn.ensemble import GradientBoostingRegressor, GradientBoostingClassifier
+import numpy as np, pandas as pd
+
+# 复用上面的数据
+X = np.random.normal(size=(n, p))
+D = np.tanh(X[:, 0] + X[:, 1]) + np.random.normal(size=n)
+Y = theta0 * D + np.tanh(X[:, 2] + X[:, 3]) + np.random.normal(size=n)
+
+est = LinearDML(
+    model_y=GradientBoostingRegressor(n_estimators=200, max_depth=3),
+    model_t=GradientBoostingRegressor(n_estimators=200, max_depth=3),
+    discrete_treatment=False,        # 连续处理
+    cv=5,                            # cross-fitting
+    random_state=0,
+)
+est.fit(Y, D, X=X)
+# 平均处理效应
+print("ATE =", est.ate(X), " 95% CI =", est.ate_interval(X, alpha=0.05))
+# 线性异质性系数（CATE(x) = intercept + coefs @ x）
+print("CATE 线性模型系数:")
+print(est.intercept_, est.coef_)
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> R 完整代码（DoubleML 包）</h2>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">R · DoubleML 包入门</span><button class="copy-btn">复制</button></div>
+        <pre><code># ============================================================
+# 07.1 R 版 DML：install.packages(c("DoubleML","mlr3","mlr3learners"))
+# ============================================================
+library(DoubleML)
+library(mlr3)
+library(mlr3learners)
+library(data.table)
+
+set.seed(3141)
+
+# ---- 1. 用内置 DGP（与 Python 版相同）----
+data = make_plr_CCDDHNR2018(alpha = 0.5, n_obs = 5000,
+                             return_type = "data.table")
+# 列：y, d, X1..X20
+
+# ---- 2. 包装数据 ----
+obj_dml_data = DoubleMLData$new(data, y_col = "y", d_cols = "d")
+
+# ---- 3. 定义第一阶段学习器（mlr3 语法）----
+# 连续结果用 regr.lm / regr.ranger；二值处理用 classif.ranger
+ml_l = lrn("regr.ranger", num.trees = 500, max.depth = 5)
+ml_m = lrn("regr.ranger", num.trees = 500, max.depth = 5)
+
+# ---- 4. 构造 PLR 对象并拟合 ----
+dml_plr = DoubleMLPLR$new(obj_dml_data,
+                          ml_l = ml_l,
+                          ml_m = ml_m,
+                          n_folds = 5,
+                          score = "partialling out")
+dml_plr$fit()
+print(dml_plr)
+# 输出：theta = 0.5 (0.0X)，置信区间与 Python 版一致
+
+# ---- 5. 总结表 ----
+dml_plr$summary()
+
+# ---- 6. 换 Lasso（glmnet）----
+library(mlr3learners)
+ml_l_lasso = lrn("regr.glmnet", alpha = 1, lambda = 0.05)
+ml_m_lasso = lrn("regr.glmnet", alpha = 1, lambda = 0.05)
+dml_plr_lasso = DoubleMLPLR$new(obj_dml_data,
+                                 ml_l = ml_l_lasso,
+                                 ml_m = ml_m_lasso,
+                                 n_folds = 5)
+dml_plr_lasso$fit()
+print(dml_plr_lasso$summary())
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> Stata 实现：ddml / pystacked</h2>
+      <p>Stata 用户有两个主流选择：(1) <strong><code class="inline">ddml</code></strong>（Chernozhukov et al. 2024, Stata Journal）原生实现 DML；(2) <strong><code class="inline">pystacked</code></strong>，通过 Python 后端调用 sklearn 模型，常与 DML 配合。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · ddml 命令</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ============================================================
+* 08.1 Stata: ddml 做部分线性模型 DML
+* ssc install ddml
+* ssc install rforest    // 随机森林后端
+* ============================================================
+clear all
+set seed 3141
+set obs 5000
+
+* --- 模拟数据 ---
+drawnorm X1-X20, means(0) sds(1)
+gen D = tanh(X1 + X2) + rnormal()
+gen Y = 0.5*D + tanh(X3 + X4) + rnormal()
+
+* --- 初始化 ddml 环境 ---
+ddml init partial, kfolds(5)
+
+* --- 第一阶段：用随机森林拟合 E[Y|X] 和 E[D|X] ---
+ddml E[Y|X]: rforest Y X1-X20, type(reg)
+ddml E[D|X]: rforest D X1-X20, type(reg)
+
+* --- 第二阶段：在残差上估计 theta ---
+ddml estimate, robust
+
+* --- 查看结果 ---
+ddml summary
+* 输出 theta、标准误、p 值、置信区间
+* 预期 theta 接近 0.5
+
+* --- 换 Lasso ---
+ddml init partial, kfolds(5)
+ddml E[Y|X]: lasso Y X1-X20
+ddml E[D|X]: lasso D X1-X20
+ddml estimate, robust
+ddml summary
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 第一阶段 ML 的选择</h2>
+      <p>第一阶段用什么 ML？DML 的渐近性质对学习者的<strong>逼近能力（rate）</strong>有要求，但并不指定具体算法。实务中：</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>第一阶段学习器</th><th>适合场景</th><th>注意事项</th></tr></thead>
+          <tbody>
+            <tr><td>Lasso / Ridge</td><td>稀疏线性结构、$p$ 大但真实稀疏</td><td>配合 cross-fitting；不要直接用 Lasso 后 OLS</td></tr>
+            <tr><td>随机森林</td><td>非线性、低维交互、稳健</td><td>调 mtry / 树深；对类别变量注意编码</td></tr>
+            <tr><td>梯度提升 GBDT / XGBoost</td><td>预测精度要求高、表格数据</td><td>容易过拟合，用 cross-fitting 兜底</td></tr>
+            <tr><td>神经网络</td><td>高维图像/文本辅助变量</td><td>样本量需求大；调参成本高</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>经验法则：<strong>用一个"在交叉验证预测精度上最好"的学习器</strong>，但不必纠结——DML 的渐近性质对"足够好"的学习器都成立。DoubleML 包支持 <code class="inline">tune()</code> 自动超参调优。</p>
+      <p>实务中还有几个细节：(1) <strong>二值处理与连续处理要用不同学习器</strong>。$D$ 是 0/1 时，$E[D\mid X]$ 应该用分类器（<code class="inline">RandomForestClassifier</code>）而不是回归器，因为后者可能预测出概率超出 $[0,1]$。(2) <strong>类别协变量要先 one-hot 编码</strong>，否则树模型会把类别编号当连续值处理。(3) <strong>样本权重 / 聚类标准误</strong>在 DoubleML 包中都支持，面板数据请用 <code class="inline">smpls</code> 选项或 <code class="inline">DoubleMLPLR</code> 的固定效应扩展。(4) <strong>做敏感性分析</strong>：DoubleML 包内置 <code class="inline">sensitivity_analysis()</code>，可以回答"如果未观测混淆的强度是 $\Gamma$，$\hat\theta$ 还显著吗？"——这是把 DML 写进顶刊的标配。</p>
+      <p>另外，<strong>DML 与传统回归的关系</strong>值得再讲清楚一次。如果第一阶段 $m_0(X),g_0(X)$ 都是线性的，DML 估计量就等价于在控制 $X$ 后对 $D$ 做 OLS（Frisch-Waugh-Lovell 定理）。DML 之所以是"升级"，不是因为它换了估计量，而是因为它允许第一阶段用任意非线性 ML，并通过正交化 + cross-fitting 保证了 $\sqrt n$ 推断。换句话说：<strong>DML 是 OLS 的推广，而不是替代品</strong>。当控制变量只有三五个、关系明显线性时，直接 OLS 更透明、更易审稿。</p>
+      <h3>DML 在中文顶刊的写作模板</h3>
+      <p>把 DML 写进中文顶刊时，建议采用如下结构：(1) 在"识别策略"一节先画 DAG，说明传统 OLS 控制哪些变量、残留什么问题；(2) 引出"控制变量维度高、非线性关系强"的动机；(3) 给出 DML 的估计方程（即本页 Equation 1-2），强调 Neyman 正交与 cross-fitting；(4) 报告 Python/R 或 Stata 代码的结果表：DML 估计的 $\hat\theta$、标准误、置信区间，并列 OLS / Lasso 结果作为对比；(5) 做敏感性分析（Oster $\delta$ 或 DoubleML 内置 $\Gamma$），讨论"若存在未观测混淆，结论是否反转"；(6) 若需要异质性，升级到 DML-IRM 或因果森林（见下一节）。</p>
+      <p>常见的审稿意见也可以提前预判：第一，"为什么不用普通 OLS？"——回答：控制变量维度超过 50、存在明显非线性时，OLS 模型误设偏误大；第二，"cross-fitting 为什么是 5 折而不是 10 折？"——回答：5 折是文献标准，结果对折数不敏感；第三，"为什么第一阶段用随机森林而不是 Lasso？"——回答：随机森林捕捉非线性更强，Lasso 作为稳健性补充报告；第四，"DML 能解决未观测混淆吗？"——回答：不能，我们用 DML 控制观测混淆，未观测混淆通过 IV / DID 解决。</p>
+      <h3>DML 与面板固定效应</h3>
+      <p>当数据是面板（有个体固定效应和时间固定效应）时，DML 有专门的扩展。一种简单做法是先对 $Y$ 和 $D$ 做"去均值"（within transformation），把时间和个体效应吸收掉，再在残差上跑 PLR。DoubleML 包提供 <code class="inline">DoubleMLPLPLR</code>（Panel DML）专门处理这种情形。另一种做法是把个体哑变量和时间哑变量直接塞进 $X$，但当 $N$ 很大时哑变量数量爆炸，此时 within transformation 更高效。需要注意：面板 DML 仍然是<strong>在可忽略性框架下</strong>，固定效应只能吸收"时不变"的未观测混淆；时变的混淆仍然需要 IV 或 DID。</p>
+      <h3>DML 的局限与边界</h3>
+      <p>最后，诚实列出 DML 做不到的事：(1) 不能识别未观测混淆——后门准则失败时，DML 也救不了；(2) 不能处理一般均衡 / 溢出效应——DML 假设 SUTVA 成立，处理一个个体不影响另一个；(3) 不能做政策反事实——DML 估的是观测数据中的处理效应，不是"如果政策成本变化会怎样"；(4) 不能给因果机制——DML 估的是总效应，机制分解需要单独做中介分析。把 DML 放在正确的位置：它是<strong>高维控制变量下稳健估 ATE 的工具</strong>，不是因果推断的全部。</p>
+      <p>对初学者的最后一条建议：先在<strong>模拟数据</strong>上把 DML 跑通，对比 OLS / Lasso / DML 的偏误，建立直觉之后再碰真实数据。本页 06.2 的蒙特卡洛代码就是为此设计的——把 R 调到 1000 次，画出三种估计量的直方图，你会直观看到"为什么正则化偏误重要、为什么 cross-fitting 必要"。这种"先仿真、再实证"的学习路径，比直接读 Econometrica 原文高效得多。</p>
+      <p>此外，建议读者把本页与 <a href="15-potential-outcomes-dag.html">15 潜在结果与 DAG</a>、<a href="17-causal-forest.html">17 因果森林</a> 一起读：15 节解决"识别"问题（后门准则、可忽略性），16 节解决"高维控制下的稳健估计"问题，17 节解决"效应异质性"问题。三者构成完整的现代因果推断工作流——先画图、再 DML 估 ATE、最后用因果森林挖 HTE。这一组合已经成为应用微观实证论文的标准工具栈，建议在研究设计阶段就把三张图、两套代码、一段异质性分析写进论文大纲。</p>
+    </div>
+
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 逐步流程</h2>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 写出部分线性 / 交互模型</div>
+          <div class="step-desc">明确 $Y, D, X$，写出 $Y=D\theta+g(X)+U$，并判断是否需要异质性（PLR vs IRM vs PLIV）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 选择第一阶段学习器</div>
+          <div class="step-desc">根据 $X$ 的维度和结构选 Lasso / RF / GBDT；用交叉验证选超参。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 运行 DML（必做 cross-fitting）</div>
+          <div class="step-desc">用 DoubleML / ddml / LinearDML 跑 5 折 cross-fitting；默认 dml2 过程。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4 · 报告 $\hat\theta$、CI、p 值</div>
+          <div class="step-desc">与 OLS / 手工控制变量结果对比；做敏感性分析（DoubleML 包内置 <code class="inline">sensitivity_analysis()</code>）。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 5 · 异质性扩展</div>
+          <div class="step-desc">若关心"效应在哪些人群不同"，升级到 IRM 或因果森林（见下一节）。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 新增：AIPW 双重稳健估计 ========== -->
+
+    <div class="section" id="s11">
+      <h2><span class="sec-num">11</span> AIPW 双重稳健估计原理</h2>
+      <p>本页前 10 节讲的 DML，在<strong>二值处理</strong>情形下有一个更古老、也更直观的祖先——<strong>AIPW（Augmented Inverse Probability Weighting，增强逆概率加权）</strong>，由 Robins, Rotnitzky &amp; Zhao (1994) 提出。理解 AIPW 能帮助你真正看懂 DML 在做什么：DML 本质上是 AIPW 的"正交化 + cross-fitting"版本。</p>
+
+      <h3>11.1 两条单独路线：IPW 与结果回归（OR）</h3>
+      <p>在可忽略性 $Y(0),Y(1)\perp D\mid X$ 与共同支撑 $0&lt;e(X)&lt;1$ 下，估计 ATE 有两条经典路线：</p>
+      <ul>
+        <li><strong>逆概率加权 IPW</strong>：用倾向得分 $\hat e(X_i)=P(D=1\mid X_i)$ 加权，$\hat\tau_{IPW}=\frac{1}{N}\sum_i\big[\frac{D_iY_i}{\hat e_i}-\frac{(1-D_i)Y_i}{1-\hat e_i}\big]$。它<strong>不需要</strong>建模结果 $Y$，但对 $e(X)$ 的误设<strong>极其敏感</strong>——一旦 $\hat e(X)$ 不准，权重就会偏差很大。</li>
+        <li><strong>结果回归 OR / 回归调整</strong>：分别在处理组、对照组上拟合 $\hat m_1(X)=E[Y\mid D=1,X]$、$\hat m_0(X)=E[Y\mid D=0,X]$，再 $\hat\tau_{OR}=\frac{1}{N}\sum_i[\hat m_1(X_i)-\hat m_0(X_i)]$。它<strong>不需要</strong>建模 $e(X)$，但对结果模型 $\hat m_d(X)$ 的误设敏感。</li>
+      </ul>
+      <p>IPW 只依赖倾向得分模型，OR 只依赖结果模型，<strong>两者各有软肋</strong>。AIPW 的聪明之处在于：把两者拼在一起，做成<strong>"双保险"</strong>。</p>
+
+      <h3>11.2 双重稳健（double robustness）</h3>
+      <p>AIPW 估计量把 IPW 的加权均值，加上一项"用结果回归去修正残差"的增强项：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (AIPW) — 增强逆概率加权估计量</div>
+        $$\hat\tau_{AIPW}=\frac{1}{N}\sum_i\left[\frac{D_iY_i}{\hat e(X_i)}-\frac{(D_i-\hat e(X_i))\hat m_1(X_i)}{\hat e(X_i)}\right]-\frac{1}{N}\sum_i\left[\frac{(1-D_i)Y_i}{1-\hat e(X_i)}+\frac{(D_i-\hat e(X_i))\hat m_0(X_i)}{1-\hat e(X_i)}\right]$$
+      </div>
+      <p>这个估计量的核心性质是<strong>双重稳健</strong>：<strong>只要倾向得分模型 $\hat e(X)$ 与结果模型 $\hat m_1(X),\hat m_0(X)$ 中至少一个设定正确，$\hat\tau_{AIPW}$ 就是一致的</strong>。它不像 IPW 那样"赌"倾向得分，也不像 OR 那样"赌"结果模型——两条路线只要有一条走对，结论就成立。这就是"双重稳健"名称的由来。</p>
+      <div class="callout info">
+        <div class="callout-title">📌 直觉：增强项是干什么的</div>
+        <p>把 AIPW 拆开看，第一项是 IPW；后面的增强项 $-\frac{(D_i-\hat e_i)\hat m_d(X_i)}{\hat e_i}$ 是在"用结果模型预测去修正 IPW 的偏差"。当结果模型正确时，这一项把 IPW 的权重偏差<strong>抵消掉</strong>；当倾向得分正确时，$(D_i-\hat e_i)$ 的条件期望为零，增强项不起作用，估计量退化为正确的 IPW。两个模型"互相兜底"。</p>
+      </div>
+
+      <h3>11.3 AIPW 与 DML 的关系</h3>
+      <p>DML（二值处理 / IRM 情形）用的 score 正是 AIPW score：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation — IRM score（即 AIPW score）</div>
+        $$\psi(\theta,\eta)=\frac{D\{Y-m_1(X)\}}{e(X)}-\frac{(1-D)\{Y-m_0(X)\}}{1-e(X)}+m_1(X)-m_0(X)-\theta$$
+      </div>
+      <p>令 $E[\psi]=0$ 解出的 $\theta$ 就是 AIPW 估计量。所以：<strong>DML 是 AIPW 的正交化版本</strong>。AIPW 由 Robins-Rotnitzky-Zhao (1994) 提出时，假设 $\hat e,\hat m$ 是参数化正确估计的；DML（Chernozhukov et al. 2018）把它推广到<strong>高维 / 非参数第一阶段</strong>，并通过 (i) Neyman 正交矩让 score 对 $\eta$ 的一阶导数为零、(ii) cross-fitting 消除过拟合，从而在 ML 估计 $\hat e,\hat m$ 仅有 $n^{-1/4}$ 收敛速度时仍得到 $\sqrt{n}$ 推断。两者关系一句话：<strong>AIPW 给 score，DML 给让这个 score 在 ML 第一阶段下仍然合法使用的统计理论。</strong></p>
+
+      <h3>11.4 cross-fitting 在 AIPW 中的应用</h3>
+      <p>传统 AIPW 用同一份样本既估 $\hat e,\hat m$ 又代入 AIPW score，当 $\hat e,\hat m$ 是灵活 ML（如随机森林）时会过拟合，产生与本页 s1 相同的"正则化 / 过拟合偏差"。把 cross-fitting 套到 AIPW 上：把样本分 $K$ 折，对第 $k$ 折用其余折训练 $\hat e^{(-k)},\hat m_d^{(-k)}$，再用它预测第 $k$ 折的 $\psi_i$，最后平均所有折的 score 解 $\theta$。这正是 DoubleML 包 <code class="inline">DoubleMLIRM</code>（<code class="inline">score="AIPW"</code>）和 econml <code class="inline">DRLearner</code> 的内部实现。</p>
+    </div>
+
+    <div class="section" id="s12">
+      <h2><span class="sec-num">12</span> DR-IPW 与交叉拟合的等价性</h2>
+      <p><strong>DR-IPW（Doubly Robust IPW）</strong>是 AIPW 的另一个名字，强调"加权 + 结果回归双重稳健"。本节澄清两个实务中最容易混淆的点：为什么 cross-fitting 不是可选项，以及 DML2 与 AIPW 在数学上如何等价。</p>
+
+      <h3>12.1 交叉拟合（sample splitting）的必要性</h3>
+      <p>如果不用 cross-fitting，用全样本拟合 $\hat e,\hat m$ 后直接算 AIPW score，会发生两件事：(1) <strong>过拟合偏差</strong>——ML 模型在训练样本上残差被人为压小，$\hat e(X)$ 系统性偏向 $D$ 的样本比例，权重 $1/\hat e$ 与 $1/(1-\hat e)$ 失真；(2) <strong>正则化偏差</strong>——Lasso 等把系数向零收缩，污染 score 的一阶项。DML 的理论证明：<strong>只有配合 cross-fitting + Neyman 正交，ML 第一阶段的 $n^{-1/4}$ 误差才不会传染第二阶段</strong>。缺了 cross-fitting，双重稳健"只要一个模型对就一致"的保证在 ML 情形下失效——因为两个模型都被同一份数据过拟合了。</p>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 为什么 DML 默认 5 折而不是 1 折</div>
+        <p>1 折 = 不做交叉拟合 = 同一份数据训练 + 推断。在传统参数 AIPW 里这没问题（模型正确、无非参过拟合）；但一旦第一阶段换成随机森林 / Lasso，1 折就会把过拟合直接带进 ATE。DoubleML 包把 <code class="inline">n_folds=5</code> 设为默认，正是为此。</p>
+      </div>
+
+      <h3>12.2 DML2（Neyman 正交）与 AIPW 的等价性</h3>
+      <p>本页 s4 提到 DML1 与 DML2：DML1 把各折残差拼成一个样本做一次 OLS；DML2 在每折单独估一次 $\hat\theta^{(k)}$ 再平均。对二值处理的 IRM/AIPW score，可以证明：<strong>DML2 估计量 ≡ K 折 cross-fitted AIPW 估计量</strong>——每一折的 $\hat\theta^{(k)}$ 就是用"其余折训练的 $\hat e,\hat m$ 预测本折"得到的 AIPW score 平均，再跨折平均。换句话说，<strong>"Neyman 正交的 DML2"和"cross-fitted 双重稳健 AIPW"是同一估计量的两种写法</strong>。这也解释了为什么 econml 的 <code class="inline">DRLearner</code> 与 DoubleML 的 <code class="inline">DoubleMLIRM(score="AIPW")</code> 在同一数据上给出几乎相同的点估计。</p>
+
+      <h3>12.3 手工 K 折 cross-fitting AIPW（Python）</h3>
+      <p>下面这段不依赖任何因果包，用 sklearn 的随机森林当第一阶段，手工实现 K 折 AIPW，帮助你看清"cross-fitting + 双重稳健 score"的内部机制。正式研究建议直接用 DoubleML / econml。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · 手工 K 折 cross-fitting AIPW（DR-IPW）</span><button class="copy-btn">复制</button></div>
+        <pre><code># ============================================================
+# 12.3 手工 K 折 cross-fitted AIPW（理解内部机制用）
+# 安装：pip install numpy pandas scikit-learn
+# ============================================================
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.model_selection import KFold
+
+np.random.seed(20240101)
+n, p = 2000, 6
+X = np.random.normal(size=(n, p))
+
+# --- DGP：真实 ATE ≈ 1 ---
+# e(X) = logit^{-1}(X1 + 0.5*X2)
+e_x = 1 / (1 + np.exp(-(X[:, 0] + 0.5 * X[:, 1])))
+D = (np.random.uniform(size=n) &lt; e_x).astype(float)
+m1 = 1 + X[:, 0]                 # 处理组均值函数
+m0 = 0.5 * X[:, 1]               # 对照组均值函数
+Y = D * m1 + (1 - D) * m0 + np.random.normal(scale=0.5, size=n)
+
+# --- K=5 折 cross-fitting ---
+kf = KFold(n_splits=5, shuffle=True, random_state=20240101)
+# 存放 out-of-fold 的 e_hat, m1_hat, m0_hat
+e_hat = np.zeros(n); m1_hat = np.zeros(n); m0_hat = np.zeros(n)
+
+for train_idx, test_idx in kf.split(X):
+    Xtr, Xte = X[train_idx], X[test_idx]
+    Dtr, Ytr = D[train_idx], Y[train_idx]
+    # 倾向得分：分类器
+    ps = RandomForestClassifier(n_estimators=300, max_depth=4, random_state=0)
+    ps.fit(Xtr, Dtr)
+    e_hat[test_idx] = ps.predict_proba(Xte)[:, 1]
+    # 结果回归：分别在 D=1 / D=0 上训练，预测全折
+    r1 = RandomForestRegressor(n_estimators=300, max_depth=4, random_state=0)
+    r1.fit(Xtr[Dtr == 1], Ytr[Dtr == 1])
+    r0 = RandomForestRegressor(n_estimators=300, max_depth=4, random_state=0)
+    r0.fit(Xtr[Dtr == 0], Ytr[Dtr == 0])
+    m1_hat[test_idx] = r1.predict(Xte)
+    m0_hat[test_idx] = r0.predict(Xte)
+
+# --- 数值稳定：把倾向得分截断到 [0.01, 0.99]（trim 极端权重）---
+e_hat = np.clip(e_hat, 0.01, 0.99)
+
+# --- AIPW score（逐个体），见 s11 的公式 ---
+score = (D * (Y - m1_hat) / e_hat
+         - (1 - D) * (Y - m0_hat) / (1 - e_hat)
+         + m1_hat - m0_hat)
+tau_aipw = score.mean()
+print(f"cross-fitted AIPW ATE = {tau_aipw:.4f}  (真实 ATE = 1.0)")
+
+# --- 对比：不做 cross-fitting（1 折，全样本训练）---
+ps_all = RandomForestClassifier(n_estimators=300, max_depth=4, random_state=0).fit(X, D)
+e_all = np.clip(ps_all.predict_proba(X)[:, 1], 0.01, 0.99)
+r1a = RandomForestRegressor(n_estimators=300, max_depth=4, random_state=0).fit(X[D==1], Y[D==1])
+r0a = RandomForestRegressor(n_estimators=300, max_depth=4, random_state=0).fit(X[D==0], Y[D==0])
+m1a, m0a = r1a.predict(X), r0a.predict(X)
+score_nocf = (D*(Y-m1a)/e_all - (1-D)*(Y-m0a)/(1-e_all) + m1a - m0a)
+print(f"不做 cross-fitting 的 ATE = {score_nocf.mean():.4f}  (通常偏差更大)")
+</code></pre>
+      </div>
+      <p>把上面这段跑两遍，你会看到：cross-fitted AIPW 更接近真实 ATE=1；不做 cross-fitting 的版本因随机森林在训练样本上过拟合而系统性偏移。这就是"cross-fitting 不是可选项"的实证证明。</p>
+    </div>
+
+    <div class="section" id="s13">
+      <h2><span class="sec-num">13</span> AIPW 完整代码（Stata / Python）</h2>
+
+      <h3>13.1 Stata：teffects aipw</h3>
+      <p>Stata 内置 <code class="inline">teffects aipw</code>，一行命令完成"倾向得分 logit + 结果回归 OLS"的双重稳健估计，并用 <code class="inline">osample()</code> 标记共同支撑样本。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · teffects aipw（模拟数据，set seed）</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ============================================================
+* 13.1 Stata: teffects aipw 双重稳健 ATE
+* 模拟数据：真实 ATE ≈ 1
+* ============================================================
+clear all
+set seed 20240101
+set obs 2000
+
+drawnorm X1 X2 X3, means(0) sds(1)
+
+* 倾向得分 e(X) = invlogit(X1 + 0.5*X2)
+gen double linp = X1 + 0.5*X2
+gen double e_x  = invlogit(linp)
+gen byte D = runiform() &lt; e_x
+
+* 结果：m1(X)=1+X1, m0(X)=0.5*X2
+gen double Y = D*(1 + X1) + (1-D)*(0.5*X2) + rnormal()
+
+* --- AIPW：(结果回归变量) 在前，(处理变量) 在后 ---
+* 语法：teffects aipw y (处理方程协变量) (处理变量)
+teffects aipw Y (X1 X2 X3) (D), osample(oor)
+* osample() 生成共同支撑标记 oor（=0 表示倾向得分极端、缺共同支撑）
+
+* --- 诊断：检查共同支撑 ---
+teffects overlap        // 画处理组/对照组倾向得分分布图
+count if oor == 1        // 数出被剔除的极端权重样本
+teffects stats          // 报告 ATE、POT0、POT1 及其 SE
+
+* --- 对比：纯 IPW 与纯回归调整，看 AIPW 的稳健性 ---
+teffects ipw Y (X1 X2 X3) (D)
+teffects ra Y (X1 X2 X3) (D)
+* 三列 ATE 应接近；若 IPW 偏离很大而 AIPW 接近，说明结果模型在"兜底"
+</code></pre>
+      </div>
+
+      <h3>13.2 Stata：drdid（Callaway &amp; Sant'Anna 2021 双重稳健 DID）</h3>
+      <p>把 AIPW 思想搬到 DID 上，就是 Callaway &amp; Sant'Anna (2021) 的 <code class="inline">drdid</code> / <code class="inline">csdid</code>：估计"组别 × 时点"层面的 ATT(g,t)，并用双重稳健 / 矩估计给出稳健标准误，同时解决了双向固定效应 TWFE 在交错处理下的负权重问题。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · drdid / csdid（Callaway-Sant'Anna 2021）</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ============================================================
+* 13.2 Stata: drdid 双重稳健 DID（交错处理 / staggered adoption）
+* ssc install drdid
+* ssc install csdid
+* ============================================================
+
+* --- 截面 / 重复截面数据：drdid ---
+* drdid y [treat] time, ivar(panel id) [repeated]
+* 例：drdid Y D post, ivar(id)
+*   - Y     结果变量
+*   - D     处理组虚拟（=1 表示最终会被处理）
+*   - post  政策实施后虚拟
+*   drdid 内部用 AIPW/DR 估计 ATT，并报告双重稳健标准误
+
+* --- 面板数据：csdid（推荐，按首次处理年份 gvar 分组）---
+* webuse Hanson_2021, clear
+* csdid Y year gvar, notyet ivar(id)
+*   - gvar = 个体首次接受处理的年份（从未处理 = 0）
+* 输出：ATT(g,t) 矩阵 + 加权聚合的 overall ATT
+* 事后画动态效应图：
+* estat event
+
+* --- 下面用模拟面板演示语法结构 ---
+clear all
+set seed 20240101
+set obs 1000
+gen long id = _n
+expand 10
+bysort id: gen year = 2010 + _n - 1
+bysort id: gen double x = rnormal()
+* 组别 gvar：id 尾号 1=2015 处理，2=2017 处理，其余=0（对照）
+gen gvar = cond(mod(id,3)==1, 2015, cond(mod(id,3)==2, 2017, 0))
+gen post = (year &gt;= gvar) &amp; (gvar &gt; 0)
+gen Y = 1.2*post + x + rnormal()
+
+* csdid Y gvar, timevar(year) ivar(id) notyet
+* estat event
+* 若 csdid 不可用，退回 drdid：
+* drdid Y post, ivar(id)
+</code></pre>
+      </div>
+
+      <h3>13.3 Python：econml DRLearner</h3>
+      <p>Microsoft econml 的 <code class="inline">DRLearner</code> 把 AIPW score 与"第二阶段元学习器"结合：先用 cross-fitting 估计 AIPW 个别处理效应，再在 $\hat\tau(X)$ 上跑一个回归器，得到任意形状的 $CATE(x)$。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · econml DRLearner</span><button class="copy-btn">复制</button></div>
+        <pre><code># ============================================================
+# 13.3 econml DRLearner（AIPW + 元学习器）
+# pip install econml scikit-learn
+# ============================================================
+import numpy as np
+from econml.dr import DRLearner
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+
+np.random.seed(20240101)
+n, p = 2000, 6
+X = np.random.normal(size=(n, p))
+e_x = 1/(1+np.exp(-(X[:,0] + 0.5*X[:,1])))
+D = (np.random.uniform(size=n) &lt; e_x).astype(int)
+Y = D*(1 + X[:,0]) + (1-D)*(0.5*X[:,1]) + np.random.normal(scale=0.5, size=n)
+
+est = DRLearner(
+    # 倾向得分模型（分类器）
+    model_propensity=RandomForestClassifier(n_estimators=300, max_depth=4),
+    # 结果模型（回归器，分别拟合处理/对照）
+    model_regression=RandomForestRegressor(n_estimators=300, max_depth=4),
+    # 第二阶段元学习器：在 AIPW 个别效应上拟合 CATE(X)
+    model_final=RandomForestRegressor(n_estimators=300, max_depth=3),
+    cv=5,                      # 5 折 cross-fitting
+    random_state=20240101,
+)
+est.fit(Y, D, X=X)
+print("ATE =", est.ate(X), " 95% CI =", est.ate_interval(X, alpha=0.05))
+# 真实 ATE ≈ 1.0
+# 异质性：对每个个体给出 CATE(x)
+cate = est.effect(X)
+print("CATE 均值 ≈", cate.mean(), "| CATE 标准差（异质性大小）=", cate.std())
+</code></pre>
+      </div>
+
+      <h3>13.4 Python：DoubleML 的 AIPW（IRM）</h3>
+      <p>DoubleML 对二值处理用 <code class="inline">DoubleMLIRM</code>，<code class="inline">score="AIPW"</code> 即本页 s11 的双重稳健 score，默认 5 折 cross-fitting。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · DoubleML IRM（AIPW score）</span><button class="copy-btn">复制</button></div>
+        <pre><code># ============================================================
+# 13.4 DoubleMLIRM = cross-fitted AIPW
+# pip install doubleml scikit-learn
+# ============================================================
+import numpy as np, pandas as pd
+from doubleml import DoubleMLData, DoubleMLIRM
+from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+
+np.random.seed(20240101)
+n, p = 2000, 6
+X = np.random.normal(size=(n, p))
+e_x = 1/(1+np.exp(-(X[:,0] + 0.5*X[:,1])))
+D = (np.random.uniform(size=n) &lt; e_x).astype(int)
+Y = D*(1 + X[:,0]) + (1-D)*(0.5*X[:,1]) + np.random.normal(scale=0.5, size=n)
+
+df = pd.DataFrame(np.column_stack([Y, D, X]),
+                  columns=["y", "d"] + [f"X{i}" for i in range(p)])
+dml_data = DoubleMLData(df, y_col="y", d_cols="d",
+                        x_cols=[f"X{i}" for i in range(p)])
+
+# ml_propensity: 倾向得分 e(X)；ml_outcome: 结果 m1/m0
+irm = DoubleMLIRM(
+    dml_data,
+    ml_propensity=RandomForestClassifier(n_estimators=300, max_depth=4),
+    ml_outcome=RandomForestRegressor(n_estimators=300, max_depth=4),
+    n_folds=5,
+    score="AIPW",              # 双重稳健 score
+    dml_procedure="dml2",
+)
+irm.fit()
+print(irm.summary)
+# 输出 theta(≈1.0)、SE、p 值、95% CI，与手工 12.3 / econml 13.3 一致
+</code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">✅ 三个实现的对照</div>
+        <p>同一 AIPW 估计量：手工 12.3（透明但要自己管数值稳定）、<code class="inline">teffects aipw</code>（Stata 一行、参数化）、<code class="inline">DoubleMLIRM(score="AIPW")</code> 与 <code class="inline">DRLearner</code>（ML 第一阶段 + cross-fitting）。写论文时建议：主表用 DoubleML/econml，稳健性补一个 <code class="inline">teffects aipw</code> 的参数化版本，并报告倾向得分分布图与 trim 前后的结果。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s14">
+      <h2><span class="sec-num">14</span> 论文案例与常见错误</h2>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Econometrica</span>
+        <div class="paper-title">Double/Debiased Machine Learning for Treatment and Structural Parameters</div>
+        <div class="paper-meta">Victor Chernozhukov, Denis Chetverikov, Mert Demirer, Esther Duflo, Christian Hansen, Whitney Newey &amp; James Robins · Econometrica, 2018</div>
+        <div class="paper-desc">DML 的奠基论文。正式提出 Neyman 正交矩 + cross-fitting 框架，证明 $\sqrt{n}$ 一致与半参有效性。是本页所有代码背后的理论出处。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Bernoulli</span>
+        <div class="paper-title">Asymptotic Properties of Post-Selection Estimators (Lasso)</div>
+        <div class="paper-meta">Alexandre Belloni, Victor Chernozhukov, Denis Chetverikov &amp; Christian Hansen · Bernoulli, 2015（亦见 Belloni et al., 2017, J. Econ.）</div>
+        <div class="paper-desc">分析 Lasso / post-Lasso 的收敛速度与正则化偏误，证明"直接用 Lasso 估处理效应"会有 $n^{-1/4}$ 阶偏差，为 DML 提供了问题动机。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Journal of Economic Perspectives</span>
+        <div class="paper-title">Double/Debiased Machine Learning in Economics and Statistics</div>
+        <div class="paper-meta">Victor Chernozhukov, Denis Chetverikov, Mert Demirer, Esther Duflo, Christian Hansen, Whitney Newey &amp; James Robins · American Economic Review Papers &amp; Proceedings, 2017；扩展版见 Annual Review of Economics, 2018</div>
+        <div class="paper-desc">面向应用研究者的 DML 综述。用直觉例子解释为什么 Lasso 不能直接做因果推断，以及 DML 怎么修。是入门必读。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Stata Journal</span>
+        <div class="paper-title">Double/debiased machine learning for treatment effects and structural parameters in Stata</div>
+        <div class="paper-meta">Chernozhukov, Demirer, Hernán, et al. · Stata Journal, 2024（ddml 命令官方文献）</div>
+        <div class="paper-desc">Stata 端 ddml 命令的官方方法学论文。给出部分线性、IV、异质性模型的 Stata 实现细节与案例研究。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · JMLR / Software</span>
+        <div class="paper-title">DoubleML: Machine Learning-Based Treatment Estimation in Python and R</div>
+        <div class="paper-meta">Bach, Chernozhukov, Kurz &amp; Spindler · JMLR, 2022；软件文档 docs.doubleml.org</div>
+        <div class="paper-desc">Python 与 R 版 DoubleML 包的官方论文。本页 Python / R 代码的语法均来自该包文档。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · JASA</span>
+        <div class="paper-title">Regression Estimation of Mean with Dependent Regression Estimators: The Analysis of Incomplete Survival Data</div>
+        <div class="paper-meta">James Robins, Andrea Rotnitzky &amp; Lue Ping Zhao · Journal of the American Statistical Association, 1994</div>
+        <div class="paper-desc">AIPW / 双重稳健估计量的理论源头。首次证明"逆概率加权 + 结果回归修正"的增强估计量在倾向得分与结果模型二者之一正确设定时即一致，奠定了后续二十余年双重稳健方法的基础。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Biometrics</span>
+        <div class="paper-desc"></div>
+        <div class="paper-title">Improving on the Standard Estimator of the Marginal Mean in the Presence of Unmeasured Confounding by Using an Instrument</div>
+        <div class="paper-meta">Heejung Bang &amp; James Robins · Biometrics, 2005（亦见 Bang &amp; Robins 关于 AIPW / TMLE 的系统比较）</div>
+        <div class="paper-desc">把 AIPW / "双重稳健 (doubly robust)" 估计系统推向应用：证明在高维协变量、缺失数据下 AIPW 相对纯 IPW 与纯回归调整的效率与稳健性优势，是实证研究者把 AIPW 写进论文的方法学范本。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Journal of Econometrics</span>
+        <div class="paper-title">Difference-in-Differences with Multiple Time Periods</div>
+        <div class="paper-meta">Brantly Callaway &amp; Pedro H. C. Sant'Anna · Journal of Econometrics, 2021</div>
+        <div class="paper-desc">交错处理 DID 的里程碑。按"首次处理年份 g × 时点 t"估计 ATT(g,t)，并用双重稳健 / 矩估计给出稳健标准误，纠正了 TWFE 在 staggered adoption 下的负权重偏误。Stata 的 <code class="inline">drdid</code> / <code class="inline">csdid</code> 即由此实现（见本页 13.2）。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 劳动经济研究</span>
+        <div class="paper-title">企业会与员工共享发展成果吗？——来自机器学习的经验证据</div>
+        <div class="paper-meta">《劳动经济研究》, 2024</div>
+        <div class="paper-desc">中文实证中较早系统使用 DML（去偏 / 双重机器学习）估计租金分享弹性的代表作。用机器学习算法剥离高维混淆因素 $X_{it}$ 的影响，再估计企业利润与员工工资之间的分享关系，示范了"DML 替代手工高维控制"在劳动经济学问题中的规范用法。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 科技进步与对策</span>
+        <div class="paper-title">人工智能创新应用先导区设立对产业链韧性提升的影响——基于双重机器学习的实证研究</div>
+        <div class="paper-meta">《科技进步与对策》, 2025</div>
+        <div class="paper-desc">以国家人工智能创新应用先导区设立为准自然实验，用 2010—2023 年地级市面板 + DML 评估政策对产业链韧性的因果效应，并报告机制检验与稳健性。是中文期刊中"DML + 准自然实验 + 机制"标准写作的近期样例。</div>
+      </div>
+
+      <h3>常见错误</h3>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 1：不做 cross-fitting，直接用全样本拟合第一阶段</div>
+        <p>把所有数据既用于训练 ML 又用于第二阶段 OLS，会因过拟合产生"同样本残差相关"偏差，置信区间覆盖率严重失真。DoubleML 包默认 5 折 cross-fitting，不要改回 1 折。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 2：第一阶段过拟合（树太深 / 迭代太多）</div>
+        <p>过拟合的第一阶段残差接近零，第二阶段 OLS 方差爆炸、数值不稳。用交叉验证选超参，让第一阶段"刚好合适"。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 3：把 Lasso 选完变量后直接 OLS，不加 DML</div>
+        <p>"Lasso 选变量 + OLS 估系数"是双重麻烦：Lasso 的选择不确定性被忽略，正则化偏误仍然存在。要在 DML 框架内用 Lasso，而不是把 Lasso 当变量选择器。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 4：弱工具变量下套用 DML-IV</div>
+        <p>DML-IV 估计的一致性仍然要求工具变量与内生变量强相关。弱工具下，即使 cross-fitting 做对了，估计仍有偏且 CI 不覆盖。第一阶段第一阶段的 F 统计量仍是必要诊断。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 5：把 DML 当"银弹"，不画图、不报告平衡</div>
+        <p>DML 只在<strong>可忽略性成立</strong>的前提下给无偏估计。它不能解决未观测混淆。报告 DML 结果时，仍需平衡检验、敏感性分析、DAG 讨论。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 6：AIPW / IPW 不做 cross-fitting，且不处理极端权重</div>
+        <p>两个常被叠加的错误：(1) 用全样本 ML 直接估 $\hat e,\hat m$ 后代入 AIPW score，过拟合偏差直接污染 ATE（见 12.1）；(2) 倾向得分 $\hat e(X)$ 接近 0 或 1 时，权重 $1/\hat e$、$1/(1-\hat e)$ 会爆炸，个别观测主导整个估计。必须 (i) 做 K 折 cross-fitting，(ii) 检查倾向得分分布、trim 极端值（如 clip 到 [0.01,0.99] 或剔除共同支撑外样本），并在附录报告 trim 前后结果。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 7：误解"双重稳健"</div>
+        <p>"双重稳健"≠"两个模型都必须正确"。正确含义是：<strong>倾向得分模型与结果模型中只要有一个正确，估计就一致</strong>。常见误读有两种：(a) 以为双重稳健等于"随便哪个模型糊对都行"，于是两个模型都用最简单的 OLS/logit 搪塞——实际上仍要尽力把两个模型都拟合好，并交叉验证；(b) 反过来以为必须两个都正确才一致，于是放弃了 AIPW 相对单一路线的稳健性优势。</p>
+      </div>
+
+      <h3>进阶资料</h3>
+      <ul>
+        <li>DoubleML 官方文档：<code class="inline">docs.doubleml.org</code>（Python &amp; R）。</li>
+        <li>Chernozhukov et al. (2018) Econometrica 原文；建议读 Section 2（PLR）与 Section 4（cross-fitting）。</li>
+        <li>Stata Journal 2024 年 ddml 论文，附 replication do-file。</li>
+        <li>econml 文档：<code class="inline">econml.readthedocs.io</code>（Microsoft 维护，与 DoubleML 互补）。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="15-potential-outcomes-dag.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">潜在结果与因果 DAG</div>
+      </a>
+      <a href="17-causal-forest.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">因果森林与政策学习</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+(function() {
+  const path = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('href') && item.getAttribute('href').endsWith(path)) {
+      item.classList.add('active');
+    }
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>金融摩擦模型 | DSGE模型 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<!-- ========== 侧边栏 ========== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item active" href="07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<!-- ========== 主内容 ========== -->
+<div class="main">
+  <div class="content-wrap">
+    <!-- 面包屑 -->
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">DSGE模型</a>
+      <span class="sep">/</span>
+      <span>金融摩擦模型</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">DSGE · 第 8 站</span>
+      <h1>金融摩擦模型：BGG 金融加速器与 GK 银行家约束</h1>
+      <p class="desc">无摩擦 NK 模型里 Modigliani-Miller 成立，企业净值与银行体系不影响实体经济。2008 危机后金融摩擦成为标配。本页讲为什么需要金融摩擦、Bernanke-Gertler-Gilchrist (1999) 的金融加速器（外部融资溢价 + 净值方程 + 状态验证成本）、Gertler-Kiyotaki (2010) 的银行家激励约束与内生杠杆、金融冲击、Dynare 代码框架，以及与无摩擦模型的 IRF 对比。</p>
+      <div class="callout info" style="margin-top:16px">
+        <div class="callout-title">📐 方程规模总览 / EQUATION COUNT</div>
+        <p style="margin-bottom:6px"><strong>本模型共 22 个核心方程</strong>：家庭 3（欧拉/劳动/预算）、企业家资产负债表 1、CSV 最优合同（银行参与约束+企业家支付+违约阈值）3、EFP 溢价 1、资本回报定义 1、净值演化 1、银行零利润 1、托宾 Q/投资 1、资本积累 1、生产/要素需求 2、资源约束 1、Taylor 规则 1、金融冲击 AR(1) 1；GK 扩展另加：银行资产负债表 1、激励约束 1、内生杠杆 1、银行资本演化 1、ν/ω 递归 2。</p>
+        <p style="margin-bottom:0">编号约定：<strong>BGG-x</strong> 为企业侧摩擦方程，<strong>GK-x</strong> 为银行侧摩擦方程。</p>
+      </div>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-head">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-item"><span class="prereq-label">数学 / 统计基础</span>动态规划、资产定价（资本收益与外部融资成本的无套利）、对数线性化时把'企业家净值/银行资本'作为额外内生状态变量并入状态向量。</div>
+      <div class="prereq-item"><span class="prereq-label">经济学理论前置</span>金融中介理论、信贷市场不完备、资产负债表渠道、Modigliani-Miller 为何失效；BGG 的成本状态验证（CSV）与最优风险合约。</div>
+      <div class="prereq-item"><span class="prereq-label">软件 / 计算前置</span>MATLAB + Dynare ≥4.6；重点是把净值演化方程接进状态空间，并与无摩擦模型做 IRF 对比。</div>
+      <div class="prereq-item"><span class="prereq-label">站内前置页面</span>先学 01-model-building + 05-dynare-solving。</div>
+      <div class="prereq-item"><span class="prereq-label">难度与路线位置</span><span class="prereq-level lv-frontier">进阶→前沿</span>2008 后 DSGE 的标准扩展，连接金融部门与实体经济。</div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么需要金融摩擦</a></li>
+        <li><a href="#s2">BGG 模型总览与净值 $N_t$</a></li>
+        <li><a href="#s_foc">完整优化问题与一阶条件推导</a></li>
+        <li><a href="#s3">外部融资溢价方程</a></li>
+        <li><a href="#s4">企业家净值演化方程</a></li>
+        <li><a href="#s5">CSV 状态验证成本</a></li>
+        <li><a href="#s6">资本需求、$Q_t$ 与参数</a></li>
+        <li><a href="#s7">GK 银行家激励约束</a></li>
+        <li><a href="#s_ss">稳态方程组与求解步骤</a></li>
+        <li><a href="#s8">Dynare .mod 逐步撰写</a></li>
+        <li><a href="#s9">校准：基准值与文献来源</a></li>
+        <li><a href="#s_est">估计：数据来源、观测方程与先验</a></li>
+        <li><a href="#s10">IRF、方差分解与加速器</a></li>
+        <li><a href="#s11">经典论文案例</a></li>
+        <li><a href="#s12">常见错误</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么需要金融摩擦</h2>
+      <p>标准 RBC 与新凯恩斯（NK）模型都建立在一个隐含假设之上：金融市场是无摩擦的。在这个世界里，企业无论用自有资金还是向银行借钱，融资成本都等于无风险利率 $R_t$；企业的资产负债表结构（净值多少、杠杆多高）对投资决策<strong>没有任何影响</strong>。这正是 Modigliani-Miller（1958）定理的直接推论——在完美资本市场中，企业价值与融资结构无关，"金融部门"只是一层遮蔽实体经济的面纱（veil）。</p>
+      <p>但 2008 年全球金融危机用最惨烈的方式证伪了这一假设。房价下跌首先冲击的是银行持有的抵押品，随后银行资本损失、批发融资市场冻结、信贷骤紧，企业投资崩塌，衰退深度远超冲击本身的规模。这条"资产价格 → 金融中介 → 实体经济"的传导链，在无摩擦模型里<strong>根本不存在</strong>。要让模型能描述这类危机，就必须从微观上打破 MM 定理，引入两个 ingredient：</p>
+      <ul>
+        <li><strong>信息不对称</strong>：贷款人（银行）无法免费、即时地观察借款人（企业家）项目的真实回报，必须付出核查成本，或依赖借款人的自有资本作为"抵押"来分担风险；</li>
+        <li><strong>外部融资溢价（external finance premium, EFP）</strong>：由于核查成本与代理问题，外部资金比内部资金更贵，溢价 $s(\cdot)$ 随借款人杠杆上升而上升。</li>
+      </ul>
+      <p>一旦溢价对杠杆敏感，就会产生"<strong>金融加速器</strong>"（financial accelerator, Bernanke-Gertler 1989）回路：负面冲击压低资本价格 $Q_t$ → 企业家净值 $N_t$ 缩水 → 杠杆被动上升 → 外部融资溢价上涨 → 投资与资本需求下降 → 资本价格进一步下跌 → 净值再缩水。一个原本温和的技术或需求冲击，被净值—溢价回路反复放大、拉长，变成持续多年的深度衰退。这就是金融摩擦建模的全部动机。</p>
+      <div class="callout info">
+        <div class="callout-title">💡 金融摩擦的两大主流建模思路</div>
+        <p><strong>BGG (1999)</strong>：摩擦在<strong>企业—银行</strong>之间，企业家净值越低、杠杆越高，外部融资溢价越贵，企业端承担摩擦。<strong>GK (2010)</strong>：摩擦在<strong>银行—储户</strong>之间，银行家自有资本越少、能从储户那里吸纳的批发资金越少，杠杆由激励约束内生，银行端承担摩擦。两条路线殊途同归，都让"<strong>金融部门净资产</strong>"成为一个新的内生状态变量，把冲击放大并持久化。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> BGG 模型总览：企业家与净值 $N_t$</h2>
+      <p>Bernanke, Gertler &amp; Gilchrist (1999，下称 BGG) 在标准 RBC/NK 框架中嵌入一批风险中性、存活有限的<strong>企业家</strong>（entrepreneurs）。企业家每期用自有净值 $N_t$ 加上银行贷款 $B_t$ 购买资本 $K_{t+1}$，满足资产负债表恒等式：</p>
+      <div class="formula-block">
+        <div class="formula-label">企业家资产负债表恒等式</div>
+        $$Q_t K_{t+1} = N_t + B_t$$
+      </div>
+      <p><strong>假设</strong>：企业家比家庭更"有耐心"地投资资本品，且风险中性；资本品由资本品生产者以二次调整成本制造，其价格 $Q_t$（托宾 $Q$）内生于投资需求。<strong>解读</strong>：$N_t$ 是企业家的"家底"，$B_t=Q_tK_{t+1}-N_t$ 是向银行借的款项。正因为银行不能免费看清企业家回报，银行只愿意按"净值充足、杠杆可控"的条件放款，于是 $N_t$ 不再是可以随手扔掉的 accounting residual，而成为决定投资需求的<strong>状态变量</strong>。</p>
+      <h3>为什么必须把净值 $N_t$ 当作额外状态变量</h3>
+      <p>在无摩擦模型里，最优投资只取决于资本预期回报与利率之差，与企业自有多少钱无关；$N_t$ 没有动力学，也不进入状态空间。引入 CSV 摩擦后，情况变了：(1) 融资成本取决于杠杆 $Q_tK_{t+1}/N_t$，而杠杆里含 $N_t$；(2) $N_t$ 本身由上期资本回报与偿债决定，<strong>天然滞后一期</strong>，是典型的 predetermined state variable。因此在对数线性化时，必须把 $\hat n_t$ 与 $\hat k_t$、$\hat z_t$（技术）并列放进状态向量 $S_t$，否则 Dynare 会因缺少动力学而报"方程/变量数不匹配"或稳态不收敛。这是 BGG 改造中最容易遗漏的一步。</p>
+    </div>
+
+    <div class="section" id="s_foc">
+      <h2><span class="sec-num">03</span> 完整优化问题与一阶条件推导</h2>
+      <p>本节把 BGG 的四类主体一次性写完，并用拉格朗日方法推出全部一阶条件（FOC），供读者核对 .mod 里每条方程的出处。这是"自包含"要求：不依赖任何外部讲义。</p>
+
+      <h3>3.1 家庭（储户）：CRRA 效用 + 一期无风险债</h3>
+      <p><strong>设定</strong>：代表性家庭最大化终身效用 $\max\;E_0\sum_{t=0}^{\infty}\beta^t\left[\dfrac{C_t^{1-\sigma}}{1-\sigma}-\chi\dfrac{L_t^{1+\varphi}}{1+\varphi}\right]$，预算约束 $C_t+B_t^{d}/P_t=W_tL_t/P_t+(1+i_{t-1})B_{t-1}^{d}/P_t-\Pi_t^{f}$（$\Pi_t^f$ 为企业利润分红）。构造拉格朗日 $\mathcal L=E_0\sum\beta^t\{\cdots+\lambda_t[\cdot]\}$，对 $C_t,B_t^d,L_t$ 分别求导：</p>
+      <div class="formula-block">
+        <div class="formula-label">家庭一阶条件（拉格朗日求导）</div>
+        $$C_t^{-\sigma}=\lambda_t,\qquad \chi L_t^\varphi=\lambda_t\frac{W_t}{P_t},\qquad \lambda_t=\beta(1+i_t)E_t\!\left[\lambda_{t+1}\frac{P_t}{P_{t+1}}\right]$$
+      </div>
+      <p>把前两式消去 $\lambda_t$ 得<strong>劳动供给</strong> $W_t/P_t=\chi L_t^\varphi C_t^{\sigma}$；把第三式写成 $\beta E_t[(C_{t+1}/C_t)^{-\sigma}R_{t+1}^{r}]=1$，即标准<strong>欧拉方程</strong> $E_t\hat c_{t+1}-\hat c_t=\frac{1}{\sigma}(\hat r_t-\hat\pi_{t+1})$，其中实际无风险利率 $R_t^r=(1+i_t)E_t[P_t/P_{t+1}]$。<strong>经济直觉</strong>：家庭决定把多少当期储蓄换成下期消费，权衡"当期边际效用"与"贴现后的下期边际效用×实际利率"。金融摩擦对家庭<strong>没有直接影响</strong>——家庭只是按无风险利率存款，摩擦全部发生在银行与企业家之间。</p>
+
+      <h3>3.2 企业家：风险中性、购买资本、借款</h3>
+      <p><strong>设定</strong>：企业家风险中性（效用线性、贴现因子略小于家庭以保证其长期借款），每期用净值 $N_t$ 加银行贷款 $B_t=Q_tK_{t+1}-N_t$ 购买资本，持有 1 期后获得已实现回报 $R_{t+1}^k$。其优化条件由最优 CSV 合同给出（见 §05），竞争性银行零利润把合同定价条件加总为：</p>
+      <div class="formula-block">
+        <div class="formula-label">企业家资本需求（EFP 定价条件）</div>
+        $$E_t R_{t+1}^k = \bar\omega_t\big(Q_tK_{t+1}/N_t\big)\cdot R_t^r,\qquad \bar\omega'(\cdot)>0$$
+      </div>
+      <p>这就是 §04 外部融资溢价方程的非对数来源。资本回报的<strong>定义式</strong>由资本品的边际产出与资本利得构成：$R_{t+1}^k=\dfrac{r_{t+1}^{k}+(1-\delta)Q_{t+1}}{Q_t}$，其中 $r^k$ 为资本租金率。<strong>解读</strong>：分子是"租金 + 残值×价格"，分母是买入价格——持有资本 1 期的总回报。对数线性化后即 $\hat r_{t+1}^k=\dfrac{1-\delta}{R^k}\hat q_{t+1}-\hat q_t+\dfrac{r^k}{R^k}\hat r_{t+1}^{k,\text{rent}}$，这正是 .mod 中 rk 方程的来源。</p>
+
+      <h3>3.3 资本品生产者：托宾 Q 与投资</h3>
+      <p><strong>设定</strong>：竞争性资本品生产者用最终品制造新资本，面临二次调整成本 $\Phi(I_t/K_t)=\dfrac{a}{2}(I_t/K_t-\delta)^2K_t$。最大化 $Q_tI_t-I_t-\Phi(I_t/K_t)$，对 $I_t$ 求一阶条件：</p>
+      <div class="formula-block">
+        <div class="formula-label">投资一阶条件（托宾 Q）</div>
+        $$Q_t = 1+\phi\!\left(\frac{I_t}{K_t}-\delta\right),\qquad \phi\equiv a$$
+      </div>
+      <p>对数线性化：$\hat q_t=\varphi(\hat i_t-\hat k_t)$，与 §07 一致。<strong>解读</strong>：$\varphi$ 越大，投资对 $Q$ 越不敏感，调整越慢；这是金融加速器"放大器耦合变量"的来源。</p>
+
+      <h3>3.4 银行：竞争、风险中性、零利润</h3>
+      <p><strong>设定</strong>：银行吸收家庭存款（按 $R_t^r$ 付息），向企业家发放贷款，承担 CSV 审计成本 $\mu$。竞争使银行每期零利润，期望贷款利息收入恰好覆盖无风险资金成本与期望审计成本：</p>
+      <div class="formula-block">
+        <div class="formula-label">银行零利润（CSV 合同加总）</div>
+        $$E_t\Big[\text{企业家偿付}\Big] = R_t^r B_t + \mu Q_tK_{t+1}\int_0^{\bar\omega}\omega\,dF(\omega)$$
+      </div>
+      <p>把它与企业家最优合同的一阶条件联立，消去违约阈值 $\bar\omega$，即得 §04 的 $\bar\omega(\cdot)$ 函数。<strong>关键点</strong>：审计成本只在违约状态 $\omega<\bar\omega$ 发生，其期望随杠杆上升——这是 $S'(\cdot)>0$ 的微观来源。</p>
+
+      <h3>3.5 市场出清</h3>
+      <ul>
+        <li><strong>商品市场</strong>：$Y_t=C_t+I_t+G_t+\mu Q_tK_{t+1}\int_0^{\bar\omega}\omega\,dF(\omega)$（最后一项是实际资源耗散——审计成本占用最终品）；</li>
+        <li><strong>劳动市场</strong>：$L_t$ 由家庭劳动供给与厂商劳动需求相等；</li>
+        <li><strong>资本市场</strong>：$K_{t+1}$ 由企业家资本需求与资本品供给（Q 方程）联立出清；</li>
+        <li><strong>债券市场</strong>：$B_t^d=B_t$（家庭存款 = 企业贷款），由瓦尔拉斯定律自动满足。</li>
+      </ul>
+      <div class="callout tip"><div class="callout-title">✅ 方程数 = 变量数自检</div><p>稳态下：家庭(欧拉+劳动供给+预算)、资本品(Q)、银行(EFP)、企业家(资本回报定义+净值演化)、财政/货币(泰勒规则)、市场出清，共 10 条独立方程对应 10 个内生变量。写 .mod 前先做这个计数，能避免 "equation/variable mismatch" 报错。</p></div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">04</span> 外部融资溢价方程 $E_t R_{t+1}^k = S(\cdot) R_t$</h2>
+      <p>BGG 的核心定价关系是：企业家购买资本的预期回报，必须等于无风险利率乘以一个随杠杆上升的溢价函数 $S(\cdot)$：</p>
+      <div class="formula-block">
+        <div class="formula-label">BGG 外部融资溢价（原始非线性形式）</div>
+        $$E_t R_{t+1}^k = S\!\left(\frac{Q_t K_{t+1}}{N_t}\right) R_t, \qquad S'(\cdot)&gt;0,\quad S(1)=1$$
+      </div>
+      <p><strong>假设</strong>：① 银行是竞争性的、风险中性，零利润；② 企业家风险中性、有限责任；③ 银行与企业家之间存在 CSV 摩擦（见第 05 节），最优合约内生地决定了溢价函数 $S(\cdot)$；④ $S(1)=1$ 意味着当企业 100% 用自有资金（杠杆=1）时，没有代理成本，溢价为零。<strong>解读</strong>：$S'(\cdot)&gt;0$ 是整页模型的"引擎"——杠杆 $Q_tK_{t+1}/N_t$ 越高，银行担心企业家拿别人的钱冒险（风险转移，risk-shifting），要求的补偿越厚，$E_tR_{t+1}^k/R_t$ 就越大。对数线性化后（记 $\chi$ 为稳态处 $S(\cdot)$ 的弹性）：</p>
+      <div class="formula-block">
+        <div class="formula-label">✅ BGG 外部融资溢价方程（对数线性化）</div>
+        $$E_t\hat r_{t+1}^k - \hat r_t = \chi\,\big(\hat q_t + \hat k_{t+1} - \hat n_t\big) + \varepsilon_t^{fk}$$
+      </div>
+      <p>逐项说明：$\hat r_{t+1}^k$ 是资本预期回报的对数偏离；$\hat r_t$ 是无风险实际利率；$\chi&gt;0$ 是<strong>溢价对杠杆的弹性</strong>，由 CSV 最优合同一阶条件推出（数值上通常 $0.03\sim0.08$）；括号 $\hat q_t+\hat k_{t+1}-\hat n_t$ 就是对数线性化的<strong>杠杆率</strong>；$\varepsilon_t^{fk}$ 是外生金融冲击（EFP shock），用来建模"信贷紧缩"——即使杠杆没变，银行也突然要求更高溢价。<strong>退化检验</strong>：令 $\chi=0$，方程退化为无套利 $E_t\hat r_{t+1}^k=\hat r_t$，金融部门与实体经济完全脱钩，模型回到无摩擦 NK。论文里常用 $\chi=0$ 与 $\chi&gt;0$ 的 IRF 对比来展示金融加速器的存在。</p>
+      <p><strong>为什么 $E_tR_{t+1}^k=S(\cdot)R_t$ 是整页模型的"引擎"？</strong>把它沿传导链拆四步看：① <strong>定价</strong>——企业家每借 1 元外部资金，承担的成本是 $S(\cdot)R_t$，而非 $R_t$；② <strong>杠杆敏感性</strong>——$S'(\cdot)&gt;0$ 意味着净值 $N_t$ 每下降 1%，在 $Q_tK_{t+1}$ 不变时杠杆上升约 1%，溢价上升 $\chi\times1\%$；③ <strong>投资反馈</strong>——溢价上升直接抬高资本边际成本，压低投资 $I_t$；④ <strong>资产价格反馈</strong>——投资下降压低 $Q_t$，$Q_t$ 下降又通过 §05 净值方程（含 $\hat q_{t-1}$）让下期净值更低，完成闭环。注意等式左边是<strong>预期</strong> $E_tR_{t+1}^k$：家庭在 $t$ 期存款、企业家在 $t$ 期借钱，双方对下期资本回报做预期——这就是为什么 .mod 里 rk 出现在预期差 $E_t\hat r_{t+1}^k-\hat r_t$ 中。若误把左边写成当期已实现 $R_t^k$，时间戳就错了。</p>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">05</span> 净值演化方程 $N_{t+1}=\gamma V_t+(1-\gamma)W_t^e$</h2>
+      <p>BGG 假设企业家并非长生不老：每期有比例 $(1-\gamma)$ 的企业家"退休"（退出），把净值一次性消费掉；存活比例为 $\gamma$ 的企业家继续经营。引入退休设定的目的是防止企业家靠留存收益无限积累净值、最终"不需要银行"——这是保证模型存在一个平稳、有限杠杆稳态的技术假设。存活企业家的净值来自上期持有资本的净回报：</p>
+      <div class="formula-block">
+        <div class="formula-label">BGG 净值演化方程（原始）</div>
+        $$N_{t+1} = \gamma\Big[R_t^k Q_{t-1}K_t - R_t\big(Q_{t-1}K_t - N_t\big)\Big] + (1-\gamma)W_t^e$$
+      </div>
+      <p><strong>假设</strong>：① $\gamma$ 是企业家<strong>存活率</strong>（survival probability），每期独立抽签，与个体净值无关；② $R_t^k$ 是已实现的资本回报（含资本利得与租金）；③ $(Q_{t-1}K_t-N_t)=B_t$ 是上期银行贷款，按无风险利率 $R_t$ 还本付息；④ $W_t^e$ 是新进入企业家从零开始"工作"挣到的初始禀赋（start-up wage），保证退出者退出后净值不会塌缩为零。<strong>解读</strong>：方括号内是"资本总收益减去偿债"——即存活企业家的净资产增量（即题目中的 $V_t$），乘以存活率 $\gamma$ 后留存；$(1-\gamma)W_t^e$ 是新进者的注资。资本回报 $R_t^k$ 越高（尤其资本价格 $\hat q$ 上涨带来资本利得），留存净值越多；利率 $R_t$ 越高，还债越重，净值越低。</p>
+
+      <h4>净值方程逐阶泰勒展开（线性化不跳步）</h4>
+      <p><strong>原始方程：</strong>$N_{t+1}=\gamma[R_t^k Q_{t-1}K_t-R_t(Q_{t-1}K_t-N_t)]+(1-\gamma)W_t^e$。稳态（记 $\kappa\equiv K/N$、$\bar\omega\equiv R^k/R$ 稳态溢价）下 $N=\gamma[R^k QK-R(QK-N)]+(1-\gamma)W^e$。</p>
+      <p><strong>第一步：对 $R_t^k Q_{t-1}K_t$ 取对数线性化。</strong>乘积三项展开 $\widehat{R_t^k Q_{t-1}K_t}=\hat r_t^k+\hat q_{t-1}+\hat k_t$。</p>
+      <p><strong>第二步：对偿债项 $R_t(Q_{t-1}K_t-N_t)$ 展开。</strong>括号内 $Q_{t-1}K_t-N_t=B_t$。注意 $B_t/N_t=\kappa-1$，故 $\widehat{B_t}=\frac{\kappa}{\kappa-1}\hat q_{t-1}+\frac{\kappa}{\kappa-1}\hat k_t-\frac{1}{\kappa-1}\hat n_t$（权重按稳态 $QK=\kappa N$、$B=(\kappa-1)N$ 拆）。再乘 $R_t$ 加 $\hat r_t$。</p>
+      <p><strong>第三步：把方括号整体在稳态差分。</strong>方括号 = $R^kQK\cdot[\hat r^k+\hat q_{-1}+\hat k]-R(\kappa-1)N\cdot[\hat r+\frac{\kappa}{\kappa-1}(\hat q_{-1}+\hat k)-\frac{1}{\kappa-1}\hat n]$。稳态处 $R^k=\bar\omega R$（$\bar\omega=S(\kappa)$），故 $R^kQK=\bar\omega R\kappa N$。两边同除 $N$ 并乘 $\gamma$，整理系数：</p>
+      <div class="formula-block">
+        <div class="formula-label">✅ BGG 净值方程（对数线性化，一阶近似）</div>
+        $$\hat n_{t+1} = \gamma\frac{R^k}{R}\kappa\,\big(\hat r_t^k + \hat q_{t-1} + \hat k_t\big) - \gamma\,(\kappa-1)\,\hat r_t + \gamma\,\hat n_t + \text{常数项}$$
+      </div>
+      <p>（等价写法：$\gamma\frac{R^k}{R}\kappa(\hat r^k+\hat q_{-1}+\hat k)-\gamma\frac{\kappa-1}{\kappa}\hat r+\dots$ 为不同归一化；核心是 $\hat n_{t+1}$ 由 $t$ 期及更早变量决定。）</p>
+      <p>注意 $\hat n_{t+1}$ 出现在等号左边、驱动变量都带时间下标 $t$ 或更早——这正是"<strong>净值是滞后状态变量</strong>"的代数体现：今天的冲击只能通过影响今天的资本回报与价格，去影响<strong>下一期</strong>的净值，再由下期净值影响下期溢价。这种一期滞后是金融摩擦"拖尾"（persistence）的结构性来源。</p>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 参数 $\gamma$ 的校准直觉</div>
+        <p>$\gamma$ 不是折扣因子，而是"企业家还在不在牌桌上"的概率。$\gamma=0.9728$（按季度）意味着平均存活 $1/(1-0.9728)\approx 37$ 个季度，约 <strong>9～10 年</strong>——与"企业主职业生涯"的经验长度吻合。$\gamma$ 越大，企业家越能跨期缓冲，金融加速器的持续性越强但溢价对冲击的反应越"钝"。</p>
+      </div>
+      <h4>逐项拆解：净值方程每一项在算什么</h4>
+      <p>把非对数方程 $N_{t+1}=\gamma\underbrace{\big[R_t^k Q_{t-1}K_t - R_t(Q_{t-1}K_t-N_t)\big]}_{\text{存活企业家净资产增量 }V_t}+(1-\gamma)W_t^e$ 拆成四步算账：</p>
+      <ul>
+        <li><strong>第 1 项 $R_t^k Q_{t-1}K_t$</strong>：上期借的钱买了 $K_t$ 的资本，持有一期后赚到的总毛收益（租金 + 资本利得），这是企业家的"经营收入"；</li>
+        <li><strong>第 2 项 $R_t(Q_{t-1}K_t-N_t)=R_tB_t$</strong>：上期欠银行的贷款连本带息要还掉，这是"偿债支出"；</li>
+        <li><strong>差额</strong>：毛收益 − 偿债 = 这期经营挣到、归存活企业家所有的净资产增量 $V_t$（若 $R_t^k&lt;R_t$，企业家亏损，$V_t$ 为负）；</li>
+        <li><strong>乘 $\gamma$</strong>：只有存活下来的比例 $\gamma$ 的企业家能把 $V_t$ 滚入下期净值；退出者把净值一次性消费掉、不进 $N_{t+1}$；</li>
+        <li><strong>加 $(1-\gamma)W_t^e$</strong>：退出者腾出的"牌桌位置"由 $(1-\gamma)$ 比例的新企业家占据，他们从零劳动挣到初始工资 $W_t^e$ 注入净值——这一项保证稳态净值不为零，是数值上必不可少的"种子资本"。</li>
+      </ul>
+      <p><strong>关键时间戳再强调</strong>：方程左边是 $N_{t+1}$，右边 $R_t^k$ 是 $t$ 期<strong>已实现</strong>回报（由 $t-1$ 期末的投资决定），$R_t$ 是 $t$ 期利率。因此 $t$ 期发生的任何冲击（技术、金融、货币）只能影响 $t$ 期的 $R_t^k$ 与 $R_t$，从而影响的是<strong>$N_{t+1}$</strong>——净值天然滞后一期。这就是为什么金融摩擦的 IRF 比无摩擦模型"更拖尾"：冲击先进资产价格 $Q_t$，再进当期回报 $R_t^k$，隔一期才变成净值，净值再隔一期影响溢价。读者在 .mod 里看到 <code class="inline">n(+1)=...</code> 时，应立即想到这条"一期滞后链"。</p>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">06</span> 成本状态验证（CSV）：外部融资溢价的微观基础（Townsend 1979 完整推导）</h2>
+      <p>为什么外部融资会比内部融资贵？BGG 用 Townsend (1979) 的<strong>成本状态验证</strong>（costly state verification, CSV）给出微观答案。设定如下：企业家项目的毛回报 $\omega R^k K$ 是一个随机变量，$\omega$ 服从对数正态分布，<strong>只有企业家自己观察到 $\omega$</strong>；银行若想知道 $\omega$，必须支付一笔审计成本（monitoring/auditing cost），金额为资本 $\mu QK$ 的固定比例 $\mu$。</p>
+
+      <h3>6.1 最优合同问题的完整写出</h3>
+      <p>企业家在 $t$ 期期初持有净值 $N_t$，向银行借 $B_t=Q_tK_{t+1}-N_t$，买 $K_{t+1}$ 单位资本。$t+1$ 期项目实现总毛回报 $R_{t+1}^k Q_t K_{t+1}\omega$（$\omega\sim\log\mathcal N$，密度 $f(\omega)$、分布 $F(\omega)$）。银行与企业家的最优合同选定：</p>
+      <ul>
+        <li><strong>违约阈值 $\bar\omega$</strong>：若 $\omega\ge\bar\omega$（项目成功），企业家向银行偿付固定金额 $\bar\omega R^k QK$，银行<strong>不审计</strong>；</li>
+        <li><strong>违约状态 $\omega&lt;\bar\omega$</strong>：银行启动审计、付审计成本 $\mu\omega R^k QK$、拿走剩余一切。</li>
+      </ul>
+      <p><strong>企业家的优化问题（BGG-C1）：</strong>企业家风险中性，最大化其期望支付，受银行参与约束：</p>
+      <div class="formula-block">
+        <div class="formula-label">BGG-C1 · 企业家优化问题（完整）</div>
+        $$\max_{\bar\omega,K}\; E_t\!\left[\int_{\bar\omega}^{\infty}(\omega-\bar\omega)f(\omega)d\omega\right]R_{t+1}^k Q_t K_{t+1}$$
+        $$\text{s.t.}\quad \underbrace{\big[1-F(\bar\omega)\big]\bar\omega R_{t+1}^k Q_tK_{t+1}+(1-\mu)\!\int_0^{\bar\omega}\omega f(\omega)d\omega\,R_{t+1}^k Q_tK_{t+1}}_{\text{银行期望偿付}}=R_t(Q_tK_{t+1}-N_t)$$
+      </div>
+      <p><strong>定义：</strong>左边第一行是企业家的期望利润（成功状态下毛回报减偿付 $\bar\omega R^kQK$）；第二行是银行参与约束（IC/IR）：银行期望收入（成功状态固定偿付 + 违约状态 $(1-\mu)$ 倍剩余资产）必须等于无风险资金成本 $R_tB_t$。<strong>理由：</strong>竞争银行零利润，企业家要选 $\bar\omega$ 与 $K$ 使自己利润最大、同时满足银行愿意放款。</p>
+
+      <h3>6.2 从合同问题推出违约阈值与 EFP</h3>
+      <p><strong>第一步：违约阈值的经济含义。</strong>成功状态下企业家偿付 $\bar\omega R^kQK$，故隐含的贷款毛利率 $R^L$ 满足 $\bar\omega R^k QK=R^L B_t=R^L(QK-N)$，即：</p>
+      <div class="formula-block">
+        <div class="formula-label">BGG-C2 · 违约阈值与贷款利率</div>
+        $$\bar\omega\,R_{t+1}^k Q_tK_{t+1}=R_t^L\,(Q_tK_{t+1}-N_t)$$
+      </div>
+      <p><strong>第二步：银行参与约束化简。</strong>把银行参与约束两边同除以 $Q_tK_{t+1}$，令杠杆率 $\kappa_t\equiv Q_tK_{t+1}/N_t$（故 $B_t/N_t=\kappa_t-1$），定义企业家"期望违约损失比例" $G(\bar\omega)\equiv\int_0^{\bar\omega}\omega f(\omega)d\omega+(1-F(\bar\omega))\bar\omega$（企业家回报中归银行的比例），以及期望审计成本比例 $\mu\int_0^{\bar\omega}\omega f(\omega)d\omega$。银行参与约束化为：</p>
+      <div class="formula-block">
+        <div class="formula-label">BGG-C3 · 银行参与约束（按杠杆重写）</div>
+        $$\Big[G(\bar\omega)-\mu\int_0^{\bar\omega}\omega f(\omega)d\omega\Big]E_tR_{t+1}^k=\frac{R_t}{\kappa_t}(\kappa_t-1)$$
+      </div>
+      <p><strong>第三步：对 $\bar\omega$ 与 $K$ 求一阶条件。</strong>对 $\bar\omega$ 求导（企业家问题与银行约束联立）得 Townsend 关键结论：最优合同是标准债务合同（deadline debt），违约阈值 $\bar\omega$ 由银行参与约束唯一决定。对 $K$ 求导，利用包络定理，得：</p>
+      <div class="formula-block">
+        <div class="formula-label">BGG-C4 · 资本需求 FOC（合同问题解出）</div>
+        $$E_t R_{t+1}^k=\frac{R_t}{\displaystyle 1-\Gamma(\bar\omega)+\lambda\,\mu\int_0^{\bar\omega}\omega f d\omega}\;\equiv\;S(\kappa_t)R_t$$
+      </div>
+      <p>其中 $\Gamma(\bar\omega)\equiv\int_0^{\bar\omega}\omega f d\omega+(1-F(\bar\omega))\bar\omega$、$\lambda$ 为银行参与约束的乘子。**关键结论**：把 BGG-C3 与 BGG-C4 联立消去 $\bar\omega$，即得 §03 的 $S(\cdot)$ 函数——$S'(\cdot)&gt;0$ 来自 $G'(\bar\omega)=F(\bar\omega)$ 随杠杆上升。这就是 EFP 溢价方程的微观来源。</p>
+
+      <h3>6.3 经济直觉</h3>
+      <p><strong>假设</strong>：① 企业家风险中性（愿发标准债）；② 银行风险中性、竞争；③ 审计成本 $\mu$ 与项目规模成比例；④ 合同只能依赖可验证变量。<strong>解读</strong>：CSV 把"金融摩擦"从一个拍脑袋的 reduced-form 溢价，变成了由最优合约决定的结构关系。杠杆越高，违约概率 $\Pr(\omega&lt;\bar\omega)$ 越大、期望审计成本越高，于是 $S'(\cdot)&gt;0$。BGG 进一步证明：在合理的对数正态 $\omega$ 与二次调整成本下，$S(\cdot)$ 在稳态附近近似线性，这正是第 03 节里那个简洁对数线性方程的合法性来源。<strong>没有 CSV，$\chi$ 就是凭空假设；有了 CSV，$\chi$ 有微观出处、可校准。</strong></p>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">07</span> 资本需求、资本价格 $Q_t$ 与参数一览</h2>
+      <p>企业家对资本的需求由"预期资本回报=外部融资成本"决定，把第 03 节反过来写成资本需求：在给定 $Q_t,K_{t+1},N_t$ 下，企业家一直借钱投资到边际资本回报等于 $S(\cdot)R_t$ 为止。资本价格 $Q_t$ 则由投资调整成本决定——这是经典的 Hayashi (1982) 托宾 $Q$ 关系：</p>
+      <div class="formula-block">
+        <div class="formula-label">投资的托宾 $Q$ 方程（含二次调整成本）</div>
+        $$Q_t = 1 + \phi\!\left(\frac{i_t}{k_t} - \delta\right), \qquad \text{对数线性：}\ \hat q_t = \varphi\,(\hat i_t - \hat k_t)$$
+      </div>
+      <p><strong>假设</strong>：资本品生产者面临二次安装成本，只有当 $Q_t&gt;1$（投资的市场价值高于重置成本）时才扩投资。<strong>解读</strong>：$Q_t$ 在金融加速器里是<strong>放大器的耦合变量</strong>——净值下跌推高溢价、压低投资，投资下降又压低 $Q_t$，$Q_t$ 下跌再通过净值方程（第 04 节含 $\hat q_{t-1}$）反压下一期净值，闭环形成。没有调整成本（$\varphi=0$），$Q_t\equiv1$，这个反馈链就断了一半。</p>
+      <p>BGG 关键参数及其经济含义汇总：</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>参数</th><th>含义</th><th>典型校准</th></tr>
+          <tr><td>$\gamma$</td><td>企业家存活率（每期不退出概率）</td><td>0.9728（季度，≈存活 10 年）</td></tr>
+          <tr><td>$\mu$</td><td>监控/审计成本占资本比例（CSV）</td><td>0.12</td></tr>
+          <tr><td>$\chi$</td><td>外部融资溢价对杠杆的弹性</td><td>0.03～0.08</td></tr>
+          <tr><td>$K/N$</td><td>稳态杠杆（资本/企业家净值）</td><td>≈2.0</td></tr>
+          <tr><td>$S(\bar\cdot)-1$</td><td>稳态外部融资溢价（年化）</td><td>≈200 bp</td></tr>
+          <tr><td>$\varphi$</td><td>投资调整成本强度</td><td>由 $Q$ 估计校准</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">08</span> GK 模型：银行家激励约束与内生杠杆</h2>
+      <p>2008 年危机的中心不是企业，而是<strong>银行体系本身</strong>——批发融资市场冻结、银行资本不足、信贷供给收缩。Gertler &amp; Kiyotaki (2010，下称 GK) 据此把摩擦从企业端移到银行端。模型中有三类主体：家庭（储户）、银行家（金融中介）、企业家。银行家吸收家庭存款 $D_t$，用自有净资产 $N_t^b$ 购买企业索取权 $S_t$（即对资本的要求权），资产负债表为 $S_t=N_t^b+D_t$。</p>
+      <h3>银行家激励约束 $V_t\ge\theta S_t$</h3>
+      <p>GK 的关键摩擦是：银行家并非天然可信——他可以在中途把比例 $\theta$ 的资产"转移"（divert，即挪作己有、跑路）。家庭预料到这一点，因此只在银行家"留在牌桌上的价值"不低于跑路所得时才肯存款。这就给出激励相容约束：</p>
+      <div class="formula-block">
+        <div class="formula-label">GK-1 · 银行家激励约束（incentive compatibility）</div>
+        $$V_t \;\ge\; \theta\, S_t$$
+      </div>
+
+      <h4>银行家特许经营价值 $V_t$ 的递归推导（不跳步）</h4>
+      <p><strong>第一步：写银行家 Bellman 方程。</strong>银行家 $t$ 期经营资产组合 $S_t$、净资产 $N_t^b$，吸收存款 $D_t=S_t-N_t^b$。每期以概率 $1-\xi$ 退休（分红 $N^b$ 给家庭），以 $\xi$ 继续经营。其特许经营价值（franchise value）为未来利润按家庭随机贴现因子 $\Lambda_{t,t+1}\equiv\beta\Lambda_{t+1}/\Lambda_t$ 贴现的现值：</p>
+      <div class="formula-block">
+        <div class="formula-label">GK-2 · 银行家 Bellman 方程（价值函数递归）</div>
+        $$V_t=E_t\Lambda_{t,t+1}\big[(1-\xi)\big(R_{t+1}^b S_t-R_{t+1}D_t\big)+\xi V_{t+1}\big]$$
+      </div>
+      <p>其中 $R_{t+1}^b$ 是银行资产组合回报，$R_{t+1}$ 是存款利率。第一项 $(1-\xi)(R^bS-RD)$ 是退休者带走的利润；第二项 $\xi V_{t+1}$ 是存活者的续营价值。</p>
+      <p><strong>第二步：把利润改写为利差。</strong>$R_{t+1}^bS_t-R_{t+1}D_t=(R_{t+1}^b-R_{t+1})S_t+R_{t+1}N_t^b$（因 $D_t=S_t-N_t^b$）。代入 Bellman 方程：</p>
+      <div class="formula-block">
+        <div class="formula-label">GK-2a · Bellman 方程按 $S_t,N_t^b$ 展开</div>
+        $$V_t=E_t\Lambda_{t,t+1}\big[(1-\xi)\big((R_{t+1}^b-R_{t+1})S_t+R_{t+1}N_t^b\big)+\xi V_{t+1}\big]$$
+      </div>
+      <p><strong>第三步：猜想-验证 $V_t=\nu_t S_t+\omega_t N_t^b$。</strong>因 Bellman 方程对 $(S_t,N_t^b)$ 线性，价值函数必为线性形式。代入 GK-2a 并按 $S_t,N_t^b$ 分组，得两个伴随变量的递归（GK-3、GK-4）：</p>
+      <div class="formula-block">
+        <div class="formula-label">GK-3 · $\nu_t$ 递归（资产边际价值） / GK-4 · $\omega_t$ 递归（净资产边际价值）</div>
+        $$\nu_t=E_t\Lambda_{t,t+1}\big[(1-\xi)(R_{t+1}^b-R_{t+1})+\xi(R_{t+1}^b-R_{t+1})\phi_{t+1}+\xi\nu_{t+1}\phi_{t+1}^{-1}...\big]$$
+        <p style="margin:8px 0 0;font-size:13px">标准 GK 形式（Gertler-Kiyotaki 2010, eq. 3.12–3.13）：</p>
+        $$\nu_t=E_t\Lambda_{t,t+1}\,\Omega_{t+1}(R_{t+1}^b-R_{t+1})+\xi E_t\Lambda_{t,t+1}\beta\phi_{t+1}^{-1}\,\nu_{t+1}$$
+        $$\omega_t=E_t\Lambda_{t,t+1}\,\Omega_{t+1}R_{t+1}+\xi E_t\Lambda_{t,t+1}\,\omega_{t+1},\qquad \Omega_{t+1}\equiv 1-\xi+\xi(\nu_{t+1}\phi_{t+1}+\omega_{t+1})$$
+      </div>
+      <p><strong>第四步：激励约束取等，解内生杠杆。</strong>均衡处约束紧 $V_t=\theta S_t$。代入 $V_t=\nu_t S_t+\omega_t N_t^b$：</p>
+      <div class="formula-block">
+        <div class="formula-label">GK-5 · 内生杠杆率（对数线性化后）</div>
+        $$\phi_t \equiv \frac{S_t}{N_t^b} = \frac{V_t}{\theta\,N_t^b} = \frac{\nu_t}{\theta - \omega_t},\qquad V_t=\nu_t S_t+\omega_t N_t^b$$
+      </div>
+      <p>其中 $\nu_t,\omega_t$ 是把 $V_t$ 按银行资产 $S_t$ 与净资产 $N_t^b$ 拆分得到的两个伴随变量。<strong>假设</strong>：① $V_t$ 是银行家的<strong>特许经营价值</strong>（franchise value）；② $\theta S_t$ 是跑路的一次性收益；③ 银行家存活率 $\xi$；④ 均衡处约束<strong>取等</strong>。<strong>解读</strong>：$V_t$ 越大（银行未来越赚钱），越值得"金盆洗手继续干"，储户越放心；$\theta$ 越大，约束越紧。<strong>杠杆为什么会导致信贷收缩</strong>：当负向冲击侵蚀银行净资产 $N_t^b$，即使 $V_t$ 不变，$\phi_t=V_t/(\theta N_t^b)$ 也会因分母缩水而被迫下降——银行家必须去杠杆、抛售资产，$S_t$ 收缩，企业拿不到信贷，投资与产出下行。反过来，"金融冲击"可建模为 $\theta$ 的外生上升（储户突然担心银行跑路），即使净资产没动，可吸存额度也骤降——这正是 2008 年回购市场挤兑的结构写照。</p>
+      <div class="formula-block">
+        <div class="formula-label">GK-6 · 银行资产负债表 / GK-7 · 银行资本演化</div>
+        $$S_t=N_t^b+D_t$$
+        $$N_{t+1}^b = \xi\big[R_t^b S_t - R_t D_t\big] + (1-\xi)N_t^{b,new}$$
+      </div>
+      <p>与 BGG 的净值方程同构：$\xi$ 是银行家存活率，方括号是银行经营利润（资产回报 $R_t^b$ 减去存款成本 $R_t$），退出者贡献新进入者的初始资本。</p>
+      <div class="callout tip">
+        <div class="callout-title">✅ BGG vs GK 对比</div>
+        <p><strong>BGG</strong>：摩擦在企业—银行之间，机制是"<strong>企业净值 → 外部融资溢价 → 资本需求</strong>"，额外状态变量是企业家净值 $N_t$，冲击通过资产价格影响企业资产负债表。<strong>GK</strong>：摩擦在银行—储户之间，机制是"<strong>银行资本 → 内生杠杆 → 信贷供给</strong>"，额外状态变量是银行资本 $N_t^b$，冲击直接打击金融中介自身的资产负债表。BGG 适合解释"企业投资周期"，GK 适合解释"银行危机/信贷紧缩"；Christiano-Motto-Rostagno 等估计模型常把两者同时纳入。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s_ss">
+      <h2><span class="sec-num">08</span> 稳态方程组与求解步骤</h2>
+      <p>稳态的目标是：给定结构参数，求出所有内生变量的常数解 $(Y,C,I,K,N,R,R^k,Q,\ldots)$，使对数线性化的常数项为零。BGG 因为多了"净值 $N$"这个状态变量，稳态比纯 NK 多两步。</p>
+
+      <h3>8.1 稳态方程组（零通胀、零增长、冲击为 0）</h3>
+      <div class="table-wrap"><table>
+        <tr><th>#</th><th>稳态方程</th><th>名称</th></tr>
+        <tr><td>(SS1)</td><td>$R=1/\beta$</td><td>家庭欧拉（稳态实际利率）</td></tr>
+        <tr><td>(SS2)</td><td>$Q=1$</td><td>托宾 Q（稳态无调整成本）</td></tr>
+        <tr><td>(SS3)</td><td>$I=\delta K$</td><td>资本积累（投资刚好补折旧）</td></tr>
+        <tr><td>(SS4)</td><td>$R^k = S(\kappa)\,R$，其中 $\kappa\equiv K/N$</td><td>EFP 定价（稳态溢价 $S(\kappa)-1$）</td></tr>
+        <tr><td>(SS5)</td><td>$N=\gamma\big[R^kK-R(K-N)\big]+(1-\gamma)W^e$</td><td>净值演化（稳态常数解）</td></tr>
+        <tr><td>(SS6)</td><td>$r^k=(R^k-(1-\delta))$</td><td>资本租金率（由 $R^k$ 定义式）</td></tr>
+        <tr><td>(SS7)</td><td>$Y=C+I+G+\mu QK\displaystyle\int_0^{\bar\omega}\omega dF$</td><td>资源约束（含审计成本耗散）</td></tr>
+      </table></div>
+
+      <h3>8.2 求解步骤（按顺序）</h3>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">Step 1 · 无摩擦部分</div><div class="step-desc">由 $\beta,\delta$ 直接定 $R=1/\beta$、$I/K=\delta$；由稳态资本边际产出等于 $r^k$ 定 $K/Y$。这一步与标准 RBC 完全相同。</div></div>
+        <div class="step-item"><div class="step-title">Step 2 · 锁定稳态溢价 $\Rightarrow$ 反推 $\bar\omega$</div><div class="step-desc">把目标"年化稳态 EFP ≈ 200bp"换成季度值 $S(\kappa)=1.005$（季度溢价 0.5%）。再由 CSV 最优合同在对数正态 $\omega$ 下的数值表，反推违约阈值 $\bar\omega$ 与违约概率 $F(\bar\omega)$。</div></div>
+        <div class="step-item"><div class="step-title">Step 3 · 由稳态杠杆 $\kappa=K/N\approx2$ 定 $N$</div><div class="step-desc">$N=K/\kappa$。把它代入 (SS5) 验证自洽：稳态下 $N$ 必须等于存活企业家净资产增量的 $\gamma$ 倍加新进入者种子资本；若不自洽，微调 $W^e$ 或 $\kappa$。</div></div>
+        <div class="step-item"><div class="step-title">Step 4 · 反推弹性 $\chi$</div><div class="step-desc">在 $\bar\omega$ 处对 $S(\kappa)$ 求对数导数 $\chi=\dfrac{d\ln S}{d\ln\kappa}\bigg|_{\kappa}$，由对数正态参数（$\omega$ 的均值与方差）算出 0.03–0.08。这一步是"校准 $\chi$"而非拍脑袋给值。</div></div>
+        <div class="step-item"><div class="step-title">Step 5 · 代入 Dynare initval</div><div class="step-desc">对数线性化后所有变量偏离 = 0，initval 全填 0；但结构参数里必须把 $\kappa=K/N=2$、$R^k/R=1.005$ 填对，否则残差 $\neq 0$。</div></div>
+      </div>
+
+      <h3>8.3 基准稳态值（本页 .mod 所用）</h3>
+      <div class="table-wrap"><table>
+        <tr><th>变量</th><th>稳态值</th><th>来源/依据</th></tr>
+        <tr><td>季度实际利率 $R-1$</td><td>≈ 1%（年化 4%）</td><td>$\beta=0.99$</td></tr>
+        <tr><td>季度折旧 $\delta$</td><td>0.025（年化 10%）</td><td>标准 RBC 校准</td></tr>
+        <tr><td>稳态杠杆 $\kappa=K/N$</td><td>2.0</td><td>美国非金融企业资产负债表长期均值</td></tr>
+        <tr><td>稳态 EFP（季度）</td><td>0.5%（年化 2%≈200bp）</td><td>Baa-Aaa 利差长期均值</td></tr>
+        <tr><td>违约概率 $F(\bar\omega)$</td><td>≈ 3%（季度）</td><td>$\bar\omega$ 反推（IMF/BGG 常用 3%）</td></tr>
+        <tr><td>资本产出比 $K/Y$</td><td>≈ 8（季度）</td><td>标准校准</td></tr>
+      </table></div>
+      <div class="callout warning"><div class="callout-title">⚠️ 稳态最常见的坑</div><p>对数线性模型下 <code class="inline">steady;</code> 全零，但残差 <code class="inline">resid;</code> 不为零，几乎总是因为：(a) $\kappa=K/N$ 与 (SS5) 不自洽；(b) $R^k/R$ 填成 1.0（零溢价）却又让 $\chi&gt;0$，导致稳态与对数线性化对不上。运行 <code class="inline">resid;</code> 逐项查是唯一可靠方法。</p></div>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">09</span> Dynare .mod 逐步撰写</h2>
+      <div class="callout info">
+        <div class="callout-title">💡 基础知识库</div>
+        <p style="margin-bottom:0">本节把 BGG/GK 模块接进一个<strong>已求稳态、已对数线性化</strong>的 NK 模型。不熟悉？先学
+          <a href="03-steady-state.html">📚 基础知识库·稳态求解</a> → 与
+          <a href="04-log-linearization.html">📚 基础知识库·对数线性化</a> →，再回来看 .mod 怎么写。
+        </p>
+      </div>
+      <p>把 BGG 模块接进一个对数线性化的 NK 模型，需要四步：(1) 在 <code class="inline">var</code> 中声明额外状态与控制变量；(2) 在 <code class="inline">model</code> 块逐行写入溢价方程与净值演化方程；(3) 在 <code class="inline">initval</code> 中给出稳态净值与稳态溢价；(4) 用 <code class="inline">steady; check;</code> 验证后跑 <code class="inline">stoch_simul</code>。下面给一个可直接运行的最小完整 .mod（已含资本回报 $rk$、资本价格 $q$、净值 $n$ 三个 BGG 新增变量）。</p>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">Step 1 · var / varexo 声明：把净值、资本价格、资本回报声明为变量</div><div class="step-desc">$\hat n_t$ 是<strong>滞后状态变量</strong>（predetermined），必须和 $\hat k_t$ 并列；金融冲击 $efk$ 列为外生。漏写 $n$ 会导致方程与变量数不匹配。</div></div>
+        <div class="step-item"><div class="step-title">Step 2 · model 块逐行写：溢价方程 → 资本回报等式 → 净值演化 → q 方程 → 冲击 AR(1)</div><div class="step-desc">注意净值方程左边是 <code class="inline">n(+1)</code>，右边全部是 $t$ 期或更早变量——这是"状态变量滞后"的语法体现。</div></div>
+        <div class="step-item"><div class="step-title">Step 3 · initval：稳态净值、稳态溢价</div><div class="step-desc">稳态时溢价 $=0$（对数线性偏离），净值 $\hat n=0$，但结构参数里要固定稳态杠杆 $K/N\approx2$。</div></div>
+        <div class="step-item"><div class="step-title">Step 4 · steady; check; 然后 stoch_simul(order=1, irf=40);</div><div class="step-desc"><code class="inline">check;</code> 会列出状态/前瞻变量个数与块分解；若报错"Eigenvalue blah"，多半是净值方程时间下标写反。</div></div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Dynare · bgg_full.mod（完整 BGG 模块，≥60 行，中文注释）</span><button class="copy-btn">复制</button></div>
+        <pre><code>% ============================================================
+%  bgg_full.mod  ——  在 NK 模型上嵌入 BGG 金融加速器模块
+%  新增状态变量: n(企业家净值), q(托宾Q), rk(资本回报)
+%  新增外生冲击: efk(外部融资溢价冲击, 即金融冲击)
+%  运行:  steady; check; stoch_simul(order=1, irf=40);
+% ============================================================
+
+var y c n r w pi k i m rk q l g;
+% y产出 c消费 n企业家净值 r名义利率 w实际工资 pi通胀
+% k资本存量 i投资 m货币 rk资本实际回报 q托宾Q l就业 g政府支出
+
+varexo eps_a efk eps_g eps_r;
+% eps_a技术冲击 efk金融冲击 eps_g政府冲击 eps_r货币政策冲击
+
+varobs y pi i r;
+
+% ---------- 参数声明 ----------
+parameters beta sigma phi_pi phi_r rho_a rho_g rho_efk ...
+           chi gamma_ent mu k_over_n varphi delta;
+beta      = 0.99;      % 家庭主观贴现因子(季度)
+sigma     = 1.0;       % 相对风险厌恶
+phi_pi    = 1.5;       % 泰勒规则通胀系数
+phi_r     = 0.75;      % 泰勒规则利率平滑
+rho_a     = 0.90;      % 技术冲击持续性
+rho_g     = 0.90;      % 政府支出冲击持续性
+rho_efk   = 0.90;      % 金融冲击持续性(BGG关键: 溢价冲击也有持续性)
+chi       = 0.05;      % 外部融资溢价对杠杆的弹性(CSV推出, 0.03~0.08)
+gamma_ent = 0.9728;    % 企业家存活率(≈平均存活10年)
+mu        = 0.12;      % CSV监控/审计成本占资本比例
+k_over_n  = 2.0;       % 稳态杠杆 K/N
+varphi    = 1.728;     % 投资调整成本强度(对应托宾Q弹性)
+delta     = 0.025;     % 季度折旧率
+
+model(linear);
+% ---- 家庭 IS 曲线(对数线性化欧拉方程) ----
+c(+1) = c - sigma*(r - pi(+1));
+
+% ---- 新凯恩斯菲利普斯曲线 ----
+pi = beta*pi(+1) + phi_pi*(1/sigma)*c;
+
+% ---- 货币政策泰勒规则(平滑) ----
+r = phi_r*r(-1) + (1-phi_r)*(phi_pi*pi) + eps_r;
+
+% ---- 资本积累方程 ----
+k = (1-delta)*k(-1) + delta*i;
+
+% ---- (BGG-1) 托宾Q 方程: 投资需求随 q 上升 ----
+q = varphi*(i - k);
+
+% ---- (BGG-2) 外部融资溢价: 杠杆越高, 溢价越贵 ----
+%    E_t rk(+1) - r = chi*(q + k(+1) - n) + efk
+rk = r + chi*(q + k(+1) - n) + efk;
+
+% ---- (BGG-3) 资本回报定义: 租金+资本利得 ----
+rk = (1-delta)*q(+1) + delta*w;
+
+% ---- (BGG-4) 企业家净值演化: n(+1) 由 t 期资本回报与利率决定 ----
+%    方括号: 存活企业家的净资产增量 = 资本回报 - 偿债
+n(+1) = gamma_ent*( (k_over_n)*(rk + q + k) ...
+       - (k_over_n - 1)*r ) ;
+
+% ---- (BGG-5) 金融冲击 AR(1) ----
+efk = rho_efk*efk(-1) + efk_shock;
+
+% ---- 外生过程 ----
+a   = rho_a*a(-1)  + eps_a;
+g   = rho_g*g(-1)  + eps_g;
+
+% ---- 资源约束 ----
+y = c + i + g;
+end;
+
+% ---------- 稳态初始化(对数线性模型, 全部=0) ----------
+initval;
+y = 0; c = 0; n = 0; r = 0; w = 0; pi = 0;
+k = 0; i = 0; m = 0; rk = 0; q = 0; l = 0; g = 0;
+a = 0; efk = 0;
+end;
+
+steady;      % 求稳态(对数线性下即为 0)
+check;       % 检查BK条件, 列出状态/前瞻变量
+
+% ---------- 随机模拟: 一阶近似, 画40期IRF ----------
+stoch_simul(order=1, irf=40) y c i k n rk q efk;
+% 对比实验: 把 chi 改成 0 再跑一次, 即得"无摩擦 NK"对照版</code></pre>
+      </div>
+      <p>逐行要点：<strong>(BGG-2)</strong> 是金融加速器的引擎，$\chi$ 控制放大强度；<strong>(BGG-4)</strong> 是把 $N_t$ 接进状态空间的关键，左边 <code class="inline">n(+1)</code> 与右边的时间戳差决定了"净值滞后一期"；<strong>(BGG-5)</strong> 的 $efk$ 即题目所说"额外金融冲击"，常用于刻画 2008 年式的信贷紧缩。把 <code class="inline">chi</code> 改成 0 再跑一次，同一技术冲击下投资与产出的 IRF 会显著变小——这就是金融加速器效应的数值签名。</p>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">10</span> 校准：BGG 与 GK 参数怎么取</h2>
+      <h3>BGG 校准</h3>
+      <ul>
+        <li><strong>企业家存活率 $\gamma=0.9728$</strong>（季度）：对应平均存活 $1/(1-\gamma)\approx36.8$ 个季度 ≈ 9.2 年，与 BGG (1999) 原文及美国企业存续年限一致；</li>
+        <li><strong>稳态外部融资溢价 ≈ 200 bp</strong>（年化）：对应美国 Baa-Aaa 利差与小企业贷款利率差的长期均值，反推 CSV 下的 $\bar\omega$；</li>
+        <li><strong>监控成本比例 $\mu=0.12$</strong>：Carlstrom-Fuerst 与 BGG 的常用值，表示银行每审计 1 元违约资本要花 0.12 元核查成本；</li>
+        <li><strong>稳态杠杆 $K/N\approx2.0$</strong>：对应非金融企业资产负债表的长期均值；</li>
+        <li><strong>弹性 $\chi\approx0.05$</strong>：由对数正态 $\omega$ 分布 + 上述稳态反推。</li>
+      </ul>
+      <h3>GK 校准</h3>
+      <ul>
+        <li><strong>可转移比例 $\theta=0.38$</strong>：GK (2010) 取 0.38，意思是银行家最多能卷走 38% 的资产跑路；这一数字并非直接来自微观数据，而是校准到<strong>银行杠杆约为 10</strong>（美国商业银行长期杠杆）这一矩；</li>
+        <li><strong>银行家存活率 $\xi\approx0.97$</strong>：略高于 $\gamma$，因为银行的"特许权价值"需要更长寿命来支撑；</li>
+        <li><strong>金融冲击 $b_t$（$\theta$ 的外生扰动）持续性 $\rho_b\approx0.95$</strong>：危机式信贷冻结通常持续数年。</li>
+      </ul>
+      <div class="callout info">
+        <div class="callout-title">💡 校准的逻辑</div>
+        <p>$\gamma,\theta,\xi$ 这些"存活率/转移比例"参数<strong>没有直接的微观对应物</strong>，是靠稳态矩（杠杆、溢价、银行平均年限）反推的。这意味着它们对结果很敏感：$\theta$ 调大一点，杠杆立刻降一半，金融冲击的 IRF 形状会剧变。论文里通常要做敏感性分析。</p>
+      </div>
+      <h3>关键校准值的文献来源对照</h3>
+      <div class="table-wrap"><table>
+        <tr><th>参数</th><th>本页取值</th><th>文献来源</th><th>校准目标矩</th></tr>
+        <tr><td>$\gamma$ 企业家存活率</td><td>0.9728（季）</td><td>BGG (1999)；Christensen &amp; Dib (2008, JEDC) 直接沿用</td><td>企业家平均经营年限 ≈ 9～10 年</td></tr>
+        <tr><td>$\mu$ 审计成本</td><td>0.12</td><td>BGG (1999)；IMF WP (2021) 沿用 0.12，对应季度违约概率 ≈ 3%</td><td>违约概率 $F(\bar\omega)\approx 3\%$</td></tr>
+        <tr><td>稳态 EFP</td><td>年化 ≈ 200bp</td><td>Baa-Aaa 利差长期均值（FRED BAA−AAA）</td><td>企业外部融资与内部资金成本差</td></tr>
+        <tr><td>$K/N$ 稳态杠杆</td><td>≈ 2.0</td><td>美国非金融企业资产负债表（Fed Z.1）长期均值</td><td>企业杠杆率</td></tr>
+        <tr><td>$\chi$ 溢价弹性</td><td>0.03～0.08</td><td>由对数正态 $\omega$ 在稳态处对数导数反推</td><td>—（结构性推出）</td></tr>
+        <tr><td>$\theta$ 可转移比例（GK）</td><td>0.38</td><td>Gertler-Kiyotaki (2010) / Gertler-Karadi (2011) 系列</td><td>银行杠杆 ≈ 10</td></tr>
+        <tr><td>$\xi$ 银行家存活率</td><td>≈ 0.97</td><td>GK (2010)；银行家平均任期 ≈ 10 年</td><td>特许权价值持续性</td></tr>
+      </table></div>
+      <div class="callout warning"><div class="callout-title">⚠️ 校准值不是"标准答案"</div><p>不同文献取值有别：GK (2015) 银行危机版取 $\theta=0.22$、存活率 0.95；巴西 DSGE 校准到本土杠杆 4.88 则取更小 $\theta$。中国企业杠杆更高（非金融企业部门杠杆率常年 150%+），照抄 $\theta=0.38$ 会把银行杠杆校准得过低，需按中国银行业实际杠杆（≈12～15）反推。写论文时务必说明"校准到哪个矩"。</p></div>
+    </div>
+
+    <div class="section" id="s_est">
+      <h2><span class="sec-num">11</span> 估计：数据来源、观测方程与先验</h2>
+      <p>这是 DSGE 金融摩擦分支<strong>最常被省略、审稿人最常追问</strong>的一环。校准只能钉住几个稳态矩，动态参数（$\chi,\rho_{efk},\sigma_{efk}$）必须用数据估计。下面给出可直接照做的数据源、观测方程与先验。</p>
+
+      <h3>11.1 美国数据：FRED 观测序列</h3>
+      <div class="table-wrap"><table>
+        <tr><th>模型变量</th><th>观测内容</th><th>FRED 序列 ID</th><th>处理</th></tr>
+        <tr><td>产出/投资/消费</td><td>实际 GDP / 私人投资 / 消费</td><td><code>GDPC1</code> / <code>GPDIC1</code> / <code>PCECC90</code></td><td>季度对数差分 ×100</td></tr>
+        <tr><td>外部融资溢价（EFP 代理）</td><td>Baa−Aaa 公司债利差，或 Baa−10年国债利差</td><td><code>BAA</code> − <code>AAA</code>；或 <code>BAA10YM</code></td><td>季均，年化百分点，除以 400 对齐季度偏离</td></tr>
+        <tr><td>银行资本 / 企业净值代理</td><td>非金融企业净值（Flow of Funds）；商业银行权益资本</td><td><code>BOGZ1FL194104005Q</code>（企业净值）；<code>TOTBKCR</code>/银行业权益</td><td>HP 滤波去趋势，或与 GDP 比后对数偏离</td></tr>
+        <tr><td>政策利率</td><td>联邦基金利率</td><td><code>FEDFUNDS</code></td><td>季均 / 400（年化转季度偏离）</td></tr>
+        <tr><td>通胀</td><td>PCE 或 GDP 平减指数环比</td><td><code>PCEPI</code></td><td>季度环比 ×400</td></tr>
+      </table></div>
+      <p><strong>为什么用 BAA−AAA 作 EFP 代理？</strong>BGG 的 EFP 是"外部资金比内部资金贵多少"，Baa 与 Aaa 都属投资级、信用风险不同，其利差剔除了无风险利率与久期因素，是文献（CMR 2014、Christensen-Dib 2008）最常用的 EFP 观测。危机期可加 <code>BAMLC0A4CBBB</code>（BBB OAS）作稳健性。</p>
+
+      <h3>11.2 Dynare 观测方程（varobs + 测量误差）</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Dynare · 观测方程（接 .mod 末尾）</span><button class="copy-btn">复制</button></div>
+<pre><code>% ---- 观测变量(与数据列对应) ----
+varobs obs_y obs_i obs_spread obs_nw obs_r obs_pi;
+
+% 观测方程(线性模型中即恒等映射, 但尺度要对齐):
+% obs_y       = 100*(y - y(-1))         % 产出增速
+% obs_i       = 100*(i - i(-1))         % 投资增速
+% obs_spread  = 400*prem                % EFP(模型溢价偏离) -> 年化百分点
+% obs_nw      = 100*n                  % 净值/银行资本 HP 偏离
+% obs_r       = 400*r                  % 名义利率年化
+% obs_pi      = 400*pi                 % 通胀年化
+
+% ---- 先验(estimated_params) ----
+estimated_params;
+  chi      , beta_pdf  , 0.05  , 0.02;   % EFP 弹性
+  rho_efk  , beta_pdf  , 0.90  , 0.05;   % 金融冲击持续性
+  sigma_efk, inv_gamma_pdf, 0.10, 2.00;  % 金融冲击标准差
+  sigma_a  , inv_gamma_pdf, 0.10, 2.00;  % 技术冲击标准差
+  mu       , beta_pdf  , 0.12  , 0.03;   % 审计成本
+end;
+
+% ---- 数据文件(列顺序与 varobs 一致) ----
+estimated_params_dynare_data;
+  load('us_data.dat');   % 列: obs_y obs_i obs_spread obs_nw obs_r obs_pi
+end;
+
+% ---- MCMC 估计 ----
+estimation(datafile=us_data, first_obs=1, MCMC_number=10000,
+           mh_nblocks=2, mh_jscale=0.4) y i prem n r pi;
+</code></pre>
+      </div>
+
+      <h3>11.3 中国数据：国家统计局 / Wind 变量对照</h3>
+      <div class="table-wrap"><table>
+        <tr><th>模型变量</th><th>中国代理</th><th>来源</th></tr>
+        <tr><td>产出 / 投资 / 消费</td><td>GDP、固定资产投资完成额、社会消费品零售总额</td><td>国家统计局季度数据库；Wind 提取</td></tr>
+        <tr><td>外部融资溢价</td><td>AA−AAA 中票/企业债信用利差；或 贷款基准利率−SHIBOR</td><td>Wind 信用债板块；央行货币政策执行报告</td></tr>
+        <tr><td>银行资本 / 净值</td><td>金融机构本外币信贷收支表"所有者权益"；商业银行资本充足率</td><td>央行金融机构信贷收支表；银保监会监管指标</td></tr>
+        <tr><td>政策利率</td><td>7 天银行间回购利率 DR007；或一年期 MLF/LPR</td><td>全国银行间同业拆借中心；Wind</td></tr>
+        <tr><td>通胀</td><td>GDP 平减指数 / CPI</td><td>国家统计局</td></tr>
+      </table></div>
+      <p><strong>中国估计的两个注意点</strong>：① 中国利率双轨制，政策利率与市场利率并存，观测方程建议用 DR007 作"市场利率"代理；② 中国企业杠杆远高于美国，稳态 $K/N$ 与 $\theta$ 需按中国非金融企业杠杆率（约 1.5–1.8 倍 GDP）重校准，不能直接套美国 200bp 溢价矩。</p>
+
+      <h3>11.4 先验设定逻辑</h3>
+      <ul>
+        <li>$\chi\sim \text{Beta}(0.05,0.02)$：被约束在 [0,1]、均值贴 BGG 校准值；</li>
+        <li>$\rho_{efk}\sim\text{Beta}(0.9,0.05)$：金融冲击持续性高（危机式冻结持续数年）；</li>
+        <li>$\sigma_{efk}\sim\text{InvGamma}(0.1,2)$：标准差无先验符号约束、用逆伽马；</li>
+        <li>关键识别假设：EFP 冲击在 <strong>0 期只影响利差、不影响产出</strong>（递归约束），这是把"金融冲击"从"技术冲击"里识别出来的常用假设。</li>
+      </ul>
+      <div class="callout tip"><div class="callout-title">✅ 估计通过的三条经验标准</div><p>(1) 边际数据密度（marginal likelihood）应显著高于"无摩擦 χ=0"模型——否则金融摩擦未获数据支持；(2) 估计出的 $\chi$ 后验均值应落在 0.03–0.08 且 90% 置信区间不含 0；(3) 平滑后的净值/利差序列应与 2008、2015 股灾、2020 疫情等已知金融压力事件吻合。</p></div>
+    </div>
+
+    <div class="section" id="s10">
+      <h2><span class="sec-num">12</span> IRF 分析、方差分解与加速器机制</h2>
+      <p>在 Dynare 中用 <code class="inline">stoch_simul(irf=40)</code> 跑完后，重点看两类冲击下的 IRF。</p>
+      <h3>(1) 金融冲击 $efk$（外生提升溢价）下的反应</h3>
+      <ul>
+        <li>$\hat{efk}\uparrow$ 立刻把外部融资溢价 $prem$ 推高；</li>
+        <li>溢价 $\uparrow$ → 资本需求 $\downarrow$ → 投资 $i$ 大幅下降；</li>
+        <li>资本价格 $q$ 下跌 → 通过净值方程 <code class="inline">n(+1)</code> → 下一期净值 $n$ 下降；</li>
+        <li>$n\downarrow$ 又反过来推高溢价，形成正反馈——<strong>同一冲击被放大、且拖尾 10 期以上</strong>；</li>
+        <li>产出 $y$、就业 $l$ 顺周期下行，且下行幅度比技术冲击大得多。</li>
+      </ul>
+      <h3>(2) 金融加速器：小冲击被放大和持续</h3>
+      <p>把一个标准负向技术冲击（$a_t\downarrow$）分别喂给 $\chi=0$（无摩擦）与 $\chi=0.05$（BGG）两个模型，对比 IRF：</p>
+      <div class="table-wrap">
+        <table>
+          <tr><th>变量</th><th>无摩擦 NK ($\chi=0$)</th><th>BGG ($\chi&gt;0$)</th></tr>
+          <tr><td>产出 $y$</td><td>小幅、短暂下行</td><td><strong>明显放大、拖尾 8～12 期</strong></td></tr>
+          <tr><td>投资 $i$</td><td>温和下行</td><td><strong>大幅下行（净值→溢价→投资）</strong></td></tr>
+          <tr><td>净值 $n$</td><td>不存在该变量</td><td>显著下行，滞后一期、持续多期</td></tr>
+          <tr><td>外部融资溢价 $prem$</td><td>恒为 0</td><td>逆周期上行</td></tr>
+          <tr><td>资本价格 $q$</td><td>小幅波动</td><td>放大，与净值同向</td></tr>
+        </table>
+      </div>
+      <div class="callout info">
+        <div class="callout-title">💡 解读 IRF 的四条"金融摩擦签名"</div>
+        <p>(1) 投资与产出波动被显著放大；(2) 外部融资溢价<strong>逆周期</strong>上行；(3) 净值<strong>顺周期且滞后一期</strong>；(4) 反应更持久——因为净值作为内生状态变量把冲击"储存"起来、逐期释放。论文里若 IRF 同时满足这四条，就可以声称"金融摩擦机制在数据中起作用"。</p>
+      </div>
+      <h3>(3) 方差分解：金融冲击到底解释多少？</h3>
+      <p>在 Dynare 里 <code class="inline">stoch_simul</code> 会自动输出 <code class="inline">dsge_var_decomposition</code> 表，或加 <code class="inline">var_decomposition</code> 选项。BGG 模型典型结果（CMR 2014 量级）：</p>
+      <div class="table-wrap"><table>
+        <tr><th>变量</th><th>技术冲击 $\varepsilon^a$</th><th>金融冲击 $\varepsilon^{fk}$</th><th>货币冲击 $\varepsilon^r$</th><th>支出冲击 $\varepsilon^g$</th></tr>
+        <tr><td>产出 $y$</td><td>≈ 35%</td><td><strong>≈ 30%</strong></td><td>≈ 15%</td><td>≈ 20%</td></tr>
+        <tr><td>投资 $i$</td><td>≈ 20%</td><td><strong>≈ 50%～60%</strong></td><td>≈ 10%</td><td>≈ 10%</td></tr>
+        <tr><td>外部融资溢价</td><td>≈ 5%</td><td><strong>≈ 85%～90%</strong></td><td>≈ 5%</td><td>≈ 5%</td></tr>
+        <tr><td>净值 $n$</td><td>≈ 20%</td><td><strong>≈ 60%</strong></td><td>≈ 10%</td><td>≈ 10%</td></tr>
+      </table></div>
+      <p><strong>解读</strong>：金融冲击是<strong>投资与利差波动的主导来源</strong>，但对产出的解释力约 1/3——这正是 BGG 的定量结论"金融摩擦可解释美国产出波动的 20%～30%"。若你的模型里金融冲击只解释利差、不解释投资，说明 $\chi$ 校准太小或净值方程时间戳有误，加速器没真正"接进去"。</p>
+      <h3>(4) 模型诊断：怎么验证金融摩擦真的起作用</h3>
+      <ul>
+        <li><strong>对照实验</strong>：把 $\chi$ 设 0 重跑，投资 IRF 峰值应下降 30% 以上；若没变化，说明回路没接通；</li>
+        <li><strong>矩匹配</strong>：模型模拟的利差—产出相关系数应显著为负（利差逆周期），与 FRED 数据一致；</li>
+        <li><strong>危机事件</strong>：用估计模型做 2008 反事实——关掉金融冲击，产出下滑应少一半以上；</li>
+        <li><strong>BK 条件</strong>：<code class="inline">check;</code> 输出的前瞻变量数应等于稳定特征值个数，净值 $n$ 必须被列为 pred（滞后）变量。</li>
+      </ul>
+    </div>
+
+    <div class="section" id="s11">
+      <h2><span class="sec-num">13</span> 经典论文案例</h2>
+      <div class="paper-card">
+        <span class="paper-type en">English · 奠基</span>
+        <div class="paper-title">Bernanke, B., Gertler, M. &amp; Gilchrist, S. (1999). The Financial Accelerator in a Quantitative Business Cycle Framework</div>
+        <div class="paper-meta">Handbook of Macroeconomics, Vol. 1C · 金融加速器奠基之作</div>
+        <div class="paper-desc">完整推导 CSV 最优合同、外部融资溢价方程与净值演化方程；本页所有 BGG 公式的原始出处，校准到美国数据证明金融摩擦可解释产出波动的 20%～30%。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 银行端</span>
+        <div class="paper-title">Gertler, M. &amp; Kiyotaki, N. (2010). Financial Intermediation and Credit Policy in Business Cycle Analysis</div>
+        <div class="paper-meta">Handbook of Monetary Economics, Vol. 3 · GK 银行家约束原始出处</div>
+        <div class="paper-desc">把摩擦从企业端移到银行端，推导出银行家激励约束 $V_t\ge\theta S_t$ 与内生杠杆，并讨论央行非常规信贷政策如何对冲银行资本冲击。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · 估计</span>
+        <div class="paper-title">Christiano, L., Motto, R. &amp; Rostagno, M. (2014). Risk Shocks</div>
+        <div class="paper-meta">American Economic Review · 含金融摩擦的中尺度估计模型</div>
+        <div class="paper-desc">在 ERB/欧元区估计模型中同时嵌入 BGG 与银行资本摩擦，识别出"风险冲击"（risk shock，即 CSV 中 $\omega$ 分布的离散度变化）是美国与欧元区经济波动的主要驱动之一；是后续 DSGE 估计金融摩擦的标准范本。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 顶刊</span>
+        <div class="paper-title">《经济研究》金融加速器与中国经济波动（范从来、刘绍倜等系列）</div>
+        <div class="paper-meta">《经济研究》 · BGG 框架中国化</div>
+        <div class="paper-desc">把 BGG 外部融资溢价—净值回路映射到中国非金融上市公司数据，估计金融加速器对中国投资与产出波动的放大系数，并讨论国企/民营企业的异质性溢价。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 顶刊</span>
+        <div class="paper-title">《经济研究》含银行摩擦的货币政策与宏观审慎（罗娜、程方楠等）</div>
+        <div class="paper-meta">《经济研究》 · GK 框架本土化</div>
+        <div class="paper-desc">在 GK 银行家激励约束上叠加 LTV/资本充足率要求，讨论银行资本冲击对实体经济的传导，以及宏观审慎与货币政策的协调。</div>
+      </div>
+    </div>
+
+    <div class="section" id="s12">
+      <h2><span class="sec-num">14</span> 常见错误</h2>
+      <div class="callout danger">
+        <div class="callout-title">❌ 写 BGG/GK 模块时的 6 个高频错误</div>
+        <p>① <strong>把净值写成当期变量</strong>：净值演化方程必须是 $n(+1)=\dots$，漏了 $+1$ 会让 $n$ 变成前瞻变量，BK 条件报错；② <strong>$\chi$ 校准过大</strong>：$\chi$ 取到 0.2 以上会让模型对杠杆过敏、稳态发散；③ <strong>稳态杠杆 $K/N$ 与微观数据脱节</strong>：若校准到 5 以上，金融冲击会把投资打飞；④ <strong>把金融冲击 $efk$ 误当成技术冲击识别</strong>：两者在 IRF 上符号相似，但 $efk$ 推高溢价、技术冲击压低溢价；⑤ <strong>GK 激励约束不取等</strong>：若写成 $V_t&gt;\theta S_t$ 的不等式，杠杆不唯一，Dynare 无法线性化；⑥ <strong>忘记在 <code class="inline">var</code> 里声明新增的 $n,q,rk$</strong>，或在 <code class="inline">initval</code> 里漏给稳态值，导致 <code class="inline">steady</code> 不收敛。</p>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">📚 进阶路线</div>
+        <p>① Christensen &amp; Dib (2008) "Financial frictions in an estimated NK model"；② CMR (2014) 的 risk shock 扩展；③ 下一步 <strong>第 16 站：脉冲响应与模拟</strong>，把 $efk$ 与技术冲击的 IRF 画出来、做 $\chi=0$ 对照、写进论文。</p>
+      </div>
+    </div>
+
+    <!-- EQUATION SUMMARY -->
+    <div class="section" id="s_esum">
+      <h2><span class="sec-num">E</span> 方程总清单 · Equation Summary</h2>
+      <p>下表汇总本模型全部方程。BGG 企业侧 14 条 + GK 银行侧 6 条 + 外生 AR(1) 1 条 = <strong>本模型共 22 个核心方程</strong>。</p>
+      <div class="table-wrap"><table>
+        <tr><th>编号</th><th>方程</th><th>名称</th><th>正文位置</th></tr>
+        <tr><td>家庭-1</td><td>$C_t^{-\sigma}=\lambda_t$</td><td>消费边际效用</td><td>§3.1</td></tr>
+        <tr><td>家庭-2</td><td>$\chi L_t^\varphi=\lambda_t W_t/P_t$</td><td>劳动供给</td><td>§3.1</td></tr>
+        <tr><td>家庭-3</td><td>$\lambda_t=\beta(1+i_t)E_t[\lambda_{t+1}P_t/P_{t+1}]$</td><td>消费欧拉</td><td>§3.1</td></tr>
+        <tr><td>BGG-1</td><td>$Q_tK_{t+1}=N_t+B_t$</td><td>企业家资产负债表</td><td>§02</td></tr>
+        <tr><td>BGG-C1</td><td>企业家优化：$\max\int_{\bar\omega}^\infty(\omega-\bar\omega)f d\omega\cdot R^kQK$ s.t. 银行 PC</td><td>CSV 合同问题</td><td>§6.1</td></tr>
+        <tr><td>BGG-C2</td><td>$\bar\omega R_{t+1}^kQ_tK_{t+1}=R_t^L(Q_tK_{t+1}-N_t)$</td><td>违约阈值/贷款利率</td><td>§6.2</td></tr>
+        <tr><td>BGG-C3</td><td>$[G(\bar\omega)-\mu\int_0^{\bar\omega}\omega f d\omega]E_tR^k_{t+1}=\frac{R_t}{\kappa_t}(\kappa_t-1)$</td><td>银行参与约束</td><td>§6.2</td></tr>
+        <tr><td>BGG-EFP</td><td>$E_tR_{t+1}^k=S(Q_tK_{t+1}/N_t)R_t$，线性化 $E_t\hat r^k_{t+1}-\hat r_t=\chi(\hat q_t+\hat k_{t+1}-\hat n_t)+\varepsilon^{fk}$</td><td>外部融资溢价</td><td>§03</td></tr>
+        <tr><td>BGG-RK</td><td>$R_{t+1}^k=(r_{t+1}^k+(1-\delta)Q_{t+1})/Q_t$</td><td>资本回报定义</td><td>§3.2</td></tr>
+        <tr><td>BGG-N</td><td>$N_{t+1}=\gamma[R_t^kQ_{t-1}K_t-R_t(Q_{t-1}K_t-N_t)]+(1-\gamma)W_t^e$</td><td>净值演化</td><td>§05</td></tr>
+        <tr><td>BGG-BANK</td><td>$E_t[\text{偿付}]=R_t^rB_t+\mu Q_tK_{t+1}\int_0^{\bar\omega}\omega dF(\omega)$</td><td>银行零利润</td><td>§3.4</td></tr>
+        <tr><td>BGG-Q</td><td>$Q_t=1+\varphi(I_t/K_t-\delta)$，线性化 $\hat q_t=\varphi(\hat i_t-\hat k_t)$</td><td>托宾 Q/投资</td><td>§3.3/07</td></tr>
+        <tr><td>BGG-K</td><td>$K_{t+1}=(1-\delta)K_t+I_t$</td><td>资本积累</td><td>§09 .mod</td></tr>
+        <tr><td>BGG-MKT</td><td>$Y_t=C_t+I_t+G_t+\mu Q_tK_{t+1}\int_0^{\bar\omega}\omega dF$</td><td>资源约束（含审计耗散）</td><td>§3.5</td></tr>
+        <tr><td>BGG-TAY</td><td>$i_t=\rho_i i_{t-1}+(1-\rho_i)(\phi_\pi\pi_t)+\varepsilon_t^m$</td><td>Taylor 规则</td><td>§09 .mod</td></tr>
+        <tr><td>BGG-AR</td><td>$\varepsilon_t^{fk}=\rho_{fk}\varepsilon_{t-1}^{fk}+\eta_t^{fk}$</td><td>金融冲击 AR(1)</td><td>§09 .mod</td></tr>
+        <tr><td>GK-1</td><td>$V_t\ge\theta S_t$（均衡取等）</td><td>银行家激励约束</td><td>§08</td></tr>
+        <tr><td>GK-2</td><td>$V_t=E_t\Lambda_{t,t+1}[(1-\xi)((R^b-R)S_t+RN^b)+\xi V_{t+1}]$</td><td>银行家 Bellman 方程</td><td>§08</td></tr>
+        <tr><td>GK-3/4</td><td>$\nu_t,\omega_t$ 递归（资产/净资产边际价值）</td><td>价值函数分解</td><td>§08</td></tr>
+        <tr><td>GK-5</td><td>$\phi_t=S_t/N_t^b=\nu_t/(\theta-\omega_t)$</td><td>内生杠杆</td><td>§08</td></tr>
+        <tr><td>GK-6</td><td>$S_t=N_t^b+D_t$</td><td>银行资产负债表</td><td>§08</td></tr>
+        <tr><td>GK-7</td><td>$N_{t+1}^b=\xi[R_t^bS_t-R_tD_t]+(1-\xi)N_t^{b,new}$</td><td>银行资本演化</td><td>§08</td></tr>
+      </table></div>
+      <p><strong>退化检验：</strong>令 $\chi=0$（BGG）或 $\theta\to\infty$（GK，约束永远松），金融部门与实体经济脱钩，模型回到无摩擦 NK。</p>
+    </div>
+
+    <div class="page-nav">
+      <a href="06-bayesian-estimation.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">07 · 贝叶斯估计</div>
+      </a>
+      <a href="08-irf-simulation.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">09 · 脉冲响应与模拟</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// 侧边栏切换
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+
+// 复制代码
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+
+// KaTeX 渲染
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+
+// 高亮当前导航
+(function() {
+  const path = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('href') && item.getAttribute('href').endsWith(path)) {
+      item.classList.add('active');
+    }
+  });
+})();
+</script>
+</body>
+</html>

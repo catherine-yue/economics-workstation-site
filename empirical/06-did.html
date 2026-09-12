@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DID 双重差分（全套） | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item active" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main"><div class="content-wrap">
+
+  <div class="breadcrumb">
+    <a href="../index.html">首页</a><span class="sep">/</span>
+    <a href="index.html">实证论文</a><span class="sep">/</span>
+    <span>DID 双重差分（全套）</span>
+  </div>
+
+  <div class="page-header">
+    <span class="tag">实证 · 06 · 重点</span>
+    <h1>DID 双重差分：从经典 2×2 到交叠 DID 的新估计量</h1>
+    <p class="desc">Difference-in-Differences (DID) 是现代微观实证中使用频率最高的识别策略。本页从经典 2×2 DID 出发，讲清楚平行趋势假设、事件研究图、PSM-DID，然后用最大篇幅覆盖 2018 年以来交叠 DID（staggered DID）的负权重问题与四大新估计量：Callaway–Sant'Anna、Sun–Abraham、de Chaisemartin–D'Haultfoeuille、Borusyak–Jaravel–Spiess。</p>
+  </div>
+
+  <div class="prereq-box">
+    <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+    <div class="prereq-grid">
+      <div class="prereq-item">
+        <div class="prereq-label">① 数学 / 统计基础</div>
+        <div class="prereq-body">因果推断潜在结果框架（Rubin Causal Model：Y(1) / Y(0)、ATE / ATT）、固定效应估计、面板差分、平行趋势假设的统计表述。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">② 经济学理论前置</div>
+        <div class="prereq-body">政策评估 / 项目评估方法（program evaluation）；理解交叠 DID 的异质性处理效应。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">③ 软件 / 计算前置</div>
+        <div class="prereq-body">Stata 17+（外部命令：<code class="inline">reghdfe</code>、<code class="inline">csdid</code>、<code class="inline">eventdd</code>、<code class="inline">coefplot</code>；新估计量 <code class="inline">did_multipgt</code>、<code class="inline">did_imputation</code>）。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">④ 站内前置页面</div>
+        <div class="prereq-body">先学 <a href="04-baseline-regression.html">04 基准回归</a>（掌握双向固定效应与聚类标准误）。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">⑤ 难度分级</div>
+        <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">进阶</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toc-box">
+    <div class="toc-title">本页目录 / CONTENTS</div>
+    <ol>
+      <li><a href="#s1">DID 的核心思想与 2×2 设定</a></li>
+      <li><a href="#s2">平行趋势假设与事件研究图</a></li>
+      <li><a href="#s3">动态效应与 PSM-DID</a></li>
+      <li><a href="#s4">交叠 DID 的负权重问题（重点）</a></li>
+      <li><a href="#s5">四大新估计量：csdid / eventdd / did_multipgt / did_imputation</a></li>
+      <li><a href="#s6">安慰剂检验 Placebo</a></li>
+      <li><a href="#s6b">平行趋势不通过时：诊断与合法补救</a></li>
+      <li><a href="#s7">完整 Stata 代码</a></li>
+      <li><a href="#s7b">进阶扩展：两阶段 DID、插补 DID、分位数 DID 与面板匹配</a></li>
+      <li><a href="#s8">论文案例与常见错误</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="s1">
+    <h2><span class="sec-num">01</span> DID 的核心思想与 2×2 设定</h2>
+    <p>Difference-in-Differences (DID) 的直觉极其直观：想象一个政策在某一时点只对一部分人（处理组 treated）实施，另一部分人（对照组 control）从未受影响。简单地比较"处理组政策前后之差"会把政策效应和<strong>时间趋势</strong>混在一起；简单地比较"处理组 vs 对照组政策后之差"会把政策效应和<strong>两组本来就存在的差异</strong>混在一起。DID 的巧思是做<strong>两次差分</strong>：先在每个组内做"政策后 − 政策前"，再把两个组的这个差再相减——时间趋势被差分掉，组间固有差异也被差分掉，剩下的就是政策的因果效应。</p>
+    <p>经典 2×2 DID 模型写成双向固定效应（two-way FE）形式：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 1.1 — 经典 TWFE DID 模型</div>
+      $$ y_{it} = \beta_0 + \beta_1 \, Treat_i \times Post_t + \alpha_i + \gamma_t + \mathbf{Z}_{it}'\boldsymbol{\delta} + \varepsilon_{it} $$
+    </div>
+    <p>其中 $Treat_i$ 是组别虚拟变量（处理组=1，对照组=0），$Post_t$ 是时期虚拟变量（政策后=1，政策前=0）。我们真正关心的系数是<strong>交互项 $Treat_i \times Post_t$ 的系数 $\beta_1$</strong>——它就是 DID 估计量：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 1.2 — DID 估计量的二阶差分形式</div>
+      $$ \hat{\beta}_{DID} = \big(\bar{y}_{T,Post} - \bar{y}_{T,Pre}\big) - \big(\bar{y}_{C,Post} - \bar{y}_{C,Pre}\big) $$
+    </div>
+    <div class="callout info">
+      <div class="callout-title">关键识别假设：Parallel Trends 平行趋势</div>
+      <p>DID 成立的唯一关键假设是：<strong>如果没有政策，处理组和对照组的结果变量会以相同的趋势演变</strong>（parallel trends assumption）。这个假设无法直接检验，但可以用政策前的数据做"伪政策时点"检验——如果政策前处理组和对照组的趋势已经分叉，平行趋势就值得怀疑。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s2">
+    <h2><span class="sec-num">02</span> 平行趋势检验与事件研究图</h2>
+    <p>论文里几乎一定会画一张<strong>事件研究图（event study plot）</strong>。它把 DID 展开成动态形式：不再假设政策效应一次性出现并保持不变，而是允许政策效应随时间变化：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 2.1 — Event Study 事件研究模型</div>
+      $$ y_{it} = \sum_{k \neq -1} \beta_k \, D_{it}^k + \alpha_i + \gamma_t + \mathbf{Z}_{it}'\boldsymbol{\delta} + \varepsilon_{it} $$
+    </div>
+    <p>这里 $D_{it}^k$ 是"相对政策时点 $k$ 年"的虚拟变量：$k&lt;0$ 表示政策前 $|k|$ 年，$k=0$ 表示政策当年，$k&gt;0$ 表示政策后 $k$ 年。我们<strong>省略 $k=-1$ 作为基准期</strong>（省略的那一期系数归一化为 0）。事件研究图横轴是 $k$，纵轴是 $\hat{\beta}_k$ 及其置信区间：</p>
+    <ul>
+      <li><strong>政策前（$k&lt;-1$）</strong>：$\hat{\beta}_k$ 应该贴着 0、不显著异于 0——这就是平行趋势的图形证据。</li>
+      <li><strong>政策后（$k \ge 0$）</strong>：$\hat{\beta}_k$ 应该显著偏离 0，且可以展示动态轨迹（政策效应是立即出现还是逐渐累积？）。</li>
+    </ul>
+    <div class="callout tip">
+      <div class="callout-title">画图命令</div>
+      <p>Stata 中最常用的是 <code class="inline">eventdd</code>（即 <code class="inline">ssc install eventdd</code>）或 <code class="inline">coefplot</code> 配合手工构造的滞后/超前项。两期及以上的 leads 必须联合不显著（pre-trend F 检验），否则审稿人会攻击平行趋势。</p>
+    </div>
+
+    <h3>2.1 pre-trend 联合 F 检验：不能只看单期系数</h3>
+    <p>单看事件研究图里每一根 whisker 是否跨 0 是不够的——如果有 5 个 leads，每个单独看不显著，<strong>5 个联合起来却显著异于 0</strong> 的情况完全可能发生。规范做法是在事件研究回归后，把所有政策前 leads 联合做 Wald 检验：</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s2_pretrend_test.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* s2.1 事件研究 + pre-trend 联合 F 检验
+* 沿用 s7 模拟数据：D095=k=-5 ... D098=k=-2, D100=k=0...
+reghdfe y D095 D096 D097 D098 D100 D101 D102 D103 D104 D105, ///
+    absorb(id year) vce(cluster id)
+
+* 联合检验所有政策前 leads（D095..D098，省略 k=-1 基准）
+test D095 D096 D097 D098
+* H0: 所有 pre 期系数联合 = 0
+* 若 p<0.05 → 拒绝平行趋势假设
+
+* 也可以用更现代的写法：先构造事件时间变量再写因子
+* testparm i.rel_time#i.treat if rel_time<0
+</code></pre>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-title">⚠ Roth (2022) 关键警告：pre-trend 检验功效低，不能把"不显著"当"平行趋势成立"</div>
+      <p>这是 2020 年后顶刊审稿人最常追问的一点。Roth (2022, JoE) 用仿真证明：在绝大多数实务样本里，pre-trend 联合检验的<strong>功效常常只有 30%–50%</strong>——也就是说，即使真实存在一条足以让你 ATT 偏误 20% 的 pre-trend 斜率，你也有一半以上概率"抓不到"。把 <code class="inline">test D095..D098</code> 的 p=0.21 直接写成"平行趋势成立"，是统计上的过度解读。正确写法必须同时交代三件事：</p>
+      <ul>
+        <li>① 联合检验 p 值（"我们不能拒绝平行趋势"）；</li>
+        <li>② <code class="inline">pretrends</code> 命令估计的<strong>检验功效</strong>与"可检测的最小 pre-trend 斜率"；</li>
+        <li>③ 若功效低，做 Rambachan &amp; Roth 式敏感性分析（允许 pre 期存在一定幅度偏离时，post 效应 CI 还跨不跨 0）。</li>
+      </ul>
+    </div>
+
+    <h3>2.2 <code class="inline">pretrends</code>（Roth 2022）：量化 pre-trend 检验的功效</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s22_pretrends_roth.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* s2.2 Roth (2022) pretrends：评估 pre-trend 检验有多大功效
+* ssc install pretrends, replace
+
+* 前置：已跑事件研究回归（见 s2.1）
+* pretrends 会自动识别事件研究中的 pre 期虚拟变量，
+* 回答："如果真实存在线性 pre-trend，本检验有多大概率抓住？"
+*
+* 语法（在 reghdfe 事件研究回归后）：
+* pretrends, leads(4) lag(0) post(5)
+*   leads(4)  : 政策前有 4 期 leads
+*   lag(0)    : 政策当年作为基准
+*   post(5)   : 政策后估计窗口
+*
+* 关键输出解读:
+*   Power of pre-trend test at 5% level: ~0.35
+*   Detectable bias (in fraction of ATT): ~0.20
+*
+* 论文写法模板:
+*   "The joint pre-trend test does not reject the null
+*    (p = 0.21), but pretrends (Roth 2022) indicates the
+*    test has only ~35% power to detect a linear pre-trend
+*    that would bias the ATT by 20%. We therefore report
+*    Rambachan-Roth sensitivity bounds (see sX.X) showing
+*    the ATT remains positive under modest pre-trend violations."
+
+* 重要：pretrends 命令在 Stata 中需要事件研究回归保留
+* e(b) 和 e(V)；如果用 reghdfe，先 estimates store 再调用。
+</code></pre>
+    </div>
+
+    <h3>2.3 观测量合并检验：当某事件期样本太少</h3>
+    <p>当你展开到 k=−6 甚至 k=−8 时，远端 leads 往往只有少数几个处理组观测，单独系数 SE 巨大、置信带宽到没意义。此时合法做法是<strong>把观测太少的相邻事件期合并</strong>（如把 k=−6 与 k=−5 合并成一个 "early-leads" 系数），而不是把远端 leads 从图上删掉。</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s23_pooled_leads.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* s2.3 远端 leads 观测太少时合并相邻期
+* 前提：该合并是由"远端期观测数过少"这一客观事实决定的，
+*       不能是"合并后刚好平行"才合并。
+
+* 假设 k=-6/-5 两期处理组观测都 <30，合并：
+gen D_early = (rel_time<=-5) if g!=0
+replace D_early = 0 if g==0
+
+* 其余 leads/lags 照常
+reghdfe y D_early D096 D097 D098 D100 D101 D102 D103 D104 D105, ///
+    absorb(id year) vce(cluster id)
+test D_early D096 D097 D098        // 合并后 pre 期联合检验
+
+* 红线：发现 k=-6 单独显著（不平行），把它和 k=-5 合并
+*       合并后"看起来不显著"——这是事后缝合趋势。
+</code></pre>
+    </div>
+  </div>
+
+  <div class="section" id="s3">
+    <h2><span class="sec-num">03</span> 动态效应与 PSM-DID</h2>
+    <p>如果担心处理组和对照组在可观测特征上差异很大（covariate imbalance），可以用<strong>倾向得分匹配 DID（Propensity Score Matching DID, PSM-DID）</strong>：先用 logit/probit 估计每个个体被处理的概率 $p(X)$（倾向得分），然后按 $p(X)$ 在处理组和对照组之间做匹配（nearest neighbor / kernel / caliper），只保留共同支撑（common support）范围内的观测，再在匹配后的样本上做 DID。</p>
+    <p>PSM-DID 的逻辑是：PSM 解决"可观测特征上的自选择"，DID 解决"时不变不可观测特征"。两者结合比单独 PSM 或单独 DID 都更稳健。但要注意：PSM 只能处理<strong>可观测</strong>的混淆，<strong>不可观测</strong>的自选择依然要靠 DID 的平行趋势假设兜住。</p>
+  </div>
+
+  <div class="section" id="s4">
+    <h2><span class="sec-num">04</span> 交叠 DID 的负权重问题（重点）</h2>
+    <p>2018 年以来，计量经济学界发生了一场"DID 革命"。Goodman-Bacon (2021)、de Chaisemartin & D'Haultfœuille (2020)、Sun & Abraham (2021)、Callaway & Sant'Anna (2021) 一系列论文指出：当政策在不同时点分批实施（<strong>staggered DID / 交叠 DID</strong>）时，传统 TWFE DID 估计量会出现严重偏误。</p>
+    <h3>偏误从哪里来？</h3>
+    <p>TWFE DID 把所有可能的"对比组 × 时期"配对加权平均成一个 ATT。问题在于：当政策效应存在异质性（处理效应随时间或组别变化，即 $\tau_{it} \neq \tau$），TWFE 在做配对时会把<strong>已经接受处理的组</strong>当作"对照组"去和新处理组比较——这就是所谓"forbidden comparison"。例如：A 组在 2010 年接受处理，B 组在 2015 年接受处理。TWFE 在估计 2015 年的效应时，会把 A 组（已经被处理 5 年）当作 B 组的"对照组"。如果 A 组的动态效应还没回到稳态，这种比较就把 A 组的动态效应"反向"加权进来，导致 TWFE 系数出现<strong>负权重（negative weights）</strong>，严重时甚至符号都能翻转。</p>
+    <h3>Bacon 分解：TWFE 究竟在加权什么？</h3>
+    <p>Goodman-Bacon (2021) 的贡献是把上面这个直觉变成了一个分解定理：交叠 DID 中的 TWFE 估计量，等于所有可能的 2×2 DID 估计量的<strong>加权平均</strong>，权重与每一对比较所动用的样本量、两组处理暴露程度成正比。分解结果天然分成三类比较："先处理组 vs 未处理组""后处理组 vs 未处理组"这两类是干净的好比较；而"后处理组 vs 先处理组"这类把已经接受处理的组当作对照，就是上节说的 forbidden comparison——当处理效应随时间或队列异质时，这类坏比较的权重可以是负的。de Chaisemartin & D'Haultfœuille (2020, AER) 把这一结论推广到更一般的 TWFE 设定，证明只要处理变量是异质性的、权重和不为 1，负权重就可能出现，进而让 TWFE 系数的符号都不可信。</p>
+    <p>此后的新估计量本质上都是"扔掉坏比较、只在干净比较上做加权"：Callaway & Sant'Anna (2021) 逐"组×期"估计 $ATT(g,t)$ 再汇总；Sun & Abraham (2021) 在事件研究框架内对 leads/lags 做交互加权；Roth et al. (2023) 的综述则把这场"DID 革命"的方法谱系、假设与实务取舍做了系统总结。</p>
+
+    <h3>Bacon 分解：TWFE 权重公式的正式推导</h3>
+    <p>Goodman-Bacon (2021, JoE) 的核心定理可以写成如下形式。设样本中有若干个处理队列（cohort），$g$ 表示该队列首次接受处理的年份，从未处理的队列为 $g=0$。对任意两个队列 $e&lt;l$（$e$ 早于 $l$ 接受处理）以及任意一对时期 $t&gt;t'$，可以构造一个经典的 2×2 DID 对比：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 4.1 — 单个 2×2 DID 对比分量</div>
+      $$ \hat{\beta}^{e,l}_{DID}(t,t') = \big(\bar{y}_{e,t} - \bar{y}_{e,t'}\big) - \big(\bar{y}_{l,t} - \bar{y}_{l,t'}\big) $$
+    </div>
+    <p>Bacon 定理证明：交叠 DID 中的 TWFE 估计量 $\hat{\beta}_{TWFE}$ 恰好等于所有这些 2×2 分量的一个加权平均，权重之和严格等于 1：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 4.2 — Goodman-Bacon (2021) 分解定理</div>
+      $$ \hat{\beta}_{TWFE} = \sum_{e<l} w_{e,l}\,\hat{\beta}^{e,l}_{DID} \;+\; w_{u}\,\hat{\beta}^{u}_{DID}, \qquad \sum_{e<l} w_{e,l} + w_{u} = 1 $$
+    </div>
+    <p>其中权重 $w_{e,l}$ 与两个队列的样本份额以及它们各自的处理变量方差成正比：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 4.3 — Bacon 权重（比例形式）</div>
+      $$ w_{e,l} \;\propto\; \frac{N_e}{N}\cdot\frac{N_l}{N}\cdot\Big[s_e(1-s_e) + s_l(1-s_l)\Big], \qquad s_g = \frac{\#\{t\ge g\}}{T} $$
+    </div>
+    <p>这里 $s_g$ 是队列 $g$ 在样本期内处于"已处理"状态的时间份额。直观地说：队列越大、处理暴露越分散，它在 TWFE 里占的权重就越大。</p>
+
+    <h4>三类对比与"负权重"从何而来</h4>
+    <p>Bacon 分解把所有 2×2 对比分成三类：</p>
+    <ol>
+      <li><strong>Early-treated vs Never-treated（干净对比）</strong>：早处理组与从未处理组比较，两组的反事实平行趋势都可以用未处理观测识别，是"好比较"。</li>
+      <li><strong>Late-treated vs Never-treated（干净对比）</strong>：晚处理组与从未处理组比较，同样是"好比较"。</li>
+      <li><strong>Late-treated vs Early-treated（forbidden comparison，坏比较）</strong>：晚处理组 vs 已经被处理的早处理组。此时早处理组的结果里已经包含了它自己的处理效应 $\tau_{e}$，把它当作"干净对照"等于把 $\tau_e$ 反向代入 DID 差分。</li>
+    </ol>
+    <p>当处理效应是<strong>同质性的</strong>（$\tau_{it}=\tau$ 常数）时，坏比较的权重虽然存在，但因为 $\tau$ 处处相同，加权平均仍能无偏估计 $\tau$——这就是为什么传统 TWFE 在"常数效应"假设下看起来没问题。问题出在<strong>异质性处理效应</strong>上：如果处理效应随队列或随处理时长变化（动态效应 $\tau^k$），坏比较里早处理组的动态效应会以<strong>负号</strong>进入 DID 差分，对应的权重在分解中可以为负，最终让 TWFE 系数的符号都可能被翻转。</p>
+
+    <div class="callout danger">
+      <div class="callout-title">de Chaisemartin & D'Haultfœuille (2020, AER) 的负权重定理</div>
+      <p>de Chaisemartin & D'Haultfœuille 把 Bacon 的结论推广到一般 TWFE 设定（不限于 DID），证明：当处理效应在个体×时间上异质时，TWFE 估计量是 $\hat{\beta}^{TWFE}=\frac{1}{N}\sum_{i,t}\omega_{it}\hat{\beta}_{it}$ 的加权和，权重 $\omega_{it}$ 满足 $\sum_{i,t}\omega_{it}=N$（不是 1），并且<strong>允许出现 $\omega_{it}&lt;0$</strong>。这意味着：即使每个真实的 $\hat{\beta}_{it}$ 都为正，只要负权重存在，$\hat{\beta}^{TWFE}$ 仍可能为负。他们据此提出 $DID_M$ 估计量（用 $\Delta D_{it}=D_{it}-D_{i,t-1}$ 作为处理变量），并给出 Stata 命令 <code class="inline">did_multiplegt</code>。</p>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-title">实务含义</div>
+      <p>只要你的处理时点不统一（"分批试点""分步推开""政策在不同地区不同年份落地"），传统 <code class="inline">reghdfe y TreatPost, absorb(id year)</code> 的结果就可能不可信。审稿人会要求你报告新估计量。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s5">
+    <h2><span class="sec-num">05</span> 四大新估计量</h2>
+    <p>目前主流的、能处理交叠 DID 异质性处理效应的估计量有四个，论文中至少要报告其中一个：</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>估计量</th><th>作者</th><th>Stata 命令</th><th>核心思路</th></tr></thead>
+        <tbody>
+          <tr><td><strong>CSDID</strong></td><td>Callaway & Sant'Anna (2021, JoE)</td><td><code class="inline">csdid</code></td><td>估计每个"组×期"的 $ATT(g,t)$，再按队列大小加权汇总；用 never-treated 或 not-yet-treated 作为对照。</td></tr>
+          <tr><td><strong>Sun-Abraham</strong></td><td>Sun & Abraham (2021, JoE)</td><td><code class="inline">eventstudyinteract</code></td><td>把事件研究系数按组×期加权，剔除负权重。</td></tr>
+          <tr><td><strong>dCDH</strong></td><td>de Chaisemartin & D'Haultfœuille (2020, AER)</td><td><code class="inline">did_multiplegt</code></td><td>用 $\sqrt{D_{it}-D_{i,t-1}}$ 作为处理变量，构造 $DID_M$ 估计量。</td></tr>
+          <tr><td><strong>BJS</strong></td><td>Borusyak, Jaravel & Spiess (2024, ReStud)</td><td><code class="inline">did_imputation</code></td><td>在组-期层面做 imputation，效率最高，适合大样本。</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>这四个估计量在平行趋势假设下都能一致估计平均处理效应，并且都不再产生负权重。实务中，<code class="inline">csdid</code> 因为输出友好（自动按 event-time 汇总、画 event study 图）、对 never-treated 对照组要求灵活，已经成为中文顶刊的"新默认"。</p>
+
+    <h3>5.1 Bacon 分解诊断：<code class="inline">bacondecomp</code></h3>
+    <p>在写论文的稳健性部分，第一步永远是先做 Bacon 分解——它本身就是一个"诊断工具"，告诉审稿人你的 TWFE 估计量里有多少权重来自干净对比、多少来自坏对比。如果坏对比权重接近 0，TWFE 仍然可信；如果坏对比权重很大且估计符号可疑，就必须上新估计量。Stata 命令 <code class="inline">bacondecomp</code>（Goodman-Bacon, Goldring & Nichols 编写）直接报告每一类对比的权重和对应 DID 估计值：</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · bacon_decomp.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+* Bacon 分解：诊断 TWFE 里的"坏对比"权重
+* 文档: Goodman-Bacon (2021, JoE)
+*--------------------------------------------------------------*
+ssc install bacondecomp, replace      // 首次运行安装
+
+* 数据要求:
+*   1) 必须 xtset
+*   2) 处理变量只能从 0 跳到 1（不能反复开关）
+*   3) 最好是平衡面板
+xtset id year
+
+* 跑经典 TWFE（作为对照）
+reghdfe y treat, absorb(id year) vce(cluster id)
+
+* Bacon 分解主命令：
+*   outcome  = y
+*   treatment = treat（0/1）
+*   ddetail  = 列出每一对 2×2 对比的权重
+*   stub(bacon_) = 把所有对比分量存成 bacon_1, bacon_2, ... 供画图
+bacondecomp y treat, ddetail stub(bacon_)
+
+* 输出会自动分三类报告:
+*   "Earlier T vs Later C"        : 早处理 vs 晚处理(not-yet)  —— 干净
+*   "Later T vs Earlier C"        : 晚处理 vs 早处理(forbidden) —— 坏对比
+*   "T vs Never-treated Control"  : 处理组 vs 从未处理组       —— 干净
+* 关注: bad-comparison 的权重占比是否过大? 它的 DID 估计符号是否与主回归相反?
+
+* 用 coefplot 画权重散点图（横轴=各 2×2 DID 估计, 纵轴=权重）
+* 坏对比的点若落在与主回归相反的一侧, 就是 TWFE 偏误的图形证据
+</code></pre>
+    </div>
+    <div class="callout info">
+      <div class="callout-title">怎么读 Bacon 分解输出</div>
+      <p>Stata 输出一张表，每行是一类对比，列出该类的"加权平均 DID"和"权重"。例如：<em>"T vs Never-treated = 0.823 (权重 0.71)"</em> 意味着 71% 的权重来自干净对比；<em>"Later T vs Earlier C = −0.410 (权重 0.29)"</em> 意味着 29% 的权重来自坏对比，且其效应符号相反——这种情况下 TWFE 系数必然被污染。</p>
+    </div>
+
+    <h3>5.2 Callaway–Sant'Anna：<code class="inline">csdid</code> 与 $ATT(g,t)$</h3>
+    <p>Callaway & Sant'Anna (2021, JoE) 的思路是<strong>逐"队列×时期"估计处理效应，再按透明的权重汇总</strong>。定义 $ATT(g,t)$ 为：队列 $g$（在年份 $g$ 首次接受处理）在时期 $t$ 相对于"未处理时反事实"的平均处理效应：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 5.1 — 组×期平均处理效应 ATT(g,t)</div>
+      $$ ATT(g,t) \equiv \mathbb{E}\big[Y_t(g) - Y_t(0) \mid G=g\big] $$
+    </div>
+    <p>识别 $ATT(g,t)$ 需要两条假设：(i) 条件平行趋势 $E[\Delta Y_t(0)\mid G=g,X]=E[\Delta Y_t(0)\mid G=0,X]$；(ii) 无预期效应（no anticipation）。对照组可以选 <strong>never-treated</strong>（$g=0$）或 <strong>not-yet-treated</strong>（还没被处理的队列）。估计时用逆概率加权（IPW / 双重稳健 DR）。</p>
+    <p>估计完所有 $ATT(g,t)$ 后，CS 提供四种聚合（aggregation）方式，论文里通常全部报告：</p>
+    <ul>
+      <li><code class="inline">estat simple</code>：简单平均 ATT（所有 $g,t$ 等权），最接近"政策总效应"。</li>
+      <li><code class="inline">estat group</code>：按队列 $g$ 聚合，看哪一批处理效应最大。</li>
+      <li><code class="inline">estat event</code>：按相对处理时长 $k=t-g$ 聚合，即动态事件研究效应，可画事件研究图。</li>
+      <li><code class="inline">estat calendar</code>：按日历年 $t$ 聚合，看政策效应的时间趋势。</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · csdid_demo.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+* Callaway-Sant'Anna (2021, JoE) 估计量
+* 命令: csdid (需 drdid 包)
+*--------------------------------------------------------------*
+ssc install csdid,  replace
+ssc install drdid,  replace
+
+* 关键变量准备:
+*   gvar = 每个体首次处理年份; 从未处理 = 0
+*   必须有: 个体 id, 年份 year, gvar
+gen gvar = g                      // 沿用本页模拟数据: g=0 表示 never-treated
+
+* 主命令:
+*   csdid  outcome  [covariates],
+*          ivar(id) time(year) gvar(gvar)
+*          method(dripw)          // 双重稳健 IPW (推荐)
+*          [notyet]               // 若没有 never-treated 组, 用 not-yet-treated 作对照
+csdid y alpha_i gamma_t, ivar(id) time(year) gvar(gvar) method(dripw)
+
+* --- 四种聚合 ---
+estat simple      // 总体 ATT (所有 ATT(g,t) 的简单平均)
+estat group       // 按队列 g 聚合
+estat event       // 按事件时间 k=t-g 聚合 (动态效应)
+estat calendar    // 按日历年聚合
+
+* --- 事件研究图 ---
+* csdid_plot 会读取 estat event 的结果并画 95% CI 的系数图
+csdid_plot, title("Callaway-Sant'Anna 事件研究图") ///
+    ytitle("ATT(g,t)") xtitle("相对处理时点 k")
+
+* 也可以分队列画:
+* csdid_plot, group(2005) title("2005 队列")
+</code></pre>
+    </div>
+
+    <h3>5.3 Sun–Abraham：<code class="inline">eventstudyinteract</code> 交互加权</h3>
+    <p>Sun & Abraham (2021, JoE) 指出：传统事件研究回归 $y_{it}=\sum_{k\neq -1}\beta_k D_{it}^k+\alpha_i+\gamma_t+\varepsilon_{it}$ 中的 $\beta_k$，即使在平行趋势下也会被<strong>其他队列的处理效应污染</strong>——因为不同队列在同一个 event-time $k$ 上的处理时长不一样。他们提出"交互加权估计量"：把每个 lead/lag 虚拟变量与队列虚拟变量交互，先估计"队列×event-time"层面的干净效应 $\hat{\beta}_{g,k}$，再按队列大小加权汇总成不被污染的 $\hat{\beta}_k$。</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · sun_abraham.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+* Sun-Abraham (2021, JoE) 交互加权事件研究
+*--------------------------------------------------------------*
+ssc install eventstudyinteract, replace
+
+* 1) 构造 event-time 虚拟变量 Dk (与 s7 节代码一致, 省略 k=-1 为基准)
+gen rel_time = year - g if g!=0
+forvalues k=-5/5 {
+    local kk = `k' + 100
+    gen D`kk' = (rel_time==`k') if g!=0
+    replace D`kk' = 0 if g==0
+}
+
+* 2) 构造队列虚拟变量 (每个处理队列一个哑变量)
+gen C2005 = (g==2005)
+gen C2008 = (g==2008)
+gen C0    = (g==0)        // never-treated 对照组
+
+* 3) 主命令:
+*   eventstudyinteract  outcome  lead_list lag_list,
+*       cohort(队列变量或队列哑变量列表)
+*       control_cohort(对照组哑变量)
+*       absorb(i.id i.year)
+*       vce(cluster id)
+eventstudyinteract y D095 D096 D097 D098 D100 D101 D102 D103 D104 D105, ///
+    cohort(C2005 C2008) control_cohort(C0) ///
+    absorb(id year) vce(cluster id)
+
+* 4) 画图: 该命令返回的系数矩阵未命名, 用 r(table) 配合 coefplot 画图
+* 或直接用 event_plot (ssc install event_plot) 读取 e(estimates)
+</code></pre>
+    </div>
+
+    <h3>5.4 Stacked DID：Cengiz et al. (2019) 与 Wooldridge (2021)</h3>
+    <p>当上面"干净对照"难以定义（例如所有单位最终都被处理，没有 never-treated 组）时，<strong>Stacked DID（堆叠 DID）</strong>是另一条干净路径。核心思想是：<strong>为每一个处理队列 $g$ 单独切一个"小数据集"</strong>——只包含该队列 $g$ 加上"在 $g$ 前后窗口期内还没被处理或永远不被处理"的单位，然后把所有这些小数据集纵向堆叠（stack）成一个新面板，在堆叠数据上做带 stack 固定效应的 TWFE。这样每个小数据集内部都是干净的 2×2 DID，不会把已经处理的单位当对照。</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 5.2 — Stacked DID 估计方程</div>
+      $$ y_{i,t,s} = \beta_s\, D_{it}\cdot Post_{t\ge g_s} + \alpha_{i,s} + \gamma_{t,s} + \varepsilon_{it,s} $$
+    </div>
+    <p>其中 $s$ 是 stack 索引（每个队列一个 stack），$\alpha_{i,s}$ 是"个体×stack"固定效应，$\gamma_{t,s}$ 是"时间×stack"固定效应。Cengiz, Dube, Lindner & Zipperer (2019, QJE) 用这套方法研究美国最低工资对低工资岗位的影响，发现就业反应接近于零。Wooldridge (2021) 从计量理论上证明了堆叠回归等价于一种扩展的 TWFE Mundlak 回归。Stata 上可以用 <code class="inline">stackedev</code> 命令一键实现：</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · stacked_did.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+* Stacked DID: Cengiz, Dube, Lindner, Zipperer (2019, QJE)
+*--------------------------------------------------------------*
+ssc install stackedev, replace
+
+* 语法:
+*   stackedev  outcome,
+*       cohort(first_treat_year)     // 每个体首次处理年份 (从未处理=0)
+*       time(year) unit(id)
+*       never_treat(no_treat)        // 从未处理组哑变量
+*       window(-4 5)                 // 处理前后各取 4/5 期
+*       event(rel_time)              // 相对 event-time 变量
+*       covariates(x1 x2)
+*       cluster(id)
+*
+* stackedev 会自动为每个队列 g 生成一个 stack, 只保留:
+*   - 队列 g 的处理组
+*   - 尚未处理 (t < g) 或永远不处理的对照组
+* 然后把所有 stack 纵向合并, 跑带 stack×unit / stack×time FE 的 TWFE
+
+* 在本页模拟数据上的示意:
+gen no_treat = (g==0)
+stackedev y, cohort(g) time(year) unit(id) ///
+    never_treat(no_treat) window(-3 5) event(rel_time) ///
+    cluster(id)
+</code></pre>
+    </div>
+
+    <h3>5.5 新估计量对比表</h3>
+    <p>面对交叠 DID，到底选哪个？下表把 TWFE、Bacon 分解（诊断）、CS、SA、Stacked 五个方法放在一起对比：</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>方法</th><th>核心假设</th><th>估计量形式</th><th>对照组要求</th><th>适用场景 / 中文论文推荐</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>TWFE</strong>（传统）</td>
+            <td>平行趋势 + <strong>同质性处理效应</strong>（$\tau_{it}=\tau$）</td>
+            <td>所有 2×2 DID 加权平均，权重可负</td>
+            <td>隐含使用已处理组作对照</td>
+            <td>仅当处理时点统一或效应同质时可信；现在应作对照而非主回归。</td>
+          </tr>
+          <tr>
+            <td><strong>Bacon 分解</strong>（诊断）</td>
+            <td>同上，但只是诊断工具</td>
+            <td>把 TWFE 拆成三类对比并报告权重</td>
+            <td>不需要新的对照假设</td>
+            <td>论文<strong>必做第一步</strong>：判断 TWFE 是否被污染。不单独报告结论。</td>
+          </tr>
+          <tr>
+            <td><strong>CS</strong>（Callaway–Sant'Anna 2021）</td>
+            <td>条件平行趋势 + 无预期效应</td>
+            <td>$ATT(g,t)$ 双重稳健估计后简单/事件时间/日历时间聚合</td>
+            <td>需要 never-treated 或 not-yet-treated</td>
+            <td><strong>中文顶刊新默认</strong>；输出友好、可画 event study；政策分批次推开时首选。</td>
+          </tr>
+          <tr>
+            <td><strong>SA</strong>（Sun–Abraham 2021）</td>
+            <td>平行趋势 + 队列均匀分布</td>
+            <td>队列×event-time 交互加权，剔除污染</td>
+            <td>需要 never-treated 或最后处理队列</td>
+            <td>主做<strong>动态效应 / 事件研究图</strong>；与 csdid 的 event 聚合互为稳健性。</td>
+          </tr>
+          <tr>
+            <td><strong>Stacked DID</strong>（Cengiz et al. 2019 / Wooldridge 2021）</td>
+            <td>平行趋势 + 局部窗口内干净对照</td>
+            <td>每队列切窗 → 堆叠 → TWFE with stack FE</td>
+            <td>可没有 never-treated，用 not-yet-treated</td>
+            <td>所有单位<strong>最终都被处理</strong>（无 never-treated）时的备选；也适合政策扩散型案例。</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>5.6 交叠 DID 专用 pre-trend 诊断（关键补充）</h3>
+    <p>注意：在交叠 DID 设定下，<strong>不能直接用传统 TWFE 事件研究图的 leads 做 pre-trend 检验</strong>。原因见 s4：TWFE 的 leads 系数本身会被异质性处理效应与负权重污染，即使图上看起来平，也可能是坏比较相互抵消的假象。规范做法是：</p>
+    <ol>
+      <li>主回归用 <code class="inline">csdid</code> 或 <code class="inline">eventstudyinteract</code>，输出"干净"的事件期 ATT；</li>
+      <li>用 <code class="inline">estat event</code> 得到按事件时间聚合的 $\hat{\beta}_k$，<strong>再</strong>对 pre 期 $k&lt;0$ 的系数做联合检验；</li>
+      <li>跑 <code class="inline">pretrends</code>（Roth 2022）评估该 pre-trend 检验的功效；</li>
+      <li>若功效低，补充 Rambachan–Roth 敏感性界。</li>
+    </ol>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s56_staggered_pretrend.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* s5.6 交叠 DID 的 pre-trend 诊断流程
+* 1) csdid 主估计（见 s5.2）
+csdid y alpha_i gamma_t, ivar(id) time(year) gvar(gvar) ///
+    method(dripw)
+
+* 2) 事件时间聚合：得到干净的 leads/lags ATT
+estat event
+csdid_plot, title("csdid 干净事件研究图（无负权重污染）")
+
+* 3) 对 estat event 输出的 pre 期 leads 做联合检验
+*    estat event 返回的系数向量按事件时间排列；
+*    在 Stata 中可通过 `e(event_results)` 或返回到矩阵后 test。
+*
+* 4) Roth (2022) 功效分析（在 csdid 之后）
+*    pretrends 命令支持 csdid 输出的事件研究系数；
+*    报告 "detectable pre-trend bias" 与检验功效。
+*
+* 关键写作要点（Roth et al. 2023, JoE 综述清单第 5 条）：
+*   "We report the pre-trend joint test on the
+*    callaway-sant'Anna event estimates: leads k=-4..-1
+*    are jointly not different from zero (Wald p=0.31).
+*    pretrends indicates power of approximately 45%
+*    to detect a linear pre-trend that would bias the
+*    ATT by 20%, so we additionally report
+*    Rambachan-Roth sensitivity bounds."
+*
+* 红线：交叠 DID 论文只贴一张 TWFE 事件研究图就宣称
+*       "平行趋势成立"——这在 2024 年后的顶刊审稿中
+*       几乎一定会被要求补做 csdid pre-trend 诊断。
+</code></pre>
+    </div>
+    <div class="callout tip">
+      <div class="callout-title">实务建议（Roth et al. 2023 清单）</div>
+      <p>① 先跑 Bacon 分解，报告坏对比权重；② 主回归用 <code class="inline">csdid</code>（<code class="inline">estat event</code> 出事件研究图）；③ 稳健性表同时报告 <code class="inline">eventstudyinteract</code>（SA）与 <code class="inline">did_multiplegt</code>（dCDH）；④ 无 never-treated 组时改用 <code class="inline">stackedev</code> 或 <code class="inline">csdid, notyet</code>；⑤ 政策前 leads 必须联合做 F 检验。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s6">
+    <h2><span class="sec-num">06</span> 安慰剂检验 Placebo Test</h2>
+    <p>为了证明你估计到的效应真的来自政策，而不是随机噪声或某种隐藏趋势，论文通常做安慰剂检验。<strong>规范做法是三种安慰剂同时报告</strong>，而不是只挑一种：</p>
+    <ul>
+      <li><strong>① 随机化处理时点（placebo time）</strong>：在样本中随机抽取"伪处理时点"（placebo time），重新跑 DID，重复 500/1000 次，画出估计系数的分布。真实的 DID 估计量应该落在 placebo 分布的尾部（小于 5% 的位置）。</li>
+      <li><strong>② 随机分配处理组（placebo group）</strong>：随机抽取"伪处理组"，重新估计，真实处理组的系数应显著偏离 placebo 分布。</li>
+      <li><strong>③ 伪结果变量（placebo outcome）</strong>：用一个理论上不受政策影响的结果变量（如性别、年龄、企业成立年份）重复回归，应得到不显著系数。</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s6_placebo.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* s6 安慰剂检验：三种做法
+* 沿用 s7 模拟数据
+
+* (a) 伪处理时点：把政策时点提前到 2007（真实政策 2012）
+gen treat_fake = (g!=0 &amp; year&gt;=2007)
+reghdfe y treat_fake, absorb(id year) vce(cluster id)
+* 期望：treat_fake 不显著；若显著 → pre-trend 可疑
+
+* (b) 随机分配伪处理组：500 次蒙特卡洛
+permute treat, reps(500) seed(2026) ///
+    saving("placebo_dist.dta", replace): ///
+    reghdfe y treat, absorb(id year) vce(cluster id)
+* 真实系数 0.8 应落在 placebo 分布 95% 分位之外
+
+use "placebo_dist.dta", clear
+sum _b_treat, detail
+* 报告：真实系数在 placebo 分布中的分位（应 < p5 或 > p95）
+
+* (c) 伪结果变量：用理论上不受政策影响的变量
+gen placebo_y = rnormal(0,1)         // 纯噪声
+reghdfe placebo_y treat, absorb(id year) vce(cluster id)
+* 期望：treat 系数不显著
+
+* 红线：从 1998..2010 扫伪时点，挑一个"刚好不显著"的写论文
+*      合法：伪时点事前选定（如政策前最早一期）+ 500次随机分布
+</code></pre>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">⚠ 安慰剂检验的常见误用</div>
+      <p>① 只做 (a) 伪时点，不做 (b) 随机化分布；② 500 次随机化分布图里真实系数其实落在 placebo 分布中部，却只报告"均值≈0"不提分位数；③ 伪时点选择事后挑选。规范做法是三种 placebo 互相印证，并报告真实系数在 placebo 分布中的分位数。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s6b">
+    <h2><span class="sec-num">06b</span> 平行趋势不通过时：诊断原因与合法补救</h2>
+    <p>pre-trend 联合检验拒绝（或图形上明显漂移）后，<strong>不能硬说"通过了"</strong>，也不能"事后改窗口凑通过"。正确做法是按下面的顺序诊断原因、选择合法补救方案。</p>
+
+    <h3>6b.1 先诊断：不通过的可能原因</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>可能原因</th><th>诊断方法</th><th>合法补救</th></tr></thead>
+        <tbody>
+          <tr><td><strong>处理时机内生</strong>：政策挑了本来就在变化的地区先试点</td><td>事件研究图 pre 期系数单调漂移；试点批次的事前趋势差异大</td><td>csdid 加协变量做条件平行趋势；Rambachan–Roth 敏感性界</td></tr>
+          <tr><td><strong>时变混杂</strong>：处理组与对照组面临不同宏观冲击</td><td>加行业×年 FE 或地区×年 FE 后 pre-trend 改善</td><td>加入更高维交互固定效应；用 not-yet-treated 替代 never-treated</td></tr>
+          <tr><td><strong>交叠 DID 的负权重污染</strong></td><td>Bacon 分解坏对比权重 &gt;0.3</td><td>换 csdid / eventstudyinteract / stackedev；不要硬用 TWFE</td></tr>
+          <tr><td><strong>预期效应（anticipation）</strong>：政策宣布前市场已反应</td><td>政策前 1 期系数已经偏离 0</td><td>把政策前 1 期从基准期剔除；估计 anticipation</td></tr>
+          <tr><td><strong>某事件期观测太少</strong>：远端 leads SE 巨大导致检验失真</td><td>看各 event-time 处理组观测数</td><td>合并相邻期（见 s2.3）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>6b.2 合法补救方案（按推荐顺序）</h3>
+    <ol>
+      <li><strong>局部窗口（local window）</strong>：只取政策前后 ±2~3 年。窗口选择必须由制度依据决定（如"政策实施前后最近一期完整数据"），不能事后挑。</li>
+      <li><strong>条件平行趋势 + 协变量平衡</strong>：csdid 的 <code class="inline">covariates()</code> 选项，按可观测特征做 IPW 加权。</li>
+      <li><strong>Rambachan–Roth 敏感性界</strong>：允许 pre 期存在一定幅度偏离（Mbar）时，post 效应的 CI 范围。若 Mbar=1（允许线性偏离）下 CI 仍不含 0，则结论对温和 pre-trend 偏离稳健。</li>
+      <li><strong>合成 DID / synthetic control</strong>：找不到干净对照组时，用合成控制构造反事实。</li>
+      <li><strong>Bacon 分解 + 组别-时期估计</strong>：找出是哪个队列在污染 pre-trend，单独报告该队列 ATT。</li>
+      <li><strong>合并观测量检验</strong>：远端 leads 观测太少时合并相邻期（见 s2.3）。</li>
+      <li><strong>如实报告 + 敏感性分析</strong>：承认平行趋势受限，把结论限定为"相关性 + 诊断性证据"而非强因果；换 RDD/IV 设计。</li>
+    </ol>
+
+    <div class="callout danger">
+      <div class="callout-title">⛔ 红线：为"凑通过"而事后改窗口/合并分组/选择性报告</div>
+      <p>审稿人识破手段：① 要求<strong>全部事件期系数表</strong>——只画显著性好的那几期图藏不住；② 要求<strong>原始数据与代码复现</strong>——事后改窗口的痕迹在 do 文件里一目了然；③ 问"你为什么选 ±3 年窗口而不是 ±5 年？"——答不出制度/理论依据即露馅；④ 要求 <code class="inline">pretrends</code> 功效报告——低功效下宣称"通过"是自相矛盾。<strong>平行趋势检验不是"调显著"的旋钮，而是识别可信度的体检报告。</strong>体检异常不代表结论作废，但篡改体检报告等于学术不端。</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s6b_remedies.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* s6b 平行趋势不通过时的合法补救（红线示例注释在内）
+* 沿用 s7 模拟数据
+
+* 合法方案1：局部窗口（±2~3 年，事前由制度依据决定）
+preserve
+    keep if year>=2010 &amp; year<=2014      // 政策2012前后各2年
+    csdid y, ivar(id) time(year) gvar(gvar) method(dripw)
+    estat event
+restore
+
+* 合法方案2：csdid 加协变量做条件平行趋势
+csdid y alpha_i gamma_t, ivar(id) time(year) gvar(gvar) ///
+    method(dripw) covariates(alpha_i gamma_t)
+estat event
+
+* 合法方案3：Bacon 分解找出污染队列
+* bacondecomp y treat, ddetail
+* 若 "Later T vs Earlier C" 权重 > 0.3 → 换 csdid
+
+* 合法方案4：Rambachan-Roth 敏感性界
+*   Stata 中需配合 R 包 Honor &amp; Roth；
+*   报告模板:
+*   "Even when Mbar=1 (allowing a linear pre-trend of
+*    the same magnitude as estimated), the lower bound
+*    of the ATT CI remains positive at 0.21."
+
+* ⛔ 红线（严禁）：
+*   - 先跑全样本 pre-trend 不通过，回头把窗口改成 ±2 年"凑通过"
+*   - 把漂移严重的队列从样本里删掉，理由是"该组异常"
+*   - 只在正文报"pre-trend 通过"，附录才出现不通过版本
+</code></pre>
+    </div>
+  </div>
+
+  <div class="section" id="s7">
+    <h2><span class="sec-num">07</span> 完整 Stata 代码</h2>
+    <p>下面这段代码完整演示：(1) 构造交叠 DID 模拟数据；(2) 经典 TWFE DID；(3) 事件研究图；(4) PSM-DID；(5) csdid / did_multiplegt / did_imputation 三大新估计量；(6) 安慰剂检验。所有命令都可以在 Stata 16+ 上运行。</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · did_full.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* DID 全套演示：经典 DID + 事件研究 + PSM-DID + 交叠 DID 新方法
+*==============================================================*
+clear all
+set more off
+set seed 20260911
+
+* --- 首次运行安装外部命令 ---
+* ssc install csdid,             replace
+* ssc install drdid,              replace
+* ssc install eventdd,            replace
+* ssc install eventstudyinteract, replace
+* ssc install did_multiplegt,     replace
+* ssc install did_imputation,    replace
+* ssc install bacondecomp,        replace   // Bacon 分解诊断
+* ssc install stackedev,         replace   // Stacked DID
+* ssc install psmatch2,           replace
+* ssc install coefplot,           replace
+
+* --- 1. 构造交叠 DID 模拟面板 ---
+* 100 个个体，2000-2010 共 11 年
+* 处理组分组：
+*   g1: 2005 年开始处理（30 个）
+*   g2: 2008 年开始处理（30 个）
+*   g0: 从未处理（40 个，对照组）
+set obs 100
+gen id = _n
+gen g = cond(_n&lt;=30, 2005, cond(_n&lt;=60, 2008, 0))   // g=0 表示 never-treated
+expand 11
+bysort id: gen year = 1999 + _n
+
+xtset id year
+
+* 处理变量：treat=1 表示该个体在该年已被处理
+gen treat = (g!=0 &amp; year &gt;= g)
+
+* 结果变量：包含个体 FE、时间 FE、处理效应（处理后每年 +0.8）
+gen eps = rnormal()
+gen alpha_i = mod(id,10)
+gen gamma_t = (year-2000)*0.1
+gen y = 5 + alpha_i + gamma_t + 0.8*treat + eps
+
+* --- 2. 经典 TWFE DID ---
+reghdfe y treat, absorb(id year) vce(cluster id)
+estimates store twfe
+
+* --- 3. 事件研究图（手工构造相对时点虚拟变量） ---
+gen rel_time = year - g if g!=0
+forvalues k=-5/5 {
+    local kk = `k' + 100          // 避免变量名以负号开头
+    gen D`kk' = (rel_time==`k') if g!=0
+    replace D`kk' = 0 if g==0
+}
+* 省略 k=-1（即 rel_time==-1, D099）作为基准
+reghdfe y D095 D096 D097 D098 D100 D101 D102 D103 D104 D105, ///
+    absorb(id year) vce(cluster id)
+coefplot, keep(D*) vertical yline(0) ///
+    xtitle("相对政策时点") ytitle("估计系数") ///
+    title("事件研究图（平行趋势检验）")
+
+* --- 4. PSM-DID ---
+* 先用处理前数据估计倾向得分
+preserve
+    keep if year&lt;2005
+    bysort id: keep if _n==1
+    gen ever_treat = (g!=0)
+    psmatch2 ever_treat alpha_i gamma_t, out(y) neighbor(1) common
+    keep id _weight
+    tempfile weights
+    save "`weights'"
+restore
+merge m:1 id using "`weights'", nogen
+
+* 在匹配后的共同支撑样本上做 DID
+reghdfe y treat [pw=_weight], absorb(id year) vce(cluster id)
+estimates store psmdid
+
+* --- 5. Callaway-Sant'Anna (csdid) ---
+* 需要 didvar 是"首次处理年份"（never-treated 为 0）
+gen gvar = g
+csdid y alpha_i gamma_t, ivar(id) time(year) gvar(gvar) method(dripw)
+estat all                           // 汇总 ATT
+csdid_plot, title("CSDID 事件研究图")
+
+* --- 6. Sun-Abraham (eventstudyinteract) ---
+* 先构造 cohort 虚拟变量
+forvalues gg=2005(3)2008 {
+    gen C`gg' = (g==`gg')
+}
+eventstudyinteract y D095 D096 D097 D098 D100 D101 D102 D103 D104 D105, ///
+    cohort(C2005 C2008) control_cohort(C0) ///
+    absorb(id year) vce(cluster id)
+
+* --- 7. de Chaisemartin-D'Haultfoeuille (did_multiplegt) ---
+did_multiplegt y id year treat, robust_dynamic dynamic(5) breps(100) cluster(id)
+
+* --- 8. Borusyak-Jaravel-Spiess (did_imputation) ---
+did_imputation y id year gvar, horizons(0/5) autosample minn(0)
+
+* --- 9. 安慰剂检验（随机分配伪处理时点） ---
+permute treat, reps(500) seed(1): ///
+    reghdfe y treat, absorb(id year) vce(cluster id)
+* 真实估计系数应落在 placebo 分布的 5% 或 95% 之外
+
+* --- 10. 导出结果 ---
+esttab twfe psmdid using "table_did.rtf", replace ///
+    b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) ///
+    mtitles("TWFE DID" "PSM-DID") ///
+    stats(N r2, fmt(0 3)) title("DID 结果对比") nogaps compress
+</code></pre>
+    </div>
+  </div>
+
+  <div class="section" id="s7b">
+    <h2><span class="sec-num">07b</span> 进阶扩展：两阶段 DID、插补 DID、分位数 DID 与面板匹配</h2>
+    <p>s5 已经覆盖交叠 DID 的四大"无负权重"估计量（CS / SA / dCDH / Stacked）。本节再补四块 2021 年后的进阶内容：(1) Gardner (2021) 的两阶段 DID <code class="inline">did2s</code>；(2) Borusyak–Jaravel–Spiess (2024, ReStud) 的插补 DID <code class="inline">did_imputation</code>；(3) 估计处理对结果<strong>分布</strong>的影响（分位数 DID / QTT）；(4) 面板匹配与事件研究的标准化做法。</p>
+
+    <h3>7b.1 Gardner (2021) 两阶段 DID（<code class="inline">did2s</code>）</h3>
+    <p><strong>原理</strong>：Gardner (2021) 的观察是——TWFE 之所以出负权重，是因为它把"估计个体/时间固定效应"和"估计处理效应"塞进同一次 OLS，处理观测被同时用来估固定效应，污染了对照。两阶段做法把这两件事拆开：</p>
+    <div class="step-flow">
+      <div class="step-item"><div class="step-title">第一阶段：只用未处理观测估固定效应</div><div class="step-desc">在 $D_{it}=0$ 的子样本上跑 $y_{it}=\alpha_i+\gamma_t+\varepsilon_{it}$，把个体 FE $\hat\alpha_i$ 和时间 FE $\hat\gamma_t$ 估出来。处理观测不参与这一步，避免污染。</div></div>
+      <div class="step-item"><div class="step-title">第二阶段：去固定效应后估处理效应</div><div class="step-desc">构造残差 $\tilde y_{it}=y_{it}-\hat\alpha_i-\hat\gamma_t$，再在全样本上把 $\tilde y_{it}$ 对处理虚拟变量回归，系数就是无负权重的 DID 估计量。</div></div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 7b.1 — Gardner 两阶段 DID</div>
+      $$ \text{Stage 1: } \hat\alpha_i,\hat\gamma_t \leftarrow \min_{\alpha_i,\gamma_t}\sum_{i,t:D_{it}=0}(y_{it}-\alpha_i-\gamma_t)^2, \qquad \text{Stage 2: } \hat\tau \leftarrow \frac{\sum_{i,t}D_{it}(y_{it}-\hat\alpha_i-\hat\gamma_t)}{\sum_{i,t}D_{it}} $$
+    </div>
+    <p>它与 BJS 插补估计量在大样本下渐近等价（见 7b.2），但 <code class="inline">did2s</code> 写法直观、计算快、天然支持事件研究设定。Stata 实现是 Kyle Butts 编写的 <code class="inline">did2s</code>（与 Gardner 合作）。</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s7b1_did2s.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+* Gardner (2021) 两阶段 DID：did2s
+* ssc install did2s, replace
+*--------------------------------------------------------------*
+set seed 20260911
+
+* 沿用 s7 模拟面板：id, year, g(首次处理年,0=never), treat
+xtset id year
+
+* --- 静态 ATT ---
+* first_stage  = 用来估固定效应的变量（个体 FE + 时间 FE）
+* second_stage = 处理变量
+did2s y, first_stage(i.id i.year) second_stage(treat) ///
+    treatment(treat) cluster(id)
+estimates store did2s_att
+
+* --- 事件研究形式（推荐，看动态效应 + pre-trend） ---
+* 先构造事件时间虚拟变量（省略 k=-1 为基准，同 s7）
+gen rel_time = year - g if g!=0
+forvalues k=-5/5 {
+    local kk = `k' + 100
+    gen D`kk' = (rel_time==`k') if g!=0
+    replace D`kk' = 0 if g==0
+}
+did2s y, first_stage(i.id i.year) ///
+    second_stage(D095 D096 D097 D098 D100 D101 D102 D103 D104 D105) ///
+    treatment(treat) cluster(id)
+* 第二阶段系数即无负权重的动态效应；pre 期 D095..D098 应联合不显著。
+</code></pre>
+    </div>
+
+    <h3>7b.2 Borusyak–Jaravel–Spiess (2024) 插补 DID（<code class="inline">did_imputation</code>）</h3>
+    <p><strong>原理</strong>：Borusyak, Jaravel & Spiess (2024, <em>Review of Economic Studies</em> 91(6): 3253–3285) 证明：在交叠 DID + 异质性处理效应下，<strong>插补估计量（imputation estimator）是渐近有效</strong>的。做法与 Gardner 两阶段同源——只用未处理观测估"个体 FE + 时间 FE"，再用这套 FE <strong>插补</strong>每个处理观测的反事实结果 $Y_{it}(0)=\hat\alpha_i+\hat\gamma_t$，残差 $Y_{it}-\hat Y_{it}(0)$ 就是该观测的处理效应，最后按目标加权平均。</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 7b.2 — BJS 插补估计量</div>
+      $$ \hat\tau_{it}=Y_{it}-\hat\alpha_i-\hat\gamma_t \quad(\text{仅用 }D_{it}=0\text{ 估 }\hat\alpha,\hat\gamma), \qquad \hat\tau=\frac{1}{N_T}\sum_{i,t:D_{it}=1}\hat\tau_{it} $$
+    </div>
+    <p>它的优势是<strong>效率最高</strong>（充分利用未处理观测的信息）、支持任意事件时间聚合、对"所有单位最终都被处理"的情形也能用 <code class="inline">auto</code> 对照。Stata 命令 <code class="inline">did_imputation</code>。注意：本页 s5 表格与 s7 代码已引用它，这里给出完整原理与多 horizon 写法。</p>
+    <div class="callout info">
+      <div class="callout-title">作者归属澄清</div>
+      <p>插补 DID 的正式发表论文是 Borusyak, Jaravel & Spiess (2024, ReStud)；<code class="inline">did_imputation</code> 命令即实现该文。它与 Gardner (2021) 两阶段在思想上独立提出、大样本渐近等价，实务中二者互为稳健性。</p>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s7b2_did_imputation.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+* Borusyak-Jaravel-Spiess (2024, ReStud) 插补 DID
+* ssc install did_imputation, replace
+*--------------------------------------------------------------*
+set seed 20260911
+xtset id year
+
+* 语法: did_imputation outcome panelvar timevar cohortvar, ...
+*   cohortvar = 每个体首次处理年份；从未处理 = 0
+*   horizons(0/5) = 估计处理后 0..5 期的动态效应
+*   autosample    = 自动选未处理对照样本
+*   minn(0)       = 不要求最小队列规模
+did_imputation y id year gvar, horizons(0/5) autosample minn(0) cluster(id)
+
+* 静态总效应（不展开 horizon）：
+did_imputation y id year gvar, autosample minn(0) cluster(id)
+
+* 无 never-treated 组时：用 not-yet-treated 作插补对照
+* did_imputation y id year gvar, horizons(0/5) autosample minn(0) ///
+*     control(notyet) cluster(id)
+
+* 输出按事件时间排列，可直接 coefplot 画事件研究图：
+* coefplot, keep(tau*) vertical yline(0)
+</code></pre>
+    </div>
+
+    <h3>7b.3 分布处理效应与分位数 DID（QTT / Callaway–Li–Oka）</h3>
+    <p>前面所有 DID 估计量都只回答"政策对<strong>均值</strong>的影响"。但政策往往<strong>改变整个结果分布</strong>：最低工资可能把工资分布底部抬起来、却对中位数以上无影响；减税可能主要利好高收入分位。<strong>分位数 DID（Quantile DID）</strong>估计处理对结果分布各分位数的影响，即分位数处理效应 $QTT_\tau$：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 7b.3 — 分位数处理效应 QTT</div>
+      $$ QTT_\theta = Q_{Y(1)}(\theta \mid T=1) - Q_{Y(0)}(\theta \mid T=1), \qquad \theta \in (0,1) $$
+    </div>
+    <p>代表文献是 Callaway, Li & Oka (2019, <em>Quantitative Economics</em>) "Quantile treatment effects in difference in differences models with panel data"，在面板数据下识别并估计各分位数的处理效应；其交错推广由 R 包 <code class="inline">qte</code> 的 <code class="inline">qdid_gt()</code> 实现。Stata 端没有官方 <code class="inline">qdid</code> 命令，下面给出<strong>手工分位数 DID</strong>（对结果变化量做分位数回归）的可运行写法，并注明 R 端标准实现。</p>
+    <div class="callout tip">
+      <div class="callout-title">什么时候必须报分布效应</div>
+      <p>当你的机制故事是"政策压平/拉大收入差距""只影响尾部""对穷人 vs 富人作用不同"时，只报均值 ATT 是不够的。审稿人会要求看 0.1/0.5/0.9 分位的效应是否分化。</p>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s7b3_quantile_did.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+* 分位数 DID / QTT（Callaway-Li-Oka 2019）Stata 手工实现
+* 思路：在"结果变化量 Δy"上对处理虚拟变量做分位数回归
+*--------------------------------------------------------------*
+set seed 20260911
+
+* 构造两期面板（政策前 year0 / 政策后 year1）
+* 假设已有：id, year, y, treat(处理组=1)
+preserve
+    keep if year==2005 | year==2012
+    reshape wide y, i(id) j(year)
+    gen dy = y2012 - y2005              // 结果变化量
+    gen treat = (g!=0)
+
+    * 各分位 QTT：τ = 0.1, 0.25, 0.5, 0.75, 0.9
+    foreach q in 0.1 0.25 0.5 0.75 0.9 {
+        qreg dy treat, quantile(`q') vce(robust)
+        display "QTT_`q' = " _b[treat]
+    }
+    * 若 QTT_0.1 &gt; QTT_0.5：政策主要抬升分布底部 → 缩小差距的故事
+restore
+
+* --- 标准实现（推荐论文用）：R 包 qte 的 qdid_gt ---
+* R:  library(qte)
+*     qdid_gt(yname="y", tname="year", idname="id",
+*             gname="g", x=~1, data=panel_data,
+*             probs=c(0.1,0.25,0.5,0.75,0.9))
+* 输出各队列×分位的 QTT，交错 DID 下无负权重。
+
+* --- csdid 的分布扩展 ---
+* csdid 本身估均值 ATT(g,t)；分布版本需走 R 包 did + qte。
+* Stata 中可用 csdid 出均值，再用上面 qreg(dy) 出分位作对照。
+</code></pre>
+    </div>
+
+    <h3>7b.4 面板匹配与事件研究的标准化做法</h3>
+    <p>平行趋势假设最常见的违反来源是：处理组和对照组<strong>事前</strong>就处于不同的结果水平/趋势上。<strong>面板匹配（panel matching）</strong>的思想是：在政策实施前，为每个处理单位找一个"事前结果路径尽量像它"的对照单位，用这一对相似单位来做 DID，而不是全体对照。</p>
+    <div class="step-flow">
+      <div class="step-item"><div class="step-title">① 只用政策前数据构造匹配变量</div><div class="step-desc">用处理前几期的结果水平、趋势、协变量定义"距离"，禁止用政策后信息。</div></div>
+      <div class="step-item"><div class="step-title">② 近邻匹配/卡尺匹配</div><div class="step-desc">为每个处理单位在对照池中找事前路径最接近的 k 个单位（nearest neighbor on pre-trend level & slope），设 caliper 防止错配。</div></div>
+      <div class="step-item"><div class="step-title">③ 在匹配样本上跑事件研究</div><div class="step-desc">匹配后处理组/对照组事前趋势应平行；再用 <code class="inline">csdid</code>/<code class="inline">eventstudyinteract</code> 出干净的动态效应。</div></div>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s7b4_panel_match.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*--------------------------------------------------------------*
+* 面板匹配：匹配事前结果路径，再做事件研究
+*--------------------------------------------------------------*
+set seed 20260911
+
+* --- 1) 提取每个单位政策前的"结果水平 + 趋势"特征 ---
+preserve
+    keep if year &lt; 2005                 // 只用政策前数据
+    * 政策前结果均值
+    collapse (mean) pre_y_mean = y (sd) pre_y_sd = y, by(id g)
+    * 政策前趋势斜率：y 对 year 的斜率（另一组回归，此处示意用首末期差）
+    tempfile prefeat
+    save "`prefeat'"
+restore
+merge m:1 id using "`prefeat'", nogen
+
+* --- 2) 近邻匹配：用 psmatch2 在对照池找事前最像的对照 ---
+* 处理组 g!=0，对照 g==0；匹配变量 = 事前结果均值/标准差
+gen ever_treat = (g!=0)
+psmatch2 ever_treat pre_y_mean pre_y_sd, out(y) neighbor(1) caliper(0.05) common
+keep id _weight
+tempfile wmatch
+save "`wmatch'"
+use, clear                            // 重新载入完整面板
+* （实际流程中在原面板 merge _weight 后继续）
+
+* --- 3) 匹配样本上跑标准化事件研究 ---
+* match 样本上处理/对照事前趋势应平行；
+* 再用无负权重估计量出动态效应：
+* csdid y, ivar(id) time(year) gvar(gvar) method(dripw)
+* estat event
+* csdid_plot
+*
+* 标准化事件研究 checklist：
+*   (a) 基准期省略 k=-1（不是 k=0！）；
+*   (b) pre 期 leads 联合 F 检验 + pretrends 功效；
+*   (c) 远端观测太少的相邻期合并（见 s2.3）；
+*   (d) 用 csdid/SA 的干净系数，不用 TWFE 事件研究做 pre-trend 判断。
+</code></pre>
+    </div>
+    <div class="callout tip">
+      <div class="callout-title">面板匹配 vs PSM-DID（s3）</div>
+      <p>s3 的 PSM-DID 匹配的是<strong>可观测协变量</strong>；面板匹配匹配的是<strong>事前结果路径（水平+趋势）</strong>，直接对准平行趋势假设本身。两者可叠加：先面板匹配事前趋势，再在匹配样本上做 csdid。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s8">
+    <h2><span class="sec-num">08</span> 论文案例与常见错误</h2>
+
+    <h3>论文案例</h3>
+    <div class="paper-card">
+      <span class="paper-type en">English · AER</span>
+      <div class="paper-title">Minimum Wages and Employment: A Case Study of the Fast-Food Industry in New Jersey and Pennsylvania</div>
+      <div class="paper-meta">David Card & Alan B. Krueger · AER, 1994</div>
+      <div class="paper-desc">DID 的开山之作。新泽西 1992 年提高最低工资，宾州未变。用 410 家快餐店的工资、就业数据，构造 2×2 DID，发现最低工资上升并未减少就业。这是"政策时点相同、处理组不同"的经典 2×2 设定。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · JoE</span>
+      <div class="paper-title">Difference-in-Differences with Variation in Treatment Timing</div>
+      <div class="paper-meta">Andrew Goodman-Bacon · Journal of Econometrics, 2021</div>
+      <div class="paper-desc">Bacon 分解（Bacon decomposition）的原始论文。证明交叠 DID 中的 TWFE 估计量本质上是所有可能的 2×2 DID 估计量的加权平均，权重由各队列的处理暴露（exposure）决定；其中"已处理组 vs 未处理组"的坏对照（forbidden comparison）在异质性处理效应下会得到负权重。理解负权重问题的第一篇必读文献。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · JoE</span>
+      <div class="paper-title">Difference-in-Differences with Multiple Time Periods</div>
+      <div class="paper-meta">Brantly Callaway & Pedro H. C. Sant'Anna · Journal of Econometrics, 2021</div>
+      <div class="paper-desc">csdid 命令的原始论文。提出估计组×期层面 $ATT(g,t)$ 的两步估计量，并用 inverse probability tilting 做权重。Stata 命令 <code class="inline">csdid</code> 直接实现。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · AER</span>
+      <div class="paper-title">Two-Way Fixed Effects Estimators with Heterogeneous Treatment Effects</div>
+      <div class="paper-meta">Clément de Chaisemartin & Xavier d'Haultfœuille · American Economic Review, 2020</div>
+      <div class="paper-desc">证明当处理效应异质时，TWFE 估计量是 2×2 DID 估计量的带权平均，权重可能为负。给出 $DID_M$ 估计量。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · JoE</span>
+      <div class="paper-title">Estimating Dynamic Treatment Effects in Event Studies with Heterogeneous Treatment Effects</div>
+      <div class="paper-meta">Liyang Sun & Sarah Abraham · Journal of Econometrics, 2021</div>
+      <div class="paper-desc">指出传统事件研究回归中的 leads/lags 系数会被其他队列的处理效应污染（good/bad comparisons 混杂）。提出交互加权估计量：按队列×期构造干净的动态处理效应，剔除负权重。Stata 命令 <code class="inline">eventstudyinteract</code> 直接实现。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · QJE</span>
+      <div class="paper-title">The Effect of Minimum Wages on Low-Wage Jobs</div>
+      <div class="paper-meta">Doruk Cengiz, Arindrajit Dube, Attila Lindner & Ben Zipperer · Quarterly Journal of Economics, 2019, 134(3): 1405–1454</div>
+      <div class="paper-desc">Stacked DID 的开山应用论文。利用美国 138 个州级最低工资上调事件，为每个处理时点切一个窗口、堆叠成新面板再做 TWFE，发现最低工资上调对低工资岗位的就业弹性接近零。是"所有单位最终都被处理、无 never-treated 组"时的标准范式。Stata 命令 <code class="inline">stackedev</code> 直接实现。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · NBER WP</span>
+      <div class="paper-title">Two-Way Fixed Effects, the Two-Way Mundlak Regression, and Difference-in-Differences Estimators</div>
+      <div class="paper-meta">Jeffrey M. Wooldridge · NBER Working Paper, 2021</div>
+      <div class="paper-desc">从计量理论上证明：堆叠 DID 与"处理变量×队列"交互的扩展 TWFE Mundlak 回归在数学上等价，并给出了在异质性处理效应下仍然一致的估计量形式。为 Stacked DID 提供了理论基础。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · JoE</span>
+      <div class="paper-title">What's Trending in Difference-in-Differences? A Synthesis of the Recent Econometrics Literature</div>
+      <div class="paper-meta">Jonathan Roth, Pedro H. C. Sant'Anna, Alyssa Bilinski & John Poel · Journal of Econometrics, 2023</div>
+      <div class="paper-desc">交叠 DID 新文献的权威综述。系统梳理 Bacon 分解、负权重问题，以及 csdid / eventstudyinteract / did_multiplegt / did_imputation 等新估计量的适用条件与相互权衡，并给出实务清单（何时必须报告新估计量、平行趋势的敏感性分析）。入门交叠 DID 的最佳路线图。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · JoE</span>
+      <div class="paper-title">Pretends: A Stata Package to Assess the Sensitivity of Event-Study Estimates to Violations of Parallel Trends</div>
+      <div class="paper-meta">Jonathan Roth · Journal of Econometrics, 2022; Stata command <code class="inline">pretrends</code></div>
+      <div class="paper-desc">证明 pre-trend 联合检验在大多数实务样本里功效只有 30–50%，不能把"不显著"当"平行趋势成立"。提供 <code class="inline">pretrends</code> 命令估计可检测的最小 pre-trend 斜率，并配合 Rambachan–Roth 敏感性界做"允许 pre 期偏离时 ATT CI 还跨不跨 0"的分析。本页 s2.2、s5.6、s6b 的核心方法依据。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 《经济研究》</span>
+      <div class="paper-title">《增值税转型改革对企业投资的影响》类交叠 DID 文章</div>
+      <div class="paper-meta">《经济研究》《管理世界》近年多篇 · 通用范式</div>
+      <div class="paper-desc">中国的"营改增""高新技术企业认定""自贸区设立"等政策几乎都是分批次、分地区推开的。近年顶刊文章已经普遍在主回归报告 csdid / did_multiplegt 结果，并附上经典 TWFE 作为对照。这是中文实证的"新规范"。</div>
+    </div>
+
+    <div class="paper-card">
+      <span class="paper-type en">English · WP</span>
+      <div class="paper-title">Two-Stage Differences in Differences</div>
+      <div class="paper-meta">John Gardner · Working Paper, 2021（UCL）；Stata 实现 Kyle Butts <code class="inline">did2s</code></div>
+      <div class="paper-desc">提出两阶段 DID：第一阶段只用未处理观测估个体/时间固定效应，第二阶段去固定效应后估处理效应，干净规避交叠 DID 的负权重。与 BJS (2024) 渐近等价。本页 7b.1 的方法依据。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · ReStud</span>
+      <div class="paper-title">Revisiting Event-Study Designs: Robust and Efficient Estimation</div>
+      <div class="paper-meta">Kirill Borusyak, Xavier Jaravel & Jann Spiess · Review of Economic Studies, 2024, 91(6): 3253–3285</div>
+      <div class="paper-desc">证明交叠 DID 下插补估计量的渐近有效性：只用未处理观测估双向固定效应、插补处理观测的反事实结果再取残差均值。Stata 命令 <code class="inline">did_imputation</code>。本页 7b.2 的方法依据。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type en">English · Quant. Econ.</span>
+      <div class="paper-title">Quantile Treatment Effects in Difference in Differences Models with Panel Data</div>
+      <div class="paper-meta">Brantly Callaway, Tong Li & Takuya Oka · Quantitative Economics, 2019, 10(4): 1579–1618</div>
+      <div class="paper-desc">面板数据下识别并估计各分位数的处理效应（QTT），把 DID 从均值拓展到整个分布。交错推广由 R 包 <code class="inline">qte</code> 的 <code class="inline">qdid_gt()</code> 实现。本页 7b.3 的方法依据。</div>
+    </div>
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 《管理世界》</span>
+      <div class="paper-title">《环境规制/产业政策分批推开》类分布与动态 DID 文章</div>
+      <div class="paper-meta">《经济研究》《管理世界》近年 · 通用范式</div>
+      <div class="paper-desc">中央环保督察、智能制造试点、创新型城市等政策在城市/企业层面分批次推开。规范做法已是：Bacon 分解 + csdid/did_imputation 主回归 + 事件研究图；若机制涉及"贫富分化/尾部效应"，进一步报告分位数 DID。</div>
+    </div>
+
+    <h3>常见错误</h3>
+    <div class="callout danger">
+      <div class="callout-title">错误 1：忽略交叠 DID 的负权重问题</div>
+      <p>只要政策时点不统一，直接 <code class="inline">reghdfe y TreatPost</code> 就可能得到符号错误的结论。必须至少报告一个新估计量。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 2：事件研究图政策前系数不显著却不报告 pre-trend F 检验</div>
+      <p>单期看不显著可能是功效低。必须把所有政策前 leads 联合做 F 检验，并报告 p 值。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 2b：把 pre-trend 检验不显著直接写成"平行趋势成立"（Roth 2022）</div>
+      <p>pre-trend 联合检验的功效常常只有 30–50%。p=0.21 只意味着"不能拒绝平行趋势"，不意味着"平行趋势成立"。必须配合 <code class="inline">pretrends</code> 命令报告检验功效与可检测的最小 pre-trend 斜率，并在功效低时做 Rambachan–Roth 敏感性界。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 2c：交叠 DID 只用 TWFE 事件研究图做 pre-trend 诊断</div>
+      <p>交叠 DID 下 TWFE 的 leads 系数本身会被负权重污染（见 s4），不能直接用于 pre-trend 检验。必须用 csdid 的 <code class="inline">estat event</code> 输出干净的事件期系数后再做联合检验（见 s5.6）。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 3：对照组选错</div>
+      <p>在交叠 DID 中，"已经被处理的组"不能直接当作"对照组"。csdid 要求明确指定 never-treated 或 not-yet-treated。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 4：PSM-DID 只做匹配不做 DID</div>
+      <p>PSM 只能平衡可观测特征，不可观测自选择依然存在。必须在匹配后的样本上继续做 DID，不能退化成 PSM。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 5：交叠 DID 只报 TWFE，不做 Bacon 分解/负权重诊断，也不列新估计量对照</div>
+      <p>政策时点不统一时，主回归必须换成 csdid / did_imputation / did2s 之一，并在同一张表列出 TWFE 作对照。直接交一个 <code class="inline">reghdfe y TreatPost</code> 就交差，审稿人会要求补做全套诊断。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 6：事件研究基准期（省略期）选错</div>
+      <p>事件研究必须省略政策前一期 $k=-1$ 作基准（系数=0），不能省略 $k=0$（政策当年）或 $k=1$。基准期选成政策后，会把已实现的处理效应污染进所有 leads/lags，图形与 pre-trend 判断全部失真。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 7：只报一个平均 ATT，不报告动态效应 / 事件研究图，也不看分布</div>
+      <p>政策效应很可能先升后降或只影响分布尾部。规范做法必须报 <code class="inline">estat event</code> 的动态效应图；若机制故事涉及"拉大/缩小差距"，再补分位数 DID（7b.3）。只有一个均值系数、一张事件研究图都不画的 DID，2024 年后很难过审。</p>
+    </div>
+
+    <h3>进阶资料</h3>
+    <ul>
+      <li><strong>Goodman-Bacon (2021)、de Chaisemartin & D'Haultfœuille (2020)、Callaway & Sant'Anna (2021)、Sun & Abraham (2021)、Roth et al. (2023)</strong> —— 详见上方"论文案例"中的交叠 DID 文献卡片。</li>
+      <li><strong>孙圣凯、侯新烁等中文教程</strong> — 国内经济学者整理的 csdid / did_multiplegt 实操笔记。</li>
+    </ul>
+  </div>
+
+  <div class="page-nav">
+    <a href="05-endogeneity-iv.html" class="prev">
+      <div class="nav-label">← 上一节</div>
+      <div class="nav-title">内生性与 IV / 2SLS</div>
+    </a>
+    <a href="07-rdd.html" class="next">
+      <div class="nav-label">下一节 →</div>
+      <div class="nav-title">RDD 断点回归</div>
+    </a>
+  </div>
+
+</div></div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show')}
+document.querySelectorAll('.copy-btn').forEach(b=>b.onclick=()=>{const c=b.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(c).then(()=>{b.textContent='已复制 ✓';setTimeout(()=>b.textContent='复制',1500)})});
+document.addEventListener('DOMContentLoaded',()=>{if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})}});
+</script>
+</body>
+</html>

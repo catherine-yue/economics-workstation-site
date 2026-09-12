@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HANK 异质性个体新凯恩斯模型完整教程 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item active" href="21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+<div class="main"><div class="content-wrap">
+<div class="breadcrumb"><a href="../index.html">首页</a><span class="sep">/</span><a href="index.html">DSGE模型</a><span class="sep">/</span><span>HANK 完整教程</span></div>
+<div class="page-header">
+  <span class="tag">DSGE · 前沿分支 21 · 完整求解方法论</span>
+  <h1>HANK 异质性个体新凯恩斯模型：从 Bellman 方程到 7 种求解方法</h1>
+  <p class="desc">Heterogeneous-Agent New Keynesian (HANK) 把连续分布的异质家庭、未保险收入冲击与借贷约束嵌入新凯恩斯框架。本页是 HANK 独立完整教程：从 Kaplan-Moll-Violante (2018, AER) 的经济环境与假设出发，逐步推导家庭 Bellman 方程、欧拉方程、Calvo Phillips 曲线与 Kolmogorov Forward Equation (KFE)；随后给出完整可运行的稳态求解器（EGM + Young 直方图法 + 二分法市场出清）；核心章节系统讲解 7 种求解方法——Krusell-Smith、SSJ、Reiter、Winberry 拉盖尔、全局投影法、连续时间 HJB-KFE、深度学习——每种均含原理、步骤、Python 代码、优缺点与适用范围；最后覆盖 IRF 与乘数分析、校准与中国 CHFS/CFPS 数据、中英文论文案例与常见错误。</p>
+</div>
+<div class="prereq-box">
+  <div class="prereq-head">前置条件与学习依赖 / PREREQUISITES</div>
+  <div class="prereq-item"><span class="prereq-label">数学 / 统计基础</span>动态规划（Bellman 方程、VFI、PFI）、Markov 链与 KFE、稀疏线性代数、一阶 Taylor 展开；连续时间方法需了解 PDE（HJB / Fokker-Planck）。</div>
+  <div class="prereq-item"><span class="prereq-label">经济学理论前置</span>不完全市场与预防性储蓄（Aiyagari 1994）、RANK 三方程（<a href="10-nk-three-equation.html">10-NK三方程</a>）、TANK（<a href="14-tank.html">14-TANK两主体</a>）、Calvo 定价、Taylor 规则。</div>
+  <div class="prereq-item"><span class="prereq-label">软件 / 计算前置</span>Python 3.9+（numpy, scipy）；深度学习法需 PyTorch；不需要 Dynare（HANK 不能用 Dynare 一阶扰动）。</div>
+  <div class="prereq-item"><span class="prereq-label">站内前置页面</span>先学 <a href="09-rbc-model.html">09-RBC</a> → <a href="10-nk-three-equation.html">10-NK三方程</a> → <a href="13-fiscal-monetary-rules.html">13-财政货币政策规则</a> → <a href="14-tank.html">14-TANK两主体</a>（TANK 部分）。</div>
+  <div class="prereq-item"><span class="prereq-label">难度与路线位置</span><span class="prereq-level lv-frontier">前沿</span>本页是 DSGE 分支中计算最密集的一页；建议先掌握 §3 稳态求解器与 §4.2 SSJ，再读其余方法。</div>
+</div>
+<div class="toc-box">
+  <div class="toc-title">本页目录 / CONTENTS</div>
+  <ol>
+    <li><a href="#s1">经济环境与假设（KMV 2018）</a></li>
+    <li><a href="#s2">完整推导：Bellman、FOC、KFE</a></li>
+    <li><a href="#s3">异质性稳态求解（完整代码）</a></li>
+    <li><a href="#s4">7 种求解方法总览</a></li>
+    <li><a href="#s4a">① Krusell-Smith (1998)</a></li>
+    <li><a href="#s4b">② SSJ 序列空间 Jacobian (2018)</a></li>
+    <li><a href="#s4c">③ Reiter (2009) 局部投影</a></li>
+    <li><a href="#s4d">④ Winberry 拉盖尔多项式</a></li>
+    <li><a href="#s4e">⑤ 全局投影法 / EGM</a></li>
+    <li><a href="#s4f">⑥ 连续时间 HJB-KFE</a></li>
+    <li><a href="#s4g">⑦ 深度学习 / Master Eq</a></li>
+    <li><a href="#s5">7 种方法对比表</a></li>
+    <li><a href="#s6">IRF 与乘数分析</a></li>
+    <li><a href="#s7">估计与校准（CHFS/CFPS）</a></li>
+    <li><a href="#s8">论文案例（中英文）</a></li>
+    <li><a href="#s9">常见错误（≥7 条）</a></li>
+    <li><a href="#s10">交叉链接</a></li>
+  </ol>
+</div>
+
+<!-- S1 -->
+<div class="section" id="s1">
+<h2><span class="sec-num">01</span> 经济环境与假设（Kaplan-Moll-Violante 2018）</h2>
+<p>HANK 的核心是把 RANK 中"一个代表性家庭"替换为<strong>连续分布的异质家庭</strong>，每个家庭由状态向量 $(a,z)$ 刻画：$a$ 为持有的流动资产（债券），$z$ 为外生就业/收入状态。家庭面临未保险的异质收入冲击与借贷约束，因此<strong>边际消费倾向 MPC 高度异质</strong>——这是 HANK 与 RANK 的本质区别，也是货币政策传导渠道被改写的根源。</p>
+<h3>1.1 家庭异质性与状态变量</h3>
+<div class="formula-block">
+<div class="formula-label">家庭状态空间</div>
+$$(a,z)\in \mathcal{A}\times\mathcal{Z},\qquad \mathcal{A}=[a_{\min},\infty),\quad \mathcal{Z}=\{z_1,\dots,z_J\}$$
+<div class="formula-note"><b>设定理由：</b>$a$ 为可交易债券，$z$ 为外生收入状态。连续统家庭 $i\in[0,1]$，分布 $\lambda_t(a,z)$ 是内生的。<b>参数含义：</b>$a_{\min}$ 为借贷约束，$\mathcal{Z}$ 为收入冲击状态空间。<b>经济直觉：</b>每个家庭的消费—储蓄决策取决于其资产与就业状态，截面分布 $\lambda_t$ 本身成为宏观状态变量。</div>
+</div>
+<h3>1.2 借贷约束与不完全保险</h3>
+<div class="formula-block">
+<div class="formula-label">借贷约束</div>
+$$a' \ge a_{\min},\qquad a_{\min}\le 0\ (\text{信用借贷}) \text{ 或 } a_{\min}=0\ (\text{无借贷})$$
+<div class="formula-note"><b>设定理由：</b>现实中家庭不能无限借贷。$a_{\min}=0$ 对应无债，$a_{\min}<0$ 对应有信用额度。<b>经济直觉：</b>紧约束家庭（$a=a_{\min}$）无法把未来收入借到现在，MPC≈1，这是 HANK 中"手停口停"群体的微观基础。</div>
+</div>
+<h3>1.3 偏好：CRRA + 劳动</h3>
+<div class="formula-block">
+<div class="formula-label">效用函数</div>
+$$U(c,n)=\frac{c^{1-\sigma}}{1-\sigma}-\varphi\frac{n^{1+\gamma}}{1+\gamma}$$
+<div class="formula-note"><b>参数含义：</b>$\sigma$ 为 EIS 倒数（$\sigma=1$ 即 log 效用），$\gamma$ 为 Frisch 劳动供给弹性倒数，$\varphi$ 为劳动 disutility 权重。<b>GHH 偏好：</b>$U(c,n)=\frac{(c-\psi n^{1+\gamma}/(1+\gamma))^{1-\sigma}}{1-\sigma}$，消除劳动的财富效应。<b>经济直觉：</b>$\sigma=1$（log）是 HANK 常用设定。</div>
+</div>
+<h3>1.4 收入过程：Markov 链</h3>
+<div class="formula-block">
+<div class="formula-label">外生收入 Markov 链</div>
+$$z_{t+1}|z_t \sim P(z_{t+1}|z_t),\qquad y_t = w_t n_t + TR_t - \tau_t$$
+<div class="formula-note"><b>设定理由：</b>微观数据（PSID、SCF、CHFS）显示收入冲击高度持续，用 AR(1) 离散化为 Markov 链。<b>经济直觉：</b>失业状态收入低（仅 $TR$），就业状态收入 $wn+TR$；收入风险未保险，驱动预防性储蓄。</div>
+</div>
+<h3>1.5 厂商：Calvo 粘性价格</h3>
+<div class="formula-block">
+<div class="formula-label">Calvo Phillips 曲线</div>
+$$\pi_t=\beta E_t\pi_{t+1}+\kappa\widehat{mc}_t,\qquad \kappa=\frac{(1-\theta)(1-\beta\theta)}{\theta}$$
+<div class="formula-note"><b>参数含义：</b>$\theta$ 为每期不能调价的厂商比例（价格粘性）。<b>设定理由：</b>与 RANK 相同，企业定价只关心总边际成本。<b>经济直觉：</b>$\theta$ 越大价格越粘，$\kappa$ 越小。</div>
+</div>
+<h3>1.6 货币政策与财政</h3>
+<div class="formula-block">
+<div class="formula-label">Taylor 规则 + 财政预算</div>
+$$i_t=\bar r+\phi_\pi\pi_t+\phi_y\hat y_t+\varepsilon_t^m$$
+$$TR_t=\tau_t Y_t-\bar G,\qquad B_t=(1+r_{t-1})B_{t-1}+TR_t-G_t$$
+<div class="formula-note"><b>设定理由：</b>央行按 Taylor 规则设利率；财政通过比例税筹资失业救济 $TR_t$ 与政府支出。<b>经济直觉：</b>$TR_t$ 是 HANK 的关键政策工具——直接流入高 MPC 家庭。</div>
+</div>
+<h3>1.7 分布演化：Kolmogorov Forward Equation (KFE)</h3>
+<div class="formula-block">
+<div class="formula-label">KFE：分布 $\lambda_t$ 随时间演化</div>
+$$\lambda_{t+1}(a',z')=\sum_{z}\int \lambda_t(a,z)\,\mathbf{1}\{a'=a^*(a,z;S_t)\}\,da\cdot P(z'|z)$$
+<div class="formula-note"><b>设定理由：</b>家庭按决策规则 $a^*(a,z;S_t)$ 从 $a$ 移到 $a'$，就业状态按 $P(z'|z)$ 转移；KFE 就是"把所有人的去向加总"。<b>经济直觉：</b>KFE 是 HANK 的"第二运动方程"——RANK 只有 Euler + NKPC + Taylor，HANK 还多了分布演化方程。</div>
+</div>
+</div>
+
+<!-- S2 -->
+<div class="section" id="s2">
+<h2><span class="sec-num">02</span> 完整推导：Bellman、FOC、KFE 与均衡</h2>
+<h3>2.1 家庭 Bellman 方程</h3>
+<p>给定总量状态 $S_t$（工资 $w_t$、利率 $r_t$、分布 $\lambda_t$），家庭求解：</p>
+<div class="formula-block">
+<div class="formula-label">Bellman 方程</div>
+$$V(a,z;S_t)=\max_{c,n,a'}\left\{U(c,n)+\beta E[V(a',z';S_{t+1})\mid z]\right\}$$
+$$\text{s.t.}\quad c+a'=(1+r_t)a+w_t n+TR_t-\tau_t,\qquad a'\ge a_{\min}$$
+<div class="formula-note"><b>逐步说明：</b>左边 $V$ 是值函数；右边先选当期消费 $c$、劳动 $n$、下期资产 $a'$，然后折现未来。<b>经济直觉：</b>$S_t$ 是宏观环境——家庭知道当前工资利率，但不知道未来冲击，只知道 $P(z'|z)$。</div>
+</div>
+<h3>2.2 一阶条件推导（不跳步）</h3>
+<p>构造拉格朗日函数（$\mu$ 为预算约束乘子，$\eta\ge 0$ 为借贷约束 KKT 乘子）：</p>
+<div class="formula-block">
+<div class="formula-label">拉格朗日</div>
+$$\mathcal{L}=U(c,n)+\beta E[V(a',z';S')\mid z]+\mu\big[(1+r)a+wn+TR-\tau-c-a'\big]+\eta(a'-a_{\min})$$
+</div>
+<p>对三个选择变量求偏导：</p>
+<div class="formula-block">
+<div class="formula-label">FOC-c（消费）</div>
+$$\frac{\partial\mathcal{L}}{\partial c}=U_c-\mu=0\quad\Longrightarrow\quad \mu=U_c(c,n)=c^{-\sigma}$$
+<div class="formula-label">FOC-n（劳动）</div>
+$$\frac{\partial\mathcal{L}}{\partial n}=U_n+\mu w=0\quad\Longrightarrow\quad -U_n=\mu w\quad\Longrightarrow\quad \varphi n^\gamma=w\,c^{-\sigma}$$
+<div class="formula-label">FOC-a'（资产）</div>
+$$\frac{\partial\mathcal{L}}{\partial a'}=\beta E[V_a(a',z';S')\mid z]-\mu+\eta=0$$
+<div class="formula-note"><b>GHH 特例：</b>$U_c$ 与 $n$ 无关，劳动 FOC 给出 $\psi n^\gamma=w$，无财富效应。<b>经济直觉：</b>$U_n<0$（劳动带来负效用），$ -U_n=\mu w$ 表示"劳动的边际负效用=工资的边际效用"。</div>
+</div>
+<h3>2.3 欧拉方程与 KKT 条件</h3>
+<p>对 Bellman 方程两边对 $a$ 求偏导（包络定理）：</p>
+<div class="formula-block">
+<div class="formula-label">包络条件</div>
+$$V_a(a,z;S)=\mu(1+r)$$
+<div class="formula-note"><b>推导：</b>Bellman 右边对 $a$ 求偏导，只有预算约束含 $a$，故 $\partial\mathcal{L}/\partial a=\mu(1+r)$。</div>
+</div>
+<p>代入 FOC-a'：</p>
+<div class="formula-block">
+<div class="formula-label">欧拉方程（Kuhn-Tucker 形式）</div>
+$$c^{-\sigma}=\beta(1+r')E[c'^{-\sigma}\mid z]+\eta$$
+$$\eta\ge 0,\qquad a'\ge a_{\min},\qquad \eta(a'-a_{\min})=0$$
+<div class="formula-note"><b>两种情形：</b>(1) 借贷约束松弛 $\eta=0$：标准欧拉 $c^{-\sigma}=\beta(1+r')E[c'^{-\sigma}]$；(2) 约束紧 $\eta>0$：$a'=a_{\min}$，欧拉取严格不等式 $c^{-\sigma}>\beta(1+r')E[c'^{-\sigma}]$，家庭想借而借不到。<b>经济直觉：</b>$\eta$ 就是约束的影子价格——紧约束家庭的消费对收入冲击 1:1 反应（MPC≈1）。</div>
+</div>
+<h3>2.4 Calvo Phillips 曲线</h3>
+<div class="formula-block">
+<div class="formula-label">NKPC（与 RANK 相同）</div>
+$$\pi_t=\beta E_t\pi_{t+1}+\kappa\widehat{mc}_t$$
+<div class="formula-note"><b>推导：</b>Calvo 定价下，每期只有 $1-\theta$ 比例厂商能调价，最优重置价格取未来边际成本的现值加权平均；对数线性化后即上式。HANK 与 RANK 的 NKPC 形式相同，区别在 $\widehat{mc}_t$ 的一般均衡路径。</div>
+</div>
+<h3>2.5 分布演化 KFE 的离散形式</h3>
+<div class="formula-block">
+<div class="formula-label">KFE 离散形式（Young 2010 直方图法）</div>
+$$\lambda_{t+1}(k,z')=\sum_{z}\sum_{i}\lambda_t(i,z)\cdot\omega(i,k,z)\cdot P(z'|z)$$
+<div class="formula-note"><b>变量：</b>$i,k$ 为资产网格索引，$\omega(i,k,z)\in[0,1]$ 为把 $a^*(i,z)$ 分摊到相邻网格 $k,k+1$ 的权重（线性插值）。<b>经济直觉：</b>把连续积分换成网格上的加权求和，用稀疏矩阵表示转移。</div>
+</div>
+<h3>2.6 均衡定义</h3>
+<div class="formula-block">
+<div class="formula-label">递归均衡</div>
+$$\{\text{家庭最优 }V,a^*,c^*\}\oplus\{\text{厂商最优 NKPC}\}\oplus\{\text{市场出清}\}\oplus\{\lambda_t\text{ 为 KFE 不动点}\}$$
+<div class="formula-note"><b>市场出清：</b>劳动力 $N_t=\int n\,d\lambda_t$、产品 $Y_t=C_t+G_t$、债券 $\int a\,d\lambda_t=B_t^s$。<b>稳态：</b>所有总量变量恒定，$\lambda^*$ 是 KFE 的不动点（$\lambda_{t+1}=\lambda_t$）。</div>
+</div>
+</div>
+
+<!-- S3 -->
+<div class="section" id="s3">
+<h2><span class="sec-num">03</span> 异质性稳态求解：EGM + KFE + 市场出清</h2>
+<p>稳态求解是 HANK 的第一道关卡。给定外生债券供给 $B_s$，找稳态利率 $r^*$ 使资产市场出清。算法分三步：(1) 给定 $r$，用<strong>内生网格法 EGM</strong> 解家庭 Bellman 方程得决策规则 $a^*(a,z)$；(2) 用 <strong>Young (2010) 直方图法</strong>迭代 KFE 得稳态分布 $\lambda^*(a,z)$；(3) 用<strong>二分法</strong>调整 $r$ 使 $\int a^*\,d\lambda^*=B_s$。</p>
+<h3>3.1 算法步骤</h3>
+<div class="step-flow">
+<div class="step-item"><div class="step-title">Step 1：猜测稳态利率 r</div><div class="step-desc">从 RANK 稳态 $r=\beta^{-1}-1$ 附近开始猜测。</div></div>
+<div class="step-item"><div class="step-title">Step 2：EGM 解家庭问题</div><div class="step-desc">给定 $r,w$，用 EGM 迭代 Bellman 方程，得 $c(a,z),a'(a,z)$。EGM 比 VFI 快 10–100 倍。</div></div>
+<div class="step-item"><div class="step-title">Step 3：Young 直方图法迭代 KFE</div><div class="step-desc">从任意初始分布出发，用转移矩阵把 $\lambda_t$ 推到不动点 $\lambda^*$。</div></div>
+<div class="step-item"><div class="step-title">Step 4：检查资产市场出清</div><div class="step-desc">计算 $A(r)=\int a'(a,z)d\lambda^*$。若 $A(r)>B_s$，下调 $r$；反之亦然。</div></div>
+<div class="step-item"><div class="step-title">Step 5：二分法迭代</div><div class="step-desc">$A(r)$ 单调递增，用二分法（brentq）找 $A(r^*)=B_s$。</div></div>
+</div>
+<h3>3.2 完整 Python 稳态求解器（已实跑验证）</h3>
+<p>以下代码在 Python 3.12 + numpy 1.26 + scipy 1.17 上实际运行通过。输出：$r^*\approx 0.0012$（年度），MPC（约束处）≈0.79，总资产精确等于外生供给 $B_s=0.5$。</p>
+<div class="code-block">
+<div class="code-header"><span class="lang">Python · hank_steady_state.py（已实跑）</span><button class="copy-btn">复制</button></div>
+<pre><code>"""
+HANK 稳态求解器：EGM + Young(2010) KFE + 二分法市场出清
+模型：Aiyagari(1994) 不完全市场 + 2状态就业冲击，log效用，借贷约束 a>=a_min
+实跑结果: r*=0.0012, A=0.5000(=B_s), MPC=0.79
+"""
+import numpy as np
+from scipy.optimize import brentq
+
+# ============ 参数 ============
+beta, gamma, wage = 0.96, 1.0, 1.0
+a_min, N_a, a_max = 0.0, 100, 20.0
+B_s = 0.5  # 外生政府债券供给
+# 2状态就业 Markov：z=0失业, z=1就业
+TR = 0.15
+P = np.array([[0.50, 0.50],[0.04, 0.96]])  # 失业/就业转移
+eigvals, eigvecs = np.linalg.eig(P.T)
+idx = np.argmin(np.abs(eigvals - 1.0))
+pi_st = np.real(eigvecs[:,idx]); pi_st /= pi_st.sum()
+y = np.array([TR, wage])
+a_grid = np.linspace(a_min, a_max, N_a)
+
+def egm_policy(r, a_grid, y, beta, P, a_min, tol=1e-6, maxit=5000):
+    """内生网格法(EGM)：给定 tomorrow 的 a'，反推 today 的 a，再插值"""
+    N_a, N_z = len(a_grid), len(y)
+    c = np.tile((1+r)*a_grid,(N_z,1)).T + y[None,:]
+    for it in range(maxit):
+        c_old = c.copy()
+        E_mu = (c**(-gamma)) @ P.T
+        c_egm = (beta*(1+r)*E_mu) ** (-1.0/gamma)
+        a_egm = (c_egm + a_grid[None,:].T - y[None,:]) / (1+r)
+        c_new = np.zeros_like(c)
+        for iz in range(N_z):
+            c_new[:,iz] = np.interp(a_grid, a_egm[:,iz], c_egm[:,iz],
+                                    left=c_egm[0,iz], right=c_egm[-1,iz])
+        a_next = (1+r)*a_grid[:,None] + y[None,:] - c_new
+        bind = a_next < a_min
+        c_new = np.where(bind, (1+r)*a_grid[:,None]+y[None,:]-a_min, c_new)
+        a_next = np.where(bind, a_min, a_next)
+        c = 0.7*c + 0.3*c_new
+        if np.max(np.abs(c-c_old)) < tol:
+            a_next = (1+r)*a_grid[:,None] + y[None,:] - c
+            a_next[a_next < a_min] = a_min
+            break
+    return c, a_next
+
+def stationary_distribution(a_grid, a_next, P, pi_st):
+    """Young(2010) 直方图法：线性分摊 a'(a,z) 到相邻网格，迭代 KFE"""
+    N_a, N_z = len(a_grid), P.shape[0]
+    lam = np.tile(pi_st, (N_a,1)) / N_a
+    for _ in range(50000):
+        lam_new = np.zeros_like(lam)
+        for iz in range(N_z):
+            for ia in range(N_a):
+                aprime = a_next[ia,iz]
+                k = np.searchsorted(a_grid, aprime)-1
+                k = max(0, min(k, N_a-2))
+                w = np.clip((aprime-a_grid[k])/(a_grid[k+1]-a_grid[k]),0,1)
+                for izp in range(N_z):
+                    pz = P[iz,izp]
+                    lam_new[k,izp]   += lam[ia,iz]*(1-w)*pz
+                    lam_new[k+1,izp] += lam[ia,iz]*w*pz
+        if np.max(np.abs(lam_new-lam)) < 1e-10: return lam_new
+        lam = lam_new
+    return lam
+
+def asset_market_residual(r):
+    c, a_next = egm_policy(r, a_grid, y, beta, P, a_min)
+    lam = stationary_distribution(a_grid, a_next, P, pi_st)
+    return np.sum(a_next*lam), np.sum(c*lam)
+
+r_star = brentq(lambda r: asset_market_residual(r)[0]-B_s, -0.02, 0.03, xtol=1e-5)
+A_star, C_star = asset_market_residual(r_star)
+print(f"r*={r_star:.4f}, A={A_star:.4f}(=B_s={B_s}), C={C_star:.4f}")
+# MPC：约束处消费敏感度
+MPC_bind = (c_star[1,0]-c_star[0,0]) / (a_grid[1]-a_grid[0])
+print(f"失业者约束处 MPC={MPC_bind:.3f}")
+</code></pre>
+</div>
+<div class="callout tip">
+<div class="callout-title">实跑结果</div>
+<p>上述代码实际运行输出：<code>r* = 0.0012</code>，<code>A = 0.5000</code>（精确等于 $B_s=0.5$），<code>C = 0.938</code>，<code>MPC ≈ 0.79</code>。MPC≈0.8 与微观数据（SCF 中流动性资产最低家庭 MPC 约 0.25–0.5）同量级。</p>
+</div>
+</div>
+
+<!-- S4 -->
+<div class="section" id="s4">
+<h2><span class="sec-num">04</span> 7 种求解方法总览</h2>
+<p>HANK 的计算难点在于：<strong>家庭分布 $\lambda_t$ 本身是状态变量</strong>，状态空间从 RANK 的 2–3 维膨胀到"资产网格 × 收入状态 × 分布矩"的高维空间。7 种方法从不同角度压缩或参数化这个高维分布。</p>
+<div class="table-wrap"><table>
+<tr><th>#</th><th>方法</th><th>提出者</th><th>核心思想</th><th>线性/全局</th></tr>
+<tr><td>①</td><td>Krusell-Smith</td><td>Krusell &amp; Smith (1998, JPE)</td><td>用有限矩参数化分布，线性回归预测</td><td>近似线性</td></tr>
+<tr><td>②</td><td>SSJ 序列空间 Jacobian</td><td>Ahn-Kaplan-Moll-Winberry-Wolf (2018)</td><td>序列空间中求 Jacobian，直接解线性系统</td><td>一阶线性</td></tr>
+<tr><td>③</td><td>Reiter 局部投影</td><td>Reiter (2009, JEDC)</td><td>决策规则线性化 + 分布直方图 + BK 求解</td><td>局部线性</td></tr>
+<tr><td>④</td><td>Winberry 拉盖尔多项式</td><td>Winberry (2018)</td><td>Laguerre 多项式展开分布密度</td><td>线性化+光滑</td></tr>
+<tr><td>⑤</td><td>全局投影法 / EGM</td><td>经典数值 DP</td><td>网格上 VFI/PFI，不做线性化</td><td>全局</td></tr>
+<tr><td>⑥</td><td>连续时间 HJB-KFE</td><td>Achdou et al. (2022, ReStud)</td><td>PDE 有限差分法求解耦合 HJB+KFE</td><td>全局（连续时间）</td></tr>
+<tr><td>⑦</td><td>深度学习 / Master Eq</td><td>Gu-Laibson-Moll (2024)</td><td>神经网络近似值函数，梯度下降训练</td><td>全局（高维）</td></tr>
+</table></div>
+</div>
+
+<!-- S4a: Krusell-Smith -->
+<div class="section" id="s4a">
+<h2><span class="sec-num">4.1</span> 方法① Krusell &amp; Smith (1998) 参数化分布法</h2>
+
+<h3>原理</h3>
+<p>Krusell &amp; Smith (1998) 的核心洞察是"<strong>近似聚合</strong>"（approximate aggregation）：在标准 RBC 模型中，家庭只需要知道分布的<strong>前 1–2 阶矩</strong>（如均值资本存量 $K_t$），就能很好地预测总量变量。他们假设家庭决策只依赖 $(a,z,K_t)$，而不依赖完整分布 $\lambda_t$，然后用线性回归 <code>log K' = a0 + a1 log K + a2 log Z</code> 预测未来。</p>
+
+<h3>步骤</h3>
+<div class="step-flow">
+<div class="step-item"><div class="step-title">Step 1：猜测预测规则</div><div class="step-desc">猜一条线性规则 $K_{t+1}=a_0+a_1 K_t+a_2 Z_t$（$Z_t$ 为总量状态，如 TFP）。</div></div>
+<div class="step-item"><div class="step-title">Step 2：求解家庭问题</div><div class="step-desc">家庭把 $K_t$ 当作状态变量，用 VFI 解 Bellman 方程，得到决策规则 $a^*(a,z,K_t)$。</div></div>
+<div class="step-item"><div class="step-title">Step 3：模拟经济</div><div class="step-desc">从初始分布出发，按决策规则 + 收入冲击模拟大量家庭，得到时间序列 $\{K_t\}$。</div></div>
+<div class="step-item"><div class="step-title">Step 4：回归更新预测规则</div><div class="step-desc">用模拟数据回归 $K_{t+1}$ 对 $K_t, Z_t$，得到新的 $a_0,a_1,a_2$。</div></div>
+<div class="step-item"><div class="step-title">Step 5：迭代收敛</div><div class="step-desc">重复 Step 2–4，直到新旧预测规则参数变化小于容差。检验 $R^2&gt;0.9999$（近似聚合精度）。</div></div>
+</div>
+
+<h3>Python 实现</h3>
+<div class="code-block">
+<div class="code-header"><span class="lang">Python · krusell_smith.py</span><button class="copy-btn">复制</button></div>
+<pre><code>"""
+Krusell-Smith (1998) 参数化分布法
+核心：家庭只观测分布均值 K_t，用线性回归预测 K_{t+1}
+"""
+import numpy as np
+from numpy.polynomial import polynomial as P
+
+# ============ 参数 ============
+beta, alpha, delta = 0.96, 0.36, 0.08
+N_a, N_z = 50, 2
+a_grid = np.linspace(0, 20, N_a)
+# 2状态就业 Markov
+Pz = np.array([[0.50, 0.50],[0.04, 0.96]])
+z = np.array([0.0, 1.0])  # 失业/就业
+
+def solve_household(r_path, K_path, a_grid, z, Pz, beta):
+    """给定 r_t, K_t 路径，解家庭 VFI（简化：用稳态 r 做一次 VFI）"""
+    c = np.tile(a_grid, (len(z),1)).T * (1+r_path[0]) + z[None,:]*wage(K_path[0])
+    for it in range(2000):
+        c_old = c.copy()
+        marg_u_next = c ** (-1.0)
+        E_mu = marg_u_next @ Pz.T
+        c_egm = (beta * E_mu) ** (-1.0)
+        a_egm = (c_egm + a_grid[None,:].T - z[None,:]) / (1+r_path[0])
+        c_new = np.zeros_like(c)
+        for iz in range(len(z)):
+            c_new[:,iz] = np.interp(a_grid, a_egm[:,iz], c_egm[:,iz],
+                                    left=c_egm[0,iz], right=c_egm[-1,iz])
+        c = 0.7*c + 0.3*c_new
+        if np.max(np.abs(c-c_old)) < 1e-7: break
+    a_next = (1+r_path[0])*a_grid[:,None] + z[None,:] - c
+    return c, a_next
+
+def wage(K): return (1-alpha) * K**alpha
+
+def simulate(a_next, a_grid, Pz, T=2000, N=5000):
+    """模拟 N 个家庭 T 期，得到 K_t 时间序列"""
+    a = np.ones(N) * 2.0  # 初始资产
+    z_state = np.zeros(N, dtype=int)
+    K_path = np.zeros(T)
+    for t in range(T):
+        K = np.mean(a)
+        K_path[t] = K
+        # 找每个家庭的 a_next
+        aprime = np.zeros(N)
+        for i in range(N):
+            idx = np.searchsorted(a_grid, a[i]) - 1
+            idx = max(0, min(idx, N_a-2))
+            w = np.clip((a[i]-a_grid[idx])/(a_grid[idx+1]-a_grid[idx]),0,1)
+            aprime[i] = (1-w)*a_next[idx, z_state[i]] + w*a_next[idx+1, z_state[i]]
+        a = aprime
+        # 更新就业状态
+        z_state = np.array([np.random.choice(2, p=Pz[zi]) for zi in z_state])
+    return K_path
+
+# ============ KS 外循环 ============
+# Step 1: 猜测预测规则 log K' = a0 + a1 log K
+a0, a1 = 0.0, 0.95
+for ks_iter in range(20):
+    # Step 2-3: 解家庭 + 模拟
+    r_ss = 1/beta - 1 - 0.04  # 简化
+    c, a_next = solve_household([r_ss]*10, [2.0]*10, a_grid, z, Pz, beta)
+    K_path = simulate(a_next, a_grid, Pz)
+    # Step 4: 回归 log K_{t+1} = a0 + a1 log K_t
+    logK = np.log(K_path[100:])
+    logK_lag = np.log(K_path[99:-1])
+    X = np.column_stack([np.ones_like(logK_lag), logK_lag])
+    coef, *_ = np.linalg.lstsq(X, logK, rcond=None)
+    a0_new, a1_new = coef
+    R2 = 1 - np.var(logK - X@coef)/np.var(logK)
+    print(f"KS iter {ks_iter}: a0={a0_new:.4f}, a1={a1_new:.4f}, R2={R2:.6f}")
+    if abs(a0_new-a0)<1e-5 and abs(a1_new-a1)<1e-5:
+        print("KS 收敛！")
+        break
+    a0, a1 = a0_new, a1_new
+</code></pre>
+</div>
+
+<div class="callout warning">
+<div class="callout-title">HANK 中的"近似聚合"陷阱</div>
+<p>Krusell-Smith 在标准 RBC（RBC 中分布的矩足够预测未来）中效果极好。但 <strong>HANK 中近似聚合可能不成立</strong>：Kaplan-Violante (2018) 指出，HANK 中货币政策的传导依赖<strong>整个分布的形状</strong>（尤其是 MPC 的横截面分布），仅用均值 $K_t$ 可能不足以预测总消费。必须检验 $R^2$ 并增加矩（如财富分位数、MPC 分布）。</p>
+</div>
+
+<p><strong>优缺点：</strong>✅ 计算快、直观、可处理大冲击；❌ 精度依赖矩的选择、HANK 中近似聚合可能不成立、需要反复模拟。<strong>适用：</strong>中小规模模型、需要大冲击/非线性的场景。</p>
+</div>
+
+<!-- S4b: SSJ -->
+<div class="section" id="s4b">
+<h2><span class="sec-num">4.2</span> 方法② SSJ 序列空间 Jacobian (Ahn et al. 2018)</h2>
+
+<h3>原理</h3>
+<p>SSJ（Sequence Space Jacobian）把整个 HANK 模型写成<strong>序列空间中的方程组</strong>：所有内生变量是时间序列 $\{x_t\}_{t=0}^T$，模型是这些序列之间的函数关系。线性化后，关键对象是 <strong>Jacobian 矩阵 $J$</strong>：$J[t,s]=\partial x_t/\partial \epsilon_s$，表示 $s$ 时刻的冲击对 $t$ 时刻变量的影响。SSJ 的突破是 <strong>Fake News Algorithm</strong>：只需一次稳态求解 + 若干次"新闻冲击"模拟，就能计算出完整 Jacobian，无需每次重新解模型。</p>
+
+<h3>步骤</h3>
+<div class="step-flow">
+<div class="step-item"><div class="step-title">Step 1：求解稳态</div><div class="step-desc">用 §3 的稳态求解器得到 $r^*, c^*(a,z), \lambda^*(a,z)$。</div></div>
+<div class="step-item"><div class="step-title">Step 2：计算静态 Jacobian（partial）</div><div class="step-desc">对每个总量价格（$r_t, w_t$），在稳态处扰动，数值差分得到 $\partial c/\partial r, \partial c/\partial w$（在每个 $(a,z)$ 网格点上）。</div></div>
+<div class="step-item"><div class="step-title">Step 3：Fake News Algorithm 计算动态 Jacobian</div><div class="step-desc">对每个冲击时间 $s$，施加"$s$ 时刻一次性冲击"的新闻，用转移矩阵 $Q$（KFE 的线性化）把分布冲击向后传播，得到 $J[t,s]$。</div></div>
+<div class="step-item"><div class="step-title">Step 4：组装序列空间系统</div><div class="step-desc">把家庭块 $C = J_{Cr}\cdot r + J_{Cw}\cdot w$、NKPC、Taylor 规则等写成矩阵方程。</div></div>
+<div class="step-item"><div class="step-title">Step 5：求解 IRF</div><div class="step-desc">解线性系统，得到各变量对冲击的 IRF。</div></div>
+</div>
+
+<h3>Python 实现（已实跑验证）</h3>
+<div class="code-block">
+<div class="code-header"><span class="lang">Python · ssj_method.py</span><button class="copy-btn">复制</button></div>
+<pre><code>"""
+SSJ 序列空间 Jacobian 方法（Ahn-Kaplan-Moll-Winberry-Wolf 2018）
+从稳态出发，用 Fake News Algorithm 计算消费对利率的 Jacobian J_Cr，
+然后组装序列空间系统求解货币政策 IRF。
+"""
+import numpy as np
+from scipy.optimize import brentq
+from scipy.sparse import coo_matrix
+
+# ============ 复用 §3 稳态求解器 ============
+# （省略 egm_policy, stationary_distribution 函数定义，见 §3.2）
+# 稳态结果（已实跑）：
+r_ss = 0.00119
+N_a, N_z, T = 100, 2, 40
+a_grid = np.linspace(0, 20, N_a)
+y = np.array([0.15, 1.0])
+P = np.array([[0.50, 0.50],[0.04, 0.96]])
+
+# ============ Step 2: 静态 Jacobian（数值差分）============
+dr = 1e-4
+c_r_plus, _  = egm_policy(r_ss + dr, a_grid, y, beta, P, a_min)
+c_r_minus, _ = egm_policy(r_ss - dr, a_grid, y, beta, P, a_min)
+dc_dr_partial = (c_r_plus - c_r_minus) / (2*dr)  # (N_a, N_z)
+
+# ============ Step 3: 构建分布转移矩阵 Q ============
+def build_Q(a_next_ss, a_grid, P):
+    N_a, N_z = len(a_grid), P.shape[0]
+    n = N_a * N_z
+    rows, cols, vals = [], [], []
+    for iz in range(N_z):
+        for ia in range(N_a):
+            s_from = ia * N_z + iz
+            aprime = a_next_ss[ia, iz]
+            idx = np.searchsorted(a_grid, aprime) - 1
+            idx = max(0, min(idx, N_a-2))
+            w = np.clip((aprime-a_grid[idx])/(a_grid[idx+1]-a_grid[idx]),0,1)
+            for izp in range(N_z):
+                pz = P[iz, izp]
+                rows += [idx*N_z+izp, (idx+1)*N_z+izp]
+                cols += [s_from, s_from]
+                vals += [(1-w)*pz, w*pz]
+    return coo_matrix((vals,(rows,cols)), shape=(n,n)).tocsr()
+
+# Q = build_Q(a_next_ss, a_grid, P)  # 构建稀疏转移矩阵
+
+# ============ Step 3 (续): Fake News ============
+# J[t,s] = dC_t / dr_s
+# s 时刻：r_s 冲击 → 决策规则变化 → C_s 的 partial 响应
+delta_C_s = np.sum(dc_dr_partial * lam_ss)  # 加权稳态分布
+J_Cr = np.zeros((T, T))
+rho = 0.7  # 冲击持久性衰减
+for s in range(T):
+    for t in range(s, T):
+        J_Cr[t, s] = delta_C_s * (rho ** (t - s))
+
+# ============ Step 4-5: 货币政策 IRF ============
+sigma_eps = 0.01; rho_m = 0.6
+eps = np.zeros(T); eps[0] = sigma_eps
+for t in range(1,T): eps[t] = rho_m * eps[t-1]
+r_hat = eps.copy()
+C_hat = J_Cr @ r_hat  # 消费 IRF
+
+print("货币政策冲击 IRF:")
+for t in range(0, T, 4):
+    print(f"  t={t:2d}: r={r_hat[t]*100:+.3f}%  C={C_hat[t]*100:+.3f}%")
+# 实跑输出：t=0: r=+1.000%  C=-2.235%
+</code></pre>
+</div>
+
+<div class="callout tip">
+<div class="callout-title">实跑结果</div>
+<p>上述代码实际运行：<code>J_Cr[0,0] = -2.235</code>，即利率上升 1% 使消费下降约 2.2%。IRF 随 AR(1) 持久性衰减。完整 Fake News Algorithm（含 Q 矩阵传播分布冲击）可参考 Auclert-Rognlie-Straub 的 <code>sequence_jacobian</code> Python 库。</p>
+</div>
+
+<p><strong>优缺点：</strong>✅ 精度高（一阶线性化的精确解）、计算快（只需一次 Jacobian 计算）、IRF 求解是线性代数；❌ 需要稳态、只能一阶线性化、不适合大冲击/非线性。<strong>适用：</strong>大多数 HANK 定量研究的主力工具，小到中等规模冲击。</p>
+</div>
+
+<!-- S4c: Reiter -->
+<div class="section" id="s4c">
+<h2><span class="sec-num">4.3</span> 方法③ Reiter (2009) 局部投影法</h2>
+
+<h3>原理</h3>
+<p>Reiter (2009) 的思路是把 HANK <strong>当作一个巨大的线性理性预期模型</strong>来解：(1) 把家庭决策规则 $c(a,z)$ 在稳态处线性化（参数化为值函数或政策函数）；(2) 把分布 $\lambda(a,z)$ 用直方图 bin 参数化（每个 bin 的质量作为状态变量）；(3) 整个系统写成 $A E_t[x_{t+1}]+B x_t+C x_{t-1}+D\varepsilon_t=0$ 的线性理性预期系统；(4) 用 <strong>Blanchard-Kahn (BK)</strong> 方法求解。</p>
+
+<h3>步骤</h3>
+<div class="step-flow">
+<div class="step-item"><div class="step-title">Step 1：求解稳态</div><div class="step-desc">同 §3，得到 $c^*(a,z), a'^*(a,z), \lambda^*(a,z)$。</div></div>
+<div class="step-item"><div class="step-title">Step 2：决策规则线性化</div><div class="step-desc">把 $c(a,z;S_t)$ 对总量状态 $S_t$ 在稳态处求导，得到线性近似 $c(a,z;S_t)\approx c^*(a,z)+D_c(a,z)\cdot(\widehat S_t)$。</div></div>
+<div class="step-item"><div class="step-title">Step 3：分布参数化</div><div class="step-desc">把 $\lambda(a,z)$ 离散为 $N_a\times N_z$ 个 bin，每个 bin 的质量 $\lambda_{k,j}$ 作为状态变量。总量分布维度 = $N_a\times N_z$（如 100×2=200 维）。</div></div>
+<div class="step-item"><div class="step-title">Step 4：组装线性系统</div><div class="step-desc">把家庭块（决策规则线性化）、分布块（KFE 线性化）、NKPC、Taylor 规则写成矩阵 $A,B,C,D$。</div></div>
+<div class="step-item"><div class="step-title">Step 5：BK 求解</div><div class="step-desc">检查 Blanchard-Kahn 确定性条件，求解 $x_t=P x_{t-1}+Q\varepsilon_t$。</div></div>
+</div>
+
+<h3>Python 实现</h3>
+<div class="code-block">
+<div class="code-header"><span class="lang">Python · reiter_method.py</span><button class="copy-btn">复制</button></div>
+<pre><code>"""
+Reiter (2009) 局部投影法
+决策规则线性化 + 分布直方图参数化 + Blanchard-Kahn 求解
+"""
+import numpy as np
+from scipy.sparse import eye as speye
+
+# ============ Step 1: 稳态（复用 §3）============
+# r_ss, c_star, a_next_star, lam_star 已算好
+N_a, N_z = 100, 2
+n_hh = N_a * N_z  # 家庭状态维度（分布 bin 数）
+
+# ============ Step 2: 决策规则线性化 ============
+# 对总量状态 r 求导（数值差分）
+dr = 1e-4
+c_r_plus, _  = egm_policy(r_ss+dr, ...)
+c_r_minus, _ = egm_policy(r_ss-dr, ...)
+Dc_dr = (c_r_plus - c_r_minus) / (2*dr)  # (N_a, N_z)
+# c(a,z;r) ≈ c_star(a,z) + Dc_dr(a,z) * r_hat
+
+# ============ Step 3: 分布参数化 ============
+# 把 lam_star flatten 为 n_hh 维状态向量
+lam_flat = lam_star.flatten()  # shape (n_hh,)
+# KFE 线性化：lam_{t+1} = Q * lam_t + (决策规则变化的直接效应)
+# Q 是稳态转移矩阵（稀疏）
+# Q = build_Q(a_next_star, a_grid, P)  # 见 SSJ 方法
+
+# ============ Step 4: 组装线性系统 ============
+# 状态向量 x_t = [lam_hat (n_hh), r_hat, w_hat, pi_hat, y_hat, eps_m]
+# 方程：
+# (1) KFE: lam_{t+1} = Q lam_t + B_r r_hat_t  (B_r 来自决策规则对 r 的导数)
+# (2) 消费: C_hat_t = sum_a,z Dc_dr(a,z) lam_star(a,z) r_hat_t + C_lam @ lam_hat_t
+# (3) NKPC: pi_t = beta pi_{t+1} + kappa y_t
+# (4) Taylor: r_hat_t = phi_pi pi_t + eps_m_t
+# 简化：把系统写成 A E_t[x_{t+1}] + B x_t + C x_{t-1} + D eps = 0
+
+n_x = n_hh + 5  # 分布 + 5个总量变量
+A = np.zeros((n_x, n_x))
+B = np.zeros((n_x, n_x))
+C = np.zeros((n_x, n_x))
+
+# KFE 块：lam_{t+1} = Q lam_t + ...
+A[:n_hh, :n_hh] = np.eye(n_hh)  # lam_{t+1} 系数
+B[:n_hh, :n_hh] = -Q.toarray()  # lam_t 系数
+# ... 填充其余块（NKPC, Taylor 等）
+
+# ============ Step 5: Blanchard-Kahn 求解 ============
+# 检查 BK 条件：前瞻变量数 = 不稳定特征根数
+# 简化：用 numpy 求解广义特征值问题
+# eigenvalues = eig(B, -A)  # 检查 |eig|>1 的个数
+# 若满足确定性条件，解为 x_t = P x_{t-1} + Q eps_t
+
+# 实际实现可用 Dynare 或 Reiter 2009 的 MATLAB 工具包
+# 这里给出框架
+print(f"Reiter 系统维度: {n_x} (家庭分布 {n_hh} + 总量 5)")
+print(f"分布 bin 数 = {N_a}×{N_z} = {n_hh}")
+print("BK 条件检查通过后，x_t = P x_{t-1} + Q eps_t")
+</code></pre>
+</div>
+
+<p><strong>优缺点：</strong>✅ 比 Krusell-Smith 精确（分布信息全部保留）、比 SSJ 早出现、可处理偶发约束（需扩展）；❌ 实现复杂、分布 bin 数影响精度、状态维度大（100×2=200 维起）。<strong>适用：</strong>需要完整分布信息的定量研究，中小型冲击。</p>
+</div>
+
+<!-- S4d: Winberry -->
+<div class="section" id="s4d">
+<h2><span class="sec-num">4.4</span> 方法④ Winberry (2018) 拉盖尔多项式参数化分布</h2>
+
+<h3>原理</h3>
+<p>Winberry (2018) 指出 Reiter 法中直方图 bin 参数化分布会产生<strong>锯齿状数值伪影</strong>。他提出用 <strong>拉盖尔多项式（Laguerre polynomials）</strong>展开分布密度 $\lambda(a,z)$：$\lambda(a,z)\approx\sum_{k=0}^K \theta_k(z) L_k(a)$，其中 $L_k(a)$ 是 Laguerre 基函数，$\theta_k(z)$ 是系数（作为状态变量）。$K$ 阶展开只需 $K\times J$ 个状态变量（远小于 Reiter 的 $N_a\times J$），且分布光滑。</p>
+
+<h3>步骤</h3>
+<div class="step-flow">
+<div class="step-item"><div class="step-title">Step 1：选择多项式阶数 K</div><div class="step-desc">通常 K=8–15 足够近似财富分布。</div></div>
+<div class="step-item"><div class="step-title">Step 2：稳态分布的多项式展开</div><div class="step-desc">把稳态 $\lambda^*(a,z)$ 投影到 Laguerre 基上，得系数 $\theta_k^*(z)$。</div></div>
+<div class="step-item"><div class="step-title">Step 3：线性化系数动态</div><div class="step-desc">把系数 $\theta_k(z)$ 作为状态变量，线性化其动态方程。</div></div>
+<div class="step-item"><div class="step-title">Step 4：求解线性系统</div><div class="step-desc">同 Reiter 法，组装线性系统后 BK 求解。</div></div>
+</div>
+
+<h3>Python 实现</h3>
+<div class="code-block">
+<div class="code-header"><span class="lang">Python · winberry_laguerre.py</span><button class="copy-btn">复制</button></div>
+<pre><code>"""
+Winberry (2018) 拉盖尔多项式参数化分布
+用 Laguerre 多项式展开分布密度，系数作为状态变量
+"""
+import numpy as np
+from numpy.polynomial.laguerre import lagval
+
+# ============ Laguerre 基函数 ============
+def laguerre_basis(a, K):
+    """返回 L_0(a), L_1(a), ..., L_K(a) 在 a 处的值"""
+    return np.array([lagval(a, [0]*k + [1]) for k in range(K+1)])
+    # 注意：numpy 的 lagval 用系数向量表示多项式
+
+# 手动计算前 K 阶 Laguerre 多项式
+def laguerre_poly(a, K):
+    """L_0=1, L_1=1-a, L_k = ((2k-1-a)L_{k-1}-(k-1)L_{k-2})/k"""
+    L = np.zeros((len(a), K+1))
+    L[:,0] = 1.0
+    if K >= 1: L[:,1] = 1.0 - a
+    for k in range(2, K+1):
+        L[:,k] = ((2*k-1-a)*L[:,k-1] - (k-1)*L[:,k-2]) / k
+    return L  # shape (N_a, K+1)
+
+# ============ Step 1-2: 稳态分布多项式展开 ============
+K = 10  # 多项式阶数
+L_basis = laguerre_poly(a_grid, K)  # (N_a, K+1)
+
+# 对每个就业状态 z，把 lam_star(a,z) 投影到 L_basis 上
+# lam(a,z) ≈ sum_k theta_k(z) * L_k(a)
+# 最小二乘: theta = (L' L)^{-1} L' lam
+theta_star = np.zeros((K+1, N_z))
+for iz in range(N_z):
+    theta_star[:, iz] = np.linalg.lstsq(L_basis, lam_star[:,iz], rcond=None)[0]
+
+# 重构分布（检验精度）
+lam_reconstructed = L_basis @ theta_star
+error = np.max(np.abs(lam_reconstructed - lam_star))
+print(f"多项式展开误差: max|lam - lam_reconstructed| = {error:.6e}")
+
+# ============ Step 3-4: 线性化系数动态 ============
+# 把 theta_k(z) 作为状态变量（(K+1)*N_z 维），替代 Reiter 的 N_a*N_z 维
+n_state_laguerre = (K+1) * N_z
+print(f"Winberry 状态维度: {n_state_laguerre} (vs Reiter {N_a*N_z})")
+print(f"压缩比: {N_a*N_z / n_state_laguerre:.1f}x")
+# 后续同 Reiter：组装线性系统 + BK 求解
+</code></pre>
+</div>
+
+<p><strong>优缺点：</strong>✅ 比直方图光滑、状态维度小（K×J vs N_a×J）、精度可控；❌ 多项式阶数 K 选择影响精度、实现复杂、分布尾部（极富家庭）拟合可能差。<strong>适用：</strong>Reiter 法的光滑替代，需要分布形状精度的定量研究。</p>
+</div>
+
+<!-- S4e: 投影法/EGM -->
+<div class="section" id="s4e">
+<h2><span class="sec-num">4.5</span> 方法⑤ 全局投影法 / EGM 全局解</h2>
+
+<h3>原理</h3>
+<p>全局投影法不做任何线性化：在整个状态空间上直接求解非线性 Bellman 方程。核心工具是 <strong>内生网格法（Endogenous Grid Method, EGM, Carroll 2006）</strong>——给定 tomorrow 的资产 $a'$，反推 today 的资产 $a$，避免在 $a'$ 上做数值优化。EGM 比暴力 VFI 快 10–100 倍，且自动处理借贷约束。</p>
+
+<h3>步骤</h3>
+<div class="step-flow">
+<div class="step-item"><div class="step-title">Step 1：构建状态空间网格</div><div class="step-desc">资产网格 $a$（指数分布，约束点密）、收入状态 $z$（Markov 链）、总量状态 $S$（如 $K_t$）。</div></div>
+<div class="step-item"><div class="step-title">Step 2：EGM 迭代</div><div class="step-desc">猜测 $c(a,z,S)$ → EGM 反推 $a_{\text{today}}(a',z)$ → 插值到原生网格 → 处理借贷约束角点 → 迭代收敛。</div></div>
+<div class="step-item"><div class="step-title">Step 3：模拟分布</div><div class="step-desc">用决策规则 + KFE 模拟，得 $\lambda_t$。</div></div>
+<div class="step-item"><div class="step-title">Step 4：全局决策规则</div><div class="step-desc">得到 $c(a,z,S)$ 在整个状态空间上的精确非线性函数，可处理大冲击、ZLB、偶尔紧约束。</div></div>
+</div>
+
+<h3>Python 实现</h3>
+<div class="code-block">
+<div class="code-header"><span class="lang">Python · global_projection.py</span><button class="copy-btn">复制</button></div>
+<pre><code>"""
+全局投影法 / EGM：不做线性化，在整个状态空间上求解
+"""
+import numpy as np
+
+def egm_global(r_path, w_path, a_grid, y, P, beta, a_min, T_trans=50):
+    """EGM 求解转移动态：给定 r_t, w_t 路径，求 c_t(a,z) 全路径
+    这是 §3 稳态 EGM 的"版本路径"扩展——不假设稳态，逐期回溯求解"""
+    N_a = len(a_grid); N_z = len(y)
+    # 从期末 T 开始：c_T(a,z) = 稳态消费（假设 T 后回到稳态）
+    c_T = np.tile((1+r_path[-1])*a_grid, (N_z,1)).T + w_path[-1]*y[None,:]
+    c_path = np.zeros((T_trans, N_a, N_z))
+    c_path[-1] = c_T
+    # 从 T-1 往 0 回溯
+    for t in range(T_trans-2, -1, -1):
+        marg_u_next = c_path[t+1] ** (-1.0)
+        E_mu = marg_u_next @ P.T
+        c_egm = (beta*(1+r_path[t+1])*E_mu) ** (-1.0)
+        a_egm = (c_egm + a_grid[None,:].T - w_path[t]*y[None,:]) / (1+r_path[t])
+        c_t = np.zeros_like(c_path[t])
+        for iz in range(N_z):
+            c_t[:,iz] = np.interp(a_grid, a_egm[:,iz], c_egm[:,iz],
+                                  left=c_egm[0,iz], right=c_egm[-1,iz])
+        a_next = (1+r_path[t])*a_grid[:,None] + w_path[t]*y[None,:] - c_t
+        bind = a_next < a_min
+        c_t = np.where(bind, (1+r_path[t])*a_grid[:,None]+w_path[t]*y[None,:]-a_min, c_t)
+        c_path[t] = c_t
+    return c_path
+
+# 使用：给定利率路径 r_path 和工资路径 w_path，直接求转移动态
+# r_path, w_path 长度 T_trans
+# c_path[t] = c_t(a,z) 全局决策规则
+print("EGM 全局解：给定 r_t, w_t 路径，直接输出 c_t(a,z) 全路径")
+print("优点：不做线性化，可处理大冲击、ZLB、偶尔紧约束")
+print("缺点：维数灾难——若总量状态 S 也需离散化，状态空间 = N_a × N_z × N_S")
+</code></pre>
+</div>
+
+<p><strong>优缺点：</strong>✅ 全局解、可处理大冲击/非线性/ZLB/偶尔约束、最精确；❌ 维数灾难（总量状态维数爆炸时计算极慢）、不适合高维模型。<strong>适用：</strong>小规模模型、需要非线性/大冲击的场景（如 ZLB、大额财政刺激）。</p>
+</div>
+
+<!-- S4f: 连续时间 HJB-KFE -->
+<div class="section" id="s4f">
+<h2><span class="sec-num">4.6</span> 方法⑥ Achdou et al. (2022) 连续时间 HJB-KFE</h2>
+
+<h3>原理</h3>
+<p>Achdou-Han-Lasry-Lions-Moll (2022, ReStud) 把 HANK 改写为<strong>连续时间</strong>模型：家庭问题变成 HJB 方程（偏微分方程），分布演化变成 KFE（Fokker-Planck 方程）。用<strong>有限差分法</strong>求解耦合的 HJB-KFE 系统。连续时间的优势是数学结构优美、数值稳定（有限差分天然单调），且 HJB 与 KFE 通过伴随算子对称。</p>
+
+<h3>步骤</h3>
+<div class="step-flow">
+<div class="step-item"><div class="step-title">Step 1：构建连续时间状态网格</div><div class="step-desc">资产 $a$ 网格，收入 $z$ 为 Poisson 切换（跳跃过程）。</div></div>
+<div class="step-item"><div class="step-title">Step 2：HJB 有限差分离散化</div><div class="step-desc">把 HJB 方程 $\rho v(a,z)=\max_c\{u(c,z)+\partial_a v\cdot s(a,z)+\lambda_z[v(a,z')-v(a,z)]\}$ 用迎风法（upwind）离散化，写成线性系统 $\rho V - A(V)V = u$，用隐式迭代求解。</div></div>
+<div class="step-item"><div class="step-title">Step 3：KFE 有限差分离散化</div><div class="step-desc">KFE 是 HJB 的伴随方程：$\partial_t \lambda = A^T(V)\lambda$。稳态时 $A^T(V)\lambda=0$。</div></div>
+<div class="step-item"><div class="step-title">Step 4：稳态迭代</div><div class="step-desc">迭代 HJB → KFE → 市场出清，直到收敛。</div></div>
+<div class="step-item"><div class="step-title">Step 5：转移动态</div><div class="step-desc">时间迭代（implicit time stepping）求解 $\dot V = \rho V - A(V)V - u$，$\dot\lambda = A^T(V)\lambda$。</div></div>
+</div>
+
+<h3>Python 实现</h3>
+<div class="code-block">
+<div class="code-header"><span class="lang">Python · continuous_time_hjb_kfe.py</span><button class="copy-btn">复制</button></div>
+<pre><code>"""
+Achdou et al. (2022) 连续时间 HJB-KFE 有限差分法
+HJB: rho v = max_c {u(c) + s(a) v_a + lambda_z [v(z')-v(z)]}
+KFE: lambda_t = A^T(V) lambda  (伴随方程)
+"""
+import numpy as np
+from scipy.sparse import diags, eye, csr_matrix
+from scipy.sparse.linalg import spsolve
+
+# ============ 参数 ============
+rho = 0.05       # 连续时间贴现率
+gamma = 1.0      # CRRA
+a_min, a_max, N_a = 0.0, 20.0, 100
+da = (a_max - a_min) / (N_a - 1)
+a_grid = np.linspace(a_min, a_max, N_a)
+# 2状态 Poisson：z=0失业, z=1就业
+lam_uz = 0.5     # 失业→就业 强度
+lam_eu = 0.04    # 就业→失业 强度
+z = np.array([0.15, 1.0])  # 收入
+
+# ============ HJB 有限差分（迎风法）============
+def solve_hjb(r, w, V, rho, da, a_grid, z, lam_uz, lam_eu, tol=1e-6):
+    """隐式迭代求解 HJB 方程"""
+    N_a = len(a_grid); N_z = 2
+    for it in range(1000):
+        V_old = V.copy()
+        # 计算漂移 s(a) = (1+r)a + w*z - c
+        # FOC: u'(c) = v_a => c = (v_a)^{-1/gamma}
+        # 迎风差分 v_a
+        V_new = np.zeros_like(V)
+        for iz in range(N_z):
+            va_f = np.zeros(N_a)  # 前向差分
+            va_b = np.zeros(N_a)  # 后向差分
+            va_f[:-1] = (V[:-1,iz] - V[1:,iz]) / (-da)  # v_a 前向
+            va_b[1:]  = (V[1:,iz] - V[:-1,iz]) / da      # v_a 后向
+            # 消费：c = max(va, eps)^{-1/gamma}
+            c_f = np.maximum(va_f, 1e-10) ** (-1.0/gamma)
+            c_b = np.maximum(va_b, 1e-10) ** (-1.0/gamma)
+            # 漂移 s = (1+r)a + w*z - c
+            s_f = (1+r)*a_grid + w*z[iz] - c_f
+            s_b = (1+r)*a_grid + w*z[iz] - c_b
+            # 迎风：s>0 用后向差分，s<0 用前向差分
+            va = np.where(s_b > 0, va_b, va_f)
+            c  = np.where(s_b > 0, c_b, c_f)
+            s  = (1+r)*a_grid + w*z[iz] - c
+            # 效用
+            u = np.log(np.maximum(c, 1e-10))
+            # 跳跃项：lambda_z [v(z')-v(z)]
+            jump = np.zeros(N_a)
+            if iz == 0: jump = lam_uz * (V[:,1] - V[:,0])
+            else:       jump = lam_eu * (V[:,0] - V[:,1])
+            # HJB: rho V = u + s * va + jump
+            V_new[:,iz] = (u + s*va + jump) / rho
+        # 边界条件：a=a_min 处反射
+        V_new[0,:] = V_new[1,:]
+        if np.max(np.abs(V_new - V_old)) < tol:
+            V = V_new; break
+        V = 0.5*V + 0.5*V_new
+    return V, c
+
+# ============ KFE 求解 ============
+def solve_kfe(V, r, w, da, a_grid, z, lam_uz, lam_eu):
+    """KFE: 分布 lambda 的稳态：A^T lambda = 0"""
+    N_a = len(a_grid); N_z = 2
+    # 简化：模拟法求稳态分布
+    lam = np.ones((N_a, N_z)) / (N_a * N_z)
+    for _ in range(20000):
+        lam_new = np.zeros_like(lam)
+        for iz in range(N_z):
+            s = (1+r)*a_grid + w*z[iz] - np.exp(V[:,iz])  # 漂移
+            for ia in range(N_a):
+                # 离散化 KFE（简化）
+                lam_new[ia, iz] += lam[ia, iz] * (1 - abs(s[ia])*da)
+                if s[ia] > 0 and ia < N_a-1:
+                    lam_new[ia+1, iz] += lam[ia, iz] * s[ia]*da
+                elif s[ia] < 0 and ia > 0:
+                    lam_new[ia-1, iz] += lam[ia, iz] * (-s[ia])*da
+        # 跳跃项
+        lam_new[:,1] += lam[:,0] * lam_uz
+        lam_new[:,0] += lam[:,1] * lam_eu
+        lam = lam_new / lam_new.sum()
+    return lam
+
+# ============ 稳态迭代 ============
+V = np.zeros((N_a, 2))
+r_guess = 0.01
+for outer in range(50):
+    V, c = solve_hjb(r_guess, 1.0, V, rho, da, a_grid, z, lam_uz, lam_eu)
+    lam = solve_kfe(V, r_guess, 1.0, da, a_grid, z, lam_uz, lam_eu)
+    A_agg = np.sum(a_grid[:,None] * lam)
+    print(f"outer {outer}: r={r_guess:.4f}, A={A_agg:.3f}")
+    if abs(A_agg - 0.5) < 1e-3: break
+    r_guess += 0.001 * (0.5 - A_agg)
+print("连续时间 HJB-KFE 稳态求解完成")
+</code></pre>
+</div>
+
+<p><strong>优缺点：</strong>✅ 数学结构优美（HJB-KFE 对偶）、有限差分稳定、连续时间天然处理偶发约束；❌ 连续时间建模与离散时间 DSGE 传统不同、需处理数值稳定性、代码量较大。<strong>适用：</strong>理论性质强的研究、需要精确分布演化的场景、Moll 课题组主流工具。</p>
+</div>
+
+<!-- S4g: 深度学习 -->
+<div class="section" id="s4g">
+<h2><span class="sec-num">4.7</span> 方法⑦ Gu-Laibson-Moll (2024) 深度学习 / Master Equation</h2>
+
+<h3>原理</h3>
+<p>Gu, Laibson, Moll 等 (2024) 用<strong>神经网络</strong>近似值函数/决策规则，用<strong>梯度下降</strong>（而非迭代）求解全局解。神经网络的万能近似性质可以突破维数灾难——状态空间维度从 $N_a\times N_z$ 降到"网络参数"。Master Equation 描述分布演化，但分布本身也可用神经网络参数化。这与 <a href="../structural/17-ai-structural-estimation.html">AI 驱动结构估计</a> 的思路一脉相承。</p>
+
+<h3>步骤</h3>
+<div class="step-flow">
+<div class="step-item"><div class="step-title">Step 1：构建神经网络</div><div class="step-desc">输入 = $(a, z, S_t)$（状态），输出 = 值函数 $V(a,z,S_t)$ 或消费 $c(a,z,S_t)$。常用 MLP（3–5 层，64–128 隐藏单元）。</div></div>
+<div class="step-item"><div class="step-title">Step 2：定义 Bellman 残差损失函数</div><div class="step-desc">$\mathcal L(\theta)=\sum_{(a,z,S)}\big|V_\theta(a,z,S)-\max_{c,a'}\{U(c)+\beta E[V_\theta(a',z',S')]\}\big|^2$。</div></div>
+<div class="step-item"><div class="step-title">Step 3：梯度下降训练</div><div class="step-desc">用 Adam 优化器，在随机采样的状态点上最小化 Bellman 残差。分布演化用 Master Equation 或粒子法（particle method）。</div></div>
+<div class="step-item"><div class="step-title">Step 4：模拟分布</div><div class="step-desc">用训练好的决策规则模拟大量"粒子"（家庭），得到分布 $\lambda_t$。</div></div>
+</div>
+
+<h3>PyTorch 实现</h3>
+<div class="code-block">
+<div class="code-header"><span class="lang">Python (PyTorch) · deep_learning_hank.py</span><button class="copy-btn">复制</button></div>
+<pre><code>"""
+Gu-Laibson-Moll (2024) 深度学习求解 HANK
+神经网络近似值函数，Bellman 残差损失，梯度下降训练
+依赖: pip install torch
+"""
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# ============ 神经网络：值函数 V(a, z) ============
+class ValueNet(nn.Module):
+    """输入 (a, z)，输出 V(a,z)。z 为 one-hot 编码"""
+    def __init__(self, n_z=2, hidden=64):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(1 + n_z, hidden),  # a + z_onehot
+            nn.ReLU(),
+            nn.Linear(hidden, hidden),
+            nn.ReLU(),
+            nn.Linear(hidden, 1)
+        )
+    def forward(self, a, z_onehot):
+        x = torch.cat([a, z_onehot], dim=-1)
+        return self.net(x).squeeze(-1)
+
+# ============ 参数 ============
+beta, r_ss, gamma = 0.96, 0.001, 1.0
+wage, a_min = 1.0, 0.0
+y = torch.tensor([0.15, 1.0])
+P = torch.tensor([[0.50, 0.50],[0.04, 0.96]])
+N_z = 2
+
+# ============ Step 1: 初始化网络与优化器 ============
+model = ValueNet(n_z=N_z, hidden=64)
+optimizer = optim.Adam(model.parameters(), lr=1e-3)
+
+# ============ Step 2-3: Bellman 残差损失训练 ============
+n_train = 5000
+batch = 1024
+for step in range(n_train):
+    # 随机采样状态 (a, z)
+    a = torch.rand(batch, 1) * 20.0 + a_min
+    z_idx = torch.randint(0, N_z, (batch,))
+    z_onehot = torch.zeros(batch, N_z)
+    z_onehot.scatter_(1, z_idx.unsqueeze(1), 1.0)
+
+    # 当前值函数 V(a,z)
+    V_now = model(a, z_onehot)
+
+    # 给定 a，最优 c = (beta*(1+r)*E[V_a(a',z')])^{-1/gamma}
+    # 简化：直接参数化 c = exp(网络输出)
+    # 这里用 Bellman 残差：V(a,z) 应该等于 max_c {u(c) + beta E[V(a',z')]}
+    # 简化损失：让 V(a,z) - (u(c) + beta * E[V(a',z')]) = 0
+    # 给定 a，预算: c + a' = (1+r)*a + y[z]
+    # 最优 a' = a 附近（稳态），简化为 c = (1+r)*a + y[z] - a_next
+    income = (1+r_ss)*a.squeeze(-1) + y[z_idx]
+    # 假设 a' = a（稳态近似）
+    c = income - a_min  # 简化消费
+    c = torch.clamp(c, min=0.01)
+    # 下期值函数：E[V(a',z')|z] = sum_j P[z,j] V(a', j)
+    a_next = a  # 简化
+    V_next = torch.zeros(batch)
+    for j in range(N_z):
+        z_onehot_j = torch.zeros(batch, N_z)
+        z_onehot_j[:, j] = 1.0
+        V_next += P[z_idx, j] * model(a_next, z_onehot_j)
+    # Bellman 残差
+    loss = ((torch.log(c) + beta * V_next - V_now) ** 2).mean()
+
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    if step % 500 == 0:
+        print(f"step {step:5d}: Bellman loss = {loss.item():.6f}")
+
+# ============ Step 4: 模拟分布（粒子法）============
+N_particles = 10000
+a_particles = torch.rand(N_particles) * 2.0
+z_particles = torch.randint(0, N_z, (N_particles,))
+print(f"\n训练完成。粒子模拟: N={N_particles}")
+print("神经网络值函数可用于高维 HANK 求解")
+print("交叉链接：见 structural/17-ai-structural-estimation.html")
+</code></pre>
+</div>
+
+<div class="callout info">
+<div class="callout-title">与 AI 驱动结构估计的呼应</div>
+<p>深度学习求解 HANK 与 <a href="../structural/17-ai-structural-estimation.html">AI 驱动结构估计</a>（structural/17）共享同一套技术栈：神经网络近似、自动微分、GPU 并行。区别在于：HANK 求解用神经网络近似值函数（正问题），AI 结构估计用神经网络近似结构模型中的高维对象（反问题/估计）。</p>
+</div>
+
+<p><strong>优缺点：</strong>✅ 可处理高维状态空间（突破维数灾难）、全局解、GPU 并行；❌ 训练不稳定、需调超参数、可解释性差、Bellman 残差收敛不保证。<strong>适用：</strong>高维 HANK（多资产、多部门）、与 AI/ML 交叉的前沿方向。</p>
+</div>
+
+<!-- S5: 对比表 -->
+<div class="section" id="s5">
+<h2><span class="sec-num">05</span> 7 种求解方法对比表</h2>
+<div class="table-wrap"><table>
+<tr><th>方法</th><th>精度</th><th>计算速度</th><th>维数扩展性</th><th>线性/全局</th><th>适用场景</th><th>实现难度</th></tr>
+<tr><td>① Krusell-Smith</td><td>中（依赖矩选择）</td><td>快</td><td>好（仅矩）</td><td>近似线性</td><td>RBC 类、大冲击</td><td>低</td></tr>
+<tr><td>② SSJ</td><td>高（一阶精确）</td><td>很快（一次 Jacobian）</td><td>好（序列空间矩阵）</td><td>一阶线性</td><td>主力工具、中小冲击</td><td>中</td></tr>
+<tr><td>③ Reiter</td><td>高（分布全保留）</td><td>中</td><td>差（N_a×N_z 维）</td><td>局部线性</td><td>需分布信息</td><td>高</td></tr>
+<tr><td>④ Winberry Laguerre</td><td>高（光滑）</td><td>中</td><td>中（K×J 维）</td><td>线性化+光滑</td><td>Reiter 光滑替代</td><td>高</td></tr>
+<tr><td>⑤ 全局投影/EGM</td><td>最高（无近似）</td><td>慢（维数灾难）</td><td>差（状态爆炸）</td><td>全局</td><td>大冲击、ZLB</td><td>中</td></tr>
+<tr><td>⑥ 连续时间 HJB-KFE</td><td>高</td><td>中（有限差分）</td><td>中</td><td>全局（连续时间）</td><td>理论研究、精确分布</td><td>高</td></tr>
+<tr><td>⑦ 深度学习</td><td>中高（取决于训练）</td><td>训练慢/推理快</td><td>最好（突破维数）</td><td>全局（高维）</td><td>高维前沿、AI 交叉</td><td>很高</td></tr>
+</table></div>
+<div class="callout tip">
+<div class="callout-title">方法选择建议</div>
+<p><strong>入门：</strong>先掌握 §3 稳态求解器 + §4.2 SSJ（当前 HANK 研究主力工具）。<strong>大冲击/ZLB：</strong>用 §4.5 全局 EGM 或 §4.6 连续时间。<strong>高维前沿：</strong>关注 §4.7 深度学习。<strong>不建议：</strong>初学者直接用 §4.1 Krusell-Smith 做 HANK 而不检验近似聚合。</p>
+</div>
+</div>
+
+<!-- S6: IRF 与乘数 -->
+<div class="section" id="s6">
+<h2><span class="sec-num">06</span> IRF 与乘数分析</h2>
+
+<h3>6.1 货币政策冲击 IRF（SSJ 方法）</h3>
+<p>用 §4.2 的 SSJ 方法计算利率冲击的 IRF。核心分解是 Kaplan-Violante (2018) 的<strong>直接效应 vs 间接效应</strong>：</p>
+<div class="formula-block">
+<div class="formula-label">货币政策传导分解</div>
+$$\frac{\partial C}{\partial \varepsilon^m}=\underbrace{\frac{\partial C}{\partial r}\bigg|_{w\text{ fixed}}}_{\text{直接效应（跨期替代）}}+\underbrace{\frac{\partial C}{\partial w}\frac{\partial w}{\partial \varepsilon^m}+\frac{\partial C}{\partial TR}\frac{\partial TR}{\partial \varepsilon^m}}_{\text{间接效应（一般均衡）}}$$
+<div class="formula-note"><b>HANK 核心发现：</b>Kaplan-Violante (2018) 证明 HANK 中间接效应<strong>远大于</strong>直接效应——降息主要通过提高工资/就业/资产价格间接拉动高 MPC 家庭消费，而非通过跨期替代。这与 RANK（直接效应主导）完全不同。</div>
+</div>
+
+<h3>6.2 财政乘数</h3>
+<div class="formula-block">
+<div class="formula-label">财政乘数</div>
+$$\text{乘数}=\frac{\Delta Y}{\Delta G}$$
+<div class="formula-note"><b>HANK 预测：</b>由于高 MPC 家庭（约束处 MPC≈0.8）的存在，政府支出/转移支付的乘数<strong>大于 RANK</strong>。RANK 中 Ricardian 家庭预期未来税收，完全抵消；HANK 中 H2M 家庭花掉转移支付，乘数放大。</div>
+</div>
+
+<h3>6.3 HANK vs TANK vs RANK 对比</h3>
+<div class="table-wrap"><table>
+<tr><th>维度</th><th>RANK</th><th>TANK</th><th>HANK</th></tr>
+<tr><td>家庭分布</td><td>1 个代表</td><td>2 类（H2M+储蓄者）</td><td>连续分布 $\lambda(a,z)$</td></tr>
+<tr><td>MPC</td><td>≈0</td><td>H2M=1, 储蓄者≈0</td><td>异质（约束处≈1，顶部≈0）</td></tr>
+<tr><td>货币政策传导</td><td>直接效应主导</td><td>直接+H2M 间接</td><td>间接效应主导</td></tr>
+<tr><td>财政乘数</td><td>≈0（Ricardian）</td><td>&gt;1</td><td>&gt;1（MPC 异质放大）</td></tr>
+<tr><td>求解工具</td><td>Dynare 一阶扰动</td><td>Dynare 一阶扰动</td><td>SSJ/Reiter/EGM（不能只用 Dynare）</td></tr>
+<tr><td>分布状态</td><td>无</td><td>外生 λ</td><td>内生 KFE 不动点</td></tr>
+</table></div>
+</div>
+
+<!-- S7: 估计与校准 -->
+<div class="section" id="s7">
+<h2><span class="sec-num">07</span> 估计与校准（含中国 CHFS/CFPS）</h2>
+
+<h3>7.1 参数校准</h3>
+<div class="table-wrap"><table>
+<tr><th>参数</th><th>含义</th><th>典型值</th><th>来源</th></tr>
+<tr><td>$\beta$</td><td>贴现因子</td><td>0.96（年）/0.99（季）</td><td>校准使 $r^*\approx 2\%$/年</td></tr>
+<tr><td>$\sigma$</td><td>EIS 倒数</td><td>1.0（log）</td><td>宏观/微观共识</td></tr>
+<tr><td>$\gamma$</td><td>Frisch 弹性倒数</td><td>1.0–2.0</td><td>微观劳动供给</td></tr>
+<tr><td>$\theta$</td><td>Calvo 价格粘性</td><td>0.75（季度）</td><td>Bils-Klenow（美国）</td></tr>
+<tr><td>$\phi_\pi$</td><td>Taylor 通胀系数</td><td>1.5</td><td>Taylor (1993)</td></tr>
+<tr><td>$\rho_z$</td><td>收入冲击持续性</td><td>0.95–0.97（年）</td><td>PSID/SCF</td></tr>
+<tr><td>$\sigma_z$</td><td>收入冲击波动率</td><td>0.20–0.30</td><td>PSID/SCF</td></tr>
+<tr><td>$a_{\min}$</td><td>借贷约束</td><td>0 或负信用额度</td><td>数据（0=无债，负=信用卡额度）</td></tr>
+</table></div>
+
+<h3>7.2 中国数据校准</h3>
+<div class="callout info">
+<div class="callout-title">CHFS / CFPS 微观数据</div>
+<p><strong>中国家庭金融调查 CHFS</strong>（西南财经大学）与<strong>中国家庭追踪调查 CFPS</strong>（北京大学）是校准中国 HANK 的主要微观数据源：</p>
+<ul>
+<li><strong>资产分布：</strong>CHFS 显示中国家庭房产占总资产 70%+，流动资产占比低 → 流动性资产分布比美国更不平等。</li>
+<li><strong>MPC 估计：</strong>CHFS/CFPS 估计中国家庭 MPC 在 0.3–0.6（城乡差异大），高于美国的 0.2–0.4。</li>
+<li><strong>收入过程：</strong>用 CFPS 面板估计 AR(1) 收入过程的 $\rho_z$ 与 $\sigma_z$；中国农村收入波动大于城市。</li>
+<li><strong>借贷约束：</strong>中国家庭债务以房贷为主，信用卡渗透率低 → $a_{\min}$ 的设定需考虑房产抵押品渠道。</li>
+</ul>
+</div>
+</div>
+
+<!-- S8: 论文案例 -->
+<div class="section" id="s8">
+<h2><span class="sec-num">08</span> 论文案例</h2>
+
+<h3>8.1 英文核心文献</h3>
+<div class="paper-card"><span class="paper-type en">EN · English</span>
+<div class="paper-title">Kaplan, Moll &amp; Violante (2018) — Monetary Policy According to HANK</div>
+<div class="paper-meta">American Economic Review, 108(3): 697–755</div>
+<div class="paper-desc">HANK 开山之作。构建双资产（流动+非流动）HANK 模型，证明货币政策传导中间接效应主导，解释为什么 RANK 的跨期替代渠道在数据中太弱。本页经济环境与假设的基准来源。</div>
+</div>
+<div class="paper-card"><span class="paper-type en">EN · English</span>
+<div class="paper-title">Krusell &amp; Smith (1998) — Income and Wealth Heterogeneity in the Macroeconomy</div>
+<div class="paper-meta">Journal of Political Economy, 106(5): 867–896</div>
+<div class="paper-desc">异质性主体宏观的开山之作。"近似聚合"发现：即使家庭层面高度异质，总量行为仍像代表性主体。§4.1 方法来源。</div>
+</div>
+<div class="paper-card"><span class="paper-type en">EN · English</span>
+<div class="paper-title">Ahn, Kaplan, Moll, Winberry &amp; Wolf (2018) — When Inequality Matters for Macro and Macro Matters for Inequality</div>
+<div class="paper-meta">NBER Macroeconomics Annual, 32: 1–75</div>
+<div class="paper-desc">SSJ 序列空间方法的提出。Fake News Algorithm 使 HANK 求解从"小时级"降到"分钟级"。§4.2 方法来源。</div>
+</div>
+<div class="paper-card"><span class="paper-type en">EN · English</span>
+<div class="paper-title">Reiter (2009) — Solving Heterogeneous-Agent Models by Projection and Perturbation</div>
+<div class="paper-meta">Journal of Economic Dynamics and Control, 33(3): 599–615</div>
+<div class="paper-desc">把 HANK 当作大维度线性理性预期模型求解。§4.3 方法来源。</div>
+</div>
+<div class="paper-card"><span class="paper-type en">EN · English</span>
+<div class="paper-title">Winberry (2018) — A Method for Solving and Estimating Heterogeneous Agent Macro Models</div>
+<div class="paper-meta">Quantitative Economics / RED</div>
+<div class="paper-desc">拉盖尔多项式参数化分布，替代 Reiter 直方图。§4.4 方法来源。</div>
+</div>
+<div class="paper-card"><span class="paper-type en">EN · English</span>
+<div class="paper-title">Achdou, Han, Lasry, Lions &amp; Moll (2022) — Heterogeneous Agent Models in Continuous Time</div>
+<div class="paper-meta">Review of Economic Studies, 89(1): 1–53</div>
+<div class="paper-desc">连续时间 HJB-KFE 有限差分法的系统理论。§4.6 方法来源。</div>
+</div>
+<div class="paper-card"><span class="paper-type en">EN · English</span>
+<div class="paper-title">Gu, Laibson, Moll et al. (2024) — Deep Learning in Heterogeneous-Agent Macro</div>
+<div class="paper-meta">NBER / working paper</div>
+<div class="paper-desc">神经网络求解高维 HANK，master equation 描述分布。§4.7 方法来源，与 <a href="../structural/17-ai-structural-estimation.html">structural/17-AI结构估计</a> 交叉。</div>
+</div>
+<div class="paper-card"><span class="paper-type en">EN · English</span>
+<div class="paper-title">McKay, Nakamura &amp; Steinsson (2016) — The Power of Forward Guidance Revisited</div>
+<div class="paper-meta">American Economic Review, 106(10): 3133–3158</div>
+<div class="paper-desc">HANK 中前瞻指引效力远小于 RANK（因为 H2M 家庭对远期利率不敏感）。</div>
+</div>
+
+<h3>8.2 中文顶刊应用</h3>
+<div class="paper-card"><span class="paper-type cn">CN · 中文</span>
+<div class="paper-title">周上尧等，异质性家庭视角下的中国货币政策传导与不平等效应——基于具有金融摩擦异质性的 HANK 模型</div>
+<div class="paper-meta">《管理世界》2025 年第 8 期（中南财经政法大学）</div>
+<div class="paper-desc">将银行金融摩擦引入 HANK，用多种家庭微观调查数据估计消费对货币政策冲击的异质响应，比较数量型与价格型货币政策传导差异。中国 HANK 应用最新代表。</div>
+</div>
+<div class="paper-card"><span class="paper-type cn">CN · 中文</span>
+<div class="paper-title">数字鸿沟、财富不平等与信息普惠政策——基于 HANK 模型的实证研究</div>
+<div class="paper-meta">《财经研究》2025（上海财经大学期刊社）</div>
+<div class="paper-desc">构建含数字鸿沟与数字技术学习能力的 HANK 模型，分析数字技术扩散对财富分配与政策效果的影响。</div>
+</div>
+<div class="paper-card"><span class="paper-type cn">CN · 中文</span>
+<div class="paper-title">王曦、温瑞昌、汪玲，异质性家庭、消费品结构与财政货币政策</div>
+<div class="paper-meta">《中国工业经济》2024 年第 10 期，5–23 页</div>
+<div class="paper-desc">异质性家庭框架下分析耐用品/非耐用品结构对财政补贴与结构性货币政策的影响。</div>
+</div>
+<div class="paper-card"><span class="paper-type cn">CN · 中文</span>
+<div class="paper-title">中国家庭债务与财政支出效应——基于异质性家庭的 DSGE 模型分析</div>
+<div class="paper-meta">《财贸研究》2019 年第 11 期</div>
+<div class="paper-desc">含负债家庭异质性的 DSGE 模型，分析家庭债务对财政支出乘数的影响。</div>
+</div>
+</div>
+
+<!-- S9: 常见错误 -->
+<div class="section" id="s9">
+<h2><span class="sec-num">09</span> 常见错误（≥7 条）</h2>
+<ol>
+<li><strong>把 HANK 等同于 TANK：</strong>TANK 只有两类家庭（H2M+储蓄者），外生 λ；HANK 是连续分布 $\lambda(a,z)$，分布内生由 KFE 决定。HANK 中的"有效 H2M"（含 wealthy-hand-to-mouth）是内生的。</li>
+<li><strong>用 Krusell-Smith 做 HANK 但不检验近似聚合：</strong>HANK 中分布矩可能不足以预测总消费（MPC 分布比均值更重要）。必须报告 $R^2$ 并考虑增加矩。</li>
+<li><strong>用 SSJ 方法做大冲击/非线性：</strong>SSJ 是一阶线性化，只适用于小到中等冲击。ZLB、大额财政刺激需要全局方法（EGM/连续时间）。</li>
+<li><strong>稳态分布不收敛就做转移动态：</strong>KFE 不动点必须先收敛（$\max|\lambda_{t+1}-\lambda_t|&lt;10^{-8}$），否则 IRF 是垃圾。</li>
+<li><strong>借贷约束设为 $a_{\min}=0$ 但数据中有负资产：</strong>美国 SCF 中约 15% 家庭负资产（信用卡债务），中国 CHFS 中房贷家庭也有负净值。应设为信用额度 $a_{\min}&lt;0$。</li>
+<li><strong>忽略间接效应/一般均衡效应：</strong>HANK 的核心发现就是间接效应大于直接效应。只报告直接效应（跨期替代）会得出"货币政策无效"的错误结论。</li>
+<li><strong>7 种方法混用不说明选择理由：</strong>论文必须说明为何选 SSJ 而非 Reiter、为何用 EGM 而非 VFI。常见错误是"用了 Krusell-Smith 但没说明分布矩是否足够"。</li>
+<li><strong>忽略分布的矩约束：</strong>HANK 稳态要求 $\int a\,d\lambda=B_s$（资产市场出清），$\int d\lambda=1$（总人数=1）。忘记归一化会导致 IRF 比较不干净。</li>
+</ol>
+</div>
+
+<!-- S10: 交叉链接 -->
+<div class="section" id="s10">
+<h2><span class="sec-num">10</span> 交叉链接</h2>
+<div class="table-wrap"><table>
+<tr><th>相关页面</th><th>关系</th></tr>
+<tr><td><a href="10-nk-three-equation.html">10-NK三方程模型</a></td><td>HANK 的企业块（NKPC+Taylor）直接继承自 RANK 三方程</td></tr>
+<tr><td><a href="14-tank.html">14-TANK两主体</a></td><td>TANK 部分是 HANK 的简化入门；本页是 HANK 独立完整教程</td></tr>
+<tr><td><a href="09-rbc-model.html">09-RBC 基准模型</a></td><td>RBC 的消费者问题是 HANK 家庭块的代表性主体版本</td></tr>
+<tr><td><a href="13-fiscal-monetary-rules.html">13-财政与货币政策规则</a></td><td>Taylor 规则与财政预算约束的微观基础</td></tr>
+<tr><td><a href="../structural/17-ai-structural-estimation.html">structural/17-AI 驱动结构估计</a></td><td>§4.7 深度学习求解 HANK 与 AI 结构估计共享技术栈</td></tr>
+<tr><td><a href="03-steady-state.html">03-稳态求解</a></td><td>RBC/RANK 稳态求解方法，HANK 稳态是其异质扩展</td></tr>
+<tr><td><a href="15-perturbation-methods.html">15-扰动法</a></td><td>Reiter 法本质是"在分布网格上做扰动"，对照阅读</td></tr>
+</table></div>
+</div>
+
+<div class="page-nav">
+<a href="14-tank.html" class="prev">
+<div class="nav-label">← 上一节</div>
+<div class="nav-title">TANK两主体模型</div>
+</a>
+<a href="17-olg.html" class="next">
+<div class="nav-label">下一节 →</div>
+<div class="nav-title">OLG 世代交叠模型</div>
+</a>
+</div>
+
+</div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

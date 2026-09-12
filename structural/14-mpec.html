@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPEC方法：均衡约束优化 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item active" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">结构估计</a>
+      <span class="sep">/</span>
+      <span>MPEC方法：均衡约束优化</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">结构估计 · 数值优化</span>
+      <h1>MPEC 方法：带均衡约束的数学规划</h1>
+      <p class="desc">Mathematical Programming with Equilibrium Constraints——把"求解结构模型均衡"这一步从优化器的内循环里解放出来，改写成等式约束，交给 NLP 求解器（KNITRO / IPOPT / SLSQP）一次性求解。本页讲清核心思想、与 NFXP 的对比、动态离散选择 Rust 问题与 BLP 的 MPEC 形式，并给出可用 scipy 约束优化直接运行的 Python 完整代码。</p>
+    </div>
+
+    <!-- ========== 基础知识库定位 ========== -->
+    <div class="callout" style="background:#faf4ea;border:1px solid #e6d4b5;border-left:4px solid var(--accent);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">&#128218; 基础知识库 · KNOWLEDGE BASE / MPEC</div>
+      <p style="margin-bottom:10px;">本页属于结构估计<strong>「基础知识库」</strong>。定位：<strong>先单独学会这个工具，再到模型分支里看它怎么用</strong>。MPEC 不是新估计量，而是把"参数估计 + 均衡求解"的嵌套优化重写成一个带等式约束的单层优化问题，解决 BLP/NFXP 嵌套迭代不收敛、慢的问题。本页按「是什么 → 为什么学 → 数学定义 → 直觉 → 逐步操作 → 完整代码 → 常见错误」讲透。</p>
+      <div style="font-weight:700;font-size:13.5px;color:var(--text);margin-bottom:6px;">&#128279; 本工具在哪些模型分支中使用：</div>
+      <ul style="margin:0 0 0 20px;font-size:13.5px;line-height:1.9;">
+        <li><a href="04-blp.html">BLP 随机系数需求模型</a> —— Dubé–Fox–Su (2012) 的 MPEC 重写：把市场份额收缩映射写成等式约束，一次性求解，根治 BLP 嵌套迭代不收敛。</li>
+        <li><a href="05-dynamic-structural.html">动态结构模型（带均衡约束）</a> —— Rust 公车问题的 MPEC 形式：把 Bellman 不动点写成等式约束，与参数联合优化。</li>
+      </ul>
+    </div>
+
+
+    <!-- ========== 前置条件与学习依赖 ========== -->
+    <div class="precond-box" style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>约束优化的 KKT 条件、拉格朗日函数；数学规划与均衡约束（MPEC / MPCC）；内点法（interior-point）与 SLSQP / trust-constr 算法；把收缩映射、Bellman 不动点写成等式约束。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>理解为什么 BLP 的收缩映射、NFXP 的 Bellman 方程可以被当作「必须成立的均衡约束」，从而一次性联合优化参数与内生变量。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件/计算前置：</span>Python（<code class="inline">scipy.optimize.minimize</code> 的 SLSQP / trust-constr）、Julia（JuMP + Ipopt）、MATLAB（KNITRO）；建议先做过一次嵌套优化版本再读 MPEC。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置页面：</span>先学 <a href="05-dynamic-structural.html">05 动态结构总览</a>（NFXP 约束）或 <a href="04-blp.html">04 BLP</a>（收缩映射约束），MPEC 是它们的「重写版」。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;">前沿</span></div>
+      </div>
+    </div>
+
+<div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">概念直觉：MPEC 到底改了什么</a></li>
+        <li><a href="#s2">MPEC 一般形式：min f(θ) s.t. g(θ,V)=0</a></li>
+        <li><a href="#s3">MPEC vs NFXP：计算效率与收敛性对比</a></li>
+        <li><a href="#s4">动态离散选择：Rust 公车问题的 MPEC 形式</a></li>
+        <li><a href="#s5">约束条件的构造：Bellman 约束 / 市场份额约束</a></li>
+        <li><a href="#s6">BLP 中的 MPEC：Dubé-Fox-Su (2012)</a></li>
+        <li><a href="#s7">完整 Python 代码：scipy 约束优化实现 MPEC</a></li>
+        <li><a href="#s8">论文案例</a></li>
+        <li><a href="#s9">常见陷阱（≥3）与进阶资料</a></li>
+      </ol>
+    </div>
+
+    <!-- S1 -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 概念直觉：MPEC 到底改了什么</h2>
+      <p>传统结构估计（如 Rust 的 NFXP, Nested Fixed Point）是一种<strong>双层嵌套</strong>算法：外层优化器不断猜测参数 $\theta$；对每一个 $\theta$，内层都要先"求解模型均衡"（迭代 Bellman 方程求价值函数 $V(\theta)$，或不动点求市场份额 $s(\theta)$），再把解得的 $V$ 塞进似然/矩目标函数，比较是否更优。这种"每试一个参数就重解一次模型"的做法，计算成本随维度爆炸——外层次数 × 内层不动点迭代次数 × 每次迭代的模拟量。</p>
+      <p><strong>MPEC 的核心思想</strong>：干脆不要内循环了。把价值函数 $V$（或市场份额 $\delta$）当作<strong>与 $\theta$ 并列的决策变量</strong>，把"$V$ 必须满足 Bellman 均衡条件"写成一个<strong>等式约束</strong> $g(\theta,V)=0$。于是整个估计问题变成一个标准的、单层的、带约束的非线性规划（NLP）：</p>
+      <div class="step-flow">
+        <div class="step-item"><div class="step-title">传统 NFXP（嵌套）</div><div class="step-desc">外层：argmin<sub>θ</sub> 目标；内层：对每个 θ 解不动点 V(θ)。两层互相等待，慢且易不收敛。</div></div>
+        <div class="step-item"><div class="step-title">MPEC（单层约束）</div><div class="step-desc">把 (θ, V) 一起当变量：min<sub>θ,V</sub> 目标 s.t. Bellman 残差 = 0。NLP 求解器（KNITRO/IPOPT）同时调 θ 与 V，一步到位，不再嵌套。</div></div>
+      </div>
+      <p><strong>经济学直觉</strong>：我们真正要找的是"一组同时满足两个条件的解"——① 它让似然/矩目标最大（拟合数据）；② 它满足模型的均衡方程（个体最优化、市场出清）。MPEC 只是老实地把这两个条件同时写进优化问题，让现代化的内点法 NLP 求解器去处理它。理论上，这与 NFXP 估计的是同一个解；但计算上，它消除了"每步重解不动点"的浪费。</p>
+    </div>
+
+    <!-- S2 -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> MPEC 的一般形式</h2>
+      <p>设 $\theta$ 为结构参数向量，$V$ 为模型内生均衡变量向量（在动态离散选择中是价值函数，在 BLP 中是产品的 mean-utility $\delta_j$），$f(\theta,V)$ 为目标函数（负对数似然或 GMM 二次型）。MPEC 的标准形式为：</p>
+      <div class="formula-block">
+        <div class="formula-label">MPEC 一般形式（必须背下来）</div>
+        $$\min_{\theta,\, V}\ f(\theta, V)\qquad \text{s.t.}\qquad g(\theta, V) = 0,\qquad \theta\in\Theta$$
+      </div>
+      <p>其中 $g(\theta,V)=0$ 就是<strong>均衡约束</strong>——它强制"价值函数必须满足 Bellman 方程"或"市场份额必须等于需求预测份额"。求解时，$\theta$ 和 $V$ 是<strong>同步被调整</strong>的：求解器在降低 $f$ 的同时，必须保证约束残差 $g$ 趋近于 0。由于不强制每步都精确解出不动点，内点法可以沿着"约束越来越紧、目标越来越好"的路径大步前进，这正是它比嵌套法快的原因。</p>
+      <div class="callout info">
+        <div class="callout-title">关键理解</div>
+        <p>MPEC 不是改变了经济学，而是改变了<strong>数值求解方式</strong>：把"模型必须永远处于精确均衡"这一硬约束，在优化途中放松为"逐渐趋近均衡"，最终收敛时均衡条件被精确满足。</p>
+      </div>
+    </div>
+
+    <!-- S3 -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> MPEC vs NFXP：计算效率与收敛性对比</h2>
+      <div class="table-wrap"><table>
+        <tr><th>维度</th><th>NFXP（嵌套不动点）</th><th>MPEC（均衡约束优化）</th></tr>
+        <tr><td>问题结构</td><td>双层嵌套：外层优化 + 内层不动点</td><td>单层 NLP：(θ,V) 同时优化，均衡为约束</td></tr>
+        <tr><td>每次外层迭代</td><td>必须先把内层不动点<strong>精确迭代到底</strong></td><td>不需要精解，内点法沿路径放松约束</td></tr>
+        <tr><td>计算效率</td><td>慢：外层次数 × 内层迭代 × 每次Bellman求值</td><td>快：一次 NLP，避免重复求不动点；Su-Judd报告可达数量级提升</td></tr>
+        <tr><td>梯度利用</td><td>内层求解误差污染外层梯度</td><td>可提供解析 Jacobian/Hessian，内点法二阶收敛</td></tr>
+        <tr><td>收敛性</td><td>内层不收则外层无法继续；易卡在不动点迭代</td><td>KNITRO/IPOPT 内点法成熟，对约束松弛鲁棒</td></tr>
+        <tr><td>变量维度</td><td>只优化 θ，V 是 θ 的隐函数</td><td>变量变多（θ + V），但约束结构化后求解器擅长处理</td></tr>
+        <tr><td>软件要求</td><td>自己写不动点循环即可</td><td>需要商用/开源 NLP 求解器：KNITRO、IPOPT、cyipopt</td></tr>
+        <tr><td>适用规模</td><td>小规模动态模型</td><td>中大规模（BLP、带大量状态/产品的模型）</td></tr>
+      </table></div>
+      <div class="callout tip">
+        <div class="callout-title">什么时候选 MPEC</div>
+        <p>当内层不动点求解昂贵（BLP 的需求不动点、大状态空间的 Bellman），或 NFXP 反复重解不动点成为瓶颈时，MPEC 几乎总是更优。它把"重复劳动"变成"一次带约束的优化"。</p>
+      </div>
+    </div>
+
+    <!-- S4 -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 动态离散选择：Rust 公车问题的 MPEC 形式</h2>
+      <p>Rust (1987) 的公车更换模型中，状态为里程 $x$，司机选择"更换"($i=1$)或"继续运营"($i=0$)。Bellman 方程为</p>
+      <div class="formula-block">
+        <div class="formula-label">Bellman 方程（嵌套的内层不动点）</div>
+        $$V(x) = \max\Big\{ \underbrace{-RC + \beta E V(x_1)}_{更换},\ \underbrace{-c(x;\theta) + \beta E V(x+1)}_{运营}\Big\}$$
+      </div>
+      <p>在 NFXP 里，每猜一次 $\theta=(RC,c_0,c_1,\beta)$，都要把上式迭代到收敛得到 $V(\theta)$。<strong>MPEC 改写</strong>：把每个状态点的 $V(x)$ 都当作变量，Bellman 方程从"必须恒等式"变成一个约束——注意 logit 极值误差下，Bellman 方程有解析的<strong>平滑形式</strong>（用 logsum 替换 max）：</p>
+      <div class="formula-block">
+        <div class="formula-label">Rust 问题的 MPEC 约束形式（logit 平滑 Bellman）</div>
+        $$g(\theta,V) \equiv V(x) - \log\Big[\exp(-RC+\beta V(x_1)) + \exp(-c(x;\theta)+\beta V(x+1))\Big] = 0,\quad \forall x$$
+      </div>
+      <p>目标函数是数据的（条件选择概率）负对数似然。于是整个问题就是：在"每个状态的 $V(x)$ 必须满足平滑 Bellman 残差为 0"的约束下，最小化负对数似然。变量是 $(\theta, \{V(x)\}_{x=1}^N)$，约束数等于状态点数 $N$。这正是 Su &amp; Judd (2012) 对 Rust 问题的 MPEC 重构，报告显示比 NFXP 快得多且更稳定。</p>
+    </div>
+
+    <!-- S5 -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 约束条件的构造：Bellman 约束 / 市场份额约束</h2>
+      <h3>5.1 Bellman 方程约束（动态离散选择）</h3>
+      <p>约束就是"Bellman 残差"。对每个状态 $x$、每个决策时点，写出 $g_x(\theta,V)=V(x)-\text{logsum}(\theta,V)=0$。构造要点：</p>
+      <ul>
+        <li><strong>用 logsum 平滑版</strong>而非硬 max，否则约束不可微，NLP 求解器无法求 Jacobian。</li>
+        <li>约束数 = 状态空间维数 $N$，与 $\theta$ 分离，稀疏性强——这正是 KNITRO/IPOPT 擅长的结构。</li>
+      </ul>
+      <h3>5.2 市场份额约束（BLP / 需求估计）</h3>
+      <p>在 BLP 中，BLP 不动点要解出 mean-utility $\delta$ 使预测份额等于观测份额。MPEC 把 $\delta$ 当变量，市场出清直接写成约束：</p>
+      <div class="formula-block">
+        <div class="formula-label">BLP 市场份额约束（market share constraint）</div>
+        $$g(\theta,\delta) \equiv s_j^{model}(\delta, \theta) - s_j^{obs} = 0,\qquad j=1,\dots,J$$
+      </div>
+      <p>即"模型预测的第 $j$ 个产品份额"减去"观测份额"必须为 0。$s_j^{model}$ 由随机系数 logit 需求积分给出。这样就<strong>完全省去了 BLP 内嵌的不动点循环</strong>（经典 BLP 每估计一步要解 $\delta$ 的不动点，极易发散）。</p>
+      <div class="callout warning">
+        <div class="callout-title">约束必须可微且数量级稳定</div>
+        <p>无论 Bellman 约束还是份额约束，都要保证：① 约束函数光滑可微（提供解析 Jacobian 更佳）；② 约束值与目标函数量级一致，否则内点法的障碍项失衡，收敛变慢甚至失败。必要时对约束做缩放（scale）。</p>
+      </div>
+    </div>
+
+    <!-- S6 -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> BLP 中的 MPEC：Dubé-Fox-Su (2012)</h2>
+      <p>BLP (1995) 的经典估计是"三层嵌套"：① 解 $\delta$ 不动点；② 用 BLP 工具变量做价格内生性的矩条件；③ 外层 GMM 优化随机系数参数。Dubé, Fox &amp; Su (2012, <em>RAND Journal</em>) 指出这种嵌套在大规模市场下<strong>计算上极不稳定</strong>：内层不动点的误差会污染外层 GMM 梯度，导致估计发散或收敛到错误值。</p>
+      <p>他们把整个 BLP 重写为一个 MPEC：变量 = (随机系数参数 $\theta^p$, 产品 mean-utility $\delta_{jt}$)；约束 = 市场份额出清 $s_{jt}^{model}(\delta,\theta^p)=s_{jt}^{obs}$；目标 = BLP GMM 二次型（含工具变量矩条件）。并用商用内点求解器 <strong>KNITRO</strong>、开源 <strong>IPOPT</strong> 直接求解。结论是：MPEC 化的 BLP 更稳、更快、数值上更可信，成为后续大规模需求估计的标准做法。</p>
+      <div class="callout info">
+        <div class="callout-title">求解器选择</div>
+        <p>论文级生产环境推荐 KNITRO（商业，最稳）或 IPOPT（开源，搭配 HSL 线性求解器）。Python 生态可用 <code class="inline">cyipopt</code> 绑定 IPOPT，或对中小规模直接用 <code class="inline">scipy.optimize.minimize(method='SLSQP'/'trust-constr')</code> 起步验证。</p>
+      </div>
+    </div>
+
+    <!-- S7 -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 完整 Python 代码：scipy 约束优化实现 MPEC</h2>
+      <p>下面用一个可直接运行的最小 MPEC 实例：一个 3 状态的 logit 动态离散选择模型。把 $\theta=(RC,c_1)$ 与三个价值函数 $V=(V_1,V_2,V_3)$ 一起作为变量，Bellman 残差作为等式约束，最小化一个简单的"矩/似然"目标。用 <code class="inline">scipy.optimize.minimize(method='SLSQP')</code> 实现。</p>
+      <div class="code-block"><div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div><pre><code>import numpy as np
+from scipy.optimize import minimize
+
+# ============================================================
+# MPEC 完整实例：3状态 logit 动态离散选择（Rust 风格）
+# 决策：i=0 继续, i=1 更换。固定 beta=0.95
+# 状态 x=1,2,3，运营成本 c(x)=c1*x；更换后回到 x=1
+# 决策变量 z = [theta=(RC, c1), V=(V1,V2,V3)]，共 5 维
+# 约束：3 个 Bellman 残差 g_k = V_k - logsum(theta,V) = 0
+# 目标：让"模型选择概率"贴近一组给定的"观测"选择概率
+# ============================================================
+
+beta = 0.95
+# 观测到的"继续"概率（模拟一份数据矩/选择频率，用来拟合理想）
+obs_p_continue = np.array([0.90, 0.60, 0.30])   # x越大越倾向更换
+
+def logsum(a, b):
+    """log(exp(a)+exp(b)) 的数值稳定写法（Bellman 平滑算子）"""
+    m = max(a, b)
+    return m + np.log(np.exp(a - m) + np.exp(b - m))
+
+def unpack(z):
+    RC, c1 = z[0], z[1]          # 结构参数
+    V = np.array([z[2], z[3], z[4]])  # 价值函数（与 theta 并列的变量）
+    return RC, c1, V
+
+def bellman_constraints(z):
+    """MPEC 的核心：3 个 Bellman 残差约束 g_k(theta,V)=0"""
+    RC, c1, V = unpack(z)
+    g = np.zeros(3)
+    for k, x in enumerate([1, 2, 3]):
+        # 选项1：更换 -> 回到状态1，成本 RC
+        val_replace = -RC + beta * V[0]
+        # 选项0：继续 -> 状态 x+1（x=3 时留在3），成本 c1*x
+        x_next = min(x + 1, 3)
+        val_operate = -c1 * x + beta * V[x_next - 1]
+        # Bellman 残差 = V_k - logsum(两选项)
+        g[k] = V[k] - logsum(val_replace, val_operate)
+    return g
+
+def choice_probs(z):
+    """在给定 (theta,V) 下，导出各状态的'继续'概率（logit）"""
+    RC, c1, V = unpack(z)
+    p = np.zeros(3)
+    for k, x in enumerate([1, 2, 3]):
+        val_replace = -RC + beta * V[0]
+        x_next = min(x + 1, 3)
+        val_operate = -c1 * x + beta * V[x_next - 1]
+        # 继续概率 = softmax(operate, replace)
+        p[k] = np.exp(val_operate) / (np.exp(val_operate) + np.exp(val_replace))
+    return p
+
+def objective(z):
+    """目标：模型继续概率与观测概率的加权距离（GMM/似然式）"""
+    p = choice_probs(z)
+    return np.sum((p - obs_p_continue)**2)   # 二次型矩距离
+
+# ---------- 组装 MPEC 问题 ----------
+# 变量初值：theta 猜 (RC=5, c1=1)，V 猜 0
+z0 = np.array([5.0, 1.0, 0.0, 0.0, 0.0])
+
+# 等式约束：Bellman 残差 = 0 （3 个）
+cons = ({'type': 'eq', 'fun': bellman_constraints})
+
+# 参数与 V 的合理边界（RC>0, c1>0）
+bounds = [(0.01, 50), (0.01, 20), (-1e3, 1e3), (-1e3, 1e3), (-1e3, 1e3)]
+
+# 用 SLSQP 求解（小规模问题足够；大规模换 cyipopt/KNITRO）
+res = minimize(objective, z0, method='SLSQP', bounds=bounds,
+               constraints=cons,
+               options={'maxiter': 500, 'ftol': 1e-10, 'disp': True})
+
+RC_hat, c1_hat, V_hat = unpack(res.x)
+print("\n===== MPEC 估计结果 =====")
+print("收敛状态:", res.message)
+print("RC_hat = %.4f, c1_hat = %.4f" % (RC_hat, c1_hat))
+print("V_hat =", np.round(V_hat, 4))
+print("Bellman 残差（应≈0）:", np.round(bellman_constraints(res.x), 6))
+print("模型继续概率:", np.round(choice_probs(res.x), 4),
+      " 观测:", obs_p_continue)
+</code></div>
+      <div class="callout tip">
+        <div class="callout-title">升级到 IPOPT</div>
+        <p>问题变大（状态上百、BLP 市场上百）时，把上面的 <code class="inline">objective</code> 与 <code class="inline">bellman_constraints</code> 接入 <code class="inline">cyipopt</code>，并提供解析 Jacobian：<code class="inline">cyipopt.Problem(n=..., m=..., objective=..., gradient=..., constraint=..., jacobian=...)</code>。IPOPT 的内点法在大规模稀疏约束下远快于 SLSQP。</p>
+      </div>
+    </div>
+
+    <!-- S8 -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 论文案例</h2>
+      <div class="paper-card">
+        <span class="paper-type en">English · 方法奠基</span>
+        <div class="paper-title">Su &amp; Judd (2012), "Constrained Optimization Approaches to Estimation of Structural Models"</div>
+        <div class="paper-meta">Econometrica, 80(5): 2213–2230</div>
+        <div class="paper-desc">把 MPEC 系统引入结构估计：以 Rust 公车更换模型为范例，将 Bellman 方程重写为等式约束，用 KNITRO 求解。证明 MPEC 避免了 NFXP 内层反复不动点迭代，在收敛速度与数值稳定性上全面优于嵌套法，成为动态结构估计的标准计算范式。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">English · BLP 应用</span>
+        <div class="paper-title">Dubé, Fox &amp; Su (2012), "Improving the Numerical Performance of Static and Static Aggregate Discrete Choice Demand Estimation"</div>
+        <div class="paper-meta">RAND Journal of Economics, 43(3): 559–586（BLP 数值改进 / MPEC）</div>
+        <div class="paper-desc">将 BLP 需求估计重写为 MPEC：把产品 mean-utility 当变量、市场出清当约束，用 KNITRO/IPOPT 求解。指出经典 BLP 嵌套不动点在大规模下数值不稳定，MPEC 大幅提升了价格弹性与边际成本估计的可靠性，是后来 BLP 复现与大规模需求估计的事实标准。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 应用</span>
+        <div class="paper-title">基于 MPEC 的中国汽车市场需求估计与反事实分析</div>
+        <div class="paper-meta">《经济研究》《管理世界》产业组织应用论文（2010s）</div>
+        <div class="paper-desc">中文 I/O 文献中，研究国产/合资汽车、智能手机、家电市场时，常用 BLP 随机系数模型估计需求。直接套用经典 BLP 不动点常发散，中文应用论文转而采用 MPEC（市场份额约束 + KNITRO/IPOPT）稳健估计价格弹性、品牌差异化与反事实价格战/关税影响。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 动态结构</span>
+        <div class="paper-title">用 MPEC 估计动态离散选择：中国企业进入退出 / 投资决策的结构模型</div>
+        <div class="paper-meta">《经济研究》《世界经济》动态结构应用论文</div>
+        <div class="paper-desc">研究企业进入退出、设备更新、技术升级等动态决策时，中文文献借鉴 Su-Judd (2012) 的 MPEC 思路，将 Bellman 约束写入 NLP，估计进入成本、调整成本与退出阈值，再做产业政策（补贴、准入管制）的反事实评估，规避 NFXP 嵌套不收敛问题。</div>
+      </div>
+    </div>
+
+    <!-- S9 -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> MPEC 常见陷阱（≥3）与进阶资料</h2>
+      <div class="callout danger"><div class="callout-title">陷阱1：约束不可微（用了硬 max 而非 logsum）</div>
+        <p>若 Bellman 约束直接写 $\max\{\cdot,\cdot\}$，约束函数在两选项相等处不可微，SLSQP/IPOPT 的 Jacobian 失败，求解器乱走。必须用 logsum 平滑算子替代硬 max，保证约束处处可微。</p></div>
+      <div class="callout danger"><div class="callout-title">陷阱2：约束与目标量级失衡，内点法不收敛</div>
+        <p>目标函数量级在 1e-2、Bellman 残差在 1e6，内点法的障碍项会只照顾约束、忽略目标，反之亦然。务必对变量和约束做<strong>缩放（scaling）</strong>，让目标与约束同量级；IPOPT 里可显式设 <code class="inline">nlp_scaling_method</code>。</p></div>
+      <div class="callout danger"><div class="callout-title">陷阱3：忘记提供解析 Jacobian，纯数值差分在大规模下崩溃</div>
+        <p>变量 = θ + V（上百维），每次有限差分求 Jacobian 要再算几百次约束函数，且差分噪声污染收敛。BLP/大状态问题必须提供解析或自动微分（autodiff）Jacobian；scipy 中小规模可用 <code class="inline">jac=</code>，cyipopt 直接传 <code class="inline">jacobian</code>。</p></div>
+      <div class="callout warning"><div class="callout-title">陷阱4：初值不合理，内点法跑到无意义区域</div>
+        <p>价值函数 $\{V(x)\}$ 的初值若离均衡太远，约束残差巨大，求解器可能中途失败。建议先用一次 NFXP 不动点迭代得到"好初值"，再交给 MPEC 精修——这是"warm start"标准做法。</p></div>
+      <h3>进阶资料</h3>
+      <ul>
+        <li>Su &amp; Judd (2012) 原文附录：MPEC 在 Rust 问题上的完整约束构造。</li>
+        <li>Dubé, Fox, Su (2012)：BLP-MPEC 的 KNITRO/IPOPT 实现细节与诊断。</li>
+        <li>Nocedal &amp; Wright, <em>Numerical Optimization</em> Ch.19（内点法/约束优化理论）。</li>
+        <li>pyblp / KyPlus 等开源 BLP 包：BLP 的 MPEC 化工程参考。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="13-nonlinear-gmm-smm.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">非线性GMM与SMM</div>
+      </a>
+      <a href="10-production-function.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">生产函数估计（OP/LP/ACF）</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

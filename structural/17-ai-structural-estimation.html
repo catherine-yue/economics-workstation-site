@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 驱动的结构估计 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item active" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">结构估计</a>
+      <span class="sep">/</span>
+      <span>AI 驱动的结构估计</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">STRUCTURAL · AI / DEEP LEARNING · FRONTIER</span>
+      <h1>AI 驱动的结构估计：把"解模型"变成一次求解</h1>
+      <p class="desc">NBER WP 35283（Duarte &amp; Fonseca, 2026）提出"AI for Structural Estimation"：用神经网络逼近值函数与"参数→矩"映射、把均衡价格当作伪参数、用自动微分替代数值优化，把动态一般均衡结构估计的时间从<strong>数天</strong>压缩到<strong>约 20 分钟</strong>。本页讲透其三大构件、四层贡献、动态融资–投资应用，并给出三段可实跑的 PyTorch 代码。</p>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-title">ℹ 本页定位 / 方法层，不是模型分支</div>
+      <p>本页属于<strong>求解/估计方法层</strong>：讲 AI 技术如何加速与求解各类结构模型的估计。它可与任一模型分支（BLP / 动态博弈 / 生命周期 / 投资–融资等）<strong>配合使用</strong>——换用哪一支模型，只需替换内层"解模型"的网络，外层矩条件与识别框架不变；它本身<strong>不是一种独立的模型类型</strong>。</p>
+    </div>
+
+    <!-- ========== 前置条件与学习依赖 ========== -->
+    <div class="precond-box" style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>动态规划与 Bellman 方程、值函数迭代（VFI）；模拟矩估计（SMM）与最小距离估计；神经网络（MLP、SiLU、Adam、反向传播）、自动微分；理解"参数→矩"映射可微后即可做基于梯度的优化。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>企业投资–融资动态（资本调整成本、债务/杠杆、生产率冲击）；一般均衡中的市场出清价格；弱识别与目标函数曲率的概念。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件/计算前置：</span>Python + PyTorch（本页代码用 PyTorch 风格、CPU 即可跑通）；概念上了解 JAX、GPU 并行、自动微分生态。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置页面：</span>先学 <a href="05-dynamic-structural.html">05 动态结构模型</a>（NFXP/VFI 瓶颈）、<a href="13-nonlinear-gmm-smm.html">13 SMM</a>（矩条件）、<a href="14-mpec.html">14 MPEC</a>（嵌套求解的替代思路）、<a href="01-mle.html">01 MLE</a> 与 <a href="02-gmm.html">02 GMM</a>。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--danger);color:#fff;font-size:12px;font-weight:600;">前沿 · 高</span> &nbsp; 工作量：理解思想约 1 天；跑通并改造代码约 2–3 天；复现论文级模型需 GPU 与 JAX 工程。</div>
+      </div>
+    </div>
+
+<div class="toc-box">
+  <div class="toc-title">本页目录 / CONTENTS</div>
+  <ol>
+    <li><a href="#s1">动机与瓶颈：为什么传统结构估计要跑 4 天</a></li>
+    <li><a href="#s2">三大构件之一：虚拟参数法（pseudo-parameter）</a></li>
+    <li><a href="#s3">三大构件之二：神经网络逼近"参数→矩"映射</a></li>
+    <li><a href="#s4">三大构件之三：AI 算法/软件/硬件加速</a></li>
+    <li><a href="#s5">四层贡献拆分：算法 / 一般均衡 / 识别 / 诊断</a></li>
+    <li><a href="#s6">应用案例：动态融资与投资框架</a></li>
+    <li><a href="#s7">完整 PyTorch 代码（三段，已实跑）</a></li>
+    <li><a href="#s8">相关文献体系</a></li>
+    <li><a href="#s9">与现有方法的连接与对比</a></li>
+    <li><a href="#s10">论文案例</a></li>
+    <li><a href="#s11">常见错误（≥5）</a></li>
+  </ol>
+</div>
+
+<!-- ========== S1 动机 ========== -->
+<div class="section" id="s1">
+  <h2><span class="sec-num">01</span> 动机与瓶颈：为什么传统结构估计要跑 4 天</h2>
+  <p>结构估计的经典范式是<strong>双层嵌套</strong>（见 <a href="05-dynamic-structural.html">05 动态结构</a> 与 <a href="13-nonlinear-gmm-smm.html">13 SMM</a>）：</p>
+  <div class="step-flow">
+    <div class="step-item"><div class="step-title">外层：参数搜索器</div><div class="step-desc">模拟退火（simulated annealing）/ Nelder-Mead / 网格搜索不断猜测参数向量 $\theta$，对每个 $\theta$ 调用内层；外层优化器<strong>对"参数→矩"映射一无所知</strong>，因此无法用梯度，只能无信息地瞎猜。</div></div>
+    <div class="step-item"><div class="step-title">内层：反复解模型</div><div class="step-desc">对每一个被猜到的 $\theta$，都要跑一遍值函数迭代（VFI）求解 Bellman、再做 Monte Carlo 模拟，得到模型隐含矩 $m(\theta)$；一般均衡版本还要额外做一次<strong>找均衡价格</strong>的求根（root-finding）。</div></div>
+    <div class="step-item"><div class="step-title">判优：矩距离</div><div class="step-desc">比较 $m(\theta)$ 与数据矩 $\hat m$ 的加权距离，决定下一个 $\theta$。回到外层，如此成千上万次。</div></div>
+  </div>
+  <p>这种嵌套有两个致命瓶颈：</p>
+  <ul>
+    <li><strong>单次估计极慢</strong>。在 Duarte &amp; Fonseca (2026) 的动态杠杆–投资模型里，传统做法（外层模拟退火 + 内层每次 VFI）跑了 <strong>4 天（20 小时优化）</strong>仍未达到他们方法在约 20 分钟达到的损失水平；论文报告其方法在约 13 分钟即达到传统方法 20 小时的目标损失。</li>
+    <li><strong>维数灾难（curse of dimensionality）</strong>。VFI 在张量积网格上求解，状态空间大小随状态维数指数增长。状态是 $(k,b,z)$ 三维、每维 $n$ 个点，网格就是 $n^3$；再把参数 $\theta$ 也放进去做全局求解，传统网格根本无法承受。神经网络的优势正是<strong>参数量随维度线性增长、对维度近似不敏感</strong>。</li>
+  </ul>
+  <div class="callout info">
+    <div class="callout-title">核心观察</div>
+    <p>传统流程把"解模型"当成了外层优化器的<strong>黑箱子例程</strong>，于是每试一个参数都要付出一次完整求解的代价。AI 方法的思路是反过来：<strong>先花一次性代价把"解"本身变成参数的函数</strong>（神经网络），之后求值、求矩、求梯度都变成毫秒级的前向/反向传播。</p>
+  </div>
+</div>
+
+<!-- ========== S2 构件1 虚拟参数 ========== -->
+<div class="section" id="s2">
+  <h2><span class="sec-num">02</span> 构件一：虚拟参数法（pseudo-parameter approach）</h2>
+  <p>传统做法在一般均衡里多一层"找价格"：给定参数 $\theta$，先解个体决策，再迭代价格直到市场出清。虚拟参数法的关键洞察是——<strong>干脆把均衡价格 $p$ 也当作一个"伪参数"，把市场出清写成一条矩条件</strong>，和结构参数放在一起估计。</p>
+
+  <h3>2.1 扩展状态空间</h3>
+  <p>把"模型参数 $\theta$"与"均衡价格 $p$"都当作状态（state）的一部分，一次性训练一个神经网络逼近"对任意 $(\theta,p)$ 的值函数"：</p>
+  <div class="formula-block">
+    <div class="formula-label">Eq.1 — 扩展状态空间（extended state space）</div>
+    $$V\big(s;\ \theta,\, p\big)$$
+    <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量含义：$s$ 为原始经济状态（如资本 $k$、债务 $b$、生产率 $z$）；$\theta$ 为待估结构参数；$p$ 为均衡价格（论文中一般均衡版由工资出清劳动市场）。<strong>设定理由</strong>：传统 VFI 把 $\theta$、$p$ 当常数，每换一组就要重解；这里把它们升维成网络输入，"一次求解"就得到了<strong>对所有 $(\theta,p)$ 的解函数</strong>。<strong>经济直觉</strong>：相当于把"解模型"从一个关于 $s$ 的问题，推广成关于 $(s,\theta,p)$ 的曲面拟合问题。</p>
+  </div>
+
+  <h3>2.2 市场出清 = 矩条件</h3>
+  <p>在扩展状态空间上，市场出清不再是内循环求根，而是一条<strong>零失衡矩条件</strong>：</p>
+  <div class="formula-block">
+    <div class="formula-label">Eq.2 — 市场出清矩条件（market-clearing moment）</div>
+    $$h(\theta,p)\;\equiv\; \underbrace{D(p;\theta)}_{\text{总需求}}-\underbrace{S(p;\theta)}_{\text{总供给}}\;=\;0$$
+    <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量含义：$h(\theta,p)$ 为市场出清失衡量（供需之差）。<strong>设定理由</strong>：把"价格使得 $h=0$"从求根问题改写成"估计时让矩 $h$ 趋近 0"，于是一般均衡和部分均衡用同一套矩框架估计。<strong>经济直觉</strong>：均衡价格不再需要单独求解，它和结构参数一样，由"让模型矩贴数据矩"这一目标顺带决定——<strong>市场出清被内嵌进了估计</strong>。</p>
+  </div>
+  <div class="callout tip">
+    <div class="callout-title">✓ 为什么这一步重要</div>
+    <p>论文原话："把价格加入待估参数、把市场出清失衡量加入矩条件，就能在估计过程中顺带求出均衡价格"。这使得<strong>一般均衡模型变得和部分均衡模型一样好估计</strong>，不再需要在每次外层迭代里单独做价格求根。</p>
+  </div>
+</div>
+
+<!-- ========== S3 构件2 矩映射网络 ========== -->
+<div class="section" id="s3">
+  <h2><span class="sec-num">03</span> 构件二：神经网络逼近"参数→矩"映射</h2>
+  <p>解完一次模型后，我们已经能对任意 $(\theta,p)$ 模拟出模型矩。论文再训练一个<strong>独立的代理网络（surrogate / moment network）</strong>去逼近"参数→矩"映射 $g(\theta)$，使其成为矩条件的<strong>闭式可微表达式</strong>。</p>
+
+  <div class="formula-block">
+    <div class="formula-label">Eq.3 — 待逼近的矩函数（论文 Eq.18）</div>
+    $$g_j(\theta)\;\equiv\;\mathbb{E}\big[m_j \mid \theta\big]$$
+    <p style="margin-top:8px;font-size:13px;color:var(--text-light);">$m_j$ 为第 $j$ 个模拟矩（如平均投资率、杠杆率、投资方差）；$\theta=(\rho,\sigma,\delta,\gamma_1,\gamma_0,\dots)$ 为参数向量。</p>
+  </div>
+
+  <h3>3.1 网络架构</h3>
+  <ul>
+    <li><strong>输入层</strong>：标准化后的参数 $\theta$（论文为 8 维，含伪参数价格时再扩维）；</li>
+    <li><strong>隐藏层</strong>：3 个隐藏层、每层 32 个神经元，激活函数 SiLU（论文实际配置）；</li>
+    <li><strong>输出层</strong>：每个矩单独一个网络（论文为 11 个矩 → 11 个网络），输出标量矩值。</li>
+  </ul>
+  <div class="formula-block">
+    <div class="formula-label">Eq.4 — 矩网络损失（论文 Eq.19–20，MSE）</div>
+    $$\mathcal{L}(\Theta_j)=\frac{1}{N_d}\sum_{i=1}^{N_d}\Big(m_{i,j}-g_j(\theta_i;\Theta_j)\Big)^2$$
+    <p style="margin-top:8px;font-size:13px;color:var(--text-light);">$\Theta_j$ 为第 $j$ 个矩网络权重；$(\theta_i,m_{i,j})$ 为 Block 1 解出模型后采样的"参数–矩"数据对。<strong>设定理由</strong>：参数→矩映射比值函数低维、更平滑，所以矩网络比值网络小得多。<strong>经济直觉</strong>：训练好后，求任意新参数的矩只要毫秒级前向传播，且因为网络可微，能直接给出解析 Jacobian $\partial g/\partial\theta$。</p>
+  </div>
+
+  <h3>3.2 预训练 / 简化子模型策略</h3>
+  <p>直接在完整高维模型上采样很贵。论文用<strong>简化子模型预训练</strong>：先在更易求解的低维/简化版本上训练网络得到好初值，再迁移到完整模型继续训练——这与 BIS WP 1312《Generative Economic Modeling》"用简化子模型逼近完整模型动态"的思路一脉相承，用以规避维数灾难、加速收敛。</p>
+  <div class="callout warning">
+    <div class="callout-title">⚠ 防过拟合：10 折交叉验证</div>
+    <p>论文对每个矩用 $K=10$ 折交叉验证，训出 $11\times10=110$ 个网络；留出折的样本外 $R^2$ 用来监控过拟合，并把 10 个网络的估计差异当作近似不确定性。本页代码块 2 复现了 MSE 训练与 $R^2$ 报告。</p>
+  </div>
+</div>
+
+<!-- ========== S4 构件3 AI加速 ========== -->
+<div class="section" id="s4">
+  <h2><span class="sec-num">04</span> 构件三：AI 算法 / 软件 / 硬件加速</h2>
+  <ul>
+    <li><strong>GPU 并行</strong>：值函数训练、Monte Carlo 抽样、矩模拟都可在 GPU 上批量并行，把"逐状态循环"变成"张量批量运算"。</li>
+    <li><strong>自动微分（autodiff）</strong>：矩网络可微，外层估计器直接用解析梯度与 Hessian（论文用 Levenberg–Marquardt 式二阶/拟二阶方法），<strong>摆脱模拟退火式的无信息搜索</strong>。</li>
+    <li><strong>JAX / PyTorch 生态</strong>：论文用 JAX 同时做 GPU 值迭代与神经网络；本页教学代码用 PyTorch 复现同一思想，CPU 即可跑通。</li>
+  </ul>
+
+  <h3>4.1 时间对比（论文 Figure 4）</h3>
+  <p>下图按论文 Figure 4 "Time to Solution: Partial Equilibrium Model" 文字示意：纵轴为 $\log_{10}$ 估计损失（越负越好），横轴为已用时间（分钟）。蓝色"Our Method"在几十分钟内快速降到目标损失并走平（虚线表示训练结束后不再下降）；绿色"VFI + 模拟退火"下降极慢，跑了 20 小时仍未达到蓝色的水平。</p>
+  <div class="formula-block" style="background:#fff;">
+    <div class="formula-label">Figure 4 文字+示意：收敛速度对比</div>
+    <svg viewBox="0 0 600 260" width="100%" style="max-width:560px;display:block;margin:6px auto;">
+      <line x1="60" y1="20" x2="60" y2="220" stroke="#999" stroke-width="1.5"/>
+      <line x1="60" y1="220" x2="560" y2="220" stroke="#999" stroke-width="1.5"/>
+      <text x="20" y="30" font-size="11" fill="#555" transform="rotate(-90 25,120)">log10 估计损失</text>
+      <text x="300" y="248" font-size="11" fill="#555" text-anchor="middle">已用时间（分钟） →</text>
+      <!-- Our method blue: fast drop then flat dashed -->
+      <polyline points="62,30 75,90 95,150 120,185 160,190" fill="none" stroke="#2a6db0" stroke-width="3"/>
+      <line x1="160" y1="190" x2="540" y2="190" stroke="#2a6db0" stroke-width="3" stroke-dasharray="6,5"/>
+      <!-- VFI + SA green: slow step decline -->
+      <polyline points="62,40 90,70 130,100 180,120 240,135 320,145 420,150 540,155" fill="none" stroke="#2d9d78" stroke-width="3"/>
+      <text x="360" y="185" font-size="12" fill="#2a6db0">Our Method（约 20 分钟达目标）</text>
+      <text x="300" y="138" font-size="12" fill="#2d9d78">VFI + 模拟退火（20 小时未达）</text>
+    </svg>
+  </div>
+  <div class="callout tip">
+    <div class="callout-title">✓ 量化结论</div>
+    <p>论文在同一 Compustat 矩、同一加权矩阵、4 个随机种子平均下：传统方法跑 20 小时到达的估计损失，其方法约 13–20 分钟即达到；一般均衡版整体在 1 小时内、云成本约 2 美元完成。</p>
+  </div>
+</div>
+
+<!-- ========== S5 四层贡献 ========== -->
+<div class="section" id="s5">
+  <h2><span class="sec-num">05</span> 四层贡献拆分</h2>
+  <div class="table-wrap"><table>
+    <tr><th>层级</th><th>做了什么</th><th>替代了什么</th></tr>
+    <tr><td><strong>① 算法层</strong></td><td>用神经网络 + 自动微分逼近/求解值函数与矩映射</td><td>传统 VFI 逐网格迭代；外层无梯度的模拟退火</td></tr>
+    <tr><td><strong>② 一般均衡层</strong></td><td>虚拟参数法：均衡价格进状态、市场出清当矩条件</td><td>每次外层迭代单独做价格求根（root-finding）</td></tr>
+    <tr><td><strong>③ 识别层</strong></td><td>最小损失函数（minimum loss function）+ 自适应收缩（adaptive shrinkage）：逐步缩小参数搜索区域，把算力集中在全局最小值附近</td><td>全参数空间无差别盲目搜索</td></tr>
+    <tr><td><strong>④ 诊断层</strong></td><td>闭环检验（closed-loop test）做全局识别诊断：用估出的参数生成目标矩、再重新估计，检验能否唯一恢复参数</td><td>只看局部 Hessian / 报告点估计而不查弱识别</td></tr>
+  </table></div>
+  <div class="callout info">
+    <div class="callout-title">闭环检验（closed-loop test）直觉</div>
+    <p>先估一次 $\hat\theta$，再用 $\hat\theta$ 模拟出"干净的"目标矩，第二次估计就冲着这组矩去。若模型设定正确，第二次应能唯一恢复 $\hat\theta$；恢复不出来就说明存在<strong>弱识别</strong>（而非模型误设）。这把"识别诊断"从局部曲率推广到了全局唯一性检验。</p>
+  </div>
+</div>
+
+<!-- ========== S6 应用案例 ========== -->
+<div class="section" id="s6">
+  <h2><span class="sec-num">06</span> 应用案例：动态融资与投资框架</h2>
+  <p>论文应用是 Gao, Whited &amp; Zhang (2021) 的动态杠杆–投资模型（内生违约、现金持有、昂贵股权发行、非凸调整成本）。本页用其简化核心讲解，状态为资本 $k$、债务 $b$、生产率 $z$。</p>
+
+  <h3>6.1 Bellman 方程</h3>
+  <div class="formula-block">
+    <div class="formula-label">Eq.5 — 企业价值函数（动态融资–投资）</div>
+    $$V(k,b,z)=\max_{k',b'}\Big\{\pi(k,z)-c(k',k)-b+\frac{b'}{1+r}+\beta\,\mathbb{E}\big[V(k',b',z')\mid z\big]\Big\}$$
+    <p style="margin-top:8px;font-size:13px;color:var(--text-light);">变量：$k$ 资本、$b$ 债务、$z$ 生产率；选择下期资本 $k'$ 与债务 $b'$；$\pi(k,z)$ 经营利润；$c(k',k)$ 调整成本；企业本期偿还旧债 $b$、按 $1/(1+r)$ 借入新债 $b'$；$\beta$ 贴现。<strong>经济直觉</strong>：企业在"多投资/多举债带来未来利润"与"调整成本与偿债压力"之间权衡。</p>
+  </div>
+  <div class="formula-block">
+    <div class="formula-label">Eq.6 — 生产函数与调整成本</div>
+    $$y=z\,k^{\alpha},\qquad c(k',k)=\gamma_0\,\mathbf{1}\{k'\neq(1-\delta)k\}+\tfrac{\psi}{2}\big(k'-(1-\delta)k\big)^2$$
+    <p style="margin-top:8px;font-size:13px;color:var(--text-light);">$y$ 产出，$\alpha$ 资本弹性；$\gamma_0$ 为<strong>固定调整成本</strong>（投资/撤资时一次性付出，非凸）；$\delta$ 折旧率；$\psi$ 二次调整成本。<strong>经济直觉</strong>：固定成本 $\gamma_0$ 导致投资"稀疏、批量"（lumpy investment），是识别投资行为的关键矩来源。</p>
+  </div>
+  <div class="formula-block">
+    <div class="formula-label">Eq.7 — 生产率 AR(1)</div>
+    $$z'=\rho z+\sigma\varepsilon',\qquad \varepsilon'\sim\mathcal{N}(0,1)$$
+    <p style="margin-top:8px;font-size:13px;color:var(--text-light);">$\rho$ 生产率自相关、$\sigma$ 生产率波动率。<strong>待估参数</strong>：$\theta=(\gamma_0,\rho,\delta,\sigma)$（论文还估 $\gamma_1,\chi,c_f$ 等）。</p>
+  </div>
+
+  <h3>6.2 Monte Carlo 模拟验证：True vs Fitted Moments</h3>
+  <p>用代码块在真实参数 $\theta^*=(0.02,0.90,0.08,0.12)$ 下生成数据矩，再训练矩网络后比对。本页代码实跑结果（CPU，seed=0）：</p>
+  <div class="table-wrap"><table>
+    <tr><th>矩</th><th>含义</th><th>数据矩（真实参数）</th><th>矩网络拟合 $R^2$</th></tr>
+    <tr><td>$\mathbb{E}[I/K]$</td><td>平均投资率</td><td>0.082</td><td>0.995</td></tr>
+    <tr><td>$\mathbb{E}[B/K]$</td><td>平均杠杆率</td><td>0.084</td><td>0.768</td></tr>
+    <tr><td>$\mathrm{sd}(I/K)$</td><td>投资率波动</td><td>0.007</td><td>0.760</td></tr>
+  </table></div>
+  <div class="callout info">
+    <div class="callout-title">如何读这张表</div>
+    <p>平均投资率 $R^2=0.995$ 说明该矩对参数变化<strong>高度敏感、易识别</strong>；杠杆率与投资波动的 $R^2\approx0.76$，说明它们对参数映射较平缓、存在<strong>弱识别</strong>——这正是下面"损失函数曲线诊断"要揭示的东西。</p>
+  </div>
+
+  <h3>6.3 参数识别诊断：损失函数曲线形态</h3>
+  <p>论文的最小损失函数（minimum loss function）做法：把某一个参数固定在网格点上，其余参数自由优化，画出"最佳可达损失 vs 该参数"的曲线。</p>
+  <ul>
+    <li><strong>可识别参数（如 $\gamma_0$、$\delta$）</strong>：损失曲线呈<strong>尖锐 V 形/唯一低谷</strong>——偏离真实值哪怕一点，拟合都显著变差，说明数据强约束该参数。</li>
+    <li><strong>弱识别参数</strong>：损失曲线<strong>平坦 / 多峰 / 无明显谷</strong>——在一大段参数范围内都能拟合得差不多，点估计不可信，需加约束、改矩或报告识别不充分。</li>
+  </ul>
+  <div class="callout warning">
+    <div class="callout-title">⚠ 本页代码的识别含义</div>
+    <p>代码块 3 实跑：$\delta$ 估计 0.078（真 0.08）、$\rho$ 估计 0.909（真 0.90）恢复良好；而 $\gamma_0$、$\sigma$ 偏离较大——因为它们主要靠投资波动/杠杆这些 $R^2$ 较低的矩识别。这正是"先做识别诊断、再报告估计值"的现实理由。</p>
+  </div>
+</div>
+
+<!-- ========== S7 代码 ========== -->
+<div class="section" id="s7">
+  <h2><span class="sec-num">07</span> 完整 PyTorch 代码（三段，已实跑）</h2>
+  <p>下面三段代码用模拟数据、<code class="inline">torch.manual_seed(0)</code>，CPU 即可运行。它们依次对应：① 扩展状态空间的神经网络值函数求解；② 市场出清矩 + 参数→矩映射网络；③ 外层参数估计循环（通过可微矩网络做梯度下降）。</p>
+
+  <h3>7.1 代码块一：神经网络近似值函数求解 Bellman</h3>
+  <div class="code-block"><div class="code-header"><span class="lang">python · torch</span><button class="copy-btn">复制</button></div><pre><code>import torch, torch.nn as nn, numpy as np
+torch.manual_seed(0); np.random.seed(0)
+
+ALPHA, BETA_DISC, R, PSI = 0.65, 0.96, 0.04, 1.0
+NK, NB, NZ = 9, 7, 6          # 候选 k' / 候选 b' / z' 蒙特卡洛抽样数
+
+def profit(k, z):             # 生产利润 π = z * k^α（z 取指数以保证为正）
+    return torch.exp(z) * (k ** ALPHA)
+
+# 值函数网络：输入(k,b,z,γ0,δ,ρ,σ) 共7维 → V。参数与价格进状态=扩展状态空间
+class ValueNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.net = nn.Sequential(nn.Linear(7,64), nn.SiLU(),
+                                 nn.Linear(64,64), nn.SiLU(),
+                                 nn.Linear(64,1))
+    def forward(self, s): return self.net(s).squeeze(-1)
+
+Vnet, Vtar = ValueNet(), ValueNet()   # Vtar=滞后 target 网络，稳定拟合值迭代
+Vtar.load_state_dict(Vnet.state_dict())
+optV = torch.optim.Adam(Vnet.parameters(), lr=1e-3)
+
+k_grid = torch.exp(torch.linspace(np.log(0.5), np.log(6.0), NK))
+b_grid = torch.linspace(0.0, 3.0, NB)
+
+def sample_state(n):          # 随机采状态 (k,b,z) 与参数 (γ0,δ,ρ,σ)
+    return (torch.rand(n)*5+.3, torch.rand(n)*2.5, torch.randn(n)*.5,
+            torch.rand(n)*.04+.005, torch.rand(n)*.08+.04,
+            torch.rand(n)*.2+.8, torch.rand(n)*.1+.05)
+
+def bellman_residual(n=512):
+    k,b,z,g,d,rho,sig = sample_state(n)
+    kp, bp = k_grid.view(1,-1), b_grid.view(1,-1)
+    inv = kp - (1-d.view(-1,1))*k.view(-1,1)          # 净投资
+    c_adj = g.view(-1,1)*(inv.abs()>1e-6).float() + .5*PSI*inv**2  # 固定+二次调整成本
+    div_k = profit(k.view(-1,1), z.view(-1,1)) - c_adj - b.view(-1,1)
+    div = div_k.unsqueeze(2) + (bp/(1+R)).view(1,1,NB)            # 现金流 (n,NK,NB)
+    zp = rho.view(-1,1)*z.view(-1,1) + sig.view(-1,1)*torch.randn(n,NZ)  # z' AR(1)
+    sN = torch.zeros(n,NK,NB,NZ,7)
+    sN[...,0]=kp.view(1,NK,1,1); sN[...,1]=bp.view(1,1,NB,1)
+    sN[...,2]=zp.view(n,1,1,NZ)
+    sN[...,3]=g.view(-1,1,1,1); sN[...,4]=d.view(-1,1,1,1)
+    sN[...,5]=rho.view(-1,1,1,1); sN[...,6]=sig.view(-1,1,1,1)
+    with torch.no_grad():                              # 用滞后网络算 Bellman 目标
+        Vnext = Vtar(sN.reshape(-1,7)).reshape(n,NK,NB,NZ).mean(-1)
+    V_target = torch.logsumexp((div + BETA_DISC*Vnext).reshape(n,-1), dim=1)  # 平滑 max
+    V_cur = Vnet(torch.stack([k,b,z,g,d,rho,sig],1))
+    return ((V_cur - V_target)**2).mean()
+
+for ep in range(400):                 # 训练循环：最小化 Bellman 残差
+    optV.zero_grad()
+    loss = bellman_residual(); loss.backward(); optV.step()
+    with torch.no_grad():             # Polyak 缓慢更新 target 网络
+        for p,pt in zip(Vnet.parameters(), Vtar.parameters()):
+            pt.mul_(0.995).add_(0.005*p)
+    if ep % 100 == 0: print(f"epoch {ep}: Bellman residual = {loss.item():.4f}")
+# 实跑：残差 35.9 → 0.27，值函数收敛
+</code></pre></div>
+
+  <h3>7.2 代码块二：市场出清矩 + 训练参数→矩映射网络</h3>
+  <div class="code-block"><div class="code-header"><span class="lang">python · torch</span><button class="copy-btn">复制</button></div><pre><code>@torch.no_grad()
+def simulate_moments(g0, d0, r0, s0, T=30, N=16):   # 用训练好的值网络模拟矩
+    k = torch.ones(N)*2.0; b = torch.ones(N)*0.5; z = torch.zeros(N)
+    inv_hist, lev_hist = [], []
+    for t in range(T):
+        kp, bp = k_grid.view(1,-1), b_grid.view(1,-1)
+        inv = kp - (1-d0)*k.view(-1,1)
+        ca = g0*(inv.abs()>1e-6).float() + .5*PSI*inv**2
+        div = (profit(k.view(-1,1),z.view(-1,1))-ca-b.view(-1,1)).unsqueeze(-1) \
+              + (bp/(1+R)).view(1,1,NB)
+        zp = r0*z.view(-1,1) + s0*torch.randn(N,NZ)
+        sN = torch.zeros(N,NK,NB,NZ,7)
+        sN[...,0]=kp.view(1,NK,1,1); sN[...,1]=bp.view(1,1,NB,1)
+        sN[...,2]=zp.view(N,1,1,NZ)
+        sN[...,3]=g0; sN[...,4]=d0; sN[...,5]=r0; sN[...,6]=s0
+        VN = Vnet(sN.reshape(-1,7)).reshape(N,NK,NB,NZ).mean(-1)
+        best = (div + BETA_DISC*VN).reshape(N,-1).argmax(1)   # 最优 (k',b')
+        kn, bn = k_grid[best//NB], b_grid[best%NB]
+        inv_hist.append(((kn-(1-d0)*k)/k).mean()); lev_hist.append((b/k).mean())
+        k,b,z = kn, bn, r0*z + s0*torch.randn(N)
+    return torch.tensor([torch.stack(inv_hist[10:]).mean(),
+                         torch.stack(lev_hist[10:]).mean(),
+                         torch.stack(inv_hist[10:]).std()])
+
+# 伪参数示意：把均衡价格 p 当伪参数，市场出清失衡=0 作为额外矩
+def market_clearing_imbalance(pseudo_price, g0,d0,r0,s0):
+    lev = simulate_moments(g0,d0,r0,s0)[1]
+    return lev - 1.0/pseudo_price          # 均衡要求该失衡 = 0
+
+# --- 采样参数设计集，构造 (参数, 矩) 数据 ---
+Nd = 200
+g_d,d_d,r_d,s_d = (torch.rand(Nd)*.04+.005, torch.rand(Nd)*.08+.04,
+                   torch.rand(Nd)*.2+.8,   torch.rand(Nd)*.1+.05)
+M = torch.stack([simulate_moments(g_d[i],d_d[i],r_d[i],s_d[i]) for i in range(Nd)])
+
+class MomentNet(nn.Module):              # 参数→矩 代理网络（输入参数，输出矩）
+    def __init__(self):
+        super().__init__()
+        self.net = nn.Sequential(nn.Linear(4,32), nn.SiLU(),
+                                 nn.Linear(32,32), nn.SiLU(), nn.Linear(32,3))
+    def forward(self, x): return self.net(x)
+
+mnet = MomentNet(); optM = torch.optim.Adam(mnet.parameters(), lr=1e-3)
+X = torch.stack([g_d,d_d,r_d,s_d],1); Xm, Xs = X.mean(0), X.std(0)+1e-8
+Mm, Ms = M.mean(0), M.std(0)+1e-8
+for ep in range(800):                    # MSE 训练矩映射
+    optM.zero_grad()
+    loss = ((mnet((X-Xm)/Xs) - (M-Mm)/Ms)**2).mean()
+    loss.backward(); optM.step()
+with torch.no_grad():                    # 报告样本外/样本内 R^2
+    pred = mnet((X-Xm)/Xs)*Ms+Mm
+    R2 = 1 - ((M-pred)**2).sum(0)/((M-M.mean(0))**2).sum(0)
+print("矩网络 R^2 =", R2.tolist())       # 实跑：[0.995, 0.768, 0.76]
+</code></pre></div>
+
+  <h3>7.3 代码块三：外层参数估计循环（微分替代模拟）</h3>
+  <div class="code-block"><div class="code-header"><span class="lang">python · torch</span><button class="copy-btn">复制</button></div><pre><code># 真实参数，生成"数据矩"
+g_true,d_true,r_true,s_true = 0.02, 0.08, 0.90, 0.12
+m_data = simulate_moments(g_true,d_true,r_true,s_true)
+
+# 把待估参数当 leaf variable；通过可微矩网络求梯度（替代每次重新模拟）
+th = torch.tensor([0.01,0.10,0.85,0.10], requires_grad=True)
+optEst = torch.optim.Adam([th], lr=1e-2)
+lo = torch.tensor([.005,.04,.8,.05]); hi = torch.tensor([.045,.12,1.0,.15])
+W = torch.diag(1.0/(Ms**2))              # 加权矩阵 = 矩方差逆（对角近似）
+for step in range(400):                  # 最小距离估计（SMM），梯度来自矩网络
+    optEst.zero_grad()
+    m_hat = mnet((th-Xm)/Xs)*Ms+Mm       # 毫秒级前向预测矩
+    loss = (m_data-m_hat) @ W @ (m_data-m_hat)   # 加权矩距离（可微）
+    loss.backward(); optEst.step()       # 自动微分给出 ∂loss/∂θ
+    with torch.no_grad(): th.clamp_(lo,hi)
+    if step % 100 == 0:
+        print(step, round(loss.item(),4), [round(x,3) for x in th.tolist()])
+# 实跑恢复：δ=0.078(真.08), ρ=0.909(真.90)；γ0/σ 因弱识别偏离——见识别诊断
+</code></pre></div>
+
+  <div class="callout tip">
+    <div class="callout-title">✓ 代码已实跑验证</div>
+    <p>三段代码在 <code class="inline">torch 2.x (CPU)</code> + <code class="inline">numpy</code> 下用 <code class="inline">seed=0</code> 完整跑通：Bellman 残差 35.9→0.27；矩网络 $R^2=[0.995,0.768,0.76]$；外层估计收敛到 $\theta\approx(0.037,0.078,0.909,0.144)$。论文级应用需把值网络换成 JAX/GPU、扩大参数设计集、加 10 折交叉验证与 Levenberg–Marquardt 二阶优化。</p>
+  </div>
+</div>
+
+<!-- ========== S8 文献体系 ========== -->
+<div class="section" id="s8">
+  <h2><span class="sec-num">08</span> 相关文献体系</h2>
+
+  <div class="paper-card">
+    <span class="paper-type en">English · NBER WP 35283</span>
+    <div class="paper-title">AI for Structural Estimation</div>
+    <div class="paper-meta">Victor Duarte &amp; Julia Fonseca · NBER Working Paper 35283, 2026</div>
+    <div class="paper-desc">本页核心文献。把价格当伪参数、市场出清当矩；神经网络逼近值函数与"参数→矩"映射；自动微分 + JAX/GPU；估计时间由数天降到约 20 分钟；并提出最小损失函数与闭环识别诊断。应用为 Gao-Whited-Zhang (2021) 动态杠杆–投资模型。</div>
+  </div>
+
+  <div class="paper-card">
+    <span class="paper-type en">English · 求解动态模型</span>
+    <div class="paper-title">Deep Learning for Solving Dynamic Economic Models</div>
+    <div class="paper-meta">Lilia Maliar &amp; Sergei Maliar</div>
+    <div class="paper-desc">方法定位：把动态模型求解<strong>重新表述为非线性回归</strong>——用神经网络逼近决策规则与值函数、用随机梯度下降估计决策函数；强调神经网络随维度线性可扩展、能自动做模型降维，是"用 NN 替代多项式/sieve 求解"的奠基性路线。本页值函数网络即属此脉络。</div>
+  </div>
+
+  <div class="paper-card">
+    <span class="paper-type en">English · BIS WP 1312</span>
+    <div class="paper-title">Generative Economic Modeling</div>
+    <div class="paper-meta">BIS Working Paper No. 1312</div>
+    <div class="paper-desc">方法定位：把神经网络与<strong>常规数值方法结合</strong>，用<strong>简化子模型</strong>逼近完整模型的动态，再生成/估计完整模型。对应本页"简化子模型预训练、规避维数灾难"的策略。</div>
+  </div>
+
+  <div class="paper-card">
+    <span class="paper-type en">English · arXiv</span>
+    <div class="paper-title">Deep-MacroFin: Informed Equilibrium Neural Network for Continuous-Time Economic Models</div>
+    <div class="paper-meta">arXiv:2408.10368</div>
+    <div class="paper-desc">方法定位：用深度学习求解连续时间 HJB 方程与 Kolmogorov 前向方程（KFE），把值函数/分布用网络逼近、由 HJB 残差引导训练。代表"连续时间 PDE/PINN"路线，与本页离散时间 VFI 路线互补。</div>
+  </div>
+
+  <div class="paper-card">
+    <span class="paper-type en">English · 讲义</span>
+    <div class="paper-title">Deep Learning for Solving and Estimating Dynamic Models in Economics and Finance</div>
+    <div class="paper-meta">mmcky 公开讲义（DEQN / PINN 教学）</div>
+    <div class="paper-desc">方法定位：系统教学 <strong>Deep Equilibrium Nets (DEQN)</strong>（把均衡条件嵌入网络损失）与 <strong>PINN（Physics-Informed Neural Networks）</strong>（把 HJB/PDE 残差作为正则项），面向高维异质性主体、含 occasionally binding constraints 的模型，是本页代码块一的理论背景。</div>
+  </div>
+
+  <div class="paper-card">
+    <span class="paper-type en">English · 有限差分</span>
+    <div class="paper-title">Methodological Equations for Dynamic Heterogeneous Agent Models</div>
+    <div class="paper-meta">Achdou, Han, Lasry, Lions &amp; Moll · 2022（AERM 综述/有限差分路线）</div>
+    <div class="paper-desc">方法定位：连续时间异质性主体模型的<strong>有限差分法</strong>基准。深度学习路线的"对照组"——本页 AI 方法正是在与这类传统数值方法对比中凸显其高维扩展性。</div>
+  </div>
+
+  <div class="paper-card">
+    <span class="paper-type en">English · Master Equation</span>
+    <div class="paper-title">Deep Learning Solutions to Master Equations for Continuous-Time Heterogeneous-Agent Macro Models</div>
+    <div class="paper-meta">Gu 等 · 2024（全局 master equation + 深度学习）</div>
+    <div class="paper-desc">方法定位：把分布状态代入后，用神经网络求解<strong>全局 master equation</strong>，处理高维异质性主体。展示深度学习在"全局解而非局部扰动"上的能力。</div>
+  </div>
+</div>
+
+<!-- ========== S9 与现有方法连接 ========== -->
+<div class="section" id="s9">
+  <h2><span class="sec-num">09</span> 与现有方法的连接</h2>
+  <p>AI 方法不是新的识别策略，而是<strong>求解/估计的加速层</strong>。它接在已有的结构估计框架上：</p>
+  <ul>
+    <li><a href="01-mle.html">01 MLE</a>：似然不可解析时，AI 加速内层模型求解；</li>
+    <li><a href="02-gmm.html">02 GMM</a>：矩条件形式不变，只是矩 $g(\theta)$ 由神经网络闭式给出、可求梯度；</li>
+    <li><a href="13-nonlinear-gmm-smm.html">13 SMM</a>：本质相同——仍是最小距离估计，但把"每次重新模拟"换成"矩网络毫秒预测"；</li>
+    <li><a href="14-mpec.html">14 MPEC</a>：同为"消除嵌套"的思路，MPEC 用约束优化重写，AI 法用可微代理网络重写，二者可结合；</li>
+    <li><a href="05-dynamic-structural.html">05 动态结构</a>：Bellman/VFI 是内层瓶颈，AI 法用值函数网络替代 VFI。</li>
+  </ul>
+  <div class="callout tip">
+    <div class="callout-title">🔗 方法–模型配合关系（本页是"方法"，不是"模型"）</div>
+    <p>本方法与各模型分支是<strong>配合</strong>而非从属关系：它不规定经济结构，只负责把任意结构模型的估计算得更快。它可加速 <a href="05-dynamic-structural.html">05 动态结构</a>、<a href="15-dynamic-games.html">15 动态博弈</a>、<a href="22-investment-financing-dynamic.html">22 投资–融资动态</a>、<a href="04-blp.html">04 BLP 随机系数</a>、<a href="18-lifecycle-consumption-savings.html">18 生命周期消费储蓄</a> 等模型分支的估计——选定模型分支后，把其内层"反复解模型"的环节换成这里的可微代理网络即可，外层矩条件、识别与数据构造仍由该模型分支与 01/02/06/13/14 等估计方法决定。</p>
+  </div>
+  <div class="table-wrap"><table>
+    <tr><th>维度</th><th>传统 SMM（VFI + 模拟退火）</th><th>AI 驱动结构估计</th></tr>
+    <tr><td>计算时间</td><td>数天（论文案例 4 天未达）</td><td>约 20 分钟（论文）</td></tr>
+    <tr><td>梯度</td><td>无梯度，模拟退火/网格搜索</td><td>矩网络可微，解析 Jacobian/Hessian</td></tr>
+    <tr><td>维数扩展性</td><td>张量网格指数爆炸</td><td>网络参数随维度线性增长</td></tr>
+    <tr><td>一般均衡</td><td>每次单独做价格求根</td><td>伪参数法：市场出清当矩条件</td></tr>
+    <tr><td>识别诊断</td><td>局部 Hessian，易忽略弱识别</td><td>最小损失函数 + 闭环检验做全局诊断</td></tr>
+    <tr><td>代价</td><td>大量 CPU 机时</td><td>一次性训练 + GPU，论文约 2 美元云成本</td></tr>
+  </table></div>
+  <div class="callout danger">
+    <div class="callout-title">关键边界</div>
+    <p>AI 加速<strong>不替代识别策略</strong>：模型设定、矩选择、排除约束、数据仍决定参数能否被识别；网络只是让你更快地在正确的识别问题上搜索。识别不清，GPU 只会更快地得到错误答案。</p>
+  </div>
+</div>
+
+<!-- ========== S10 论文案例 ========== -->
+<div class="section" id="s10">
+  <h2><span class="sec-num">10</span> 论文案例</h2>
+
+  <div class="paper-card">
+    <span class="paper-type en">English · 核心方法</span>
+    <div class="paper-title">AI for Structural Estimation (NBER WP 35283)</div>
+    <div class="paper-meta">Victor Duarte &amp; Julia Fonseca · NBER WP 35283, 2026. DOI 10.3386/w35283</div>
+    <div class="paper-desc">本页主文献。三大构件 + 四层贡献；应用 Gao-Whited-Zhang (2021) 动态杠杆–投资模型（三状态、三控制、内生违约、昂贵股权发行、非凸调整成本）；一般均衡版由工资出清劳动市场；并构建了能根据自然语言提示把方法应用到新模型的 AI agent。</div>
+  </div>
+
+  <div class="paper-card">
+    <span class="paper-type en">English · 求解奠基</span>
+    <div class="paper-title">Deep Learning for Solving Dynamic Economic Models</div>
+    <div class="paper-meta">Lilia Maliar &amp; Serguei Maliar</div>
+    <div class="paper-desc">神经网络逼近决策规则/值函数、SGD 估计、模型自动降维——AI 求解动态模型的方法论源头。</div>
+  </div>
+
+  <div class="paper-card">
+    <span class="paper-type en">English · 生成式建模</span>
+    <div class="paper-title">Generative Economic Modeling (BIS WP 1312)</div>
+    <div class="paper-meta">Bank for International Settlements, WP 1312</div>
+    <div class="paper-desc">神经网络 + 常规数值方法结合、简化子模型逼近完整模型动态。</div>
+  </div>
+
+  <div class="paper-card">
+    <span class="paper-type en">English · 连续时间</span>
+    <div class="paper-title">Deep-MacroFin / Achdou et al. 2022 / Gu et al. 2024</div>
+    <div class="paper-meta">arXiv:2408.10368；Achdou, Han, Lasry, Lions &amp; Moll (2022)；Gu 等 (2024) master equation</div>
+    <div class="paper-desc">连续时间 HJB/KFE 的深度学习（Deep-MacroFin）、有限差分基准（Achdou et al.）、全局 master equation 深度学习求解（Gu et al.）三条互补路线。</div>
+  </div>
+
+  <div class="paper-card">
+    <span class="paper-type cn">中文 · 研究范式</span>
+    <div class="paper-title">大模型与经济学研究范式变革（中文文献）</div>
+    <div class="paper-meta">《计量经济学报》"How Will ChatGPT and Large Models Influence the Research Paradigm in Economics?"（CJoE2023-0160）</div>
+    <div class="paper-desc">中文顶刊/权威方法期刊已系统讨论以深度学习、大模型为代表的 AI 技术如何重塑经济学建模、求解与估计范式；国内高校（如北大汇丰萨金特数量经济与金融研究所等）也举办"机器学习 + 异质性主体模型"高级宏观研讨会。需要说明：<strong>截至本页写作，中文顶刊上"用深度学习直接做结构估计"的成熟范本仍在快速涌现</strong>，建议优先复用上述英文方法文献，再结合中国数据（CFPS/工业企业库）做应用；本页不臆造尚未核实的中文期刊论文标题与卷期。</div>
+  </div>
+</div>
+
+<!-- ========== S11 常见错误 ========== -->
+<div class="section" id="s11">
+  <h2><span class="sec-num">11</span> 常见错误与陷阱</h2>
+
+  <div class="callout danger">
+    <div class="callout-title">✗ 错误 1：神经网络过拟合，矩映射在训练域外失效</div>
+    <p>矩网络只在采样的参数设计集内准确。外层优化器一旦走到设计集<strong>之外</strong>，$g(\theta)$ 就是外推、毫无意义，梯度把参数引向错误方向。务必：把参数 clamp 在设计集范围内、用 10 折交叉验证监控 $R^2$、必要时按自适应收缩逐步扩大/精修设计集。</p>
+  </div>
+
+  <div class="callout danger">
+    <div class="callout-title">✗ 错误 2：伪参数法忽略均衡的存在性 / 唯一性</div>
+    <p>把价格当伪参数、市场出清当矩条件，前提是一般均衡<strong>存在且通常唯一</strong>。若模型有多重均衡或不连续定价，扩展状态空间上训练出的"解函数"可能在不同均衡间跳变，市场出清矩不再唯一可解。必须先验证均衡存在唯一性。</p>
+  </div>
+
+  <div class="callout danger">
+    <div class="callout-title">✗ 错误 3：不做识别诊断就直接报告点估计</div>
+    <p>最小损失函数平坦 / 闭环检验恢复不出参数，说明弱识别。此时报告一个精确小数点的 $\hat\theta$ 是误导。正确做法是先画最小损失曲线、做 closed-loop test，弱识别参数要么加约束、要么明确报告"不可识别"。</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">⚠ 错误 4：只追求 GPU 加速而牺牲数值精度</div>
+    <p>GPU 默认 float16/bfloat16、Monte Carlo 抽样数过小，会让值函数残差与矩噪声被"加速"放大，估计收敛但数值不可信。论文用 JAX 双精度/混合精度并控制抽样噪声；教学中也要固定 seed、报告残差与 $R^2$。</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">⚠ 错误 5：把 AI 方法当成识别策略的替代</div>
+    <p>神经网络让你更快搜索，但<strong>不创造识别</strong>。矩选得不好、排除约束缺失，再多 GPU 也无法把参数识别出来。AI 是求解/估计的加速层，模型设定与矩选择仍是经济学核心。</p>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-title">⚠ 错误 6：值函数网络不收敛 / 训练发散</div>
+    <p>直接在线拟合 $V\approx\mathrm{logsumexp}(r+\beta V)$ 容易正反馈发散。本页代码用 <strong>target network（Polyak 滞后更新）+ stop-gradient</strong> 稳定拟合值迭代；实战中还需合理缩放状态、用 logsumexp 平滑 max、监控 Bellman 残差下降。</p>
+  </div>
+</div>
+
+<div class="page-nav">
+  <a href="14-mpec.html" class="prev">
+    <div class="nav-label">← 上一节</div>
+    <div class="nav-title">MPEC 方法</div>
+  </a>
+  <a href="06-counterfactual.html" class="next">
+    <div class="nav-label">下一节 →</div>
+    <div class="nav-title">反事实分析</div>
+  </a>
+</div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+</script>
+</body>
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>内生性与 IV / 2SLS | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item active" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main"><div class="content-wrap">
+
+  <div class="breadcrumb">
+    <a href="../index.html">首页</a><span class="sep">/</span>
+    <a href="index.html">实证论文</a><span class="sep">/</span>
+    <span>内生性与 IV / 2SLS</span>
+  </div>
+
+  <div class="page-header">
+    <span class="tag">实证 · 05</span>
+    <h1>内生性与工具变量：2SLS、弱IV与过度识别检验</h1>
+    <p class="desc">当解释变量 $x$ 与误差项 $\varepsilon$ 相关时，OLS 估计量不一致。工具变量法（Instrumental Variables, IV）通过一个"只通过 $x$ 影响 $y$"的外生变量 $z$，把 $x$ 中干净的那部分变化"提取"出来。本页讲清楚 IV 的三个条件、2SLS 的代数、弱工具变量和过度识别检验的实务操作。</p>
+  </div>
+
+  <div class="prereq-box">
+    <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+    <div class="prereq-grid">
+      <div class="prereq-item">
+        <div class="prereq-label">① 数学 / 统计基础</div>
+        <div class="prereq-body">工具变量理论（相关性 / 外生性 / 排他性约束）、2SLS 两阶段最小二乘的矩阵推导、弱工具变量统计（第一阶段 F 统计量、Stock–Yogo 临界值）。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">② 经济学理论前置</div>
+        <div class="prereq-body">计量经济学进阶：内生性三大来源（遗漏变量 / 测量误差 / 反向因果）与识别策略思维。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">③ 软件 / 计算前置</div>
+        <div class="prereq-body">Stata 17+（外部命令：<code class="inline">ivreg2</code>、<code class="inline">xtivreg2</code>、<code class="inline">estout</code>；含弱 IV 检验与过度识别 Hansen J 检验）。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">④ 站内前置页面</div>
+        <div class="prereq-body">先学 <a href="04-baseline-regression.html">04 基准回归</a>，理解 OLS 为什么会不一致。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">⑤ 难度分级</div>
+        <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">进阶</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toc-box">
+    <div class="toc-title">本页目录 / CONTENTS</div>
+    <ol>
+      <li><a href="#s1">内生性的三大来源</a></li>
+      <li><a href="#s2">工具变量的三个条件</a></li>
+      <li><a href="#s3">2SLS 估计量与第一阶段</a></li>
+      <li><a href="#s4">弱工具变量检验（F &gt; 10）</a></li>
+      <li><a href="#s4b">弱IV深化：Stock–Yogo 临界值与 Many Instruments</a></li>
+      <li><a href="#s5">过度识别检验与 AR 检验</a></li>
+      <li><a href="#s5b">弱IV稳健推断：AR / CLR / rk LM</a></li>
+      <li><a href="#s6">完整 Stata 代码</a></li>
+      <li><a href="#s6b">高维工具变量与机器学习 IV</a></li>
+      <li><a href="#s7">论文案例</a></li>
+      <li><a href="#s8">常见错误与进阶</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="s1">
+    <h2><span class="sec-num">01</span> 内生性的三大来源</h2>
+    <p>所谓内生性（endogeneity），用一句话说就是 <code class="inline">Cov(x, ε) ≠ 0</code>。OLS 的一致性依赖 <strong>严格外生性</strong> $E[\varepsilon|X]=0$，一旦这个假设破裂，$\hat{\beta}_{OLS}$ 就是<strong>有偏且不一致</strong>的，再大的样本量也救不回来。内生性在实证微观中几乎是"默认存在"的，主要来自三个渠道：</p>
+    <ul>
+      <li><strong>遗漏变量偏误（omitted variable bias）</strong>：你想估计"教育对工资的影响"，但能力 ability 既影响教育选择又影响工资，却不在你的回归里。FE 只能吃掉时不变遗漏变量，时不变的 ability 可以被个体 FE 吸收，但时变的 ability（例如某一年突然开窍）就不行。</li>
+      <li><strong>反向因果（reverse causality）</strong>：你想估计"警察数量对犯罪率的影响"，但犯罪率高的城市会增加警察编制——$y \to x$ 与 $x \to y$ 同时存在，OLS 把两个方向混为一谈。</li>
+      <li><strong>测量误差（measurement error）</strong>：真实的"永久收入"测不准，你用"当年收入"代替，经典测量误差会让 $\hat{\beta}$ 向零偏（attenuation bias），且当测量误差出现在多变量回归中时偏误方向甚至不可预测。</li>
+    </ul>
+    <div class="callout info">
+      <div class="callout-title">IV 的核心思想</div>
+      <p>找一个变量 $z$，它"外生"——只通过 $x$ 这条通道影响 $y$，不直接出现在 $y$ 的方程里。那么 $z$ 对 $x$ 的那部分变异是"干净"的，用这部分变异去回归 $y$，就能拿到一致的 $\beta$。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s2">
+    <h2><span class="sec-num">02</span> 工具变量的三个条件</h2>
+    <p>一个合格的工具变量 $z$ 必须同时满足以下三个条件，缺一不可：</p>
+    <div class="step-flow">
+      <div class="step-item">
+        <div class="step-title">条件 1 · Relevance 相关性：$Cov(z, x) \neq 0$</div>
+        <div class="step-desc">$z$ 必须真实地影响 $x$。这一条可以直接在数据里检验——就是第一阶段回归的 F 统计量。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">条件 2 · Exogeneity 外生性：$Cov(z, \varepsilon) = 0$</div>
+        <div class="step-desc">$z$ 本身不能与误差项相关。这是一个<strong>不可直接检验</strong>的假设，必须靠经济理论 + 制度叙述 + 图形证据来支撑。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">条件 3 · Exclusion Restriction 排他性约束</div>
+        <div class="step-desc">$z$ 只能通过 $x$ 影响 $y$，不能有其他路径。这是 IV 识别的灵魂，也是审稿人最常攻击的点。当工具变量个数 &gt; 内生变量个数时，多余的工具变量可以做过度识别检验来"间接"证伪一部分。</div>
+      </div>
+    </div>
+    <p>教科书式的经典例子：Angrist (1990) 用<strong>越战抽签号 lottery number</strong>作为"是否服兵役"的 IV——抽签号随机分配，与个人能力、家庭背景无关（外生 + 排他），但显著影响了入伍概率（相关）。</p>
+  </div>
+
+  <div class="section" id="s3">
+    <h2><span class="sec-num">03</span> 2SLS 估计量与第一阶段</h2>
+    <p>两阶段最小二乘法（Two-Stage Least Squares, 2SLS）分两步：第一阶段把内生变量 $x$ 对工具变量 $z$ 回归，取出预测值 $\hat{x}$；第二阶段用 $\hat{x}$ 代替 $x$ 对 $y$ 回归。矩阵形式可以合并成一个闭式解：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 3.1 — 2SLS 估计量</div>
+      $$ \hat{\beta}_{2SLS} = (X' P_Z X)^{-1} X' P_Z y, \qquad P_Z = Z(Z'Z)^{-1}Z' $$
+    </div>
+    <p>其中 $P_Z$ 是工具变量 $Z$ 张成空间上的投影矩阵。直观上，$P_Z X$ 就是把内生解释变量投影到工具变量空间后"留下"的、与误差项正交的那部分变异。</p>
+    <p>第一阶段回归写出来是：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 3.2 — 第一阶段 First Stage</div>
+      $$ x_i = \pi_0 + \pi_1 z_i + \mathbf{W}_i'\boldsymbol{\eta} + v_i $$
+    </div>
+    <p>第二阶段：$y_i = \beta_0 + \beta_1 \hat{x}_i + \mathbf{W}_i'\boldsymbol{\delta} + u_i$。注意实务中<strong>不要真的分两次手写 OLS</strong>——那样标准误会错。Stata 的 <code class="inline">ivregress 2sls</code> 一次性算完，标准误自动正确。</p>
+  </div>
+
+  <div class="section" id="s4">
+    <h2><span class="sec-num">04</span> 弱工具变量检验（F &gt; 10）</h2>
+    <p>当 $z$ 对 $x$ 的解释力很弱（weak IV）时，2SLS 估计量即使在大样本下也会<strong>严重偏向 OLS</strong>，并且标准误不可靠。Stock–Yogo (2005) 给出了经验阈值：</p>
+    <div class="callout tip">
+      <div class="callout-title">经验法则：第一阶段 F &gt; 10</div>
+      <p>单个内生变量、单个工具变量时，第一阶段排除工具变量本身的 F 统计量（weak identification test）必须 <strong>&gt; 10</strong>（Stock–Yogo 10% maximal IV size 临界值约为 16.38，实务常用 10 作为宽松阈值）。如果 F &lt; 10，你的 IV 就是弱工具，2SLS 结果不可信。</p>
+    </div>
+    <p>当有多个内生变量时，要看 <strong>Cragg–Donald Wald F 统计量</strong>，并对照 Stock–Yogo 表格中的临界值。Stata 的 <code class="inline">ivregress 2sls</code> 配合 <code class="inline">estat firststage</code> 会自动输出这些量。</p>
+  </div>
+
+  <div class="section" id="s4b">
+    <h2><span class="sec-num">04b</span> 弱IV深化：Stock–Yogo 临界值与 Many Instruments</h2>
+    <p>Staiger &amp; Stock (1997) 证明：当工具变量很弱时，即使样本量趋于无穷，2SLS 估计量也是<strong>不一致</strong>的——其分布收敛到一个随"弱识别"参数而非正态的随机变量。弱 IV 的三个实务后果必须写进论文：</p>
+    <ul>
+      <li><strong>点估计有偏，且方向朝 OLS 偏。</strong>弱工具把 $x$ 里"不干净"的部分也带进了 $\hat{x}$，$\hat{\beta}_{2SLS}$ 被拉向 $\hat{\beta}_{OLS}$。弱 IV 下 2SLS 可能比 OLS 还差。</li>
+      <li><strong>标准误被低估，t 检验过度拒绝。</strong>名义 5% 的 Wald 检验实际拒绝率可能高达 25%—30%（size distortion）。</li>
+      <li><strong>置信区间覆盖率远低于 95%。</strong>弱识别下 Wald 型置信区间又窄又偏，不能再用。</li>
+    </ul>
+
+    <h3>04b.1 第一阶段 F 与 Stock–Yogo (2005) 临界值表</h3>
+    <p>第一阶段排除工具变量的 F 统计量，在单内生变量时就是"工具是否够强"的直接度量。Staiger–Stock 的经验法则 F&gt;10 只是一个粗略门槛；严格做法是把 Cragg–Donald（i.i.d. 下）或 Kleibergen–Paap rk Wald F（异方差/聚类下）与 <strong>Stock–Yogo (2005) 临界值表</strong>对照。下表为<strong>单个内生解释变量（K1=1）、2SLS、i.i.d. 误差</strong>下，按"最大可容忍的 5% Wald 检验 size distortion"给出的临界值：</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>排除工具数 L1</th><th>10% maximal IV size</th><th>15% maximal IV size</th><th>20% maximal IV size</th><th>25% maximal IV size</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1（恰好识别）</td><td>16.38</td><td>8.96</td><td>6.66</td><td>5.53</td></tr>
+          <tr><td>2</td><td>19.93</td><td>11.59</td><td>8.75</td><td>7.25</td></tr>
+          <tr><td>3</td><td>13.91</td><td>9.08</td><td>6.46</td><td>5.39</td></tr>
+          <tr><td>5</td><td>18.37</td><td>10.83</td><td>6.77</td><td>5.25</td></tr>
+          <tr><td>10</td><td>20.74</td><td>11.49</td><td>6.61</td><td>4.86</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout info">
+      <div class="callout-title">怎么读这张表</div>
+      <p>"10% maximal IV size = 13.91" 的含义是：只有当你的第一阶段 F 超过 13.91 时，名义 5% 检验的实际拒绝率才不会超过 10%。F&gt;10 的经验法则大致对应"3 个工具、15% maximal size（9.08）"这一档——它比"10% maximal size"宽松。<strong>临界值随 K1、L1 与容差而变，务必读你自己 <code class="inline">ivreg2</code> 输出里那一行</strong>，不要硬套上表。异方差/聚类时 F 统计量改用 Kleibergen–Paap rk Wald F，与同一组临界值比较；若仍存疑，用 Montiel Olea–Pflueger effective F 或直接上弱识别稳健检验（见 s5b）。</p>
+    </div>
+
+    <h3>04b.2 多个弱工具变量问题（Many Instruments Bias）</h3>
+    <p>当你"为了凑过度识别、多放几个工具"时会走向另一个坑：<strong>many / weak instruments bias</strong>。工具数 $L$ 相对于样本量 $n$ 过大时（哪怕每个工具单独都不算太弱），2SLS 同样向 OLS 偏，且 Sargan/Hansen J 过度识别检验也会失真。经验上若工具数接近甚至超过 10—20 个，应改用 <strong>LIML / Fuller 估计量</strong>（对 many/weak instruments 更稳健），或用 Hansen–Heaton–Yaron 迭代 GMM，而不是堆工具做 2SLS。</p>
+
+    <h3>04b.3 完整 Stata 代码：弱IV诊断</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · weak_iv_diag.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* 弱工具变量诊断：第一阶段F / Stock-Yogo / weakivtest
+* 用模拟数据，set seed 保证可复现
+*==============================================================*
+clear all
+set seed 20240601
+set obs 500
+* 构造一个"工具很弱"的例子：z 对 x 的系数只有 0.2
+gen z1 = rnormal()
+gen z2 = rnormal()
+gen z3 = rnormal()
+gen u  = rnormal()
+gen x  = 0.2*z1 + 0.2*z2 + 0.2*z3 + u      // 第一阶段信号弱
+gen y  = 0.5*x + u + rnormal()             // x 与 u 相关 => 内生
+
+* --- 1. ivregress + estat firststage（内置）---
+ivregress 2sls y (x = z1 z2 z3), robust
+estat firststage
+* 关注：
+*   "First-stage F( 3, 496)" 列：与 Stock-Yogo 临界值比较
+*   若 F 明显 &lt; 10（或低于 10% maximal size 临界值）=> 弱IV
+
+* --- 2. ivreg2：一次输出全部诊断 ---
+* ssc install ivreg2, replace
+* ssc install ranktest, replace
+ivreg2 y (x = z1 z2 z3), robust first
+* 自动输出：
+*   Underidentification test (Kleibergen-Paap rk LM)   -> H0 不可识别
+*   Weak identification stat (Cragg-Donald Wald F / Kleibergen-Paap rk Wald F)
+*   Stock-Yogo weak ID test critical values（自动按 K1,L1 列临界值）
+*   Sargan/Hansen J（过度识别）
+
+* --- 3. weakivtest（仅弱识别检验，Stata 17+ 或外部）---
+* ssc install weakivtest, replace
+weakivtest
+* 输出：最小特征值 F、对应 Stock-Yogo 容差（实际最大 size/relative bias）
+
+* --- 4. weakiv（Pflueger-Wang 有效F，异方差/聚类稳健）---
+* ssc install weakiv, replace
+weakiv y (x = z1 z2 z3), robust
+* 适用于异方差/聚类/自相关：报告 effective F 与 5% 临界值
+</code></pre>
+    </div>
+  </div>
+
+  <div class="section" id="s5">
+    <h2><span class="sec-num">05</span> 过度识别检验与 Anderson–Rubin</h2>
+    <p>当工具变量个数 $L$ &gt; 内生变量个数 $K$ 时（overidentified model），你有"多余"的外生信息，可以检验"至少有一个工具变量是外生的"这一原假设：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 5.1 — Sargan / Hansen J 统计量</div>
+      $$ J = n \cdot R^2_{(\hat{u}_{2SLS} \sim Z)} \sim \chi^2_{(L-K)} $$
+    </div>
+    <p>过度识别检验（overidentification test）：Sargan 统计量在 i.i.d. 误差下成立；存在异方差/聚类时必须用 <strong>Hansen's J</strong>（GMM 框架下）。不拒绝原假设意味着"工具变量外生性无反证"，但拒绝也并不必然说明哪个 IV 有问题。</p>
+    <p>当担心工具变量弱识别时，<strong>Anderson–Rubin (1949) 检验</strong>对弱 IV 稳健：它检验原假设 $\beta = \beta_0$ 在弱识别下依然有效，不依赖"强工具变量"的渐近理论。Stata 中 <code class="inline">ivregress gmm ..., cluster()</code> 后 <code class="inline">estat overid</code>、<code class="inline">estat firststage</code> 即可。</p>
+  </div>
+
+  <div class="section" id="s5b">
+    <h2><span class="sec-num">05b</span> 弱IV稳健推断：AR / CLR / rk LM</h2>
+    <p>第一阶段 F 不达标时，正确做法不是"硬报 2SLS 置信区间"，而是换用<strong>对弱识别稳健（weak-identification-robust）的推断</strong>。这类检验在工具强时与 Wald 一样高效，在工具弱时仍保持正确的 size。</p>
+
+    <h3>05b.1 Anderson–Rubin (AR, 1949) 检验</h3>
+    <p>AR 检验对原假设 $H_0: \beta = \beta_0$（结构参数等于某个具体值）直接做检验，绕开了对"第一阶段有多强"的依赖。在恰好识别或过度识别、i.i.d. 下，AR 统计量渐近服从 $\chi^2_{(L_1)}$（$L_1$ 为排除工具数）：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. AR.1 — Anderson–Rubin 统计量</div>
+      $$ AR(\beta_0) = \frac{(n-k)}{L_1}\cdot \frac{(S(\beta_0)-S(\tilde{\beta}))}{S(\tilde{\beta})} \ \sim\ \chi^2_{L_1}\ \text{（弱IV下仍正确）} $$
+    </div>
+    <p>把所有不被 AR 拒绝的 $\beta_0$ 收集起来，就得到 <strong>AR 置信集</strong>。它在弱 IV 下覆盖率正确，但当工具较多（过度识别强）时 power 偏低——这正是 CLR 要改进的。</p>
+
+    <h3>05b.2 条件似然比 CLR（Moreira, 2003）</h3>
+    <p>Moreira (2003) 提出 <strong>CLR（Conditional Likelihood Ratio）检验</strong>：在充分统计量 $S$（结构方程与简化型方程的似然比）的条件下构造临界值。它与 AR 一样对弱 IV 稳健，但在工具较强时 power 明显更高，置信集更窄。单内生变量时 CLR 置信集几乎是弱识别稳健推断的"金标准"。Andrews, Moreira &amp; Stock (2006) 证明 CLR 在一类检验中近似最有功效。</p>
+
+    <h3>05b.3 Kleibergen–Paap rk LM（不可识别检验）</h3>
+    <p><strong>Kleibergen–Paap rk LM 统计量</strong>检验原假设"矩阵秩不足 / 方程不可识别"（即工具完全与内生变量无关）。它是 Anderson canon. corr. LR 检验在异方差/聚类下的稳健版本。不拒绝 → 连"有没有识别"都成问题；拒绝但 rk Wald F 仍小 → 可识别但弱，需用 AR/CLR。</p>
+
+    <h3>05b.4 完整 Stata 代码</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · weakiv_robust.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* 弱IV稳健推断：AR / CLR / rk LM
+*==============================================================*
+clear all
+set seed 20240602
+sysuse auto.dta, clear
+global Y price
+global T  foreign          // 内生处理变量
+global C  weight           //  Included 外生控制
+* 用 length、displacement 作为 foreign 的两个工具（教学例）
+
+* --- 1. ivreg2 自带：AR / CLR / K-P rk LM 一次出齐 ---
+* ssc install ivreg2, replace
+ivreg2 $Y $C ($T = length displacement), robust
+* 诊断块直接给：
+*   Kleibergen-Paap rk LM statistic      -> underidentification (H0 rank deficient)
+*   Kleibergen-Paap rk Wald F statistic   -> weak identification
+*   Anderson-Rubin statistic               -> weak-IV robust 检验 H0: beta=0
+*   Stock-Wright LM S statistic           -> 另一种 weak-IV robust 检验
+*   Hansen J                              -> overidentification
+
+* --- 2. weakiv 命令：AR / CLR / Lagrange multiplier 稳健检验 ---
+* ssc install weakiv, replace
+weakiv $Y $C ($T = length displacement), robust
+* 输出三类 weak-identification-robust 统计量及其 p 值：
+*   AR (Anderson-Rubin), LM (K.-P. score), CLR (conditional LHR)
+* 并给出对应置信区间 / 置信集
+
+* --- 3. 手算 AR 检验（理解原理，H0: beta_T = b0）---
+* 思路：在 y - b0*x 上对全部外生变量(含工具)回归，看工具是否联合显著
+local b0 = 0                      // 检验 H0: beta_foreign = 0
+gen ystar = $Y - `b0'*$T
+regress ystar $C length displacement
+test length displacement          // H0: 两个工具系数联合为0 => AR p 值
+* 若不拒绝 => beta=0 落在 AR 置信集内
+
+* --- 4. 恰好识别单工具：用 rivtest / AR 置信区间 ---
+* ssc install rivtest, replace
+rivtest $Y $C ($T = length), robust
+* 画 AR 置信集：图形化展示 beta 的弱IV稳健取值范围
+</code></pre>
+    </div>
+    <div class="callout tip">
+      <div class="callout-title">报告规范</div>
+      <p>当 rk Wald F 低于 Stock–Yogo 临界值时，论文应同时报告：(1) rk LM 及其 p 值；(2) rk Wald F 与对照临界值；(3) AR / CLR 检验的 p 值与置信集。若 CLR 置信集比 Wald 置信区间宽很多、甚至包含多个量级，要如实说明"点估计对工具强度敏感"，而不是只挑显著的 Wald CI 写进正文。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s6">
+    <h2><span class="sec-num">06</span> 完整 Stata 代码</h2>
+    <p>下面这段代码用 Stata 自带的 <code class="inline">auto</code> 数据演示：我们想估计"外国车对价格的影响"（foreign 是否影响 price），但 foreign 与其他未观测质量特征相关，故用 length（车长）作为 foreign 的工具变量。这是一个教学性例子，实际研究中 IV 选择要严肃得多。</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · iv_2sls.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* 内生性与 2SLS 完整演示
+*==============================================================*
+clear all
+set more off
+* ssc install estout, replace
+
+sysuse auto.dta, clear
+
+* --- 0. 先用 OLS 跑一下，作为对照 ---
+* 关注的内生变量：foreign（是否外国车）
+* 我们想估计 foreign 对 price 的影响
+regress price foreign weight length
+estimates store ols
+
+* --- 1. 简单 IV：单个工具变量 length ---
+* 假设 length 只通过 foreign / weight 影响 price
+ivregress 2sls price weight (foreign = length), robust
+estimates store iv1
+
+* 第一阶段：直接看 length 是否显著影响 foreign
+regress foreign weight length
+estimates store firststage
+
+* --- 2. 看第一阶段 F 统计量（弱 IV 检验） ---
+ivregress 2sls price weight (foreign = length), robust
+estat firststage
+* 若 "F( 1, ... )" &gt; 10，则不是弱工具
+
+* --- 3. 多个工具变量 + 聚类标准误 + 过度识别检验 ---
+* 用 length 和 displacement 两个变量作为 foreign 的工具
+ivregress 2sls price weight (foreign = length displacement), robust
+estat firststage              // Cragg-Donald F
+estat overid                  // Sargan / Hansen J 过度识别检验
+
+* --- 4. 用 ivreg2（外部命令，输出更全） ---
+* ssc install ivreg2, replace
+* ssc install ranktest, replace
+ivreg2 price weight (foreign = length displacement), robust first
+* ivreg2 自动输出：
+*   - Kleibergen-Paap rk LM statistic (underidentification)
+*   - Cragg-Donald Wald F / Kleibergen-Paap Wald F (weak IV)
+*   - Hansen J statistic (overidentification)
+
+* --- 5. Anderson-Rubin 弱识别稳健置信区间 ---
+* ssc install rivtest, replace
+* rivtest price weight (foreign = length displacement), robust
+
+* --- 6. 用 esttab 导出 IV 结果到三线表 ---
+esttab ols iv1 firststage using "table_iv.rtf", replace ///
+    b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) ///
+    mtitles("OLS" "2SLS" "第一阶段") ///
+    stats(N r2, fmt(0 3) labels("观测值" "R^2")) ///
+    title("表 X：foreign 对 price 的影响，IV 估计") ///
+    nogaps compress
+</code></pre>
+    </div>
+  </div>
+
+  <div class="section" id="s6b">
+    <h2><span class="sec-num">06b</span> 高维工具变量与机器学习 IV（Post-Double Selection）</h2>
+    <p>当控制变量 $X$ 或候选工具 $Z$ 数量很大（几十上百个）时，手工挑选哪些该进第一阶段、哪些该进结果方程，极易引入"选变量偏误"。<strong>Belloni, Chernozhukov &amp; Hansen (2014, ReStud)</strong> 提出的 <strong>post-double selection（双重选择后估计）</strong>用机器学习做变量选择，再做低维的 IV/OLS 推断，保证 $\sqrt{n}$ 一致与正确的置信区间。站内 <a href="16-dml.html">16 DML 去偏机器学习</a> 页讲了更完整的 DML 框架，这里只给 IV 语境下的直觉与代码。</p>
+
+    <h3>06b.1 概念框架</h3>
+    <div class="step-flow">
+      <div class="step-item">
+        <div class="step-title">Step 1 · 用 Lasso/后向选择，从高维候选里挑"预测处理 x"的变量（第一阶段选择）</div>
+        <div class="step-desc">对 $x \sim Z, W$ 做 Lasso，筛出第一阶段重要的变量集 $S_x$。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">Step 2 · 再挑"预测结果 y"的变量（结果方程选择）</div>
+        <div class="step-desc">对 $y \sim W$（不含 x）做 Lasso，筛出与 y 强相关的变量集 $S_y$。</div>
+      </div>
+      <div class="step-item">
+        <div class="step-title">Step 3 · 取并集 $S = S_x \cup S_y$，在 $S$ 上做低维 2SLS</div>
+        <div class="step-desc">关键是<strong>两次选择取并集</strong>：即使某个变量不预测处理、但预测结果（它是混淆），也会被保留下来，从而避免遗漏关键混淆。这是"double selection"防止 OVB 的核心。</div>
+      </div>
+    </div>
+
+    <h3>06b.2 Stata 代码：post-double selection IV</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · pds_iv.do</span><button class="copy-btn">复制</button></div>
+<pre><code>*==============================================================*
+* 高维控制下的 IV：Post-Double Selection（Belloni-Chernozhukov-Hansen 2014）
+* 思路：Lasso 选变量 -> 并集 -> 低维 2SLS
+*==============================================================*
+clear all
+set seed 20240603
+set obs 1000
+
+* 模拟：x 内生，候选工具 z1..z10，候选控制 w1..w50（高维）
+set seed 20240603
+gen z1 = rnormal(), z2 = rnormal(), z3 = rnormal()
+forvalues j = 4/10 {
+    gen z`j' = rnormal()
+}
+forvalues j = 1/50 {
+    gen w`j' = rnormal()
+}
+gen u   = rnormal()
+* 真实结构：只有 z1,z2 真的影响 x；只有 w1,w2,w3 真的混淆 y-x
+gen x   = 0.5*z1 + 0.5*z2 + 0.3*w1 + 0.3*w2 + u
+gen y    = 0.4*x + 0.5*w1 + 0.5*w2 + 0.5*w3 + u + rnormal()
+
+* --- 1. 第一阶段选择：Lasso 找预测 x 的变量 ---
+* ssc install lassopack, replace
+lasso linear x w1-w50, rseed(20240603)
+local S_x : allvars              // 选出的预测 x 的协变量（含混淆）
+
+* --- 2. 结果方程选择：Lasso 找预测 y 的变量（不含 x）---
+lasso linear y w1-w50, rseed(20240603)
+local S_y : allvars
+
+* --- 3. 取并集（此处教学上简化为全部 w1-w3 参与）---
+* 实务中把 S_x 与 S_y 的并集存入 local：
+global W_sel w1 w2 w3
+
+* --- 4. 在选中的低维控制集上做 2SLS ---
+ivregress 2sls y $W_sel (x = z1 z2), robust
+estat firststage
+
+* --- 5. 等价：用 pds 命令（外部包）一站式完成 ---
+* ssc install pdslasso, replace
+* pdslasso y (x = z1 z2) w1-w50, controls(w1-w50)
+</code></pre>
+    </div>
+
+    <h3>06b.3 Python 等价（Double MLIV）</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">python · dml_iv.py（py_doubleml 风格）</span><button class="copy-btn">复制</button></div>
+<pre><code># 用 doubleml 库做 IV-LASSO / DML-IV，与上面 Stata 思路一致
+# pip install doubleml
+import numpy as np
+from sklearn.ensemble import RandomForestRegressor
+from doubleml import DoubleMLIIVM  # 或 DoubleMLPLIV
+
+np.random.seed(20240603)
+n = 1000
+Z = np.random.normal(size=(n, 2))     # 工具
+W = np.random.normal(size=(n, 50))    # 高维控制
+u = np.random.normal(size=n)
+x = 0.5*Z[:,0] + 0.5*Z[:,1] + 0.3*W[:,0] + u
+y = 0.4*x + 0.5*W[:,0] + 0.5*W[:,1] + u + np.random.normal(size=n)
+
+# 用随机森林学高维 nuisance 函数，再去偏做 IV 推断
+ml_l = RandomForestRegressor(n_estimators=200)  # 学习 E[x|Z,W]
+ml_m = RandomForestRegressor(n_estimators=200)  # 学习 E[y|W]
+# dml = DoubleMLIIVM(y, x, d, z, allvars, ml_l, ml_m)  # 具体接口见 doubleml 文档
+# dml.fit(); print(dml.summary)
+print("DML-IV: 自动做样本切分 + 去偏，给出 beta 与稳健置信区间")
+</code></pre>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">注意</div>
+      <p>ML-IV / post-double selection 只能解决"<strong>高维控制下的选择偏误</strong>"，它不能替代一个真正外生的工具——排他性约束仍然是经济理论问题，机器学习帮不了。站内 <a href="16-dml.html">16 DML 页</a> 有更严谨的样本切分与 cross-fitting 细节。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s7">
+    <h2><span class="sec-num">07</span> 论文案例精读</h2>
+
+    <div class="paper-card">
+      <span class="paper-type en">English · Econometrica</span>
+      <div class="paper-title">Lifetime Earnings and the Vietnam Era Draft Lottery: Evidence from Social Security Administrative Records</div>
+      <div class="paper-meta">Joshua D. Angrist · American Economic Review, 1990</div>
+      <div class="paper-desc">IV 研究的开山范例。用越战抽签号（random lottery number）作为"是否服兵役"的工具变量，估计服兵役对后续收入的影响。抽签号随机分配 → 外生；与个人能力无关 → 排他性；显著影响入伍概率 → 相关性。三个条件在制度叙述中非常干净。</div>
+    </div>
+
+    <div class="paper-card">
+      <span class="paper-type en">English · Textbook</span>
+      <div class="paper-title">Mostly Harmless Econometrics (Chapter 4: Instrumental Variables in Action)</div>
+      <div class="paper-meta">Angrist & Pischke · 2009</div>
+      <div class="paper-desc">系统讲解 IV 的 LATE 解释（局部平均处理效应）、Wald 估计量、2SLS 代数，以及"何时 IV 是好的、何时是坏的"。是每一个做实证的学生必读。</div>
+    </div>
+
+    <div class="paper-card">
+      <span class="paper-type en">English · JoE</span>
+      <div class="paper-title">Bootstrap-Based Improvements for Inference with Clustered Errors / Weak Identification Robust Inference</div>
+      <div class="paper-meta">Cameron, Gelbach & Miller (2008); Chernozhukov & Hansen (2008); and Moreira (2003) 的 CLR 检验</div>
+      <div class="paper-desc">当工具变量弱、聚类数少时，普通 2SLS 推断失效。这些文献给出了弱识别稳健的置信区间（Anderson–Rubin、CLR、LQ），是现在顶刊审稿人会要求你报告的内容。</div>
+    </div>
+
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 《经济研究》</span>
+      <div class="paper-title">《互联网普及对城乡收入差距的影响》类 IV 论文</div>
+      <div class="paper-meta">《经济研究》《管理世界》近年多篇 · 通用范式</div>
+      <div class="paper-desc">中文顶刊中常见的 IV 思路：用"地形起伏度""历史邮电局数量""1984 年每百人固定电话数"作为当前互联网/数字金融发展的工具变量。逻辑链是：历史基础设施与当前技术扩散相关（相关性）；历史变量不会直接影响今天的收入差距（外生+排他性）。文章会照例报告第一阶段 F 统计量、过度识别检验 p 值，并在稳健性部分换用 GMM / limited information maximum likelihood。</div>
+    </div>
+
+    <div class="paper-card">
+      <span class="paper-type en">English · Econometrica</span>
+      <div class="paper-title">Instrumental Variables Regression with Weak Instruments</div>
+      <div class="paper-meta">Douglas Staiger &amp; James H. Stock · Econometrica, 1997, 65(3): 557–586</div>
+      <div class="paper-desc">弱工具变量文献的开山之作。提出"局部渐近（local to zero）"框架，证明弱 IV 下 2SLS 不一致、向 OLS 偏，并给出著名的 F&gt;10 经验法则。本页 s4b 全部结论的理论源头。</div>
+    </div>
+
+    <div class="paper-card">
+      <span class="paper-type en">English · Book chapter</span>
+      <div class="paper-title">Testing for Weak Instruments in Linear IV Regression</div>
+      <div class="paper-meta">James H. Stock &amp; Motohiro Yogo · in <em>Identification and Inference for Econometric Models</em> (Andrews &amp; Stock eds.), 2005</div>
+      <div class="paper-desc">给出按 maximal IV size / relative bias 分级的临界值表（本页 s4b.1 的表），并区分"size 准则"与"bias 准则"。ivreg2 输出里那几行临界值即出自此处。</div>
+    </div>
+
+    <div class="paper-card">
+      <span class="paper-type en">English · Econometrica</span>
+      <div class="paper-title">A Conditional Likelihood Ratio Test for Structural Models</div>
+      <div class="paper-meta">Marcelo J. Moreira · Econometrica, 2003, 71(4): 1027–1048</div>
+      <div class="paper-desc">提出 CLR 检验：在充分统计量 S 条件下构造临界值，弱 IV 下 size 正确、强 IV 下比 AR 更有功效。本页 s5b.2 的方法来源。</div>
+    </div>
+
+    <div class="paper-card">
+      <span class="paper-type en">English · Annual Review of Economics</span>
+      <div class="paper-title">Weak Instruments in Instrumental Variables Regression: Theory and Practice</div>
+      <div class="paper-meta">Isaiah Andrews, James H. Stock &amp; Liyang Sun · Annual Review of Economics, 2019, 11: 727–753</div>
+      <div class="paper-desc">弱 IV 领域最新的权威综述，覆盖异方差/聚类下的有效 F（Montiel Olea–Pflueger）、AR/CLR/LM 稳健检验与实务报告规范。写论文时的首选引用与操作指南。</div>
+    </div>
+  </div>
+
+  <div class="section" id="s8">
+    <h2><span class="sec-num">08</span> 常见错误与进阶资料</h2>
+
+    <div class="callout danger">
+      <div class="callout-title">错误 1：IV 的"故事"讲不通却硬用</div>
+      <p>审稿人最常攻击的不是你的 F 统计量，而是你的排他性约束。如果你的 $z$ 除了通过 $x$ 还能直接影响 $y$，那 IV 就废了。写论文时必须花一大段文字论证"为什么 $z$ 不会走第二条路"，并附上控制 $z$ 的直接影响后结果仍稳健的证据。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 2：第一阶段 F &lt; 10 还硬报 2SLS</div>
+      <p>弱工具变量下 2SLS 估计量严重偏向 OLS，置信区间覆盖率极低。正确做法：换更强的工具、用 LIML / Fuller 估计、或报告 Anderson–Rubin 置信区间。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 3：把"恰好识别"和"过度识别"混淆</div>
+      <p>恰好识别（工具数 = 内生变量数）时，过度识别检验根本无法做；不要看到 Stata 不输出 Hansen J 就以为出错了。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 4：手写两阶段 OLS 而不用 ivregress</div>
+      <p>自己跑两个 regress 会用第二阶段残差方差估计错误。永远用 <code class="inline">ivregress 2sls</code> 或 <code class="inline">ivreg2</code>。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 5：只看第一阶段 F，不做弱IV稳健推断</div>
+      <p>F 只是"诊断"，不是"治疗"。即使 F 勉强过了 10，只要工具偏弱，Wald 置信区间仍可能失真。规范做法是同时报告 AR / CLR 检验与置信集；当 rk F 低于 Stock–Yogo 临界值时，正文应以 CLR 置信区间为主，而不是只给 2SLS 的 (β̂ ± 1.96·SE)。</p>
+    </div>
+    <div class="callout warning">
+      <div class="callout-title">错误 6：many instruments 不校正</div>
+      <p>为了过度识别检验而堆砌几十个工具，2SLS 会出现 many-instruments bias 并向 OLS 偏。工具过多时应改用 LIML / Fuller 或迭代 GMM，并报告工具数与样本量之比。</p>
+    </div>
+    <div class="callout danger">
+      <div class="callout-title">错误 7：弱IV下仍只报 2SLS 置信区间</div>
+      <p>弱识别下 Wald 型 95% CI 覆盖率可能远低于 95%。若 AR/CLR 置信集很宽或不收敛，必须如实报告"点估计对工具强度敏感"，不能把一个窄而不可靠的 2SLS CI 当成结论。</p>
+    </div>
+
+    <h3>进阶资料</h3>
+    <ul>
+      <li><strong>Stock, J. H. & M. Yogo (2005)</strong> — "Testing for Weak Instruments in Linear IV Regression", <em>Identification and Inference for Econometric Models</em>。</li>
+      <li><strong>Staiger, D. & J. H. Stock (1997)</strong> — "Instrumental Variables Regression with Weak Instruments", <em>Econometrica</em>, 65(3): 557–586。</li>
+      <li><strong>Moreira, M. J. (2003)</strong> — "A Conditional Likelihood Ratio Test for Structural Models", <em>Econometrica</em>, 71(4): 1027–1048。</li>
+      <li><strong>Andrews, I., J. H. Stock & L. Sun (2019)</strong> — "Weak Instruments in IV Regression: Theory and Practice", <em>Annual Review of Economics</em>, 11: 727–753。</li>
+      <li><strong>Belloni, A., V. Chernozhukov & C. Hansen (2014)</strong> — "Inference on Treatment Effects after Selection among High-Dimensional Controls", <em>Review of Economic Studies</em>（post-double selection）。</li>
+      <li><strong>Wooldridge, J. M. (2010)</strong> — <em>Econometric Analysis of Cross Section and Panel Data</em> 第 5、8 章。</li>
+      <li><strong>Baum, C. F., Schaffer, M. E. & Stillman, S. (2007)</strong> — "Enhanced routines for instrumental variables/GMM estimation", <em>Stata Journal</em>（ivreg2 作者手册）。</li>
+      <li><strong>NBER / LSE 的 IV 网络课件</strong>：弱工具变量、LATE 解释的最佳入门。</li>
+    </ul>
+  </div>
+
+  <div class="page-nav">
+    <a href="04-baseline-regression.html" class="prev">
+      <div class="nav-label">← 上一节</div>
+      <div class="nav-title">基准回归</div>
+    </a>
+    <a href="06-did.html" class="next">
+      <div class="nav-label">下一节 →</div>
+      <div class="nav-title">DID 双重差分（全套）</div>
+    </a>
+  </div>
+
+</div></div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show')}
+document.querySelectorAll('.copy-btn').forEach(b=>b.onclick=()=>{const c=b.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(c).then(()=>{b.textContent='已复制 ✓';setTimeout(()=>b.textContent='复制',1500)})});
+document.addEventListener('DOMContentLoaded',()=>{if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})}});
+</script>
+</body>
+</html>

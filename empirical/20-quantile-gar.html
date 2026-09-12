@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>分位数回归与Growth-at-Risk 尾部风险测度 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item active" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">实证论文</a><span class="sep">/</span>
+      <span>分位数回归与 Growth-at-Risk</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">Frontier · Quantile Regression &amp; Growth-at-Risk</span>
+      <h1>分位数回归与 Growth-at-Risk 尾部风险测度</h1>
+      <p class="desc">平均增长能告诉我们"经济大概涨多少"，却回答不了"跌下来会跌多惨"。本节从 Koenker-Bassett (1978) 的分位数回归讲起，介绍 Adrian, Boyarchenko &amp; Giannone (2019, AER) 的 Growth-at-Risk 框架——用金融条件预测 GDP 增长分布的左尾，并用完整 Stata / Python 代码复现 GaR 时间序列。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">条件分布、分位数、检查函数（check function）、非参数核密度、bootstrap。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">金融摩擦、杠杆周期、风险承担渠道；理解"为什么尾部风险是非线性的"。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">Stata 17+（<code class="inline">qreg / bsqreg / ivqreg / qregplot</code>）；Python <code class="inline">statsmodels.regression.quantile_regression.QuantReg</code>。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body">先读 <a href="04-baseline-regression.html">基准回归</a> 与 <a href="10-heterogeneity.html">异质性分析</a>（其中已简介 qreg）；与上一节 <a href="19-nowcasting-dfm.html">Nowcasting &amp; DFM</a> 互补。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">前沿 · 进阶</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">分位数回归 QR 原理</a></li>
+        <li><a href="#s2">为什么用分位数回归</a></li>
+        <li><a href="#s3">Growth-at-Risk (GaR) 框架</a></li>
+        <li><a href="#s4">Stata 完整代码</a></li>
+        <li><a href="#s5">Python 完整代码</a></li>
+        <li><a href="#s6">从分位数到完整条件分布</a></li>
+        <li><a href="#s7">中国应用与风险溯源</a></li>
+        <li><a href="#s8">论文案例</a></li>
+        <li><a href="#s9">逐步流程与常见错误</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 分位数回归 QR 原理</h2>
+      <p>普通最小二乘（OLS）估计的是条件均值 $E[y\mid x]$：给定协变量 $x$，$y$ 平均是多少。但政策制定者与风险管理者关心的常常不是"平均"，而是<strong>"最坏情况会坏到什么程度"</strong>。分位数回归（Quantile Regression, QR）由 Koenker &amp; Bassett (1978) 在《Econometrica》提出，估计的是条件分位数函数：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (1) — 条件分位数回归</div>
+        $$Q_\tau(y_i\mid x_i)=x_i'\beta(\tau),\qquad \tau\in(0,1)$$
+      </div>
+      <p>系数 $\beta(\tau)$ 通过最小化<strong>不对称加权绝对偏差</strong>（即检查函数 $\rho_\tau$ 的和）得到：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (2) — QR 估计目标函数</div>
+        $$\hat\beta(\tau)=\arg\min_{\beta}\ \sum_{i=1}^{n}\rho_\tau\big(y_i-x_i'\beta\big),\qquad \rho_\tau(u)=\big(\tau-\mathbf{1}\{u&lt;0\}\big)u$$
+      </div>
+      <p>检查函数 $\rho_\tau(u)$ 的直觉：当残差 $u=y-x'\beta&gt;0$（预测偏低）时，权重为 $\tau$；当 $u&lt;0$（预测偏高）时，权重为 $\tau-1$（绝对值 $1-\tau$）。$\tau=0.5$ 时正负对称，退化为最小绝对偏差（LAD / 中位数回归）；$\tau=0.05$ 时，模型高度惩罚"预测偏高"的错误——它拼命把回归线往下拉，使得只有 5% 的样本落在它下方，这正是左尾。</p>
+      <div class="callout info">
+        <div class="callout-title">📌 与 OLS 的几何对比</div>
+        <p>OLS 最小化残差<strong>平方和</strong>，对远离均值的极端误差给平方级惩罚，估计的是"平均人"；QR 最小化<strong>加权绝对偏差</strong>，不假设误差正态分布，对异常值更稳健，且能让同一个 $x$ 对 $y$ 的效应沿分布变化。$\beta(\tau)$ 不是一条线，而是<strong>一族曲线</strong>：在 $\tau=0.1,0.25,0.5,0.75,0.9$ 各估计一次，就能看到"x 对 y 的效应在 y 分布的低端、中端、高端有何不同"。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 为什么用分位数回归</h2>
+      <p>分位数回归在宏观与金融风险测度中不可替代，原因有四：</p>
+      <ol>
+        <li><strong>关注尾部而非均值。</strong>央行与 IMF 关心的是"未来 GDP 增长下行 1% 的概率有多大"，而不是"平均增长 2%"。OLS 一个系数回答不了这个问题，QR 一族系数可以。</li>
+        <li><strong>异方差下更稳健。</strong>宏观数据的条件方差常随状态变化（危机期波动率飙升）。QR 不假设同方差、也不要求误差正态，估计结果对厚尾分布稳健。</li>
+        <li><strong>揭示非线性与不对称性。</strong>Adrian et al. (2019) 的核心发现正是：金融条件收紧时，GDP 增长的<strong>左尾分位数大幅下移，而右尾分位数几乎不变</strong>——这种"下行风险大于上行收益"的不对称，OLS 均值系数完全看不见。</li>
+        <li><strong>不依赖分布假设即可给出完整条件分布。</strong>估计 $\tau=0.05,0.25,0.5,0.75,0.95$ 等一列分位，就拼出了条件分布的形状（偏度、厚尾），无需事先假设正态或 t 分布。</li>
+      </ol>
+      <p>需要特别澄清一个常见误解：分位数回归<strong>不是"在 y 的不同分位子样本里做 OLS"</strong>。许多初学者以为 $\tau=0.1$ 就是"取 y 最小的 10% 样本再做 OLS"，这是错的。QR 的估计过程仍然使用全部 $n$ 个样本，只是通过检查函数 $\rho_\tau$ 给不同残差以不对称权重——$\tau=0.1$ 时，模型让"预测过高"的样本承担 9 倍于"预测过低"样本的惩罚，从而把回归线"拉"到分布的第 10 个百分位附近。这个区别至关重要：子样本 OLS 会损失大量信息、且选择子样本本身依赖于 y 的实现值（导致样本选择偏误），而 QR 是全样本的凸优化问题，性质完全不同。</p>
+      <p>此外，QR 的系数解释要回到"<strong>条件分位</strong>"而非"无条件分位"。$\hat\beta(\tau)$ 回答的是：在协变量为 $x$ 的子总体中，$x$ 每变动一单位，其 $y$ 的第 $\tau$ 个条件分位数变动多少。这与"先按 y 分位再分组"的描述性统计不可混为一谈。Koenker (2005) 的专著 <em>Quantile Regression</em> 是这一方法的标准参考书。</p>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> Growth-at-Risk (GaR) 框架</h2>
+      <p><strong>Growth-at-Risk（在险增长，GaR）</strong>概念由 Adrian, Boyarchenko &amp; Giannone (2019, AER) 在 "Vulnerable Growth" 一文中系统提出，现已成为 IMF、各国央行金融稳定报告的标准工具。它的定义极其简洁：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (3) — Growth-at-Risk 定义</div>
+        $$\text{GaR}_{\tau,t+h} = \hat Q_\tau\big(\Delta y_{t+h}\mid\Omega_t\big),\qquad \tau=0.05$$
+      </div>
+      <p>即：给定当前信息集 $\Omega_t$（核心是<strong>金融条件指数 FCI</strong>，辅以实体经济变量），预测 $h$ 期后 GDP 增长的 $\tau=5\%$ 分位数。GaR 是一个<strong>时间序列</strong>：每一期都用当时的 FCI 做一次分位数回归预测，得到该期的左尾风险。当 FCI 收紧（信贷利差走阔、股市下跌、波动率上升）时，$\hat\beta_{FCI}(0.05)$ 显著为负，GaR 快速下降——这就是"脆弱增长（Vulnerable Growth）"。</p>
+      <p>完整 GaR 预测方程通常写成：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (4) — GaR 预测方程</div>
+        $$\Delta y_{t+h} = \alpha_\tau + \beta_\tau\,FCI_t + \gamma_\tau\,\Delta y_t + \delta_\tau'Z_t + \varepsilon_{t+h,\tau}$$
+      </div>
+      <p>其中 $\Delta y_{t+h}$ 是未来 $h$ 期 GDP 累计增长（常用 $h=1$ 或 $h=4$ 季度），$FCI_t$ 是金融条件指数（芝加哥联储 NFCI、Fed 的 ANFCI、IMF 的 FCI），$\Delta y_t$ 是滞后增长以控制动量，$Z_t$ 是其他控制变量（通胀、失业率等）。对每个 $\tau\in\{0.05,0.25,0.5,0.75,0.95\}$ 分别估计一次，即得完整条件预测分布。</p>
+      <p>GaR 的政策意义在于它把"金融稳定"与"实体经济"显式连接起来：IMF 在 2017 年后把 GaR 纳入《全球金融稳定报告》（GFSR）的标准章节，各国央行（欧央行、英格兰银行、中国人民银行研究局）纷纷建立本国 GaR 监测框架。其逻辑是：<strong>金融条件看似平稳时，左尾风险可能正在累积</strong>——当 FCI 从宽松收紧时，均值增长下移有限，但左尾分位数大幅恶化，意味着"崩盘式下行"的概率被 OLS 均值模型严重低估。这正是 Adrian et al. (2019) 标题"Vulnerable Growth（脆弱增长）"的含义：增长看似平稳，实则脆弱。</p>
+      <p>与 GaR 紧密相关的两个尾部风险概念需要区分：<strong>CoVaR</strong>（Adrian &amp; Brunnermeier, 2016, <em>AER</em>）关注单个金融机构在压力条件下对系统的风险贡献；<strong>Expected Shortfall（ES，条件尾部期望）</strong>是比 GaR 更严格的尾部风险测度——它度量"一旦增长跌破 GaR，平均会跌多深"。实践中常把 GaR 作为左尾的"阈值"，ES 作为"阈值之下的深度"，二者并列报告。</p>
+      <div class="callout tip">
+        <div class="callout-title">✅ 直觉</div>
+        <p>想象一张"GDP 增长分布图"随时间滚动。正常时期，它近似对称、集中在 2–3%；金融条件恶化时，整个分布不是平移，而是<strong>左尾被拉长、右尾几乎不动</strong>——分布变得左偏。GaR 就是那个不断左移的 5% 分位点。Adrian et al. (2019) 的关键实证结论：右尾分位数对 FCI 几乎不敏感，左尾分位数高度敏感，这正是"脆弱增长"。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> Stata 完整代码</h2>
+      <p>下面用模拟数据在 Stata 中复现 GaR：构造金融条件指数 FCI → 模拟 GDP 增长（其条件方差依赖 FCI）→ 对多个分位点做 qreg → 计算 GaR 时间序列 → 画系数分位图。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 分位数回归 + Growth-at-Risk</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ============================================================
+*  Stata: Quantile Regression & Growth-at-Risk 完整复现
+* ============================================================
+clear all
+set seed 20240101
+set obs 200
+
+* ---------- 1. 模拟数据：金融条件 FCI -> GDP 增长 ----------
+* FCI：正值=金融条件宽松，负值=收紧
+gen t = _n
+tsset t
+gen fci = 0.8*l.fci + rnormal()            // FCI 自回归
+replace fci = fci[_n-1] if _n==1
+
+* GDP 增长：均值受 FCI 影响，条件方差也受 FCI 影响（脆弱增长机制）
+gen sigma = exp(-0.8*fci)                   // FCI 越差 sigma 越大
+gen gdp_growth = 0.5 + 0.6*fci + sigma*rnormal()
+gen l_gdp = l.gdp_growth
+
+* ---------- 2. 单分位点 QR：tau=0.05 ----------
+qreg gdp_growth fci l_gdp, quantile(0.05) vce(bootstrap, reps=500)
+est store q05
+* 关注 fci 的系数：tau=0.05 时应显著为负且绝对值大
+
+* ---------- 3. 多分位点联立 ----------
+foreach tau in 0.05 0.25 0.50 0.75 0.95 {
+    qreg gdp_growth fci l_gdp, quantile(`tau')
+    est store q`=substr("`tau'",3,2)'
+}
+esttab q05 q25 q50 q75 q95, keep(fci l_gdp) se ///
+    mtitles("p5" "p25" "p50" "p75" "p95") ///
+    star(* 0.1 ** 0.05 *** 0.01)
+
+* ---------- 4. Bootstrap 分位数回归（更可靠的标准误）----------
+* bsqreg 用 bootstrap 估计 QR 的协方差矩阵
+bsqreg gdp_growth fci l_gdp, quantile(0.05) reps(500)
+
+* ---------- 5. 工具变量分位数回归 ivqreg ----------
+* 若担心 FCI 内生（央行逆周期调整），可用工具变量
+* ssc install ivqreg
+* ivqreg gdp_growth l_gdp (fci = instrument), quantile(0.05)
+
+* ---------- 6. 计算 GaR 时间序列（滚动估计）----------
+gen gar_p5 = .
+gen gar_p50 = .
+gen gar_p95 = .
+forvalues t = 60/200 {
+    * 用前 t-1 期数据估计
+    quietly qreg gdp_growth fci l_gdp in 1/`=`t'-1', quantile(0.05)
+    predict resid_p5, xb
+    qui replace gar_p5 = resid_p5[`t'] in `t'
+    quietly qreg gdp_growth fci l_gdp in 1/`=`t'-1', quantile(0.50)
+    predict resid_p50, xb
+    qui replace gar_p50 = resid_p50[`t'] in `t'
+    quietly qreg gdp_growth fci l_gdp in 1/`=`t'-1', quantile(0.95)
+    predict resid_p95, xb
+    qui replace gar_p95 = resid_p95[`t'] in `t'
+    drop resid_p5 resid_p50 resid_p95
+}
+
+* ---------- 7. 画 GaR 时间序列 + 系数分位图 ----------
+twoway (rarea gar_p5 gar_p95 t, fcolor(gs12) lcolor(none)) ///
+       (line gar_p50 t, lcolor(navy) lwidth(med)) ///
+       (line gdp_growth t, lcolor(red) lwidth(med)), ///
+       title("GDP 增长分布与 Growth-at-Risk") ///
+       legend(label(1 "5%-95% 区间") label(2 "中位数") label(3 "实际增长"))
+
+* 系数沿分位变化图：手动循环估计并记录 fci 系数
+gen tau_list = .
+gen beta_fci = .
+local i = 1
+forvalues tau = 5(5)95 {
+    quietly qreg gdp_growth fci l_gdp, quantile(`=`tau'/100')
+    qui replace tau_list = `tau'/100 in `i'
+    qui replace beta_fci = _b[fci] in `i'
+    local i = `i' + 1
+}
+twoway connected beta_fci tau_list, ///
+    title("FCI 系数沿 GDP 增长分布分位的变化") ///
+    yline(0, lcolor(red) lpattern(dash))
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> Python 完整代码</h2>
+      <p>Python 中用 <code class="inline">statsmodels.regression.quantile_regression.QuantReg</code> 实现。下面完整模拟"金融条件 → GDP 增长分布 → GaR 时间序列"，并与 OLS 均值预测对比。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · statsmodels QuantReg 与 GaR</span><button class="copy-btn">复制</button></div>
+        <pre><code># -*- coding: utf-8 -*-
+"""
+Growth-at-Risk (GaR) with Quantile Regression
+=============================================
+模拟金融条件 FCI 与 GDP 增长，做分位数回归，
+构造 GaR (5% 分位) 时间序列，并与 OLS 均值预测对比。
+"""
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+import matplotlib.pyplot as plt
+
+np.random.seed(20240101)
+T = 200
+
+# ---------- 1. 模拟数据 ----------
+# FCI：AR(1)，正值=宽松，负值=收紧
+fci = np.zeros(T)
+fci[0] = 0.0
+for t in range(1, T):
+    fci[t] = 0.8 * fci[t-1] + np.random.normal(0, 0.5)
+
+# GDP 增长：均值随 FCI 上升；条件方差在 FCI 低（收紧）时放大
+sigma = np.exp(-0.8 * fci)               # 金融条件越差，波动越大
+gdp = np.zeros(T)
+gdp[0] = 0.5
+for t in range(1, T):
+    gdp[t] = 0.5 + 0.6*fci[t-1] + 0.3*gdp[t-1] + sigma[t]*np.random.normal()
+
+lag_gdp = np.r_[np.nan, gdp[:-1]]
+df = pd.DataFrame({'gdp': gdp, 'fci': fci, 'lag_gdp': lag_gdp}).dropna()
+X = sm.add_constant(df[['fci', 'lag_gdp']])
+y = df['gdp']
+
+# ---------- 2. OLS 均值回归（基准） ----------
+ols = sm.OLS(y, X).fit()
+print(ols.summary().tables[1])
+
+# ---------- 3. 多分位数 QR ----------
+quantiles = [0.05, 0.25, 0.50, 0.75, 0.95]
+coefs = {}
+for tau in quantiles:
+    qr = sm.QuantReg(y, X).fit(q=tau)
+    coefs[tau] = qr.params
+    print(f"\n--- tau={tau:.2f} ---")
+    print(qr.summary().tables[1])
+
+# ---------- 4. GaR 时间序列：滚动估计 ----------
+start = 60
+gar5, gar50, gar95, actual = [], [], [], []
+for t in range(start, len(df)):
+    tr = df.iloc[:t]
+    Xtr = sm.add_constant(tr[['fci','lag_gdp']])
+    ytr = tr['gdp']
+    Xte = sm.add_constant(df.iloc[[t]][['fci','lag_gdp']], has_constant='add')
+    q5  = sm.QuantReg(ytr, Xtr).fit(q=0.05).predict(Xte).values[0]
+    q50 = sm.QuantReg(ytr, Xtr).fit(q=0.50).predict(Xte).values[0]
+    q95 = sm.QuantReg(ytr, Xtr).fit(q=0.95).predict(Xte).values[0]
+    gar5.append(q5); gar50.append(q50); gar95.append(q95)
+    actual.append(df['gdp'].iloc[t])
+
+# ---------- 5. 样本外评估：GaR 5% 分位命中率 ----------
+# 理论上 5% 的实际值应落在 GaR 之下
+hit_rate = np.mean(np.array(actual) &lt; np.array(gar5))
+print(f"\nGaR(5%) 样本外命中率 = {hit_rate:.3f} （应接近 0.05）")
+
+# ---------- 6. 可视化：FCI 系数沿分位变化 ----------
+taus = np.linspace(0.05, 0.95, 19)
+beta_fci = []
+for tau in taus:
+    beta_fci.append(sm.QuantReg(y, X).fit(q=tau).params['fci'])
+plt.figure(figsize=(8,4.5))
+plt.plot(taus, beta_fci, 'o-', label='QR: beta(FCI)')
+plt.axhline(ols.params['fci'], color='red', ls='--', label='OLS mean')
+plt.xlabel('Quantile'); plt.ylabel('Coefficient on FCI')
+plt.title('FCI 对 GDP 增长的效应沿分位变化')
+plt.legend(); plt.tight_layout()
+# plt.savefig('gar_coef.png', dpi=150)
+plt.show()
+
+# ---------- 7. 输出：GaR 在 FCI 收紧时应显著下移 ----------
+print("\n样本外 RMSE:")
+print(f"  均值预测(OLS) = {np.sqrt(np.mean((np.array(actual)-np.array(gar50))**2)):.3f}")
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">✅ 关键输出</div>
+        <p>模拟设计让"FCI 越差 → 波动越大 → 左尾下移更多"。你应看到 $\hat\beta_{FCI}(0.05)$ 的绝对值显著大于 $\hat\beta_{FCI}(0.95)$——这正是 Adrian et al. (2019) "Vulnerable Growth" 的核心事实：金融条件对左尾的影响远强于右尾。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 从分位数到完整条件分布</h2>
+      <p>QR 本身只给出若干离散分位点，要做密度预测（density forecast）或风险指标（如 VaR、Expected Shortfall），需要把这些分位点"拼"成一条完整的条件分布。两条主流路线：</p>
+      <p><strong>(1) 参数化分布拟合。</strong>估计出 5%、50%、95% 分位后，假设条件分布服从某个参数族（如偏态 t 分布 skewed-t、NIG），用三个分位数反解分布参数（位置、尺度、偏度、自由度）。Adrian et al. (2019) 即用偏态 t 分布把分位数连成密度，进而计算 Expected Shortfall（尾部期望损失）。</p>
+      <p><strong>(2) 非参数 / 插值。</strong>把估计的分位点 $\{(\tau_j,\hat Q_{\tau_j})\}$ 按线性或单调样条插值得到分位函数 $Q(\tau)$，再对其求导得密度 $f(y)=1/\frac{dQ}{d\tau}$。优点是无分布假设；缺点是分位点少的时候插值噪声大，且必须保证分位函数单调（quantile crossing 问题：相邻分位预测可能颠倒）。</p>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ Quantile Crossing（分位交叉）</div>
+        <p>逐分位独立估计时，可能出现 $\hat Q_{0.05}&gt;\hat Q_{0.5}$ 的荒谬结果。生产应用中需用单调性约束（rearrangement，Chernozhukov et al. 2010）或联合估计（jointly estimated quantiles）修正。</p>
+      </div>
+      <p>密度预测的质量评估有别于点预测：不能只看 RMSE，要用<strong>概率积分变换（PIT）</strong>——如果预测分布正确，那么把实际值代入其累积分布函数，所得应在 $[0,1]$ 上均匀分布；以及<strong>CRPS（连续排名概率得分）</strong>——同时奖励"分布集中"与"实际值落在高密度区"。Adams et al. (2021) 的 GaR 评估协议即用这些指标对比分位数回归与随机波动、贝叶斯模型平均等备选方法，结论是 QR + FCI 在左尾预测上显著优于均值模型。</p>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 中国应用与风险溯源</h2>
+      <p>GaR 框架在中国的最重要应用是<strong>郑挺国、叶仕奇、范馨月 (2023) 在《经济研究》第 11 期发表的《大数据下经济在险增长测度与风险探源研究》</strong>。该文把宏观大数据与在险增长框架结合，提出<strong>正则化混频分位数回归模型</strong>测度中国经济在险增长：在经济增速的不同分位上用 Lasso / Elastic Net 从高维宏观指标中筛选重要因子，构建潜在风险源集合，再用高维 TVP-VAR 与网络拓扑分析识别宏观经济的风险来源。其主要结论包括：金融因素在国际金融危机时期是主要风险源，此后房地产因素在危机后逐渐成为主要风险源；经济下行期风险源数量多、关联性强；2009 年后财政政策对"稳增长防风险"的重要性超过货币政策。这篇论文是中文 GaR 文献中"测度 + 风险溯源"范式的代表作。</p>
+      <p><strong>风险溯源（risk attribution）</strong>是 GaR 从"测度"走向"诊断"的关键一步：当 GaR 突然下行时，要回答"是谁把它拉下来的？"方法上有两条：(1) <strong>分位数系数的时变轨迹</strong>——观察 $\hat\beta_j(\tau=0.05,t)$ 是否在危机期突然放大；(2) <strong>Shapley / 方差分解</strong>——在高维模型中用 Shapley 值把 GaR 的变化按各协变量贡献分解，类似 nowcasting 中的 news 分解。郑挺国等 (2023) 即用 TVP-VAR + 网络拓扑实现了这一诊断。</p>
+      <p>在中国做 GaR 还要处理两个本土问题。第一，<strong>金融条件指数的构造</strong>：中国不存在完全对应的 NFCI，需要自己从银行间利率、信用利差（AA- vs AAA 企业债）、房地产价格、汇率贬值预期、股市波动率中合成，或直接用正则化分位数回归从高维指标中自动筛选（郑挺国等 2023 的做法）。第二，<strong>政策反应函数</strong>：中国央行对经济下行的逆周期调节力度强于美国，这意味着 FCI 与 GDP 增长之间存在反向因果——用 QR 做政策评估时，工具变量分位数回归（ivqreg）或局部投影的 GaR 扩展是需要考虑的稳健性方向。</p>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 经济研究</span>
+        <div class="paper-title">大数据下经济在险增长测度与风险探源研究</div>
+        <div class="paper-meta">郑挺国、叶仕奇、范馨月 · 《经济研究》, 2023, 58(11): 133–152.</div>
+        <div class="paper-desc">将宏观大数据与在险增长框架结合，提出正则化混频分位数回归测度中国经济在险增长，并用高维 TVP-VAR 与网络拓扑识别风险来源。是中文 GaR 测度与风险溯源方向的代表论文。</div>
+      </div>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 论文案例</h2>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Econometrica</span>
+        <div class="paper-title">Regression Quantiles</div>
+        <div class="paper-meta">Roger Koenker &amp; Gilbert Bassett Jr. · Econometrica, 1978, 46(1): 33–50.</div>
+        <div class="paper-desc">分位数回归的原始论文。提出用不对称加权绝对损失函数估计条件分位数族，奠定了整个 QR 文献的方法论基础。是本节所有方法的源头。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · AER</span>
+        <div class="paper-title">Vulnerable Growth</div>
+        <div class="paper-meta">Tobias Adrian, Nina Boyarchenko &amp; Domenico Giannone · American Economic Review, 2019, 109(4): 1263–1289. DOI: 10.1257/aer.20161923</div>
+        <div class="paper-desc">Growth-at-Risk 范式论文。用分位数回归估计 GDP 增长的条件分布随金融条件指数（NFCI）的变化，发现左尾分位数对金融条件高度敏感、右尾几乎不变——"脆弱增长"。此后 IMF《全球金融稳定报告》把 GaR 作为标准工具。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 经济研究</span>
+        <div class="paper-title">大数据下经济在险增长测度与风险探源研究</div>
+        <div class="paper-meta">郑挺国、叶仕奇、范馨月 · 《经济研究》, 2023, 58(11): 133–152.</div>
+        <div class="paper-desc">见第 07 节：正则化混频分位数回归 + 高维 TVP-VAR 网络拓扑，测度中国 GaR 并做风险溯源。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · IJF</span>
+        <div class="paper-title">Forecasting Macroeconomic Risks</div>
+        <div class="paper-meta">Patrick Adams, Tobias Adrian, Nina Boyarchenko &amp; Domenico Giannone · International Journal of Forecasting, 2021, 37(3): 1173–1191.</div>
+        <div class="paper-desc">系统评估 GaR 模型的样本外预测能力：对比分位数回归、BMA、随机波动等方法，确认 QR + FCI 在尾部密度预测上的优势，并给出 GaR 的完整评估协议（CRPS、命中率）。</div>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 逐步流程与常见错误</h2>
+
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 构造预测变量</div>
+          <div class="step-desc">选择 FCI（或自行用主成分从利率、利差、股市、波动率合成），控制滞后 GDP 增长与通胀；所有变量平稳化。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 多分位点 QR 估计</div>
+          <div class="step-desc">对 $\tau=0.05,0.25,0.5,0.75,0.95$ 分别估计，记录系数与置信区间；画 $\beta(\tau)$ 曲线对比 OLS 水平线。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 滚动样本外 GaR</div>
+          <div class="step-desc">从样本中点开始，逐期重估、预测 $\tau=0.05$ 分位，得 GaR 时间序列。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4 · 密度预测评估</div>
+          <div class="step-desc">用命中率（5% 实际值落在 GaR 之下）、CRPS、pinball loss 评估；与 OLS + 正态假设基准对比。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 5 · 风险溯源</div>
+          <div class="step-desc">把 GaR 的变化按协变量贡献分解（Shapley / 时变系数），回答"当前尾部风险来自哪个变量"。</div>
+        </div>
+      </div>
+
+      <h3>常见错误</h3>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 1：把分位数系数当作"边际效应"直接解读</div>
+        <p>$\beta(\tau)$ 是"$x$ 对 $y$ 在 $\tau$ 分位上的条件分位的斜率"，不是对所有人的平均边际效应。写"FCI 系数 = -0.5"时必须指明"在 5% 分位上"，不能与 OLS 的 -0.2 混为一谈。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 2：GaR 不做样本外验证就报告</div>
+        <p>样本内 QR 总能很好地拟合左尾，但 GaR 的政策价值在于"下一期真出事时它有没有提前预警"。必须做滚动样本外、报告命中率与 CRPS，否则只是曲线拟合。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 3：交互项在 QR 中的含义被误读</div>
+        <p>$x\times z$ 的系数 $\beta_{xz}(\tau)$ 度量的是"在 $\tau$ 分位上，$z$ 每变化一单位时 $x$ 对 $y$ 分位的边际效应变化"，与 OLS 交互项的解释类似，但<strong>它只对该分位的子总体成立</strong>，不能推广到全样本。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 4：忽略分位数交叉（quantile crossing）</div>
+        <p>逐分位独立估计可能出现 $\hat Q_{0.05}&gt;\hat Q_{0.5}$。报告 GaR 前应检查单调性，必要时用 Chernozhukov et al. (2010) 的 rearrangement 修正。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 5：用渐近标准误而不 bootstrap</div>
+        <p>QR 的渐近方差公式在样本量不大、误差非正态时并不可靠。GaR 论文普遍用 bootstrap（Stata <code class="inline">bsqreg</code>、Python <code class="inline">bootstrap</code>）给系数置信区间，不要直接报告渐近 SE。</p>
+      </div>
+
+      <h3>进阶资料</h3>
+      <ul>
+        <li>Koenker &amp; Bassett (1978), <em>Econometrica</em> — Regression Quantiles 原始论文。</li>
+        <li>Adrian, Boyarchenko &amp; Giannone (2019), <em>AER</em> — Vulnerable Growth / GaR 范式。</li>
+        <li>Adams, Adrian, Boyarchenko &amp; Giannone (2021), <em>IJF</em> — GaR 样本外评估协议。</li>
+        <li>郑挺国、叶仕奇、范馨月 (2023), 《经济研究》— 中国 GaR 与风险溯源。</li>
+        <li>Stata：<code class="inline">qreg / bsqreg / ivqreg / qregplot</code>；Python：<code class="inline">statsmodels.QuantReg</code>、R <code class="inline">quantreg</code> 包。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="19-nowcasting-dfm.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">Nowcasting 与 DFM</div>
+      </a>
+      <a href="11-significance-practice.html" class="next">
+        <div class="nav-label">返回 →</div>
+        <div class="nav-title">显著性诊断实务</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+(function() {
+  const path = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('href') && item.getAttribute('href').endsWith(path)) {
+      item.classList.add('active');
+    }
+  });
+})();
+</script>
+</body>
+</html>

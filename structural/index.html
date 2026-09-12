@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>结构估计总览 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item active" href="index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <span>结构估计 Structural Estimation</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">结构估计 · Structural Estimation</span>
+      <h1>结构估计总览：模型类型分支 Taxonomy 与学习路线</h1>
+      <p class="desc">从数据中恢复经济结构参数。本站严格区分<b>模型类型（分支）</b>与<b>估计/求解方法（工具）</b>：结构估计下设 16 个模型分支——静态/动态离散选择、BLP 需求、动态结构、生产函数、拍卖、搜索匹配、动态博弈、教育人力资本、生命周期消费储蓄、市场结构与进入退出、住房区位选择、保险需求与风险偏好、投资融资动态结构；MLE、GMM、非线性GMM/SMM、MPEC、反事实分析、AI 驱动结构估计是跨分支共用的估计/求解工具，不单独称为分支。本页是整个结构估计模块的"目录"。</p>
+    </div>
+
+    
+
+    <!-- ========== 前置条件与学习依赖 ========== -->
+    <div class="precond-box" style="background:#eef4f7;border:1px solid #cdd9e0;border-left:4px solid var(--primary);border-radius:8px;padding:18px 22px;margin:0 0 28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;">&#128218; 前置条件与学习依赖 / Prerequisites</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px 24px;font-size:13.5px;line-height:1.7;">
+        <div><span style="color:var(--accent);font-weight:700;">&#9312; 数学/统计基础：</span>单变量/多变量微积分、概率论基础（条件概率、期望、方差）、线性代数（矩阵乘法、逆矩阵、特征值）；不需要随机过程或实分析基础。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9313; 经济学理论前置：</span>中级微观经济学（消费者效用最大化、企业成本最小化）、Wooldridge《计量经济学导论》水平的 OLS/IV 直觉。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9314; 软件/计算前置：</span>Stata（logit/probit/regress）或 Python（pandas + statsmodels/scipy）任一即可；本总览不涉及繁重计算。</div>
+        <div><span style="color:var(--accent);font-weight:700;">&#9315; 站内前置页面：</span>无（本页就是结构估计模块的入口与路线图）。</div>
+        <div style="grid-column:1/-1;border-top:1px dashed #cdd9e0;padding-top:8px;"><span style="color:var(--accent);font-weight:700;">&#9316; 难度分级：</span><span style="display:inline-block;padding:2px 10px;border-radius:10px;background:var(--primary);color:#fff;font-size:12px;font-weight:600;">入门</span></div>
+      </div>
+    </div>
+
+<div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s0">估计方法 Methods（先学工具，再进分支）</a></li>
+        <li><a href="#s1">模型分支 Branches（16 个模型）</a></li>
+        <li><a href="#s2">分分支学习路径（前置依赖与分叉）</a></li>
+        <li><a href="#s3">结构估计论文的典型写作范式</a></li>
+        <li><a href="#s4">软件与工具清单</a></li>
+        <li><a href="#s5">本领域全部页面（按学习顺序）</a></li>
+      </ol>
+    </div>
+
+    <!-- ========== 结构估计必备基础知识（先学工具，再进分支） ========== -->
+    <div class="section" id="s0">
+      <h2><span class="sec-num">00</span> 估计方法 Methods</h2>
+      <div class="callout" style="background:#faf4ea;border:1px solid #e6d4b5;border-left:4px solid var(--accent);border-radius:8px;padding:16px 20px;margin:0 0 20px;">
+        <div class="callout-title" style="color:var(--accent);">&#128218; 先掌握这些估计/求解工具，再进入模型分支</div>
+        <p style="margin:0;">下列工具是贯穿所有模型分支的<b>估计方法</b>，单独成页——<b>先单独学会这个工具，再到分支里看它怎么用</b>。每张卡片给出：是什么、难度、对应方法页链接、在哪些模型分支中使用。掌握它们后，再去读下方 16 个模型分支会顺畅得多。</p>
+      </div>
+      <div class="ref-grid">
+        <div class="ref-card">
+          <span class="ref-badge">估计工具 · 入门</span>
+          <h4><a href="01-mle.html">极大似然估计 MLE</a></h4>
+          <p><b>是什么：</b>写出完整条件密度，经数值优化求参数与渐近标准误。<br><b>在哪些分支使用：</b><a href="03-discrete-choice.html">离散选择</a>、<a href="11-auctions.html">拍卖</a>、<a href="05-dynamic-structural.html">动态结构</a>（似然可得时）。</p>
+        </div>
+        <div class="ref-card">
+          <span class="ref-badge">估计工具 · 进阶</span>
+          <h4><a href="02-gmm.html">广义矩估计 GMM</a></h4>
+          <p><b>是什么：</b>写不出完整分布时，用"条件矩为零"的方程 + 最优权重矩阵估计。<br><b>在哪些分支使用：</b><a href="04-blp.html">BLP</a>、<a href="10-production-function.html">生产函数</a>、<a href="05-dynamic-structural.html">消费欧拉方程</a>。</p>
+        </div>
+        <div class="ref-card">
+          <span class="ref-badge">估计工具 · 进阶/前沿</span>
+          <h4><a href="13-nonlinear-gmm-smm.html">非线性 GMM / SMM</a></h4>
+          <p><b>是什么：</b>矩条件非线性或无解析式时，用蒙特卡洛模拟近似矩（含间接推断）。<br><b>在哪些分支使用：</b><a href="05-dynamic-structural.html">动态结构</a>、<a href="11-auctions.html">拍卖</a>（似然不可得时）、<a href="../dsge/21-hank.html">HANK</a>。</p>
+        </div>
+        <div class="ref-card">
+          <span class="ref-badge">求解工具 · 前沿</span>
+          <h4><a href="14-mpec.html">MPEC 带均衡约束优化</a></h4>
+          <p><b>是什么：</b>把"估计 + 解均衡"的嵌套迭代重写成单层等式约束优化，根治不收敛。<br><b>在哪些分支使用：</b><a href="04-blp.html">BLP</a>、<a href="05-dynamic-structural.html">动态结构</a>（带均衡约束）。</p>
+        </div>
+        <div class="ref-card">
+          <span class="ref-badge">分析出口 · 进阶</span>
+          <h4><a href="06-counterfactual.html">反事实分析</a></h4>
+          <p><b>是什么：</b>估出结构参数后，代入新政策/新市场结构重解均衡、算福利。<br><b>在哪些分支使用：</b><a href="04-blp.html">BLP 需求反事实</a>、<a href="11-auctions.html">拍卖机制设计</a>、<a href="../qsge/05-counterfactual-solving.html">贸易政策</a>。</p>
+        </div>
+        <div class="ref-card">
+          <span class="ref-badge">求解/估计工具 · 前沿</span>
+          <h4><a href="17-ai-structural-estimation.html">AI 驱动结构估计</a></h4>
+          <p><b>是什么：</b>用神经网络逼近值函数与"参数→矩"映射、伪参数法内嵌市场出清、自动微分替代数值优化，把结构估计从数天压到约 20 分钟。<br><b>定位：</b>求解/估计<b>方法层</b>而非模型分支——可加速 <a href="05-dynamic-structural.html">动态结构</a>、<a href="15-dynamic-games.html">动态博弈</a>、<a href="22-investment-financing-dynamic.html">投资–融资</a> 等任一模型分支的估计。</p>
+        </div>
+        <div class="ref-card">
+          <span class="ref-badge">基础工具 · 入门</span>
+          <h4>数值优化（无独立页）</h4>
+          <p><b>是什么：</b>Newton–Raphson / BFGS / 内点法等，是 MLE、GMM、MPEC 共同的计算底座。<br><b>在哪学：</b>见 <a href="01-mle.html">MLE</a> 与 <a href="14-mpec.html">MPEC</a> 页的优化章节。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 模型分支 Branches（16 个模型）</h2>
+      <p>结构估计模块按<b>"模型类型"</b>组织。每张卡片给出：分支中英文名称、按顺序的包含页面、全流程覆盖环节（假设 → 模型设定 → 估计方法 → 求解算法 → 数据/IV → 应用）、难度、前置依赖与首末页链接。<b>注意：分支仅指模型类型</b>——MLE、GMM、非线性 GMM/SMM、MPEC、反事实分析、AI 加速估计均为<b>估计方法或求解工具</b>，被多个分支共用，已上移为本页 §00 的"估计方法 Methods"组，不单独列为分支。</p>
+
+      <div class="taxonomy-grid">
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-titlewrap"><div class="bc-name">1. 离散选择模型</div><div class="bc-en">DISCRETE CHOICE FAMILY</div></div><span class="diff intermediate">入门→进阶</span></div>
+          <div class="bc-pipeline"><span class="stage on">假设 ✓</span><span class="stage on">模型设定 ✓</span><span class="stage on">估计方法 ✓</span><span class="stage on">求解算法 ✓</span><span class="stage on">数据/IV ✓</span><span class="stage on">应用 ✓</span></div>
+          <div class="bc-meta"><b>前置依赖：</b>MLE 方法（01）　<b>系列页（4 页）：</b>03 → 07 → 08 → 09</div>
+          <div class="bc-desc">随机效用框架下的选择建模，沿"二值 → 多项/有序 → 混合 Logit"逐步放松 IIA，含边际效应。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="03-discrete-choice.html">离散选择总览</a><span class="mi-method">RUM · IIA · logit 家族</span></div>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="07-binary-choice.html">二值选择</a><span class="mi-method">Logit / Probit · 边际效应</span></div>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="08-multinomial-ordered.html">多项与有序选择</a><span class="mi-method">MNL · Ordered Probit · Nested Logit</span></div>
+            </div>
+            <div class="model-item">
+              <div class="mi-left"><a href="09-mixed-logit.html">混合 Logit</a><span class="mi-method">随机系数 · 模拟 MLE · 放松 IIA</span></div>
+            </div>
+          </div>
+          <div class="bc-jump">首页 <a href="03-discrete-choice.html">03 总览</a> → 末页 <a href="09-mixed-logit.html">09 混合 Logit</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-titlewrap"><div class="bc-name">2. BLP 随机系数模型</div><div class="bc-en">BERRY-LEVINSOHN-PAKES</div></div><span class="diff advanced">前沿</span></div>
+          <div class="bc-pipeline"><span class="stage on">假设 ✓</span><span class="stage on">模型设定 ✓</span><span class="stage on">估计方法 ✓</span><span class="stage on">求解算法 ✓</span><span class="stage on">数据/IV ✓</span><span class="stage on">应用 ✓</span></div>
+          <div class="bc-meta"><b>前置依赖：</b>混合 Logit（09）+ GMM 方法（02）</div>
+          <div class="bc-desc">解决 IIA 的需求估计标杆：收缩映射内循环 + GMM 外循环，IV 处理价格内生，Bertrand 供给定价。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="04-blp.html">BLP 随机系数模型</a><span class="mi-method">IIA 问题 · 收缩映射 · GMM 内外循环 · IV · Bertrand</span></div>
+            </div>
+          </div>
+          <div class="bc-jump">单页直达：<a href="04-blp.html">04-blp.html</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-titlewrap"><div class="bc-name">3. 动态结构模型</div><div class="bc-en">DYNAMIC STRUCTURAL MODELS</div></div><span class="diff advanced">前沿</span></div>
+          <div class="bc-pipeline"><span class="stage on">假设 ✓</span><span class="stage on">模型设定 ✓</span><span class="stage on">估计方法 ✓</span><span class="stage on">求解算法 ✓</span><span class="stage on">数据/IV ✓</span><span class="stage on">应用 ✓</span></div>
+          <div class="bc-meta"><b>前置依赖：</b>MLE 方法（01）+ 离散选择模型（分支 1）</div>
+          <div class="bc-desc">估计 forward-looking 主体的动态决策：Bellman 方程、VFI 求解，以及 NFXP 与 CCP（Hotz-Miller）两条估计路线。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="05-dynamic-structural.html">动态结构模型总览</a><span class="mi-method">Bellman · NFXP · CCP · VFI · 估计</span></div>
+            </div>
+          </div>
+          <div class="bc-jump">单页直达：<a href="05-dynamic-structural.html">05-dynamic-structural.html</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-titlewrap"><div class="bc-name">4. 生产函数估计</div><div class="bc-en">PRODUCTION FUNCTION ESTIMATION</div></div><span class="diff intermediate">进阶</span></div>
+          <div class="bc-pipeline"><span class="stage on">假设 ✓</span><span class="stage on">模型设定 ✓</span><span class="stage on">估计方法 ✓</span><span class="stage on">求解算法 ✓</span><span class="stage on">数据/IV ✓</span><span class="stage on">应用 ✓</span></div>
+          <div class="bc-meta"><b>前置依赖：</b>GMM 方法（02）</div>
+          <div class="bc-desc">OP/LP/ACF 用投入需求作代理变量控制内生生产率，以 GMM 矩条件识别并估计 TFP。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="10-production-function.html">生产函数估计</a><span class="mi-method">OP/LP/ACF · 代理变量 · 矩条件 · TFP</span></div>
+            </div>
+          </div>
+          <div class="bc-jump">单页直达：<a href="10-production-function.html">10-production-function.html</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-titlewrap"><div class="bc-name">5. 拍卖模型</div><div class="bc-en">AUCTION MODELS</div></div><span class="diff advanced">前沿</span></div>
+          <div class="bc-pipeline"><span class="stage on">假设 ✓</span><span class="stage on">模型设定 ✓</span><span class="stage on">估计方法 ✓</span><span class="stage on">求解算法 ✓</span><span class="stage on">数据/IV ✓</span><span class="stage on">应用 ✓</span></div>
+          <div class="bc-meta"><b>前置依赖：</b>MLE 方法（01）</div>
+          <div class="bc-desc">由 BNE 与出价数据反推 valuation 分布：次序统计量、GPV 非参数估计与结构 MLE。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="11-auctions.html">拍卖模型</a><span class="mi-method">BNE · 次序统计量 · GPV 非参 · 结构 MLE</span></div>
+            </div>
+          </div>
+          <div class="bc-jump">单页直达：<a href="11-auctions.html">11-auctions.html</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-titlewrap"><div class="bc-name">6. 搜索与匹配模型</div><div class="bc-en">SEARCH &amp; MATCHING MODELS</div></div><span class="diff advanced">进阶/前沿</span></div>
+          <div class="bc-pipeline"><span class="stage on">假设 ✓</span><span class="stage on">模型设定 ✓</span><span class="stage on">估计方法 ✓</span><span class="stage on">求解算法 ✓</span><span class="stage on">数据/IV ✓</span><span class="stage on">应用 ✓</span></div>
+          <div class="bc-meta"><b>前置依赖：</b>动态结构模型（分支 3）</div>
+          <div class="bc-desc">McCall 在职/失业搜索与 DMP 匹配框架：匹配函数、工资 posting 与持续时间模型。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="12-search-matching.html">搜索与匹配模型</a><span class="mi-method">McCall · DMP · 匹配函数 · 持续时间模型</span></div>
+            </div>
+          </div>
+          <div class="bc-jump">单页直达：<a href="12-search-matching.html">12-search-matching.html</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-titlewrap"><div class="bc-name">7. 动态博弈 / 产业动态</div><div class="bc-en">DYNAMIC GAMES / INDUSTRY DYNAMICS · ERICSON-PAKES</div></div><span class="diff advanced">前沿</span></div>
+          <div class="bc-pipeline"><span class="stage on">假设 ✓</span><span class="stage on">模型设定 ✓</span><span class="stage on">估计方法 ✓</span><span class="stage on">求解算法 ✓</span><span class="stage on">数据/IV ✓</span><span class="stage on">应用 ✓</span></div>
+          <div class="bc-meta"><b>前置依赖：</b>动态结构模型（分支 3）+ MPEC（14）</div>
+          <div class="bc-desc">Ericson-Pakes (1995) 多企业联立 Bellman 与进入/退出决策；BBL 两步估计与 MPEC 均衡约束，刻画企业竞争互动与产业动态演化。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="15-dynamic-games.html">动态博弈与产业动态</a><span class="mi-method">Ericson-Pakes · BBL · MPEC · 进入/退出</span></div>
+            </div>
+          </div>
+          <div class="bc-jump">单页直达：<a href="15-dynamic-games.html">15-dynamic-games.html</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-titlewrap"><div class="bc-name">8. 教育 / 人力资本的结构估计</div><div class="bc-en">EDUCATION / HUMAN CAPITAL · KEANE-WOLPIN</div></div><span class="diff advanced">前沿</span></div>
+          <div class="bc-pipeline"><span class="stage on">假设 ✓</span><span class="stage on">模型设定 ✓</span><span class="stage on">估计方法 ✓</span><span class="stage on">求解算法 ✓</span><span class="stage on">数据/IV ✓</span><span class="stage on">应用 ✓</span></div>
+          <div class="bc-meta"><b>前置依赖：</b>动态结构模型（分支 3）</div>
+          <div class="bc-desc">Keane-Wolpin (1997) 生命周期动态离散选择：多期教育/职业决策、Mincer 收入方程与结构估计，用 NLSY/CFPS 类面板识别人力资本回报。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="16-education-human-capital.html">教育与人力资本结构估计</a><span class="mi-method">DDCM · Mincer · Keane-Wolpin · 生命周期</span></div>
+            </div>
+          </div>
+          <div class="bc-jump">单页直达：<a href="16-education-human-capital.html">16-education-human-capital.html</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-titlewrap"><div class="bc-name">9. 生命周期消费与储蓄</div><div class="bc-en">LIFECYCLE CONSUMPTION &amp; SAVINGS</div></div><span class="diff advanced">前沿</span></div>
+          <div class="bc-pipeline"><span class="stage on">假设 ✓</span><span class="stage on">模型设定 ✓</span><span class="stage on">估计方法 ✓</span><span class="stage on">求解算法 ✓</span><span class="stage on">数据 ✓</span><span class="stage on">应用 ✓</span></div>
+          <div class="bc-meta"><b>前置依赖：</b>动态结构模型（分支 3）+ GMM（02）/ SMM（13）</div>
+          <div class="bc-desc">Buffer-stock / 生命周期模型下的消费—储蓄选择：收入冲击、预防性储蓄、借贷约束与退休决策，用 CHIP/CFPS 类微观面板估计偏好与风险态度。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="18-lifecycle-consumption-savings.html">生命周期消费储蓄结构估计</a><span class="mi-method">Buffer-stock · 预防性储蓄 · EGM · 微观面板</span></div>
+            </div>
+          </div>
+          <div class="bc-jump">单页直达：<a href="18-lifecycle-consumption-savings.html">18-lifecycle-consumption-savings.html</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-titlewrap"><div class="bc-name">10. 市场结构与进入退出</div><div class="bc-en">MARKET STRUCTURE &amp; ENTRY / EXIT</div></div><span class="diff advanced">前沿</span></div>
+          <div class="bc-pipeline"><span class="stage on">假设 ✓</span><span class="stage on">模型设定 ✓</span><span class="stage on">估计方法 ✓</span><span class="stage on">求解算法 ✓</span><span class="stage on">数据 ✓</span><span class="stage on">应用 ✓</span></div>
+          <div class="bc-meta"><b>前置依赖：</b>动态博弈（分支 7）+ 生产函数（分支 4）</div>
+          <div class="bc-desc">静态/动态进入退出与市场集中度：沉没成本、选择效应与竞争政策反事实，对照 BLP/拍卖看需求—供给—进入的耦合识别。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="19-market-structure-entry.html">市场结构与进入退出结构估计</a><span class="mi-method">Entry-exit · 沉没成本 · 集中度 · 反事实政策</span></div>
+            </div>
+          </div>
+          <div class="bc-jump">单页直达：<a href="19-market-structure-entry.html">19-market-structure-entry.html</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-titlewrap"><div class="bc-name">11. 住房与区位选择</div><div class="bc-en">HOUSING &amp; LOCATION CHOICE</div></div><span class="diff advanced">前沿</span></div>
+          <div class="bc-pipeline"><span class="stage on">假设 ✓</span><span class="stage on">模型设定 ✓</span><span class="stage on">估计方法 ✓</span><span class="stage on">求解算法 ✓</span><span class="stage on">数据 ✓</span><span class="stage on">应用 ✓</span></div>
+          <div class="bc-meta"><b>前置依赖：</b>离散选择（分支 1）+ 动态结构（分支 3）</div>
+          <div class="bc-desc">住宅购买/租赁与居住地离散—连续选择：房价、通勤与 Amenity 的资本化为结构参数，用微观住家调查识别支付意愿。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="20-housing-location-choice.html">住房与区位选择结构估计</a><span class="mi-method">离散—连续选择 · Hedonic · 通勤 Amenity</span></div>
+            </div>
+          </div>
+          <div class="bc-jump">单页直达：<a href="20-housing-location-choice.html">20-housing-location-choice.html</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-titlewrap"><div class="bc-name">12. 保险需求与风险偏好</div><div class="bc-en">INSURANCE DEMAND &amp; RISK PREFERENCES</div></div><span class="diff advanced">前沿</span></div>
+          <div class="bc-pipeline"><span class="stage on">假设 ✓</span><span class="stage on">模型设定 ✓</span><span class="stage on">估计方法 ✓</span><span class="stage on">求解算法 ✓</span><span class="stage on">数据 ✓</span><span class="stage on">应用 ✓</span></div>
+          <div class="bc-meta"><b>前置依赖：</b>离散选择（分支 1）+ GMM（02）</div>
+          <div class="bc-desc">健康/车险等保险需求结构估计：风险厌恶、逆向选择与道德风险的分离识别，用保单—理赔微观数据反推偏好与政策外部性。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="21-insurance-risk-preference.html">保险需求与风险偏好结构估计</a><span class="mi-method">风险厌恶 · 逆向选择 · 道德风险 · 保单数据</span></div>
+            </div>
+          </div>
+          <div class="bc-jump">单页直达：<a href="21-insurance-risk-preference.html">21-insurance-risk-preference.html</a></div>
+        </div>
+
+        <div class="branch-card">
+          <div class="bc-head"><div class="bc-titlewrap"><div class="bc-name">13. 投资与融资动态结构</div><div class="bc-en">INVESTMENT &amp; FINANCING DYNAMICS</div></div><span class="diff advanced">前沿</span></div>
+          <div class="bc-pipeline"><span class="stage on">假设 ✓</span><span class="stage on">模型设定 ✓</span><span class="stage on">估计方法 ✓</span><span class="stage on">求解算法 ✓</span><span class="stage on">数据 ✓</span><span class="stage on">应用 ✓</span></div>
+          <div class="bc-meta"><b>前置依赖：</b>动态结构（分支 3）+ 生产函数（分支 4）</div>
+          <div class="bc-desc">企业投资—融资联合动态：调整成本、融资约束与内生进入，用公司面板结构估计真实摩擦与金融摩擦的相对贡献。</div>
+          <div class="model-list">
+            <div class="model-item">
+              <div class="mi-left"><a href="22-investment-financing-dynamic.html">投资融资动态结构估计</a><span class="mi-method">调整成本 · 融资约束 · 公司面板 · 反事实</span></div>
+            </div>
+          </div>
+          <div class="bc-jump">单页直达：<a href="22-investment-financing-dynamic.html">22-investment-financing-dynamic.html</a></div>
+        </div>
+
+      </div>
+
+      <h3 style="margin-top:28px;">方法参考 · 估计/求解工具（跨分支使用）</h3>
+      <p style="font-size:13.5px;color:var(--text-light);">以下六页<b>不是模型分支</b>，而是被多个模型分支共用的估计方法、求解算法或分析出口，按选题与需要查阅。标注"估计/求解工具，跨分支使用"。</p>
+      <div class="ref-grid">
+        <div class="ref-card">
+          <span class="ref-badge">估计工具 / 跨分支使用</span>
+          <h4><a href="01-mle.html">极大似然估计 MLE（01）</a></h4>
+          <p>从分布假设写出似然函数，经数值优化求参并导出渐近标准误——离散选择、拍卖、动态结构等分支共用的估计基础。</p>
+        </div>
+        <div class="ref-card">
+          <span class="ref-badge">估计工具 / 跨分支使用</span>
+          <h4><a href="02-gmm.html">广义矩估计 GMM（02）</a></h4>
+          <p>用矩条件代替似然：最优权重、两步法、Hansen J 检验——BLP、生产函数等分支共用的矩估计工具。</p>
+        </div>
+        <div class="ref-card">
+          <span class="ref-badge">估计工具 / 跨分支使用</span>
+          <h4><a href="13-nonlinear-gmm-smm.html">非线性 GMM 与 SMM（13）</a></h4>
+          <p>当解析似然写不出、只能模拟时的通用后备——模拟矩与间接推断，做复杂模型前再补。</p>
+        </div>
+        <div class="ref-card">
+          <span class="ref-badge">求解工具 / 跨分支使用</span>
+          <h4><a href="14-mpec.html">MPEC 方法（14）</a></h4>
+          <p>把嵌套不动点改写为约束优化（Su-Judd 2012），跨分支加速动态/博弈模型的估计。</p>
+        </div>
+        <div class="ref-card">
+          <span class="ref-badge">分析步骤 / 跨分支使用</span>
+          <h4><a href="06-counterfactual.html">反事实分析（06）</a></h4>
+          <p>估完参数后做政策模拟与福利计算，是所有模型分支共用的最终出口。</p>
+        </div>
+        <div class="ref-card">
+          <span class="ref-badge">求解/估计工具 / 跨分支使用</span>
+          <h4><a href="17-ai-structural-estimation.html">AI 驱动结构估计（17）</a></h4>
+          <p>神经网络逼近值函数与"参数→矩"映射 + 伪参数法 + 自动微分，把任一结构模型的估计算得更快；本身不是模型类型，可加速动态结构、动态博弈、投资–融资等分支。</p>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-title">难度标签说明</div>
+        <p><span class="diff beginner">入门</span> 标准计量课程已覆盖，1-2 周；<span class="diff intermediate">进阶</span> 需结合具体模型实现，2-3 周；<span class="diff advanced">前沿</span> 涉及大规模数值优化与模拟，4 周以上。每张卡片上的 <span class="stage on">流程标签</span> 标注该分支覆盖的全流程环节。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 分分支学习路径（前置依赖与分叉）</h2>
+      <p>结构估计是"方法→应用"导向：先把 <strong>MLE + GMM + 离散选择</strong>这条通用主线打牢，再在三个应用方向（需求/动态/生产拍卖搜索）中分叉选 1-2 个深入。每条路径都标了起点页、前置依赖、建议顺序与难度。</p>
+
+      <div class="bp-list">
+
+        <div class="branch-path">
+          <div class="bp-head"><div class="bp-name">① 估计基础 + 离散选择主线（必修）</div><span class="diff intermediate">进阶</span></div>
+          <div class="bp-meta"><b>起点：</b>01 MLE　<b>前置依赖：</b>无（领域入口）　<b>目标：</b>会写似然/矩条件并数值求解，走完 logit 家族"二值→多项→混合"的放松 IIA 进化链。</div>
+          <div class="bp-flow">
+            <span class="step"><span class="num">01</span><a href="01-mle.html">MLE</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">02</span><a href="02-gmm.html">GMM</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">03</span><a href="03-discrete-choice.html">离散选择总览</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">07</span><a href="07-binary-choice.html">二值选择</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">08</span><a href="08-multinomial-ordered.html">多项与有序</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">09</span><a href="09-mixed-logit.html">混合 Logit</a></span>
+          </div>
+        </div>
+
+        <div class="branch-path bp-fork">
+          <div class="bp-head"><div class="bp-name">② 需求估计（IO）路径</div><span class="diff advanced">前沿</span></div>
+          <div class="bp-meta"><b>起点：</b>04 BLP　<b>前置依赖：</b>① 混合 Logit（09）+ GMM（02）　<b>目标：</b>估计市场力量、做合并/价格反事实。</div>
+          <div class="bp-flow">
+            <span class="step"><span class="num">09</span><a href="09-mixed-logit.html">混合 Logit</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">04</span><a href="04-blp.html">BLP 随机系数</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">06</span><a href="06-counterfactual.html">反事实分析</a></span>
+          </div>
+        </div>
+
+        <div class="branch-path bp-fork">
+          <div class="bp-head"><div class="bp-name">③ 动态结构路径</div><span class="diff advanced">前沿</span></div>
+          <div class="bp-meta"><b>起点：</b>05 动态结构总览　<b>前置依赖：</b>① MLE（01）+ GMM（02）　<b>目标：</b>估计 forward-looking 主体的动态决策，掌握 Hotz-Miller 与 MPEC 两大求解思路。</div>
+          <div class="bp-flow">
+            <span class="step"><span class="num">01</span><a href="01-mle.html">MLE</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">05</span><a href="05-dynamic-structural.html">动态结构总览</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">14</span><a href="14-mpec.html">MPEC</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">06</span><a href="06-counterfactual.html">反事实</a></span>
+          </div>
+        </div>
+
+        <div class="branch-path bp-fork">
+          <div class="bp-head"><div class="bp-name">④ 应用分支：生产函数 / 拍卖 / 搜索</div><span class="diff advanced">前沿</span></div>
+          <div class="bp-meta"><b>起点：</b>10 / 11 / 12 任选　<b>前置依赖：</b>① MLE（01）+ GMM（02）；当解析似然不可得时先补 <b>13 非线性 GMM / SMM</b>。三者相互独立，按选题选一个。</div>
+          <div class="bp-flow">
+            <span class="step"><span class="num">01</span><a href="01-mle.html">MLE</a></span><span class="arr">→</span>
+            <span class="step"><span class="num">02</span><a href="02-gmm.html">GMM</a></span><span class="ar">→</span>
+            <span class="step"><span class="num">10</span><a href="10-production-function.html">生产函数 OP/LP/ACF</a></span>
+            <span class="or">/</span>
+            <span class="step"><span class="num">11</span><a href="11-auctions.html">拍卖 GPV</a></span>
+            <span class="or">/</span>
+            <span class="step"><span class="num">12</span><a href="12-search-matching.html">搜索匹配 DMP</a></span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-title">怎么选路径</div>
+        <p>新手按 ① 走完全程再分叉。做产业组织/需求估计走 ②；做公司动态/投资决策走 ③；做生产率、拍卖、劳动搜索走 ④。13 非线性 GMM/SMM 是"解析似然写不出来"时的通用后备，做复杂模型前再补。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 结构估计论文的典型写作范式</h2>
+      <p>结构估计论文与 reduced-form 实证的最大区别：必须先写清楚模型，再做估计，最后做反事实。</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>章节</th><th>内容</th><th>对应分支 / 方法</th></tr></thead>
+          <tbody>
+            <tr><td>1. Introduction</td><td>研究问题 + 模型一句话 + 估计方法 + 反事实发现</td><td>全局</td></tr>
+            <tr><td>2. Model</td><td>经济环境设定、主体优化问题、均衡定义（必须完整）</td><td>各模型分支的模型设定部分（离散选择/BLP/动态结构/生产函数/拍卖/搜索）</td></tr>
+            <tr><td>3. Estimation</td><td>数据描述、似然/矩条件、识别讨论、估计结果表格</td><td>MLE / GMM 方法页</td></tr>
+            <tr><td>4. Identification &amp; Fit</td><td>识别讨论、模型拟合优度、非参数检验</td><td>MLE/GMM 方法页 + 所选模型分支</td></tr>
+            <tr><td>5. Counterfactual</td><td>政策反事实：改变环境参数，重算均衡，报福利变化</td><td>反事实分析（方法页 06）</td></tr>
+            <tr><td>6. Robustness</td><td>换分布假设、换工具变量、换样本</td><td>MLE/GMM 方法页</td></tr>
+            <tr><td>7. Conclusion</td><td>总结 + 政策含义 + 模型局限</td><td>全局</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">结构论文最常见的写作事故</div>
+        <p>① Model 章节跳步，直接从效用跳到估计结果；② 不讨论识别（identification），审稿人不知道参数怎么从数据里出来的；③ 估计结果只报系数不报告经济含义；④ 反事实分析不报告模型拟合；⑤ 忽略标准误的数值优化误差。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 软件与工具清单</h2>
+      <div class="tool-grid">
+        <div class="tool-card">
+          <h4>MATLAB</h4>
+          <p>结构估计主力。fmincon / fminunc 做数值优化，knitro 处理约束优化（MPEC）。BLP、动态结构经典代码多为 MATLAB。</p>
+        </div>
+        <div class="tool-card">
+          <h4>Python</h4>
+          <p>numpy/scipy.optimize 做矩估计与 SMM；pylogit / xlogit 做离散选择；Julia 做大规模模拟越来越流行。</p>
+        </div>
+        <div class="tool-card">
+          <h4>Stata（部分）</h4>
+          <p>二值选择、多项 Logit、IV/GMM 有内置命令；复杂结构估计仍需 MATLAB/Python。</p>
+        </div>
+        <div class="tool-card">
+          <h4>数值优化</h4>
+          <p>fmincon（约束）、fminunc（无约束）、knitro（商业强求解器）、NLopt、Ipopt（开源）。</p>
+        </div>
+        <div class="tool-card">
+          <h4>模拟工具</h4>
+          <p>Halton 序列、Geweke-Hajivassiliou-Keane 模拟器（多元正态概率）、CRN 控制变量法。</p>
+        </div>
+        <div class="tool-card">
+          <h4>经典代码库</h4>
+          <p>BLP：Nevo (2000) 代码；动态结构：Rust 原始代码、Hotz-Miller 实现；OP/LP/ACF：Petrin 个人主页代码。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 本领域全部页面（按学习顺序）</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>页面</th><th>所属分支</th><th>难度</th></tr></thead>
+          <tbody>
+            <tr><td>01</td><td><a href="index.html" style="color:var(--primary);">结构估计总览（本页）</a></td><td>总览</td><td>—</td></tr>
+            <tr><td>02</td><td><a href="01-mle.html" style="color:var(--primary);">极大似然估计 MLE</a></td><td>估计方法 Methods</td><td><span class="diff beginner">入门</span></td></tr>
+            <tr><td>03</td><td><a href="02-gmm.html" style="color:var(--primary);">广义矩估计 GMM</a></td><td>估计方法 Methods</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>04</td><td><a href="03-discrete-choice.html" style="color:var(--primary);">离散选择总览</a></td><td>模型分支 Branches</td><td><span class="diff beginner">入门</span></td></tr>
+            <tr><td>05</td><td><a href="07-binary-choice.html" style="color:var(--primary);">二值选择 (Logit/Probit)</a></td><td>模型分支 Branches</td><td><span class="diff beginner">入门</span></td></tr>
+            <tr><td>06</td><td><a href="08-multinomial-ordered.html" style="color:var(--primary);">多项与有序选择</a></td><td>模型分支 Branches</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>07</td><td><a href="09-mixed-logit.html" style="color:var(--primary);">混合 Logit (Mixed Logit)</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>08</td><td><a href="04-blp.html" style="color:var(--primary);">BLP 随机系数模型</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>09</td><td><a href="05-dynamic-structural.html" style="color:var(--primary);">动态结构模型总览</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>10</td><td><a href="10-production-function.html" style="color:var(--primary);">生产函数估计 (OP/LP/ACF)</a></td><td>模型分支 Branches</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>11</td><td><a href="11-auctions.html" style="color:var(--primary);">拍卖模型</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>12</td><td><a href="12-search-matching.html" style="color:var(--primary);">搜索与匹配模型</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>13</td><td><a href="13-nonlinear-gmm-smm.html" style="color:var(--primary);">非线性 GMM 与 SMM</a></td><td>估计方法 Methods</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>14</td><td><a href="14-mpec.html" style="color:var(--primary);">MPEC 方法</a></td><td>估计方法 Methods</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>15</td><td><a href="06-counterfactual.html" style="color:var(--primary);">反事实分析</a></td><td>估计方法 Methods</td><td><span class="diff intermediate">进阶</span></td></tr>
+            <tr><td>16</td><td><a href="15-dynamic-games.html" style="color:var(--primary);">动态博弈与产业动态（Ericson-Pakes）</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>17</td><td><a href="16-education-human-capital.html" style="color:var(--primary);">教育与人力资本结构估计（Keane-Wolpin）</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>18</td><td><a href="17-ai-structural-estimation.html" style="color:var(--primary);">AI 驱动结构估计</a></td><td>估计方法 Methods</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>19</td><td><a href="18-lifecycle-consumption-savings.html" style="color:var(--primary);">生命周期消费与储蓄</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>20</td><td><a href="19-market-structure-entry.html" style="color:var(--primary);">市场结构与进入退出</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>21</td><td><a href="20-housing-location-choice.html" style="color:var(--primary);">住房与区位选择</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>22</td><td><a href="21-insurance-risk-preference.html" style="color:var(--primary);">保险需求与风险偏好</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+            <tr><td>23</td><td><a href="22-investment-financing-dynamic.html" style="color:var(--primary);">投资与融资动态结构</a></td><td>模型分支 Branches</td><td><span class="diff advanced">前沿</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-nav">
+      <a href="../index.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">工作站首页</div>
+      </a>
+      <a href="01-mle.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">方法工具 · 极大似然估计 MLE</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show');}
+document.querySelectorAll('.copy-btn').forEach(btn=>{btn.addEventListener('click',function(){const code=this.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(code).then(()=>{this.textContent='已复制 ✓';setTimeout(()=>{this.textContent='复制';},1500);});});});
+document.addEventListener('DOMContentLoaded',function(){if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}});
+(function(){const path=window.location.pathname.split('/').pop();document.querySelectorAll('.nav-item').forEach(item=>{if(item.getAttribute('href')&&item.getAttribute('href').endsWith(path)){item.classList.add('active');}});})();
+</script>
+</body>
+</html>

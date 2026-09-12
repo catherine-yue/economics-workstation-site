@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>贸易成本结构估计 Trade Cost Estimation | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="../empirical/index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="../empirical/01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="../empirical/02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="../empirical/03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="../empirical/14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="../empirical/04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="../empirical/05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="../empirical/06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="../empirical/07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="../empirical/24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="../empirical/25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="../empirical/26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="../empirical/28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="../empirical/08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="../empirical/09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item" href="../empirical/10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="../empirical/11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="../empirical/23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="../empirical/15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="../empirical/16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="../empirical/17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="../empirical/18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="../empirical/19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="../empirical/20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="../empirical/21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="../empirical/22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="../empirical/29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="../empirical/30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="../empirical/12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="../empirical/13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="../empirical/27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item active" href="10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a>
+      <span class="sep">/</span>
+      <a href="index.html">量化空间一般均衡</a>
+      <span class="sep">/</span>
+      <span>贸易成本结构估计</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">QSGE · 10</span>
+      <h1>贸易成本结构估计：引力、Head-Ries 指数与 EK 反演</h1>
+      <p class="desc">本页自包含：结构引力方程推导 → 多边阻力项（MR）→ Head-Ries 指数从贸易份额反推 → EK 反演法 → 边境效应 → PPML(ppmlhdfe) 估计 Stata 代码 → EK 反演与贸易成本矩阵可视化 Python 代码 → 数据来源 → 关税/非关税分解 + 论文案例。</p>
+    </div>
+
+    <div style="background:linear-gradient(90deg,#1c5d6e,#2a7d92);color:#fff;padding:14px 22px;border-radius:8px;margin:0 0 28px;font-size:14px;line-height:1.7;">
+      <div style="font-size:11px;letter-spacing:2px;opacity:.75;margin-bottom:4px;">EQUATION AUDIT · 公式审计</div>
+      本页共 <strong>8</strong> 个核心方程（结构引力、对数线性化、MR 项、Head-Ries 指数、Novy 福利形式、EK 反演、边境效应、PPML 一阶条件）。贸易成本是 QSGE 的"旋钮"——所有反事实政策（关税、RTA、基础设施）都通过改 $d_{ni}$ 起作用，因此把 $d_{ni}$ 测准是整个学科的地基。
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">经济环境与假设</a></li>
+        <li><a href="#s2">结构引力方程推导</a></li>
+        <li><a href="#s3">多边阻力（MR）与对数线性化</a></li>
+        <li><a href="#s4">Head-Ries 指数：从份额反推</a></li>
+        <li><a href="#s5">EK 反演法</a></li>
+        <li><a href="#s6">边境效应（McCallum）</a></li>
+        <li><a href="#s7">估计方法：PPML 与代码</a></li>
+        <li><a href="#s8">数据来源</a></li>
+        <li><a href="#s9">模拟与应用：成本分解</a></li>
+        <li><a href="#s10">论文案例、常见错误与难度</a></li>
+      </ol>
+    </div>
+
+    <!-- ============ S1 ============ -->
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 经济环境与假设</h2>
+      <p><strong>贸易成本</strong>是两地之间、把一件商品从卖方运到买方手中所需的全部代价——不仅是运费，还包括关税、非关税壁垒、语言文化差异、信息摩擦、合同执行成本，甚至"看不见"的家乡偏好。<a href="03-gravity.html" style="color:var(--primary);font-weight:600;">结构引力</a>给出了贸易流与贸易成本的理论映射，本页要解决的问题是反过来：<strong>给定观测到的贸易流，如何把贸易成本 $\tau_{ni}$ 测出来？</strong></p>
+      <p>核心假设清单（每条附<strong>设定理由 / 参数含义 / 经济直觉</strong>）：</p>
+      <ul>
+        <li><strong>假设 A1：Armington / EK 偏好下的引力框架。</strong>两国 $n$（进口）、$i$（出口），产品有来源国偏好（Armington）或生产率有 Fréchet 分布（EK），最终都导出同一形式的引力方程。<em>理由</em>：引力方程不是纯经验关系，而是有微观结构的——这是它能做"结构估计"而非"简化估计"的根本。<em>参数含义</em>：$\sigma>1$ 是 Armington 替代弹性，$\theta$ 是 EK 贸易弹性。<em>直觉</em>：产品越是同质（$\sigma$ 小 / $\theta$ 大），贸易流对成本越敏感。</li>
+        <li><strong>假设 A2：iceberg 贸易成本 $\tau_{ni}\ge 1$。</strong>1 单位商品从 $i$ 出发只有 $1/\tau_{ni}$ 到达 $n$，损失部分"融解"在路上。<em>理由</em>：省去运输部门建模，且与引力/EK 闭式兼容。<em>参数含义</em>：$\tau_{ni}=1$ 代表无成本（仅理论极限），$\tau_{nn}=1$（国内无跨境成本）。<em>直觉</em>：关税 $t_{ni}$ 只是 $\tau_{ni}$ 的一小部分。</li>
+        <li><strong>假设 A3：贸易成本可分解为可观测 + 不可观测。</strong>$\tau_{ni}=\text{距离}^{ρ}\cdot(1+t_{ni})\cdot\exp(\text{其他壁垒})$。<em>理由</em>：距离、关税可观测，是政策分析的抓手；剩下的非关税壁垒、边境效应是残差。<em>参数含义</em>：$\rho$ 是距离弹性，$t_{ni}$ 是从价关税。<em>直觉</em>：中美贸易成本 60% 以上不是关税，而是关税以外的一切。</li>
+        <li><strong>假设 A4：结构估计 vs 简化估计。</strong>简化估计只跑 $\ln X_{ni}=\beta_0+\beta_1\ln\text{dist}+\epsilon$，得到的是条件相关；结构估计先推出理论引力方程，再估计出"与福利相关"的弹性（如 $\sigma-1$ 或 $\theta$）。<em>理由</em>：只有结构弹性才能做 <a href="04-welfare-decomposition.html" style="color:var(--primary);font-weight:600;">ACR 福利反事实</a>。<em>直觉</em>：$\ln$ 距离系数 −1 到底意味着什么福利？只有结构模型告诉你。</li>
+      </ul>
+
+      <h4>符号与参数总表</h4>
+      <div class="table-wrap">
+        <table>
+          <tr><th>符号</th><th>含义</th><th>典型取值/来源</th></tr>
+          <tr><td>$X_{ni}$</td><td>$n$ 从 $i$ 的进口额</td><td>Comtrade/BACI</td></tr>
+          <tr><td>$Y_i$</td><td>$i$ 国总产出</td><td>PWT/WB WDI</td></tr>
+          <tr><td>$Y$</td><td>世界总产出</td><td>$\sum_i Y_i$</td></tr>
+          <tr><td>$\tau_{ni}$</td><td>双边贸易成本（iceberg）</td><td>本页估计对象</td></tr>
+          <tr><td>$\Pi_i,P_n$</td><td> outward / inward 多边阻力</td><td>结构引力核心</td></tr>
+          <tr><td>$\sigma$</td><td>Armington 替代弹性</td><td>$4\sim 9$</td></tr>
+          <tr><td>$\theta$</td><td>EK 贸易弹性</td><td>$4\sim 5$</td></tr>
+          <tr><td>$t_{ni}$</td><td>从价关税（可观测）</td><td>WITS/TRAINS</td></tr>
+          <tr><td>$\pi_{ni}$</td><td>$n$ 从 $i$ 进口份额</td><td>$X_{ni}/X_n$</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ S2 ============ -->
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 结构引力方程推导</h2>
+      <p>由 Armington 偏好（CES 复合商品）+ 完全竞争 + 贸易成本 $p_{ni}=p_i\tau_{ni}$，$n$ 地对 $i$ 地产品的支出份额为：</p>
+      <div class="formula-block">
+        <div class="formula-label">(TC2) ★ 结构引力方程</div>
+        $$X_{ni}=\frac{Y_i\,Y_n}{Y}\left(\frac{\tau_{ni}}{\Pi_i P_n}\right)^{1-\sigma}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>分子分母各是什么</strong>：$Y_iY_n/Y$＝两国经济规模（"质量×质量"）；$\tau_{ni}^{1-\sigma}$＝双边成本（$\sigma>1$ 故 $1-\sigma<0$，成本越高贸易越少）；$\Pi_i$＝出口国 $i$ 的 outward 多边阻力（其产品进入所有市场的难度）；$P_n$＝进口国 $n$ 的 inward 多边阻力（$n$ 从所有市场买货的难度）。$\Pi_i P_n$ 是"相对成本"——贸易看的是 $i$ 对 $n$ 的成本，相对 $i$ 对别人、$n$ 对别人的成本。</p>
+        </div>
+      </div>
+      <p><strong>设定理由</strong>：这是 Anderson-van Wincoop (2003) 的核心贡献——把早期引力方程里被忽略的"多边阻力"显式写出来。早期工作（Tinbergen 1962）只写 $X_{ni}=G Y_iY_n/\tau_{ni}$，漏掉 $\Pi_i,P_n$，导致<strong>遗漏变量偏误</strong>。</p>
+      <p><strong>经济直觉</strong>：加拿大把货卖给美国明尼苏达，成本取决于美加距离，但也取决于"美国从日本、德国买同样的货有多便宜"——这就是 $P_n$。同样的明尼苏达—曼尼托巴距离，相对于"明尼苏达—加州"的距离，才决定了边境效应有多大。这正是 McCallum (1995) 美加边境之谜能被解开的钥匙。</p>
+      <p>$\Pi_i$ 与 $P_n$ 由下面的定义式自洽决定（结构引力的"一般均衡"闭环）：</p>
+      <div class="formula-block">
+        <div class="formula-label">多边阻力定义</div>
+        $$\Pi_i^{1-\sigma}=\sum_n \frac{Y_n}{Y}\left(\frac{\tau_{ni}}{P_n}\right)^{1-\sigma},\qquad
+        P_n^{1-\sigma}=\sum_i \frac{Y_i}{Y}\left(\frac{\tau_{ni}}{\Pi_i}\right)^{1-\sigma}$$
+      </div>
+    </div>
+
+    <!-- ============ S3 ============ -->
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 对数线性化与 MR 项处理</h2>
+      <p>把 (TC2) 两边取对数：</p>
+      <div class="formula-block">
+        <div class="formula-label">(TC3) 对数线性化引力</div>
+        $$\ln X_{ni}=\ln Y_i+\ln Y_n-\ln Y+(1-\sigma)\ln\tau_{ni}-(1-\sigma)\ln\Pi_i-(1-\sigma)\ln P_n$$
+      </div>
+      <p><strong>关键问题</strong>：$\Pi_i$ 只随出口国变、$P_n$ 只随进口国变。因此在面板回归里，它们正好被<strong>出口国固定效应 $\mu_i$ 和进口国固定效应 $\nu_n$</strong>吸收：</p>
+      <div class="formula-block">
+        <div class="formula-label">(TC3b) 固定效应引力（估计用）</div>
+        $$\ln X_{ni}=\mu_i+\nu_n+(1-\sigma)\ln\tau_{ni}+\epsilon_{ni}$$
+      </div>
+      <p>这就是为什么今天的引力回归<strong>必须</strong>加出口国/进口国（或时间-出口国、时间-进口国）固定效应——不是为了"稳健性"，而是为了<strong>恰好控制住多边阻力</strong>，否则距离系数有偏。这是 Anderson-van Wincoop 2003 之后引力文献的铁律。但注意：对数化把 $X_{ni}=0$ 的观测全部丢掉了——小国之间的零贸易流恰恰是贸易成本最高的样本，丢掉它们会系统性低估成本。这正是下一节 PPML 的理由。</p>
+      <div class="callout warning">
+        <div class="callout-title">OLS 对数化 vs PPML：Silva-Tenreyro 的警告</div>
+        <p>当误差项与解释变量相关（异方差）时，$\ln X$ 的 OLS 估计<strong>不是</strong> $E[X]$ 的矩，会有偏。Silva &amp; Tenreyro (2006) 证明：在结构引力下，应该直接对 $X_{ni}$ 用泊松伪极大似然（PPML），把 $X_{ni}$ 的水平值当因变量，零贸易流保留。这是 <a href="03-gravity.html" style="color:var(--primary);font-weight:600;">03 引力与 PPML</a> 页的核心，本页 Stata 代码直接用 <code>ppmlhdfe</code>。</p>
+      </div>
+    </div>
+
+    <!-- ============ S4 ============ -->
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> Head-Ries 指数：从贸易份额反推</h2>
+      <p>PPML 只能估计"成本的弹性"（距离系数、关税系数），不能给出<strong>双边贸易成本的绝对水平</strong>。Head &amp; Ries (2001) 与 Novy (2013) 提出一个天才的恒等式：利用"双向贸易流 + 国内销售"，可以在<strong>不估计 MR、不假设模型参数</strong>的情况下，直接把 $\tau_{ni}$ 反推出来。</p>
+      <p>由结构引力，$n$ 从 $i$ 进口 $X_{ni}$，$i$ 从 $n$ 进口 $X_{in}$，国内销售 $X_{nn}$（$n$ 卖给自己）、$X_{ii}$（$i$ 卖给自己）。四式相除，$\Pi_i,P_n$ 和 $Y_i,Y_n$ 全部消掉：</p>
+      <div class="formula-block">
+        <div class="formula-label">(TC4) ★ Head-Ries 贸易成本指数</div>
+        $$\tau_{ni}^{HR}=\sqrt{\frac{X_{ni}X_{in}}{X_{nn}X_{ii}}}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>读法</strong>：分子是双边贸易流的几何平均，分母是"两国国内自给自足"的几何平均。$\tau^{HR}$ 越接近 1（$X_{ni}X_{in}\approx X_{nn}X_{ii}$），跨境与国内一样容易；越接近 0，跨境越难。它<strong>不需要</strong>任何距离、关税数据，只需要贸易矩阵的完整信息（包括对角元 $X_{nn}$）。</p>
+        </div>
+      </div>
+      <p><strong>Novy (2013) 的福利形式</strong>：在已知替代弹性 $\sigma$ 时，可把 HR 指数换算成"从价等值贸易成本"（ad-valorem tariff equivalent）：</p>
+      <div class="formula-block">
+        <div class="formula-label">(TC4b) Novy 从价等值成本</div>
+        $$\tau_{ni}^{\text{Novy}}=\left(\frac{X_{nn}X_{ii}}{X_{ni}X_{in}}\right)^{\frac{1}{2(\sigma-1)}}-1$$
+      </div>
+      <p><strong>经济直觉</strong>：如果 $n$ 卖给自己的份额 $X_{nn}/Y_n$ 很高，说明跨境很难；如果 $n$ 和 $i$ 互相卖给对方的份额很高，说明跨境容易。HR 指数把"相对国内贸易的跨境贸易"这个比例直接转成成本。它是衡量"国内市场整合度"的利器——中国省间贸易成本就是用省间铁路货运量 + 省总产出构造 $X_{nn},X_{ni}$ 后算 HR。</p>
+      <div class="callout tip">
+        <div class="callout-title">为什么 HR 假设对称？</div>
+        <p>(TC4) 里 $X_{ni}$ 与 $X_{in}$ 相乘，天然假设" $n$ 到 $i$ 的成本 ≈ $i$ 到 $n$ 的成本"。这在对称壁垒（距离、共同语言）下成立；但关税、非对称边境管制会让 $\tau_{ni}\ne\tau_{in}$，HR 只能给出"均值"。非对称场景要用 EK 反演（下一节）或结构引力估计。</p>
+      </div>
+    </div>
+
+    <!-- ============ S5 ============ -->
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> EK 反演法</h2>
+      <p>在 <a href="02-eaton-kortum.html" style="color:var(--primary);font-weight:600;">EK 模型</a>里，贸易份额为 $\pi_{ni}=\dfrac{T_i(w_i\tau_{ni})^{-\theta}}{\sum_k T_k(w_k\tau_{nk})^{-\theta}}$。取 $n$ 对自己的份额 $\pi_{nn}=\dfrac{T_n(w_n\tau_{nn})^{-\theta}}{\sum_k(\cdot)}$（$\tau_{nn}=1$），两式相除，分母相同消掉：</p>
+      <div class="formula-block">
+        <div class="formula-label">(TC5) ★ EK 反演：从份额反推双边成本</div>
+        $$\frac{\pi_{ni}}{\pi_{nn}}=\frac{T_i}{T_n}\left(\frac{w_i}{w_n}\tau_{ni}\right)^{-\theta}\tau_{nn}^{\theta}
+        \;\Longrightarrow\;
+        \tau_{ni}=\left(\frac{\pi_{ni}/\pi_{nn}}{T_i/T_n}\right)^{-1/\theta}\frac{w_i}{w_n}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p><strong>读法</strong>：知道 $n$ 从 $i$ 的份额 $\pi_{ni}$ 与自给份额 $\pi_{nn}$、生产率比 $T_i/T_n$、工资比 $w_i/w_n$、贸易弹性 $\theta$，就能反解出唯一的 $\tau_{ni}$。与 HR 不同，EK 反演<strong>不需要</strong>对称假设，可逐对得到非对称成本。</p>
+        </div>
+      </div>
+      <p><strong>经济直觉</strong>：如果 $n$ 从 $i$ 进口份额远低于 $n$ 自给份额，同时 $i$ 的生产率 $T_i$ 并不比 $n$ 差、工资 $w_i$ 也不更高，那唯一的解释就是" $n$ 到 $i$ 的贸易成本很高"。EK 反演把这一差额归因到 $\tau_{ni}$。它的代价是需要先估出生产率 $T_i$ 与工资 $w_i$——而这两者本身又是模型内生的，需要用 <a href="06-rrh-spatial.html" style="color:var(--primary);font-weight:600;">inversion</a> 从均衡反推。</p>
+    </div>
+
+    <!-- ============ S6 ============ -->
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 边境效应（McCallum 之谜）</h2>
+      <p>McCallum (1995, <em>AER</em>) 估计加拿大各省与美国各州的贸易流，发现：即使控制了 GDP、距离，加拿大省际贸易流量是加拿大省—美国州贸易流量的<strong>22 倍</strong>。这就是著名的"边境效应"（home bias / border effect）——一道无形的边境，把国际贸易压缩到远低于预测水平。</p>
+      <p>在引力方程里加一个"共同国家"虚拟变量 $\text{samecountry}_{ni}$：</p>
+      <div class="formula-block">
+        <div class="formula-label">(TC6) 边境效应估计</div>
+        $$\ln X_{ni}=\mu_i+\nu_n+\beta_1\ln\text{dist}_{ni}+\beta_2\text{samecountry}_{ni}+\epsilon_{ni}$$
+        <div class="formula-meta" style="font-size:13px;color:#444;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border-light);">
+          <p>$\exp(\hat\beta_2)$ 就是"同国内贸易是跨境贸易的多少倍"。McCallum 估得 $\exp(3.09)\approx 22$。Anderson-van Wincoop (2003) 指出：这个 22 倍里有一大半是<strong>多边阻力未控制</strong>导致的——加了 MR（出口国/进口国固定效应）后，美加边境效应下降到约 6 倍，仍显著但不再"谜"。</p>
+        </div>
+      </div>
+      <p><strong>经济直觉</strong>：小国（加拿大）的边境效应被放大，因为它替代选项少——加拿大省际贸易受边境影响的相对变化大；大国（美国）省—州贸易受边境影响小。这就是为什么 McCallum 用加拿大数据会得到 22 倍，而用美国数据会小得多。理解 MR 之后，边境效应不再是谜，而是结构模型里的一个矩。</p>
+    </div>
+
+    <!-- ============ S7 ============ -->
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 估计方法与代码</h2>
+      <h3>7.1 Stata：ppmlhdfe 估计结构引力</h3>
+      <p>当代引力估计的金标准是 <code>ppmlhdfe</code>（Correia, Guimarães, Zylkin 2020）：PPML 估计 + 高维固定效应，自动吸收出口国/进口国/时间固定效应，且保留零贸易流。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · ppmlhdfe 结构引力</span><button class="copy-btn">复制</button></div>
+<pre><code>* ============================================================
+* 结构引力 PPML 估计 + 贸易成本弹性 (Anderson-van Wincoop 2003)
+* 数据: 双边贸易流面板, 每对(i,n,t)一行
+* 需要: ssc install ppmlhdfe, replace
+* ============================================================
+clear all
+set more off
+
+* --- 0. 载入双边贸易数据 ---
+* flow_ni : n从i进口额(水平值, 不是对数!)
+use "gravity_panel.dta", clear
+
+* 构造时间×出口国 / 时间×进口国固定效应(吸收MR)
+egen exp_yr = group(exp_iso year)      // 出口国-时间 FE
+egen imp_yr = group(imp_iso year)      // 进口国-时间 FE
+
+* --- 1. PPML 基准: 出口国-时间 + 进口国-时间 FE ---
+* 这是 AER 2003 之后的标准: 严格控制多边阻力
+ppmlhdfe flow_ni ln_dist ln_tariff contig comlang rta, ///
+    absorb(exp_yr imp_yr) cluster(pair_id)
+* 系数解释:
+*   ln_dist 系数 = -(sigma-1)*rho  (贸易成本的距离弹性)
+*   ln_tariff 系数 = -(sigma-1)    (关税弹性, 直接得 sigma-1)
+*   rta 系数 >0: 区域贸易协定降低成本
+
+* --- 2. 边境效应: 加 "同国内部" 虚拟变量 ---
+gen same_country = (exp_iso == imp_iso)   // 国内销售=1
+ppmlhdfe flow_ni ln_dist same_country contig comlang, ///
+    absorb(exp_yr imp_yr) cluster(pair_id)
+* exp(_b[same_country]) 即国内贸易相对跨境的倍数(边境效应)
+
+* --- 3. 用估出的 sigma-1 换算贸易成本弹性 ---
+* 若 ln_tariff 系数为 -1.5, 则 sigma-1 = 1.5, sigma = 2.5
+* 贸易成本 tau 每升 10%, 贸易流下降 1.5*10% = 15%
+
+* --- 4. 稳健性: 对比 OLS 对数化(故意保留零流问题) ---
+gen ln_flow = ln(flow_ni)
+reg ln_flow ln_dist contig comlang i.exp_iso i.imp_iso i.year
+* 注意: 这条 OLS 会自动丢掉 flow_ni=0 的行, 系数有偏
+</code></pre>
+      </div>
+
+      <h3>7.2 Python：Head-Ries 指数 + EK 反演 + 成本矩阵</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Python · numpy · HR 指数 + EK 反演</span><button class="copy-btn">复制</button></div>
+<pre><code># ============================================================
+# 贸易成本反推: Head-Ries 指数 + EK 反演法
+# 输入: 双边贸易矩阵 X (n从i进口, 对角=国内销售)
+#       生产率 T_i, 工资 w_i, 贸易弹性 theta
+# 输出: HR成本矩阵 tau_HR, EK反演矩阵 tau_EK
+# ============================================================
+import numpy as np
+
+def head_ries(X):
+    """Head-Ries 指数: tau_HR[n,i] = sqrt(X[n,i]*X[i,n] / (X[n,n]*X[i,i]))
+    X[n,i] = n 从 i 进口 (含对角元 X[n,n] = n 自给)"""
+    X = np.asarray(X, dtype=float)
+    n = X.shape[0]
+    diag = np.diag(X)                       # X[n,n]
+    num = X * X.T                           # X[n,i]*X[i,n]
+    den = diag[:, None] * diag[None, :]     # X[n,n]*X[i,i]
+    hr = np.sqrt(num / den)
+    np.fill_diagonal(hr, 1.0)               # 国内成本=1
+    return hr
+
+def novy_tariff_equiv(X, sigma=5.0):
+    """Novy (2013): 从价等值贸易成本 = (X_nn X_ii / (X_ni X_in))^(1/(2(sigma-1))) - 1"""
+    hr = head_ries(X)                       # = sqrt(X_ni X_in / (X_nn X_ii))
+    # 注意: hr = sqrt(bilater/domestic), Novy 用 domestic/bilater = 1/hr^2
+    novy = (1.0 / hr**2) ** (1.0 / (2 * (sigma - 1))) - 1.0
+    np.fill_diagonal(novy, 0.0)
+    return novy
+
+def ek_inversion(X, T, w, theta):
+    """EK 反演: tau_ni = ((pi_ni/pi_nn)/(T_i/T_n))^(-1/theta) * w_i/w_n
+    X[n,i] = n 从 i 进口; T[i]=i地生产率; w[i]=i地工资"""
+    X = np.asarray(X, float)
+    row_sum = X.sum(axis=1, keepdims=True)  # n地总进口(含国内)
+    pi = X / row_sum                        # pi[n,i] = n从i进口份额
+    pi_nn = np.diag(pi)[:, None]            # n 自给份额 (n,n)
+    ratio_pi = pi / pi_nn                   # pi_ni / pi_nn
+    T = np.asarray(T, float); w = np.asarray(w, float)
+    ratio_T = T[None, :] / T[:, None]       # T_i / T_n  (n行,i列)
+    ratio_w = w[None, :] / w[:, None]       # w_i / w_n
+    tau = (ratio_pi / ratio_T) ** (-1.0 / theta) * ratio_w
+    np.fill_diagonal(tau, 1.0)
+    return tau
+
+# ------------------------------------------------------------
+# 用模拟贸易矩阵演示 (实际替换为 BACI/海关数据)
+# ------------------------------------------------------------
+if __name__ == "__main__":
+    rng = np.random.default_rng(0)
+    N = 5
+    # 模拟: 国内销售大, 跨境贸易小; 构造一个 (n从i进口) 矩阵
+    X = rng.uniform(0.5, 2.0, (N, N))
+    np.fill_diagonal(X, rng.uniform(8.0, 12.0, N))   # 国内销售远大于跨境
+    X = X + X.T                                        # 近似对称贸易
+
+    hr = head_ries(X)
+    print("Head-Ries 指数矩阵 (越接近0跨境越难):")
+    print(np.round(hr, 3))
+    print("HR 行平均(排除对角):",
+          np.round(np.nanmean(np.where(np.eye(N) == 0, hr, np.nan)), 3))
+
+    novy = novy_tariff_equiv(X, sigma=5.0)
+    print("\nNovy 从价等值成本 (sigma=5):")
+    print(np.round(novy, 3))
+
+    # EK 反演
+    T_prod = rng.uniform(0.8, 1.3, N)
+    w = rng.uniform(0.9, 1.1, N)
+    tau_ek = ek_inversion(X, T_prod, w, theta=4.0)
+    print("\nEK 反演双边成本 (theta=4):")
+    print(np.round(tau_ek, 3))
+    print("EK 反演对角=1:", np.allclose(np.diag(tau_ek), 1.0))
+</code></pre>
+      </div>
+      <div class="callout tip">
+        <div class="callout-title">代码要点</div>
+        <ul>
+          <li><strong>对角元是命门</strong>：HR 与 EK 反演都需要 $X_{nn}$（国内销售）。BACI 只有跨境贸易，必须用"总产出 − 出口"近似 $X_{nn}$；</li>
+          <li><strong>对称性</strong>：HR 自动用 $X_{ni}X_{in}$，要求数据双向都有；单向数据只能用 EK 反演；</li>
+          <li><strong>Stata vs Python 分工</strong>：回归弹性用 <code>ppmlhdfe</code>（Stata 生态成熟），反推水平值用 Python（矩阵运算快）。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============ S8 ============ -->
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 数据来源</h2>
+      <div class="table-wrap">
+        <table>
+          <tr><th>数据</th><th>来源</th><th>用途</th></tr>
+          <tr><td>双边贸易流 $X_{ni}$</td><td>UN Comtrade；Cepii BACI（已修正 CIF/FOB 不一致）；WITS</td><td>引力回归、HR 指数</td></tr>
+          <tr><td>引力变量（距离/语言/边界/RTA）</td><td>Cepii GeoDist（Mayer-Zignago）；CEPII Gravity 数据库</td><td>$\ln\tau_{ni}$ 的可观测部分</td></tr>
+          <tr><td>关税 $t_{ni}$</td><td>WTO TAO；UNCTAD TRAINS；WITS（整合后）</td><td>关税 vs 非关税分解</td></tr>
+          <tr><td>GDP / 总产出</td><td>Penn World Table；IMF WEO；World Bank WDI</td><td>$Y_i,Y_n,Y$</td></tr>
+          <tr><td>国内销售 $X_{nn}$</td><td>总产出 − 总出口（工业普查/国民账户）；WIOD 对角块</td><td>HR 指数分母</td></tr>
+          <tr><td>中国微观</td><td>海关数据库（HS8 位企业-产品-目的地，2000-2016）；中国工业企业库</td><td>企业层面引力、加工贸易</td></tr>
+          <tr><td>省间贸易 $X_{ni}^{\text{省}}$</td><td>省间铁路货运量；引力模型反推（如 Tombe-Zhu 2019）</td><td>中国国内市场整合</td></tr>
+        </table>
+      </div>
+      <p><strong>实操提醒</strong>：(i) Comtrade 的进口用 CIF、出口用 FOB，$X_{ni}\ne X_{in}$，必须用 BACI 做镜像调和；(ii) 关税用 HS 编码，贸易流用 SITC/ISIC，必须做 HS↔ISIC↔SITC 多版本匹配（WITS 自带 concordance）；(iii) 中国省间贸易没有官方统计，常用"铁路货运量 + 引力反推"近似，会有测量误差。</p>
+    </div>
+
+    <!-- ============ S9 ============ -->
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> 模拟与应用：成本分解与趋势</h2>
+      <h3>9.1 贸易成本矩阵的描述性分析</h3>
+      <p>算出 $\tau_{ni}$ 后，按 (i) 距离分桶、(ii) 是否同 RTA、(iii) 是否同语言、(iv) 是否同国家（边境效应）分组，看平均成本如何变化。典型发现：距离每翻一倍，贸易成本上升约 20–30%；同 RTA 使成本下降 5–15%；同语言使成本下降约 5%。</p>
+      <h3>9.2 关税 vs 非关税壁垒的贡献分解</h3>
+      <p>从 PPML 回归可得：<strong>可观测关税</strong>只解释双边总贸易成本的一小部分（通常 &lt; 20%），剩下 80% 是<strong>非关税壁垒</strong>（技术性贸易壁垒 TBT、检验检疫、许可证、文化距离、信息摩擦）。分解方法：把 $\ln\tau_{ni}=\rho\ln\text{dist}+\ln(1+t_{ni})+\boldsymbol\gamma'\mathbf{Z}+\tilde\tau_{ni}$，关税项贡献 $\ln(1+t_{ni})$，残差 $\tilde\tau_{ni}$ 即非关税。这正是"中美贸易战加了 25% 关税，但实际成本上升远不止"的量化来源。</p>
+      <h3>9.3 贸易成本随时间下降趋势</h3>
+      <p>用 HR 指数逐年算 $\tau_{ni,t}$，1950–2020 年全球平均贸易成本下降约 30–50%（Novy 2013 估计），但<strong>近 10 年下降停滞甚至回升</strong>——这是"慢全球化"（slowbalization）和贸易战的量化证据。中国内部省间贸易成本自 1995 年以来持续下降，但地区间差距仍大，统一大市场建设的空间就在这里。</p>
+    </div>
+
+    <!-- ============ S10 ============ -->
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 论文案例、常见错误与难度</h2>
+      <h3>10.1 英文经典论文</h3>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 里程碑</span>
+        <div class="paper-title">Gravity with Gravitas: A Solution to the Border Puzzle</div>
+        <div class="paper-meta">Anderson &amp; van Wincoop (2003), <em>American Economic Review</em> 93(1): 170-192</div>
+        <div class="paper-desc">结构引力 + 多边阻力的奠基之作，解开 McCallum 边境之谜。本页 (TC2)(TC3) 的直接来源。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Increasing Returns versus National Product Differentiation as an Explanation for the Pattern of US-Canada Trade</div>
+        <div class="paper-meta">Head &amp; Ries (2001), <em>American Economic Review</em> 91(4): 858-876</div>
+        <div class="paper-desc">HR 指数的原始思想：从双边贸易流与国内销售反推贸易成本，无需估计 MR。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">National Borders Matter: Canada-U.S. Regional Trade Patterns</div>
+        <div class="paper-meta">McCallum (1995), <em>American Economic Review</em> 85(3): 615-623</div>
+        <div class="paper-desc">美加边境效应 22 倍之谜的原始估计，引爆整个引力文献。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">The Log of Gravity</div>
+        <div class="paper-meta">Santos Silva &amp; Tenreyro (2006), <em>The Review of Economics and Statistics</em> 88(4): 641-658</div>
+        <div class="paper-desc">证明对数 OLS 在异方差下有偏，PPML 才是结构引力的正确估计量。本页 Stata 代码的方法论依据。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 经典</span>
+        <div class="paper-title">Gravity Redux: Measuring International Trade Costs with Panel Data</div>
+        <div class="paper-meta">Novy (2013), <em>Economic Inquiry</em> 51(1): 101-121（及早期 JIE 版本）</div>
+        <div class="paper-desc">把 HR 指数发展成可测算随时间变化贸易成本的面板工具，给出 Novy 从价等值成本。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type en">EN · 手册</span>
+        <div class="paper-title">Gravity Equations: Workhorse, Toolkit, and Cookbook</div>
+        <div class="paper-meta">Head &amp; Mayer (2014), <em>Handbook of International Economics</em> Vol.4</div>
+        <div class="paper-desc">引力方程的百科全书式综述，PPML、固定效应、HR、MR 一站式参考。</div>
+      </div>
+
+      <h3>10.2 中文顶刊与中国应用</h3>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 国内贸易成本</span>
+        <div class="paper-title">中国的国内贸易是否比国际贸易更难开展？</div>
+        <div class="paper-meta">逯建、行伟波（引力模型 + 空间引力，测度中国国内 vs 国际贸易成本）</div>
+        <div class="paper-desc">用多种引力模型（含空间引力）稳健估计中国国内贸易成本，对"中国国内市场分割严重"的流行说法提出直接反驳。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · Head-Ries 应用</span>
+        <div class="paper-title">国内贸易壁垒与企业出口二元边际</div>
+        <div class="paper-meta">用 Head-Ries 指数估计中国区域间总贸易成本，关联企业出口决策</div>
+        <div class="paper-desc">先以 HR 指数测度中国省际贸易壁垒，再识别其对企业出口集约/扩展边际的影响，是 HR 在中国的标准应用。</div>
+      </div>
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 边境效应</span>
+        <div class="paper-title">中国区域边界效应测度（结构引力）</div>
+        <div class="paper-meta">许统生等（基于结构引力测度中国内部/跨境边境效应与非关税壁垒分解）</div>
+        <div class="paper-desc">把关税、信息成本、本地偏好、文化相似性在边境效应中分解，是中国情境下 McCallum 式估计的代表。</div>
+      </div>
+
+      <h3>10.3 常见错误</h3>
+      <div class="callout danger">
+        <div class="callout-title">错误 1：OLS 对数化丢零贸易流</div>
+        <p><code>ln(flow)</code> 直接把 flow=0 的样本丢掉。小国之间零贸易恰恰是高成本观测，丢掉会严重低估贸易成本弹性。必须用 PPML 保留水平值。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">错误 2：忘记控制多边阻力（MR）</div>
+        <p>不加出口国/进口国固定效应（或时间×国固定效应），距离与边境系数都有偏——这正是 McCallum 22 倍之谜的来源。<strong>没加 MR 的引力回归在 2024 年不能投稿。</strong></p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 3：Head-Ries 当非对称成本用</div>
+        <p>HR 用 $X_{ni}X_{in}$，本质假设对称。若研究非对称关税或单边制裁，HR 会把双边成本"平均化"，应改用 EK 反演。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 4：关税与贸易流的 HS 编码错配</div>
+        <p>关税是 HS6/HS8 位，贸易流常是 SITC/ISIC。直接按 HS 年份合并会因编码版本变动（HS1996→2002→2007→2012→2017→2022）错配。必须用 WITS/BACI 的官方 concordance 并按版本映射。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">错误 5：把 $X_{nn}$ 当 0 或忽略</div>
+        <p>HR 与 EK 反演都需要对角元 $X_{nn}$。BACI 只含跨境贸易，直接算 HR 会除零。必须用"总产出 − 出口"或 WIOD 对角块补国内销售。</p>
+      </div>
+
+      <h3>10.4 难度与前置</h3>
+      <p><strong>难度：★★★☆☆。</strong>需要掌握：<a href="03-gravity.html" style="color:var(--primary);font-weight:600;">结构引力与 PPML</a>（03 页）、<a href="02-eaton-kortum.html" style="color:var(--primary);font-weight:600;">EK 模型</a>（02 页）、ACR 福利（04 页）。本页是 03 页的<strong>深化</strong>——03 教你跑 PPML，本页教你把 PPML 系数 + HR + EK 反演拼成一套完整的"贸易成本工具箱"。与 <a href="11-gvc-value-added.html" style="color:var(--primary);font-weight:600;">GVC 增加值</a>互补：贸易成本决定"流多少"，增加值分解决定"流的里面有多少是真本国造的"。</p>
+    </div>
+
+    <div class="page-nav">
+      <a href="09-dynamic-spatial.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">动态空间一般均衡</div>
+      </a>
+      <a href="11-gvc-value-added.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">全球价值链与增加值贸易</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>异质性分析：分组、交互项与组间差异 | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group">
+      <div class="nav-group-title">总览 Overview</div>
+      <a class="nav-item" href="../index.html">首页总览</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">实证论文 Empirical</div>
+      <a class="nav-item" href="index.html">实证总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">A 数据准备与描述 Data</div>
+      <a class="nav-item" href="01-data-cleaning.html"><span class="num">01</span> 数据清洗</a>
+      <a class="nav-item" href="02-data-merge.html"><span class="num">02</span> 数据合并与面板</a>
+      <a class="nav-item" href="03-descriptive-stats.html"><span class="num">03</span> 描述性统计</a>
+      <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">14</span> EDA与样本构造</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">B 基准与因果识别 Causal ID</div>
+      <a class="nav-item" href="04-baseline-regression.html"><span class="num">04</span> 基准回归</a>
+      <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">05</span> 内生性与IV</a>
+      <a class="nav-item" href="06-did.html"><span class="num">06</span> DID双重差分</a>
+      <a class="nav-item" href="07-rdd.html"><span class="num">07</span> RDD断点回归</a>
+      <a class="nav-item" href="24-synthetic-control.html"><span class="num">24</span> 合成控制法 SCM</a>
+      <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">25</span> 动态面板 GMM</a>
+      <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">26</span> 空间计量入门</a>
+      <a class="nav-item" href="28-bunching-kink.html"><span class="num">28</span> Bunching/Kink聚束设计</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">C 识别诊断与稳健性 Diagnostics</div>
+      <a class="nav-item" href="08-robustness.html"><span class="num">08</span> 稳健性检验</a>
+      <a class="nav-item" href="09-mechanism.html"><span class="num">09</span> 机制检验</a>
+      <a class="nav-item active" href="10-heterogeneity.html"><span class="num">10</span> 异质性分析</a>
+      <a class="nav-item" href="11-significance-practice.html"><span class="num">11</span> 显著性诊断实务</a>
+      <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span> 显著性手法库与规范判别</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">D 前沿与预测方法 Frontier</div>
+      <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">15</span> 潜在结果与因果图</a>
+      <a class="nav-item" href="16-dml.html"><span class="num">16</span> DML去偏机器学习</a>
+      <a class="nav-item" href="17-causal-forest.html"><span class="num">17</span> 因果森林与政策学习</a>
+      <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">18</span> 大数据宏观预测</a>
+      <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">19</span> 即时预测与DFM</a>
+      <a class="nav-item" href="20-quantile-gar.html"><span class="num">20</span> 分位数回归与GaR</a>
+      <a class="nav-item" href="21-text-analysis.html"><span class="num">21</span> 文本分析与叙事冲击</a>
+      <a class="nav-item" href="22-tvp-var.html"><span class="num">22</span> TVP-VAR与风险溯源</a>
+      <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">29</span> 非参/半参方法</a>
+      <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">30</span> 贝叶斯实证推断</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">E 论文工程 Workflow</div>
+      <a class="nav-item" href="12-replication-workflow.html"><span class="num">12</span> 论文复现流程</a>
+      <a class="nav-item" href="13-five-layer-framework.html"><span class="num">13</span> 五层框架</a>
+      <a class="nav-item" href="27-ejd-method-map.html"><span class="num">27</span> 顶刊方法地图与复现</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">DSGE 模型</div>
+      <a class="nav-item" href="../dsge/index.html">DSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">09</span> RBC基准模型</a>
+      <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">10</span> NK三方程模型</a>
+      <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">11</span> 中尺度模型(SW)</a>
+      <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">12</span> 小国开放经济</a>
+      <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">07</span> 金融摩擦(BGG/GK)</a>
+      <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">13</span> 财政与货币政策规则</a>
+      <a class="nav-item" href="../dsge/14-tank.html"><span class="num">14</span> TANK两主体模型</a>
+      <a class="nav-item" href="../dsge/21-hank.html"><span class="num">21</span> HANK异质性主体</a>
+      <a class="nav-item" href="../dsge/17-olg.html"><span class="num">17</span> OLG世代交叠</a>
+      <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">18</span> 货币搜寻模型</a>
+      <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">19</span> ZLB偶发约束(OccBin)</a>
+      <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">20</span> 多部门IO-DSGE</a>
+      <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">16</span> 适应性学习与行为预期</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">求解与估计方法 Methods</div>
+      <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">01</span> 模型构建</a>
+      <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">02</span> 一阶条件推导</a>
+      <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">03</span> 稳态求解</a>
+      <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">04</span> 对数线性化</a>
+      <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">15</span> 扰动法(一阶/二阶)</a>
+      <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">05</span> Dynare实操</a>
+      <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">06</span> 贝叶斯估计</a>
+      <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">08</span> IRF与模拟</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">结构估计 Structural</div>
+      <a class="nav-item" href="../structural/index.html">结构估计总览</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">03</span> 离散选择总览</a>
+      <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">07</span> 二值选择(Logit/Probit)</a>
+      <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">08</span> 多项与有序选择</a>
+      <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">09</span> 混合Logit</a>
+      <a class="nav-item" href="../structural/04-blp.html"><span class="num">04</span> BLP随机系数模型</a>
+      <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">05</span> 动态结构模型总览</a>
+      <a class="nav-item" href="../structural/10-production-function.html"><span class="num">10</span> 生产函数估计(OP/LP/ACF)</a>
+      <a class="nav-item" href="../structural/11-auctions.html"><span class="num">11</span> 拍卖模型</a>
+      <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">12</span> 搜索与匹配模型</a>
+      <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">15</span> 动态博弈/产业动态</a>
+      <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">16</span> 教育/人力资本</a>
+      <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">18</span> 生命周期消费储蓄</a>
+      <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">19</span> 市场结构与进入退出</a>
+      <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">20</span> 住房与区位选择</a>
+      <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">21</span> 保险需求与风险偏好</a>
+      <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">22</span> 投资融资动态结构</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计方法 Methods</div>
+      <a class="nav-item" href="../structural/01-mle.html"><span class="num">01</span> 极大似然估计 MLE</a>
+      <a class="nav-item" href="../structural/02-gmm.html"><span class="num">02</span> 广义矩估计 GMM</a>
+      <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">06</span> 反事实分析</a>
+      <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">13</span> 非线性GMM/SMM</a>
+      <a class="nav-item" href="../structural/14-mpec.html"><span class="num">14</span> MPEC方法</a>
+      <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">17</span> AI驱动结构估计</a>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">量化空间一般均衡 QSGE</div>
+      <a class="nav-item" href="../qsge/index.html">QSGE总览与路线</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">模型分支 Branches</div>
+      <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span> Armington模型</a>
+      <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span> Eaton-Kortum模型</a>
+      <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span> 结构引力与PPML</a>
+      <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">08</span> Melitz异质企业模型</a>
+      <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">06</span> RRH空间一般均衡</a>
+      <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">07</span> 贸易+迁移+土地</a>
+      <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">09</span> 动态空间一般均衡</a>
+      <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">11</span> GVC增加值贸易</a>
+      <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">12</span> 多部门EK量化贸易</a>
+      <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">13</span> 城市通勤空间均衡</a>
+      <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">14</span> 空间经济统一框架</a>
+      <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">15</span> 单中心城市土地利用</a>
+      <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">16</span> 定量HOV要素禀赋</a>
+      <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">17</span> 通勤贸易一体化</a>
+      <div class="sidebar-group-title" style="display:block;padding:8px 20px 4px;margin-top:8px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#6f8aa0;background:rgba(255,255,255,0.04);border-left:3px solid rgba(184,115,51,0.5);">估计与反事实方法 Methods</div>
+      <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">04</span> 福利分解(ACR)</a>
+      <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">05</span> 帽代数反事实</a>
+      <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">10</span> 贸易成本结构估计</a>
+    </div>
+  </nav>
+</aside>
+
+<div class="main">
+  <div class="content-wrap">
+    <div class="breadcrumb">
+      <a href="../index.html">首页</a><span class="sep">/</span>
+      <a href="index.html">实证论文</a><span class="sep">/</span>
+      <span>异质性分析</span>
+    </div>
+
+    <div class="page-header">
+      <span class="tag">Empirical · Heterogeneity Analysis</span>
+      <h1>异质性分析：分组、交互项与组间系数差异检验</h1>
+      <p class="desc">Heterogeneity：平均效应之外，效应在不同所有制、地区、规模、行业间如何分化？本节讲分组回归、交互项法、组间系数差异检验（SUR / 费舍尔组合 / bdiff）、分位数回归 qreg，以及异质性的经济学解读与"异质性—机制"联动。</p>
+    </div>
+
+    <div class="prereq-box">
+      <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+      <div class="prereq-grid">
+        <div class="prereq-item">
+          <div class="prereq-label">① 数学 / 统计基础</div>
+          <div class="prereq-body">交互项与边际效应、分位数回归（qreg 条件分位数）、子样本推断与组间系数差异检验（SUR / 费舍尔组合 / bdiff）。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">② 经济学理论前置</div>
+          <div class="prereq-body">应用微观经济学；能基于理论预期说出处理效应应沿哪些维度分化。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">③ 软件 / 计算前置</div>
+          <div class="prereq-body">Stata 17+（外部命令：<code class="inline">bdiff</code>、<code class="inline">qreg</code>、<code class="inline">suest</code>、<code class="inline">estout</code>、<code class="inline">reghdfe</code>，按分析选用）。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">④ 站内前置页面</div>
+          <div class="prereq-body">先学 <a href="04-baseline-regression.html">04 基准回归</a>，平均效应成立后再拆异质性。</div>
+        </div>
+        <div class="prereq-item">
+          <div class="prereq-label">⑤ 难度分级</div>
+          <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">进阶</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toc-box">
+      <div class="toc-title">本页目录 / CONTENTS</div>
+      <ol>
+        <li><a href="#s1">为什么要做异质性分析</a></li>
+        <li><a href="#s2">分组回归法</a></li>
+        <li><a href="#s3">交互项法与形式化</a></li>
+        <li><a href="#s4">组间系数差异检验</a></li>
+        <li><a href="#s5">分位数回归 qreg</a></li>
+        <li><a href="#s6">异质性的经济学解读</a></li>
+        <li><a href="#s7">异质性—机制联动</a></li>
+        <li><a href="#s8">逐步流程</a></li>
+        <li><a href="#s9">QTE 分位数处理效应</a></li>
+        <li><a href="#s10">分布分解（DFL / RIF / Oaxaca-Blinder）</a></li>
+        <li><a href="#s11">异质性的其他前沿方法</a></li>
+        <li><a href="#s12">论文案例与常见错误</a></li>
+      </ol>
+    </div>
+
+    <div class="section" id="s1">
+      <h2><span class="sec-num">01</span> 为什么要做异质性分析</h2>
+      <p>基准回归给出的是<strong>平均处理效应 ATT / ATE</strong>，它把所有个体"揉"在一起，掩盖了效应在不同群体间的分化。但政策评估的核心关切往往恰恰是分化：<strong>谁受益多、谁受损、谁不受影响？</strong>同样一项减税政策，对国有企业和民营企业、对东部沿海与内陆省份、对大企业与小企业、对资本密集与劳动密集行业的效应可能天差地别。异质性分析（heterogeneity analysis）就是要把这个"平均黑箱"打开。</p>
+      <p>从写作角度看，异质性分析有三重价值：(1) <strong>充实故事</strong>——效应在理论预测应当更强的子样本里更强，本身就是对机制的侧面印证；(2) <strong>政策含义</strong>——告诉你政策应当向哪个群体倾斜；(3) <strong>回应审稿人</strong>——证明你的结论不是某个极端子样本的产物。但要警惕：异质性不是"随便切几刀样本看谁显著"，每一次切分都必须有经济学先验。</p>
+      <div class="callout info">
+        <div class="callout-title">📌 两种主流做法</div>
+        <p>异质性分析有两条技术路线：<strong>分组回归</strong>（把样本切成子样本分别回归，直观看系数大小）与<strong>交互项法</strong>（在全样本里加入 X×D 交互项，直接检验差异是否统计显著）。前者直观，后者严谨，顶刊通常两者并用。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s2">
+      <h2><span class="sec-num">02</span> 分组回归法</h2>
+      <p>分组回归（split-sample regression）最直观：按某个维度（所有制、地区、规模、行业）把样本切成两组或多组，分别估计 $Y=\beta X+\gamma'Z+\varepsilon$，比较各组的 $\hat{\beta}$。常见的分组维度包括：</p>
+      <ul>
+        <li><strong>所有制</strong>：国有 vs 非国有 / 民营 vs 外资；</li>
+        <li><strong>地区</strong>：东部 vs 中西部、沿海 vs 内陆、高市场化 vs 低市场化地区；</li>
+        <li><strong>企业规模</strong>：大企业 vs 中小企业（按员工数或资产中位数）；</li>
+        <li><strong>行业</strong>：高污染 vs 低污染、资本密集 vs 劳动密集、高技术 vs 传统行业；</li>
+        <li><strong>治理/融资特征</strong>：高融资约束 vs 低融资约束、高成长性 vs 低成长性。</li>
+      </ul>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 分组回归的关键陷阱</div>
+        <p>分组回归只是<strong>分别估计</strong>，两组系数一个显著、一个不显著，并<strong>不能直接推出"两组系数有显著差异"</strong>。因为"显著 vs 不显著"在统计上并不等价于"两者差异显著"。要证明组间差异本身显著，必须做组间系数差异检验（见第 04 节）。这是中文论文最常见的错误之一。</p>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 分组回归</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ===== 02.1 按所有制分组：国有 vs 非国有 =====
+reghdfe Y X $Xctrl if SOE==1, absorb(id year) vce(cluster id)   // 国有
+est store h_soe
+reghdfe Y X $Xctrl if SOE==0, absorb(id year) vce(cluster id)   // 非国有
+est store h_nonsoe
+esttab h_soe h_nonsoe, keep(X) se star(* 0.1 ** 0.05 *** 0.01) ///
+    mtitles("国有" "非国有")
+
+* ===== 02.2 按地区分组：东部 vs 中西部 =====
+reghdfe Y X $Xctrl if east==1, absorb(id year) vce(cluster id)
+est store h_east
+reghdfe Y X $Xctrl if east==0, absorb(id year) vce(cluster id)
+est store h_west
+
+* ===== 02.3 按规模分组：大企业 vs 中小企业 =====
+xtile size_grp = lnasset, nq(2)
+reghdfe Y X $Xctrl if size_grp==1, absorb(id year) vce(cluster id)
+est store h_small
+reghdfe Y X $Xctrl if size_grp==2, absorb(id year) vce(cluster id)
+est store h_large
+esttab h_small h_large, keep(X) se star(* 0.1 ** 0.05 *** 0.01) ///
+    mtitles("中小企业" "大企业")
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s3">
+      <h2><span class="sec-num">03</span> 交互项法与形式化</h2>
+      <p>交互项法（interaction model）在全样本里一次性估计组间差异，不需要切分样本，且能直接给出差异项的显著性。设 $D$ 为分组虚拟变量（如 $D=1$ 表示国有企业），模型为：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (1) — 交互项异质性模型</div>
+        $$y=\beta_0+\beta_1 x+\beta_2\,x\times D+\beta_3 D+\varepsilon$$
+      </div>
+      <p>系数解读：$\beta_1$ 是 $D=0$ 组中 $x$ 对 $y$ 的效应；$\beta_3$ 是两组在截距上的差异；$\beta_2$ 是<strong>组间效应差异</strong>——即 $D=1$ 组的 $x\to y$ 斜率比 $D=0$ 组多（或少）$\beta_2$。$D=1$ 组的总效应为 $\beta_1+\beta_2$。<strong>$\beta_2$ 是否显著不为零，正是"两组系数差异是否显著"的直接检验</strong>，这比分组回归后肉眼比较严谨得多。</p>
+      <p>当分组变量是连续变量（如融资约束指数、市场化程度）时，做法完全相同：把 $D$ 换成连续变量 $Z$，交互项为 $x\times Z$，$\beta_2$ 度量 $Z$ 每上升一单位时 $x\to y$ 斜率的变化。为降低多重共线性，连续变量通常先中心化。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 交互项法（虚拟变量 + 连续变量）</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ===== 03.1 分组虚拟变量交互 =====
+gen XxD = X * SOE
+reghdfe Y X SOE XxD $Xctrl, absorb(id year) vce(cluster id)
+* XxD 的系数 beta2 显著 => 国有/非国有两组效应差异显著
+* D=1 组总效应 = _b[X] + _b[XxD]
+
+* ===== 03.2 连续变量交互（先中心化）=====
+center SA_index, prefix(c_)
+gen XxcSA = X * c_SA_index
+reghdfe Y X c_SA_index XxcSA $Xctrl, absorb(id year) vce(cluster id)
+
+* ===== 03.3 用因子变量语法自动生成交互并做简单效应 =====
+reghdfe Y c.X##i.SOE $Xctrl, absorb(id year) vce(cluster id)
+margins SOE, dydx(X)          // 分别给出 SOE=0/1 两组 X 的边际效应
+marginsplot                   // 画两组边际效应及置信区间对比
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s4">
+      <h2><span class="sec-num">04</span> 组间系数差异检验</h2>
+      <p>当你坚持用分组回归（而非交互项）来报告时，必须正式检验两组系数是否真的不同。三种常用方法：</p>
+      <p><strong>(1) 似无相关回归 SUR（suest）</strong>：把两组回归放在同一系统里估计，利用跨方程误差相关，直接检验 $\beta_{group1}=\beta_{group2}$。</p>
+      <p><strong>(2) 费舍尔组合检验 / 自体抽样（Fisher permutation / bootstrap）</strong>：通过有放回或无放回地重抽样构造"组间系数差"的经验分布，判断真实差异是否落在尾部。中文顶刊常用 <code class="inline">bdiff</code> 命令实现。</p>
+      <p><strong>(3) 交互项法</strong>：即上一节的 $\beta_2$ 检验，本质上是在全样本里做一个等价的 Wald 检验，最简洁。</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (2) — 组间系数差异检验的原假设</div>
+        $$H_0:\ \beta_{group1}=\beta_{group2}\quad\Longleftrightarrow\quad H_0:\ \beta_2=0\ (\text{交互项})$$
+      </div>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · SUR / bdiff 费舍尔组合检验 / 交互项 Wald</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ===== 04.1 似无相关回归 suest 检验组间差异 =====
+* 注意：suest 不能直接用 reghdfe，先用 regress/xtreg 估计并存储
+reg Y X $Xctrl if SOE==1
+est store g1
+reg Y X $Xctrl if SOE==0
+est store g0
+suest g1 g0
+* 检验两组的 X 系数是否相等
+test [g1_mean]X = [g0_mean]X
+* 输出差异与 p 值：p<0.05 => 组间系数差异显著
+
+* ===== 04.2 费舍尔组合检验：bdiff 命令 =====
+* ssc install bdiff
+* 语法：bdiff, group(分组变量) model(回归模型) reps(次数)
+bdiff, group(SOE) model(reghdfe Y X $Xctrl, absorb(id year) vce(cluster id)) ///
+    reps(1000) seed(20240101)
+* 输出经验 p 值：diff_p<0.05 => 组间差异显著
+
+* ===== 04.3 交互项法：直接 Wald 检验（最简洁）=====
+gen XxD = X*SOE
+reghdfe Y X SOE XxD $Xctrl, absorb(id year) vce(cluster id)
+test XxD                 // H0: beta2 = 0，等价于组间系数无差异
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s5">
+      <h2><span class="sec-num">05</span> 分位数回归 qreg</h2>
+      <p>分组与交互项只回答"在类别维度或单一调节变量上"的异质性。<strong>分位数回归（quantile regression, qreg）</strong>则回答另一个维度的问题：$x$ 对 $y$ 的效应，在 $y$ 分布的不同分位上是否不同？例如政策对"高生产率企业"和"低生产率企业"（即 $y$ 分布的 90 分位与 10 分位）的影响是否不同？</p>
+      <p>OLS 估计的是条件均值 $E[y|x]$，而分位数回归估计条件分位数 $Q_\tau(y|x)$：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (3) — 条件分位数回归</div>
+        $$Q_\tau(y|x)=\beta_0(\tau)+\beta_1(\tau)x+\gamma(\tau)'Z,\qquad \tau\in(0,1)$$
+      </div>
+      <p>通过比较 $\beta_1(\tau)$ 在 $\tau=0.1,0.25,0.5,0.75,0.9$ 处的轨迹，可以看到效应是否随 $y$ 分布位置系统性变化。建议同时画<strong>系数分位图（coefplot over quantiles）</strong>：横轴为分位点，纵轴为 $\hat{\beta}_1(\tau)$ 及其置信区间，与 OLS 的水平线对比。</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · 分位数回归 qreg</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ===== 05.1 单个分位点 =====
+qreg Y X $Xctrl, quantile(0.25) vce(bootstrap, reps(500))
+est store q25
+
+* ===== 05.2 多个分位点联立（分位数回归）=====
+qreg Y X $Xctrl, quantile(0.10)
+est store q10
+qreg Y X $Xctrl, quantile(0.50)
+est store q50
+qreg Y X $Xctrl, quantile(0.90)
+est store q90
+esttab q10 q50 q90, keep(X) se star(* 0.1 ** 0.05 *** 0.01) ///
+    mtitles("10分位" "50分位(中位)" "90分位")
+
+* ===== 05.3 面板分位数回归（需 xtqreg / usereghdfe）=====
+* ssc install xtqreg
+xtqreg Y X $Xctrl, quantile(0.50)
+
+* ===== 05.4 画系数沿分位变化图 =====
+* 循环估计 0.05~0.95 各分位，记录系数，再 coefplot
+* 与 OLS 水平线对比，看效应是否随分位系统性上升/下降
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s6">
+      <h2><span class="sec-num">06</span> 异质性的经济学解读</h2>
+      <p>异质性分析最容易"跑而不思"：切完样本、跑完系数就写"在 X 组更显著"。但审稿人真正关心的是<strong>这个差异的经济学含义</strong>。一个合格的异质性章节，应当回答三个问题：</p>
+      <ol>
+        <li><strong>方向是否与理论一致？</strong>如果理论预测"高融资约束组效应更强"，那实证上就应当是高约束组系数更大；若相反，要解释为什么。</li>
+        <li><strong>大小差异是否有政策含义？</strong>差异多大才值得政策上区别对待？不要把统计显著但经济上微小的差异夸大。</li>
+        <li><strong>是否排除了其他解释？</strong>两组系数不同，可能不是因为分组维度本身，而是因为两组在其他协变量上分布不同（如大企业组里高出口企业更多）。要检查协变量的组间平衡。</li>
+      </ol>
+      <div class="callout tip">
+        <div class="callout-title">✅ 解读模板</div>
+        <p>"我们预期政策对高融资约束企业影响更大（理论：融资约束渠道）。分组回归显示高约束组系数为 0.12（p&lt;0.01），低约束组为 0.03（不显著）；交互项 $X\times SA$ 系数为 0.08（p&lt;0.05），bdiff 检验经验 p 值为 0.03，确认组间差异显著。这与融资约束渠道一致。"</p>
+      </div>
+    </div>
+
+    <div class="section" id="s7">
+      <h2><span class="sec-num">07</span> 异质性—机制联动</h2>
+      <p>异质性与机制不是两张皮。<strong>最强的实证叙事，是让异质性分析反过来印证机制</strong>：如果 X 通过渠道 M 起作用，那么在"M 更容易被激活"的子样本里效应应当更强。这就把异质性（谁受影响更大）和机制（通过什么渠道）锁在了一起。</p>
+      <p>例如：若"数字经济 → 融资约束缓解 → 创新"是机制链，那么异质性分析应当显示：在融资约束更紧、金融发展更弱的地区，数字经济对创新的边际效应更大。这种"异质性方向与机制预测一致"的证据，比单纯的中介系数更有说服力，因为它利用了理论预测的交叉限制（cross-equation restriction）。写作时建议把异质性表和机制表放在同一节，互相引用。</p>
+    </div>
+
+    <div class="section" id="s8">
+      <h2><span class="sec-num">08</span> 逐步流程</h2>
+      <div class="step-flow">
+        <div class="step-item">
+          <div class="step-title">Step 1 · 由理论决定切分维度</div>
+          <div class="step-desc">先想清楚：根据你的机制故事，效应应当在哪个子样本更强？据此确定所有制/地区/规模/行业等切分维度，而不是随便切。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 2 · 分组回归看方向与量级</div>
+          <div class="step-desc">按维度切样本，分别估计并汇总成"一组一列"的异质性表格，直观看系数大小与方向。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 3 · 交互项法检验差异显著性</div>
+          <div class="step-desc">在全样本加入 $X\times D$，直接检验组间差异是否显著（$\beta_2$）。这是最严谨的一步，不能省。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 4 · 正式组间差异检验</div>
+          <div class="step-desc">若报告分组回归，用 suest 或 bdiff（费舍尔组合检验）给出组间系数差异的经验 p 值，避免"显著 vs 不显著"的误读。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 5 · 分位数回归补充分布异质性</div>
+          <div class="step-desc">对连续结果变量，补一组 qreg 看效应沿 $y$ 分布如何变化，并画系数分位图。</div>
+        </div>
+        <div class="step-item">
+          <div class="step-title">Step 6 · 回到经济学解读与机制联动</div>
+          <div class="step-desc">用理论解释差异方向，与机制表交叉印证，写出政策含义。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 新增：QTE / 分布分解 / 前沿方法 ========== -->
+
+    <div class="section" id="s9">
+      <h2><span class="sec-num">09</span> QTE 分位数处理效应</h2>
+      <p>本页 s5 的条件分位数回归（<code class="inline">qreg</code>）回答的是"<strong>给定 $X$，$y$ 的条件分位数如何随 $x$ 变化</strong>"。但政策评估更关心另一个问题：<strong>处理对结果的整个分布产生了什么影响？</strong>平均处理效应 ATE 只问 $E[Y(1)-Y(0)]$，它可能掩盖"处理把低收入人群往上拉、却把高收入人群往下压"这种分布层面的故事。<strong>分位数处理效应 QTE（Quantile Treatment Effect）</strong>就是为此设计的。</p>
+
+      <h3>9.1 原理：τ_q = Y_q(1) − Y_q(0)</h3>
+      <div class="formula-block">
+        <div class="formula-label">Equation (QTE) — 分位数处理效应</div>
+        $$\tau_q = Q_q\big(Y(1)\big) - Q_q\big(Y(0)\big),\qquad q\in(0,1)$$
+      </div>
+      <p>其中 $Q_q(Y(d))$ 是潜在结果 $Y(d)$ 分布的第 $q$ 分位数。$\tau_q$ 度量"处理把第 $q$ 分位的个体收入 / 生产率 / 工资抬高了多少"。把 $q$ 从 0.1 扫到 0.9，就得到一条<strong>处理效应的分布曲线</strong>：如果 $\tau_q$ 在低分位很大、高分位很小，说明处理主要帮了"底层"；如果 $\tau_q$ 随 $q$ 上升，说明处理加剧了不平等。</p>
+      <div class="callout info">
+        <div class="callout-title">📌 ATE 与 QTE 的区别</div>
+        <p><strong>ATE 是"分布的平均位置"效应</strong>（一阶矩），$\tau_q$ 是"分布整条曲线"效应（各分位数）。ATE 可能为 0 而 QTE 不为 0——例如处理让一半人收入 +100、另一半人 −100，均值不变但分布被拉开了。这就是为什么政策评估常同时报 ATE 与 QTE：<strong>平均效应不显著 ≠ 处理无效</strong>。</p>
+      </div>
+
+      <h3>9.2 估计方法谱系</h3>
+      <ul>
+        <li><strong>分位数回归（Koenker &amp; Bassett, 1978）</strong>：估计条件分位数 $Q_q(Y\mid X,D)$。在可忽略性下，对处理组、对照组分别拟合分位数回归，再取条件分位之差——但这给的是"条件 QTE"，解释时要固定 $X$。</li>
+        <li><strong>Firpo (2007) 重新加权 QTE</strong>：在选择观察条件下，用倾向得分把处理组 / 对照组的分布"加权"到同一个反事实分布上，直接估计<strong>无条件分位数处理效应</strong> $\tau_q$，Stata 有 <code class="inline">qte</code> 命令实现。</li>
+        <li><strong>RIF 回归（Firpo, Fortin &amp; Lemieux, 2009）</strong>：构造"再中心化影响函数" RIF(Y,q)，对它做 OLS，系数就是处理对无条件分位数的边际效应，Stata 命令 <code class="inline">rifreg</code>。</li>
+        <li><strong>Callaway &amp; Li (2023) 分布处理效应</strong>：在交错处理 / DID 框架下，估计处理对整个结果分布（而非仅均值）的动态因果效应，是 QTE 在面板 / 政策评估下的前沿扩展。</li>
+      </ul>
+
+      <h3>9.3 Stata 完整代码</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · qreg / ivqreg / qte / rifreg</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ============================================================
+* 09.3 QTE 分位数处理效应（模拟数据，set seed）
+* ssc install qte        // Firpo(2007) 无条件 QTE
+* ssc install rif       // RIF 回归相关
+* ============================================================
+clear all
+set seed 20240101
+set obs 2000
+drawnorm X1 X2 X3, means(0) sds(1)
+
+* 倾向得分 + 结果：处理效应随 Y 分布变化
+gen double e_x = invlogit(X1 + 0.5*X2)
+gen byte D = runiform() &lt; e_x
+* 真实 QTE：低分位效应大、高分位效应小（处理压缩分布）
+gen double u = rnormal()
+gen double Y0 = X2 + u
+gen double Y1 = Y0 + (1.5 - 1.0*norm(u))   // 低分位(u小)效应≈1.5，高分位≈0.5
+gen double Y  = D*Y1 + (1-D)*Y0
+
+* ---- (1) 条件分位数回归：处理组 vs 对照组 ----
+qreg Y D X1 X2 X3, quantile(0.10) vce(boot, reps(500))
+est store q10
+qreg Y D X1 X2 X3, quantile(0.50) vce(boot, reps(500))
+est store q50
+qreg Y D X1 X2 X3, quantile(0.90) vce(boot, reps(500))
+est store q90
+esttab q10 q50 q90, keep(D) se star(* 0.1 ** 0.05 *** 0.01) ///
+    mtitles("10分位" "50分位" "90分位")
+* D 的系数即"条件 QTE"，应看到从 1.5 降到 0.5 的轨迹
+
+* ---- (2) 无条件 QTE：Firpo (2007) 重新加权 ----
+* qte Y D X1 X2 X3, q(0.1 0.25 0.5 0.75 0.9)
+* 输出各无条件分位点的 QTE 及 bootstrap SE
+
+* ---- (3) 工具变量分位数处理效应（若 D 内生）----
+* ivqreg Y D X1 X2 X3 (Z = 工具变量), quantile(0.5)
+
+* ---- (4) RIF 回归：处理对无条件分位数的边际效应 ----
+* 先生成第 q 分位的 RIF，再回归 Y~D+X
+* 例：rifreg Y D X1 X2 X3, rif(q(0.5))
+* 循环 q=0.1...0.9，记录 D 的系数，画 QTE 轨迹图
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s10">
+      <h2><span class="sec-num">10</span> 分布分解（DFL / RIF / Oaxaca-Blinder）</h2>
+      <p>QTE 问"处理如何移动结果分布"，<strong>分布分解</strong>则问：两组（男 / 女、处理 / 对照、政策前 / 后）的<strong>结果分布差异</strong>，有多少来自"个体特征不同"，有多少来自"特征的回报率不同"？这是 Oaxaca-Blinder 均值分解在分布层面的推广。</p>
+
+      <h3>10.1 从 Oaxaca-Blinder 到分布分解</h3>
+      <p>经典 Oaxaca-Blinder 只分解<strong>均值差</strong> $\Delta\bar Y=\bar Y_A-\bar Y_B$：把它拆成"特征构成效应"（endowment，A、B 的 $X$ 分布不同）与"系数 / 回报效应"（coefficient，同样的 $X$ 在两组回报不同）。但均值分解看不到分布两端——工资性别差距在 10 分位和 90 分位可能完全不同。分布分解把这套逻辑推广到整条分布。</p>
+
+      <h3>10.2 DFL 重新加权分解（DiNardo-Fortin-Lemieux, 1996）</h3>
+      <p><strong>DFL</strong> 的核心是构造一个"反事实分布"：<em>用 A 组的特征、B 组的回报率</em>会得到什么分布？做法是给样本重新加权：</p>
+      <div class="formula-block">
+        <div class="formula-label">Equation (DFL weight)</div>
+        $$w(x)=\frac{P(A\mid x)}{1-P(A\mid x)}\cdot\frac{1-P(A)}{P(A)}$$
+      </div>
+      <p>用这个权重调整 B 组样本，使其协变量分布"看起来像"A 组，再比较原 B 分布与加权后分布的分位数差，即为特征构成效应。DFL 的优点是不假设函数形式，缺点是权重对倾向得分误设敏感。</p>
+
+      <h3>10.3 RIF 回归分解（Firpo-Fortin-Lemieux, 2009）</h3>
+      <p>RIF（Recentered Influence Function）是一个把"分布统计量（分位数、基尼系数、方差）"变换成"可对其做 OLS 的因变量"的工具。对第 $q$ 分位数，RIF 近似等于把"个体对该分位数的贡献"作为因变量做 OLS，系数就是<strong>协变量对无条件分位数的边际效应</strong>。在 Oaxaca-Blinder 框架下用 RIF 替代 $Y$，就能把均值分解直接搬到任意分位数 / 基尼系数上。</p>
+      <div class="callout tip">
+        <div class="callout-title">✅ 为什么用 RIF 而不是直接 qreg</div>
+        <p>条件分位数回归的系数不能直接做 Oaxaca 分解（条件 ≠ 无条件）。RIF 的巧妙在于：它构造的是<strong>无条件</strong>分位数的影响函数，因此可以直接代入 Oaxaca 分解公式，把"均值分解"无缝升级为"分布分解"。这是过去十年劳动经济学实证最常用的分布分解工具。</p>
+      </div>
+
+      <h3>10.4 Stata 完整代码</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">Stata · oaxaca / rifreg / dfl 分解</span><button class="copy-btn">复制</button></div>
+        <pre><code>* ============================================================
+* 10.4 分布分解（模拟数据，set seed）
+* ssc install oaxaca, replace
+* ssc install rif, replace       // RIF 回归
+* ============================================================
+clear all
+set seed 20240101
+set obs 3000
+gen byte group = _n &lt; 1500          // A=1（如处理组）, B=0
+drawnorm educ exper, means(0) sds(1)
+* A 组特征更好、回报率更高
+gen double Y = 0.8*group + (1 + 0.6*group)*educ + (0.3 + 0.2*group)*exper + rnormal()
+
+* ---- (1) 均值 Oaxaca-Blinder 分解 ----
+oaxaca Y educ exper, by(group) detail
+* 输出：总差异 = 解释部分(特征) + 未解释部分(回报)
+
+* ---- (2) DFL 重新加权（手工倾向得分加权）----
+logit group educ exper
+predict double pA, pr
+gen double dfl_w = cond(group==1, 1, pA/(1-pA)) * (1-0.5)/0.5
+* dfl_w 把 B 组加权成 A 组的协变量分布；
+* 用 dfl_w 加权比较 A、B 的 Y 分布（直方图 / 分位数差）
+
+* ---- (3) RIF 分解：在各分位上重复 Oaxaca ----
+* 对 q=0.1,0.5,0.9 分别构造 RIF 并做分解
+* 循环：
+foreach q in 0.1 0.5 0.9 {
+    * 生成第 q 分位的 RIF（用 rif 包或手工：
+    *   RIF = q + (q - 1(Y&lt;=q)) / f_Y(q)）
+    * 再对 RIF 跑 oaxaca
+    di "=== 分位 `q` 的 RIF 分解 ==="
+    * oaxaca rif_Y educ exper, by(group)
+}
+* 画出"分位数 — 特征效应 / 回报效应"两条曲线，
+* 即 FFL (2009) 标准的分布分解图
+</code></pre>
+      </div>
+    </div>
+
+    <div class="section" id="s11">
+      <h2><span class="sec-num">11</span> 异质性的其他前沿方法</h2>
+      <p>除本页前 8 节的分组 / 交互 / 分位数与 QTE / 分布分解外，处理效应异质性还有几条前沿路线，这里只做定位与交叉链接，细节在对应页面展开。</p>
+      <ul>
+        <li><strong>相关随机系数模型（Correlated Random Coefficients）</strong>：允许个体处理效应 $\tau_i=Y_i(1)-Y_i(0)$ 本身随机，并与 $D$ 相关（即"自选择进更受益的组"）。它估计的不是固定 ATE，而是$\tau_i$ 的分布特征（均值、方差、与 $D$ 的相关），工具变量识别其边际分位效应。代表如 Heckman-Urzua-Vytlacil 的 marginal treatment effect (MTE) 框架，与本页 QTE 互补：MTE 沿"进入处理的倾向"维度展开，QTE 沿"结果分布"维度展开。</li>
+        <li><strong>机器学习异质性：因果森林</strong>：当异质性维度太多、无法事先用交互项穷举时，用因果森林让数据自动估计 $CATE(x)=E[Y(1)-Y(0)\mid X=x]$ 的整条曲线。详见站内 <a href="17-causal-forest.html">17 因果森林与政策学习</a>；其"双重稳健 + 正交"的统计基础见 <a href="16-dml.html">16 DML 去偏机器学习</a>。</li>
+        <li><strong>事前 vs 事后分组异质性</strong>：先验理论决定的分组（事前） vs 数据驱动后切分（事后），涉及多重检验与"挑选显著"的判别规范。详见站内 <a href="23-significance-techniques.html">23 显著性手法库与规范判别</a>。</li>
+      </ul>
+      <div class="callout info">
+        <div class="callout-title">📌 方法选择导航</div>
+        <p>想知道"效应在所有制 / 地区 / 规模间是否不同" → 用本页 s2–s4 的分组 / 交互 / 组间检验；想知道"效应沿结果分布怎么变" → s5 条件 qreg 或 s9 QTE；想知道"两组结果分布差距从何而来" → s10 DFL/RIF 分解；想"让数据自己找异质性" → 17 因果森林。</p>
+      </div>
+    </div>
+
+    <div class="section" id="s12">
+      <h2><span class="sec-num">12</span> 论文案例与常见错误</h2>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Econometrica</span>
+        <div class="paper-title">The Impact of Trade on Intra-Industry Reallocations and Aggregate Industry Productivity</div>
+        <div class="paper-meta">Melitz (2003), Econometrica</div>
+        <div class="paper-desc">异质性企业贸易理论（HFT）的奠基之作。理论上证明贸易自由化只让生产率最高的企业出口、退出最低效企业、并通过资源再配置提升行业总生产率。它为"为什么要做异质性分析"提供了理论原型：平均效应背后是系统性的企业间分化。后续大量实证都以此为异质性分析的理论坐标。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · QJE</span>
+        <div class="paper-title">Misallocation and Manufacturing TFP in China and India</div>
+        <div class="paper-meta">Hsieh & Klenow (2009), Quarterly Journal of Economics</div>
+        <div class="paper-desc">论文用企业层面数据度量中国与印度制造业 TFP 的离散度（dispersion），论证资源错配——同一行业内高效率与低效率企业的生产率差异——压低了宏观 TFP。是把"企业间异质性分布"本身作为研究对象、并用分位数/分布视角展开分析的代表作。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 经济研究</span>
+        <div class="paper-title">中国制造业企业全要素生产率研究（异质性与分布）</div>
+        <div class="paper-meta">杨汝岱（2015），《经济研究》</div>
+        <div class="paper-desc">基于中国工业企业数据库，系统估计了制造业企业 TFP 的水平、增长及其在所有制、地区、行业间的异质性分布。是中文文献中"用分位数/分布视角刻画企业异质性"的代表性论文，展示了 qreg 与分布分析在实证中的规范用法。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 管理世界</span>
+        <div class="paper-title">数字经济发展、要素配置与企业异质性（异质性—机制联动范例）</div>
+        <div class="paper-meta">《管理世界》数字经济/要素配置类实证论文（异质性章节范式）</div>
+        <div class="paper-desc">这类论文普遍按所有制、地区市场化程度、行业要素密集度做分组回归与交互项，并用 bdiff / suest 检验组间系数差异，再把异质性结果与融资约束、资源配置渠道的机制检验交叉印证。是中文顶刊"分组回归 + 交互项 + 组间差异检验 + 机制联动"标准写法的样例。</div>
+      </div>
+
+      <h3>前沿扩展：机器学习与因果推断（DML / 因果森林 / 政策树）</h3>
+      <p>传统异质性分析依赖研究者<strong>事先指定</strong>的调节变量（所有制、地区、规模……），本质上是在一个低维网格上手动搜索异质性。2018 年以来，机器学习方法被引入因果推断，提供了两条新路线：(1) <strong>DML（Double/Debiased Machine Learning）</strong>用 Lasso、随机森林、Boosting 等灵活拟合高维混淆函数，再通过 Neyman 正交矩给出半参有效、对模型误设稳健的处理效应估计——当控制变量维度很高时，这是比"手工挑几个控制变量"更稳的<strong>稳健性</strong>做法；(2) <strong>因果森林（Causal Forest）</strong>直接估计个体层面的条件平均处理效应 $CATE(x)=E[Y(1)-Y(0)\mid X=x]$，让数据自己发现"谁受影响更大"的异质性维度，而不必事先切分样本；(3) <strong>政策树 / 政策学习（Policy Tree）</strong>则更进一步，把"应当对谁施加政策"当成一个直接的决策问题来优化。下面这些文献是这一前沿的方法与应用代表作。</p>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Econometrica</span>
+        <div class="paper-title">Double/Debiased Machine Learning for Treatment and Structural Parameters</div>
+        <div class="paper-meta">Victor Chernozhukov, Denis Chetverikov, Mert Demirer, Esther Duflo, Christian Hansen, Whitney Newey & James Robins · Econometrica, 2018</div>
+        <div class="paper-desc">DML（双重/去偏机器学习）的奠基论文。用机器学习（Lasso、随机森林、Boosting 等）灵活估计混淆函数 $E[X|Z]$、$E[Y|Z]$，再通过残差化 + Neyman 正交矩（cross-fitting）得到 $\sqrt{n}$ 一致、半参有效的处理效应估计。在高维控制变量下做基准回归稳健性时，可替代手工选取的控制集。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · JASA</span>
+        <div class="paper-title">Estimation and Inference of Heterogeneous Treatment Effects Using Random Forests</div>
+        <div class="paper-meta">Stefan Wager & Susan Athey · Journal of the American Statistical Association, 2018</div>
+        <div class="paper-desc">第一篇给出因果森林（causal forest）渐近正态性的论文。用随机森林递归划分样本、在叶子节点内估计处理效应，从而对每个个体给出条件平均处理效应 $CATE(x)$ 的点估计与置信区间。是"让数据自动找异质性"的代表方法。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · PNAS</span>
+        <div class="paper-title">Generalized Random Forests</div>
+        <div class="paper-meta">Susan Athey, Julie Tibshirani & Stefan Wager · Proceedings of the National Academy of Sciences, 2019</div>
+        <div class="paper-desc">把随机森林推广为一个"用非参数似然估计任意低维目标函数"的通用框架，因果森林是其特例。在观察数据中估计随协变量平滑变化的处理效应曲线，并附带诚实推断（honest inference）。Stata 中可通过 <code class="inline">rdrobust</code> 生态外的 R 包 grf 实现，是当前异质性处理效应的主流工具。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Operations Research</span>
+        <div class="paper-title">Policy Learning with Observational Data</div>
+        <div class="paper-meta">Susan Athey & Stefan Wager · Operations Research, 2021</div>
+        <div class="paper-desc">从"估计异质性效应"跨到"直接做政策决策"。在观察数据上估计最优政策树（policy tree）：不再问"谁受影响大"，而是直接回答"把政策资源分配给谁能最大化社会福利"，并给出了半参效率界与诚实分裂规则。是异质性分析的政策化延伸。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · AER</span>
+        <div class="paper-title">机器学习因果推断的异质性应用论文（Delfino, AER 2024）</div>
+        <div class="paper-meta">Delfino · American Economic Review, 2024</div>
+        <div class="paper-desc">AER 上应用 DML / 因果森林类方法估计政策异质性处理效应的代表论文。示范了如何把机器学习估计的 $CATE(x)$ 与传统分组回归、交互项结果并列报告：机器学习用于发现异质性维度与稳健性验证，经典方法用于可解释的因果叙事。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · AER</span>
+        <div class="paper-title">机器学习因果推断的异质性应用论文（Haushofer et al., AER 2025）</div>
+        <div class="paper-meta">Haushofer 等 · American Economic Review, 2025</div>
+        <div class="paper-desc">AER 2025 年应用前沿机器学习因果方法的代表作品。展示了在现场实验/准实验数据中用因果森林刻画处理效应的人群异质性，并用 policy-learning 思路讨论政策靶向（targeting），是"异质性分析 + 政策含义"结合的新范式。</div>
+      </div>
+
+      <h3>QTE 与分布分解方法学文献</h3>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Econometrica</span>
+        <div class="paper-title">Regression Quantiles</div>
+        <div class="paper-meta">Roger Koenker &amp; Gilbert Bassett Jr. · Econometrica, 1978</div>
+        <div class="paper-desc">分位数回归的开山之作。把"均值回归"推广到"条件任意分位数回归"，提出最小化非对称绝对损失损失函数的估计方法，是本页 s5 <code class="inline">qreg</code> 与一切分位数 / QTE 方法的理论源头。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Econometrica</span>
+        <div class="paper-title">Efficient Semiparametric Estimation of Quantile Treatment Effects</div>
+        <div class="paper-meta">Sergio Firpo · Econometrica, 2007</div>
+        <div class="paper-desc">在可忽略性下，用倾向得分重新加权估计<strong>无条件</strong>分位数处理效应 $\tau_q$，并证明半参有效性。Stata 的 <code class="inline">qte</code> 命令即据此实现（见本页 9.3）。区分了"条件 QTE"与"无条件 QTE"，是 QTE 实证的标准参考。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Journal of Econometrics</span>
+        <div class="paper-title">Labor Market Institutions and the Distribution of Wages, 1973-1992: A Semiparametric Approach</div>
+        <div class="paper-meta">John DiNardo, Nicole Fortin &amp; Thomas Lemieux · Journal of Econometrics, 1996</div>
+        <div class="paper-desc">DFL 重新加权分布分解的奠基论文。用倾向得分权重把一组工人的工资分布"重加权"到另一组的协变量分布上，分解工会化、最低工资对美国工资分布两端的影响。是分布分解领域引用最高的实证范本。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Econometrica</span>
+        <div class="paper-title">Unconditional Quantile Regressions</div>
+        <div class="paper-meta">Sergio Firpo, Nicole Fortin &amp; Thomas Lemieux · Econometrica, 2009</div>
+        <div class="paper-desc">提出 RIF（再中心化影响函数）回归，把"分布任意统计量（分位数、方差、基尼）"的边际效应变成可 OLS 的回归问题，并与 Oaxaca-Blinder 分解结合，实现"逐分位的分布分解"。Stata <code class="inline">rifreg</code> 由此而来，是当下分布分解的主力工具。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type en">English · Working paper / JoE</span>
+        <div class="paper-title">Distributional Treatment Effects（分布处理效应）</div>
+        <div class="paper-meta">Brantly Callaway &amp; Tiantian Li · 2023（交错处理下的分布处理效应方法）</div>
+        <div class="paper-desc">把 Callaway &amp; Sant'Anna (2021) 的 group-time ATT 框架从均值推广到整个结果分布，估计政策对分布各位置的动态因果效应，是 QTE 在面板 / 交错 DID 场景的前沿扩展。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 财经研究（上海财经大学）</span>
+        <div class="paper-title">流动人口与本地人口就业质量差异研究：现状、来源与成因</div>
+        <div class="paper-meta">《财经研究》, 2022</div>
+        <div class="paper-desc">使用 DiNardo-Fortin-Lemieux (1996) 的 DFL 重新加权法构造反事实分布，分解流动人口与本地人口就业质量分布的差异来源（特征构成 vs 回报率）。是中文期刊中规范使用分布分解的代表作。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 自然资源学报</span>
+        <div class="paper-title">地形差异视角下耕地流转对农户收入差距的影响及其分解</div>
+        <div class="paper-meta">《自然资源学报》, 2023</div>
+        <div class="paper-desc">用 RIF 回归分解耕地转入 / 转出对农户收入差距（各分位点）的影响，报告总差异沿收入分位点的变化。示范了 RIF 分解在中文应用微观实证中的完整流程。</div>
+      </div>
+
+      <div class="paper-card">
+        <span class="paper-type cn">中文 · 数量经济研究</span>
+        <div class="paper-title">无条件分位数回归与 RIF 回归分解：区域间家庭消费差距</div>
+        <div class="paper-meta">陆地、孙巍 · 《数量经济研究》, 2018</div>
+        <div class="paper-desc">系统介绍无条件分位数回归（UQR）与 RIF 回归分解方法，并用 CHIP 数据分解区域间城镇居民消费差距的形成机制。是中文文献中方法介绍 + 应用结合的参考。</div>
+      </div>
+
+      <h3>常见错误</h3>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 1：把"一组显著、一组不显著"当成"两组差异显著"</div>
+        <p>这是最普遍的错误。两个系数一个显著一个不显著，在统计上完全可能来自抽样波动，组间差异未必显著。必须用交互项 $\beta_2$、suest 或 bdiff 正式检验组间系数差。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 2：无理论地切十几刀样本，挑显著的写</div>
+        <p>把所有制、地区、规模、行业、年龄、成长性……每个都切一遍，只报告显著的那几格，本质是多重检验下的 p-hacking。异质性切分维度必须事先由理论限定，并控制多重比较（如报告所有切分结果）。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 3：交互项模型漏掉主效应</div>
+        <p>写 $Y=\beta_1 X+\beta_2 X\times D$ 却漏掉 $D$ 的主效应 $\beta_3$，会让交互项系数的解释变得混乱。正确做法是"有交互必有主效应"：$X$、$D$、$X\times D$ 三者同时进模型。</p>
+      </div>
+      <div class="callout warning">
+        <div class="callout-title">⚠️ 错误 4：连续变量不中心化导致伪显著</div>
+        <p>连续变量未中心化时，主效应项与交互项高度共线，标准误被人为放大或缩小。连续调节变量应先中心化（center）再构造交互项。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 5：把 QTE 当成"个体在不同分位上的效应"</div>
+        <p>$\tau_q=Q_q(Y(1))-Q_q(Y(0))$ 是<strong>反事实分布第 $q$ 分位数之差</strong>，是一个分布层面的因果对比，<strong>不是</strong>"某个位于第 $q$ 分位的个体被处理后效应是多少"。它回答的是"处理如何移动整条分布"，不能解释为个体效应大小，也不能跨分位数把 $\tau_{0.2}$ 与 $\tau_{0.8}$ 读成"同一个人先在 20% 位、后到 80% 位"。报告时应写"处理把收入分布第 10 分位抬高了多少"，而非"对第 10 名个体的效应"。</p>
+      </div>
+      <div class="callout danger">
+        <div class="callout-title">❌ 错误 6：分布分解 / DFL / RIF 忽略共同支撑（common support）</div>
+        <p>DFL 重新加权与 QTE 都依赖倾向得分 $0&lt;e(X)&lt;1$ 的共同支撑。若某组协变量取值在另一组几乎不存在（如高教育样本在处理组极少），权重会极端化、反事实分布外推到无数据区域，分解结果不可信。做分布分解前<strong>必须画两组倾向得分 / 协变量的重叠图，trim 共同支撑外样本</strong>，并报告"在重叠样本上"的分解结果。</p>
+      </div>
+
+      <h3>进阶资料</h3>
+      <ul>
+        <li>Melitz (2003), <em>Econometrica</em> — 异质性企业贸易理论。</li>
+        <li>Hsieh & Klenow (2009), <em>QJE</em> — 错配与生产率离散。</li>
+        <li>Koenker & Bassett (1978) — 分位数回归的原始方法。</li>
+        <li>Stata 命令：<code class="inline">suest</code>、<code class="inline">bdiff</code>、<code class="inline">qreg / xtqreg</code>、<code class="inline">margins / marginsplot</code>、因子变量 <code class="inline">c.X##i.D</code>。</li>
+      </ul>
+    </div>
+
+    <div class="page-nav">
+      <a href="09-mechanism.html" class="prev">
+        <div class="nav-label">← 上一节</div>
+        <div class="nav-title">机制检验</div>
+      </a>
+      <a href="11-significance-practice.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">显著性实务与调参</div>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.querySelector('.overlay').classList.toggle('show');
+}
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const code = this.closest('.code-block').querySelector('pre').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      this.textContent = '已复制 ✓';
+      setTimeout(() => { this.textContent = '复制'; }, 1500);
+    });
+  });
+});
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderMathInElement !== 'undefined') {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false}
+      ],
+      throwOnError: false
+    });
+  }
+});
+(function() {
+  const path = window.location.pathname.split('/').pop();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    if (item.getAttribute('href') && item.getAttribute('href').endsWith(path)) {
+      item.classList.add('active');
+    }
+  });
+})();
+</script>
+</body>
+</html>
