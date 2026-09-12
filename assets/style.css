@@ -309,15 +309,16 @@ code.inline {
 
 /* ---------- 代码使用指南（解释说明块，与代码块/正文三色分明） ---------- */
 .callout.codeguide {
-  background: #f3fbf5;
-  border: 1px solid #34a05c;
-  border-left: 4px solid #2e8b57;
+  background: #e6f6ec;
+  border: 1.5px solid #2e8b57;
+  border-left: 5px solid #1d6b3c;
+  box-shadow: 0 1px 6px rgba(46, 139, 87, 0.18);
 }
 .callout.codeguide .callout-title {
-  color: #1d6b3c;
+  color: #14532d;
   font-weight: 700;
 }
-.callout.codeguide p { color: #22311f; }
+.callout.codeguide p { color: #1f3a2a; }
 .callout.codeguide b { color: #1d6b3c; }
 
 /* ---------- 公式块 ---------- */
