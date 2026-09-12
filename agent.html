@@ -110,7 +110,7 @@ function setHint(msg) {
 let ZHIPU_KEY = localStorage.getItem('rag_zhipu_key') || '028575a795344080983813b9a4fcb99c.csobfbZ3oyfzthhk';
 if (ZHIPU_KEY) {
   document.getElementById('hintBar').style.display = 'block';
-  document.getElementById('hintBar').textContent = '已配置 API Key（仅保存在本浏览器）。';
+  document.getElementById('hintBar').textContent = '已配置 API Key（仅保存在本浏览器）。｜AI助手 v6（2026-09-12，支持联网搜索）';
 }
 
 function toggleConfig() {
@@ -430,28 +430,25 @@ async function sendMessage() {
   if (ZHIPU_KEY) {
     try {
       const model = document.getElementById('modelSel').value;
-      const res = await callZhipu(text, context, model, 120000);
+      const res = await callZhipu(text, context, model, 90000);
       removeTyping();
       if (!res.ok) {
-        // 限流(429/1305)：①等5秒重试所选模型 ②降级到最稳的 GLM-4-Flash ③再等4秒重试 GLM-4-Flash
+        // 限流(429/1305)：多模型轮换重试（所选 → 其他免费模型 → 最稳 flash），等待时间逐级递增
         if ((res.status === 429 || res.code === '1305')) {
           addTyping();
-          let ans = null;
-          if (model !== 'glm-4-flash') {
-            await new Promise((r) => setTimeout(r, 5000));
-            ans = await callZhipu(text, context, model, 120000);
-          }
-          if (!(ans && ans.ok && ans.content)) {
-            ans = await callZhipu(text, context, 'glm-4-flash', 120000);
-          }
-          if (!(ans && ans.ok && ans.content)) {
-            await new Promise((r) => setTimeout(r, 4000));
-            ans = await callZhipu(text, context, 'glm-4-flash', 120000);
+          const ordered = ['glm-4-flash', 'glm-4.7-flash', 'glm-z1-flash'];
+          const fallbackModels = [model, ...ordered.filter((m) => m !== model)];
+          let ans = null, usedModel = null;
+          for (let attempt = 0; attempt < fallbackModels.length; attempt++) {
+            const m = fallbackModels[attempt];
+            await new Promise((r) => setTimeout(r, attempt === 0 ? 3000 : 8000 * attempt));
+            ans = await callZhipu(text, context, m, 90000);
+            if (ans && ans.ok && ans.content) { usedModel = m; break; }
           }
           removeTyping();
           if (ans && ans.ok && ans.content) {
-            const switched = model !== 'glm-4-flash';
-            addMessage('assistant', ans.content + (switched ? '\n\n> 注：所选模型当前访问量过大，本次已自动切换至更稳的 GLM-4-Flash 回答，内容不受影响。' : '') + (netResults.length ? '\n\n> 🔍 本次回答已联网检索 ' + netResults.length + ' 条外部来源（学术文献/百科）。' : ''), sources);
+            const switched = usedModel !== model;
+            addMessage('assistant', ans.content + (switched ? '\n\n> 注：所选模型当前访问量过大，本次已自动切换至 ' + usedModel + ' 回答，内容不受影响。' : '') + (netResults.length ? '\n\n> 🔍 本次回答已联网检索 ' + netResults.length + ' 条外部来源（学术文献/百科）。' : ''), sources);
             if (ans.truncated) {
               addMessage('assistant', '⚠️ 回答较长，已到达单次输出上限而被截断。你可以针对其中某一部分继续追问（例如"只写第3步的代码"），我会基于站内资料继续补充。');
             }
@@ -460,7 +457,7 @@ async function sendMessage() {
           }
         }
         let tip = '';
-        if (res.status === 429 || res.code === '1305') tip = '\n\n（免费模型当前访问量过大，请稍等 1-2 分钟重试，或切换 GLM-4-Flash。）';
+        if (res.status === 429 || res.code === '1305') tip = '\n\n（免费模型当前访问量过大，已轮换尝试多个免费模型仍失败。请稍等 1-2 分钟重试；若刚升级过站点请强制刷新 Ctrl+F5 加载最新版本。）';
         else if (res.status === 401) tip = '\n\n（API Key 无效，请重新在"配置API Key"中粘贴正确的 Key。）';
         addMessage('assistant', 'LLM 调用失败（HTTP ' + res.status + '）：' + JSON.stringify(res.error || {}).slice(0, 200) + tip + '\n\n——以下为站内检索结果：');
         addMessage('assistant', buildRetrievalAnswer(results), sources);
@@ -548,7 +545,7 @@ function buildRetrievalAnswer(results) {
     const link = url ? `\n[点击查看完整教程页：${r.page_title}](${url})` : '';
     return `**【${i + 1}】${r.page_title}**（${r.domain} · ${r.section}）\n${content}${code ? '\n```\n' + code + '\n```' : ''}${link}`;
   });
-  return '已为你从站内 95 页教程中检索到以下相关内容（点击链接可打开完整教程页；配置 API Key 后可获得 AI 生成的完整回答）：\n\n' + lines.join('\n\n');
+  return '已为你从站内 95 页教程中检索到以下相关内容（当前为降级模式，AI 生成未完成；若你刚升级过站点，请强制刷新 Ctrl+F5 加载最新版本，或稍后重试）：\n\n' + lines.join('\n\n');
 }
 </script>
 
