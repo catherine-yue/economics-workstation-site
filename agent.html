@@ -203,6 +203,90 @@ function bm25Search(query, chunks, topK) {
   return scores.filter((s) => s.score > 0).sort((a, b) => b.score - a.score).slice(0, topK);
 }
 
+// ================= 网络搜索（免费多源，全部容错） =================
+async function webSearch(query) {
+  const withTimeout = (fn, ms) => Promise.race([fn(), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), ms))]);
+  const safe = (fn) => withTimeout(fn, 9000).catch(() => []);
+  const sources = (await Promise.all([
+    safe(() => searchCrossref(query)),
+    safe(() => searchOpenAlex(query)),
+    safe(() => searchArxiv(query)),
+    safe(() => searchSemanticScholar(query)),
+    safe(() => searchWikipedia(query, 'zh')),
+  ])).flat();
+  // 去重 + 限量
+  const seen = new Set(), uniq = [];
+  for (const r of sources) {
+    const key = String(r.title || '').slice(0, 28);
+    if (!r.title || seen.has(key) || uniq.length >= 8) continue;
+    seen.add(key);
+    uniq.push(r);
+  }
+  return uniq;
+}
+
+async function searchCrossref(q) {
+  const url = 'https://api.crossref.org/works?query=' + encodeURIComponent(q) + '&rows=4&select=title,URL,published,author';
+  const res = await fetch(url);
+  if (!res.ok) return [];
+  const d = await res.json();
+  return (d.message.items || []).map((it) => ({
+    title: (it.title && it.title[0]) || '',
+    url: it.URL || '',
+    year: (it.published && it.published['date-parts'] && it.published['date-parts'][0] && it.published['date-parts'][0][0]) || '',
+    type: '学术论文'
+  })).filter((x) => x.title);
+}
+
+async function searchOpenAlex(q) {
+  const url = 'https://api.openalex.org/works?search=' + encodeURIComponent(q) + '&per-page=4&select=title,doi,publication_year';
+  const res = await fetch(url);
+  if (!res.ok) return [];
+  const d = await res.json();
+  return (d.results || []).map((it) => ({
+    title: it.title || '',
+    url: it.doi ? 'https://doi.org/' + it.doi : '',
+    year: it.publication_year || '',
+    type: '学术论文'
+  })).filter((x) => x.title);
+}
+
+async function searchArxiv(q) {
+  const url = 'https://export.arxiv.org/api/query?search_query=all:' + encodeURIComponent(q) + '&max_results=4';
+  const res = await fetch(url);
+  const xml = await res.text();
+  const dom = new DOMParser().parseFromString(xml, 'text/xml');
+  return [...dom.querySelectorAll('entry')].map((e) => ({
+    title: (e.querySelector('title')?.textContent || '').trim().replace(/\s+/g, ' '),
+    url: e.querySelector('id')?.textContent || '',
+    year: (e.querySelector('published')?.textContent || '').slice(0, 4),
+    type: '预印本'
+  })).filter((x) => x.title);
+}
+
+async function searchSemanticScholar(q) {
+  const url = 'https://api.semanticscholar.org/graph/v1/paper/search?query=' + encodeURIComponent(q) + '&limit=4&fields=title,year,url';
+  const res = await fetch(url);
+  if (!res.ok) return [];
+  const d = await res.json();
+  return (d.data || []).map((it) => ({
+    title: it.title || '', url: it.url || '', year: it.year || '', type: '学术论文'
+  })).filter((x) => x.title);
+}
+
+async function searchWikipedia(q, lang) {
+  const url = 'https://' + lang + '.wikipedia.org/w/api.php?action=query&list=search&srsearch=' + encodeURIComponent(q) + '&format=json&origin=*&srlimit=3';
+  const res = await fetch(url);
+  if (!res.ok) return [];
+  const d = await res.json();
+  return (d.query && d.query.search || []).map((h) => ({
+    title: h.title || '',
+    url: 'https://' + lang + '.wikipedia.org/wiki/' + encodeURIComponent(String(h.title).replace(/ /g, '_')),
+    year: '',
+    type: '百科'
+  }));
+}
+
 // ================= 渲染 =================
 // page_id → 站内教程页相对路径（如 "dsge-01-model-building" → "dsge/01-model-building.html"）
 function chunkUrl(c) {
@@ -320,10 +404,25 @@ async function sendMessage() {
   // 1) 站内检索
   const results = bm25Search(text, CHUNKS, 5);
 
-  // 2) 组装上下文
-  const context = results.map((r, i) =>
+  // 1.5) 网络检索（免费多源：Crossref/OpenAlex/arXiv/语义学者/维基百科，全部容错，任一失败静默跳过）
+  const NEED_NET_RE = /最新|网络|联网|搜索|文献|论文|参考文献|综述|来源|出处|谁提出|什么时候|202[0-9]年|202[4-9]|DOI|期刊|下载|引用|cite|paper|survey|data|最新数据/i;
+  const needNet = NEED_NET_RE.test(text) || results.length === 0 || (results[0] && results[0].score < 2.5);
+  let netResults = [];
+  if (needNet) {
+    netResults = await webSearch(text);
+  }
+
+  // 2) 组装上下文（站内 + 网络）
+  const baseContext = results.map((r, i) =>
     `【来源${i + 1}】${r.page_title}（${r.domain}·${r.section}）\n【页面路径】${chunkUrl(r)}\n${r.content || ''}${r.code ? '\n```\n' + r.code + '\n```' : ''}`
   ).join('\n\n');
+  let netContext = '';
+  if (netResults.length) {
+    netContext = '\n\n【网络搜索结果（最新信息/文献来源，可能不准确，需甄别）】\n' + netResults.map((r, i) =>
+      `[网络${i + 1}] ${r.title}（${r.type}${r.year ? ' ' + r.year : ''}）链接：${r.url}`
+    ).join('\n');
+  }
+  const context = baseContext + netContext;
 
   const sources = results.map((r) => ({ page: r.page_title, section: r.section, domain: r.domain, url: chunkUrl(r) }));
 
@@ -352,7 +451,7 @@ async function sendMessage() {
           removeTyping();
           if (ans && ans.ok && ans.content) {
             const switched = model !== 'glm-4-flash';
-            addMessage('assistant', ans.content + (switched ? '\n\n> 注：所选模型当前访问量过大，本次已自动切换至更稳的 GLM-4-Flash 回答，内容不受影响。' : ''), sources);
+            addMessage('assistant', ans.content + (switched ? '\n\n> 注：所选模型当前访问量过大，本次已自动切换至更稳的 GLM-4-Flash 回答，内容不受影响。' : '') + (netResults.length ? '\n\n> 🔍 本次回答已联网检索 ' + netResults.length + ' 条外部来源（学术文献/百科）。' : ''), sources);
             if (ans.truncated) {
               addMessage('assistant', '⚠️ 回答较长，已到达单次输出上限而被截断。你可以针对其中某一部分继续追问（例如"只写第3步的代码"），我会基于站内资料继续补充。');
             }
@@ -370,7 +469,7 @@ async function sendMessage() {
           addMessage('assistant', '模型返回了空回答。\n\n——以下为站内检索结果：', sources);
           addMessage('assistant', buildRetrievalAnswer(results), sources);
         } else {
-          addMessage('assistant', res.content, sources);
+          addMessage('assistant', res.content + (netResults.length ? '\n\n> 🔍 本次回答已联网检索 ' + netResults.length + ' 条外部来源（学术文献/百科），可点开上方相关链接核对。' : ''), sources);
           if (res.truncated) {
             addMessage('assistant', '⚠️ 回答较长，已到达单次输出上限而被截断。你可以针对其中某一部分继续追问（例如"只写第3步的代码"），我会基于站内资料继续补充。');
           }
@@ -399,7 +498,7 @@ async function sendMessage() {
 async function callZhipu(question, context, model, timeoutMs) {
   const isReasoning = /z1|reasoning|r1/i.test(model);
   const sysMsg = '你是经济学研究学习工作站的智能助手，擅长实证方法（Stata）、DSGE建模、结构估计和量化空间一般均衡。请用通俗易懂的语言回答，就像给经济学本科生讲课：先直接给出结论，再分步骤解释；多用生活化的例子和比喻帮助理解；避免堆砌术语，必须用术语时用一句话解释它。回答专业、准确、有步骤，代码紧凑完整、每行加简短中文注释，要点不遗漏、避免空话套话。';
-  const userMsg = `请基于以下站内资料回答用户问题。如果资料中没有相关内容，请如实说明，不要编造。\n\n【站内检索结果】\n${context || '（未检索到相关站内资料，请根据你的经济学知识回答，并提示用户该内容站内暂未覆盖。）'}\n\n【用户问题】\n${question}\n\n【回答要求】\n- 用通俗易懂的中文回答，像给本科生讲课：先结论，后解释\n- 多用生活化例子和比喻，帮助理解概念\n- 涉及公式时给出推导和每一步的含义\n- 涉及代码时：必须给出完整可运行、能直接复制的代码，并逐行中文注释；禁止只给一行命令（如 do main.do、cd "路径"）了事——要么给完整流程代码，要么不展示代码\n- 末尾附上相关的站内教程页面链接，用 [页面名](相对路径) 格式（例如 [RDD断点回归](empirical/07-rdd.html)）；相对路径必须严格从【站内检索结果】的【页面路径】字段中取，绝不编造链接\n- 如果是步骤操作类问题，给出逐步操作指引\n- 如果是论文框架设计类问题，给出结构化建议，并说明每部分写什么、怎么写\n\n【复现 / 代码工程类问题（重要）】当用户问"论文复现、复现包怎么做、搭代码框架"时，必须给出完整的复现包骨架，而不是一行启动命令：\n① 目录结构树：main.do + code/ 子 do 文件（00_setup/01_clean/02_merge/03_sample/04_desc/05_main_reg）+ data/(raw/derived/analysis) + output/\n② main.do 主程序：全局路径设置（只改一处）→ 创建输出文件夹 → 启动日志 → 检查外部命令 → 按调用链 do 各子脚本\n③ 子 do 文件模板：至少给 00_setup.do 和 05_main_reg.do 各一个可运行模板，逐行中文注释\n④ 每步跑完怎么看结果 / 怎么验证（对照原文表格数字、检查 log 无 error）\n⑤ 常见坑一句话提醒（路径硬编码、相对路径、随机种子、外部命令版本）\n\n【论文类型判断与框架设计（重要）】当用户问"我想写一篇论文 / 这篇论文属于什么类型 / 怎么设计论文框架"这类问题时，必须按以下流程回答：\n① 先判断论文类型，并说明判断依据（从研究问题特征看）：\n- 实证因果类：研究"某个政策/事件/变量 X 对结果 Y 的因果效应"，有可观测的政策冲击、断点或处理组对照组的 → 用 DID / RDD / IV / 合成控制 / 事件研究等\n- 结构估计类：想估计深层参数（需求弹性、生产成本、折现因子、偏好参数、TFP 等）并做反事实分析的 → 用 BLP / OP-LP-ACF / 动态离散选择 / 产业组织估计等\n- DSGE 类：宏观经济机制建模 + 政策实验，从家庭/厂商最优化推导一般均衡，讨论货币政策/财政政策的 → RBC / NK / TANK / HANK，含参数校准与估计、模型求解、脉冲响应、福利与政策分析\n- 量化空间一般均衡（QSGE）类：模型带空间维度（贸易、迁移、区域政策、城市）的量化一般均衡\n- 纯理论或综述类：无数据，推导模型或文献综述\n② 再给出该类型的论文整体框架模板，逐章说明"写什么、怎么写、常见坑"：\n- 实证因果类：引言(研究问题+识别策略一句话+主要发现+3条贡献) → 制度背景与文献 → 数据与描述统计(Table 1) → 基准回归 → 因果识别(如DID平行趋势检验、RDD连续性检验、IV排他性检验) → 稳健性(安慰剂/换样本/换标准误) → 机制与异质性 → 结论与政策建议\n- DSGE 类：引言(问题+机制+贡献) → 文献与制度背景 → 模型设定(家庭/厂商/政府/市场出清；TANK 与 HANK 的各主体规则) → 参数校准与估计 → 模型求解(如线性化、扰动法、全局法) → 脉冲响应与机制分解 → 福利分析与政策实验 → 结论\n- 结构估计类：引言 → 数据与实证事实 → 模型设定(效用/需求/技术) → 估计方法(矩条件/极大似然/NPL 等) → 参数估计结果与模型拟合检验 → 反事实分析 → 结论\n③ 框架每一步尽量结合站内资料给出具体建议（如 RDD 要报告 pre-RMSPE、DID 要画平行趋势图、DSGE 可给出求解代码骨架），并给出对应的站内教程链接。`;
+  const userMsg = `请基于以下站内资料回答用户问题。如果资料中没有相关内容，请如实说明，不要编造。\n\n【站内检索结果】\n${context || '（未检索到相关站内资料，请根据你的经济学知识回答，并提示用户该内容站内暂未覆盖。）'}\n\n【用户问题】\n${question}\n\n【回答要求】\n- 用通俗易懂的中文回答，像给本科生讲课：先结论，后解释\n- 多用生活化例子和比喻，帮助理解概念\n- 涉及公式时给出推导和每一步的含义\n- 涉及代码时：必须给出完整可运行、能直接复制的代码，并逐行中文注释；禁止只给一行命令（如 do main.do、cd "路径"）了事——要么给完整流程代码，要么不展示代码\n- 末尾附上相关的站内教程页面链接，用 [页面名](相对路径) 格式（例如 [RDD断点回归](empirical/07-rdd.html)）；相对路径必须严格从【站内检索结果】的【页面路径】字段中取，绝不编造链接\n- 如果是步骤操作类问题，给出逐步操作指引\n- 如果是论文框架设计类问题，给出结构化建议，并说明每部分写什么、怎么写\n\n【网络搜索结果使用（重要）】当提供【网络搜索结果】时：\n① 结合站内资料与网络结果回答，网络信息用于补充最新数据、文献出处、真实论文案例；\n② 引用网络信息时标注来源，用 [标题](链接) 格式，链接必须从【网络搜索结果】的链接字段中取，绝不编造 URL；\n③ 区分站内资料与网络信息：站内是本站教程内容，网络是外部来源，若两者冲突以站内为准并说明；\n④ 网络搜索不到相关内容时，如实说明"未检索到网络信息"，不要编造。\n\n【复现 / 代码工程类问题（重要）】当用户问"论文复现、复现包怎么做、搭代码框架"时，必须给出完整的复现包骨架，而不是一行启动命令：\n① 目录结构树：main.do + code/ 子 do 文件（00_setup/01_clean/02_merge/03_sample/04_desc/05_main_reg）+ data/(raw/derived/analysis) + output/\n② main.do 主程序：全局路径设置（只改一处）→ 创建输出文件夹 → 启动日志 → 检查外部命令 → 按调用链 do 各子脚本\n③ 子 do 文件模板：至少给 00_setup.do 和 05_main_reg.do 各一个可运行模板，逐行中文注释\n④ 每步跑完怎么看结果 / 怎么验证（对照原文表格数字、检查 log 无 error）\n⑤ 常见坑一句话提醒（路径硬编码、相对路径、随机种子、外部命令版本）\n\n【论文类型判断与框架设计（重要）】当用户问"我想写一篇论文 / 这篇论文属于什么类型 / 怎么设计论文框架"这类问题时，必须按以下流程回答：\n① 先判断论文类型，并说明判断依据（从研究问题特征看）：\n- 实证因果类：研究"某个政策/事件/变量 X 对结果 Y 的因果效应"，有可观测的政策冲击、断点或处理组对照组的 → 用 DID / RDD / IV / 合成控制 / 事件研究等\n- 结构估计类：想估计深层参数（需求弹性、生产成本、折现因子、偏好参数、TFP 等）并做反事实分析的 → 用 BLP / OP-LP-ACF / 动态离散选择 / 产业组织估计等\n- DSGE 类：宏观经济机制建模 + 政策实验，从家庭/厂商最优化推导一般均衡，讨论货币政策/财政政策的 → RBC / NK / TANK / HANK，含参数校准与估计、模型求解、脉冲响应、福利与政策分析\n- 量化空间一般均衡（QSGE）类：模型带空间维度（贸易、迁移、区域政策、城市）的量化一般均衡\n- 纯理论或综述类：无数据，推导模型或文献综述\n② 再给出该类型的论文整体框架模板，逐章说明"写什么、怎么写、常见坑"：\n- 实证因果类：引言(研究问题+识别策略一句话+主要发现+3条贡献) → 制度背景与文献 → 数据与描述统计(Table 1) → 基准回归 → 因果识别(如DID平行趋势检验、RDD连续性检验、IV排他性检验) → 稳健性(安慰剂/换样本/换标准误) → 机制与异质性 → 结论与政策建议\n- DSGE 类：引言(问题+机制+贡献) → 文献与制度背景 → 模型设定(家庭/厂商/政府/市场出清；TANK 与 HANK 的各主体规则) → 参数校准与估计 → 模型求解(如线性化、扰动法、全局法) → 脉冲响应与机制分解 → 福利分析与政策实验 → 结论\n- 结构估计类：引言 → 数据与实证事实 → 模型设定(效用/需求/技术) → 估计方法(矩条件/极大似然/NPL 等) → 参数估计结果与模型拟合检验 → 反事实分析 → 结论\n③ 框架每一步尽量结合站内资料给出具体建议（如 RDD 要报告 pre-RMSPE、DID 要画平行趋势图、DSGE 可给出求解代码骨架），并给出对应的站内教程链接。`;
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), timeoutMs || 120000);
   try {
