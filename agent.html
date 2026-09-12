@@ -61,16 +61,17 @@
 </div>
 
 <script>
-// ================= 前端 RAG：加载站内语料（分4份并行，逐份重试） =================
+// ================= 前端 RAG：加载站内语料（分8份并行，逐份重试） =================
 let CHUNKS = [];
-const CHUNK_PARTS = ['chunks_0.json', 'chunks_1.json', 'chunks_2.json', 'chunks_3.json'];
-(async function loadChunks() {
-  setHint('⏳ 正在加载站内教程语料（首次约 3-8 秒）…');
+let CHUNKS_LOADING = null; // 加载 Promise，供提问时等待
+const CHUNK_PARTS = ['chunks_0.json', 'chunks_1.json', 'chunks_2.json', 'chunks_3.json', 'chunks_4.json', 'chunks_5.json', 'chunks_6.json', 'chunks_7.json'];
+CHUNKS_LOADING = (async function loadChunks() {
+  setHint('⏳ 正在加载站内教程语料（网络较慢时约需 10-40 秒）…');
   const loaded = [];
   await Promise.all(CHUNK_PARTS.map(async (part, idx) => {
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
-        const resp = await fetch('api/' + part, { signal: AbortSignal.timeout(20000) });
+        const resp = await fetch('api/' + part, { signal: AbortSignal.timeout(60000) });
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
         const data = await resp.json();
         loaded[idx] = data.chunks || [];
@@ -82,11 +83,14 @@ const CHUNK_PARTS = ['chunks_0.json', 'chunks_1.json', 'chunks_2.json', 'chunks_
     }
   }));
   CHUNKS = [].concat(...loaded);
+  CHUNKS_LOADING = null;
   console.log('chunks loaded:', CHUNKS.length);
-  if (CHUNKS.length > 1000) {
+  if (CHUNKS.length > 2000) {
     setHint('已加载站内 ' + CHUNKS.length + ' 条教程片段，可以开始提问。');
+  } else if (CHUNKS.length > 0) {
+    setHint('⚠️ 部分语料加载失败（当前 ' + CHUNKS.length + ' / 2224 条），可继续提问，检索范围有限。');
   } else {
-    setHint('⚠️ 部分语料加载失败（当前 ' + CHUNKS.length + ' 条），请刷新重试。');
+    setHint('⚠️ 语料加载失败，请刷新页面重试。');
   }
 })();
 
@@ -283,8 +287,17 @@ async function sendMessage() {
   if (!text) return;
 
   if (!CHUNKS.length) {
-    addMessage('assistant', '⏳ 站内教程语料还在加载中（约 3-10 秒），请稍候片刻再发送。');
-    return;
+    if (CHUNKS_LOADING) {
+      addMessage('assistant', '⏳ 站内教程语料正在加载中（网络较慢时约需 10-40 秒），加载完成后会自动回答，请稍候…');
+      await CHUNKS_LOADING;
+      if (!CHUNKS.length) {
+        addMessage('assistant', '⚠️ 语料加载失败，请刷新页面后重试。');
+        return;
+      }
+    } else {
+      addMessage('assistant', '⏳ 站内教程语料尚未加载完成，请稍候片刻再发送。');
+      return;
+    }
   }
 
   addMessage('user', text);
