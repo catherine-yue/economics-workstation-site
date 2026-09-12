@@ -264,77 +264,77 @@
 
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · rdd.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* RDD 完整演示：Sharp RDD + Fuzzy RDD + rdplot + rddensity
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* RDD 完整演示：Sharp RDD + Fuzzy RDD + rdplot + rddensity</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set more off
 set seed 20260911
 
-* --- 首次运行安装 ---
-* ssc install rdrobust,     replace
-* ssc install rddensity,   replace
-* ssc install lpdensity,   replace
+<span class="cm-l">* --- 首次运行安装 ---</span>
+<span class="cm-l">* ssc install rdrobust,     replace</span>
+<span class="cm-l">* ssc install rddensity,   replace</span>
+<span class="cm-l">* ssc install lpdensity,   replace</span>
 
-* --- 1. 构造 RDD 模拟数据 ---
-* running variable X ~ Uniform(-1, 1)，cutoff c=0
-* 处理规则：X &gt;= 0 时 D=1（Sharp）
-* 真实处理效应 tau = 0.8
+<span class="cm-l">* --- 1. 构造 RDD 模拟数据 ---</span>
+<span class="cm-l">* running variable X ~ Uniform(-1, 1)，cutoff c=0</span>
+<span class="cm-l">* 处理规则：X &gt;= 0 时 D=1（Sharp）</span>
+<span class="cm-l">* 真实处理效应 tau = 0.8</span>
 set obs 2000
-gen X = (runiform()*2 - 1)        // running variable, c=0
+gen X = (runiform()*2 - 1)        <span class="cm">// running variable, c=0</span>
 gen D = (X &gt;= 0)
 gen eps = rnormal()
 gen y = 0.5 + 0.3*X + 0.8*D + 0.1*X*D + eps
-gen age = 30 + 5*X + rnormal()*3     // 协变量：应在 cutoff 处连续
-gen female = rbinomial(1, 0.5 + 0.1*X) // 协变量：应在 cutoff 处连续
+gen age = 30 + 5*X + rnormal()*3     <span class="cm">// 协变量：应在 cutoff 处连续</span>
+gen female = rbinomial(1, 0.5 + 0.1*X) <span class="cm">// 协变量：应在 cutoff 处连续</span>
 
-* --- 2. Sharp RDD 主回归：rdrobust ---
-* y 是结果，X 是 running variable，c(0) 指定 cutoff
+<span class="cm-l">* --- 2. Sharp RDD 主回归：rdrobust ---</span>
+<span class="cm-l">* y 是结果，X 是 running variable，c(0) 指定 cutoff</span>
 rdrobust y X, c(0)
-* 输出包括：
-*   Coef. (在 cutoff 处的跳跃)
-*   Conventional / Bias-corrected / Robust 三种置信区间
-*   带宽 h_left, h_right
+<span class="cm-l">* 输出包括：</span>
+<span class="cm-l">*   Coef. (在 cutoff 处的跳跃)</span>
+<span class="cm-l">*   Conventional / Bias-corrected / Robust 三种置信区间</span>
+<span class="cm-l">*   带宽 h_left, h_right</span>
 
-* --- 3. 画 RDD 图：rdplot ---
-rdplot y X, c(0) ///
-    title("RDD：奖学金对后续学业表现的影响") ///
-    ytitle("后续 GPA") xtitle("入学考试分数（距 cutoff 的距离）") ///
+<span class="cm-l">* --- 3. 画 RDD 图：rdplot ---</span>
+rdplot y X, c(0) <span class="cm">///</span>
+    title("RDD：奖学金对后续学业表现的影响") <span class="cm">///</span>
+    ytitle("后续 GPA") xtitle("入学考试分数（距 cutoff 的距离）") <span class="cm">///</span>
     graph_options(legend(off))
 
-* --- 4. 带宽敏感性分析：0.5h, h, 2h ---
+<span class="cm-l">* --- 4. 带宽敏感性分析：0.5h, h, 2h ---</span>
 rdrobust y X, c(0) h(0.2)
 rdrobust y X, c(0) h(0.4)
 rdrobust y X, c(0) h(0.8)
 
-* --- 5. 三角核 vs 矩形核 vs 局部二次 ---
+<span class="cm-l">* --- 5. 三角核 vs 矩形核 vs 局部二次 ---</span>
 rdrobust y X, c(0) kernel(triangular) p(1)
 rdrobust y X, c(0) kernel(uniform)    p(1)
 rdrobust y X, c(0) kernel(triangular) p(2)
 
-* --- 6. Fuzzy RDD：处理分配不完全由 X 决定 ---
-* 假设 D 在 X&gt;=0 时以 0.8 概率为 1，X&lt;0 时以 0.2 概率为 1
+<span class="cm-l">* --- 6. Fuzzy RDD：处理分配不完全由 X 决定 ---</span>
+<span class="cm-l">* 假设 D 在 X&gt;=0 时以 0.8 概率为 1，X&lt;0 时以 0.2 概率为 1</span>
 replace D = (X &gt;= 0 &amp; runiform()&lt;0.8) | (X&lt;0 &amp; runiform()&lt;0.2)
 gen y_fuzzy = 0.5 + 0.3*X + 0.8*D + eps
 
-* Fuzzy RDD：用 c(0) 处的虚拟变量作为 D 的工具
+<span class="cm-l">* Fuzzy RDD：用 c(0) 处的虚拟变量作为 D 的工具</span>
 rdrobust y_fuzzy X, c(0) fuzzy(D)
-* 等价于局部 IV：cutoff indicator 是 D 的工具
+<span class="cm-l">* 等价于局部 IV：cutoff indicator 是 D 的工具</span>
 
-* --- 7. 协变量连续性检验（placebo outcome） ---
-* 对 age、female 跑 rdrobust，系数应不显著
+<span class="cm-l">* --- 7. 协变量连续性检验（placebo outcome） ---</span>
+<span class="cm-l">* 对 age、female 跑 rdrobust，系数应不显著</span>
 rdrobust age    X, c(0)
 rdrobust female X, c(0)
 
-* --- 8. 排序检验 / 密度检验（McCrary 类） ---
+<span class="cm-l">* --- 8. 排序检验 / 密度检验（McCrary 类） ---</span>
 rddensity X, c(0) plot
-* 原假设：running variable 的密度在 cutoff 处连续
-* 不拒绝 → 没有 manipulation，RDD 识别有效
-* 拒绝 → 个体在 manipulate running variable，RDD 失效
+<span class="cm-l">* 原假设：running variable 的密度在 cutoff 处连续</span>
+<span class="cm-l">* 不拒绝 → 没有 manipulation，RDD 识别有效</span>
+<span class="cm-l">* 拒绝 → 个体在 manipulate running variable，RDD 失效</span>
 
-* --- 9. 导出结果 ---
-* rdrobust 结果可以用 esttab 导出，也可以用 outreg2
-* rdrobust 没有 estimates 范式，建议手工记录系数和稳健标准误
+<span class="cm-l">* --- 9. 导出结果 ---</span>
+<span class="cm-l">* rdrobust 结果可以用 esttab 导出，也可以用 outreg2</span>
+<span class="cm-l">* rdrobust 没有 estimates 范式，建议手工记录系数和稳健标准误</span>
 </code></pre>
     </div>
   </div>
@@ -361,55 +361,55 @@ rddensity X, c(0) plot
     </div>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · s6b1_honest_ci.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-* Honest / bias-aware CI 演示：Kolesar-Rothe(2018) 思想的 Stata 等价
-* 数据沿用 s6：X ~ U(-1,1), cutoff c=0, tau=0.8
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* Honest / bias-aware CI 演示：Kolesar-Rothe(2018) 思想的 Stata 等价</span>
+<span class="cm-l">* 数据沿用 s6：X ~ U(-1,1), cutoff c=0, tau=0.8</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 set seed 20260911
 set obs 2000
 gen X = (runiform()*2 - 1)
 gen D = (X &gt;= 0)
 gen eps = rnormal()
-* 故意加入曲率（X 的二次项），制造 honest CI 要对付的情形
+<span class="cm-l">* 故意加入曲率（X 的二次项），制造 honest CI 要对付的情形</span>
 gen y = 0.5 + 0.3*X + 0.15*X^2 + 0.8*D + eps
 
-* --- (a) rdrobust 自带的 bias-corrected robust CI（CCT 路线） ---
-* 默认即输出 Conventional / Bias-corrected / Robust 三套 CI
+<span class="cm-l">* --- (a) rdrobust 自带的 bias-corrected robust CI（CCT 路线） ---</span>
+<span class="cm-l">* 默认即输出 Conventional / Bias-corrected / Robust 三套 CI</span>
 rdrobust y X, c(0) kernel(triangular) p(1)
-* 论文主报 "Robust" 那一列：它已经把偏误估计并校正、用稳健 SE。
+<span class="cm-l">* 论文主报 "Robust" 那一列：它已经把偏误估计并校正、用稳健 SE。</span>
 
-* --- (b) 手动选带宽：rdbwselect（CCT IK 口径都能出） ---
-* mserd  = IMSE 最优（CCT 默认）
-* cerrd  = coverage-error-rate optimal（CI 专用，更接近 honest 思想）
+<span class="cm-l">* --- (b) 手动选带宽：rdbwselect（CCT IK 口径都能出） ---</span>
+<span class="cm-l">* mserd  = IMSE 最优（CCT 默认）</span>
+<span class="cm-l">* cerrd  = coverage-error-rate optimal（CI 专用，更接近 honest 思想）</span>
 rdbwselect y X, c(0) deriv(0) kernel(triangular) p(1) bwselect(mserd)
 rdbwselect y X, c(0) deriv(0) kernel(triangular) p(1) bwselect(cerrd)
-* 把上面返回的带宽 h 记下来：
-*   e(h_l), e(h_r) 为 CCT 最优；cerrd 为 CI 专用带宽
+<span class="cm-l">* 把上面返回的带宽 h 记下来：</span>
+<span class="cm-l">*   e(h_l), e(h_r) 为 CCT 最优；cerrd 为 CI 专用带宽</span>
 
-* --- (c) 手动 bias-aware / honest 区间（Stata 等价写法） ---
-* 思路：估计局部线性 tau_hat 与 SE；
-*       再用数据估二阶导上界 M，把偏误界 M*h^2 加进半宽。
+<span class="cm-l">* --- (c) 手动 bias-aware / honest 区间（Stata 等价写法） ---</span>
+<span class="cm-l">* 思路：估计局部线性 tau_hat 与 SE；</span>
+<span class="cm-l">*       再用数据估二阶导上界 M，把偏误界 M*h^2 加进半宽。</span>
 local h = 0.4
-* 局部线性估计（三角核）
-gen w = (abs(X)&lt;=`h') * (1 - abs(X)/`h')       // 三角核权重
+<span class="cm-l">* 局部线性估计（三角核）</span>
+gen w = (abs(X)&lt;=`h') * (1 - abs(X)/`h')       <span class="cm">// 三角核权重</span>
 reg y D c.X#i.D [aw=w] if abs(X)&lt;=`h', vce(robust)
 scalar tau = _b[D]
 scalar se  = _se[D]
-* 用断点两侧局部二次回归估二阶导上界 M（粗略：取两侧 |二阶导| 的较大值）
+<span class="cm-l">* 用断点两侧局部二次回归估二阶导上界 M（粗略：取两侧 |二阶导| 的较大值）</span>
 reg c.X##c.X if X&lt;0 &amp; abs(X)&lt;=`h'
 scalar m_lo = abs(_b[c.X#c.X])
 reg c.X##c.X if X&gt;=0 &amp; abs(X)&lt;=`h'
 scalar m_hi = abs(_b[c.X#c.X])
-scalar M = max(m_lo, m_hi)*1.2                  // 留 20% 安全余量
-scalar bias = M*`h'^2                           // worst-case 偏误界
-scalar hw   = invnormal(0.975)*se + bias         // honest 半宽
+scalar M = max(m_lo, m_hi)*1.2                  <span class="cm">// 留 20% 安全余量</span>
+scalar bias = M*`h'^2                           <span class="cm">// worst-case 偏误界</span>
+scalar hw   = invnormal(0.975)*se + bias         <span class="cm">// honest 半宽</span>
 display "honest CI: [" tau - hw ", " tau + hw "]   (M=" M ", bias=" bias ")"
 
-* --- (d) R 端真正的 honest CI（论文推荐，附录给出） ---
-* R:  library(RDHonest)
-*     RDHonest(y ~ X, cutoff=0, M=NULL)
-*     # M=NULL 时用数据估二阶导上界；也可手动 M=0.5
-* 输出：honest 95% CI，带宽固定即可，不要求 h→0。
+<span class="cm-l">* --- (d) R 端真正的 honest CI（论文推荐，附录给出） ---</span>
+<span class="cm-l">* R:  library(RDHonest)</span>
+<span class="cm-l">*     RDHonest(y ~ X, cutoff=0, M=NULL)</span>
+<span class="cm-l">*     # M=NULL 时用数据估二阶导上界；也可手动 M=0.5</span>
+<span class="cm-l">* 输出：honest 95% CI，带宽固定即可，不要求 h→0。</span>
 </code></pre>
     </div>
 
@@ -426,9 +426,9 @@ display "honest CI: [" tau - hw ", " tau + hw "]   (M=" M ", bias=" bias ")"
     </div>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · s6b2_donut.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-* Donut RDD：挖掉断点附近 d 宽的一圈再估计
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* Donut RDD：挖掉断点附近 d 宽的一圈再估计</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 set seed 20260911
 set obs 2000
 gen X = (runiform()*2 - 1)
@@ -436,26 +436,26 @@ gen D = (X &gt;= 0)
 gen eps = rnormal()
 gen y = 0.5 + 0.3*X + 0.8*D + 0.1*X*D + eps
 
-* --- 主回归（不挖洞）作为基准 ---
+<span class="cm-l">* --- 主回归（不挖洞）作为基准 ---</span>
 rdrobust y X, c(0)
 
-* --- Donut：先手动挖掉 |X| &lt;= d，再跑 rdrobust ---
-local d = 0.1                       // donut 半径，由制度/堆积证据定
-gen keep_donut = (abs(X) &gt; `d')     // 挖掉断点周围 ±0.1
+<span class="cm-l">* --- Donut：先手动挖掉 |X| &lt;= d，再跑 rdrobust ---</span>
+local d = 0.1                       <span class="cm">// donut 半径，由制度/堆积证据定</span>
+gen keep_donut = (abs(X) &gt; `d')     <span class="cm">// 挖掉断点周围 ±0.1</span>
 rdrobust y X if keep_donut, c(0)
-* rdrobust 仍会在剩余样本里自动选带宽；断点处 now 是一个"洞"。
+<span class="cm-l">* rdrobust 仍会在剩余样本里自动选带宽；断点处 now 是一个"洞"。</span>
 
-* --- 多档 donut 宽度做稳健性表 ---
+<span class="cm-l">* --- 多档 donut 宽度做稳健性表 ---</span>
 foreach d in 0.05 0.1 0.2 {
     gen keep`d' = (abs(X) &gt; `d')
     rdrobust y X if keep`d', c(0)
     drop keep`d'
 }
-* 报告：主回归 tau≈0.8；d=0.05/0.1/0.2 下 tau 仍显著为正且接近 0.8。
+<span class="cm-l">* 报告：主回归 tau≈0.8；d=0.05/0.1/0.2 下 tau 仍显著为正且接近 0.8。</span>
 
-* --- 配合密度检验：先 rddensity 看哪里 bunching ---
+<span class="cm-l">* --- 配合密度检验：先 rddensity 看哪里 bunching ---</span>
 rddensity X, c(0) plot
-* 若断点右侧样本异常多 → 操纵嫌疑 → donut 稳健性更要做。
+<span class="cm-l">* 若断点右侧样本异常多 → 操纵嫌疑 → donut 稳健性更要做。</span>
 </code></pre>
     </div>
 
@@ -468,41 +468,41 @@ rddensity X, c(0) plot
     </ul>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · s6b3_bw_sensitivity.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-* 带宽选择：IK vs CCT + 带宽敏感性曲线
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* 带宽选择：IK vs CCT + 带宽敏感性曲线</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 set seed 20260911
 set obs 2000
 gen X = (runiform()*2 - 1)
 gen D = (X &gt;= 0)
 gen y = 0.5 + 0.3*X + 0.8*D + 0.1*X*D + rnormal()
 
-* --- 1. IK 最优带宽（rdbwselect_2014 / rdrobust 内 bwselect(ik)） ---
+<span class="cm-l">* --- 1. IK 最优带宽（rdbwselect_2014 / rdrobust 内 bwselect(ik)） ---</span>
 rdrobust y X, c(0) bwselect(ik)
-* --- 2. CCT 默认 IMSE（rdrobust 默认，等价 bwselect(mserd)） ---
+<span class="cm-l">* --- 2. CCT 默认 IMSE（rdrobust 默认，等价 bwselect(mserd)） ---</span>
 rdrobust y X, c(0) bwselect(mserd)
-* --- 3. CI 最优带宽 cerrd ---
+<span class="cm-l">* --- 3. CI 最优带宽 cerrd ---</span>
 rdbwselect y X, c(0) bwselect(cerrd)
 
-* --- 4. 带宽敏感性：循环跑 h = 0.2,0.3,...,0.8，存系数 ---
+<span class="cm-l">* --- 4. 带宽敏感性：循环跑 h = 0.2,0.3,...,0.8，存系数 ---</span>
 tempname bmat
 postfile `bmat' double(h tau se) using "bw_sens.dta", replace
 foreach h in 0.2 0.3 0.4 0.5 0.6 0.7 0.8 {
     rdrobust y X, c(0) h(`h')
-    post `bmat' (`h') (e(tau_bc)) (e(se_rb))   // bias-corrected 系数 + robust SE
+    post `bmat' (`h') (e(tau_bc)) (e(se_rb))   <span class="cm">// bias-corrected 系数 + robust SE</span>
 }
 postclose `bmat'
 
 use "bw_sens.dta", clear
 gen lo = tau - 1.96*se
 gen hi = tau + 1.96*se
-twoway (rcap lo hi h, lcolor(navy%60)) ///
-       (scatter tau h, mcolor(navy) msymbol(O)), ///
-       yline(0, lcolor(red) lpattern(dash)) ///
-       ytitle("处理效应 tau") xtitle("带宽 h") ///
-       title("带宽敏感性图：tau 随 h 的变化") ///
+twoway (rcap lo hi h, lcolor(navy%60)) <span class="cm">///</span>
+       (scatter tau h, mcolor(navy) msymbol(O)), <span class="cm">///</span>
+       yline(0, lcolor(red) lpattern(dash)) <span class="cm">///</span>
+       ytitle("处理效应 tau") xtitle("带宽 h") <span class="cm">///</span>
+       title("带宽敏感性图：tau 随 h 的变化") <span class="cm">///</span>
        legend(label(1 "95% CI") label(2 "tau 估计"))
-* 读图：tau 应在各带宽下稳定为正；若只在某一个 h 显著，需警惕。
+<span class="cm-l">* 读图：tau 应在各带宽下稳定为正；若只在某一个 h 显著，需警惕。</span>
 </code></pre>
     </div>
 
@@ -518,31 +518,31 @@ twoway (rcap lo hi h, lcolor(navy%60)) ///
     </div>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · s6b4_density.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-* 操纵检验：McCrary (2008) 与 rddensity (CJM 2018)
-*--------------------------------------------------------------*
-* ssc install rddensity, replace
-* ssc install lpdensity, replace
-* ssc install DCdensity,   replace   // 经典 McCrary（可选，做对照）
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* 操纵检验：McCrary (2008) 与 rddensity (CJM 2018)</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* ssc install rddensity, replace</span>
+<span class="cm-l">* ssc install lpdensity, replace</span>
+<span class="cm-l">* ssc install DCdensity,   replace   // 经典 McCrary（可选，做对照）</span>
 
 set seed 20260911
 set obs 3000
 gen X = (runiform()*2 - 1)
 
-* --- (a) 新版：rddensity（Cattaneo-Jansson-Ma 2018，默认做法） ---
+<span class="cm-l">* --- (a) 新版：rddensity（Cattaneo-Jansson-Ma 2018，默认做法） ---</span>
 rddensity X, c(0)
-* 自动选带宽；输出断点处密度跳跃的 z/p 值 + 密度比。
-rddensity X, c(0) plot          // 画断点两侧局部多项式密度 + CI
-rddensity X, c(0) bwselect(comb) // 组合带宽选择
+<span class="cm-l">* 自动选带宽；输出断点处密度跳跃的 z/p 值 + 密度比。</span>
+rddensity X, c(0) plot          <span class="cm">// 画断点两侧局部多项式密度 + CI</span>
+rddensity X, c(0) bwselect(comb) <span class="cm">// 组合带宽选择</span>
 
-* --- (b) 经典：DCdensity（McCrary 2008），做对照 ---
-* DCdensity X, breakpoint(0) generate(x1 f1 se1) graph
-* 需手动指定 bin 与 bandwidth；与 rddensity 结论互证。
+<span class="cm-l">* --- (b) 经典：DCdensity（McCrary 2008），做对照 ---</span>
+<span class="cm-l">* DCdensity X, breakpoint(0) generate(x1 f1 se1) graph</span>
+<span class="cm-l">* 需手动指定 bin 与 bandwidth；与 rddensity 结论互证。</span>
 
-* --- (c) 若显著 → 三件事 ---
-*   1) 报告 bunching 出现在断点哪一侧（直方图）；
-*   2) 做 Donut RDD（见 6b.2）作为稳健性；
-*   3) 用制度语言解释：谁有动机/能力在断点附近操纵？
+<span class="cm-l">* --- (c) 若显著 → 三件事 ---</span>
+<span class="cm-l">*   1) 报告 bunching 出现在断点哪一侧（直方图）；</span>
+<span class="cm-l">*   2) 做 Donut RDD（见 6b.2）作为稳健性；</span>
+<span class="cm-l">*   3) 用制度语言解释：谁有动机/能力在断点附近操纵？</span>
 </code></pre>
     </div>
   </div>

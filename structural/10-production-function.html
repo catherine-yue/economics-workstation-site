@@ -422,13 +422,13 @@
       <h3>9.1 Stata：opreg / levpet / acfest</h3>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* 生产函数估计：OP / LP / ACF 完整示例
-* 数据：企业面板 id-year，变量 y(增加值/总产出) k l m
-* 安装：ssc install opreg, replace
-*       ssc install levpet, replace
-*       ssc install acfest, replace
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* 生产函数估计：OP / LP / ACF 完整示例</span>
+<span class="cm-l">* 数据：企业面板 id-year，变量 y(增加值/总产出) k l m</span>
+<span class="cm-l">* 安装：ssc install opreg, replace</span>
+<span class="cm-l">*       ssc install levpet, replace</span>
+<span class="cm-l">*       ssc install acfest, replace</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set more off
 use "firm_panel.dta", clear
@@ -440,33 +440,33 @@ gen ln_l  = ln(labor)
 gen ln_m  = ln(material)
 gen ln_inv= ln(investment)
 
-* --- 0. OLS 参照 ---
+<span class="cm-l">* --- 0. OLS 参照 ---</span>
 reg ln_y ln_k ln_l, robust
 estimates store ols
 
-* --- 1. Olley-Pakes (1996) ---
-opreg ln_y = ln_l, state(ln_k) proxy(ln_inv) exit(exit_flag) ///
+<span class="cm-l">* --- 1. Olley-Pakes (1996) ---</span>
+opreg ln_y = ln_l, state(ln_k) proxy(ln_inv) exit(exit_flag) <span class="cm">///</span>
     vce(boot, reps(50))
 estimates store op
 
-* --- 2. Levinsohn-Petrin (2003) ---
+<span class="cm-l">* --- 2. Levinsohn-Petrin (2003) ---</span>
 levpet ln_y, free(ln_l) state(ln_k) proxy(ln_m) valueadded
 estimates store lp_va
 
-* gross output 形式
+<span class="cm-l">* gross output 形式</span>
 levpet ln_y_gross, free(ln_l) state(ln_k) proxy(ln_m)
 estimates store lp_go
 
-* --- 3. Ackerberg-Caves-Frazer (2015) ---
-acfest ln_y_gross, free(ln_l) state(ln_k) proxy(ln_m) ///
+<span class="cm-l">* --- 3. Ackerberg-Caves-Frazer (2015) ---</span>
+acfest ln_y_gross, free(ln_l) state(ln_k) proxy(ln_m) <span class="cm">///</span>
     vce(boot, reps(100)) tech(nr)
 estimates store acf
 
-* --- 4. 导出 TFP 对比 ---
+<span class="cm-l">* --- 4. 导出 TFP 对比 ---</span>
 predict tfp_ols, xb
 gen tfp_op = ln_y - _b[ln_l]*ln_l - _b[ln_k]*ln_k
 predict tfp_acf, omega
-esttab ols op lp_va acf, se star(* 0.1 ** 0.05 *** 0.01) ///
+esttab ols op lp_va acf, se star(* 0.1 ** 0.05 *** 0.01) <span class="cm">///</span>
     mtitles("OLS" "OP" "LP(VA)" "ACF")
 </code></pre>
       </div>

@@ -308,7 +308,7 @@ $$\{\text{家庭最优 }V,a^*,c^*\}\oplus\{\text{厂商最优 NKPC}\}\oplus\{\te
 <div class="code-header"><span class="lang">Python · hank_steady_state.py（已实跑）</span><button class="copy-btn">复制</button></div>
 <pre><code>"""
 HANK 稳态求解器：EGM + Young(2010) KFE + 二分法市场出清
-模型：Aiyagari(1994) 不完全市场 + 2状态就业冲击，log效用，借贷约束 a>=a_min
+模型：Aiyagari(1994) 不完全市场 + 2状态就业冲击，log效用，借贷约束 a&gt;=a_min
 实跑结果: r*=0.0012, A=0.5000(=B_s), MPC=0.79
 """
 import numpy as np
@@ -341,13 +341,13 @@ def egm_policy(r, a_grid, y, beta, P, a_min, tol=1e-6, maxit=5000):
             c_new[:,iz] = np.interp(a_grid, a_egm[:,iz], c_egm[:,iz],
                                     left=c_egm[0,iz], right=c_egm[-1,iz])
         a_next = (1+r)*a_grid[:,None] + y[None,:] - c_new
-        bind = a_next < a_min
+        bind = a_next &lt; a_min
         c_new = np.where(bind, (1+r)*a_grid[:,None]+y[None,:]-a_min, c_new)
         a_next = np.where(bind, a_min, a_next)
         c = 0.7*c + 0.3*c_new
-        if np.max(np.abs(c-c_old)) < tol:
+        if np.max(np.abs(c-c_old)) &lt; tol:
             a_next = (1+r)*a_grid[:,None] + y[None,:] - c
-            a_next[a_next < a_min] = a_min
+            a_next[a_next &lt; a_min] = a_min
             break
     return c, a_next
 
@@ -367,7 +367,7 @@ def stationary_distribution(a_grid, a_next, P, pi_st):
                     pz = P[iz,izp]
                     lam_new[k,izp]   += lam[ia,iz]*(1-w)*pz
                     lam_new[k+1,izp] += lam[ia,iz]*w*pz
-        if np.max(np.abs(lam_new-lam)) < 1e-10: return lam_new
+        if np.max(np.abs(lam_new-lam)) &lt; 1e-10: return lam_new
         lam = lam_new
     return lam
 
@@ -454,7 +454,7 @@ def solve_household(r_path, K_path, a_grid, z, Pz, beta):
             c_new[:,iz] = np.interp(a_grid, a_egm[:,iz], c_egm[:,iz],
                                     left=c_egm[0,iz], right=c_egm[-1,iz])
         c = 0.7*c + 0.3*c_new
-        if np.max(np.abs(c-c_old)) < 1e-7: break
+        if np.max(np.abs(c-c_old)) &lt; 1e-7: break
     a_next = (1+r_path[0])*a_grid[:,None] + z[None,:] - c
     return c, a_next
 
@@ -496,7 +496,7 @@ for ks_iter in range(20):
     a0_new, a1_new = coef
     R2 = 1 - np.var(logK - X@coef)/np.var(logK)
     print(f"KS iter {ks_iter}: a0={a0_new:.4f}, a1={a1_new:.4f}, R2={R2:.6f}")
-    if abs(a0_new-a0)<1e-5 and abs(a1_new-a1)<1e-5:
+    if abs(a0_new-a0)&lt;1e-5 and abs(a1_new-a1)&lt;1e-5:
         print("KS 收敛！")
         break
     a0, a1 = a0_new, a1_new
@@ -675,7 +675,7 @@ B[:n_hh, :n_hh] = -Q.toarray()  # lam_t 系数
 # ============ Step 5: Blanchard-Kahn 求解 ============
 # 检查 BK 条件：前瞻变量数 = 不稳定特征根数
 # 简化：用 numpy 求解广义特征值问题
-# eigenvalues = eig(B, -A)  # 检查 |eig|>1 的个数
+# eigenvalues = eig(B, -A)  # 检查 |eig|&gt;1 的个数
 # 若满足确定性条件，解为 x_t = P x_{t-1} + Q eps_t
 
 # 实际实现可用 Dynare 或 Reiter 2009 的 MATLAB 工具包
@@ -725,7 +725,7 @@ def laguerre_poly(a, K):
     """L_0=1, L_1=1-a, L_k = ((2k-1-a)L_{k-1}-(k-1)L_{k-2})/k"""
     L = np.zeros((len(a), K+1))
     L[:,0] = 1.0
-    if K >= 1: L[:,1] = 1.0 - a
+    if K &gt;= 1: L[:,1] = 1.0 - a
     for k in range(2, K+1):
         L[:,k] = ((2*k-1-a)*L[:,k-1] - (k-1)*L[:,k-2]) / k
     return L  # shape (N_a, K+1)
@@ -800,7 +800,7 @@ def egm_global(r_path, w_path, a_grid, y, P, beta, a_min, T_trans=50):
             c_t[:,iz] = np.interp(a_grid, a_egm[:,iz], c_egm[:,iz],
                                   left=c_egm[0,iz], right=c_egm[-1,iz])
         a_next = (1+r_path[t])*a_grid[:,None] + w_path[t]*y[None,:] - c_t
-        bind = a_next < a_min
+        bind = a_next &lt; a_min
         c_t = np.where(bind, (1+r_path[t])*a_grid[:,None]+w_path[t]*y[None,:]-a_min, c_t)
         c_path[t] = c_t
     return c_path
@@ -863,7 +863,7 @@ def solve_hjb(r, w, V, rho, da, a_grid, z, lam_uz, lam_eu, tol=1e-6):
     for it in range(1000):
         V_old = V.copy()
         # 计算漂移 s(a) = (1+r)a + w*z - c
-        # FOC: u'(c) = v_a => c = (v_a)^{-1/gamma}
+        # FOC: u'(c) = v_a =&gt; c = (v_a)^{-1/gamma}
         # 迎风差分 v_a
         V_new = np.zeros_like(V)
         for iz in range(N_z):
@@ -877,9 +877,9 @@ def solve_hjb(r, w, V, rho, da, a_grid, z, lam_uz, lam_eu, tol=1e-6):
             # 漂移 s = (1+r)a + w*z - c
             s_f = (1+r)*a_grid + w*z[iz] - c_f
             s_b = (1+r)*a_grid + w*z[iz] - c_b
-            # 迎风：s>0 用后向差分，s<0 用前向差分
-            va = np.where(s_b > 0, va_b, va_f)
-            c  = np.where(s_b > 0, c_b, c_f)
+            # 迎风：s&gt;0 用后向差分，s&lt;0 用前向差分
+            va = np.where(s_b &gt; 0, va_b, va_f)
+            c  = np.where(s_b &gt; 0, c_b, c_f)
             s  = (1+r)*a_grid + w*z[iz] - c
             # 效用
             u = np.log(np.maximum(c, 1e-10))
@@ -891,7 +891,7 @@ def solve_hjb(r, w, V, rho, da, a_grid, z, lam_uz, lam_eu, tol=1e-6):
             V_new[:,iz] = (u + s*va + jump) / rho
         # 边界条件：a=a_min 处反射
         V_new[0,:] = V_new[1,:]
-        if np.max(np.abs(V_new - V_old)) < tol:
+        if np.max(np.abs(V_new - V_old)) &lt; tol:
             V = V_new; break
         V = 0.5*V + 0.5*V_new
     return V, c
@@ -909,9 +909,9 @@ def solve_kfe(V, r, w, da, a_grid, z, lam_uz, lam_eu):
             for ia in range(N_a):
                 # 离散化 KFE（简化）
                 lam_new[ia, iz] += lam[ia, iz] * (1 - abs(s[ia])*da)
-                if s[ia] > 0 and ia < N_a-1:
+                if s[ia] &gt; 0 and ia &lt; N_a-1:
                     lam_new[ia+1, iz] += lam[ia, iz] * s[ia]*da
-                elif s[ia] < 0 and ia > 0:
+                elif s[ia] &lt; 0 and ia &gt; 0:
                     lam_new[ia-1, iz] += lam[ia, iz] * (-s[ia])*da
         # 跳跃项
         lam_new[:,1] += lam[:,0] * lam_uz
@@ -927,7 +927,7 @@ for outer in range(50):
     lam = solve_kfe(V, r_guess, 1.0, da, a_grid, z, lam_uz, lam_eu)
     A_agg = np.sum(a_grid[:,None] * lam)
     print(f"outer {outer}: r={r_guess:.4f}, A={A_agg:.3f}")
-    if abs(A_agg - 0.5) < 1e-3: break
+    if abs(A_agg - 0.5) &lt; 1e-3: break
     r_guess += 0.001 * (0.5 - A_agg)
 print("连续时间 HJB-KFE 稳态求解完成")
 </code></pre>

@@ -277,7 +277,7 @@
       <div class="code-block">
         <div class="code-header"><span class="lang">python · aa_unified.py</span><button class="copy-btn">复制</button></div>
         <pre><code>"""
-Allen & Arkolakis (2014) 空间经济统一框架
+Allen &amp; Arkolakis (2014) 空间经济统一框架
 - 地点网络, 一般化引力 pi_ni, 迁移选址 L_i ∝ V_i^eps, 土地出清
 - 网络不动点迭代: 工资 + 人口
 """
@@ -295,7 +295,7 @@ def solve_spatial_network(N, A, B, tau, theta=5.0, eps=1.5,
         Ssum = S.sum(axis=1, keepdims=True)
         pi = S / Ssum
         P = Ssum.ravel() ** (-1.0 / theta)
-        # (AA3) 贸易平衡 -> 隐含工资
+        # (AA3) 贸易平衡 -&gt; 隐含工资
         w_implied = pi.T @ (w * L) / L
         w = (1 - damp) * w + damp * w_implied
         # 地租 + 生活成本 + 间接效用 + (AA5) 人口份额

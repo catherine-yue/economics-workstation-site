@@ -394,7 +394,7 @@ from scipy.optimize import brentq
 def bid_rent(d, y, t, rA, alpha, ubar):
     """给定均衡效用 ubar，求距离 d 处的竞租 r(d)。
     推导：ubar = K_alpha*(y-td)/r(d)^(1-alpha)
-    => r(d) = [K_alpha*(y-td)/ubar]^(1/(1-alpha))
+    =&gt; r(d) = [K_alpha*(y-td)/ubar]^(1/(1-alpha))
     """
     K = (alpha**alpha * (1 - alpha)**(1 - alpha))
     return (K * (y - t * d) / ubar) ** (1.0 / (1 - alpha))
@@ -408,7 +408,7 @@ def land_demand(d, y, t, rA, alpha, ubar):
 
 def population_predicted(b, y, t, rA, alpha):
     """给定边界 b 处 r(b)=rA，反解 ubar，再算城市总人口 N_pred。
-    rA = [K(y-tb)/ubar]^(1/(1-alpha))  =>  ubar = K(y-tb)/rA^(1-alpha)
+    rA = [K(y-tb)/ubar]^(1/(1-alpha))  =&gt;  ubar = K(y-tb)/rA^(1-alpha)
     """
     K = alpha**alpha * (1 - alpha)**(1 - alpha)
     ubar_implied = K * (y - t * b) / rA**(1 - alpha)
@@ -423,12 +423,12 @@ def solve_amm(y=100.0, t=2.0, rA=5.0, alpha=0.75, N=1e6):
     外层对 b 求根：N_pred(b) - N = 0
     """
     def f(b):
-        if y - t * b <= 0:          # 边界处净收入必须为正
+        if y - t * b &lt;= 0:          # 边界处净收入必须为正
             return 1e12
         Npred, _ = population_predicted(b, y, t, rA, alpha)
         return Npred - N
 
-    # 物理上 b < y/t（否则通勤吃掉全部收入）
+    # 物理上 b &lt; y/t（否则通勤吃掉全部收入）
     b_sol = brentq(f, 1e-6, y / t - 1e-6, xtol=1e-8, maxiter=500)
     _, ubar = population_predicted(b_sol, y, t, rA, alpha)
     return dict(b=b_sol, ubar=ubar, rA=rA)
@@ -453,8 +453,8 @@ if __name__ == "__main__":
 
     # 比较静态：通勤成本 t 下降 20%（修地铁）
     cf = solve_amm(y=100.0, t=1.6, rA=5.0, alpha=0.75, N=1e6)
-    print(f"\nt 下降 20%: b {base['b']:.2f}->{cf['b']:.2f}, "
-          f"ubar {base['ubar']:.3f}->{cf['ubar']:.3f}")
+    print(f"\nt 下降 20%: b {base['b']:.2f}-&gt;{cf['b']:.2f}, "
+          f"ubar {base['ubar']:.3f}-&gt;{cf['ubar']:.3f}")
 </code></pre>
       </div>
       <div class="callout tip">

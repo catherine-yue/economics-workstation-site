@@ -316,62 +316,62 @@
 
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · nonparametric.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* 非参 / 半参回归演示：核回归、局部线性、PLM
-* 情境：模拟 Y = sin(X) + 0.3*X + eps，看非参能否抓出非线性
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* 非参 / 半参回归演示：核回归、局部线性、PLM</span>
+<span class="cm-l">* 情境：模拟 Y = sin(X) + 0.3*X + eps，看非参能否抓出非线性</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set more off
 set seed 20260911
 
-* --- 1. 模拟数据 ---
+<span class="cm-l">* --- 1. 模拟数据 ---</span>
 set obs 1000
-gen X = runiform()*4*_pi - 2*_pi       // X ~ Uniform[-2pi, 2pi]
-gen Z = rnormal()                       // PLM 中的非参变量
-gen true_m = sin(X) + 0.3*Z            // 真实 m(X) 与线性 Z 系数
+gen X = runiform()*4*_pi - 2*_pi       <span class="cm">// X ~ Uniform[-2pi, 2pi]</span>
+gen Z = rnormal()                       <span class="cm">// PLM 中的非参变量</span>
+gen true_m = sin(X) + 0.3*Z            <span class="cm">// 真实 m(X) 与线性 Z 系数</span>
 gen Y = true_m + rnormal()*0.5
 
-* --- 2. 非参核回归：lpoly（局部线性） ---
-* 语法：lpoly Y X, width(h) gengrid n(100) ci
-* 默认 Epanechnikov 核；width 为带宽
-lpoly Y X, leg(order(2)) ///
-    ci                  ///  画 95% 置信带
-    bw cvplot           ///  用 CV 选带宽并画 CV 曲线
-    graph(title("局部线性回归：Y 关于 X")) ///
+<span class="cm-l">* --- 2. 非参核回归：lpoly（局部线性） ---</span>
+<span class="cm-l">* 语法：lpoly Y X, width(h) gengrid n(100) ci</span>
+<span class="cm-l">* 默认 Epanechnikov 核；width 为带宽</span>
+lpoly Y X, leg(order(2)) <span class="cm">///</span>
+    ci                  <span class="cm">///  画 95% 置信带</span>
+    bw cvplot           <span class="cm">///  用 CV 选带宽并画 CV 曲线</span>
+    graph(title("局部线性回归：Y 关于 X")) <span class="cm">///</span>
     ytitle("拟合值") xtitle("X")
 graph export "lpoly_cv.png", replace
 
-* --- 3. 多档带宽稳健性 ---
+<span class="cm-l">* --- 3. 多档带宽稳健性 ---</span>
 local h_default = 0.5
-twoway (lpolyci Y X, fcolor(gs12%30) lcolor(navy)), ///
+twoway (lpolyci Y X, fcolor(gs12%30) lcolor(navy)), <span class="cm">///</span>
     legend(off) title("带宽 = 0.5")
-* 对比 0.25 与 1.0
+<span class="cm-l">* 对比 0.25 与 1.0</span>
 lpoly Y X, at(X) bwidth(0.25) gen(y025)
 lpoly Y X, at(X) bwidth(0.50) gen(y050)
 lpoly Y X, at(X) bwidth(1.00) gen(y100)
-twoway (line y025 X, sort lcolor(red)) ///
-       (line y050 X, sort lcolor(navy)) ///
-       (line y100 X, sort lcolor(orange)), ///
-       legend(label(1 "h=0.25") label(2 "h=0.50") label(3 "h=1.00")) ///
+twoway (line y025 X, sort lcolor(red)) <span class="cm">///</span>
+       (line y050 X, sort lcolor(navy)) <span class="cm">///</span>
+       (line y100 X, sort lcolor(orange)), <span class="cm">///</span>
+       legend(label(1 "h=0.25") label(2 "h=0.50") label(3 "h=1.00")) <span class="cm">///</span>
        title("带宽敏感性：过小/适中/过大")
 
-* --- 4. 部分线性模型 PLM：Robinson (1988) 残差法 ---
-* 模型：Y = beta*Z + g(X) + eps
-* 步骤：① 非参拟合 E[Y|X]、E[Z|X]；② 残差化；③ OLS
+<span class="cm-l">* --- 4. 部分线性模型 PLM：Robinson (1988) 残差法 ---</span>
+<span class="cm-l">* 模型：Y = beta*Z + g(X) + eps</span>
+<span class="cm-l">* 步骤：① 非参拟合 E[Y|X]、E[Z|X]；② 残差化；③ OLS</span>
 lpoly Y X, at(X) bwidth(0.5) gen(E_Y)
 lpoly Z X, at(X) bwidth(0.5) gen(E_Z)
 gen tilde_Y = Y - E_Y
 gen tilde_Z = Z - E_Z
 reg tilde_Y tilde_Z
-* tilde_Z 的系数就是 beta 的 Robinson 估计（渐近 sqrt-n 一致）
-* 与 OLS 直接对比：
+<span class="cm-l">* tilde_Z 的系数就是 beta 的 Robinson 估计（渐近 sqrt-n 一致）</span>
+<span class="cm-l">* 与 OLS 直接对比：</span>
 reg Y Z X
-* 若 X 与 Z 相关、且 g(X) 非线性，OLS 会偏；PLM 一致
+<span class="cm-l">* 若 X 与 Z 相关、且 g(X) 非线性，OLS 会偏；PLM 一致</span>
 
-* --- 5. Stata 16+ 官方 npregress（更现代） ---
-* npregress kernel Y X, kernel(epanechnikov) bw(cv)
-* npregress series  Y X, order(3)  // 序列回归（多项式样条）
-* 注意：npregress 是 Stata 16+ 内置，无需 ssc install
+<span class="cm-l">* --- 5. Stata 16+ 官方 npregress（更现代） ---</span>
+<span class="cm-l">* npregress kernel Y X, kernel(epanechnikov) bw(cv)</span>
+<span class="cm-l">* npregress series  Y X, order(3)  // 序列回归（多项式样条）</span>
+<span class="cm-l">* 注意：npregress 是 Stata 16+ 内置，无需 ssc install</span>
 </code></pre>
     </div>
 
@@ -407,7 +407,7 @@ def nw(x0, X, Y, h, kernel='gauss'):
     if kernel == 'gauss':
         w = np.exp(-0.5*u**2)
     else:  # epanechnikov
-        w = np.where(np.abs(u) <= 1, 0.75*(1-u**2), 0.0)
+        w = np.where(np.abs(u) &lt;= 1, 0.75*(1-u**2), 0.0)
     return np.sum(w*Y)/np.sum(w)
 
 grid = np.linspace(X.min(), X.max(), 200)

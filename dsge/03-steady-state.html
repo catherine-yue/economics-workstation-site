@@ -362,7 +362,7 @@ p.sigma  = 1.0;
 p.phi    = 5.0;
 p.alpha  = 0.25;
 p.eps    = 9.0;
-p.chi    = (1-p.alpha)*(p.eps-1)/p.eps;   % 归一化系数 -> N=1
+p.chi    = (1-p.alpha)*(p.eps-1)/p.eps;   % 归一化系数 -&gt; N=1
 
 % --- 2. 定义稳态方程组 ---
 ss_eq = @(x) [
@@ -407,20 +407,20 @@ fprintf('残差范数 = %.2e\n', norm(fval));</code></pre>
 % baseline_nk_ss.mod —— 完整可运行的 baseline NK 模型
 % ============================================================
 
-// ---------- 变量 ----------
+<span class="cm">// ---------- 变量 ----------</span>
 var Y C N w mc r i pi y_gap;
 varexo eps_a eps_m;
 
-// ---------- 参数 ----------
+<span class="cm">// ---------- 参数 ----------</span>
 parameters beta sigma phi alpha eps_p chi kappa rho_a rho_i phi_pi phi_y;
 
 beta=0.99; sigma=1.0; phi=5.0; alpha=0.25;
 eps_p=9.0;
-chi = (1-alpha)*(eps_p-1)/eps_p;     % 归一化 -> N_ss = 1
+chi = (1-alpha)*(eps_p-1)/eps_p;     % 归一化 -&gt; N_ss = 1
 kappa = (1-0.75)*(1-beta*0.75)/0.75 * (sigma+phi);  % theta=0.75
 rho_a=0.9; rho_i=0.8; phi_pi=1.5; phi_y=0.125;
 
-// ---------- 模型方程（对数线性化后）----------
+<span class="cm">// ---------- 模型方程（对数线性化后）----------</span>
 model;
   y_gap = y_gap(+1) - (1/sigma)*r;
   r     = i - pi(+1);
@@ -428,7 +428,7 @@ model;
   i     = rho_i*i(-1) + (1-rho_i)*(phi_pi*pi + phi_y*y_gap) + eps_m;
 end;
 
-// ---------- 稳态（关键块）----------
+<span class="cm">// ---------- 稳态（关键块）----------</span>
 steady_state_model;
   % --- 零通胀归一化稳态 ---
   pi   = 0;
@@ -442,13 +442,13 @@ steady_state_model;
   y_gap = 0;
 end;
 
-// ---------- 冲击 ----------
+<span class="cm">// ---------- 冲击 ----------</span>
 shocks;
 var eps_a; stderr 0.01;
 var eps_m; stderr 0.0025;
 end;
 
-// ---------- 求解 ----------
+<span class="cm">// ---------- 求解 ----------</span>
 steady;
 check;
 stoch_simul(irf=20, nograph);</code></pre>

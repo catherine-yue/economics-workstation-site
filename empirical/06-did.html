@@ -240,18 +240,18 @@
     <p>单看事件研究图里每一根 whisker 是否跨 0 是不够的——如果有 5 个 leads，每个单独看不显著，<strong>5 个联合起来却显著异于 0</strong> 的情况完全可能发生。规范做法是在事件研究回归后，把所有政策前 leads 联合做 Wald 检验：</p>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · s2_pretrend_test.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* s2.1 事件研究 + pre-trend 联合 F 检验
-* 沿用 s7 模拟数据：D095=k=-5 ... D098=k=-2, D100=k=0...
-reghdfe y D095 D096 D097 D098 D100 D101 D102 D103 D104 D105, ///
+<pre><code><span class="cm-l">* s2.1 事件研究 + pre-trend 联合 F 检验</span>
+<span class="cm-l">* 沿用 s7 模拟数据：D095=k=-5 ... D098=k=-2, D100=k=0...</span>
+reghdfe y D095 D096 D097 D098 D100 D101 D102 D103 D104 D105, <span class="cm">///</span>
     absorb(id year) vce(cluster id)
 
-* 联合检验所有政策前 leads（D095..D098，省略 k=-1 基准）
+<span class="cm-l">* 联合检验所有政策前 leads（D095..D098，省略 k=-1 基准）</span>
 test D095 D096 D097 D098
-* H0: 所有 pre 期系数联合 = 0
-* 若 p<0.05 → 拒绝平行趋势假设
+<span class="cm-l">* H0: 所有 pre 期系数联合 = 0</span>
+<span class="cm-l">* 若 p&lt;0.05 → 拒绝平行趋势假设</span>
 
-* 也可以用更现代的写法：先构造事件时间变量再写因子
-* testparm i.rel_time#i.treat if rel_time<0
+<span class="cm-l">* 也可以用更现代的写法：先构造事件时间变量再写因子</span>
+<span class="cm-l">* testparm i.rel_time#i.treat if rel_time&lt;0</span>
 </code></pre>
     </div>
 
@@ -268,33 +268,33 @@ test D095 D096 D097 D098
     <h3>2.2 <code class="inline">pretrends</code>（Roth 2022）：量化 pre-trend 检验的功效</h3>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · s22_pretrends_roth.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* s2.2 Roth (2022) pretrends：评估 pre-trend 检验有多大功效
-* ssc install pretrends, replace
+<pre><code><span class="cm-l">* s2.2 Roth (2022) pretrends：评估 pre-trend 检验有多大功效</span>
+<span class="cm-l">* ssc install pretrends, replace</span>
 
-* 前置：已跑事件研究回归（见 s2.1）
-* pretrends 会自动识别事件研究中的 pre 期虚拟变量，
-* 回答："如果真实存在线性 pre-trend，本检验有多大概率抓住？"
-*
-* 语法（在 reghdfe 事件研究回归后）：
-* pretrends, leads(4) lag(0) post(5)
-*   leads(4)  : 政策前有 4 期 leads
-*   lag(0)    : 政策当年作为基准
-*   post(5)   : 政策后估计窗口
-*
-* 关键输出解读:
-*   Power of pre-trend test at 5% level: ~0.35
-*   Detectable bias (in fraction of ATT): ~0.20
-*
-* 论文写法模板:
-*   "The joint pre-trend test does not reject the null
-*    (p = 0.21), but pretrends (Roth 2022) indicates the
-*    test has only ~35% power to detect a linear pre-trend
-*    that would bias the ATT by 20%. We therefore report
-*    Rambachan-Roth sensitivity bounds (see sX.X) showing
-*    the ATT remains positive under modest pre-trend violations."
+<span class="cm-l">* 前置：已跑事件研究回归（见 s2.1）</span>
+<span class="cm-l">* pretrends 会自动识别事件研究中的 pre 期虚拟变量，</span>
+<span class="cm-l">* 回答："如果真实存在线性 pre-trend，本检验有多大概率抓住？"</span>
+<span class="cm-l">*</span>
+<span class="cm-l">* 语法（在 reghdfe 事件研究回归后）：</span>
+<span class="cm-l">* pretrends, leads(4) lag(0) post(5)</span>
+<span class="cm-l">*   leads(4)  : 政策前有 4 期 leads</span>
+<span class="cm-l">*   lag(0)    : 政策当年作为基准</span>
+<span class="cm-l">*   post(5)   : 政策后估计窗口</span>
+<span class="cm-l">*</span>
+<span class="cm-l">* 关键输出解读:</span>
+<span class="cm-l">*   Power of pre-trend test at 5% level: ~0.35</span>
+<span class="cm-l">*   Detectable bias (in fraction of ATT): ~0.20</span>
+<span class="cm-l">*</span>
+<span class="cm-l">* 论文写法模板:</span>
+<span class="cm-l">*   "The joint pre-trend test does not reject the null</span>
+<span class="cm-l">*    (p = 0.21), but pretrends (Roth 2022) indicates the</span>
+<span class="cm-l">*    test has only ~35% power to detect a linear pre-trend</span>
+<span class="cm-l">*    that would bias the ATT by 20%. We therefore report</span>
+<span class="cm-l">*    Rambachan-Roth sensitivity bounds (see sX.X) showing</span>
+<span class="cm-l">*    the ATT remains positive under modest pre-trend violations."</span>
 
-* 重要：pretrends 命令在 Stata 中需要事件研究回归保留
-* e(b) 和 e(V)；如果用 reghdfe，先 estimates store 再调用。
+<span class="cm-l">* 重要：pretrends 命令在 Stata 中需要事件研究回归保留</span>
+<span class="cm-l">* e(b) 和 e(V)；如果用 reghdfe，先 estimates store 再调用。</span>
 </code></pre>
     </div>
 
@@ -302,21 +302,21 @@ test D095 D096 D097 D098
     <p>当你展开到 k=−6 甚至 k=−8 时，远端 leads 往往只有少数几个处理组观测，单独系数 SE 巨大、置信带宽到没意义。此时合法做法是<strong>把观测太少的相邻事件期合并</strong>（如把 k=−6 与 k=−5 合并成一个 "early-leads" 系数），而不是把远端 leads 从图上删掉。</p>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · s23_pooled_leads.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* s2.3 远端 leads 观测太少时合并相邻期
-* 前提：该合并是由"远端期观测数过少"这一客观事实决定的，
-*       不能是"合并后刚好平行"才合并。
+<pre><code><span class="cm-l">* s2.3 远端 leads 观测太少时合并相邻期</span>
+<span class="cm-l">* 前提：该合并是由"远端期观测数过少"这一客观事实决定的，</span>
+<span class="cm-l">*       不能是"合并后刚好平行"才合并。</span>
 
-* 假设 k=-6/-5 两期处理组观测都 <30，合并：
-gen D_early = (rel_time<=-5) if g!=0
+<span class="cm-l">* 假设 k=-6/-5 两期处理组观测都 &lt;30，合并：</span>
+gen D_early = (rel_time&lt;=-5) if g!=0
 replace D_early = 0 if g==0
 
-* 其余 leads/lags 照常
-reghdfe y D_early D096 D097 D098 D100 D101 D102 D103 D104 D105, ///
+<span class="cm-l">* 其余 leads/lags 照常</span>
+reghdfe y D_early D096 D097 D098 D100 D101 D102 D103 D104 D105, <span class="cm">///</span>
     absorb(id year) vce(cluster id)
-test D_early D096 D097 D098        // 合并后 pre 期联合检验
+test D_early D096 D097 D098        <span class="cm">// 合并后 pre 期联合检验</span>
 
-* 红线：发现 k=-6 单独显著（不平行），把它和 k=-5 合并
-*       合并后"看起来不显著"——这是事后缝合趋势。
+<span class="cm-l">* 红线：发现 k=-6 单独显著（不平行），把它和 k=-5 合并</span>
+<span class="cm-l">*       合并后"看起来不显著"——这是事后缝合趋势。</span>
 </code></pre>
     </div>
   </div>
@@ -394,36 +394,36 @@ test D_early D096 D097 D098        // 合并后 pre 期联合检验
     <p>在写论文的稳健性部分，第一步永远是先做 Bacon 分解——它本身就是一个"诊断工具"，告诉审稿人你的 TWFE 估计量里有多少权重来自干净对比、多少来自坏对比。如果坏对比权重接近 0，TWFE 仍然可信；如果坏对比权重很大且估计符号可疑，就必须上新估计量。Stata 命令 <code class="inline">bacondecomp</code>（Goodman-Bacon, Goldring & Nichols 编写）直接报告每一类对比的权重和对应 DID 估计值：</p>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · bacon_decomp.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-* Bacon 分解：诊断 TWFE 里的"坏对比"权重
-* 文档: Goodman-Bacon (2021, JoE)
-*--------------------------------------------------------------*
-ssc install bacondecomp, replace      // 首次运行安装
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* Bacon 分解：诊断 TWFE 里的"坏对比"权重</span>
+<span class="cm-l">* 文档: Goodman-Bacon (2021, JoE)</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
+ssc install bacondecomp, replace      <span class="cm">// 首次运行安装</span>
 
-* 数据要求:
-*   1) 必须 xtset
-*   2) 处理变量只能从 0 跳到 1（不能反复开关）
-*   3) 最好是平衡面板
+<span class="cm-l">* 数据要求:</span>
+<span class="cm-l">*   1) 必须 xtset</span>
+<span class="cm-l">*   2) 处理变量只能从 0 跳到 1（不能反复开关）</span>
+<span class="cm-l">*   3) 最好是平衡面板</span>
 xtset id year
 
-* 跑经典 TWFE（作为对照）
+<span class="cm-l">* 跑经典 TWFE（作为对照）</span>
 reghdfe y treat, absorb(id year) vce(cluster id)
 
-* Bacon 分解主命令：
-*   outcome  = y
-*   treatment = treat（0/1）
-*   ddetail  = 列出每一对 2×2 对比的权重
-*   stub(bacon_) = 把所有对比分量存成 bacon_1, bacon_2, ... 供画图
+<span class="cm-l">* Bacon 分解主命令：</span>
+<span class="cm-l">*   outcome  = y</span>
+<span class="cm-l">*   treatment = treat（0/1）</span>
+<span class="cm-l">*   ddetail  = 列出每一对 2×2 对比的权重</span>
+<span class="cm-l">*   stub(bacon_) = 把所有对比分量存成 bacon_1, bacon_2, ... 供画图</span>
 bacondecomp y treat, ddetail stub(bacon_)
 
-* 输出会自动分三类报告:
-*   "Earlier T vs Later C"        : 早处理 vs 晚处理(not-yet)  —— 干净
-*   "Later T vs Earlier C"        : 晚处理 vs 早处理(forbidden) —— 坏对比
-*   "T vs Never-treated Control"  : 处理组 vs 从未处理组       —— 干净
-* 关注: bad-comparison 的权重占比是否过大? 它的 DID 估计符号是否与主回归相反?
+<span class="cm-l">* 输出会自动分三类报告:</span>
+<span class="cm-l">*   "Earlier T vs Later C"        : 早处理 vs 晚处理(not-yet)  —— 干净</span>
+<span class="cm-l">*   "Later T vs Earlier C"        : 晚处理 vs 早处理(forbidden) —— 坏对比</span>
+<span class="cm-l">*   "T vs Never-treated Control"  : 处理组 vs 从未处理组       —— 干净</span>
+<span class="cm-l">* 关注: bad-comparison 的权重占比是否过大? 它的 DID 估计符号是否与主回归相反?</span>
 
-* 用 coefplot 画权重散点图（横轴=各 2×2 DID 估计, 纵轴=权重）
-* 坏对比的点若落在与主回归相反的一侧, 就是 TWFE 偏误的图形证据
+<span class="cm-l">* 用 coefplot 画权重散点图（横轴=各 2×2 DID 估计, 纵轴=权重）</span>
+<span class="cm-l">* 坏对比的点若落在与主回归相反的一侧, 就是 TWFE 偏误的图形证据</span>
 </code></pre>
     </div>
     <div class="callout info">
@@ -447,38 +447,38 @@ bacondecomp y treat, ddetail stub(bacon_)
     </ul>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · csdid_demo.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-* Callaway-Sant'Anna (2021, JoE) 估计量
-* 命令: csdid (需 drdid 包)
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* Callaway-Sant'Anna (2021, JoE) 估计量</span>
+<span class="cm-l">* 命令: csdid (需 drdid 包)</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 ssc install csdid,  replace
 ssc install drdid,  replace
 
-* 关键变量准备:
-*   gvar = 每个体首次处理年份; 从未处理 = 0
-*   必须有: 个体 id, 年份 year, gvar
-gen gvar = g                      // 沿用本页模拟数据: g=0 表示 never-treated
+<span class="cm-l">* 关键变量准备:</span>
+<span class="cm-l">*   gvar = 每个体首次处理年份; 从未处理 = 0</span>
+<span class="cm-l">*   必须有: 个体 id, 年份 year, gvar</span>
+gen gvar = g                      <span class="cm">// 沿用本页模拟数据: g=0 表示 never-treated</span>
 
-* 主命令:
-*   csdid  outcome  [covariates],
-*          ivar(id) time(year) gvar(gvar)
-*          method(dripw)          // 双重稳健 IPW (推荐)
-*          [notyet]               // 若没有 never-treated 组, 用 not-yet-treated 作对照
+<span class="cm-l">* 主命令:</span>
+<span class="cm-l">*   csdid  outcome  [covariates],</span>
+<span class="cm-l">*          ivar(id) time(year) gvar(gvar)</span>
+<span class="cm-l">*          method(dripw)          // 双重稳健 IPW (推荐)</span>
+<span class="cm-l">*          [notyet]               // 若没有 never-treated 组, 用 not-yet-treated 作对照</span>
 csdid y alpha_i gamma_t, ivar(id) time(year) gvar(gvar) method(dripw)
 
-* --- 四种聚合 ---
-estat simple      // 总体 ATT (所有 ATT(g,t) 的简单平均)
-estat group       // 按队列 g 聚合
-estat event       // 按事件时间 k=t-g 聚合 (动态效应)
-estat calendar    // 按日历年聚合
+<span class="cm-l">* --- 四种聚合 ---</span>
+estat simple      <span class="cm">// 总体 ATT (所有 ATT(g,t) 的简单平均)</span>
+estat group       <span class="cm">// 按队列 g 聚合</span>
+estat event       <span class="cm">// 按事件时间 k=t-g 聚合 (动态效应)</span>
+estat calendar    <span class="cm">// 按日历年聚合</span>
 
-* --- 事件研究图 ---
-* csdid_plot 会读取 estat event 的结果并画 95% CI 的系数图
-csdid_plot, title("Callaway-Sant'Anna 事件研究图") ///
+<span class="cm-l">* --- 事件研究图 ---</span>
+<span class="cm-l">* csdid_plot 会读取 estat event 的结果并画 95% CI 的系数图</span>
+csdid_plot, title("Callaway-Sant'Anna 事件研究图") <span class="cm">///</span>
     ytitle("ATT(g,t)") xtitle("相对处理时点 k")
 
-* 也可以分队列画:
-* csdid_plot, group(2005) title("2005 队列")
+<span class="cm-l">* 也可以分队列画:</span>
+<span class="cm-l">* csdid_plot, group(2005) title("2005 队列")</span>
 </code></pre>
     </div>
 
@@ -486,12 +486,12 @@ csdid_plot, title("Callaway-Sant'Anna 事件研究图") ///
     <p>Sun & Abraham (2021, JoE) 指出：传统事件研究回归 $y_{it}=\sum_{k\neq -1}\beta_k D_{it}^k+\alpha_i+\gamma_t+\varepsilon_{it}$ 中的 $\beta_k$，即使在平行趋势下也会被<strong>其他队列的处理效应污染</strong>——因为不同队列在同一个 event-time $k$ 上的处理时长不一样。他们提出"交互加权估计量"：把每个 lead/lag 虚拟变量与队列虚拟变量交互，先估计"队列×event-time"层面的干净效应 $\hat{\beta}_{g,k}$，再按队列大小加权汇总成不被污染的 $\hat{\beta}_k$。</p>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · sun_abraham.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-* Sun-Abraham (2021, JoE) 交互加权事件研究
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* Sun-Abraham (2021, JoE) 交互加权事件研究</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 ssc install eventstudyinteract, replace
 
-* 1) 构造 event-time 虚拟变量 Dk (与 s7 节代码一致, 省略 k=-1 为基准)
+<span class="cm-l">* 1) 构造 event-time 虚拟变量 Dk (与 s7 节代码一致, 省略 k=-1 为基准)</span>
 gen rel_time = year - g if g!=0
 forvalues k=-5/5 {
     local kk = `k' + 100
@@ -499,23 +499,23 @@ forvalues k=-5/5 {
     replace D`kk' = 0 if g==0
 }
 
-* 2) 构造队列虚拟变量 (每个处理队列一个哑变量)
+<span class="cm-l">* 2) 构造队列虚拟变量 (每个处理队列一个哑变量)</span>
 gen C2005 = (g==2005)
 gen C2008 = (g==2008)
-gen C0    = (g==0)        // never-treated 对照组
+gen C0    = (g==0)        <span class="cm">// never-treated 对照组</span>
 
-* 3) 主命令:
-*   eventstudyinteract  outcome  lead_list lag_list,
-*       cohort(队列变量或队列哑变量列表)
-*       control_cohort(对照组哑变量)
-*       absorb(i.id i.year)
-*       vce(cluster id)
-eventstudyinteract y D095 D096 D097 D098 D100 D101 D102 D103 D104 D105, ///
-    cohort(C2005 C2008) control_cohort(C0) ///
+<span class="cm-l">* 3) 主命令:</span>
+<span class="cm-l">*   eventstudyinteract  outcome  lead_list lag_list,</span>
+<span class="cm-l">*       cohort(队列变量或队列哑变量列表)</span>
+<span class="cm-l">*       control_cohort(对照组哑变量)</span>
+<span class="cm-l">*       absorb(i.id i.year)</span>
+<span class="cm-l">*       vce(cluster id)</span>
+eventstudyinteract y D095 D096 D097 D098 D100 D101 D102 D103 D104 D105, <span class="cm">///</span>
+    cohort(C2005 C2008) control_cohort(C0) <span class="cm">///</span>
     absorb(id year) vce(cluster id)
 
-* 4) 画图: 该命令返回的系数矩阵未命名, 用 r(table) 配合 coefplot 画图
-* 或直接用 event_plot (ssc install event_plot) 读取 e(estimates)
+<span class="cm-l">* 4) 画图: 该命令返回的系数矩阵未命名, 用 r(table) 配合 coefplot 画图</span>
+<span class="cm-l">* 或直接用 event_plot (ssc install event_plot) 读取 e(estimates)</span>
 </code></pre>
     </div>
 
@@ -528,30 +528,30 @@ eventstudyinteract y D095 D096 D097 D098 D100 D101 D102 D103 D104 D105, ///
     <p>其中 $s$ 是 stack 索引（每个队列一个 stack），$\alpha_{i,s}$ 是"个体×stack"固定效应，$\gamma_{t,s}$ 是"时间×stack"固定效应。Cengiz, Dube, Lindner & Zipperer (2019, QJE) 用这套方法研究美国最低工资对低工资岗位的影响，发现就业反应接近于零。Wooldridge (2021) 从计量理论上证明了堆叠回归等价于一种扩展的 TWFE Mundlak 回归。Stata 上可以用 <code class="inline">stackedev</code> 命令一键实现：</p>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · stacked_did.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-* Stacked DID: Cengiz, Dube, Lindner, Zipperer (2019, QJE)
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* Stacked DID: Cengiz, Dube, Lindner, Zipperer (2019, QJE)</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 ssc install stackedev, replace
 
-* 语法:
-*   stackedev  outcome,
-*       cohort(first_treat_year)     // 每个体首次处理年份 (从未处理=0)
-*       time(year) unit(id)
-*       never_treat(no_treat)        // 从未处理组哑变量
-*       window(-4 5)                 // 处理前后各取 4/5 期
-*       event(rel_time)              // 相对 event-time 变量
-*       covariates(x1 x2)
-*       cluster(id)
-*
-* stackedev 会自动为每个队列 g 生成一个 stack, 只保留:
-*   - 队列 g 的处理组
-*   - 尚未处理 (t < g) 或永远不处理的对照组
-* 然后把所有 stack 纵向合并, 跑带 stack×unit / stack×time FE 的 TWFE
+<span class="cm-l">* 语法:</span>
+<span class="cm-l">*   stackedev  outcome,</span>
+<span class="cm-l">*       cohort(first_treat_year)     // 每个体首次处理年份 (从未处理=0)</span>
+<span class="cm-l">*       time(year) unit(id)</span>
+<span class="cm-l">*       never_treat(no_treat)        // 从未处理组哑变量</span>
+<span class="cm-l">*       window(-4 5)                 // 处理前后各取 4/5 期</span>
+<span class="cm-l">*       event(rel_time)              // 相对 event-time 变量</span>
+<span class="cm-l">*       covariates(x1 x2)</span>
+<span class="cm-l">*       cluster(id)</span>
+<span class="cm-l">*</span>
+<span class="cm-l">* stackedev 会自动为每个队列 g 生成一个 stack, 只保留:</span>
+<span class="cm-l">*   - 队列 g 的处理组</span>
+<span class="cm-l">*   - 尚未处理 (t &lt; g) 或永远不处理的对照组</span>
+<span class="cm-l">* 然后把所有 stack 纵向合并, 跑带 stack×unit / stack×time FE 的 TWFE</span>
 
-* 在本页模拟数据上的示意:
+<span class="cm-l">* 在本页模拟数据上的示意:</span>
 gen no_treat = (g==0)
-stackedev y, cohort(g) time(year) unit(id) ///
-    never_treat(no_treat) window(-3 5) event(rel_time) ///
+stackedev y, cohort(g) time(year) unit(id) <span class="cm">///</span>
+    never_treat(no_treat) window(-3 5) event(rel_time) <span class="cm">///</span>
     cluster(id)
 </code></pre>
     </div>
@@ -610,35 +610,35 @@ stackedev y, cohort(g) time(year) unit(id) ///
     </ol>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · s56_staggered_pretrend.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* s5.6 交叠 DID 的 pre-trend 诊断流程
-* 1) csdid 主估计（见 s5.2）
-csdid y alpha_i gamma_t, ivar(id) time(year) gvar(gvar) ///
+<pre><code><span class="cm-l">* s5.6 交叠 DID 的 pre-trend 诊断流程</span>
+<span class="cm-l">* 1) csdid 主估计（见 s5.2）</span>
+csdid y alpha_i gamma_t, ivar(id) time(year) gvar(gvar) <span class="cm">///</span>
     method(dripw)
 
-* 2) 事件时间聚合：得到干净的 leads/lags ATT
+<span class="cm-l">* 2) 事件时间聚合：得到干净的 leads/lags ATT</span>
 estat event
 csdid_plot, title("csdid 干净事件研究图（无负权重污染）")
 
-* 3) 对 estat event 输出的 pre 期 leads 做联合检验
-*    estat event 返回的系数向量按事件时间排列；
-*    在 Stata 中可通过 `e(event_results)` 或返回到矩阵后 test。
-*
-* 4) Roth (2022) 功效分析（在 csdid 之后）
-*    pretrends 命令支持 csdid 输出的事件研究系数；
-*    报告 "detectable pre-trend bias" 与检验功效。
-*
-* 关键写作要点（Roth et al. 2023, JoE 综述清单第 5 条）：
-*   "We report the pre-trend joint test on the
-*    callaway-sant'Anna event estimates: leads k=-4..-1
-*    are jointly not different from zero (Wald p=0.31).
-*    pretrends indicates power of approximately 45%
-*    to detect a linear pre-trend that would bias the
-*    ATT by 20%, so we additionally report
-*    Rambachan-Roth sensitivity bounds."
-*
-* 红线：交叠 DID 论文只贴一张 TWFE 事件研究图就宣称
-*       "平行趋势成立"——这在 2024 年后的顶刊审稿中
-*       几乎一定会被要求补做 csdid pre-trend 诊断。
+<span class="cm-l">* 3) 对 estat event 输出的 pre 期 leads 做联合检验</span>
+<span class="cm-l">*    estat event 返回的系数向量按事件时间排列；</span>
+<span class="cm-l">*    在 Stata 中可通过 `e(event_results)` 或返回到矩阵后 test。</span>
+<span class="cm-l">*</span>
+<span class="cm-l">* 4) Roth (2022) 功效分析（在 csdid 之后）</span>
+<span class="cm-l">*    pretrends 命令支持 csdid 输出的事件研究系数；</span>
+<span class="cm-l">*    报告 "detectable pre-trend bias" 与检验功效。</span>
+<span class="cm-l">*</span>
+<span class="cm-l">* 关键写作要点（Roth et al. 2023, JoE 综述清单第 5 条）：</span>
+<span class="cm-l">*   "We report the pre-trend joint test on the</span>
+<span class="cm-l">*    callaway-sant'Anna event estimates: leads k=-4..-1</span>
+<span class="cm-l">*    are jointly not different from zero (Wald p=0.31).</span>
+<span class="cm-l">*    pretrends indicates power of approximately 45%</span>
+<span class="cm-l">*    to detect a linear pre-trend that would bias the</span>
+<span class="cm-l">*    ATT by 20%, so we additionally report</span>
+<span class="cm-l">*    Rambachan-Roth sensitivity bounds."</span>
+<span class="cm-l">*</span>
+<span class="cm-l">* 红线：交叠 DID 论文只贴一张 TWFE 事件研究图就宣称</span>
+<span class="cm-l">*       "平行趋势成立"——这在 2024 年后的顶刊审稿中</span>
+<span class="cm-l">*       几乎一定会被要求补做 csdid pre-trend 诊断。</span>
 </code></pre>
     </div>
     <div class="callout tip">
@@ -657,31 +657,31 @@ csdid_plot, title("csdid 干净事件研究图（无负权重污染）")
     </ul>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · s6_placebo.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* s6 安慰剂检验：三种做法
-* 沿用 s7 模拟数据
+<pre><code><span class="cm-l">* s6 安慰剂检验：三种做法</span>
+<span class="cm-l">* 沿用 s7 模拟数据</span>
 
-* (a) 伪处理时点：把政策时点提前到 2007（真实政策 2012）
+<span class="cm-l">* (a) 伪处理时点：把政策时点提前到 2007（真实政策 2012）</span>
 gen treat_fake = (g!=0 &amp; year&gt;=2007)
 reghdfe y treat_fake, absorb(id year) vce(cluster id)
-* 期望：treat_fake 不显著；若显著 → pre-trend 可疑
+<span class="cm-l">* 期望：treat_fake 不显著；若显著 → pre-trend 可疑</span>
 
-* (b) 随机分配伪处理组：500 次蒙特卡洛
-permute treat, reps(500) seed(2026) ///
-    saving("placebo_dist.dta", replace): ///
+<span class="cm-l">* (b) 随机分配伪处理组：500 次蒙特卡洛</span>
+permute treat, reps(500) seed(2026) <span class="cm">///</span>
+    saving("placebo_dist.dta", replace): <span class="cm">///</span>
     reghdfe y treat, absorb(id year) vce(cluster id)
-* 真实系数 0.8 应落在 placebo 分布 95% 分位之外
+<span class="cm-l">* 真实系数 0.8 应落在 placebo 分布 95% 分位之外</span>
 
 use "placebo_dist.dta", clear
 sum _b_treat, detail
-* 报告：真实系数在 placebo 分布中的分位（应 < p5 或 > p95）
+<span class="cm-l">* 报告：真实系数在 placebo 分布中的分位（应 &lt; p5 或 &gt; p95）</span>
 
-* (c) 伪结果变量：用理论上不受政策影响的变量
-gen placebo_y = rnormal(0,1)         // 纯噪声
+<span class="cm-l">* (c) 伪结果变量：用理论上不受政策影响的变量</span>
+gen placebo_y = rnormal(0,1)         <span class="cm">// 纯噪声</span>
 reghdfe placebo_y treat, absorb(id year) vce(cluster id)
-* 期望：treat 系数不显著
+<span class="cm-l">* 期望：treat 系数不显著</span>
 
-* 红线：从 1998..2010 扫伪时点，挑一个"刚好不显著"的写论文
-*      合法：伪时点事前选定（如政策前最早一期）+ 500次随机分布
+<span class="cm-l">* 红线：从 1998..2010 扫伪时点，挑一个"刚好不显著"的写论文</span>
+<span class="cm-l">*      合法：伪时点事前选定（如政策前最早一期）+ 500次随机分布</span>
 </code></pre>
     </div>
     <div class="callout warning">
@@ -726,36 +726,36 @@ reghdfe placebo_y treat, absorb(id year) vce(cluster id)
 
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · s6b_remedies.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* s6b 平行趋势不通过时的合法补救（红线示例注释在内）
-* 沿用 s7 模拟数据
+<pre><code><span class="cm-l">* s6b 平行趋势不通过时的合法补救（红线示例注释在内）</span>
+<span class="cm-l">* 沿用 s7 模拟数据</span>
 
-* 合法方案1：局部窗口（±2~3 年，事前由制度依据决定）
+<span class="cm-l">* 合法方案1：局部窗口（±2~3 年，事前由制度依据决定）</span>
 preserve
-    keep if year>=2010 &amp; year<=2014      // 政策2012前后各2年
+    keep if year&gt;=2010 &amp; year&lt;=2014      <span class="cm">// 政策2012前后各2年</span>
     csdid y, ivar(id) time(year) gvar(gvar) method(dripw)
     estat event
 restore
 
-* 合法方案2：csdid 加协变量做条件平行趋势
-csdid y alpha_i gamma_t, ivar(id) time(year) gvar(gvar) ///
+<span class="cm-l">* 合法方案2：csdid 加协变量做条件平行趋势</span>
+csdid y alpha_i gamma_t, ivar(id) time(year) gvar(gvar) <span class="cm">///</span>
     method(dripw) covariates(alpha_i gamma_t)
 estat event
 
-* 合法方案3：Bacon 分解找出污染队列
-* bacondecomp y treat, ddetail
-* 若 "Later T vs Earlier C" 权重 > 0.3 → 换 csdid
+<span class="cm-l">* 合法方案3：Bacon 分解找出污染队列</span>
+<span class="cm-l">* bacondecomp y treat, ddetail</span>
+<span class="cm-l">* 若 "Later T vs Earlier C" 权重 &gt; 0.3 → 换 csdid</span>
 
-* 合法方案4：Rambachan-Roth 敏感性界
-*   Stata 中需配合 R 包 Honor &amp; Roth；
-*   报告模板:
-*   "Even when Mbar=1 (allowing a linear pre-trend of
-*    the same magnitude as estimated), the lower bound
-*    of the ATT CI remains positive at 0.21."
+<span class="cm-l">* 合法方案4：Rambachan-Roth 敏感性界</span>
+<span class="cm-l">*   Stata 中需配合 R 包 Honor &amp; Roth；</span>
+<span class="cm-l">*   报告模板:</span>
+<span class="cm-l">*   "Even when Mbar=1 (allowing a linear pre-trend of</span>
+<span class="cm-l">*    the same magnitude as estimated), the lower bound</span>
+<span class="cm-l">*    of the ATT CI remains positive at 0.21."</span>
 
-* ⛔ 红线（严禁）：
-*   - 先跑全样本 pre-trend 不通过，回头把窗口改成 ±2 年"凑通过"
-*   - 把漂移严重的队列从样本里删掉，理由是"该组异常"
-*   - 只在正文报"pre-trend 通过"，附录才出现不通过版本
+<span class="cm-l">* ⛔ 红线（严禁）：</span>
+<span class="cm-l">*   - 先跑全样本 pre-trend 不通过，回头把窗口改成 ±2 年"凑通过"</span>
+<span class="cm-l">*   - 把漂移严重的队列从样本里删掉，理由是"该组异常"</span>
+<span class="cm-l">*   - 只在正文报"pre-trend 通过"，附录才出现不通过版本</span>
 </code></pre>
     </div>
   </div>
@@ -766,68 +766,68 @@ estat event
 
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · did_full.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* DID 全套演示：经典 DID + 事件研究 + PSM-DID + 交叠 DID 新方法
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* DID 全套演示：经典 DID + 事件研究 + PSM-DID + 交叠 DID 新方法</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set more off
 set seed 20260911
 
-* --- 首次运行安装外部命令 ---
-* ssc install csdid,             replace
-* ssc install drdid,              replace
-* ssc install eventdd,            replace
-* ssc install eventstudyinteract, replace
-* ssc install did_multiplegt,     replace
-* ssc install did_imputation,    replace
-* ssc install bacondecomp,        replace   // Bacon 分解诊断
-* ssc install stackedev,         replace   // Stacked DID
-* ssc install psmatch2,           replace
-* ssc install coefplot,           replace
+<span class="cm-l">* --- 首次运行安装外部命令 ---</span>
+<span class="cm-l">* ssc install csdid,             replace</span>
+<span class="cm-l">* ssc install drdid,              replace</span>
+<span class="cm-l">* ssc install eventdd,            replace</span>
+<span class="cm-l">* ssc install eventstudyinteract, replace</span>
+<span class="cm-l">* ssc install did_multiplegt,     replace</span>
+<span class="cm-l">* ssc install did_imputation,    replace</span>
+<span class="cm-l">* ssc install bacondecomp,        replace   // Bacon 分解诊断</span>
+<span class="cm-l">* ssc install stackedev,         replace   // Stacked DID</span>
+<span class="cm-l">* ssc install psmatch2,           replace</span>
+<span class="cm-l">* ssc install coefplot,           replace</span>
 
-* --- 1. 构造交叠 DID 模拟面板 ---
-* 100 个个体，2000-2010 共 11 年
-* 处理组分组：
-*   g1: 2005 年开始处理（30 个）
-*   g2: 2008 年开始处理（30 个）
-*   g0: 从未处理（40 个，对照组）
+<span class="cm-l">* --- 1. 构造交叠 DID 模拟面板 ---</span>
+<span class="cm-l">* 100 个个体，2000-2010 共 11 年</span>
+<span class="cm-l">* 处理组分组：</span>
+<span class="cm-l">*   g1: 2005 年开始处理（30 个）</span>
+<span class="cm-l">*   g2: 2008 年开始处理（30 个）</span>
+<span class="cm-l">*   g0: 从未处理（40 个，对照组）</span>
 set obs 100
 gen id = _n
-gen g = cond(_n&lt;=30, 2005, cond(_n&lt;=60, 2008, 0))   // g=0 表示 never-treated
+gen g = cond(_n&lt;=30, 2005, cond(_n&lt;=60, 2008, 0))   <span class="cm">// g=0 表示 never-treated</span>
 expand 11
 bysort id: gen year = 1999 + _n
 
 xtset id year
 
-* 处理变量：treat=1 表示该个体在该年已被处理
+<span class="cm-l">* 处理变量：treat=1 表示该个体在该年已被处理</span>
 gen treat = (g!=0 &amp; year &gt;= g)
 
-* 结果变量：包含个体 FE、时间 FE、处理效应（处理后每年 +0.8）
+<span class="cm-l">* 结果变量：包含个体 FE、时间 FE、处理效应（处理后每年 +0.8）</span>
 gen eps = rnormal()
 gen alpha_i = mod(id,10)
 gen gamma_t = (year-2000)*0.1
 gen y = 5 + alpha_i + gamma_t + 0.8*treat + eps
 
-* --- 2. 经典 TWFE DID ---
+<span class="cm-l">* --- 2. 经典 TWFE DID ---</span>
 reghdfe y treat, absorb(id year) vce(cluster id)
 estimates store twfe
 
-* --- 3. 事件研究图（手工构造相对时点虚拟变量） ---
+<span class="cm-l">* --- 3. 事件研究图（手工构造相对时点虚拟变量） ---</span>
 gen rel_time = year - g if g!=0
 forvalues k=-5/5 {
-    local kk = `k' + 100          // 避免变量名以负号开头
+    local kk = `k' + 100          <span class="cm">// 避免变量名以负号开头</span>
     gen D`kk' = (rel_time==`k') if g!=0
     replace D`kk' = 0 if g==0
 }
-* 省略 k=-1（即 rel_time==-1, D099）作为基准
-reghdfe y D095 D096 D097 D098 D100 D101 D102 D103 D104 D105, ///
+<span class="cm-l">* 省略 k=-1（即 rel_time==-1, D099）作为基准</span>
+reghdfe y D095 D096 D097 D098 D100 D101 D102 D103 D104 D105, <span class="cm">///</span>
     absorb(id year) vce(cluster id)
-coefplot, keep(D*) vertical yline(0) ///
-    xtitle("相对政策时点") ytitle("估计系数") ///
+coefplot, keep(D*) vertical yline(0) <span class="cm">///</span>
+    xtitle("相对政策时点") ytitle("估计系数") <span class="cm">///</span>
     title("事件研究图（平行趋势检验）")
 
-* --- 4. PSM-DID ---
-* 先用处理前数据估计倾向得分
+<span class="cm-l">* --- 4. PSM-DID ---</span>
+<span class="cm-l">* 先用处理前数据估计倾向得分</span>
 preserve
     keep if year&lt;2005
     bysort id: keep if _n==1
@@ -839,41 +839,41 @@ preserve
 restore
 merge m:1 id using "`weights'", nogen
 
-* 在匹配后的共同支撑样本上做 DID
+<span class="cm-l">* 在匹配后的共同支撑样本上做 DID</span>
 reghdfe y treat [pw=_weight], absorb(id year) vce(cluster id)
 estimates store psmdid
 
-* --- 5. Callaway-Sant'Anna (csdid) ---
-* 需要 didvar 是"首次处理年份"（never-treated 为 0）
+<span class="cm-l">* --- 5. Callaway-Sant'Anna (csdid) ---</span>
+<span class="cm-l">* 需要 didvar 是"首次处理年份"（never-treated 为 0）</span>
 gen gvar = g
 csdid y alpha_i gamma_t, ivar(id) time(year) gvar(gvar) method(dripw)
-estat all                           // 汇总 ATT
+estat all                           <span class="cm">// 汇总 ATT</span>
 csdid_plot, title("CSDID 事件研究图")
 
-* --- 6. Sun-Abraham (eventstudyinteract) ---
-* 先构造 cohort 虚拟变量
+<span class="cm-l">* --- 6. Sun-Abraham (eventstudyinteract) ---</span>
+<span class="cm-l">* 先构造 cohort 虚拟变量</span>
 forvalues gg=2005(3)2008 {
     gen C`gg' = (g==`gg')
 }
-eventstudyinteract y D095 D096 D097 D098 D100 D101 D102 D103 D104 D105, ///
-    cohort(C2005 C2008) control_cohort(C0) ///
+eventstudyinteract y D095 D096 D097 D098 D100 D101 D102 D103 D104 D105, <span class="cm">///</span>
+    cohort(C2005 C2008) control_cohort(C0) <span class="cm">///</span>
     absorb(id year) vce(cluster id)
 
-* --- 7. de Chaisemartin-D'Haultfoeuille (did_multiplegt) ---
+<span class="cm-l">* --- 7. de Chaisemartin-D'Haultfoeuille (did_multiplegt) ---</span>
 did_multiplegt y id year treat, robust_dynamic dynamic(5) breps(100) cluster(id)
 
-* --- 8. Borusyak-Jaravel-Spiess (did_imputation) ---
+<span class="cm-l">* --- 8. Borusyak-Jaravel-Spiess (did_imputation) ---</span>
 did_imputation y id year gvar, horizons(0/5) autosample minn(0)
 
-* --- 9. 安慰剂检验（随机分配伪处理时点） ---
-permute treat, reps(500) seed(1): ///
+<span class="cm-l">* --- 9. 安慰剂检验（随机分配伪处理时点） ---</span>
+permute treat, reps(500) seed(1): <span class="cm">///</span>
     reghdfe y treat, absorb(id year) vce(cluster id)
-* 真实估计系数应落在 placebo 分布的 5% 或 95% 之外
+<span class="cm-l">* 真实估计系数应落在 placebo 分布的 5% 或 95% 之外</span>
 
-* --- 10. 导出结果 ---
-esttab twfe psmdid using "table_did.rtf", replace ///
-    b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) ///
-    mtitles("TWFE DID" "PSM-DID") ///
+<span class="cm-l">* --- 10. 导出结果 ---</span>
+esttab twfe psmdid using "table_did.rtf", replace <span class="cm">///</span>
+    b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) <span class="cm">///</span>
+    mtitles("TWFE DID" "PSM-DID") <span class="cm">///</span>
     stats(N r2, fmt(0 3)) title("DID 结果对比") nogaps compress
 </code></pre>
     </div>
@@ -896,34 +896,34 @@ esttab twfe psmdid using "table_did.rtf", replace ///
     <p>它与 BJS 插补估计量在大样本下渐近等价（见 7b.2），但 <code class="inline">did2s</code> 写法直观、计算快、天然支持事件研究设定。Stata 实现是 Kyle Butts 编写的 <code class="inline">did2s</code>（与 Gardner 合作）。</p>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · s7b1_did2s.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-* Gardner (2021) 两阶段 DID：did2s
-* ssc install did2s, replace
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* Gardner (2021) 两阶段 DID：did2s</span>
+<span class="cm-l">* ssc install did2s, replace</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 set seed 20260911
 
-* 沿用 s7 模拟面板：id, year, g(首次处理年,0=never), treat
+<span class="cm-l">* 沿用 s7 模拟面板：id, year, g(首次处理年,0=never), treat</span>
 xtset id year
 
-* --- 静态 ATT ---
-* first_stage  = 用来估固定效应的变量（个体 FE + 时间 FE）
-* second_stage = 处理变量
-did2s y, first_stage(i.id i.year) second_stage(treat) ///
+<span class="cm-l">* --- 静态 ATT ---</span>
+<span class="cm-l">* first_stage  = 用来估固定效应的变量（个体 FE + 时间 FE）</span>
+<span class="cm-l">* second_stage = 处理变量</span>
+did2s y, first_stage(i.id i.year) second_stage(treat) <span class="cm">///</span>
     treatment(treat) cluster(id)
 estimates store did2s_att
 
-* --- 事件研究形式（推荐，看动态效应 + pre-trend） ---
-* 先构造事件时间虚拟变量（省略 k=-1 为基准，同 s7）
+<span class="cm-l">* --- 事件研究形式（推荐，看动态效应 + pre-trend） ---</span>
+<span class="cm-l">* 先构造事件时间虚拟变量（省略 k=-1 为基准，同 s7）</span>
 gen rel_time = year - g if g!=0
 forvalues k=-5/5 {
     local kk = `k' + 100
     gen D`kk' = (rel_time==`k') if g!=0
     replace D`kk' = 0 if g==0
 }
-did2s y, first_stage(i.id i.year) ///
-    second_stage(D095 D096 D097 D098 D100 D101 D102 D103 D104 D105) ///
+did2s y, first_stage(i.id i.year) <span class="cm">///</span>
+    second_stage(D095 D096 D097 D098 D100 D101 D102 D103 D104 D105) <span class="cm">///</span>
     treatment(treat) cluster(id)
-* 第二阶段系数即无负权重的动态效应；pre 期 D095..D098 应联合不显著。
+<span class="cm-l">* 第二阶段系数即无负权重的动态效应；pre 期 D095..D098 应联合不显著。</span>
 </code></pre>
     </div>
 
@@ -940,29 +940,29 @@ did2s y, first_stage(i.id i.year) ///
     </div>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · s7b2_did_imputation.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-* Borusyak-Jaravel-Spiess (2024, ReStud) 插补 DID
-* ssc install did_imputation, replace
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* Borusyak-Jaravel-Spiess (2024, ReStud) 插补 DID</span>
+<span class="cm-l">* ssc install did_imputation, replace</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 set seed 20260911
 xtset id year
 
-* 语法: did_imputation outcome panelvar timevar cohortvar, ...
-*   cohortvar = 每个体首次处理年份；从未处理 = 0
-*   horizons(0/5) = 估计处理后 0..5 期的动态效应
-*   autosample    = 自动选未处理对照样本
-*   minn(0)       = 不要求最小队列规模
+<span class="cm-l">* 语法: did_imputation outcome panelvar timevar cohortvar, ...</span>
+<span class="cm-l">*   cohortvar = 每个体首次处理年份；从未处理 = 0</span>
+<span class="cm-l">*   horizons(0/5) = 估计处理后 0..5 期的动态效应</span>
+<span class="cm-l">*   autosample    = 自动选未处理对照样本</span>
+<span class="cm-l">*   minn(0)       = 不要求最小队列规模</span>
 did_imputation y id year gvar, horizons(0/5) autosample minn(0) cluster(id)
 
-* 静态总效应（不展开 horizon）：
+<span class="cm-l">* 静态总效应（不展开 horizon）：</span>
 did_imputation y id year gvar, autosample minn(0) cluster(id)
 
-* 无 never-treated 组时：用 not-yet-treated 作插补对照
-* did_imputation y id year gvar, horizons(0/5) autosample minn(0) ///
-*     control(notyet) cluster(id)
+<span class="cm-l">* 无 never-treated 组时：用 not-yet-treated 作插补对照</span>
+<span class="cm-l">* did_imputation y id year gvar, horizons(0/5) autosample minn(0) ///</span>
+<span class="cm-l">*     control(notyet) cluster(id)</span>
 
-* 输出按事件时间排列，可直接 coefplot 画事件研究图：
-* coefplot, keep(tau*) vertical yline(0)
+<span class="cm-l">* 输出按事件时间排列，可直接 coefplot 画事件研究图：</span>
+<span class="cm-l">* coefplot, keep(tau*) vertical yline(0)</span>
 </code></pre>
     </div>
 
@@ -979,38 +979,38 @@ did_imputation y id year gvar, autosample minn(0) cluster(id)
     </div>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · s7b3_quantile_did.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-* 分位数 DID / QTT（Callaway-Li-Oka 2019）Stata 手工实现
-* 思路：在"结果变化量 Δy"上对处理虚拟变量做分位数回归
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* 分位数 DID / QTT（Callaway-Li-Oka 2019）Stata 手工实现</span>
+<span class="cm-l">* 思路：在"结果变化量 Δy"上对处理虚拟变量做分位数回归</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 set seed 20260911
 
-* 构造两期面板（政策前 year0 / 政策后 year1）
-* 假设已有：id, year, y, treat(处理组=1)
+<span class="cm-l">* 构造两期面板（政策前 year0 / 政策后 year1）</span>
+<span class="cm-l">* 假设已有：id, year, y, treat(处理组=1)</span>
 preserve
     keep if year==2005 | year==2012
     reshape wide y, i(id) j(year)
-    gen dy = y2012 - y2005              // 结果变化量
+    gen dy = y2012 - y2005              <span class="cm">// 结果变化量</span>
     gen treat = (g!=0)
 
-    * 各分位 QTT：τ = 0.1, 0.25, 0.5, 0.75, 0.9
+<span class="cm-l">    * 各分位 QTT：τ = 0.1, 0.25, 0.5, 0.75, 0.9</span>
     foreach q in 0.1 0.25 0.5 0.75 0.9 {
         qreg dy treat, quantile(`q') vce(robust)
         display "QTT_`q' = " _b[treat]
     }
-    * 若 QTT_0.1 &gt; QTT_0.5：政策主要抬升分布底部 → 缩小差距的故事
+<span class="cm-l">    * 若 QTT_0.1 &gt; QTT_0.5：政策主要抬升分布底部 → 缩小差距的故事</span>
 restore
 
-* --- 标准实现（推荐论文用）：R 包 qte 的 qdid_gt ---
-* R:  library(qte)
-*     qdid_gt(yname="y", tname="year", idname="id",
-*             gname="g", x=~1, data=panel_data,
-*             probs=c(0.1,0.25,0.5,0.75,0.9))
-* 输出各队列×分位的 QTT，交错 DID 下无负权重。
+<span class="cm-l">* --- 标准实现（推荐论文用）：R 包 qte 的 qdid_gt ---</span>
+<span class="cm-l">* R:  library(qte)</span>
+<span class="cm-l">*     qdid_gt(yname="y", tname="year", idname="id",</span>
+<span class="cm-l">*             gname="g", x=~1, data=panel_data,</span>
+<span class="cm-l">*             probs=c(0.1,0.25,0.5,0.75,0.9))</span>
+<span class="cm-l">* 输出各队列×分位的 QTT，交错 DID 下无负权重。</span>
 
-* --- csdid 的分布扩展 ---
-* csdid 本身估均值 ATT(g,t)；分布版本需走 R 包 did + qte。
-* Stata 中可用 csdid 出均值，再用上面 qreg(dy) 出分位作对照。
+<span class="cm-l">* --- csdid 的分布扩展 ---</span>
+<span class="cm-l">* csdid 本身估均值 ATT(g,t)；分布版本需走 R 包 did + qte。</span>
+<span class="cm-l">* Stata 中可用 csdid 出均值，再用上面 qreg(dy) 出分位作对照。</span>
 </code></pre>
     </div>
 
@@ -1023,44 +1023,44 @@ restore
     </div>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · s7b4_panel_match.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-* 面板匹配：匹配事前结果路径，再做事件研究
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* 面板匹配：匹配事前结果路径，再做事件研究</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 set seed 20260911
 
-* --- 1) 提取每个单位政策前的"结果水平 + 趋势"特征 ---
+<span class="cm-l">* --- 1) 提取每个单位政策前的"结果水平 + 趋势"特征 ---</span>
 preserve
-    keep if year &lt; 2005                 // 只用政策前数据
-    * 政策前结果均值
+    keep if year &lt; 2005                 <span class="cm">// 只用政策前数据</span>
+<span class="cm-l">    * 政策前结果均值</span>
     collapse (mean) pre_y_mean = y (sd) pre_y_sd = y, by(id g)
-    * 政策前趋势斜率：y 对 year 的斜率（另一组回归，此处示意用首末期差）
+<span class="cm-l">    * 政策前趋势斜率：y 对 year 的斜率（另一组回归，此处示意用首末期差）</span>
     tempfile prefeat
     save "`prefeat'"
 restore
 merge m:1 id using "`prefeat'", nogen
 
-* --- 2) 近邻匹配：用 psmatch2 在对照池找事前最像的对照 ---
-* 处理组 g!=0，对照 g==0；匹配变量 = 事前结果均值/标准差
+<span class="cm-l">* --- 2) 近邻匹配：用 psmatch2 在对照池找事前最像的对照 ---</span>
+<span class="cm-l">* 处理组 g!=0，对照 g==0；匹配变量 = 事前结果均值/标准差</span>
 gen ever_treat = (g!=0)
 psmatch2 ever_treat pre_y_mean pre_y_sd, out(y) neighbor(1) caliper(0.05) common
 keep id _weight
 tempfile wmatch
 save "`wmatch'"
-use, clear                            // 重新载入完整面板
-* （实际流程中在原面板 merge _weight 后继续）
+use, clear                            <span class="cm">// 重新载入完整面板</span>
+<span class="cm-l">* （实际流程中在原面板 merge _weight 后继续）</span>
 
-* --- 3) 匹配样本上跑标准化事件研究 ---
-* match 样本上处理/对照事前趋势应平行；
-* 再用无负权重估计量出动态效应：
-* csdid y, ivar(id) time(year) gvar(gvar) method(dripw)
-* estat event
-* csdid_plot
-*
-* 标准化事件研究 checklist：
-*   (a) 基准期省略 k=-1（不是 k=0！）；
-*   (b) pre 期 leads 联合 F 检验 + pretrends 功效；
-*   (c) 远端观测太少的相邻期合并（见 s2.3）；
-*   (d) 用 csdid/SA 的干净系数，不用 TWFE 事件研究做 pre-trend 判断。
+<span class="cm-l">* --- 3) 匹配样本上跑标准化事件研究 ---</span>
+<span class="cm-l">* match 样本上处理/对照事前趋势应平行；</span>
+<span class="cm-l">* 再用无负权重估计量出动态效应：</span>
+<span class="cm-l">* csdid y, ivar(id) time(year) gvar(gvar) method(dripw)</span>
+<span class="cm-l">* estat event</span>
+<span class="cm-l">* csdid_plot</span>
+<span class="cm-l">*</span>
+<span class="cm-l">* 标准化事件研究 checklist：</span>
+<span class="cm-l">*   (a) 基准期省略 k=-1（不是 k=0！）；</span>
+<span class="cm-l">*   (b) pre 期 leads 联合 F 检验 + pretrends 功效；</span>
+<span class="cm-l">*   (c) 远端观测太少的相邻期合并（见 s2.3）；</span>
+<span class="cm-l">*   (d) 用 csdid/SA 的干净系数，不用 TWFE 事件研究做 pre-trend 判断。</span>
 </code></pre>
     </div>
     <div class="callout tip">

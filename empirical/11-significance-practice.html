@@ -245,51 +245,51 @@
       <p><strong>怎么读</strong>：置信区间很宽（比如 [-0.2, 0.6]），说明你的估计精度差，"不显著"主要是没测准，而不是没效应——此时该做的是扩样本或换更高效的设计，而不是换模型。反过来，如果 CI 很窄地贴着 0（比如 [-0.02, 0.03]），那功效充足、精度够，"不显著"才更接近"真没效应"。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 根因1_功效分析.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 根因1：功效不足 / 样本量小
-* 诊断：(a) 解析 power 分析  (b) 仿真功效  (c) CI 宽度
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 根因1：功效不足 / 样本量小</span>
+<span class="cm-l">* 诊断：(a) 解析 power 分析  (b) 仿真功效  (c) CI 宽度</span>
+<span class="cm-l">*==============================================================</span>
 clear all
 set more off
 set seed 20260911
 
-* --- 1.1 解析功效：两独立样本均值检验，要检出 d=0.3 的中等效应 ---
-* 80% 功效、5% 双侧、两组等样本，各需多少观测？
+<span class="cm-l">* --- 1.1 解析功效：两独立样本均值检验，要检出 d=0.3 的中等效应 ---</span>
+<span class="cm-l">* 80% 功效、5% 双侧、两组等样本，各需多少观测？</span>
 power twomeans 0, diff(0.3) sd(1) power(0.8) alpha(0.05)
-* 输出会告诉你每组约需 N≈176（合计约352）。
-* 若你真实数据每组只有 N=60，功效必然不足。
+<span class="cm-l">* 输出会告诉你每组约需 N≈176（合计约352）。</span>
+<span class="cm-l">* 若你真实数据每组只有 N=60，功效必然不足。</span>
 
-* 单比例检验示例：处理组通过率从50%升到58%
+<span class="cm-l">* 单比例检验示例：处理组通过率从50%升到58%</span>
 power oneproportion .5, .58 power(0.8) alpha(0.05)
 
-* --- 1.2 仿真功效：用你"实际使用的模型"算真实 power ---
-* 思路：重复1000次"造数据→跑回归→看是否显著"，数检出率
+<span class="cm-l">* --- 1.2 仿真功效：用你"实际使用的模型"算真实 power ---</span>
+<span class="cm-l">* 思路：重复1000次"造数据→跑回归→看是否显著"，数检出率</span>
 clear
 set obs 1000
 gen power_flag = .
 forvalues r=1/1000 {
     preserve
-    quietly set obs 200                 // 模拟你手头只有200个观测
+    quietly set obs 200                 <span class="cm">// 模拟你手头只有200个观测</span>
     gen x = rnormal()
-    gen y = 0.3*x + rnormal(0, 1.5)     // 真实斜率=0.3，噪声较大
+    gen y = 0.3*x + rnormal(0, 1.5)     <span class="cm">// 真实斜率=0.3，噪声较大</span>
     quietly reg y x
-    quietly gen sig = (abs(_b[x]/_se[x]) > 1.96)
+    quietly gen sig = (abs(_b[x]/_se[x]) &gt; 1.96)
     scalar p_r = sig[1]
     restore
     qui replace power_flag = p_r in `r'
 }
 sum power_flag
-* 若均值只有0.4，说明在N=200、噪声1.5下，你只有40%概率检出0.3的效应
-* 这就是"跑不显著"的客观原因，而非效应不存在
+<span class="cm-l">* 若均值只有0.4，说明在N=200、噪声1.5下，你只有40%概率检出0.3的效应</span>
+<span class="cm-l">* 这就是"跑不显著"的客观原因，而非效应不存在</span>
 
-* --- 1.3 用置信区间宽度判断精度 ---
+<span class="cm-l">* --- 1.3 用置信区间宽度判断精度 ---</span>
 clear
 set obs 200
 gen x = rnormal()
 gen y = 0.3*x + rnormal(0, 1.5)
 reg y x
-* 看 [_b[_cons]?] 重点看 x 的 [95% Conf. Interval]：
-* 若区间横跨正负且很宽 -> 精度不足，结论是"检测不到"，不是"无效应"
+<span class="cm-l">* 看 [_b[_cons]?] 重点看 x 的 [95% Conf. Interval]：</span>
+<span class="cm-l">* 若区间横跨正负且很宽 -&gt; 精度不足，结论是"检测不到"，不是"无效应"</span>
 reg y x, level(95)
 </code></pre>
       </div>
@@ -304,40 +304,40 @@ reg y x, level(95)
       <p>TOST 的逻辑和常规检验正好相反：常规检验是"能否拒绝零"，TOST 是"能否拒绝'效应大到有实际意义'这个备择"。你先定一个"实质等价边界" Δ（比如效应小于 0.1 个标准差就算经济上可忽略），如果系数的 90% CI 整个落在 [-Δ, Δ] 之内，你就能在 5% 水平上<em>等价于零</em>——这才是严谨地声称"没有有意义的效应"。没有 TOST，"p=0.2 所以无效应"只是一句不成立的话。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 根因2_效应量与TOST.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 根因2：效应量本来就小 / 经济显著性
-* 诊断：标准化效应量 + 经济量级换算 + TOST 等价检验
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 根因2：效应量本来就小 / 经济显著性</span>
+<span class="cm-l">* 诊断：标准化效应量 + 经济量级换算 + TOST 等价检验</span>
+<span class="cm-l">*==============================================================</span>
 clear all
 set seed 8888
-set obs 5000                          // 大样本：功效充足，专门暴露"小效应"
+set obs 5000                          <span class="cm">// 大样本：功效充足，专门暴露"小效应"</span>
 gen x = rnormal()
-gen y = 0.05*x + rnormal(0, 1)        // 真实斜率极小(0.05)，但N大
+gen y = 0.05*x + rnormal(0, 1)        <span class="cm">// 真实斜率极小(0.05)，但N大</span>
 reg y x
 
-* --- 2.1 标准化效应量（x加1SD，y变几个SD）---
-* 用标准化变量直接读：
+<span class="cm-l">* --- 2.1 标准化效应量（x加1SD，y变几个SD）---</span>
+<span class="cm-l">* 用标准化变量直接读：</span>
 gen z_x = (x-r(mean))/r(sd)
 gen z_y = (y-r(mean))/r(sd)
 reg z_y z_x
-* 系数即标准化效应；Cohen's d 经验：0.2小 / 0.5中 / 0.8大
+<span class="cm-l">* 系数即标准化效应；Cohen's d 经验：0.2小 / 0.5中 / 0.8大</span>
 
-* --- 2.2 经济显著性：系数 × x 的标准差 = 实际影响 ---
-* 若 x 是"政策冲击强度"，乘它的标准差看 y 变化占 y 均值多少
+<span class="cm-l">* --- 2.2 经济显著性：系数 × x 的标准差 = 实际影响 ---</span>
+<span class="cm-l">* 若 x 是"政策冲击强度"，乘它的标准差看 y 变化占 y 均值多少</span>
 sum y
 scalar y_mean = r(mean)
 display "x加1个SD，y变化占y均值的 " %4.1f  (_b[x]*sd(x)/y_mean*100) " %"
 
-* --- 2.3 TOST 等价检验：正式判断"是否小到可忽略" ---
-* 需 ssc install tostt ；等价边界 Δ 设为 0.1 个标准化效应
-* 等价于：检验系数是否落在 [-0.1, 0.1] 内
+<span class="cm-l">* --- 2.3 TOST 等价检验：正式判断"是否小到可忽略" ---</span>
+<span class="cm-l">* 需 ssc install tostt ；等价边界 Δ 设为 0.1 个标准化效应</span>
+<span class="cm-l">* 等价于：检验系数是否落在 [-0.1, 0.1] 内</span>
 tostt z_y == z_x, eqv(0.1)
-* 解读：TOST 的 p<0.05 => 可以认为效应"等价于可忽略"（真null）
-*       TOST 的 p>0.05 => 无法排除有实际意义的效应（检测不到）
+<span class="cm-l">* 解读：TOST 的 p&lt;0.05 =&gt; 可以认为效应"等价于可忽略"（真null）</span>
+<span class="cm-l">*       TOST 的 p&gt;0.05 =&gt; 无法排除有实际意义的效应（检测不到）</span>
 
-* 对比：统计显著但经济不显著 的情况
-* N=5000 时，0.05 的斜率可能 t 检验显著；
-* 但 TOST 若通过，说明它统计显著却实质可忽略
+<span class="cm-l">* 对比：统计显著但经济不显著 的情况</span>
+<span class="cm-l">* N=5000 时，0.05 的斜率可能 t 检验显著；</span>
+<span class="cm-l">* 但 TOST 若通过，说明它统计显著却实质可忽略</span>
 </code></pre>
       </div>
       <div class="callout info">
@@ -350,37 +350,37 @@ tostt z_y == z_x, eqv(0.1)
       <p>很多"不显著"既不是没效应、也不是效应小，而是<strong>标准误被错误地估宽了或估窄了</strong>。残差存在异方差、序列相关、组内相关时，默认的同方差标准误会失真。诊断就是把几种标准误放在一张表里对比：普通 OLS、异方差稳健（robust）、聚类标准误（个体 / 行业 / 年份 / 双向聚类），看系数的 t 值怎么变。哪一种最保守、为什么，要讲清楚。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 根因3_标准误对比.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 根因3：异方差 / 序列相关 / 聚类层级
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 根因3：异方差 / 序列相关 / 聚类层级</span>
+<span class="cm-l">*==============================================================</span>
 clear all
 set seed 2024
 set obs 2000
 gen id = ceil(_n/5)
 gen year = 2010 + mod(_n,10)
-gen industry = ceil(runiform()*20)       // 20个行业
+gen industry = ceil(runiform()*20)       <span class="cm">// 20个行业</span>
 gen x = rnormal()
-* 让同行业内残差相关 + 异方差，模拟真实面板
+<span class="cm-l">* 让同行业内残差相关 + 异方差，模拟真实面板</span>
 gen u = rnormal()
 gen y = 0.5*x + 0.7*rnormal(industry) + exp(0.5*x)*rnormal(0,0.5)
 
-* --- 3.1 异方差 / 序列相关检验 ---
+<span class="cm-l">* --- 3.1 异方差 / 序列相关检验 ---</span>
 reg y x
-estat imtest, white          // White 异方差检验；p<0.05 即存在异方差
-estat hettest                 // Breusch-Pagan 检验
-* 面板序列相关：
+estat imtest, white          <span class="cm">// White 异方差检验；p&lt;0.05 即存在异方差</span>
+estat hettest                 <span class="cm">// Breusch-Pagan 检验</span>
+<span class="cm-l">* 面板序列相关：</span>
 xtset id year
-xtserial y x                 // Wooldridge 面板序列相关检验
+xtserial y x                 <span class="cm">// Wooldridge 面板序列相关检验</span>
 
-* --- 3.2 四种标准误同表对比 ---
+<span class="cm-l">* --- 3.2 四种标准误同表对比 ---</span>
 reg y x, vce(ols)                                   ; est store s_ols
 reg y x, vce(robust)                                ; est store s_rob
 reg y x, vce(cluster id)                            ; est store s_id
 reg y x, vce(cluster industry)                      ; est store s_ind
-* 双向聚类（行业+年份）
+<span class="cm-l">* 双向聚类（行业+年份）</span>
 reghdfe y x, absorb(industry year) vce(cluster industry year) ; est store s_two
 
-esttab s_ols s_rob s_id s_ind s_two, keep(x) b(%9.3f) ///
+esttab s_ols s_rob s_id s_ind s_two, keep(x) b(%9.3f) <span class="cm">///</span>
     se star(* 0.1 ** 0.05 *** 0.01) mtitles("OLS" "robust" "聚个体" "聚行业" "双向")
 </code></pre>
       </div>
@@ -391,24 +391,24 @@ esttab s_ols s_rob s_id s_ind s_two, keep(x) b(%9.3f) ///
       <p>控制变量之间高度相关时，单个系数的标准误会被人为撑大，于是"不显著"——但整体 F 检验可能仍然显著。诊断靠 VIF、条件数和相关矩阵。注意：VIF 高<em>不意味着</em>要删核心解释变量，更不意味着效应不存在；它意味着你无法把两个纠缠变量的效应分开，要回到理论上判断谁该留。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 根因4_共线性.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 根因4：多重共线性
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 根因4：多重共线性</span>
+<span class="cm-l">*==============================================================</span>
 clear all
 set seed 5150
 set obs 1000
 gen x1 = rnormal()
-gen x2 = 0.9*x1 + rnormal(0,0.2)      // x2 与 x1 几乎线性相关
-gen x3 = rnormal()                     // 独立控制
+gen x2 = 0.9*x1 + rnormal(0,0.2)      <span class="cm">// x2 与 x1 几乎线性相关</span>
+gen x3 = rnormal()                     <span class="cm">// 独立控制</span>
 gen y  = 0.4*x1 + 0.2*x3 + rnormal(0,1)
 
 reg y x1 x2 x3
-estat vif                              // VIF；>10 警惕，>30 严重
-estat coldiag2                         // 条件数；>30 提示共线问题
-pwcorr x1 x2 x3, sig                   // 相关系数矩阵
+estat vif                              <span class="cm">// VIF；&gt;10 警惕，&gt;30 严重</span>
+estat coldiag2                         <span class="cm">// 条件数；&gt;30 提示共线问题</span>
+pwcorr x1 x2 x3, sig                   <span class="cm">// 相关系数矩阵</span>
 
-* 处理：不是删 x1（核心解释），而是检查理论依据、合并维度或换设定
-* 例：若理论上 x1 才是核心，把 x2 从控制变量里去掉重跑
+<span class="cm-l">* 处理：不是删 x1（核心解释），而是检查理论依据、合并维度或换设定</span>
+<span class="cm-l">* 例：若理论上 x1 才是核心，把 x2 从控制变量里去掉重跑</span>
 reg y x1 x3
 estat vif
 </code></pre>
@@ -423,30 +423,30 @@ estat vif
       <p>OLS 最小化平方误差，意味着<em>离群点拥有不成比例的话语权</em>。但新手的第一反应往往是"先缩个 1% 尾看看"——这跳过了最关键的一步：<strong>先诊断这个异常点到底有没有驱动你的系数</strong>。用 leverage（x 方向的杠杆）、Cook's D（删掉它整个拟合变多少）、DFBETA（删掉它核心系数变多少）、DFITS 来精确定位"谁在牵着回归走"。只有诊断显示某观测确实左右系数，再决定缩尾或剔除；并且三档阈值（1%/5%/10%）要并列报告，不能挑显著的那档。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 根因5_影响诊断.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 根因5：异常值与杠杆点 —— 先诊断影响，再谈缩尾
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 根因5：异常值与杠杆点 —— 先诊断影响，再谈缩尾</span>
+<span class="cm-l">*==============================================================</span>
 clear all
 set seed 13579
 set obs 1500
 gen id = _n
 gen x = rnormal()
-replace x = 15 in 1/5                  // 故意埋5个超级杠杆点
-gen y = 0.3*x + rnormal(0,1.5)        // 真实斜率0.3
+replace x = 15 in 1/5                  <span class="cm">// 故意埋5个超级杠杆点</span>
+gen y = 0.3*x + rnormal(0,1.5)        <span class="cm">// 真实斜率0.3</span>
 
 reg y x
-* 影响诊断统计量
-predict lev, leverage                  // 杠杆；>2k/N 警惕
-predict cook, cooksd                  // Cook's D；>4/N 高影响
-predict dfit, dfits                   // DFITS
-dfbeta                                // 逐点计算删去该点后 x 系数的变化
-* 列出真正高影响的观测，人工判断是不是数据错误
-list id x y lev cook if cook > 4/_N
+<span class="cm-l">* 影响诊断统计量</span>
+predict lev, leverage                  <span class="cm">// 杠杆；&gt;2k/N 警惕</span>
+predict cook, cooksd                  <span class="cm">// Cook's D；&gt;4/N 高影响</span>
+predict dfit, dfits                   <span class="cm">// DFITS</span>
+dfbeta                                <span class="cm">// 逐点计算删去该点后 x 系数的变化</span>
+<span class="cm-l">* 列出真正高影响的观测，人工判断是不是数据错误</span>
+list id x y lev cook if cook &gt; 4/_N
 
-* 对比：逐点删去最影响点后系数如何变（看是不是被这5个点带偏）
-reg y x if cook < 4/_N                 // 剔除高影响点后，斜率应回归0.3
+<span class="cm-l">* 对比：逐点删去最影响点后系数如何变（看是不是被这5个点带偏）</span>
+reg y x if cook &lt; 4/_N                 <span class="cm">// 剔除高影响点后，斜率应回归0.3</span>
 
-* 三档缩尾并列（scc install winsor2），绝不挑显著的那一档
+<span class="cm-l">* 三档缩尾并列（scc install winsor2），绝不挑显著的那一档</span>
 winsor2 x, cuts(1 99) gen(x1)
 winsor2 x, cuts(5 95) gen(x5)
 reg y x  ; est store raw
@@ -465,30 +465,30 @@ esttab raw w1 w5, keep(x x1 x5) b(%9.3f) se star(*.1 **.05 ***.01)
       <p>如果真实关系是 U 型、倒 U 型或有阈值效应，你硬套一条直线，平均斜率自然接近零——这是一种"假不显著"。诊断工具：Ramsey RESET 检验（检验拟合值的高次项是否联合显著，显著即线性设定不足）、加二次项看是否显著、画 lowess 半参数图看真实形状。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 根因6_函数形式.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 根因6：函数形式误设
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 根因6：函数形式误设</span>
+<span class="cm-l">*==============================================================</span>
 clear all
 set seed 31313
 set obs 1200
 gen x = rnormal(-2, 2)
-gen y = 1 - 0.4*x^2 + rnormal(0,1)     // 真实是倒U型
+gen y = 1 - 0.4*x^2 + rnormal(0,1)     <span class="cm">// 真实是倒U型</span>
 
-* 线性误设：平均斜率≈0，假不显著
+<span class="cm-l">* 线性误设：平均斜率≈0，假不显著</span>
 reg y x
-estat ovtest                           // Ramsey RESET；p<0.05 说明线性设定被拒绝
+estat ovtest                           <span class="cm">// Ramsey RESET；p&lt;0.05 说明线性设定被拒绝</span>
 
-* 正确设定：加二次项
+<span class="cm-l">* 正确设定：加二次项</span>
 gen x2 = x^2
 reg y x x2
-test x2                                // 二次项显著 => 非线性
+test x2                                <span class="cm">// 二次项显著 =&gt; 非线性</span>
 
-* 半参数肉眼检查
-lowess y x, bwidth(0.3)                // 看曲线是否弯曲
+<span class="cm-l">* 半参数肉眼检查</span>
+lowess y x, bwidth(0.3)                <span class="cm">// 看曲线是否弯曲</span>
 
-* 读边际效应：在 x 均值处 dE[y]/dx
+<span class="cm-l">* 读边际效应：在 x 均值处 dE[y]/dx</span>
 sum x
-margins, dydx(x) at(x=r(mean))         // 报告均值处的斜率，而非笼统"不显著"
+margins, dydx(x) at(x=r(mean))         <span class="cm">// 报告均值处的斜率，而非笼统"不显著"</span>
 </code></pre>
       </div>
 
@@ -497,27 +497,27 @@ margins, dydx(x) at(x=r(mean))         // 报告均值处的斜率，而非笼�
       <p>核心解释变量测不准，OLS 系数会被系统性地<em>向零拉</em>（attenuation bias），真实效应 0.4 你只能估出 0.2，于是"假不显著"。诊断：判断测量误差是否经典（与真值独立）、估算信度（reliability，即真实方差占观测方差的比例）；若有可信的信度系数或外生工具变量，可用 IV 修正衰减。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 根因7_测量误差.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 根因7：测量误差导致衰减偏误
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 根因7：测量误差导致衰减偏误</span>
+<span class="cm-l">*==============================================================</span>
 clear all
 set seed 9090
 set obs 1500
-gen z = rnormal()                      // 外生工具
-gen x_true = 0.8*z + rnormal()         // 真值
+gen z = rnormal()                      <span class="cm">// 外生工具</span>
+gen x_true = 0.8*z + rnormal()         <span class="cm">// 真值</span>
 gen err = rnormal()
-gen x_obs = x_true + 0.8*err          // 观测值=真值+测量误差
-gen y = 0.5*x_true + err               // 真实效应0.5
+gen x_obs = x_true + 0.8*err          <span class="cm">// 观测值=真值+测量误差</span>
+gen y = 0.5*x_true + err               <span class="cm">// 真实效应0.5</span>
 
-* OLS 应被衰减到约 0.5*(信度)
-reg y x_obs                            // 系数明显<0.5
+<span class="cm-l">* OLS 应被衰减到约 0.5*(信度)</span>
+reg y x_obs                            <span class="cm">// 系数明显&lt;0.5</span>
 est store ols_atten
 
-* 信度 = Var(x_true)/Var(x_obs)，经典误差下 OLS 系数≈真实×信度
-* IV 用 z 修正（z 只通过 x_true 影响 y）
+<span class="cm-l">* 信度 = Var(x_true)/Var(x_obs)，经典误差下 OLS 系数≈真实×信度</span>
+<span class="cm-l">* IV 用 z 修正（z 只通过 x_true 影响 y）</span>
 ivregress 2sls y (x_obs = z)
 est store iv_fix
-estat firststage                       // 第一阶段 F 应>10
+estat firststage                       <span class="cm">// 第一阶段 F 应&gt;10</span>
 esttab ols_atten iv_fix, b(%9.3f) se star(*.1 **.05 ***.01)
 </code></pre>
       </div>
@@ -531,33 +531,33 @@ esttab ols_atten iv_fix, b(%9.3f) se star(*.1 **.05 ***.01)
       <p>遗漏变量 O 同时与 x、y 相关时，OLS 估计是有偏的，偏误方向由公式决定：$\beta_{偏误}=\beta_{真实}+\gamma\cdot\frac{Cov(X,u)}{Var(X)}$，其中 $\gamma$ 是 O 对 y 的效应。诊断：FE vs RE 用 Hausman 检验；更重要的是<em>手工做偏误方向分析</em>——理论上判断遗漏变量把你的系数推大了还是拉小了。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 根因8_遗漏变量.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 根因8：遗漏变量 / 选择偏误
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 根因8：遗漏变量 / 选择偏误</span>
+<span class="cm-l">*==============================================================</span>
 clear all
 set seed 424242
 set obs 1200
 gen id = ceil(_n/6)
 gen x = rnormal()
-gen omit = rnormal()                    // 遗漏变量
-gen y = 0.4*x + 0.6*omit + rnormal()   // 真实效应0.4
-gen x2 = x + 0.8*omit                  // x 与 omit 相关，制造遗漏偏误
+gen omit = rnormal()                    <span class="cm">// 遗漏变量</span>
+gen y = 0.4*x + 0.6*omit + rnormal()   <span class="cm">// 真实效应0.4</span>
+gen x2 = x + 0.8*omit                  <span class="cm">// x 与 omit 相关，制造遗漏偏误</span>
 
-* 不控制 omit：偏误方向 = sign(0.6 * Cov(x,omit)/Var(x)) > 0 => 高估
-reg y x2                                // 系数应>0.4（被推大）
+<span class="cm-l">* 不控制 omit：偏误方向 = sign(0.6 * Cov(x,omit)/Var(x)) &gt; 0 =&gt; 高估</span>
+reg y x2                                <span class="cm">// 系数应&gt;0.4（被推大）</span>
 est store omit
-* 控制 omit 后回到0.4
+<span class="cm-l">* 控制 omit 后回到0.4</span>
 reg y x2 omit
 est store ctrl
 esttab omit ctrl, keep(x2) b(%9.3f) se
 
-* Hausman：固定效应 vs 随机效应（面板语境）
+<span class="cm-l">* Hausman：固定效应 vs 随机效应（面板语境）</span>
 xtset id
 xtreg y x, fe
 est store fe
 xtreg y x, re
 est store re
-hausman fe re                           // p<0.05 => 应选FE
+hausman fe re                           <span class="cm">// p&lt;0.05 =&gt; 应选FE</span>
 </code></pre>
       </div>
       <p><strong>解读</strong>：若理论上遗漏变量会<em>推高</em>你的系数，那么 OLS 不显著意味着真实效应可能比你估的还小；若遗漏变量会<em>拉低</em>你的系数（如测量误差式的衰减方向），则不显著可能是"被压下去的真效应"。这个方向分析，比盲目加控制变量重要得多。</p>
@@ -567,34 +567,34 @@ hausman fe re                           // p<0.05 => 应选FE
       <p>平均效应为零，可能是正负效应在不同子群里相互抵消，或效应只分布在被解释变量的某个分位上。合法的诊断是：分组维度<em>事前由理论决定</em>（国企/民企、高/低融资约束），用交互项做正式的组间差异检验，用分位数回归看效应在分布上的形状。<strong>绝不</strong>是事后遍历十几个维度、挑一组显著的写进正文。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 根因9_异质性.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 根因9：异质性掩盖
-* 关键：分组维度必须事前声明，且用交互项做组间检验
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 根因9：异质性掩盖</span>
+<span class="cm-l">* 关键：分组维度必须事前声明，且用交互项做组间检验</span>
+<span class="cm-l">*==============================================================</span>
 clear all
 set seed 555
 set obs 1000
 gen x = rnormal()
 gen err = rnormal()
-* 构造"只对高端有效"的数据生成过程
-gen y = 0.1*x + 0.6*x*(err>0) + err
+<span class="cm-l">* 构造"只对高端有效"的数据生成过程</span>
+gen y = 0.1*x + 0.6*x*(err&gt;0) + err
 
-* OLS 平均效应可能不显著
+<span class="cm-l">* OLS 平均效应可能不显著</span>
 reg y x
 est store ols
 
-* 分位数回归：看效应在分布上的形状
+<span class="cm-l">* 分位数回归：看效应在分布上的形状</span>
 qreg y x, q(0.1)  ; est store q10
 qreg y x, q(0.5)  ; est store q50
 qreg y x, q(0.9)  ; est store q90
 esttab ols q10 q50 q90, keep(x) b(%9.3f) se mtitles("OLS" "Q10" "Q50" "Q90")
 
-* 事前理论分组（此处模拟高/低融资约束），交互项正式检验
+<span class="cm-l">* 事前理论分组（此处模拟高/低融资约束），交互项正式检验</span>
 gen fc = runiform()
 xtile fc_hi = fc, nq(2)
 gen x_hi = x*fc_hi
 reg y x fc_hi x_hi
-test x_hi                              // 这才回答"两组是否真的不同"
+test x_hi                              <span class="cm">// 这才回答"两组是否真的不同"</span>
 </code></pre>
       </div>
       <div class="callout danger">
@@ -607,26 +607,26 @@ test x_hi                              // 这才回答"两组是否真的不同"
       <p>你做了 10 个机制检验、20 个异质性，即使全部是纯噪声，5% 水平下也会"期望"出现 10×0.05=0.5 个假阳性；做 20 个就期望 1 个。诊断第一步是诚实数一数：你一共做了多少个检验？校正方法：Bonferroni（最严，α 除以检验数）、Benjamini-Hochberg 控制错误发现率（FDR/q 值）、Westfall-Young（bootstrap，最灵活）。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 根因10_多重检验.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 根因10：多重检验 / 假阳性膨胀
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 根因10：多重检验 / 假阳性膨胀</span>
+<span class="cm-l">*==============================================================</span>
 clear
 set obs 20
 gen testname = ""
 gen p_raw = .
 forvalues i=1/20 {
     replace testname = "test`i'" in `i'
-    replace p_raw = runiform()/3 in `i'     // 演示：模拟一批"看起来显著"的p
+    replace p_raw = runiform()/3 in `i'     <span class="cm">// 演示：模拟一批"看起来显著"的p</span>
 }
-* 单检验下，20个里约1个(<.05)是假阳性
+<span class="cm-l">* 单检验下，20个里约1个(&lt;.05)是假阳性</span>
 
-* FDR (Benjamini-Hochberg)：控制"被拒绝中假阳性的比例"
+<span class="cm-l">* FDR (Benjamini-Hochberg)：控制"被拒绝中假阳性的比例"</span>
 multproc, p(p_raw) method(bh)
-* Bonferroni：最保守，alpha/20
+<span class="cm-l">* Bonferroni：最保守，alpha/20</span>
 multproc, p(p_raw) method(bonferroni)
 
-* 解读：看哪些"原始显著"在校正后仍然存活
-* 若校正后所剩无几，说明你正文里的星号很可能来自多重比较
+<span class="cm-l">* 解读：看哪些"原始显著"在校正后仍然存活</span>
+<span class="cm-l">* 若校正后所剩无几，说明你正文里的星号很可能来自多重比较</span>
 </code></pre>
       </div>
     </div>

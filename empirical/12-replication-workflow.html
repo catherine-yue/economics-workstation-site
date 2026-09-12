@@ -329,12 +329,12 @@
       <p>作者在自己电脑上写的 <code class="inline">cd "C:/Users/Nathan/Dropbox/HCI/replication"</code>，你拿到后直接跑，必然报错。<strong>正确做法</strong>：在 main.do 最开头定义一个全局宏：</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 路径宏示例</span><button class="copy-btn">复制</button></div>
-<pre><code>* 在 main.do 开头，只改这一行
+<pre><code><span class="cm-l">* 在 main.do 开头，只改这一行</span>
 global root "C:/你的路径/Lane2025_replication"
 cd "$root"
 
-* 之后所有 do 文件都用 "$root/data/raw/..." 引用路径
-* 不要在每个 do 文件里写死自己的电脑路径</code></pre>
+<span class="cm-l">* 之后所有 do 文件都用 "$root/data/raw/..." 引用路径</span>
+<span class="cm-l">* 不要在每个 do 文件里写死自己的电脑路径</span></code></pre>
       </div>
 
       <h3>错误 2：相对路径错误</h3>
@@ -391,44 +391,44 @@ cd "$root"
       <h4>main.do（带完整中文注释）</h4>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · main.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 主程序：从 raw 数据一键复现全部表格
-* 用法：改下面 global root 为你本机路径，然后 do main.do
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 主程序：从 raw 数据一键复现全部表格</span>
+<span class="cm-l">* 用法：改下面 global root 为你本机路径，然后 do main.do</span>
+<span class="cm-l">*==============================================================</span>
 clear all
 set more off
 set varabbrev off
-set seed 20260911                // 固定随机种子，保证可复现
+set seed 20260911                <span class="cm">// 固定随机种子，保证可复现</span>
 
-* --- 1. 路径设置（只改这一行）---
+<span class="cm-l">* --- 1. 路径设置（只改这一行）---</span>
 global root "C:/Users/你/Projects/replication_template"
 cd "$root"
 
-* --- 2. 新建输出文件夹（如不存在）---
+<span class="cm-l">* --- 2. 新建输出文件夹（如不存在）---</span>
 capture mkdir "output/tables"
 capture mkdir "output/figures"
 capture mkdir "log"
 
-* --- 3. 启动日志 ---
+<span class="cm-l">* --- 3. 启动日志 ---</span>
 capture log close
 log using "log/run_$S_DATE.log", replace
 
-* --- 4. 安装并检查外部命令 ---
-* （首次运行取消下面注释）
-* ssc install reghdfe, replace
-* ssc install estout, replace
+<span class="cm-l">* --- 4. 安装并检查外部命令 ---</span>
+<span class="cm-l">* （首次运行取消下面注释）</span>
+<span class="cm-l">* ssc install reghdfe, replace</span>
+<span class="cm-l">* ssc install estout, replace</span>
 which reghdfe
 which estout
 
-* --- 5. 按调用链依次执行 ---
+<span class="cm-l">* --- 5. 按调用链依次执行 ---</span>
 do "code/00_setup.do"
-do "code/01_clean.do"        // raw -> derived/clean_firm.dta
-do "code/02_merge.do"        // + policy -> derived/panel.dta
-do "code/03_sample.do"       // -> analysis/final.dta
-do "code/04_descriptive.do"  // -> output/tables/t1_desc.tex
-do "code/05_main_reg.do"     // -> output/tables/t2_main.tex
+do "code/01_clean.do"        <span class="cm">// raw -&gt; derived/clean_firm.dta</span>
+do "code/02_merge.do"        <span class="cm">// + policy -&gt; derived/panel.dta</span>
+do "code/03_sample.do"       <span class="cm">// -&gt; analysis/final.dta</span>
+do "code/04_descriptive.do"  <span class="cm">// -&gt; output/tables/t1_desc.tex</span>
+do "code/05_main_reg.do"     <span class="cm">// -&gt; output/tables/t2_main.tex</span>
 
-* --- 6. 完成 ---
+<span class="cm-l">* --- 6. 完成 ---</span>
 display _n "===== 全部跑完，请检查 output/tables/ ====="
 log close</code></pre>
       </div>
@@ -436,36 +436,36 @@ log close</code></pre>
       <h4>03_sample.do（样本构造，演示如何记录 N 变化）</h4>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · code/03_sample.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 03_sample.do：从 derived/panel.dta 构造最终分析样本
-* 每一步都用 count 记录 N，方便做 flow chart
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 03_sample.do：从 derived/panel.dta 构造最终分析样本</span>
+<span class="cm-l">* 每一步都用 count 记录 N，方便做 flow chart</span>
+<span class="cm-l">*==============================================================</span>
 use "$root/data/derived/panel.dta", clear
 
-* 初始 N
+<span class="cm-l">* 初始 N</span>
 count
 scalar N0 = r(N)
 display "初始观测: " N0
 
-* 步骤1：只保留制造业
+<span class="cm-l">* 步骤1：只保留制造业</span>
 keep if industry_sector == "manufacturing"
 count
 scalar N1 = r(N)
 display "保留制造业后: " N1 " (删了 " N0-N1 ")"
 
-* 步骤2：删除关键变量缺失
+<span class="cm-l">* 步骤2：删除关键变量缺失</span>
 drop if missing(output, capital, labor, treat)
 count
 scalar N2 = r(N)
 display "删除关键变量缺失后: " N2 " (删了 " N1-N2 ")"
 
-* 步骤3：缩尾 1%/99%（在组内）
+<span class="cm-l">* 步骤3：缩尾 1%/99%（在组内）</span>
 winsor2 output capital labor, cuts(1 99) replace by(year)
 
-* 保存最终分析样本
+<span class="cm-l">* 保存最终分析样本</span>
 save "$root/data/analysis/final.dta", replace
 
-* 打印 flow chart
+<span class="cm-l">* 打印 flow chart</span>
 display _n "===== 样本构造 flow chart ====="
 display "N0 原始面板:    " N0
 display "N1 制造业:      " N1

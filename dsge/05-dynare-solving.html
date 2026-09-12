@@ -261,7 +261,7 @@ parameters beta sigma kappa phi_pi phi_y rho_r rho_a sigma_a sigma_m;
 beta      = 0.99;     % 主观贴现因子
 sigma     = 1.0;      % CRRA 风险厌恶系数(=1 即对数效用)
 kappa     = 0.125;    % NKPC 斜率(Calvo 概率 theta=0.75 标定)
-phi_pi    = 1.5;      % Taylor 规则对通胀的反应(>1 满足 Taylor 原则)
+phi_pi    = 1.5;      % Taylor 规则对通胀的反应(&gt;1 满足 Taylor 原则)
 phi_y     = 0.5/4;    % Taylor 规则对产出的反应
 rho_r     = 0.8;      % 利率平滑系数
 rho_a     = 0.9;      % 技术冲击 AR(1) 系数
@@ -303,9 +303,9 @@ stoch_simul(order=1, irf=40, nograph, nodisp);
 
 % ======================================================================
 % 运行后在 MATLAB 工作区可见:
-%   oo_.irf.ya   -> 技术冲击 ea 对 y 的 40 期脉冲响应
-%   oo_.dr.ghx   -> 政策函数对状态变量的一阶导数(政策函数系数)
-%   M_.param_names -> 全部参数名
+%   oo_.irf.ya   -&gt; 技术冲击 ea 对 y 的 40 期脉冲响应
+%   oo_.dr.ghx   -&gt; 政策函数对状态变量的一阶导数(政策函数系数)
+%   M_.param_names -&gt; 全部参数名
 % ======================================================================</code></pre>
       </div>
       <div class="callout tip">

@@ -471,7 +471,7 @@ def consumer_surplus(p, X, alpha, beta):
 
 CS_base = consumer_surplus(p_base, X, alpha, beta)
 CS_cf = consumer_surplus(p_cf, X, alpha, beta)
-# CV = CS_cf - CS_base（因为 alpha<0, CS 是"负效用"，CV 应为正表示损失）
+# CV = CS_cf - CS_base（因为 alpha&lt;0, CS 是"负效用"，CV 应为正表示损失）
 CV = (CS_cf - CS_base) / alpha   # 单位换算
 print(f"\n基准 CS: {CS_base:.4f}")
 print(f"反事实 CS: {CS_cf:.4f}")

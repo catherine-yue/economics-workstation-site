@@ -348,7 +348,7 @@ gamma = np.clip(1.5 + 0.5*np.random.randn(N), 0.1, 5)
 
 def crra(c, g):
     c = np.clip(c, 1e-8, None)
-    return np.where(np.abs(g-1)<1e-8, np.log(c), c**(1-g)/(1-g))
+    return np.where(np.abs(g-1)&lt;1e-8, np.log(c), c**(1-g)/(1-g))
 
 def EU(theta_i, g, p, q):
     return (1-theta_i)*crra(w-p, g) + theta_i*crra(w-p-(1-q)*L, g)
@@ -356,13 +356,13 @@ def EU(theta_i, g, p, q):
 EU0 = EU(theta, gamma, p0, q0)
 EU1 = EU(theta, gamma, p1, q1)
 P_buy = 1/(1+np.exp(-0.5*(EU1-EU0)))     # 尺度=0.5
-buy = (np.random.rand(N) < P_buy).astype(int)
+buy = (np.random.rand(N) &lt; P_buy).astype(int)
 print("总体购买率 =", round(buy.mean(),3))
 
 # 混合Logit估计：在R个gamma draws上积分
 def neg_ll(params, t_obs, choice):
     g_mean, g_sd = params
-    if g_sd <= 1e-3: return 1e10
+    if g_sd &lt;= 1e-3: return 1e10
     lam, R = 0.5, 30
     draws = np.clip(g_mean + g_sd*np.random.randn(R,N), 0.05, 5)
     P = np.zeros(N)
@@ -415,7 +415,7 @@ WTP = np.array([max_premium(theta[i], gamma_true[i]) for i in range(N)])
 
 def recover_gamma(wtp, t):
     def eq(g):
-        if g < 0.01: return 1e6
+        if g &lt; 0.01: return 1e6
         return crra(w-wtp,g) - ((1-t)*crra(w,g)+t*crra(w-L,g))
     return brentq(eq, 0.01, 8.0)
 
@@ -465,14 +465,14 @@ np.random.seed(20240912)
 w, L, gamma = 10.0, 1.0, 2.0
 theta_L, theta_H, frac_H = 0.15, 0.45, 0.35
 N = 10000
-type_H = np.random.rand(N) < frac_H
+type_H = np.random.rand(N) &lt; frac_H
 theta_i = np.where(type_H, theta_H, theta_L)
 
 def crra(c, g):
     c = np.clip(c, 1e-8, None); return c**(1-g)/(1-g)
 
 def buys(p, t):
-    return crra(w-p, gamma) >= (1-t)*crra(w,gamma)+t*crra(w-L,gamma)
+    return crra(w-p, gamma) &gt;= (1-t)*crra(w,gamma)+t*crra(w-L,gamma)
 
 # 市场均衡固定点
 p = 0.3
@@ -480,7 +480,7 @@ for _ in range(200):
     b = buys(p, theta_i)
     if b.sum()==0: p=np.nan; break
     p_new = theta_i[b].mean()*L
-    if abs(p_new-p)<1e-6: p=p_new; break
+    if abs(p_new-p)&lt;1e-6: p=p_new; break
     p = 0.5*p+0.5*p_new
 print("市场均衡保费 p* =", round(p,3))
 b_eq = buys(p, theta_i)
@@ -490,7 +490,7 @@ print("高风险购买率 =", round(b_eq[type_H].mean(),3))
 # 社会最优（强制按人群平均风险）
 p_social = (frac_H*theta_H+(1-frac_H)*theta_L)*L
 print("社会最优保费 =", round(p_social,3))
-print("解读：市场保费被高风险推高，低风险退出 -> 保障不足 -> 福利损失。")
+print("解读：市场保费被高风险推高，低风险退出 -&gt; 保障不足 -&gt; 福利损失。")
 print("      强制/补贴保险可恢复覆盖、消除该福利损失。")
 </code></pre>
     </div>

@@ -325,10 +325,10 @@ print(f"稳态利率   r*   = {r_star:.4f}")
 print(f"稳态工资   w*   = {w_star:.4f}")
 print(f"人口增长率 n    = {n:.4f}")
 # 动态效率判据
-if r_star > n:
-    print(f"动态有效：r*={r_star:.3f} > n={n:.3f}，资本不足")
+if r_star &gt; n:
+    print(f"动态有效：r*={r_star:.3f} &gt; n={n:.3f}，资本不足")
 else:
-    print(f"动态无效率：r*={r_star:.3f} < n={n:.3f}，资本过度积累，可引入养老金帕累托改进")
+    print(f"动态无效率：r*={r_star:.3f} &lt; n={n:.3f}，资本过度积累，可引入养老金帕累托改进")
 
 # ---------- 5. 转轨路径：从初始 k0 模拟 60 期 ----------
 T = 60

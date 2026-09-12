@@ -409,46 +409,46 @@
       <h3>9.1 Stata 完整可运行代码</h3>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 07_binary_choice.do</span><button class="copy-btn">复制</button></div>
-        <pre><code>*==============================================================*
-* 二值选择模型：Logit / Probit / AME / 罕见事件
-* 示例：NLS 数据，因变量 union（是否加入工会）
-*==============================================================*
+        <pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* 二值选择模型：Logit / Probit / AME / 罕见事件</span>
+<span class="cm-l">* 示例：NLS 数据，因变量 union（是否加入工会）</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set more off
-use "https://www.stata-press.com/data/r16/union.dta", clear
+use "https:<span class="cm">//www.stata-press.com/data/r16/union.dta", clear</span>
 
-* --- (1) 基准 Logit ---
+<span class="cm-l">* --- (1) 基准 Logit ---</span>
 logit union age grade not_smsa south
 estimates store M1
 
-* --- (2) Probit 对照 ---
+<span class="cm-l">* --- (2) Probit 对照 ---</span>
 probit union age grade not_smsa south
 estimates store M2
 
-* --- (3) 模型比较：系数差 ~ 1.6-1.8 倍 ---
-esttab M1 M2, b(%9.4f) star(* 0.1 ** 0.05 *** 0.01) ///
+<span class="cm-l">* --- (3) 模型比较：系数差 ~ 1.6-1.8 倍 ---</span>
+esttab M1 M2, b(%9.4f) star(* 0.1 ** 0.05 *** 0.01) <span class="cm">///</span>
     mtitles("Logit" "Probit")
 
-* --- (4) ★ 平均边际效应 AME（顶刊推荐口径）---
+<span class="cm-l">* --- (4) ★ 平均边际效应 AME（顶刊推荐口径）---</span>
 quietly logit union age grade not_smsa south
-margins, dydx(age grade not_smsa south)   // 默认即 AME
-margins, dydx(*) atmeans                  // MEM：在均值处
+margins, dydx(age grade not_smsa south)   <span class="cm">// 默认即 AME</span>
+margins, dydx(*) atmeans                  <span class="cm">// MEM：在均值处</span>
 
-* --- (5) 拟合优度 ---
-estat gof                                  // Hosmer-Lemeshow
-estat clas                                 // 命中率表
-fitstat                                    // McFadden R2, BIC, AIC
+<span class="cm-l">* --- (5) 拟合优度 ---</span>
+estat gof                                  <span class="cm">// Hosmer-Lemeshow</span>
+estat clas                                 <span class="cm">// 命中率表</span>
+fitstat                                    <span class="cm">// McFadden R2, BIC, AIC</span>
 
-* --- (6) LR 检验：是否加 south 与 not_smsa 交互 ---
+<span class="cm-l">* --- (6) LR 检验：是否加 south 与 not_smsa 交互 ---</span>
 logit union age grade not_smsa south c.age##c.grade
 estimates store M3
-lrtest M1 M3                                // LR 统计量 ~ chi2
+lrtest M1 M3                                <span class="cm">// LR 统计量 ~ chi2</span>
 
-* --- (7) 罕见事件：Firth penalized logit ---
-* ssc install firthlogit, replace           // 首次运行需安装
-firthlogit union age grade not_smsa south   // 处理罕见事件/分离
+<span class="cm-l">* --- (7) 罕见事件：Firth penalized logit ---</span>
+<span class="cm-l">* ssc install firthlogit, replace           // 首次运行需安装</span>
+firthlogit union age grade not_smsa south   <span class="cm">// 处理罕见事件/分离</span>
 
-* --- (8) 聚类稳健标准误 ---
+<span class="cm-l">* --- (8) 聚类稳健标准误 ---</span>
 logit union age grade not_smsa south, vce(cluster south)
 </code></pre>
       </div>
@@ -475,7 +475,7 @@ south = np.random.binomial(1, 0.4, N)
 # 真实潜效用：y* = -2 + 0.05*age + 0.2*grade - 0.6*south + eps
 xb = -2 + 0.05*age + 0.2*grade - 0.6*south
 eps = np.random.logistic(0, 1, N)          # Logit 的扰动
-y = (xb + eps > 0).astype(int)
+y = (xb + eps &gt; 0).astype(int)
 X = sm.add_constant(np.c_[age, grade, south])
 cols = ["const", "age", "grade", "south"]
 
@@ -498,7 +498,7 @@ print("\n=== AME（Logit）===")
 for k, name in enumerate(cols):
     if name == "const":
         continue
-    print(f"  AME({name:>5}) = {ame_logit(logit_mod, X, k):.4f}")
+    print(f"  AME({name:&gt;5}) = {ame_logit(logit_mod, X, k):.4f}")
 
 # MEM：在均值处
 xbar = X.mean(axis=0)
@@ -507,7 +507,7 @@ print(f"\n=== MEM（在均值处，p={p_bar:.3f}）===")
 for k, name in enumerate(cols):
     if name == "const":
         continue
-    print(f"  MEM({name:>5}) = {logit_mod.params[k]*p_bar*(1-p_bar):.4f}")
+    print(f"  MEM({name:&gt;5}) = {logit_mod.params[k]*p_bar*(1-p_bar):.4f}")
 
 # ---------- 4. 拟合优度：McFadden R2 + AUC ----------
 ll_full = logit_mod.llf
@@ -532,7 +532,7 @@ def firth_logit(X, y, maxit=50):
         score = X.T @ ((y - p) + (1 - 2*p)*h/2)
         step = np.linalg.solve(I, score)
         beta += step
-        if np.max(np.abs(step)) < 1e-8:
+        if np.max(np.abs(step)) &lt; 1e-8:
             break
     return beta
 

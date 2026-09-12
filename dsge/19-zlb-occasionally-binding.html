@@ -358,12 +358,12 @@
       <p>下面是一个<strong>完整可运行</strong>的 OccBin .mod，存为 <code class="inline">zlb_occbin.mod</code>。结构：第一个 <code class="inline">model;</code> 块写"无约束"的 Taylor 规则版；<code class="inline">occbin;</code> 块声明下界约束；第二个 <code class="inline">model(linear);</code> 块写"绑定"版（利率钉死）。运行 <code class="inline">dynare zlb_occbin.mod</code>。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Dynare / zlb_occbin.mod（完整 OccBin 工程）</span><button class="copy-btn">复制</button></div>
-        <pre><code>// ============================================================
-// zlb_occbin.mod  ——  NK 三方程 + 名义利率零下限（OccBin）
-// 运行：dynare zlb_occbin.mod
-// 思想：两套 model 块分别对应 "约束松弛" 与 "约束绑定"
-//       occbin 块声明 i >= i_lb，绑定时把 i 钉到下界
-// ============================================================
+        <pre><code><span class="cm">// ============================================================</span>
+<span class="cm">// zlb_occbin.mod  ——  NK 三方程 + 名义利率零下限（OccBin）</span>
+<span class="cm">// 运行：dynare zlb_occbin.mod</span>
+<span class="cm">// 思想：两套 model 块分别对应 "约束松弛" 与 "约束绑定"</span>
+<span class="cm">//       occbin 块声明 i &gt;= i_lb，绑定时把 i 钉到下界</span>
+<span class="cm">// ============================================================</span>
 
 var  y pi i rn ;
 varexo eps_rn ;
@@ -371,7 +371,7 @@ varexo eps_rn ;
 parameters beta sigma varphi epsilon theta kappa ...
            phi_pi phi_y rho_rn i_lb;
 
-// ---------- 深参数校准（与 NK 三方程页一致） ----------
+<span class="cm">// ---------- 深参数校准（与 NK 三方程页一致） ----------</span>
 beta    = 0.99;
 sigma   = 1.0;
 varphi  = 1.0;
@@ -381,67 +381,67 @@ kappa   = (1-theta)*(1-beta*theta)/theta*(sigma+varphi)/(1+epsilon*varphi);
 phi_pi  = 1.5;
 phi_y   = 0.125;
 rho_rn  = 0.90;
-i_lb    = 0.0;          // 零下界（对数线性模型里取 0）
+i_lb    = 0.0;          <span class="cm">// 零下界（对数线性模型里取 0）</span>
 
-// ============================================================
-// 【model 块 1】约束【松弛】：Taylor 规则完全生效
-// ============================================================
+<span class="cm">// ============================================================</span>
+<span class="cm">// 【model 块 1】约束【松弛】：Taylor 规则完全生效</span>
+<span class="cm">// ============================================================</span>
 model;
-// (1) IS 曲线
+<span class="cm">// (1) IS 曲线</span>
 y = y(+1) - (1/sigma)*( i - pi(+1) - rn );
-// (2) NKPC
+<span class="cm">// (2) NKPC</span>
 pi = beta*pi(+1) + kappa*y;
-// (3) Taylor 规则（无下界的"影子"意愿利率）
+<span class="cm">// (3) Taylor 规则（无下界的"影子"意愿利率）</span>
 i = phi_pi*pi + phi_y*y;
-// (4) 自然利率 AR(1)
+<span class="cm">// (4) 自然利率 AR(1)</span>
 rn = rho_rn*rn(-1) + eps_rn;
 end;
 
-// ============================================================
-// 【occbin 块】声明偶发约束：名义利率不能低于 i_lb
-// ============================================================
+<span class="cm">// ============================================================</span>
+<span class="cm">// 【occbin 块】声明偶发约束：名义利率不能低于 i_lb</span>
+<span class="cm">// ============================================================</span>
 occbin;
-var i;                          // 被约束的变量
-parameters i_lb;                // 下界参数
+var i;                          <span class="cm">// 被约束的变量</span>
+parameters i_lb;                <span class="cm">// 下界参数</span>
 constraints;
-  i >= i_lb;                    // 不等式约束
+  i &gt;= i_lb;                    <span class="cm">// 不等式约束</span>
 restrictions;
-  i = i_lb;                     // 一旦绑定，把 i 钉到下界（替换 Taylor 规则）
+  i = i_lb;                     <span class="cm">// 一旦绑定，把 i 钉到下界（替换 Taylor 规则）</span>
 end;
 
-// ============================================================
-// 【model 块 2】约束【绑定】：利率钉死在 i_lb
-// 只把第三式换成 i = i_lb，其余与块1相同
-// ============================================================
+<span class="cm">// ============================================================</span>
+<span class="cm">// 【model 块 2】约束【绑定】：利率钉死在 i_lb</span>
+<span class="cm">// 只把第三式换成 i = i_lb，其余与块1相同</span>
+<span class="cm">// ============================================================</span>
 model(linear);
 y = y(+1) - (1/sigma)*( i - pi(+1) - rn );
 pi = beta*pi(+1) + kappa*y;
-i = i_lb;                       // 关键区别：不再按 Taylor 规则调
+i = i_lb;                       <span class="cm">// 关键区别：不再按 Taylor 规则调</span>
 rn = rho_rn*rn(-1) + eps_rn;
 end;
 
-// ---------- 初始值（正常稳态原点） ----------
+<span class="cm">// ---------- 初始值（正常稳态原点） ----------</span>
 initval;
  y = 0; pi = 0; i = 0; rn = 0;
 end;
 steady;
 
-// ---------- 自然利率冲击（一次性大负冲击推入 ZLB） ----------
+<span class="cm">// ---------- 自然利率冲击（一次性大负冲击推入 ZLB） ----------</span>
 shocks;
 var eps_rn; stderr = 0.01;
 end;
 
-// 给一个大的负自然利率冲击（-3%），观察经济如何撞入并走出 ZLB
-// periods=80：模拟 80 个季度；replic：确定性模拟路径
+<span class="cm">// 给一个大的负自然利率冲击（-3%），观察经济如何撞入并走出 ZLB</span>
+<span class="cm">// periods=80：模拟 80 个季度；replic：确定性模拟路径</span>
 shocks;
-var eps_rn = (-0.03);   // 第 1 期一个 -3% 的自然利率冲击
+var eps_rn = (-0.03);   <span class="cm">// 第 1 期一个 -3% 的自然利率冲击</span>
 end;
 
 occbin_setup(display_occbin);
 simul(periods=80);
 
-// 想对比"无约束"版本：把 occbin 块与第二个 model 块删掉，
-// 直接 stoch_simul 跑块1即可，会看到利率被允许降到负值（错误！）</code></pre>
+<span class="cm">// 想对比"无约束"版本：把 occbin 块与第二个 model 块删掉，</span>
+<span class="cm">// 直接 stoch_simul 跑块1即可，会看到利率被允许降到负值（错误！）</span></code></pre>
       </div>
       <div class="callout warning">
         <div class="callout-title">Dynare 版本注意</div>
@@ -459,7 +459,7 @@ simul(periods=80);
 # zlb_global_solve.py  ——  NK三方程 + ZLB 的全局非线性求解
 # 方法：在状态 rn 网格上，把每个网格点的 IS/NKPC/ZLB 残差
 #       全部堆叠成一个大的非线性方程组，用 fsolve 一次性求根。
-# 说明：纯前望 NK 在"深 ZLB 绑定区"局部特征根>1，朴素的
+# 说明：纯前望 NK 在"深 ZLB 绑定区"局部特征根&gt;1，朴素的
 #       时间迭代会发散；直接联立求根能稳定收敛到全局政策函数。
 # 状态：自然利率 rn（AR(1)，用 Rouwenhorst 离散）
 # 控制：产出缺口 y, 通胀 pi, 名义利率 i
@@ -511,7 +511,7 @@ def residuals(x):
     for j in range(N):
         # 意愿（影子）利率与实际利率：ZLB 取 max(i_lb, 意愿)
         i_star = phi_pi*pi[j] + phi_y*y[j]
-        i = i_star if i_star >= i_lb else i_lb   # 关键的分段 max
+        i = i_star if i_star &gt;= i_lb else i_lb   # 关键的分段 max
         # IS 曲线残差：y_j = Ey_j - (1/sigma)(i_j - Epi_j - rn_j)
         r[j]   = y[j] - Ey[j] + (1/sigma)*(i - Epi[j] - rn_grid[j])
         # NKPC 残差：pi_j = beta*Epi_j + kappa*y_j
@@ -531,14 +531,14 @@ print(f"[求解] fsolve 收敛状态 ier={ier}")
 # ---------- 6. 后处理：实际利率政策函数与绑定标记 ----------
 i_star  = phi_pi*pi_policy + phi_y*y_policy
 i_policy = np.maximum(i_lb, i_star)            # 实际利率（含 ZLB）
-binding  = i_policy <= i_lb + 1e-9             # 哪些状态 ZLB 绑定
+binding  = i_policy &lt;= i_lb + 1e-9             # 哪些状态 ZLB 绑定
 
 # ---------- 7. 打印关键结果 ----------
 print("\n=== 全局政策函数（自然利率由低到高） ===")
-print(f"{'rn':>8}{'y':>10}{'pi':>10}{'i(实际)':>10}{'ZLB绑定?':>10}")
-for j in [0, N//4, N//2, 3*N//4, N-1]:
+print(f"{'rn':&gt;8}{'y':&gt;10}{'pi':&gt;10}{'i(实际)':&gt;10}{'ZLB绑定?':&gt;10}")
+for j in [0, N<span class="cm">//4, N//2, 3*N//4, N-1]:</span>
     print(f"{rn_grid[j]:8.4f}{y_policy[j]:10.4f}{pi_policy[j]:10.4f}"
-          f"{i_policy[j]:10.4f}{str(binding[j]):>10}")
+          f"{i_policy[j]:10.4f}{str(binding[j]):&gt;10}")
 print("\n经济直觉：")
 print("· rn 很负（深衰退）时 y 大幅为负、i 被钉在 0（ZLB 绑定）；")
 print("· 因为央行降不动息，通缩+衰退被前向预期放大；")

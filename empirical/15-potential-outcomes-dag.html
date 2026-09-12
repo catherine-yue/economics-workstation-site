@@ -365,7 +365,7 @@
       <div class="code-block">
         <div class="code-header"><span class="lang">Python · 用 networkx 画 DAG</span><button class="copy-btn">复制</button></div>
         <pre><code># ============================================================
-# 09.1 用 networkx 画"教育 -> 收入"的因果 DAG
+# 09.1 用 networkx 画"教育 -&gt; 收入"的因果 DAG
 # pip install networkx matplotlib
 # ============================================================
 import networkx as nx
@@ -380,12 +380,12 @@ G.add_nodes_from(nodes)
 edges = [
     ("A", "D"),          # 能力影响是否上大学
     ("A", "Y"),          # 能力直接影响收入
-    ("F", "A"),          # 父亲教育 -> 能力
-    ("F", "D"),          # 父亲教育 -> 上大学
-    ("F", "Y"),          # 父亲教育 -> 收入（网络）
-    ("Age", "Y"),        # 年龄 -> 收入
-    ("D", "Q"),          # 上大学 -> 大学质量
-    ("Q", "Y"),          # 大学质量 -> 收入
+    ("F", "A"),          # 父亲教育 -&gt; 能力
+    ("F", "D"),          # 父亲教育 -&gt; 上大学
+    ("F", "Y"),          # 父亲教育 -&gt; 收入（网络）
+    ("Age", "Y"),        # 年龄 -&gt; 收入
+    ("D", "Q"),          # 上大学 -&gt; 大学质量
+    ("Q", "Y"),          # 大学质量 -&gt; 收入
 ]
 G.add_edges_from(edges)
 
@@ -411,11 +411,11 @@ nx.draw_networkx(G, pos, labels=labels, with_labels=True,
                  node_size=2200, node_color="#e8eef5",
                  font_size=10, font_family="Noto Sans CJK SC",
                  edge_color="#888", arrows=True, arrowsize=15)
-plt.title("因果图：教育 -> 收入（A 未观测，后门路径未阻断）")
+plt.title("因果图：教育 -&gt; 收入（A 未观测，后门路径未阻断）")
 plt.axis("off")
 plt.tight_layout()
 plt.savefig("dag_edu_income.png", dpi=150)
-# 读图可知：D<-A->Y 是无法用观测变量阻断的后门路径
+# 读图可知：D&lt;-A-&gt;Y 是无法用观测变量阻断的后门路径
 </code></pre>
       </div>
 
@@ -423,7 +423,7 @@ plt.savefig("dag_edu_income.png", dpi=150)
         <div class="code-header"><span class="lang">Python · 模拟数据演示混杂偏误</span><button class="copy-btn">复制</button></div>
         <pre><code># ============================================================
 # 09.2 模拟数据：演示"控制混杂前后 OLS 系数的变化"
-# 真实 DGP：A -> D, A -> Y, D -> Y, 且 A 不可观测
+# 真实 DGP：A -&gt; D, A -&gt; Y, D -&gt; Y, 且 A 不可观测
 # 真实因果效应 tau0 = 1.0
 # ============================================================
 import numpy as np

@@ -240,12 +240,12 @@
       <p><code class="inline">binscatter y x, nquantiles(20)</code> 把 X 分成 20 个等频 bin，每个 bin 画一个点（该 bin 内 X 和 Y 的均值）。它比散点图清爽得多，且能自动加线性拟合线。<strong>binscatter 是顶刊论文里最常见的 EDA 图</strong>——因为它在大样本下既不糊、又能展示非线性。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 双变量 EDA 三件套</span><button class="copy-btn">复制</button></div>
-<pre><code>* 三件套：散点 + lowess + binscatter
+<pre><code><span class="cm-l">* 三件套：散点 + lowess + binscatter</span>
 twoway (scatter y x) (lfit y x), name(sc1, replace)
 twoway (lowess y x, bw(0.3)), name(sc2, replace)
 binscatter y x, nquantiles(20) name(sc3, replace)
 
-* 并排放三张图
+<span class="cm-l">* 并排放三张图</span>
 graph combine sc1 sc2 sc3, rows(1) ycommon
 graph export "output/figures/bivariate_eda.png", replace</code></pre>
       </div>
@@ -261,15 +261,15 @@ graph export "output/figures/bivariate_eda.png", replace</code></pre>
       <p>这是 DID 识别策略的命脉。按处理组和对照组分别画 Y 的年均值趋势：</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · DID 平行趋势可视化</span><button class="copy-btn">复制</button></div>
-<pre><code>* 按 (year, treat) 计算 Y 的均值
+<pre><code><span class="cm-l">* 按 (year, treat) 计算 Y 的均值</span>
 collapse (mean) y, by(year treat)
-twoway (line y year if treat==1) ///
-       (line y year if treat==0), ///
-       legend(label(1 "处理组") label(2 "对照组")) ///
-       xline(2012, lpattern(dash) lcolor(red)) ///  // 政策实施年份
+twoway (line y year if treat==1) <span class="cm">///</span>
+       (line y year if treat==0), <span class="cm">///</span>
+       legend(label(1 "处理组") label(2 "对照组")) <span class="cm">///</span>
+       xline(2012, lpattern(dash) lcolor(red)) <span class="cm">///  // 政策实施年份</span>
        title("政策前后两组均值趋势")
-* 如果政策前两组基本平行，DID 平行趋势假设看起来合理
-* 如果政策前两组已经在发散，DID 就有问题</code></pre>
+<span class="cm-l">* 如果政策前两组基本平行，DID 平行趋势假设看起来合理</span>
+<span class="cm-l">* 如果政策前两组已经在发散，DID 就有问题</span></code></pre>
       </div>
       <p>时间趋势图还能帮你发现<em>结构断点</em>：2008 年金融危机前后、2015 年汇改前后、疫情前后——这些外生冲击会让你的回归系数跳变，必须在模型里控制时间固定效应或剔除异常年份。</p>
     </div>
@@ -321,17 +321,17 @@ twoway (line y year if treat==1) ///
       <p>诊断方法很简单：把"被删"和"被留"两组在关键变量上做均值检验。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 样本选择诊断</span><button class="copy-btn">复制</button></div>
-<pre><code>* 假设 kept==1 是保留下来的样本
+<pre><code><span class="cm-l">* 假设 kept==1 是保留下来的样本</span>
 gen byte kept = !missing(Y, X, controls)
 
-* 对比被删组 vs 保留组在 X、Y、控制变量上的均值
+<span class="cm-l">* 对比被删组 vs 保留组在 X、Y、控制变量上的均值</span>
 foreach v in X Y age size leverage {
     quietly ttest `v', by(kept)
-    display "变量 `v': 被删组均值=" r(mu_1) " 保留组均值=" r(mu_2) ///
+    display "变量 `v': 被删组均值=" r(mu_1) " 保留组均值=" r(mu_2) <span class="cm">///</span>
             "  p值=" r(p)
 }
-* 如果 p 值很小，说明"能否进样本"和这些变量系统相关
-* 你的 Sample 层有选择偏误，需要在论文里讨论</code></pre>
+<span class="cm-l">* 如果 p 值很小，说明"能否进样本"和这些变量系统相关</span>
+<span class="cm-l">* 你的 Sample 层有选择偏误，需要在论文里讨论</span></code></pre>
       </div>
       <div class="callout danger">
         <div class="callout-title">⛔ 红线</div>
@@ -345,116 +345,116 @@ foreach v in X Y age size leverage {
       <p>下面这段代码自己生成一份模拟面板数据（1000 家企业 × 10 年），然后跑完整套 EDA。你可以直接复制到 Stata 里跑通，作为你自己项目的模板。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 14_eda_full.do（可直接运行）</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 14_eda_full.do：模拟数据的全套 EDA
-* 目标：在跑任何回归之前，先用眼睛看一遍数据
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 14_eda_full.do：模拟数据的全套 EDA</span>
+<span class="cm-l">* 目标：在跑任何回归之前，先用眼睛看一遍数据</span>
+<span class="cm-l">*==============================================================</span>
 clear all
 set more off
 set seed 20260911
 
-* --- 1. 生成模拟面板数据 ---
-* 1000 家企业 × 10 年 = 10000 观测
+<span class="cm-l">* --- 1. 生成模拟面板数据 ---</span>
+<span class="cm-l">* 1000 家企业 × 10 年 = 10000 观测</span>
 set obs 1000
 gen firm_id = _n
-gen treat = (runiform() < 0.5)            // 处理组 50%
+gen treat = (runiform() &lt; 0.5)            <span class="cm">// 处理组 50%</span>
 expand 10
 bysort firm_id: gen year = 2010 + _n - 1
 
-* 处理变量：2015 年及以后处理组受到政策冲击
-gen post = (year >= 2015)
+<span class="cm-l">* 处理变量：2015 年及以后处理组受到政策冲击</span>
+gen post = (year &gt;= 2015)
 gen did = treat * post
 
-* 协变量：企业规模（对数正态）、年龄
+<span class="cm-l">* 协变量：企业规模（对数正态）、年龄</span>
 gen size = exp(rnormal(2, 1))
 gen age  = floor(runiform()*20 + 1)
 
-* 结果变量：企业利润（对数）
-* 真实模型：lprofit = 0.5*did + 0.3*ln(size) - 0.01*age + 噪声
+<span class="cm-l">* 结果变量：企业利润（对数）</span>
+<span class="cm-l">* 真实模型：lprofit = 0.5*did + 0.3*ln(size) - 0.01*age + 噪声</span>
 gen ln_size = log(size)
 gen lprofit = 0.5*did + 0.3*ln_size - 0.01*age + rnormal(0, 1)
 
-* 故意加几个异常值（1% 的极端大值）
-replace lprofit = lprofit + 8 if runiform() < 0.01
+<span class="cm-l">* 故意加几个异常值（1% 的极端大值）</span>
+replace lprofit = lprofit + 8 if runiform() &lt; 0.01
 
-* 故意让部分企业在 2010 年缺失利润（模拟选择偏误）
-replace lprofit = . if year==2010 & treat==1 & runiform()<0.3
+<span class="cm-l">* 故意让部分企业在 2010 年缺失利润（模拟选择偏误）</span>
+replace lprofit = . if year==2010 &amp; treat==1 &amp; runiform()&lt;0.3
 
-*==============================================================
-* 2. 单变量分布 EDA
-*==============================================================
-* 2.1 直方图 + 正态叠加
-histogram lprofit, normal name(h_lp, replace) ///
+<span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 2. 单变量分布 EDA</span>
+<span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 2.1 直方图 + 正态叠加</span>
+histogram lprofit, normal name(h_lp, replace) <span class="cm">///</span>
     title("利润对数分布")
 graph export "eda_1_hist_lprofit.png", replace
 
-* 2.2 核密度（处理组 vs 对照组）
-twoway (kdensity lprofit if treat==1) ///
-       (kdensity lprofit if treat==0), ///
-       legend(label(1 "处理组") label(2 "对照组")) ///
+<span class="cm-l">* 2.2 核密度（处理组 vs 对照组）</span>
+twoway (kdensity lprofit if treat==1) <span class="cm">///</span>
+       (kdensity lprofit if treat==0), <span class="cm">///</span>
+       legend(label(1 "处理组") label(2 "对照组")) <span class="cm">///</span>
        name(kd_grp, replace)
 graph export "eda_2_kdensity_group.png", replace
 
-* 2.3 箱线图：按处理组
+<span class="cm-l">* 2.3 箱线图：按处理组</span>
 graph box lprofit, over(treat) name(box_grp, replace)
 graph export "eda_3_boxplot.png", replace
 
-*==============================================================
-* 3. 双变量关系 EDA
-*==============================================================
-* 3.1 binscatter：ln(size) vs lprofit
-binscatter lprofit ln_size, nquantiles(30) ///
-    name(bin_size, replace) ///
+<span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 3. 双变量关系 EDA</span>
+<span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 3.1 binscatter：ln(size) vs lprofit</span>
+binscatter lprofit ln_size, nquantiles(30) <span class="cm">///</span>
+    name(bin_size, replace) <span class="cm">///</span>
     title("企业规模 vs 利润")
 graph export "eda_4_binscatter_size.png", replace
 
-* 3.2 lowess：年龄 vs lprofit（看是否非线性）
+<span class="cm-l">* 3.2 lowess：年龄 vs lprofit（看是否非线性）</span>
 lowess lprofit age, bw(0.3) name(lowess_age, replace)
 graph export "eda_5_lowess_age.png", replace
 
-*==============================================================
-* 4. 时间趋势 EDA（DID 平行趋势预检）
-*==============================================================
+<span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 4. 时间趋势 EDA（DID 平行趋势预检）</span>
+<span class="cm-l">*==============================================================</span>
 preserve
     collapse (mean) lprofit, by(year treat)
-    twoway (line lprofit year if treat==1) ///
-           (line lprofit year if treat==0), ///
-           legend(label(1 "处理组") label(2 "对照组")) ///
-           xline(2015, lpattern(dash) lcolor(red)) ///
-           name(trend, replace) ///
+    twoway (line lprofit year if treat==1) <span class="cm">///</span>
+           (line lprofit year if treat==0), <span class="cm">///</span>
+           legend(label(1 "处理组") label(2 "对照组")) <span class="cm">///</span>
+           xline(2015, lpattern(dash) lcolor(red)) <span class="cm">///</span>
+           name(trend, replace) <span class="cm">///</span>
            title("政策前后利润趋势（2015 为政策年）")
     graph export "eda_6_trend.png", replace
 restore
 
-*==============================================================
-* 5. 分组均值 + 置信区间
-*==============================================================
-* 2015 年前 vs 后，处理组 vs 对照组
+<span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 5. 分组均值 + 置信区间</span>
+<span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 2015 年前 vs 后，处理组 vs 对照组</span>
 preserve
     keep if !missing(lprofit)
     ci means lprofit, by(treat post)
 restore
 
-*==============================================================
-* 6. 样本构造 flow chart
-*==============================================================
+<span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 6. 样本构造 flow chart</span>
+<span class="cm-l">*==============================================================</span>
 count
 scalar N0 = r(N)
 display "Step0 原始观测: " N0
 
-* 只保留 2010 年以后（其实数据就是 2010 起）
-keep if year >= 2010
+<span class="cm-l">* 只保留 2010 年以后（其实数据就是 2010 起）</span>
+keep if year &gt;= 2010
 count
 scalar N1 = r(N)
 display "Step1 保留2010年后: " N1
 
-* 删除 lprofit 缺失
+<span class="cm-l">* 删除 lprofit 缺失</span>
 drop if missing(lprofit)
 count
 scalar N2 = r(N)
 display "Step2 删除lprofit缺失: " N2
 
-* 缩尾 1%/99%（注意：缩尾不改变 N）
+<span class="cm-l">* 缩尾 1%/99%（注意：缩尾不改变 N）</span>
 capture which winsor2
 if _rc ssc install winsor2, replace
 winsor2 lprofit ln_size, cuts(1 99) replace
@@ -469,18 +469,18 @@ display "N1 = " N1 " (删了 " N0-N1 ")"
 display "N2 = " N2 " (删了 " N1-N2 ")"
 display "N3 = " N3 " (最终回归 N)"
 
-*==============================================================
-* 7. 样本选择诊断：被删的是谁？
-*==============================================================
-* 重新读一遍原始数据，标记哪些被删了
+<span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 7. 样本选择诊断：被删的是谁？</span>
+<span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 重新读一遍原始数据，标记哪些被删了</span>
 preserve
-    * 这里略：实际项目中用 kept 哑变量 + ttest 对比
+<span class="cm-l">    * 这里略：实际项目中用 kept 哑变量 + ttest 对比</span>
     display "请参考本页第 07 节的 ttest 模板"
 restore
 
-*==============================================================
-* 8. 最后才跑回归
-*==============================================================
+<span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 8. 最后才跑回归</span>
+<span class="cm-l">*==============================================================</span>
 reg lprofit did ln_size i.age, vce(cluster firm_id)
 estimates table, b(%9.3f) se(%9.3f) stats(N r2)
 

@@ -227,14 +227,14 @@
 
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 三种 merge 模式演示</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  02-merge-modes.do
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  02-merge-modes.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 clear all
 set more off
 
-* ---------- 构造演示数据 ----------
-* master: 公司-年份面板（已清洗好的财务数据）
+<span class="cm-l">* ---------- 构造演示数据 ----------</span>
+<span class="cm-l">* master: 公司-年份面板（已清洗好的财务数据）</span>
 clear
 input stkcd year roe
 1 2010 0.05
@@ -245,7 +245,7 @@ input stkcd year roe
 end
 save "master_fin.dta", replace
 
-* using-A: 公司基本信息表（每家公司一行）—— 1:1 / m:1 都可以用
+<span class="cm-l">* using-A: 公司基本信息表（每家公司一行）—— 1:1 / m:1 都可以用</span>
 clear
 input stkcd industry province
 1 "C3" "Guangdong"
@@ -253,7 +253,7 @@ input stkcd industry province
 end
 save "using_info.dta", replace
 
-* using-B: 行业层面宏观变量（每个行业-年份一行）
+<span class="cm-l">* using-B: 行业层面宏观变量（每个行业-年份一行）</span>
 clear
 input industry year ind_growth
 "C3" 2010 0.12
@@ -263,34 +263,34 @@ input industry year ind_growth
 end
 save "using_indmacro.dta", replace
 
-* ---------- 1:1 合并：公司基本信息 ----------
-* 因为 master 里 stkcd-year 唯一、using 里 stkcd 唯一，
-* 这里用 m:1 stkcd（master 多行、using 一行）最自然
+<span class="cm-l">* ---------- 1:1 合并：公司基本信息 ----------</span>
+<span class="cm-l">* 因为 master 里 stkcd-year 唯一、using 里 stkcd 唯一，</span>
+<span class="cm-l">* 这里用 m:1 stkcd（master 多行、using 一行）最自然</span>
 use "master_fin.dta", clear
 merge m:1 stkcd using "using_info.dta"
-* _merge 取值：
-*   1 = 主数据集独有（using 没匹配到）
-*   2 = 被合并数据集独有（master 没这行）
-*   3 = 两边都有（完美匹配）
+<span class="cm-l">* _merge 取值：</span>
+<span class="cm-l">*   1 = 主数据集独有（using 没匹配到）</span>
+<span class="cm-l">*   2 = 被合并数据集独有（master 没这行）</span>
+<span class="cm-l">*   3 = 两边都有（完美匹配）</span>
 
-* 查看匹配情况
+<span class="cm-l">* 查看匹配情况</span>
 tab _merge
 
-* 删掉"using 独有"的行（对我们没意义）
+<span class="cm-l">* 删掉"using 独有"的行（对我们没意义）</span>
 keep if _merge == 1 | _merge == 3
 drop _merge
 
-* ---------- 多关键字 m:1：行业 × 年份 ----------
-* 这次要合并的是"行业-年份"层面的宏观变量，
-* 主数据集中没有 industry，需要先在 master 里加 industry 列。
-* 为演示，我们直接重建 master：
+<span class="cm-l">* ---------- 多关键字 m:1：行业 × 年份 ----------</span>
+<span class="cm-l">* 这次要合并的是"行业-年份"层面的宏观变量，</span>
+<span class="cm-l">* 主数据集中没有 industry，需要先在 master 里加 industry 列。</span>
+<span class="cm-l">* 为演示，我们直接重建 master：</span>
 use "master_fin.dta", clear
 gen industry = ""
 replace industry = "C3" if stkcd == 1
 replace industry = "C4" if stkcd == 2
 replace industry = "C4" if stkcd == 3
 
-* 按 (industry, year) 两个关键字合并
+<span class="cm-l">* 按 (industry, year) 两个关键字合并</span>
 merge m:1 industry year using "using_indmacro.dta"
 tab _merge
 drop _merge
@@ -344,31 +344,31 @@ list
 
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 行业代码对齐的常见套路</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  04-industry-match.do
-*--------------------------------------------------------------*
-* 假设 master 里有 stkcd year industry
-* 2011 年及以前用老版（CSRC 2001），2012 起用新版（CSRC 2012）
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  04-industry-match.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* 假设 master 里有 stkcd year industry</span>
+<span class="cm-l">* 2011 年及以前用老版（CSRC 2001），2012 起用新版（CSRC 2012）</span>
 
-* 1) 把年份分段
+<span class="cm-l">* 1) 把年份分段</span>
 gen old_code_flag = (year &lt;= 2011)
 
-* 2) 准备两张映射表（省略手工构造代码，假设已经在 industry_map_2001.dta 和 industry_map_2012.dta 里）
-* use industry_map_2001.dta, clear
-* keep if old_code_flag == 1
-* merge m:1 industry using ...
+<span class="cm-l">* 2) 准备两张映射表（省略手工构造代码，假设已经在 industry_map_2001.dta 和 industry_map_2012.dta 里）</span>
+<span class="cm-l">* use industry_map_2001.dta, clear</span>
+<span class="cm-l">* keep if old_code_flag == 1</span>
+<span class="cm-l">* merge m:1 industry using ...</span>
 
-* 3) 一个更实用的写法：把行业代码截断成"证监会一位大类"
-*    旧代码形如 "C8"，新代码形如 "C27"
-gen ind1 = substr(industry, 1, 1)        // 把 C8 / C27 都变成 "C"
-* 三位行业大类：旧版取前两位，新版取前一位加两位数字
+<span class="cm-l">* 3) 一个更实用的写法：把行业代码截断成"证监会一位大类"</span>
+<span class="cm-l">*    旧代码形如 "C8"，新代码形如 "C27"</span>
+gen ind1 = substr(industry, 1, 1)        <span class="cm">// 把 C8 / C27 都变成 "C"</span>
+<span class="cm-l">* 三位行业大类：旧版取前两位，新版取前一位加两位数字</span>
 gen ind3 = ""
 replace ind3 = substr(industry, 1, 2) if year &lt;= 2011
 replace ind3 = substr(industry, 1, 3) if year &gt;= 2012
 
-* 4) 行业 × 年份固定效应：用 ind3 × year
+<span class="cm-l">* 4) 行业 × 年份固定效应：用 ind3 × year</span>
 egen ind_year = group(ind3 year)
-* 之后 reghdfe y x, absorb(ind_year firm) 即可
+<span class="cm-l">* 之后 reghdfe y x, absorb(ind_year firm) 即可</span>
 </code></pre>
       </div>
     </div>
@@ -379,14 +379,14 @@ egen ind_year = group(ind3 year)
       <p><code class="inline">append</code> 与 <code class="inline">merge</code> 完全不同：<strong>merge 是横向拼接（增加列），append 是纵向堆叠（增加行）</strong>。当你按年份分别下载了 2007–2020 年的财务表，每个文件结构相同，就用 append 把它们摞起来。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · append 纵向堆叠</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  05-append.do
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  05-append.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 clear all
 set more off
 
-* 假设 data/raw/ 下有 fin_2007.dta ... fin_2020.dta
-* 标准做法：先清空，再 append using
+<span class="cm-l">* 假设 data/raw/ 下有 fin_2007.dta ... fin_2020.dta</span>
+<span class="cm-l">* 标准做法：先清空，再 append using</span>
 use "data/raw/fin_2007.dta", clear
 forvalues y = 2008/2020 {
     append using "data/raw/fin_`y'.dta"
@@ -394,9 +394,9 @@ forvalues y = 2008/2020 {
 describe
 count
 
-* 关键检查：append 后变量名应当完全一致
-* 如果有"2015 年新增了一个变量 R&D"，旧年份该变量会自动变成缺失
-* 用 misstable summarize 检查一下
+<span class="cm-l">* 关键检查：append 后变量名应当完全一致</span>
+<span class="cm-l">* 如果有"2015 年新增了一个变量 R&amp;D"，旧年份该变量会自动变成缺失</span>
+<span class="cm-l">* 用 misstable summarize 检查一下</span>
 </code></pre>
       </div>
     </div>
@@ -413,14 +413,14 @@ count
 
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · reshape 长表 ⇄ 宽表</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  06-reshape.do
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  06-reshape.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 clear all
 set more off
 
-* ---------- 第一步：构造一个 wide 表 ----------
-* 每家公司一行，roe_2010 ... roe_2012 三列
+<span class="cm-l">* ---------- 第一步：构造一个 wide 表 ----------</span>
+<span class="cm-l">* 每家公司一行，roe_2010 ... roe_2012 三列</span>
 clear
 input stkcd roe_2010 roe_2011 roe_2012
 1 0.05 0.08 0.06
@@ -429,15 +429,15 @@ input stkcd roe_2010 roe_2011 roe_2012
 end
 list
 
-* ---------- wide -&gt; long（最常用！） ----------
-* reshape long 告诉 Stata：
-*   "把 roe_&lt;j&gt; 拆成 (j, roe)"
-* 语法：reshape long 变量前缀, i(id) j(timevar)
+<span class="cm-l">* ---------- wide -&gt; long（最常用！） ----------</span>
+<span class="cm-l">* reshape long 告诉 Stata：</span>
+<span class="cm-l">*   "把 roe_&lt;j&gt; 拆成 (j, roe)"</span>
+<span class="cm-l">* 语法：reshape long 变量前缀, i(id) j(timevar)</span>
 reshape long roe, i(stkcd) j(year)
 list, sepby(stkcd)
-* 现在是 (stkcd, year, roe) 的长表
+<span class="cm-l">* 现在是 (stkcd, year, roe) 的长表</span>
 
-* ---------- long -&gt; wide（反向操作） ----------
+<span class="cm-l">* ---------- long -&gt; wide（反向操作） ----------</span>
 reshape wide roe, i(stkcd) j(year)
 list
 </code></pre>
@@ -457,27 +457,27 @@ list
 
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · xtset 与 xtdescribe</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  07-xtset.do
-*--------------------------------------------------------------*
-webuse nlswork, clear      // Stata 自带的面板：员工-年份
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  07-xtset.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
+webuse nlswork, clear      <span class="cm">// Stata 自带的面板：员工-年份</span>
 
-* 1) xtset：声明 panelvar = idcode, timevar = year
+<span class="cm-l">* 1) xtset：声明 panelvar = idcode, timevar = year</span>
 xtset idcode year
 
-* 2) xtdescribe：检查面板的"形状"
-*    输出会告诉你：
-*    - 总共多少个组（公司/个人）
-*    - 时间跨度
-*    - 是否平衡（balanced）
-*    - 每个组有多少期观测
+<span class="cm-l">* 2) xtdescribe：检查面板的"形状"</span>
+<span class="cm-l">*    输出会告诉你：</span>
+<span class="cm-l">*    - 总共多少个组（公司/个人）</span>
+<span class="cm-l">*    - 时间跨度</span>
+<span class="cm-l">*    - 是否平衡（balanced）</span>
+<span class="cm-l">*    - 每个组有多少期观测</span>
 xtdescribe
 
-* 3) xtsum：面板版的 summarize（组内/组间/总体方差分解）
+<span class="cm-l">* 3) xtsum：面板版的 summarize（组内/组间/总体方差分解）</span>
 xtsum ln_wage age tenure
 
-* 4) 看一下"时间有没有跳跃"
-*    比如某个员工 1980 年之后跳到 1985 年，xtset 会警告
+<span class="cm-l">* 4) 看一下"时间有没有跳跃"</span>
+<span class="cm-l">*    比如某个员工 1980 年之后跳到 1985 年，xtset 会警告</span>
 list idcode year in 1/30
 </code></pre>
       </div>
@@ -499,23 +499,23 @@ list idcode year in 1/30
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 转成平衡面板</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  08-balanced.do
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  08-balanced.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 webuse nlswork, clear
 xtset idcode year
-xtdescribe    // 此时是非平衡
+xtdescribe    <span class="cm">// 此时是非平衡</span>
 
-* 方法：只保留"恰好观察满所有年份"的公司
-* 1) 每个公司有多少期？
+<span class="cm-l">* 方法：只保留"恰好观察满所有年份"的公司</span>
+<span class="cm-l">* 1) 每个公司有多少期？</span>
 bysort idcode: gen n_years = _N
-* 2) 总年数是多少？
+<span class="cm-l">* 2) 总年数是多少？</span>
 quietly levelsof year, local(allyears)
 scalar T_total = `: word count `allyears''
-* 3) 保留恰好等于 T_total 的公司
+<span class="cm-l">* 3) 保留恰好等于 T_total 的公司</span>
 keep if n_years == T_total
 xtset idcode year
-xtdescribe    // 现在应当是 "balanced"
+xtdescribe    <span class="cm">// 现在应当是 "balanced"</span>
 </code></pre>
       </div>
     </div>

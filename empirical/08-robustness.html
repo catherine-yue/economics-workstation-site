@@ -262,36 +262,36 @@
       <p><strong>剔除特殊样本</strong>针对的是样本污染：直辖市往往政策力度与经济结构特殊；2020—2022 年受疫情冲击的观测可能扭曲估计；刚上市、刚被 ST、刚退市的企业处于财务异常区间。把这些观测逐个剔除，若系数稳定，则结果不是由少数极端样本撑起的。<strong>改变缩尾程度</strong>（winsorize）则从 1% 换到 5%，并对比 winsor（缩尾，保留样本量）与 trim（截尾，删除尾部）两种做法。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 替换变量 / 替换样本 / 缩尾</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ===== 03.1 替换被解释变量 =====
-* 基准 Y = lnTFP，替代 Y = 劳动生产率 lnLP、利润率 ROA
+        <pre><code><span class="cm-l">* ===== 03.1 替换被解释变量 =====</span>
+<span class="cm-l">* 基准 Y = lnTFP，替代 Y = 劳动生产率 lnLP、利润率 ROA</span>
 reghdfe lnTFP D $X, absorb(id year) vce(cluster id)
 est store m_y1
-reghdfe lnLP  D $X, absorb(id year) vce(cluster id)   // 替代Y：劳动生产率
+reghdfe lnLP  D $X, absorb(id year) vce(cluster id)   <span class="cm">// 替代Y：劳动生产率</span>
 est store m_y2
-reghdfe ROA   D $X, absorb(id year) vce(cluster id)   // 替代Y：会计利润率
+reghdfe ROA   D $X, absorb(id year) vce(cluster id)   <span class="cm">// 替代Y：会计利润率</span>
 est store m_y3
 esttab m_y1 m_y2 m_y3, keep(D) se star(* 0.1 ** 0.05 *** 0.01)
 
-* ===== 03.2 替换核心解释变量：连续处理强度 =====
-gen treat_intensity = 政策覆盖率 * 处理虚拟        // 连续处理强度
+<span class="cm-l">* ===== 03.2 替换核心解释变量：连续处理强度 =====</span>
+gen treat_intensity = 政策覆盖率 * 处理虚拟        <span class="cm">// 连续处理强度</span>
 reghdfe lnTFP treat_intensity $X, absorb(id year) vce(cluster id)
 
-* ===== 03.3 剔除特殊样本 =====
-reghdfe lnTFP D $X if 直辖市==0, absorb(id year) vce(cluster id)      // 剔除直辖市
-reghdfe lnTFP D $X if !inlist(year,2020,2021,2022), absorb(id year) vce(cluster id) // 剔除疫情年
+<span class="cm-l">* ===== 03.3 剔除特殊样本 =====</span>
+reghdfe lnTFP D $X if 直辖市==0, absorb(id year) vce(cluster id)      <span class="cm">// 剔除直辖市</span>
+reghdfe lnTFP D $X if !inlist(year,2020,2021,2022), absorb(id year) vce(cluster id) <span class="cm">// 剔除疫情年</span>
 
-* ===== 03.4 改变缩尾程度：1% -> 5% =====
-winsor2 lnTFP, cuts(1 99)  replace suffix(_w1)      // 1% 缩尾
-winsor2 lnTFP, cuts(5 95)  replace suffix(_w5)      // 5% 缩尾
+<span class="cm-l">* ===== 03.4 改变缩尾程度：1% -&gt; 5% =====</span>
+winsor2 lnTFP, cuts(1 99)  replace suffix(_w1)      <span class="cm">// 1% 缩尾</span>
+winsor2 lnTFP, cuts(5 95)  replace suffix(_w5)      <span class="cm">// 5% 缩尾</span>
 reghdfe lnTFP_w1 D $X, absorb(id year) vce(cluster id)
 reghdfe lnTFP_w5 D $X, absorb(id year) vce(cluster id)
 
-* ===== 03.5 PSM-DID：先配对再回归 =====
-* 第一步：估计倾向得分
-gen post = (year >= policy_year)
+<span class="cm-l">* ===== 03.5 PSM-DID：先配对再回归 =====</span>
+<span class="cm-l">* 第一步：估计倾向得分</span>
+gen post = (year &gt;= policy_year)
 gen treat_post = treat * post
 psmatch2 treat $X, out(lnTFP) neighbor(1) caliper(0.05)
-* 第二步：仅在共同支撑（common support）样本上做 DID
+<span class="cm-l">* 第二步：仅在共同支撑（common support）样本上做 DID</span>
 reghdfe lnTFP treat_post $X if _weight!=., absorb(id year) vce(cluster id)
 </code></pre>
       </div>
@@ -307,23 +307,23 @@ reghdfe lnTFP treat_post $X if _weight!=., absorb(id year) vce(cluster id)
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 估计方法 / 高阶固定效应 / 平衡面板</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ===== 04.1 替换估计方法：OLS -> FE -> Poisson PML =====
+        <pre><code><span class="cm-l">* ===== 04.1 替换估计方法：OLS -&gt; FE -&gt; Poisson PML =====</span>
 xtset id year
-xtreg lnTFP D $X i.year, fe vce(cluster id)        // 固定效应
-ppmlhdfe patent_count D $X, absorb(id year) vce(cluster id) // 计数Y用泊松PML
+xtreg lnTFP D $X i.year, fe vce(cluster id)        <span class="cm">// 固定效应</span>
+ppmlhdfe patent_count D $X, absorb(id year) vce(cluster id) <span class="cm">// 计数Y用泊松PML</span>
 
-* ===== 04.2 高阶固定效应：行业×年份、省份×年份 =====
-reghdfe lnTFP D $X, absorb(id industry#year) vce(cluster id)   // 行业×年份
-reghdfe lnTFP D $X, absorb(id prov#year)     vce(cluster id)  // 省份×年份
+<span class="cm-l">* ===== 04.2 高阶固定效应：行业×年份、省份×年份 =====</span>
+reghdfe lnTFP D $X, absorb(id industry#year) vce(cluster id)   <span class="cm">// 行业×年份</span>
+reghdfe lnTFP D $X, absorb(id prov#year)     vce(cluster id)  <span class="cm">// 省份×年份</span>
 
-* ===== 04.3 剔除其他同期政策 =====
-gen other_policy = (year>=2015 & 地区=="试点")     // 构造同期另一政策虚拟
-reghdfe lnTFP D other_policy $X, absorb(id year) vce(cluster id) // 同时控制
-* 或：剔除受同期政策影响的子样本
+<span class="cm-l">* ===== 04.3 剔除其他同期政策 =====</span>
+gen other_policy = (year&gt;=2015 &amp; 地区=="试点")     <span class="cm">// 构造同期另一政策虚拟</span>
+reghdfe lnTFP D other_policy $X, absorb(id year) vce(cluster id) <span class="cm">// 同时控制</span>
+<span class="cm-l">* 或：剔除受同期政策影响的子样本</span>
 reghdfe lnTFP D $X if other_policy==0, absorb(id year) vce(cluster id)
 
-* ===== 04.4 平衡面板：仅保留连续存在的样本 =====
-xtbalance, range(2008 2020)                         // 需 ssc install xtbalance
+<span class="cm-l">* ===== 04.4 平衡面板：仅保留连续存在的样本 =====</span>
+xtbalance, range(2008 2020)                         <span class="cm">// 需 ssc install xtbalance</span>
 reghdfe lnTFP D $X, absorb(id year) vce(cluster id)
 </code></pre>
       </div>
@@ -336,47 +336,47 @@ reghdfe lnTFP D $X, absorb(id year) vce(cluster id)
       <p><strong>第二类：随机处理时间。</strong>保持处理组不变，但把政策发生年份随机前移或后移到一个"假年份"，检验在假年份前后是否出现断点式变化。如果假年份也出现显著效应，说明你的识别可能捕捉到了某种一般性的时间趋势，而非政策本身。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 安慰剂：随机处理组 + 随机处理时间</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ===== 05.1 安慰剂检验：随机分配处理组（1000次循环）=====
-* 真实处理组标识为 treat（0/1，按个体id层面）
+        <pre><code><span class="cm-l">* ===== 05.1 安慰剂检验：随机分配处理组（1000次循环）=====</span>
+<span class="cm-l">* 真实处理组标识为 treat（0/1，按个体id层面）</span>
 levelsof id, local(ids)
 scalar real_b = .
 reghdfe lnTFP treat_post $X, absorb(id year) vce(cluster id)
 scalar real_b = _b[treat_post]
 
-* 用 simulate 跑 1000 次随机抽样
+<span class="cm-l">* 用 simulate 跑 1000 次随机抽样</span>
 program drop _permute_treat
 program define _permute_treat, rclass
     use "panel_data.dta", clear
-    * 随机抽 n_treat 个 id 作为假处理组
+<span class="cm-l">    * 随机抽 n_treat 个 id 作为假处理组</span>
     preserve
         keep if year == first_year
         gen u = runiform()
         sort u
-        gen byte fake_treat = (_n <= `= n_treat')
+        gen byte fake_treat = (_n &lt;= `= n_treat')
         keep id fake_treat
         tempfile tmp
         save `tmp'
     restore
     merge m:1 id using `tmp', nogen
-    gen fake_post  = (year >= fake_policy_year)   // 假政策年
+    gen fake_post  = (year &gt;= fake_policy_year)   <span class="cm">// 假政策年</span>
     gen fake_tp    = fake_treat * fake_post
     reghdfe lnTFP fake_tp $X, absorb(id year) vce(cluster id)
     return scalar b_fake = _b[fake_tp]
 end
-permute b_fake = r(b_fake), reps(1000) seed(20240101) saving("placebo.dta", replace): ///
+permute b_fake = r(b_fake), reps(1000) seed(20240101) saving("placebo.dta", replace): <span class="cm">///</span>
     _permute_treat
 
-* 画分布图：真实系数应落在分布远端
+<span class="cm-l">* 画分布图：真实系数应落在分布远端</span>
 use "placebo.dta", clear
-gen pval = (abs(b_fake) >= abs(real_b))
-histogram b_fake, xline(`=real_b') title("Placebo: fake coefficient distribution") ///
+gen pval = (abs(b_fake) &gt;= abs(real_b))
+histogram b_fake, xline(`=real_b') title("Placebo: fake coefficient distribution") <span class="cm">///</span>
     note("真实系数 = " %6.4f real_b)
 
-* ===== 05.2 安慰剂检验：随机处理时间 =====
-* 保持处理组，把政策年随机提前3年/延后3年
-gen fake_post = (year >= policy_year - 3)
+<span class="cm-l">* ===== 05.2 安慰剂检验：随机处理时间 =====</span>
+<span class="cm-l">* 保持处理组，把政策年随机提前3年/延后3年</span>
+gen fake_post = (year &gt;= policy_year - 3)
 gen fake_tp   = treat * fake_post
-reghdfe lnTFP fake_tp $X, absorb(id year) vce(cluster id)   // 预期：不显著
+reghdfe lnTFP fake_tp $X, absorb(id year) vce(cluster id)   <span class="cm">// 预期：不显著</span>
 </code></pre>
       </div>
       <div class="callout tip">
@@ -391,20 +391,20 @@ reghdfe lnTFP fake_tp $X, absorb(id year) vce(cluster id)   // 预期：不显�
       <p>当聚类数偏少（少于 ~30—50 个集群）时，渐近聚类标准误会偏低，此时应使用 <strong>Wild Cluster Bootstrap</strong>（<code class="inline">boottest</code>）或小样本校正。当误差分布未知时，<strong>Bootstrap 标准误</strong>通过有放回地重复抽样 1000 次来构造经验分布，对小样本与非正态误差更稳健。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 聚类层级 / Wild Bootstrap / Bootstrap SE</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ===== 06.1 改变聚类层级：企业 -> 行业/地区 =====
-reghdfe lnTFP D $X, absorb(id year) vce(cluster id)        // 企业聚类（基准）
-reghdfe lnTFP D $X, absorb(id year) vce(cluster industry)  // 行业聚类
-reghdfe lnTFP D $X, absorb(id year) vce(cluster prov)       // 地区聚类
+        <pre><code><span class="cm-l">* ===== 06.1 改变聚类层级：企业 -&gt; 行业/地区 =====</span>
+reghdfe lnTFP D $X, absorb(id year) vce(cluster id)        <span class="cm">// 企业聚类（基准）</span>
+reghdfe lnTFP D $X, absorb(id year) vce(cluster industry)  <span class="cm">// 行业聚类</span>
+reghdfe lnTFP D $X, absorb(id year) vce(cluster prov)       <span class="cm">// 地区聚类</span>
 
-* 双向聚类：企业 + 年份
+<span class="cm-l">* 双向聚类：企业 + 年份</span>
 reghdfe lnTFP D $X, absorb(id year) vce(cluster id year)
 
-* ===== 06.2 聚类数少时：Wild Cluster Bootstrap =====
-* ssc install boottest, replace
+<span class="cm-l">* ===== 06.2 聚类数少时：Wild Cluster Bootstrap =====</span>
+<span class="cm-l">* ssc install boottest, replace</span>
 reghdfe lnTFP D $X, absorb(id year) vce(cluster prov)
-boottest D, reps(999) weight(webb)        // Webb 权重，集群少时更准
+boottest D, reps(999) weight(webb)        <span class="cm">// Webb 权重，集群少时更准</span>
 
-* ===== 06.3 一般 Bootstrap 标准误 =====
+<span class="cm-l">* ===== 06.3 一般 Bootstrap 标准误 =====</span>
 reghdfe lnTFP D $X, absorb(id year) vce(bootstrap, reps(1000) seed(20240101))
 </code></pre>
       </div>
@@ -421,31 +421,31 @@ reghdfe lnTFP D $X, absorb(id year) vce(bootstrap, reps(1000) seed(20240101))
       <p>其中 $t_i^*$ 为个体 $i$ 的处理时点。要求处理前各 lead 的 $\beta_k\approx0$（平行趋势），处理后 $\beta_k$ 显著且呈现合理形态。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 时间趋势 / 事件研究动态效应</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ===== 07.1 加入个体线性时间趋势 =====
+        <pre><code><span class="cm-l">* ===== 07.1 加入个体线性时间趋势 =====</span>
 xtset id year
-reghdfe lnTFP D $X i.id#c.year, vce(cluster id)   // 个体特定线性趋势
+reghdfe lnTFP D $X i.id#c.year, vce(cluster id)   <span class="cm">// 个体特定线性趋势</span>
 
-* 加入非线性/联合时间趋势
-reghdfe lnTFP D $X, absorb(id prov#year) vce(cluster id)  // 省份×年份
+<span class="cm-l">* 加入非线性/联合时间趋势</span>
+reghdfe lnTFP D $X, absorb(id prov#year) vce(cluster id)  <span class="cm">// 省份×年份</span>
 
-* ===== 07.2 事件研究：提前期 + 滞后项 =====
-* 以政策当年为基准期（omit），生成相对时间 d_{-K} ... d_{+K}
+<span class="cm-l">* ===== 07.2 事件研究：提前期 + 滞后项 =====</span>
+<span class="cm-l">* 以政策当年为基准期（omit），生成相对时间 d_{-K} ... d_{+K}</span>
 gen rel_time = year - policy_year
 forvalues k = -4/4 {
-    local kk = `k' + 5          // 命名为 d1..d9
+    local kk = `k' + 5          <span class="cm">// 命名为 d1..d9</span>
     gen d`kk' = (rel_time == `k')
 }
-* 省略处理当年（rel_time==0，即 d5）作为基准
+<span class="cm-l">* 省略处理当年（rel_time==0，即 d5）作为基准</span>
 reghdfe lnTFP d1 d2 d3 d4 d6 d7 d8 d9 $X, absorb(id year) vce(cluster id)
 est store event_study
 
-* 画图：提前期(d1-d4)应不显著贴近0；滞后项(d6-d9)显著
-coefplot event_study, keep(d1 d2 d3 d4 d6 d7 d8 d9) ///
+<span class="cm-l">* 画图：提前期(d1-d4)应不显著贴近0；滞后项(d6-d9)显著</span>
+coefplot event_study, keep(d1 d2 d3 d4 d6 d7 d8 d9) <span class="cm">///</span>
     vertical yline(0) title("Event Study: pre-trend vs post-effect")
 
-* 也可使用 eventdd / did_multiplegt 等官方推荐命令
-* ssc install eventdd
-eventdd lnTFP $X, timevar(rel_time) method(fe, vce(cluster id)) ///
+<span class="cm-l">* 也可使用 eventdd / did_multiplegt 等官方推荐命令</span>
+<span class="cm-l">* ssc install eventdd</span>
+eventdd lnTFP $X, timevar(rel_time) method(fe, vce(cluster id)) <span class="cm">///</span>
     leads(4) lags(4) baseline(-1)
 </code></pre>
       </div>
@@ -504,44 +504,44 @@ eventdd lnTFP $X, timevar(rel_time) method(fe, vce(cluster id)) ///
       <h3>08b.2 完整 Stata 代码</h3>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · psm_full.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* ===== PSM 倾向得分匹配完整流程 =====
-* 场景：评估"参加培训 D=1"对工资 lnWage 的影响
+<pre><code><span class="cm-l">* ===== PSM 倾向得分匹配完整流程 =====</span>
+<span class="cm-l">* 场景：评估"参加培训 D=1"对工资 lnWage 的影响</span>
 set seed 20240109
 
-* --- 1. 估计倾向得分（logit）---
-* ssc install psmatch2, replace
-global X age educ gender married exper    // 决定是否参加培训的可观测变量
+<span class="cm-l">* --- 1. 估计倾向得分（logit）---</span>
+<span class="cm-l">* ssc install psmatch2, replace</span>
+global X age educ gender married exper    <span class="cm">// 决定是否参加培训的可观测变量</span>
 logit D $X, robust
-predict pscore, pr                        // 倾向得分
+predict pscore, pr                        <span class="cm">// 倾向得分</span>
 
-* --- 2. 看共同支撑区间 ---
+<span class="cm-l">* --- 2. 看共同支撑区间 ---</span>
 sum pscore if D==1
 local pmin_treat = r(min)
 local pmax_treat = r(max)
 sum pscore if D==0
-* 只保留 pscore 在 [max(min_treat, min_ctrl), min(max_treat, max_ctrl)] 内的观测
+<span class="cm-l">* 只保留 pscore 在 [max(min_treat, min_ctrl), min(max_treat, max_ctrl)] 内的观测</span>
 
-* --- 3. 1:1 最近邻匹配 + 卡尺 ---
+<span class="cm-l">* --- 3. 1:1 最近邻匹配 + 卡尺 ---</span>
 psmatch2 D $X, out(lnWage) neighbor(1) caliper(0.05) common ties
-* 输出：
-*   ATT (Average Treatment effect on Treated)
-*   _weight : 匹配权重（处理组=1，对照组=匹配权重）
-*   _support: 共同支撑标识
+<span class="cm-l">* 输出：</span>
+<span class="cm-l">*   ATT (Average Treatment effect on Treated)</span>
+<span class="cm-l">*   _weight : 匹配权重（处理组=1，对照组=匹配权重）</span>
+<span class="cm-l">*   _support: 共同支撑标识</span>
 
-* --- 4. 平衡性检验 ---
+<span class="cm-l">* --- 4. 平衡性检验 ---</span>
 pstest $X, both graph
-* 输出：每个 X 匹配前后的标准化均值差
-* 经验阈值：匹配后 |bias| &lt; 10%
-* 若某个 X 匹配后偏差仍 &gt; 10%，调整匹配方法或加入高次项
+<span class="cm-l">* 输出：每个 X 匹配前后的标准化均值差</span>
+<span class="cm-l">* 经验阈值：匹配后 |bias| &lt; 10%</span>
+<span class="cm-l">* 若某个 X 匹配后偏差仍 &gt; 10%，调整匹配方法或加入高次项</span>
 
-* --- 5. 不同匹配方法的稳健性 ---
-psmatch2 D $X, out(lnWage) neighbor(3) caliper(0.05) common   // 1:3 近邻
-psmatch2 D $X, out(lnWage) kernel bwidth(0.06) common          // 核匹配
-psmatch2 D $X, out(lnWage) strata breaks(0 .2 .4 .6 .8 1) common // 分层匹配
+<span class="cm-l">* --- 5. 不同匹配方法的稳健性 ---</span>
+psmatch2 D $X, out(lnWage) neighbor(3) caliper(0.05) common   <span class="cm">// 1:3 近邻</span>
+psmatch2 D $X, out(lnWage) kernel bwidth(0.06) common          <span class="cm">// 核匹配</span>
+psmatch2 D $X, out(lnWage) strata breaks(0 .2 .4 .6 .8 1) common <span class="cm">// 分层匹配</span>
 
-* --- 6. teffects 替代命令（Stata 内置）---
+<span class="cm-l">* --- 6. teffects 替代命令（Stata 内置）---</span>
 teffects psmatch (lnWage) (D $X, logit), atet nneighbor(3) vce(robust)
-* teffects 输出更规范，自动算 ATT / ATU / ATE
+<span class="cm-l">* teffects 输出更规范，自动算 ATT / ATU / ATE</span>
 </code></pre>
       </div>
 
@@ -576,44 +576,44 @@ teffects psmatch (lnWage) (D $X, logit), atet nneighbor(3) vce(robust)
       <h3>08c.2 完整 Stata 代码</h3>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · heckman_demo.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* ===== Heckman 两阶段：女性工资方程 =====
-* 场景：估计女性教育回报率，但只有"参与劳动力市场"的女性有工资数据
+<pre><code><span class="cm-l">* ===== Heckman 两阶段：女性工资方程 =====</span>
+<span class="cm-l">* 场景：估计女性教育回报率，但只有"参与劳动力市场"的女性有工资数据</span>
 
-* --- 1. 数据准备 ---
-* lwage: 对数工资（仅参与工作的女性观测到）
-* educ: 教育年限
-* exper: 工作经验
-* married / children: 婚姻、子女（影响是否参与工作，但不直接影响工资）
-* inlf: 是否参与劳动力市场
+<span class="cm-l">* --- 1. 数据准备 ---</span>
+<span class="cm-l">* lwage: 对数工资（仅参与工作的女性观测到）</span>
+<span class="cm-l">* educ: 教育年限</span>
+<span class="cm-l">* exper: 工作经验</span>
+<span class="cm-l">* married / children: 婚姻、子女（影响是否参与工作，但不直接影响工资）</span>
+<span class="cm-l">* inlf: 是否参与劳动力市场</span>
 
-* --- 2. 两步法手动估计 ---
-* 第一步：选择方程（probit）
+<span class="cm-l">* --- 2. 两步法手动估计 ---</span>
+<span class="cm-l">* 第一步：选择方程（probit）</span>
 probit inlf educ exper married children other_income
 predict xb, xb
-gen imr_normal = normalden(xb)/normal(xb)        // IMR（参与样本）
+gen imr_normal = normalden(xb)/normal(xb)        <span class="cm">// IMR（参与样本）</span>
 
-* 第二步：结果方程（仅 inlf=1 样本）
+<span class="cm-l">* 第二步：结果方程（仅 inlf=1 样本）</span>
 reg lwage educ exper imr_normal if inlf==1, robust
-* imr_normal 显著 → 存在样本选择偏差
+<span class="cm-l">* imr_normal 显著 → 存在样本选择偏差</span>
 
-* --- 3. Stata 内置 heckman 命令（MLE，推荐）---
+<span class="cm-l">* --- 3. Stata 内置 heckman 命令（MLE，推荐）---</span>
 heckman lwage educ exper, select(inlf = educ exper married children other_income)
-* 输出：
-*   结果方程：lwage 的系数
-*   选择方程：inlf 的系数
-*   /athrho / lnsigma：rho（选择方程与结果方程误差相关）与 sigma
-*   lambda: IMR 的系数（=rho*sigma）
-*   LR test of indep. eqns. (rho=0): H0 选择与结果独立
-*   若 LR 检验 p&lt;0.05 → 必须用 Heckman
+<span class="cm-l">* 输出：</span>
+<span class="cm-l">*   结果方程：lwage 的系数</span>
+<span class="cm-l">*   选择方程：inlf 的系数</span>
+<span class="cm-l">*   /athrho / lnsigma：rho（选择方程与结果方程误差相关）与 sigma</span>
+<span class="cm-l">*   lambda: IMR 的系数（=rho*sigma）</span>
+<span class="cm-l">*   LR test of indep. eqns. (rho=0): H0 选择与结果独立</span>
+<span class="cm-l">*   若 LR 检验 p&lt;0.05 → 必须用 Heckman</span>
 
-* --- 4. 二值结果变量：heckprob ---
-* 若 Y 是 0/1（如"是否拥有养老保险"），用 heckprob
+<span class="cm-l">* --- 4. 二值结果变量：heckprob ---</span>
+<span class="cm-l">* 若 Y 是 0/1（如"是否拥有养老保险"），用 heckprob</span>
 heckprob own_pension educ exper, select(inlf = educ exper married children)
 
-* --- 5. 关键诊断 ---
-* 排除约束：选择方程中的 married/children 不应出现在结果方程中
-* 检查：结果方程若加入 married/children，应不显著（理论上）
-* 若找不到排除约束，Heckman 只能靠函数形式识别，结果极不可靠
+<span class="cm-l">* --- 5. 关键诊断 ---</span>
+<span class="cm-l">* 排除约束：选择方程中的 married/children 不应出现在结果方程中</span>
+<span class="cm-l">* 检查：结果方程若加入 married/children，应不显著（理论上）</span>
+<span class="cm-l">* 若找不到排除约束，Heckman 只能靠函数形式识别，结果极不可靠</span>
 </code></pre>
       </div>
 
@@ -651,50 +651,50 @@ heckprob own_pension educ exper, select(inlf = educ exper married children)
       <h3>08d.2 完整 Stata 代码（psacalc）</h3>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · oster_psacalc.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* Oster (2019) 系数稳定性：psacalc
-* 场景：处理变量 D 对 Y 的影响，可观测控制 X
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* Oster (2019) 系数稳定性：psacalc</span>
+<span class="cm-l">* 场景：处理变量 D 对 Y 的影响，可观测控制 X</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set seed 20240701
 sysuse auto.dta, clear
 
-* --- 0. 两个基础设定：短回归 & 长回归 ---
+<span class="cm-l">* --- 0. 两个基础设定：短回归 &amp; 长回归 ---</span>
 global Y price
 global D  foreign
 global X  weight length turn
 
-* 短回归：只放处理变量
+<span class="cm-l">* 短回归：只放处理变量</span>
 regress $Y $D
 scalar b_short   = _b[$D]
 scalar r2_short  = e(r2)
 
-* 长回归：放全部控制
+<span class="cm-l">* 长回归：放全部控制</span>
 regress $Y $D $X
 scalar b_long    = _b[$D]
 scalar r2_long   = e(r2)
 
-* --- 1. psacalc（Oster 官方 Stata 命令）---
-* ssc install psacalc, replace
+<span class="cm-l">* --- 1. psacalc（Oster 官方 Stata 命令）---</span>
+<span class="cm-l">* ssc install psacalc, replace</span>
 regress $Y $D $X
-* 报告让 beta=0 所需的 delta*（默认 Rmax = 1.3 * R2_long）
+<span class="cm-l">* 报告让 beta=0 所需的 delta*（默认 Rmax = 1.3 * R2_long）</span>
 psacalc delta $D, rmax(0.5)
-* 若 delta* &gt; 1 => 稳健（需要不可观测比可观测更强才能归零）
+<span class="cm-l">* 若 delta* &gt; 1 =&gt; 稳健（需要不可观测比可观测更强才能归零）</span>
 
-* 报告在 delta=1 下的 beta*（识别区间下限）
+<span class="cm-l">* 报告在 delta=1 下的 beta*（识别区间下限）</span>
 psacalc beta $D, rmax(0.5) delta(1)
-* 识别区间 = [beta*, b_long]；若不含 0 => 稳健
+<span class="cm-l">* 识别区间 = [beta*, b_long]；若不含 0 =&gt; 稳健</span>
 
-* --- 2. 手算 delta* 与 beta*（理解原理）---
-* delta* = (b_long - 0) * (Rmax - R2_long) / ((b_short - b_long) * (R2_long - R2_short))
+<span class="cm-l">* --- 2. 手算 delta* 与 beta*（理解原理）---</span>
+<span class="cm-l">* delta* = (b_long - 0) * (Rmax - R2_long) / ((b_short - b_long) * (R2_long - R2_short))</span>
 scalar Rmax = 1.3 * r2_long
 scalar dstar = (b_long - 0) * (Rmax - r2_long) / ((b_short - b_long) * (r2_long - r2_short))
 display "delta* (让 beta=0 所需) = " dstar
 
-* 在 delta=1 下的 beta*
+<span class="cm-l">* 在 delta=1 下的 beta*</span>
 scalar bstar = b_long - 1 * (b_short - b_long) * (Rmax - r2_long)/(r2_long - r2_short)
 display "delta=1 时 beta* = " bstar "  ; b_long = " b_long
-* 区间 [bstar, b_long] 若不含 0，则稳健
+<span class="cm-l">* 区间 [bstar, b_long] 若不含 0，则稳健</span>
 </code></pre>
       </div>
     </div>
@@ -736,31 +736,31 @@ library(sensemakr)
 
 # 1. 先用线性回归估计处理 D 对 Y 的效应（含控制 X）
 data("darfur")
-model <- lm(peacefactor ~ directlyharmed + age + farmer_dar +
+model &lt;- lm(peacefactor ~ directlyharmed + age + farmer_dar +
             heron_dar + voted, data = darfur)
 
 # 2. 跑 sensemakr：处理变量 directlyharmed
-s <- sensemakr(model = model, treatment = "directlyharmed",
+s &lt;- sensemakr(model = model, treatment = "directlyharmed",
                benchmark_covariates = "farmer_dar",  # 用已观测变量作强度标尺
                kd = 1:3)                             # 混杂强度 = kd * 标尺
 summary(s)
 
 # 3. 核心输出：
 #   RV  (robustness value)：让 CI 含 0 所需的最小 partial R2
-#   若 RV 远大于任一已观测控制的 partial R2 => 结论稳健
+#   若 RV 远大于任一已观测控制的 partial R2 =&gt; 结论稳健
 # 4. 画敏感性等值线图
 # plot(s, sensitivity.of = "estimate")
 </code></pre>
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · sensemakr 等价手算（概念版）</span><button class="copy-btn">复制</button></div>
-<pre><code>* Stata 无 sensemakr 官方命令，可手算 RV 的近似量或调用 Python/R
-* 思路：报告已观测控制的 partial R2，作为"混杂强度标尺"
+<pre><code><span class="cm-l">* Stata 无 sensemakr 官方命令，可手算 RV 的近似量或调用 Python/R</span>
+<span class="cm-l">* 思路：报告已观测控制的 partial R2，作为"混杂强度标尺"</span>
 sysuse auto.dta, clear
 regress price foreign weight length turn
-* 用 partial R2 作对照：某个强控制解释了多少残差变异
-* 若 RV &gt;&gt; 任一已观测控制的 partial R2，则不可观测混杂需非常强
-* 严谨的 RV/等值线建议在 R 中用 sensemakr 完成，再把数值贴回论文
+<span class="cm-l">* 用 partial R2 作对照：某个强控制解释了多少残差变异</span>
+<span class="cm-l">* 若 RV &gt;&gt; 任一已观测控制的 partial R2，则不可观测混杂需非常强</span>
+<span class="cm-l">* 严谨的 RV/等值线建议在 R 中用 sensemakr 完成，再把数值贴回论文</span>
 </code></pre>
       </div>
     </div>
@@ -785,36 +785,36 @@ regress price foreign weight length turn
       <h3>08f.2 完整 Stata 代码</h3>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · randomization_inference.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* 随机化推断 RI：permute / ritest / 手写置换
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* 随机化推断 RI：permute / ritest / 手写置换</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set seed 20240702
 sysuse auto.dta, clear
 
-* --- 1. 真实统计量：foreign 对 price 的效应 ---
+<span class="cm-l">* --- 1. 真实统计量：foreign 对 price 的效应 ---</span>
 regress price foreign weight
 scalar b_obs = _b[foreign]
 
-* --- 2. 官方 permute：置换 foreign 标签 1000 次 ---
-permute foreign b = _b[foreign], reps(1000) seed(20240702) saving("ri_perm.dta", replace): ///
+<span class="cm-l">* --- 2. 官方 permute：置换 foreign 标签 1000 次 ---</span>
+permute foreign b = _b[foreign], reps(1000) seed(20240702) saving("ri_perm.dta", replace): <span class="cm">///</span>
     regress price foreign weight
 
-* 读结果：真实 b 在置换分布中的位置
+<span class="cm-l">* 读结果：真实 b 在置换分布中的位置</span>
 use "ri_perm.dta", clear
 gen p_ri = (abs(b) &gt;= abs(b_obs)) + 0
 quietly sum p_ri
 display "随机化 p 值 = " r(mean)
 histogram b, xline(`=b_obs') note("真实系数 = " %6.3f b_obs)
 
-* --- 3. ritest（Heß 2017，更灵活，推荐）---
-* ssc install ritest, replace
+<span class="cm-l">* --- 3. ritest（Heß 2017，更灵活，推荐）---</span>
+<span class="cm-l">* ssc install ritest, replace</span>
 sysuse auto.dta, clear
-ritest foreign _b[foreign], reps(1000) seed(20240702) : ///
+ritest foreign _b[foreign], reps(1000) seed(20240702) : <span class="cm">///</span>
     regress price foreign weight
-* ritest 直接输出 RI p 值；支持 reghdfe、聚类、固定效应
+<span class="cm-l">* ritest 直接输出 RI p 值；支持 reghdfe、聚类、固定效应</span>
 
-* --- 4. 手写 permutation test（理解原理）---
+<span class="cm-l">* --- 4. 手写 permutation test（理解原理）---</span>
 sysuse auto.dta, clear
 gen b_perm = .
 local B = 1000
@@ -822,7 +822,7 @@ forvalues b = 1/`B' {
     preserve
         gen u = runiform()
         sort u
-        gen fake_foreign = mod(_n, 2)        // 随机重排 foreign
+        gen fake_foreign = mod(_n, 2)        <span class="cm">// 随机重排 foreign</span>
         regress price fake_foreign weight
         scalar bb = _b[fake_foreign]
     restore

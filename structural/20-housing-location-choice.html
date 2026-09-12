@@ -361,21 +361,21 @@ for j in range(J - 1):
 def choose_communities(p, a):
     resid = y_sim[:, None] - p[None, :]
     V = np.full((N, J), -np.inf)
-    m = resid > 0
+    m = resid &gt; 0
     V[m] = (resid[m] ** alpha) * np.tile(a, (N, 1))[m]
     return np.argmax(V, axis=1)
 choice = choose_communities(p_eq, a)
 
 # ---------- 5. 输出 ----------
-print(f"{'社区':>4} {'设施a_j':>8} {'房价p_j':>9} {'平均收入':>9} {'份额':>7}")
+print(f"{'社区':&gt;4} {'设施a_j':&gt;8} {'房价p_j':&gt;9} {'平均收入':&gt;9} {'份额':&gt;7}")
 for j in range(J):
     sel = choice == j
     inc = y_sim[sel].mean() if sel.any() else np.nan
-    print(f"{j:>4} {a[j]:>8.2f} {p_eq[j]:>9.2f} {inc:>9.1f} {sel.mean():>7.3f}")
+    print(f"{j:&gt;4} {a[j]:&gt;8.2f} {p_eq[j]:&gt;9.2f} {inc:&gt;9.1f} {sel.mean():&gt;7.3f}")
 
 mean_inc = np.array([y_sim[choice==j].mean() if (choice==j).any() else np.nan
                      for j in range(J)])
-print("平均收入随设施单调递增?", bool(np.all(np.diff(mean_inc[~np.isnan(mean_inc)])>=-1e-9)))
+print("平均收入随设施单调递增?", bool(np.all(np.diff(mean_inc[~np.isnan(mean_inc)])&gt;=-1e-9)))
 </code></pre>
     </div>
     <div class="callout tip">
@@ -393,7 +393,7 @@ print("平均收入随设施单调递增?", bool(np.all(np.diff(mean_inc[~np.isn
       <pre><code>"""
 代码块2：Bayer-McMillan-Rueben 离散选择 + IV 估计
   U_ij = X_j'beta - alpha p_j + gamma Xbar_j + xi_j + eps_ij
-  p_j 与 xi_j 内生相关 -> OLS 偏误；用成本冲击 cost_shock 作 IV
+  p_j 与 xi_j 内生相关 -&gt; OLS 偏误；用成本冲击 cost_shock 作 IV
 """
 import numpy as np
 from scipy.optimize import minimize
@@ -466,7 +466,7 @@ print("IV   alpha =", round(b_iv[2],3), "(真实 -1.2)")
     <div class="code-block">
       <div class="code-header"><span class="lang">python</span><button class="copy-btn">复制</button></div>
       <pre><code>"""
-代码块3：反事实 —— 设施改善 -> 房价资本化 -> 福利(CV)
+代码块3：反事实 —— 设施改善 -&gt; 房价资本化 -&gt; 福利(CV)
   承接代码1：a1=优质学区+20%；a2=郊区通勤改善
   CV：在新(p,a)下维持旧效用 V_base 所需收入 y'，CV = y - y'
 """
@@ -488,7 +488,7 @@ def solve_prices(a, p0=5.0):
 
 def choose(p, a):
     res = y_sim[:,None] - p[None,:]
-    V = np.full((N,J), -np.inf); m = res>0
+    V = np.full((N,J), -np.inf); m = res&gt;0
     V[m] = (res[m]**alpha)*np.tile(a,(N,1))[m]
     return np.argmax(V, axis=1)
 

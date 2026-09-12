@@ -381,17 +381,17 @@ V_u = c/(1-beta)
 for _ in range(2000):
     w_star = (1-beta)*V_u
     draws = np.random.lognormal(mu_w, sigma_w, size=20000)
-    acc = draws[draws >= w_star]
-    exp_val = (acc.sum()/(1-beta) + V_u*(draws < w_star).sum())/len(draws)
+    acc = draws[draws &gt;= w_star]
+    exp_val = (acc.sum()/(1-beta) + V_u*(draws &lt; w_star).sum())/len(draws)
     V_u_new = c + beta*exp_val
-    if abs(V_u_new-V_u) < 1e-6: break
+    if abs(V_u_new-V_u) &lt; 1e-6: break
     V_u = V_u_new
 print(f"保留工资 w* = {w_star:.3f}, 失业值 V_u = {V_u:.3f}")
 
 # ---------- 2. 模拟失业持续期 ----------
 def sim_duration(w_star, T_max=200):
     for t in range(1, T_max+1):
-        if np.random.lognormal(mu_w, sigma_w) >= w_star:
+        if np.random.lognormal(mu_w, sigma_w) &gt;= w_star:
             return t
     return T_max
 durs = np.array([sim_duration(w_star) for _ in range(5000)])
@@ -401,7 +401,7 @@ print(f"理论 hazard = {1-lognorm.cdf(w_star, sigma_w, scale=np.exp(mu_w)):.3f}
 # ---------- 3. MLE 估计 hazard ----------
 def nll(logit_h, durs):
     h = 1/(1+np.exp(-logit_h))
-    unc = durs[durs < 200]; cen = durs[durs >= 200]
+    unc = durs[durs &lt; 200]; cen = durs[durs &gt;= 200]
     return -(np.sum(np.log(1-h)+(unc-1)*np.log(h)) + np.sum(cen*np.log(h)))
 r = minimize_scalar(nll, args=(durs,), method='bounded', bounds=(-5,5))
 print(f"MLE hazard = {1/(1+np.exp(-r.x)):.3f}")
@@ -421,32 +421,32 @@ print(f"匹配函数: A={np.exp(res.params[0]):.3f}(真{A_t}), eta={res.params[1
       <h3>7.2 Stata：失业持续期生存分析</h3>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* 失业持续期结构估计：McCall + DMP 匹配函数
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* 失业持续期结构估计：McCall + DMP 匹配函数</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 use "unemployment_spells.dta", clear
-* spell: 失业持续月数; fail: 1=找到工作, 0=右删失
+<span class="cm-l">* spell: 失业持续月数; fail: 1=找到工作, 0=右删失</span>
 stset spell, fail(fail=1)
 
-* 1. Kaplan-Meier 非参
-sts graph, by(gender) title("Survival Function") ///
+<span class="cm-l">* 1. Kaplan-Meier 非参</span>
+sts graph, by(gender) title("Survival Function") <span class="cm">///</span>
     xtitle("Months") ytitle("Survival Probability")
 
-* 2. Cox 比例风险
+<span class="cm-l">* 2. Cox 比例风险</span>
 stcox age i.educ i.marr, robust
 estimates store cox
 
-* 3. Weibull 参数模型
+<span class="cm-l">* 3. Weibull 参数模型</span>
 streg age i.educ i.marr, distribution(weibull) time
 estimates store weibull
 
-* 4. DMP 匹配函数（地区月度面板）
+<span class="cm-l">* 4. DMP 匹配函数（地区月度面板）</span>
 use "local_labor_market.dta", clear
 xtset region month
 reg log_m log_u log_v, robust
 estimates store ols
-* 用滞后变量 IV 处理 simultaneity
+<span class="cm-l">* 用滞后变量 IV 处理 simultaneity</span>
 ivregress 2sls log_m log_v (log_u = L.log_u L2.log_u), robust
 estimates store iv
 esttab ols iv, se star(* 0.1 ** 0.05 *** 0.01) mtitles("OLS" "IV")

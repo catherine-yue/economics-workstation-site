@@ -767,220 +767,220 @@
 
       <div class="code-block">
         <div class="code-header"><span class="lang">Dynare / sw2007_full.mod（≥100 行教学完整版）</span><button class="copy-btn">复制</button></div>
-<pre><code>// ============================================================
-// sw2007_full.mod —— Smets-Wouters (2007) 中尺度 DSGE 教学完整版
-// 六大摩擦(习惯/投资调整成本/资本利用/Calvo价格/Calvo工资/指数化)
-// 七冲击(技术/投资专用/政府支出/货币/价格加成/工资加成/风险溢价)
-// 求解：order=2 + pruning
-// 运行：dynare sw2007_full.mod
-// 所有变量为偏离稳态的对数/百分点
-// ============================================================
+<pre><code><span class="cm">// ============================================================</span>
+<span class="cm">// sw2007_full.mod —— Smets-Wouters (2007) 中尺度 DSGE 教学完整版</span>
+<span class="cm">// 六大摩擦(习惯/投资调整成本/资本利用/Calvo价格/Calvo工资/指数化)</span>
+<span class="cm">// 七冲击(技术/投资专用/政府支出/货币/价格加成/工资加成/风险溢价)</span>
+<span class="cm">// 求解：order=2 + pruning</span>
+<span class="cm">// 运行：dynare sw2007_full.mod</span>
+<span class="cm">// 所有变量为偏离稳态的对数/百分点</span>
+<span class="cm">// ============================================================</span>
 
-// ---------- Step 1: 内生变量声明 ----------
+<span class="cm">// ---------- Step 1: 内生变量声明 ----------</span>
 var
-  y          // 产出
-  c          // 消费
-  i          // 投资
-  n          // 劳动(工时)
-  pi         // 通胀
-  r          // 名义利率(联邦基金)
-  rn         // 风险溢价/偏好冲击过程
-  rk         // 资本实际租金
-  w          // 实际工资
-  mc         // 实际边际成本
-  q          // 托宾Q
-  k          // 资本存量(滞后状态)
-  kbar       // 有效资本 = u + k(-1)
-  u          // 资本利用率
-  pi_w       // 工资通胀
-  mrs        // 劳动边际替代率
-  g          // 政府支出
-  a          // 技术过程
-  b          // 偏好/风险溢价过程
-  p_shock    // 价格加成过程
-  w_shock    // 工资加成过程
-  i_shock    // 投资专用技术过程
+  y          <span class="cm">// 产出</span>
+  c          <span class="cm">// 消费</span>
+  i          <span class="cm">// 投资</span>
+  n          <span class="cm">// 劳动(工时)</span>
+  pi         <span class="cm">// 通胀</span>
+  r          <span class="cm">// 名义利率(联邦基金)</span>
+  rn         <span class="cm">// 风险溢价/偏好冲击过程</span>
+  rk         <span class="cm">// 资本实际租金</span>
+  w          <span class="cm">// 实际工资</span>
+  mc         <span class="cm">// 实际边际成本</span>
+  q          <span class="cm">// 托宾Q</span>
+  k          <span class="cm">// 资本存量(滞后状态)</span>
+  kbar       <span class="cm">// 有效资本 = u + k(-1)</span>
+  u          <span class="cm">// 资本利用率</span>
+  pi_w       <span class="cm">// 工资通胀</span>
+  mrs        <span class="cm">// 劳动边际替代率</span>
+  g          <span class="cm">// 政府支出</span>
+  a          <span class="cm">// 技术过程</span>
+  b          <span class="cm">// 偏好/风险溢价过程</span>
+  p_shock    <span class="cm">// 价格加成过程</span>
+  w_shock    <span class="cm">// 工资加成过程</span>
+  i_shock    <span class="cm">// 投资专用技术过程</span>
 ;
 
-// ---------- Step 2: 外生冲击声明(7个) ----------
+<span class="cm">// ---------- Step 2: 外生冲击声明(7个) ----------</span>
 varexo
-  eps_a      // 技术冲击
-  eps_i      // 投资专用技术冲击
-  eps_g      // 政府支出冲击
-  eps_m      // 货币政策冲击
-  eps_p      // 价格加成冲击
-  eps_w      // 工资加成冲击
-  eps_b      // 风险溢价/偏好冲击
+  eps_a      <span class="cm">// 技术冲击</span>
+  eps_i      <span class="cm">// 投资专用技术冲击</span>
+  eps_g      <span class="cm">// 政府支出冲击</span>
+  eps_m      <span class="cm">// 货币政策冲击</span>
+  eps_p      <span class="cm">// 价格加成冲击</span>
+  eps_w      <span class="cm">// 工资加成冲击</span>
+  eps_b      <span class="cm">// 风险溢价/偏好冲击</span>
 ;
 
-// ---------- Step 3: 参数声明与校准 ----------
+<span class="cm">// ---------- Step 3: 参数声明与校准 ----------</span>
 parameters beta sigma h phi varphi alpha delta ...
     theta_p theta_w gamma_p gamma_w psi invadj ...
     phi_pi phi_y rho_i ...
     rho_a rho_i2 rho_g rho_m rho_p rho_w rho_b;
 
-beta=0.99;          // 季度贴现因子(年化4%)
-sigma=1.5;          // 风险厌恶系数
-h=0.7;              // 习惯形成参数(SW后验≈0.7)
-phi=2.0;            // 劳动Frisch逆弹性
-alpha=0.33;         // 资本份额
-delta=0.025;        // 季度折旧率(年10%)
-theta_p=0.75;       // 价格Calvo不调价概率(平均1年合同)
-theta_w=0.75;       // 工资Calvo不调价概率
-gamma_p=0.5;        // 价格指数化程度
-gamma_w=0.5;        // 工资指数化程度
-psi=0.5;            // 资本利用成本曲率
-invadj=5.0;         // 投资调整成本曲率 S''
-phi_pi=1.5;         // Taylor对通胀反应
-phi_y=0.125;        // Taylor对产出反应
-rho_i=0.75;         // 利率平滑
-// 7个AR(1)持续性
+beta=0.99;          <span class="cm">// 季度贴现因子(年化4%)</span>
+sigma=1.5;          <span class="cm">// 风险厌恶系数</span>
+h=0.7;              <span class="cm">// 习惯形成参数(SW后验≈0.7)</span>
+phi=2.0;            <span class="cm">// 劳动Frisch逆弹性</span>
+alpha=0.33;         <span class="cm">// 资本份额</span>
+delta=0.025;        <span class="cm">// 季度折旧率(年10%)</span>
+theta_p=0.75;       <span class="cm">// 价格Calvo不调价概率(平均1年合同)</span>
+theta_w=0.75;       <span class="cm">// 工资Calvo不调价概率</span>
+gamma_p=0.5;        <span class="cm">// 价格指数化程度</span>
+gamma_w=0.5;        <span class="cm">// 工资指数化程度</span>
+psi=0.5;            <span class="cm">// 资本利用成本曲率</span>
+invadj=5.0;         <span class="cm">// 投资调整成本曲率 S''</span>
+phi_pi=1.5;         <span class="cm">// Taylor对通胀反应</span>
+phi_y=0.125;        <span class="cm">// Taylor对产出反应</span>
+rho_i=0.75;         <span class="cm">// 利率平滑</span>
+<span class="cm">// 7个AR(1)持续性</span>
 rho_a=0.95; rho_i2=0.71; rho_g=0.97; rho_m=0.15;
 rho_p=0.90; rho_w=0.90; rho_b=0.22;
 
-// ---------- Step 4: 模型方程 ----------
+<span class="cm">// ---------- Step 4: 模型方程 ----------</span>
 model;
-// (1) 习惯形成下的消费欧拉(含偏好冲击 b)
+<span class="cm">// (1) 习惯形成下的消费欧拉(含偏好冲击 b)</span>
 c = h/(1+h)*c(-1) + 1/(1+h)*c(+1) ...
     - (1-h)/(sigma*(1+h))*( r - pi(+1) ) + b;
 
-// (2) 投资欧拉(含调整成本与投资专用冲击 i_shock)
+<span class="cm">// (2) 投资欧拉(含调整成本与投资专用冲击 i_shock)</span>
 i = 1/(1+beta)*( i(-1) + beta*i(+1) ) ...
     + 1/((1+beta)*invadj)*q + i_shock;
 
-// (3) 托宾Q资产定价方程
+<span class="cm">// (3) 托宾Q资产定价方程</span>
 q = -( r - pi(+1) ) + beta*(1-delta)*q(+1) ...
     + (1-beta*(1-delta))*rk(+1);
 
-// (4) 资本利用: rk = psi * u
+<span class="cm">// (4) 资本利用: rk = psi * u</span>
 rk = psi*u;
 
-// (5) 有效资本 = 利用率 + 滞后资本
+<span class="cm">// (5) 有效资本 = 利用率 + 滞后资本</span>
 kbar = u + k(-1);
 
-// (6) 资本积累
+<span class="cm">// (6) 资本积累</span>
 k = (1-delta)*k(-1) + delta*i;
 
-// (7) 生产函数(忽略固定成本phi)
+<span class="cm">// (7) 生产函数(忽略固定成本phi)</span>
 y = a + alpha*kbar + (1-alpha)*n;
 
-// (8) 边际成本
+<span class="cm">// (8) 边际成本</span>
 mc = (1-alpha)*w + alpha*rk - a;
 
-// (9) 资源约束(简化: y = c + i + g)
+<span class="cm">// (9) 资源约束(简化: y = c + i + g)</span>
 y = c + i + g;
 
-// (10) 价格NKPC(含指数化gamma_p与价格加成冲击)
+<span class="cm">// (10) 价格NKPC(含指数化gamma_p与价格加成冲击)</span>
 pi = beta/(1+beta*gamma_p)*pi(+1) ...
     + gamma_p/(1+beta*gamma_p)*pi(-1) ...
     + ((1-theta_p)*(1-beta*theta_p))/(theta_p*(1+beta*gamma_p))*mc ...
     + p_shock;
 
-// (11) 劳动边际替代率(含习惯 h)
+<span class="cm">// (11) 劳动边际替代率(含习惯 h)</span>
 mrs = phi*n + sigma/(1-h)*( c - h*c(-1) );
 
-// (12) 工资Phillips曲线(含指数化gamma_w)
+<span class="cm">// (12) 工资Phillips曲线(含指数化gamma_w)</span>
 pi_w = beta/(1+beta)*pi_w(+1) + 1/(1+beta)*pi_w(-1) ...
      + gamma_w/(1+beta)*pi(-1) ...
      - (1+beta*gamma_w)/(1+beta)*pi + beta/(1+beta)*pi(+1) ...
      + ((1-theta_w)*(1-beta*theta_w))/(theta_w*(1+beta))*( mrs - w ) ...
      + w_shock;
 
-// (13) 实际工资累积关系: w = w(-1) + pi_w - pi
+<span class="cm">// (13) 实际工资累积关系: w = w(-1) + pi_w - pi</span>
 w = w(-1) + pi_w - pi;
 
-// (14) Taylor规则(含利率平滑与货币冲击 eps_m)
+<span class="cm">// (14) Taylor规则(含利率平滑与货币冲击 eps_m)</span>
 r = rho_i*r(-1) ...
     + (1-rho_i)*( phi_pi*pi + phi_y*y ) + eps_m;
 
-// (15-21) 7个外生冲击的AR(1)过程
-a       = rho_a*a(-1)       + eps_a;     // 技术
-i_shock= rho_i2*i_shock(-1) + eps_i;    // 投资专用
-g       = rho_g*g(-1)       + eps_g;    // 政府支出
-p_shock = rho_p*p_shock(-1) + eps_p;    // 价格加成
-w_shock = rho_w*w_shock(-1) + eps_w;    // 工资加成
-b       = rho_b*b(-1)       + eps_b;    // 风险溢价/偏好
-// eps_m 已直接进Taylor规则
+<span class="cm">// (15-21) 7个外生冲击的AR(1)过程</span>
+a       = rho_a*a(-1)       + eps_a;     <span class="cm">// 技术</span>
+i_shock= rho_i2*i_shock(-1) + eps_i;    <span class="cm">// 投资专用</span>
+g       = rho_g*g(-1)       + eps_g;    <span class="cm">// 政府支出</span>
+p_shock = rho_p*p_shock(-1) + eps_p;    <span class="cm">// 价格加成</span>
+w_shock = rho_w*w_shock(-1) + eps_w;    <span class="cm">// 工资加成</span>
+b       = rho_b*b(-1)       + eps_b;    <span class="cm">// 风险溢价/偏好</span>
+<span class="cm">// eps_m 已直接进Taylor规则</span>
 end;
 
-// ---------- Step 5: 稳态求解 ----------
-// 对数线性化模型: 所有变量稳态=0
-// 若写非线性原始模型, 先 initval; 给猜测:
-//   initval;  y=1; c=0.59; i=0.23; k=9.3; n=1/3; pi=0; r=0.01; end;
-//   steady; resid;   // resid; 检查稳态残差
+<span class="cm">// ---------- Step 5: 稳态求解 ----------</span>
+<span class="cm">// 对数线性化模型: 所有变量稳态=0</span>
+<span class="cm">// 若写非线性原始模型, 先 initval; 给猜测:</span>
+<span class="cm">//   initval;  y=1; c=0.59; i=0.23; k=9.3; n=1/3; pi=0; r=0.01; end;</span>
+<span class="cm">//   steady; resid;   // resid; 检查稳态残差</span>
 steady;
 
-// ---------- Step 6: Blanchard-Kahn 诊断 ----------
+<span class="cm">// ---------- Step 6: Blanchard-Kahn 诊断 ----------</span>
 check;
 
-// ---------- Step 7: 冲击方差 ----------
+<span class="cm">// ---------- Step 7: 冲击方差 ----------</span>
 shocks;
-var eps_a = 0.0045^2;   // 技术
-var eps_i = 0.10^2;     // 投资专用
-var eps_g = 0.02^2;     // 政府支出
-var eps_m = 0.0025^2;   // 货币
-var eps_p = 0.01^2;     // 价格加成
-var eps_w = 0.05^2;     // 工资加成
-var eps_b = 0.10^2;     // 风险溢价
+var eps_a = 0.0045^2;   <span class="cm">// 技术</span>
+var eps_i = 0.10^2;     <span class="cm">// 投资专用</span>
+var eps_g = 0.02^2;     <span class="cm">// 政府支出</span>
+var eps_m = 0.0025^2;   <span class="cm">// 货币</span>
+var eps_p = 0.01^2;     <span class="cm">// 价格加成</span>
+var eps_w = 0.05^2;     <span class="cm">// 工资加成</span>
+var eps_b = 0.10^2;     <span class="cm">// 风险溢价</span>
 end;
 
-// ---------- Step 8: 二阶求解 + pruning + IRF ----------
-// order=2: 二阶扰动,含风险修正
-// pruning: 抑制高阶矩累积发散(中尺度多冲击必开)
-// irf=40: 画40期脉冲
+<span class="cm">// ---------- Step 8: 二阶求解 + pruning + IRF ----------</span>
+<span class="cm">// order=2: 二阶扰动,含风险修正</span>
+<span class="cm">// pruning: 抑制高阶矩累积发散(中尺度多冲击必开)</span>
+<span class="cm">// irf=40: 画40期脉冲</span>
 stoch_simul(order=2, irf=40, pruning, nograph) ...
   y c i n pi r w rk q kbar u;
 
-// ============================================================
-// ===== Step 9 (估计用): 贝叶斯估计块 =====
-// 跑估计时把上面 stoch_simul 注释掉, 打开以下块:
-// ============================================================
-// (a) 数据声明: 7个观测变量(与9.1表一一对应)
-// varobs  y_obs c_obs i_obs w_obs n_obs pi_obs r_obs;
-// 数据文件 sw_us_data.m 或 .xlsx 需在运行目录, 列顺序同上,
-// 已按 9.1 处理: 对数差分×100 / ×400 / 利率÷4 / 工时去趋势.
+<span class="cm">// ============================================================</span>
+<span class="cm">// ===== Step 9 (估计用): 贝叶斯估计块 =====</span>
+<span class="cm">// 跑估计时把上面 stoch_simul 注释掉, 打开以下块:</span>
+<span class="cm">// ============================================================</span>
+<span class="cm">// (a) 数据声明: 7个观测变量(与9.1表一一对应)</span>
+<span class="cm">// varobs  y_obs c_obs i_obs w_obs n_obs pi_obs r_obs;</span>
+<span class="cm">// 数据文件 sw_us_data.m 或 .xlsx 需在运行目录, 列顺序同上,</span>
+<span class="cm">// 已按 9.1 处理: 对数差分×100 / ×400 / 利率÷4 / 工时去趋势.</span>
 
-// (b) 先验(对应9.3表): 分布(mean,std)
-// estimated_params;
-//   h,           beta_pdf,   0.70, 0.10;     // 习惯
-//   sigma,       normal_pdf, 1.50, 0.37;     // 效用曲率
-//   phi,         normal_pdf, 2.00, 0.75;    // Frisch逆
-//   invadj,      normal_pdf, 4.00, 1.50;    // 投资调整成本
-//   theta_p,     beta_pdf,   0.50, 0.10;     // 价格Calvo
-//   theta_w,     beta_pdf,   0.50, 0.10;     // 工资Calvo
-//   gamma_p,     beta_pdf,   0.50, 0.15;     // 价格指数化
-//   gamma_w,     beta_pdf,   0.50, 0.15;     // 工资指数化
-//   psi,         beta_pdf,   0.50, 0.15;     // 利用率曲率
-//   rho_i,       beta_pdf,   0.75, 0.10;     // 利率平滑
-//   phi_pi,      normal_pdf, 1.50, 0.25;     // Taylor通胀
-//   phi_y,       normal_pdf, 0.125,0.05;     // Taylor产出
-//   // 6个AR(1)持续性
-//   rho_a,rho_i2,rho_g,rho_p,rho_w,rho_b, beta_pdf, 0.50, 0.20;
-//   // 7个冲击标准差(逆Gamma弱信息)
-//   stderr eps_a,  inv_gamma_pdf, 0.10, 2.00;
-//   stderr eps_i,  inv_gamma_pdf, 0.10, 2.00;
-//   stderr eps_g,  inv_gamma_pdf, 0.10, 2.00;
-//   stderr eps_m,  inv_gamma_pdf, 0.10, 2.00;
-//   stderr eps_p,  inv_gamma_pdf, 0.10, 2.00;
-//   stderr eps_w,  inv_gamma_pdf, 0.10, 2.00;
-//   stderr eps_b,  inv_gamma_pdf, 0.10, 2.00;
-// end;
+<span class="cm">// (b) 先验(对应9.3表): 分布(mean,std)</span>
+<span class="cm">// estimated_params;</span>
+<span class="cm">//   h,           beta_pdf,   0.70, 0.10;     // 习惯</span>
+<span class="cm">//   sigma,       normal_pdf, 1.50, 0.37;     // 效用曲率</span>
+<span class="cm">//   phi,         normal_pdf, 2.00, 0.75;    // Frisch逆</span>
+<span class="cm">//   invadj,      normal_pdf, 4.00, 1.50;    // 投资调整成本</span>
+<span class="cm">//   theta_p,     beta_pdf,   0.50, 0.10;     // 价格Calvo</span>
+<span class="cm">//   theta_w,     beta_pdf,   0.50, 0.10;     // 工资Calvo</span>
+<span class="cm">//   gamma_p,     beta_pdf,   0.50, 0.15;     // 价格指数化</span>
+<span class="cm">//   gamma_w,     beta_pdf,   0.50, 0.15;     // 工资指数化</span>
+<span class="cm">//   psi,         beta_pdf,   0.50, 0.15;     // 利用率曲率</span>
+<span class="cm">//   rho_i,       beta_pdf,   0.75, 0.10;     // 利率平滑</span>
+<span class="cm">//   phi_pi,      normal_pdf, 1.50, 0.25;     // Taylor通胀</span>
+<span class="cm">//   phi_y,       normal_pdf, 0.125,0.05;     // Taylor产出</span>
+<span class="cm">//   // 6个AR(1)持续性</span>
+<span class="cm">//   rho_a,rho_i2,rho_g,rho_p,rho_w,rho_b, beta_pdf, 0.50, 0.20;</span>
+<span class="cm">//   // 7个冲击标准差(逆Gamma弱信息)</span>
+<span class="cm">//   stderr eps_a,  inv_gamma_pdf, 0.10, 2.00;</span>
+<span class="cm">//   stderr eps_i,  inv_gamma_pdf, 0.10, 2.00;</span>
+<span class="cm">//   stderr eps_g,  inv_gamma_pdf, 0.10, 2.00;</span>
+<span class="cm">//   stderr eps_m,  inv_gamma_pdf, 0.10, 2.00;</span>
+<span class="cm">//   stderr eps_p,  inv_gamma_pdf, 0.10, 2.00;</span>
+<span class="cm">//   stderr eps_w,  inv_gamma_pdf, 0.10, 2.00;</span>
+<span class="cm">//   stderr eps_b,  inv_gamma_pdf, 0.10, 2.00;</span>
+<span class="cm">// end;</span>
 
-// (c) Kalman滤波+后验众数+MH抽样
-// estimation(datafile=sw_us_data, xlsrange='B2:H180', ...
-//            mode_compute=6,         % Newton找后验众数
-//            mh_nblocks=2,           % 两条独立链
-//            mh_replic=200000,       % 每条20万步
-//            mh_jscale=0.4,          % 调到接受率25%-35%
-//            mcmc=drop,              % 自动去burn-in
-//            filter_covariance, ...
-//            smoothed_state, ...
-//            irf=40, periods=100);
-// 跑完后 Dynare 输出:
-//   - 后验均值/90%置信区间表
-//   - BGR多变量收敛图(应收敛到1)
-//   - 边际似然、预测似然(模型比较)
-//   - smoothed 冲击实现(历史分解)
+<span class="cm">// (c) Kalman滤波+后验众数+MH抽样</span>
+<span class="cm">// estimation(datafile=sw_us_data, xlsrange='B2:H180', ...</span>
+<span class="cm">//            mode_compute=6,         % Newton找后验众数</span>
+<span class="cm">//            mh_nblocks=2,           % 两条独立链</span>
+<span class="cm">//            mh_replic=200000,       % 每条20万步</span>
+<span class="cm">//            mh_jscale=0.4,          % 调到接受率25%-35%</span>
+<span class="cm">//            mcmc=drop,              % 自动去burn-in</span>
+<span class="cm">//            filter_covariance, ...</span>
+<span class="cm">//            smoothed_state, ...</span>
+<span class="cm">//            irf=40, periods=100);</span>
+<span class="cm">// 跑完后 Dynare 输出:</span>
+<span class="cm">//   - 后验均值/90%置信区间表</span>
+<span class="cm">//   - BGR多变量收敛图(应收敛到1)</span>
+<span class="cm">//   - 边际似然、预测似然(模型比较)</span>
+<span class="cm">//   - smoothed 冲击实现(历史分解)</span>
 </code></pre>
       </div>
       <div class="callout warning">

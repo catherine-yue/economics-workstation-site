@@ -350,7 +350,7 @@
       <div class="code-block">
         <div class="code-header"><span class="lang">Python · numpy</span><button class="copy-btn">复制</button></div>
 <pre><code># ============================================================
-# Monte, Redding & Rossi-Hansberg (2018, REStud)
+# Monte, Redding &amp; Rossi-Hansberg (2018, REStud)
 # 通勤与贸易一体化模型求解器
 # 三市场：货物贸易(EK) + 通勤选择(Logit) + 土地市场
 # 已实跑验证：numpy 1.26
@@ -425,7 +425,7 @@ def solve_mrrh(N=8, theta=4.0, nu=0.3, beta=0.75,
         w_upd = damp * w_new + (1 - damp) * w
         err = max(np.max(np.abs(r_upd - r)), np.max(np.abs(w_upd - w)))
         r, w = r_upd, w_upd
-        if err < tol:
+        if err &lt; tol:
             print(f"收敛于第 {it} 轮, err={err:.2e}")
             break
 

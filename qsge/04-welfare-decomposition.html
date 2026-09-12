@@ -396,16 +396,16 @@ def acr_gain(lam_nn, theta):
 # ---------- 3. 对不同 theta 计算 ----------
 thetas = [3.0, 5.0, 8.28]   # EK 2002 估计 = 8.28；Simonovska-Waugh = 5；下限 = 3
 
-print(f"{'国家':<10} {'λ_nn':<6}", end="")
+print(f"{'国家':&lt;10} {'λ_nn':&lt;6}", end="")
 for th in thetas:
-    print(f" θ={th:<6}", end="")
+    print(f" θ={th:&lt;6}", end="")
 print()
 print("-" * 60)
 for c, lam in countries.items():
-    print(f"{c:<10} {lam:<6.2f}", end="")
+    print(f"{c:&lt;10} {lam:&lt;6.2f}", end="")
     for th in thetas:
         g = acr_gain(lam, th) * 100
-        print(f" {g:>6.2f}%  ", end="")
+        print(f" {g:&gt;6.2f}%  ", end="")
     print()
 
 # ---------- 4. 反事实：贸易成本下降 10% 的福利变化 ----------
@@ -418,7 +418,7 @@ for c, lam in countries.items():
     # 一阶近似：ln(lam'_nn/lam_nn) ≈ 0.10 * (1 - lam_nn) / lam_nn  （粗略）
     # 严格公式见 05 页 hat algebra
     approx_change = 0.10 / theta * 100  # 一阶：每降 10% 成本，福利上升 ~2%
-    print(f"  {c:<10} 近似福利变化 ≈ +{approx_change:.2f}%")
+    print(f"  {c:&lt;10} 近似福利变化 ≈ +{approx_change:.2f}%")
 
 # ---------- 5. 验证 ACR 公式在 EK 模型里的精确性 ----------
 # 我们用 02 页的 solve_ek 跑一个反事实，对比帽子代数结果与 ACR 公式预测
@@ -439,7 +439,7 @@ def solve_ek(T, L, tau, theta, tol=1e-10):
         excess = sales/(w*L)
         w = w * excess**0.3
         w = w / np.sum(w*L); X = w*L
-        if np.max(np.abs(excess-1)) < tol: break
+        if np.max(np.abs(excess-1)) &lt; tol: break
     cost = w[None,:]*tau
     S = T[None,:] * cost**(-theta)
     pi = S / S.sum(axis=1, keepdims=True)

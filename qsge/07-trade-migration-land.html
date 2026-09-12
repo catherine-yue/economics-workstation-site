@@ -467,7 +467,7 @@ def solve_tml(N=6, theta=4.0, nu=2.0, beta=0.75,
         for _ in range(50):
             L_next = np.sum(m * L_new[:, None], axis=0)
             L_next = L_next / L_next.sum() * Lbar
-            if np.max(np.abs(L_next - L_new)) < 1e-10:
+            if np.max(np.abs(L_next - L_new)) &lt; 1e-10:
                 L_new = L_next; break
             L_new = 0.5*L_next + 0.5*L_new
 
@@ -480,7 +480,7 @@ def solve_tml(N=6, theta=4.0, nu=2.0, beta=0.75,
         w = damp*w_new + (1-damp)*w
         L = L_new
         err = np.max(np.abs(w - w_new)) + np.max(np.abs(Q - Q_new))
-        if err < tol:
+        if err &lt; tol:
             print(f"收敛于第 {it} 轮, err={err:.2e}"); break
 
     return dict(w=w, Q=Q, L=L, P=P, pi=pi, m=m, U=U)
@@ -537,7 +537,7 @@ def static_equilibrium(L, T, d, theta, beta, eland, H0,
         err = np.max(np.abs(w_new - w)) + np.max(np.abs(Q_new - Q))
         w = damp * w_new + (1 - damp) * w
         Q = damp * Q_new + (1 - damp) * Q
-        if err < tol:
+        if err &lt; tol:
             break
     return dict(w=w, P=P, Q=Q_new, U=U, pi=pi)
 
@@ -578,12 +578,12 @@ def forward_population(V, U_path, tau, nu, L0, T_horiz):
 
 # ---------- (D) 稳态主特征向量 ----------
 def steady_state_population(m, Lbar=1.0, tol=1e-12, maxiter=100000):
-    """反复迭代 L <- m^T L 直到收敛 (Perron-Frobenius)。"""
+    """反复迭代 L &lt;- m^T L 直到收敛 (Perron-Frobenius)。"""
     L = np.ones(len(m)) / len(m)
     for _ in range(maxiter):
         L_next = m.T @ L
         L_next = L_next / L_next.sum() * Lbar
-        if np.max(np.abs(L_next - L)) < tol:
+        if np.max(np.abs(L_next - L)) &lt; tol:
             return L_next
         L = L_next
     return L
@@ -610,7 +610,7 @@ def solve_dynamic(N=5, T_horiz=60, theta=4.0, nu=2.0, beta_disc=0.95,
         eq = static_equilibrium(L_path[t], T_prod, d, theta,
                                  beta, eland, H0, w_init=w_guess)
         U_path[t] = eq["U"]; w_guess = eq["w"]
-        if t < T_horiz:
+        if t &lt; T_horiz:
             # 先用静态 m 推一步人口, 让 L_path 与 U_path 一致
             u = np.log(U_path[t])[None, :] - np.log(tau)
             m_s = np.exp(u / nu); m_s /= m_s.sum(axis=1, keepdims=True)

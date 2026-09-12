@@ -287,75 +287,75 @@
     <p>下面这段代码完整演示：(1) 用模拟数据构造 1 个处理地区 + 20 个 donor；(2) 跑 <code class="inline">synth</code>；(3) 画出处理效应图；(4) 跑 <code class="inline">synth_runner</code> 做安慰剂检验。所有命令在 Stata 17+ 上可运行。</p>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · scm_demo.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* ============================================================
-* 合成控制法 SCM 完整演示
-* 场景：某省（id=1）在 2010 年实施自贸区政策，其余 20 省未实施
-* 目标：估计自贸区对 lnGDP 的因果效应
-* ============================================================
+<pre><code><span class="cm-l">* ============================================================</span>
+<span class="cm-l">* 合成控制法 SCM 完整演示</span>
+<span class="cm-l">* 场景：某省（id=1）在 2010 年实施自贸区政策，其余 20 省未实施</span>
+<span class="cm-l">* 目标：估计自贸区对 lnGDP 的因果效应</span>
+<span class="cm-l">* ============================================================</span>
 clear all
 set seed 20240101
-set obs 2100                              // 21 地区 × 100 年
-gen id = ceil(_n/100)                      // 地区编号 1..21
-bysort id: gen year = 1950 + _n            // 年份 1950..2049
+set obs 2100                              <span class="cm">// 21 地区 × 100 年</span>
+gen id = ceil(_n/100)                      <span class="cm">// 地区编号 1..21</span>
+bysort id: gen year = 1950 + _n            <span class="cm">// 年份 1950..2049</span>
 
-* --- 1. 模拟结果变量：地区固定效应 + 共同趋势 + 政策效应 ---
-gen u_i = rnormal(0, 0.5) in 1/21          // 地区固定效应（每地区抽一次）
+<span class="cm-l">* --- 1. 模拟结果变量：地区固定效应 + 共同趋势 + 政策效应 ---</span>
+gen u_i = rnormal(0, 0.5) in 1/21          <span class="cm">// 地区固定效应（每地区抽一次）</span>
 bysort id: replace u_i = u_i[1]
 gen t = year - 1950
-gen y = 2 + 0.05*t + u_i + rnormal(0, 0.2) // 无政策时的 lnGDP
+gen y = 2 + 0.05*t + u_i + rnormal(0, 0.2) <span class="cm">// 无政策时的 lnGDP</span>
 
-* 处理单位 id=1 在 2010 年起获得 +0.3 的政策效应
+<span class="cm-l">* 处理单位 id=1 在 2010 年起获得 +0.3 的政策效应</span>
 replace y = y + 0.3 if id==1 &amp; year&gt;=2010
 
-* --- 2. 预测变量（政策前 2000-2009 年的均值）---
-* 为简化，这里用几个常数型变量 + 政策前结果变量均值
+<span class="cm-l">* --- 2. 预测变量（政策前 2000-2009 年的均值）---</span>
+<span class="cm-l">* 为简化，这里用几个常数型变量 + 政策前结果变量均值</span>
 gen x1 = rnormal(0, 1) in 1/21
 bysort id: replace x1 = x1[1]
 gen x2 = rnormal(0, 1) in 1/21
 bysort id: replace x2 = x2[1]
 
-* --- 3. 安装外部命令 ---
-* ssc install synth, replace
-* ssc install synth_runner, replace
+<span class="cm-l">* --- 3. 安装外部命令 ---</span>
+<span class="cm-l">* ssc install synth, replace</span>
+<span class="cm-l">* ssc install synth_runner, replace</span>
 
-* --- 4. 跑 synth（经典版）---
-* synth 语法：synth 结果变量 预测变量(英文变量列表), trunit(处理单位) trperiod(政策期)
-* 这里我们用 x1 x2 + 政策前若干年的结果变量作为预测变量
+<span class="cm-l">* --- 4. 跑 synth（经典版）---</span>
+<span class="cm-l">* synth 语法：synth 结果变量 预测变量(英文变量列表), trunit(处理单位) trperiod(政策期)</span>
+<span class="cm-l">* 这里我们用 x1 x2 + 政策前若干年的结果变量作为预测变量</span>
 preserve
-    keep if year &lt;= 2009                  // 只用政策前数据估计权重
-    * 构造政策前结果变量的若干年份均值作为预测变量
-    * synth 要求数据是 wide 形式：每地区一行，列是各年 y
+    keep if year &lt;= 2009                  <span class="cm">// 只用政策前数据估计权重</span>
+<span class="cm-l">    * 构造政策前结果变量的若干年份均值作为预测变量</span>
+<span class="cm-l">    * synth 要求数据是 wide 形式：每地区一行，列是各年 y</span>
     collapse (mean) y, by(id year)
     reshape wide y, i(id) j(year)
-    * 用 2000-2009 年的 y 作为预测变量（典型 SCM 做法）
-    synth y2009 y2008 y2007 y2006 y2005 x1 x2, ///
+<span class="cm-l">    * 用 2000-2009 年的 y 作为预测变量（典型 SCM 做法）</span>
+    synth y2009 y2008 y2007 y2006 y2005 x1 x2, <span class="cm">///</span>
         trunit(1) trperiod(2010) keep(scm_result)
 restore
 
-* --- 5. 用 synth_runner 跑完整流程 + 安慰剂检验 ---
-* synth_runner 是更现代的封装，自动画 gap plot、算 RMSPE ratio
+<span class="cm-l">* --- 5. 用 synth_runner 跑完整流程 + 安慰剂检验 ---</span>
+<span class="cm-l">* synth_runner 是更现代的封装，自动画 gap plot、算 RMSPE ratio</span>
 preserve
-    keep if year &lt;= 2019                  // 政策后 10 年窗口
+    keep if year &lt;= 2019                  <span class="cm">// 政策后 10 年窗口</span>
     reshape wide y x1 x2, i(id) j(year)
-    * synth_runner 语法（需先 install）
-    * synth_runner y, trunit(1) trperiod(2010) ///
-    *     pre(1980/2009) post(2010/2019) ///
-    *    covariates(x1 x2) ///
-    *    mspeperiod(1980/2009) ///
-    *    figure_name(gap_plot)
-    * 输出：
-    *   - _data.dta     : 处理 vs 合成的逐年差距
-    *   - placebo_results: 所有单位的伪效应
-    *   - gap plot      : 真实效应是否跳出信封
+<span class="cm-l">    * synth_runner 语法（需先 install）</span>
+<span class="cm-l">    * synth_runner y, trunit(1) trperiod(2010) ///</span>
+<span class="cm-l">    *     pre(1980/2009) post(2010/2019) ///</span>
+<span class="cm-l">    *    covariates(x1 x2) ///</span>
+<span class="cm-l">    *    mspeperiod(1980/2009) ///</span>
+<span class="cm-l">    *    figure_name(gap_plot)</span>
+<span class="cm-l">    * 输出：</span>
+<span class="cm-l">    *   - _data.dta     : 处理 vs 合成的逐年差距</span>
+<span class="cm-l">    *   - placebo_results: 所有单位的伪效应</span>
+<span class="cm-l">    *   - gap plot      : 真实效应是否跳出信封</span>
 restore
 
-* --- 6. 手动解读关键输出 ---
-* synth 输出表 1：权重 W*
-*   关注：哪几个 donor 权重 &gt; 0.01？加起来是否 = 1？
-* synth 输出表 2：预测变量均值对比
-*   关注：处理单位 vs 合成单位在每个预测变量上的差距是否 &lt; 0.1 SD
-* synth 输出表 3：RMSPE
-*   pre-RMSPE 应 &lt; post-RMSPE / 5
+<span class="cm-l">* --- 6. 手动解读关键输出 ---</span>
+<span class="cm-l">* synth 输出表 1：权重 W*</span>
+<span class="cm-l">*   关注：哪几个 donor 权重 &gt; 0.01？加起来是否 = 1？</span>
+<span class="cm-l">* synth 输出表 2：预测变量均值对比</span>
+<span class="cm-l">*   关注：处理单位 vs 合成单位在每个预测变量上的差距是否 &lt; 0.1 SD</span>
+<span class="cm-l">* synth 输出表 3：RMSPE</span>
+<span class="cm-l">*   pre-RMSPE 应 &lt; post-RMSPE / 5</span>
 </code></pre>
     </div>
     <div class="callout tip">

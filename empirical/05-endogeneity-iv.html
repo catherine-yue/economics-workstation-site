@@ -297,47 +297,47 @@
     <h3>04b.3 完整 Stata 代码：弱IV诊断</h3>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · weak_iv_diag.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* 弱工具变量诊断：第一阶段F / Stock-Yogo / weakivtest
-* 用模拟数据，set seed 保证可复现
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* 弱工具变量诊断：第一阶段F / Stock-Yogo / weakivtest</span>
+<span class="cm-l">* 用模拟数据，set seed 保证可复现</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set seed 20240601
 set obs 500
-* 构造一个"工具很弱"的例子：z 对 x 的系数只有 0.2
+<span class="cm-l">* 构造一个"工具很弱"的例子：z 对 x 的系数只有 0.2</span>
 gen z1 = rnormal()
 gen z2 = rnormal()
 gen z3 = rnormal()
 gen u  = rnormal()
-gen x  = 0.2*z1 + 0.2*z2 + 0.2*z3 + u      // 第一阶段信号弱
-gen y  = 0.5*x + u + rnormal()             // x 与 u 相关 => 内生
+gen x  = 0.2*z1 + 0.2*z2 + 0.2*z3 + u      <span class="cm">// 第一阶段信号弱</span>
+gen y  = 0.5*x + u + rnormal()             <span class="cm">// x 与 u 相关 =&gt; 内生</span>
 
-* --- 1. ivregress + estat firststage（内置）---
+<span class="cm-l">* --- 1. ivregress + estat firststage（内置）---</span>
 ivregress 2sls y (x = z1 z2 z3), robust
 estat firststage
-* 关注：
-*   "First-stage F( 3, 496)" 列：与 Stock-Yogo 临界值比较
-*   若 F 明显 &lt; 10（或低于 10% maximal size 临界值）=> 弱IV
+<span class="cm-l">* 关注：</span>
+<span class="cm-l">*   "First-stage F( 3, 496)" 列：与 Stock-Yogo 临界值比较</span>
+<span class="cm-l">*   若 F 明显 &lt; 10（或低于 10% maximal size 临界值）=&gt; 弱IV</span>
 
-* --- 2. ivreg2：一次输出全部诊断 ---
-* ssc install ivreg2, replace
-* ssc install ranktest, replace
+<span class="cm-l">* --- 2. ivreg2：一次输出全部诊断 ---</span>
+<span class="cm-l">* ssc install ivreg2, replace</span>
+<span class="cm-l">* ssc install ranktest, replace</span>
 ivreg2 y (x = z1 z2 z3), robust first
-* 自动输出：
-*   Underidentification test (Kleibergen-Paap rk LM)   -> H0 不可识别
-*   Weak identification stat (Cragg-Donald Wald F / Kleibergen-Paap rk Wald F)
-*   Stock-Yogo weak ID test critical values（自动按 K1,L1 列临界值）
-*   Sargan/Hansen J（过度识别）
+<span class="cm-l">* 自动输出：</span>
+<span class="cm-l">*   Underidentification test (Kleibergen-Paap rk LM)   -&gt; H0 不可识别</span>
+<span class="cm-l">*   Weak identification stat (Cragg-Donald Wald F / Kleibergen-Paap rk Wald F)</span>
+<span class="cm-l">*   Stock-Yogo weak ID test critical values（自动按 K1,L1 列临界值）</span>
+<span class="cm-l">*   Sargan/Hansen J（过度识别）</span>
 
-* --- 3. weakivtest（仅弱识别检验，Stata 17+ 或外部）---
-* ssc install weakivtest, replace
+<span class="cm-l">* --- 3. weakivtest（仅弱识别检验，Stata 17+ 或外部）---</span>
+<span class="cm-l">* ssc install weakivtest, replace</span>
 weakivtest
-* 输出：最小特征值 F、对应 Stock-Yogo 容差（实际最大 size/relative bias）
+<span class="cm-l">* 输出：最小特征值 F、对应 Stock-Yogo 容差（实际最大 size/relative bias）</span>
 
-* --- 4. weakiv（Pflueger-Wang 有效F，异方差/聚类稳健）---
-* ssc install weakiv, replace
+<span class="cm-l">* --- 4. weakiv（Pflueger-Wang 有效F，异方差/聚类稳健）---</span>
+<span class="cm-l">* ssc install weakiv, replace</span>
 weakiv y (x = z1 z2 z3), robust
-* 适用于异方差/聚类/自相关：报告 effective F 与 5% 临界值
+<span class="cm-l">* 适用于异方差/聚类/自相关：报告 effective F 与 5% 临界值</span>
 </code></pre>
     </div>
   </div>
@@ -374,46 +374,46 @@ weakiv y (x = z1 z2 z3), robust
     <h3>05b.4 完整 Stata 代码</h3>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · weakiv_robust.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* 弱IV稳健推断：AR / CLR / rk LM
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* 弱IV稳健推断：AR / CLR / rk LM</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set seed 20240602
 sysuse auto.dta, clear
 global Y price
-global T  foreign          // 内生处理变量
-global C  weight           //  Included 外生控制
-* 用 length、displacement 作为 foreign 的两个工具（教学例）
+global T  foreign          <span class="cm">// 内生处理变量</span>
+global C  weight           <span class="cm">//  Included 外生控制</span>
+<span class="cm-l">* 用 length、displacement 作为 foreign 的两个工具（教学例）</span>
 
-* --- 1. ivreg2 自带：AR / CLR / K-P rk LM 一次出齐 ---
-* ssc install ivreg2, replace
+<span class="cm-l">* --- 1. ivreg2 自带：AR / CLR / K-P rk LM 一次出齐 ---</span>
+<span class="cm-l">* ssc install ivreg2, replace</span>
 ivreg2 $Y $C ($T = length displacement), robust
-* 诊断块直接给：
-*   Kleibergen-Paap rk LM statistic      -> underidentification (H0 rank deficient)
-*   Kleibergen-Paap rk Wald F statistic   -> weak identification
-*   Anderson-Rubin statistic               -> weak-IV robust 检验 H0: beta=0
-*   Stock-Wright LM S statistic           -> 另一种 weak-IV robust 检验
-*   Hansen J                              -> overidentification
+<span class="cm-l">* 诊断块直接给：</span>
+<span class="cm-l">*   Kleibergen-Paap rk LM statistic      -&gt; underidentification (H0 rank deficient)</span>
+<span class="cm-l">*   Kleibergen-Paap rk Wald F statistic   -&gt; weak identification</span>
+<span class="cm-l">*   Anderson-Rubin statistic               -&gt; weak-IV robust 检验 H0: beta=0</span>
+<span class="cm-l">*   Stock-Wright LM S statistic           -&gt; 另一种 weak-IV robust 检验</span>
+<span class="cm-l">*   Hansen J                              -&gt; overidentification</span>
 
-* --- 2. weakiv 命令：AR / CLR / Lagrange multiplier 稳健检验 ---
-* ssc install weakiv, replace
+<span class="cm-l">* --- 2. weakiv 命令：AR / CLR / Lagrange multiplier 稳健检验 ---</span>
+<span class="cm-l">* ssc install weakiv, replace</span>
 weakiv $Y $C ($T = length displacement), robust
-* 输出三类 weak-identification-robust 统计量及其 p 值：
-*   AR (Anderson-Rubin), LM (K.-P. score), CLR (conditional LHR)
-* 并给出对应置信区间 / 置信集
+<span class="cm-l">* 输出三类 weak-identification-robust 统计量及其 p 值：</span>
+<span class="cm-l">*   AR (Anderson-Rubin), LM (K.-P. score), CLR (conditional LHR)</span>
+<span class="cm-l">* 并给出对应置信区间 / 置信集</span>
 
-* --- 3. 手算 AR 检验（理解原理，H0: beta_T = b0）---
-* 思路：在 y - b0*x 上对全部外生变量(含工具)回归，看工具是否联合显著
-local b0 = 0                      // 检验 H0: beta_foreign = 0
+<span class="cm-l">* --- 3. 手算 AR 检验（理解原理，H0: beta_T = b0）---</span>
+<span class="cm-l">* 思路：在 y - b0*x 上对全部外生变量(含工具)回归，看工具是否联合显著</span>
+local b0 = 0                      <span class="cm">// 检验 H0: beta_foreign = 0</span>
 gen ystar = $Y - `b0'*$T
 regress ystar $C length displacement
-test length displacement          // H0: 两个工具系数联合为0 => AR p 值
-* 若不拒绝 => beta=0 落在 AR 置信集内
+test length displacement          <span class="cm">// H0: 两个工具系数联合为0 =&gt; AR p 值</span>
+<span class="cm-l">* 若不拒绝 =&gt; beta=0 落在 AR 置信集内</span>
 
-* --- 4. 恰好识别单工具：用 rivtest / AR 置信区间 ---
-* ssc install rivtest, replace
+<span class="cm-l">* --- 4. 恰好识别单工具：用 rivtest / AR 置信区间 ---</span>
+<span class="cm-l">* ssc install rivtest, replace</span>
 rivtest $Y $C ($T = length), robust
-* 画 AR 置信集：图形化展示 beta 的弱IV稳健取值范围
+<span class="cm-l">* 画 AR 置信集：图形化展示 beta 的弱IV稳健取值范围</span>
 </code></pre>
     </div>
     <div class="callout tip">
@@ -428,60 +428,60 @@ rivtest $Y $C ($T = length), robust
 
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · iv_2sls.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* 内生性与 2SLS 完整演示
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* 内生性与 2SLS 完整演示</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set more off
-* ssc install estout, replace
+<span class="cm-l">* ssc install estout, replace</span>
 
 sysuse auto.dta, clear
 
-* --- 0. 先用 OLS 跑一下，作为对照 ---
-* 关注的内生变量：foreign（是否外国车）
-* 我们想估计 foreign 对 price 的影响
+<span class="cm-l">* --- 0. 先用 OLS 跑一下，作为对照 ---</span>
+<span class="cm-l">* 关注的内生变量：foreign（是否外国车）</span>
+<span class="cm-l">* 我们想估计 foreign 对 price 的影响</span>
 regress price foreign weight length
 estimates store ols
 
-* --- 1. 简单 IV：单个工具变量 length ---
-* 假设 length 只通过 foreign / weight 影响 price
+<span class="cm-l">* --- 1. 简单 IV：单个工具变量 length ---</span>
+<span class="cm-l">* 假设 length 只通过 foreign / weight 影响 price</span>
 ivregress 2sls price weight (foreign = length), robust
 estimates store iv1
 
-* 第一阶段：直接看 length 是否显著影响 foreign
+<span class="cm-l">* 第一阶段：直接看 length 是否显著影响 foreign</span>
 regress foreign weight length
 estimates store firststage
 
-* --- 2. 看第一阶段 F 统计量（弱 IV 检验） ---
+<span class="cm-l">* --- 2. 看第一阶段 F 统计量（弱 IV 检验） ---</span>
 ivregress 2sls price weight (foreign = length), robust
 estat firststage
-* 若 "F( 1, ... )" &gt; 10，则不是弱工具
+<span class="cm-l">* 若 "F( 1, ... )" &gt; 10，则不是弱工具</span>
 
-* --- 3. 多个工具变量 + 聚类标准误 + 过度识别检验 ---
-* 用 length 和 displacement 两个变量作为 foreign 的工具
+<span class="cm-l">* --- 3. 多个工具变量 + 聚类标准误 + 过度识别检验 ---</span>
+<span class="cm-l">* 用 length 和 displacement 两个变量作为 foreign 的工具</span>
 ivregress 2sls price weight (foreign = length displacement), robust
-estat firststage              // Cragg-Donald F
-estat overid                  // Sargan / Hansen J 过度识别检验
+estat firststage              <span class="cm">// Cragg-Donald F</span>
+estat overid                  <span class="cm">// Sargan / Hansen J 过度识别检验</span>
 
-* --- 4. 用 ivreg2（外部命令，输出更全） ---
-* ssc install ivreg2, replace
-* ssc install ranktest, replace
+<span class="cm-l">* --- 4. 用 ivreg2（外部命令，输出更全） ---</span>
+<span class="cm-l">* ssc install ivreg2, replace</span>
+<span class="cm-l">* ssc install ranktest, replace</span>
 ivreg2 price weight (foreign = length displacement), robust first
-* ivreg2 自动输出：
-*   - Kleibergen-Paap rk LM statistic (underidentification)
-*   - Cragg-Donald Wald F / Kleibergen-Paap Wald F (weak IV)
-*   - Hansen J statistic (overidentification)
+<span class="cm-l">* ivreg2 自动输出：</span>
+<span class="cm-l">*   - Kleibergen-Paap rk LM statistic (underidentification)</span>
+<span class="cm-l">*   - Cragg-Donald Wald F / Kleibergen-Paap Wald F (weak IV)</span>
+<span class="cm-l">*   - Hansen J statistic (overidentification)</span>
 
-* --- 5. Anderson-Rubin 弱识别稳健置信区间 ---
-* ssc install rivtest, replace
-* rivtest price weight (foreign = length displacement), robust
+<span class="cm-l">* --- 5. Anderson-Rubin 弱识别稳健置信区间 ---</span>
+<span class="cm-l">* ssc install rivtest, replace</span>
+<span class="cm-l">* rivtest price weight (foreign = length displacement), robust</span>
 
-* --- 6. 用 esttab 导出 IV 结果到三线表 ---
-esttab ols iv1 firststage using "table_iv.rtf", replace ///
-    b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) ///
-    mtitles("OLS" "2SLS" "第一阶段") ///
-    stats(N r2, fmt(0 3) labels("观测值" "R^2")) ///
-    title("表 X：foreign 对 price 的影响，IV 估计") ///
+<span class="cm-l">* --- 6. 用 esttab 导出 IV 结果到三线表 ---</span>
+esttab ols iv1 firststage using "table_iv.rtf", replace <span class="cm">///</span>
+    b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) <span class="cm">///</span>
+    mtitles("OLS" "2SLS" "第一阶段") <span class="cm">///</span>
+    stats(N r2, fmt(0 3) labels("观测值" "R^2")) <span class="cm">///</span>
+    title("表 X：foreign 对 price 的影响，IV 估计") <span class="cm">///</span>
     nogaps compress
 </code></pre>
     </div>
@@ -510,15 +510,15 @@ esttab ols iv1 firststage using "table_iv.rtf", replace ///
     <h3>06b.2 Stata 代码：post-double selection IV</h3>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · pds_iv.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* 高维控制下的 IV：Post-Double Selection（Belloni-Chernozhukov-Hansen 2014）
-* 思路：Lasso 选变量 -> 并集 -> 低维 2SLS
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* 高维控制下的 IV：Post-Double Selection（Belloni-Chernozhukov-Hansen 2014）</span>
+<span class="cm-l">* 思路：Lasso 选变量 -&gt; 并集 -&gt; 低维 2SLS</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set seed 20240603
 set obs 1000
 
-* 模拟：x 内生，候选工具 z1..z10，候选控制 w1..w50（高维）
+<span class="cm-l">* 模拟：x 内生，候选工具 z1..z10，候选控制 w1..w50（高维）</span>
 set seed 20240603
 gen z1 = rnormal(), z2 = rnormal(), z3 = rnormal()
 forvalues j = 4/10 {
@@ -528,30 +528,30 @@ forvalues j = 1/50 {
     gen w`j' = rnormal()
 }
 gen u   = rnormal()
-* 真实结构：只有 z1,z2 真的影响 x；只有 w1,w2,w3 真的混淆 y-x
+<span class="cm-l">* 真实结构：只有 z1,z2 真的影响 x；只有 w1,w2,w3 真的混淆 y-x</span>
 gen x   = 0.5*z1 + 0.5*z2 + 0.3*w1 + 0.3*w2 + u
 gen y    = 0.4*x + 0.5*w1 + 0.5*w2 + 0.5*w3 + u + rnormal()
 
-* --- 1. 第一阶段选择：Lasso 找预测 x 的变量 ---
-* ssc install lassopack, replace
+<span class="cm-l">* --- 1. 第一阶段选择：Lasso 找预测 x 的变量 ---</span>
+<span class="cm-l">* ssc install lassopack, replace</span>
 lasso linear x w1-w50, rseed(20240603)
-local S_x : allvars              // 选出的预测 x 的协变量（含混淆）
+local S_x : allvars              <span class="cm">// 选出的预测 x 的协变量（含混淆）</span>
 
-* --- 2. 结果方程选择：Lasso 找预测 y 的变量（不含 x）---
+<span class="cm-l">* --- 2. 结果方程选择：Lasso 找预测 y 的变量（不含 x）---</span>
 lasso linear y w1-w50, rseed(20240603)
 local S_y : allvars
 
-* --- 3. 取并集（此处教学上简化为全部 w1-w3 参与）---
-* 实务中把 S_x 与 S_y 的并集存入 local：
+<span class="cm-l">* --- 3. 取并集（此处教学上简化为全部 w1-w3 参与）---</span>
+<span class="cm-l">* 实务中把 S_x 与 S_y 的并集存入 local：</span>
 global W_sel w1 w2 w3
 
-* --- 4. 在选中的低维控制集上做 2SLS ---
+<span class="cm-l">* --- 4. 在选中的低维控制集上做 2SLS ---</span>
 ivregress 2sls y $W_sel (x = z1 z2), robust
 estat firststage
 
-* --- 5. 等价：用 pds 命令（外部包）一站式完成 ---
-* ssc install pdslasso, replace
-* pdslasso y (x = z1 z2) w1-w50, controls(w1-w50)
+<span class="cm-l">* --- 5. 等价：用 pds 命令（外部包）一站式完成 ---</span>
+<span class="cm-l">* ssc install pdslasso, replace</span>
+<span class="cm-l">* pdslasso y (x = z1 z2) w1-w50, controls(w1-w50)</span>
 </code></pre>
     </div>
 

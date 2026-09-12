@@ -315,12 +315,12 @@
 │   ├── yearbook_rural_*.csv
 │   └── wind_restricted/      # 受限数据，不入版本库，仅本地
 ├── Data/                     # 清洗后中间/分析数据，可由代码重生成
-│   ├── county_panel.dta      # 县级面板（服务 Tables 1,3,9 & Figures 4,5,A4）
+│   ├── county_panel.dta      # 县级面板（服务 Tables 1,3,9 &amp; Figures 4,5,A4）
 │   ├── household_cfps.dta    # 户级（服务 Tables 5-8）
-│   └── county_baseline.dta   # 基线（服务 Tables 1,3,9 & Figures 4,5,A4）
+│   └── county_baseline.dta   # 基线（服务 Tables 1,3,9 &amp; Figures 4,5,A4）
 ├── Code/
-│   ├── clean_raw.do          # Raw -> Data（每步 count 记 N）
-│   ├── Table_Do.do           # 行号映射：Table 1 = 26-54行 -> Table1.csv
+│   ├── clean_raw.do          # Raw -&gt; Data（每步 count 记 N）
+│   ├── Table_Do.do           # 行号映射：Table 1 = 26-54行 -&gt; Table1.csv
 │   └── Figure_Do.do
 └── Output/
     ├── Tables/   Table1.csv ... Table9.csv
@@ -332,33 +332,33 @@
       <p>规范的复现包会在 do 文件里用注释标出"这一段对应正文哪张表"。复现者据此核对：打开 Table_Do.do，定位到第 26–54 行，跑出来的就是正文 Table 1；第 26 行附近是 <code class="inline">eststo</code> 收集各列，第 54 行附近是 <code class="inline">esttab using .../Table1.csv</code>。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · Table_Do.do（行号映射示意）</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* Table_Do.do  —— 每段注释标注服务正文哪张表
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* Table_Do.do  —— 每段注释标注服务正文哪张表</span>
+<span class="cm-l">*==============================================================</span>
 use "$root/Data/county_baseline.dta", clear
 xtset county_id year
 
-*----- Table 1：描述性统计（重点县 vs 非重点县） -----
-* [行号 26-54] -> Output/Tables/Table1.csv
+<span class="cm-l">*----- Table 1：描述性统计（重点县 vs 非重点县） -----</span>
+<span class="cm-l">* [行号 26-54] -&gt; Output/Tables/Table1.csv</span>
 eststo clear
-estpost summarize rural_income ln_agr_output urban_share ///
+estpost summarize rural_income ln_agr_output urban_share <span class="cm">///</span>
         if treat==1, detail
-esttab using "$root/Output/Tables/Table1.csv", replace ///
-        cells("mean(fmt(3)) sd(fmt(3)) min max") ///
+esttab using "$root/Output/Tables/Table1.csv", replace <span class="cm">///</span>
+        cells("mean(fmt(3)) sd(fmt(3)) min max") <span class="cm">///</span>
         title("Table 1: Summary Statistics, Treated Counties")
 
-*----- Table 3：DID 主回归（县级，双向固定效应） -----
-* [行号 60-95] -> Output/Tables/Table3.csv
+<span class="cm-l">*----- Table 3：DID 主回归（县级，双向固定效应） -----</span>
+<span class="cm-l">* [行号 60-95] -&gt; Output/Tables/Table3.csv</span>
 eststo clear
-eststo m1: reghdfe ln_rural_income post_treat $covars, ///
+eststo m1: reghdfe ln_rural_income post_treat $covars, <span class="cm">///</span>
         absorb(county_id year) vce(cluster county_id)
-eststo m2: reghdfe ln_rural_income post_treat $covars, ///
+eststo m2: reghdfe ln_rural_income post_treat $covars, <span class="cm">///</span>
         absorb(county_id year province#year) vce(cluster county_id)
-esttab m1 m2 using "$root/Output/Tables/Table3.csv", replace ///
+esttab m1 m2 using "$root/Output/Tables/Table3.csv", replace <span class="cm">///</span>
         se star(* 0.1 ** 0.05 *** 0.01)
 
-*----- Table 9：机制异质性（比较优势） -----
-* [行号 102-140] -> Output/Tables/Table9.csv</code></pre>
+<span class="cm-l">*----- Table 9：机制异质性（比较优势） -----</span>
+<span class="cm-l">* [行号 102-140] -&gt; Output/Tables/Table9.csv</span></code></pre>
       </div>
 
       <h4>④ 受限数据与手工图：区分"可自动"与"需手工"</h4>
@@ -396,34 +396,34 @@ esttab m1 m2 using "$root/Output/Tables/Table3.csv", replace ///
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · master.do（干净单入口范式）</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* Kessler &amp; Roth (2025) 复现主程序示意
-* 单 master.do 跑全部 9 图 9 表，预计运行 1-2 小时
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* Kessler &amp; Roth (2025) 复现主程序示意</span>
+<span class="cm-l">* 单 master.do 跑全部 9 图 9 表，预计运行 1-2 小时</span>
+<span class="cm-l">*==============================================================</span>
 clear all
 set more off
 set varabbrev off
-set seed 20250501              // 固定种子（随机化推断/permutation）
+set seed 20250501              <span class="cm">// 固定种子（随机化推断/permutation）</span>
 
 global root "C:/你路径/KesslerRoth2025"
 cd "$root"
 capture log close
 log using "log/master_$S_DATE.log", replace
 
-* --- 数据清洗：raw CSV -> final_analysis.dta ---
-do "code/clean_data.do"        // 读 raw/experiment.csv + raw/state_reg.csv
-                               // 生成 data/final_analysis.dta
+<span class="cm-l">* --- 数据清洗：raw CSV -&gt; final_analysis.dta ---</span>
+do "code/clean_data.do"        <span class="cm">// 读 raw/experiment.csv + raw/state_reg.csv</span>
+                               <span class="cm">// 生成 data/final_analysis.dta</span>
 
-* --- 9 表 ---
-do "code/Tables/Table1_balance.do"     // 随机化平衡性检验
-do "code/Tables/Table2_itt.do"         // 意向处理效应 ITT
-do "code/Tables/Table3_complier.do"    // 依从者效应 CACE
-* ... Table4-9 ...
+<span class="cm-l">* --- 9 表 ---</span>
+do "code/Tables/Table1_balance.do"     <span class="cm">// 随机化平衡性检验</span>
+do "code/Tables/Table2_itt.do"         <span class="cm">// 意向处理效应 ITT</span>
+do "code/Tables/Table3_complier.do"    <span class="cm">// 依从者效应 CACE</span>
+<span class="cm-l">* ... Table4-9 ...</span>
 
-* --- 9 图 ---
-do "code/Figures/Figure1_frame.do"     // 不同提问措辞对照
-do "code/Figures/Figure2_state_sc.do"  // 州级合成控制外推
-* ... Figure3-9 ...
+<span class="cm-l">* --- 9 图 ---</span>
+do "code/Figures/Figure1_frame.do"     <span class="cm">// 不同提问措辞对照</span>
+do "code/Figures/Figure2_state_sc.do"  <span class="cm">// 州级合成控制外推</span>
+<span class="cm-l">* ... Figure3-9 ...</span>
 
 display _n "===== 全部完成，请核对 Output/Tables 与 Figures ====="
 log close</code></pre>
@@ -460,37 +460,37 @@ log close</code></pre>
       <h4>DID 换估计器：TWFE → CSDID → stacked 的代码骨架</h4>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · did_robustness.do（换估计器重跑）</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* did_robustness.do：在跑通主回归后，系统换估计器重跑
-* 用法：接在主回归包之后，use 已构造好的 final.dta
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* did_robustness.do：在跑通主回归后，系统换估计器重跑</span>
+<span class="cm-l">* 用法：接在主回归包之后，use 已构造好的 final.dta</span>
+<span class="cm-l">*==============================================================</span>
 use "$root/Data/analysis/final.dta", clear
 
-* --- (0) 基准：双向固定效应 TWFE ---
-eststo twfe: reghdfe ln_rural_income post_treat $covars, ///
+<span class="cm-l">* --- (0) 基准：双向固定效应 TWFE ---</span>
+eststo twfe: reghdfe ln_rural_income post_treat $covars, <span class="cm">///</span>
         absorb(county_id year) vce(cluster county_id)
 
-* --- (1) 换聚类层级：从县级 -> 省级 ---
-eststo twfe_prov: reghdfe ln_rural_income post_treat $covars, ///
+<span class="cm-l">* --- (1) 换聚类层级：从县级 -&gt; 省级 ---</span>
+eststo twfe_prov: reghdfe ln_rural_income post_treat $covars, <span class="cm">///</span>
         absorb(county_id year) vce(cluster province_id)
 
-* --- (2) Callaway &amp; Sant'Anna (2021) 异质性稳健 DID ---
-* ssc install csdid, replace
-csdid ln_rural_income $covars, ivar(county_id) time(year) ///
+<span class="cm-l">* --- (2) Callaway &amp; Sant'Anna (2021) 异质性稳健 DID ---</span>
+<span class="cm-l">* ssc install csdid, replace</span>
+csdid ln_rural_income $covars, ivar(county_id) time(year) <span class="cm">///</span>
         gvar(first_treat_year) cluster(county_id)
-estat event            // 事件研究动态效应
+estat event            <span class="cm">// 事件研究动态效应</span>
 
-* --- (3) stacked regression（Sun &amp; Abraham 2021 思路）---
-* 为每个处理队列构造干净对照，避免负权重
-* ssc install eventdd, replace
-eventdd ln_rural_income $covars, timevar(rel_year) ///
-        eventvar(treat) cluster(county_id) ///
-        coefplot(-5(1)5) lag(4) leads(5) ///
+<span class="cm-l">* --- (3) stacked regression（Sun &amp; Abraham 2021 思路）---</span>
+<span class="cm-l">* 为每个处理队列构造干净对照，避免负权重</span>
+<span class="cm-l">* ssc install eventdd, replace</span>
+eventdd ln_rural_income $covars, timevar(rel_year) <span class="cm">///</span>
+        eventvar(treat) cluster(county_id) <span class="cm">///</span>
+        coefplot(-5(1)5) lag(4) leads(5) <span class="cm">///</span>
         graph_op(ytitle("动态效应") title("Event Study"))
 
-* --- 输出对照：一列 TWFE，一列 CSDID，一列 stacked ---
-esttab twfe twfe_prov using "$root/Output/robust_estimator.csv", ///
-        se star(* 0.1 ** 0.05 *** 0.01) ///
+<span class="cm-l">* --- 输出对照：一列 TWFE，一列 CSDID，一列 stacked ---</span>
+esttab twfe twfe_prov using "$root/Output/robust_estimator.csv", <span class="cm">///</span>
+        se star(* 0.1 ** 0.05 *** 0.01) <span class="cm">///</span>
         mtitles("TWFE" "TWFE省聚类")</code></pre>
       </div>
 
@@ -502,7 +502,7 @@ esttab twfe twfe_prov using "$root/Output/robust_estimator.csv", ///
 1. 复现对象：题名 / 期刊 / 卷期 / 年份 / DOI
 2. 环境：Stata 版本、外部命令及版本、运行时长
 3. 复现核对：
-   - 成功复现：Table X（主系数 0.xxx，与原文差异 < 0.00x）
+   - 成功复现：Table X（主系数 0.xxx，与原文差异 &lt; 0.00x）
    - 未完全复现：Table Y（差在 …，定位到 do 文件第 … 行）
    - 受限/手工：WIND 部分仅有 log；Fig2 ArcGIS 手工
 4. 稳健性改动与结论：
@@ -524,22 +524,22 @@ esttab twfe twfe_prov using "$root/Output/robust_estimator.csv", ///
       <p>无论复现别人还是做自己，第一天就把目录搭成三层。<strong>Raw 只读、绝不修改</strong>；Clean 是可重生成的中间产物；Analysis 是最终回归样本。每个阶段开头固定日志、固定种子、记录 N。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 00_setup.do（项目初始化）</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 00_setup.do：每个项目第一步
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 00_setup.do：每个项目第一步</span>
+<span class="cm-l">*==============================================================</span>
 clear all
 set more off
 set varabbrev off
-set seed 20260911                 // 固定种子，保证可复现
+set seed 20260911                 <span class="cm">// 固定种子，保证可复现</span>
 set linesize 120
 
 global root "C:/你路径/your_project"
 cd "$root"
 
-* 三阶段目录
-global raw      "$root/Raw"          // 只读，绝不 save,replace
-global clean    "$root/Clean"        // 中间数据，可重生成
-global analysis "$root/Analysis"     // 最终回归样本
+<span class="cm-l">* 三阶段目录</span>
+global raw      "$root/Raw"          <span class="cm">// 只读，绝不 save,replace</span>
+global clean    "$root/Clean"        <span class="cm">// 中间数据，可重生成</span>
+global analysis "$root/Analysis"     <span class="cm">// 最终回归样本</span>
 global out      "$root/Output"
 global logdir   "$root/Log"
 
@@ -552,7 +552,7 @@ capture mkdir "$logdir"
 capture log close
 log using "$logdir/run_$S_DATE.log", replace
 
-* 外部命令版本登记（写进 log，方便日后核对）
+<span class="cm-l">* 外部命令版本登记（写进 log，方便日后核对）</span>
 which reghdfe
 which estout
 which coefplot</code></pre>
@@ -562,32 +562,32 @@ which coefplot</code></pre>
       <p>每构造一个变量，就在 codebook 里登记：变量名、单位、来源、构造公式。缺失值要分"真缺失"与"结构性零"；受限数据（WIND、企业保密数据）只放本地、不入版本库，并保留导出 log。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · 01_clean.do（变量构造与 codebook）</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* 01_clean.do：Raw -> Clean，变量构造 + 缺失处理
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* 01_clean.do：Raw -&gt; Clean，变量构造 + 缺失处理</span>
+<span class="cm-l">*==============================================================</span>
 use "$raw/county_raw.dta", clear
 
-* 1) 关键被解释变量：log 农村收入（加 1 防 log(0)）
+<span class="cm-l">* 1) 关键被解释变量：log 农村收入（加 1 防 log(0)）</span>
 gen ln_rural_income = ln(rural_income + 1)
 label var ln_rural_income "log(农村人均可支配收入+1), 来源:农村统计年鉴"
 
-* 2) 处理变量：是否国家重点县 x 政策后
-gen post_treat = (treat==1 &amp; year>=2012)
+<span class="cm-l">* 2) 处理变量：是否国家重点县 x 政策后</span>
+gen post_treat = (treat==1 &amp; year&gt;=2012)
 label var post_treat "DID处理=重点县且2012年后"
 
-* 3) 缺失值：区分结构性零与真缺失
-*    企业未报告 -> 缺失；本就无此收入 -> 0，不要盲目 replace
-mvdecode rural_income, mv(-999 = .)        // 把 -999 编码缺失转为系统缺失
+<span class="cm-l">* 3) 缺失值：区分结构性零与真缺失</span>
+<span class="cm-l">*    企业未报告 -&gt; 缺失；本就无此收入 -&gt; 0，不要盲目 replace</span>
+mvdecode rural_income, mv(-999 = .)        <span class="cm">// 把 -999 编码缺失转为系统缺失</span>
 
-* 4) 缩尾：按年份组内 1%/99%（winsor2）
-* ssc install winsor2, replace
+<span class="cm-l">* 4) 缩尾：按年份组内 1%/99%（winsor2）</span>
+<span class="cm-l">* ssc install winsor2, replace</span>
 winsor2 ln_rural_income $covars, cuts(1 99) by(year) replace
 
-* 5) 生成 codebook，留档供审阅
-codebook county_id year ln_rural_income post_treat ///
+<span class="cm-l">* 5) 生成 codebook，留档供审阅</span>
+codebook county_id year ln_rural_income post_treat <span class="cm">///</span>
         using "$out/codebook.md", markdown replace
 
-* 6) 每步记 N（做 flow chart）
+<span class="cm-l">* 6) 每步记 N（做 flow chart）</span>
 count
 display "清洗后 N = " r(N)
 save "$clean/county_clean.dta", replace</code></pre>
@@ -597,44 +597,44 @@ save "$clean/county_clean.dta", replace</code></pre>
       <p>顶刊图有约定俗成的画法：<strong>事件研究图要画动态系数 + 95% CI + 归一化在事件前一期为 0</strong>；RD 图要局部线性拟合叠加散点分箱；系数森林图横放、按大小排序；时间序列图要标政策时点。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · figures.do（四类顶刊图）</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* figures.do：四类顶刊标准图
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* figures.do：四类顶刊标准图</span>
+<span class="cm-l">*==============================================================</span>
 use "$analysis/final.dta", clear
 
-* --- (1) 事件研究图：eventdd / coefplot ---
-* ssc install eventdd, replace
-eventdd ln_rural_income $covars, ///
-        timevar(rel_year) eventvar(post_treat) ///
-        absorb(county_id year) cluster(county_id) ///
-        lag(5) leads(5) baseline(-1) ///
-        graph_op(ytitle("政策效应") xtitle("相对政策年份") ///
-        title("Figure X: Event Study") ///
+<span class="cm-l">* --- (1) 事件研究图：eventdd / coefplot ---</span>
+<span class="cm-l">* ssc install eventdd, replace</span>
+eventdd ln_rural_income $covars, <span class="cm">///</span>
+        timevar(rel_year) eventvar(post_treat) <span class="cm">///</span>
+        absorb(county_id year) cluster(county_id) <span class="cm">///</span>
+        lag(5) leads(5) baseline(-1) <span class="cm">///</span>
+        graph_op(ytitle("政策效应") xtitle("相对政策年份") <span class="cm">///</span>
+        title("Figure X: Event Study") <span class="cm">///</span>
         yline(0, lcolor(red%40)) xline(0, lcolor(red%40)))
 graph export "$out/Figures/fig_eventstudy.png", replace width(2000)
 
-* --- (2) RD 图：rdplot（局部线性 + 分箱散点）---
-* ssc install rdrobust, replace
-rdplot y running_var, c(0) h(10) ///
-        title("Figure Y: RD Plot") ///
+<span class="cm-l">* --- (2) RD 图：rdplot（局部线性 + 分箱散点）---</span>
+<span class="cm-l">* ssc install rdrobust, replace</span>
+rdplot y running_var, c(0) h(10) <span class="cm">///</span>
+        title("Figure Y: RD Plot") <span class="cm">///</span>
         graph_options(ytitle("结果") xtitle("分配变量"))
 graph export "$out/Figures/fig_rd.png", replace width(2000)
 
-* --- (3) 系数森林图：coefplot（异质性分组系数横放）---
-eststo g1: reghdfe ln_rural_income c.post_treat#c.female $covars, ///
+<span class="cm-l">* --- (3) 系数森林图：coefplot（异质性分组系数横放）---</span>
+eststo g1: reghdfe ln_rural_income c.post_treat#c.female $covars, <span class="cm">///</span>
         absorb(county_id year) cluster(county_id)
-eststo g2: reghdfe ln_rural_income c.post_treat#c.old $covars, ///
+eststo g2: reghdfe ln_rural_income c.post_treat#c.old $covars, <span class="cm">///</span>
         absorb(county_id year) cluster(county_id)
-coefplot g1 g2, keep(*post_treat*) vertical ///
-        title("Figure Z: Heterogeneity Forest") ///
+coefplot g1 g2, keep(*post_treat*) vertical <span class="cm">///</span>
+        title("Figure Z: Heterogeneity Forest") <span class="cm">///</span>
         yline(0, lcolor(red))
 graph export "$out/Figures/fig_forest.png", replace width(2000)
 
-* --- (4) 时间序列图：标政策时点 ---
-twoway (line ln_rural_income year, lwidth(2)) ///
-       (rcap lo ci_hi year), ///
-       xline(2012, lpattern(dash) lcolor(red)) ///
-       xtitle("年份") ytitle("log农村收入") ///
+<span class="cm-l">* --- (4) 时间序列图：标政策时点 ---</span>
+twoway (line ln_rural_income year, lwidth(2)) <span class="cm">///</span>
+       (rcap lo ci_hi year), <span class="cm">///</span>
+       xline(2012, lpattern(dash) lcolor(red)) <span class="cm">///</span>
+       xtitle("年份") ytitle("log农村收入") <span class="cm">///</span>
        title("Figure W: 处理县均值与政策时点")
 graph export "$out/Figures/fig_ts.png", replace width(2000)</code></pre>
       </div>
@@ -643,29 +643,29 @@ graph export "$out/Figures/fig_ts.png", replace width(2000)</code></pre>
       <p>拿到一个研究问题，建模设定按下面顺序决策：<strong>① 估计器</strong>（实验？准实验？结构？）→ <strong>② 固定效应组合</strong>（个体 / 时间 / 个体×时间趋势）→ <strong>③ 聚类层级</strong>（处理层级是什么就聚到哪）→ <strong>④ 控制变量策略</strong>（先不加、再加时不变协变量、最后加 pre-trend）。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · decision_tree.do（建模设定递进）</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================
-* decision_tree.do：建模设定逐步递进（避免"控制变量轰炸"）
-*==============================================================
+<pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">* decision_tree.do：建模设定逐步递进（避免"控制变量轰炸"）</span>
+<span class="cm-l">*==============================================================</span>
 use "$analysis/final.dta", clear
 
-* 第1层：仅双向固定效应（最干净，先看 raw 相关）
-eststo m1: reghdfe ln_rural_income post_treat, ///
+<span class="cm-l">* 第1层：仅双向固定效应（最干净，先看 raw 相关）</span>
+eststo m1: reghdfe ln_rural_income post_treat, <span class="cm">///</span>
         absorb(county_id year) vce(cluster county_id)
 
-* 第2层：加时不变协变量（人口、初始收入）
-eststo m2: reghdfe ln_rural_income post_treat $x0, ///
+<span class="cm-l">* 第2层：加时不变协变量（人口、初始收入）</span>
+eststo m2: reghdfe ln_rural_income post_treat $x0, <span class="cm">///</span>
         absorb(county_id year) vce(cluster county_id)
 
-* 第3层：加省份×年份趋势（吸收省级时变冲击）
-eststo m3: reghdfe ln_rural_income post_treat $x0, ///
+<span class="cm-l">* 第3层：加省份×年份趋势（吸收省级时变冲击）</span>
+eststo m3: reghdfe ln_rural_income post_treat $x0, <span class="cm">///</span>
         absorb(county_id province#year) vce(cluster county_id)
 
-* 第4层：换更稳的 DID 估计器（交叠处理时）
-* csdid ln_rural_income $x0, ivar(county_id) time(year) ///
-*        gvar(first_treat) cluster(county_id)
+<span class="cm-l">* 第4层：换更稳的 DID 估计器（交叠处理时）</span>
+<span class="cm-l">* csdid ln_rural_income $x0, ivar(county_id) time(year) ///</span>
+<span class="cm-l">*        gvar(first_treat) cluster(county_id)</span>
 
-esttab m1 m2 m3 using "$out/Tables/main_spec.csv", replace ///
-        se star(* 0.1 ** 0.05 *** 0.01) ///
+esttab m1 m2 m3 using "$out/Tables/main_spec.csv", replace <span class="cm">///</span>
+        se star(* 0.1 ** 0.05 *** 0.01) <span class="cm">///</span>
         mtitles("FE only" "+协变量" "+省×年趋势")</code></pre>
       </div>
     </div>

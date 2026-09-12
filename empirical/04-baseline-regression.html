@@ -285,69 +285,69 @@
 
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · baseline_regression.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* 基准回归完整演示：OLS -> FE -> TWFE -> 聚类标准误 -> esttab 导出
-* 数据：Stata 自带 nlswork（面板：id 为工人，year 为年份）
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* 基准回归完整演示：OLS -&gt; FE -&gt; TWFE -&gt; 聚类标准误 -&gt; esttab 导出</span>
+<span class="cm-l">* 数据：Stata 自带 nlswork（面板：id 为工人，year 为年份）</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set more off
 capture log close
 log using "baseline_regression.log", replace
 
-* --- 0. 安装所需外部命令（首次运行取消注释） ---
-* ssc install reghdfe, replace
-* ssc install ftools,   replace
-* ssc install estout,   replace
-* ssc install esttab,  replace
+<span class="cm-l">* --- 0. 安装所需外部命令（首次运行取消注释） ---</span>
+<span class="cm-l">* ssc install reghdfe, replace</span>
+<span class="cm-l">* ssc install ftools,   replace</span>
+<span class="cm-l">* ssc install estout,   replace</span>
+<span class="cm-l">* ssc install esttab,  replace</span>
 
-* --- 1. 加载数据并构造面板 ---
+<span class="cm-l">* --- 1. 加载数据并构造面板 ---</span>
 sysuse nlswork.dta, clear
-xtset idcode year                 // 声明面板：个体 id，时间 year
+xtset idcode year                 <span class="cm">// 声明面板：个体 id，时间 year</span>
 
-* 关键变量：
-*   ln_wage   被解释变量：工资对数
-*   grade     个体受教育年限（时变程度小）
-*   age       年龄
-*   tenure    在当前雇主的 tenure
-*   south / smsa / race   常用控制变量
+<span class="cm-l">* 关键变量：</span>
+<span class="cm-l">*   ln_wage   被解释变量：工资对数</span>
+<span class="cm-l">*   grade     个体受教育年限（时变程度小）</span>
+<span class="cm-l">*   age       年龄</span>
+<span class="cm-l">*   tenure    在当前雇主的 tenure</span>
+<span class="cm-l">*   south / smsa / race   常用控制变量</span>
 
-* --- 2. 模型 (1)：朴素 Pooled OLS（不推荐，仅作对照） ---
+<span class="cm-l">* --- 2. 模型 (1)：朴素 Pooled OLS（不推荐，仅作对照） ---</span>
 regress ln_wage grade age i.south i.smsa
 estimates store m1
 
-* --- 3. 模型 (2)：单向个体固定效应 xtreg, fe ---
+<span class="cm-l">* --- 3. 模型 (2)：单向个体固定效应 xtreg, fe ---</span>
 xtreg ln_wage grade age i.south i.smsa i.year, fe
 estimates store m2
 
-* --- 4. 模型 (3)：areg 吸收 id，加年份 FE ---
+<span class="cm-l">* --- 4. 模型 (3)：areg 吸收 id，加年份 FE ---</span>
 areg ln_wage grade age i.south i.smsa i.year, absorb(idcode)
 estimates store m3
 
-* --- 5. 模型 (4)：reghdfe 双向固定效应 + 双向聚类 ---
-reghdfe ln_wage grade age i.south i.smsa, ///
+<span class="cm-l">* --- 5. 模型 (4)：reghdfe 双向固定效应 + 双向聚类 ---</span>
+reghdfe ln_wage grade age i.south i.smsa, <span class="cm">///</span>
     absorb(idcode year) vce(cluster idcode)
 estimates store m4
 
-* --- 6. 模型 (5)：再加一维行业聚类（多向聚类） ---
-reghdfe ln_wage grade age i.south i.smsa, ///
+<span class="cm-l">* --- 6. 模型 (5)：再加一维行业聚类（多向聚类） ---</span>
+reghdfe ln_wage grade age i.south i.smsa, <span class="cm">///</span>
     absorb(idcode year) vce(cluster idcode year)
 estimates store m5
 
-* --- 7. Hausman 检验：FE vs RE ---
+<span class="cm-l">* --- 7. Hausman 检验：FE vs RE ---</span>
 xtreg ln_wage grade age i.south i.smsa i.year, fe
 estimates store FE
 xtreg ln_wage grade age i.south i.smsa i.year, re
 estimates store RE
 hausman FE RE, sigmamore
 
-* --- 8. 用 esttab 导出论文级三线表 ---
-* 横向并排展示 5 个模型；括号中放标准误；显示星号；删除虚拟变量行
-esttab m1 m2 m3 m4 m5 using "table_baseline.rtf", replace ///
-    b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) ///
-    stats(N r2 r2_a, fmt(0 3 3) labels("观测值" "R^2" "调整 R^2")) ///
-    drop(*.year *.smsa *.south) ///
-    mtitles("Pooled OLS" "xtreg FE" "areg" "reghdfe 单向聚类" "reghdfe 双向聚类") ///
-    title("表 X：受教育年限对工资的影响") ///
+<span class="cm-l">* --- 8. 用 esttab 导出论文级三线表 ---</span>
+<span class="cm-l">* 横向并排展示 5 个模型；括号中放标准误；显示星号；删除虚拟变量行</span>
+esttab m1 m2 m3 m4 m5 using "table_baseline.rtf", replace <span class="cm">///</span>
+    b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) <span class="cm">///</span>
+    stats(N r2 r2_a, fmt(0 3 3) labels("观测值" "R^2" "调整 R^2")) <span class="cm">///</span>
+    drop(*.year *.smsa *.south) <span class="cm">///</span>
+    mtitles("Pooled OLS" "xtreg FE" "areg" "reghdfe 单向聚类" "reghdfe 双向聚类") <span class="cm">///</span>
+    title("表 X：受教育年限对工资的影响") <span class="cm">///</span>
     nogaps compress
 
 log close

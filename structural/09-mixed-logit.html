@@ -384,10 +384,10 @@ def halton(dim: int, n_sample: int, leap: int = 1):
     生成 dim 维 Halton 序列，返回 shape=(n_sample, dim)，值域 [0,1)
     dim: 随机系数的维度（用前 dim 个素数作基）
     """
-    # 前 20 个素数，足够覆盖 dim<=20
+    # 前 20 个素数，足够覆盖 dim&lt;=20
     primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
               31, 37, 41, 43, 47, 53, 59, 61, 67, 71]
-    assert dim <= len(primes), "维度超出预设素数表"
+    assert dim &lt;= len(primes), "维度超出预设素数表"
     H = np.zeros((n_sample, dim))
     for d in range(dim):
         p = primes[d]
@@ -401,7 +401,7 @@ def halton(dim: int, n_sample: int, leap: int = 1):
             f, denom = 0.0, 1.0
             while u &gt; 0:
                 f += (u % p) / denom
-                u //= p
+                u <span class="cm">//= p</span>
                 denom *= p
             seq[i - 1] = f
         H[:, d] = seq
@@ -429,7 +429,7 @@ beta_true = mu_true + sig_true * np.random.randn(N, K)
 
 # 生成选择：logit 核
 def choice_from_beta(X, beta):
-    """X:(N,J,K), beta:(N,K) -> y:(N,)"""
+    """X:(N,J,K), beta:(N,K) -&gt; y:(N,)"""
     V = np.einsum('njk,nk-&gt;nj', X, beta)     # (N,J)
     V -= V.max(axis=1, keepdims=True)        # log-sum-exp 数值稳定
     P = np.exp(V)
@@ -448,7 +448,7 @@ halton_base = halton(K, R)                    # 固定 draws，避免目标函�
 
 def simulated_choice_probs(params):
     """
-    params: 长度 2K，前 K 是均值 mu，后 K 是 log(std)（保证 std>0）
+    params: 长度 2K，前 K 是均值 mu，后 K 是 log(std)（保证 std&gt;0）
     返回 P_hat: (N, J)
     """
     mu = params[:K]

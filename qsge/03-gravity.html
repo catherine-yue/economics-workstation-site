@@ -324,7 +324,7 @@ print("内向 MR P :", np.round(P, 4))
 # 贸易量: X_ni = Y_n Y_i / Y_w * tau_ni^(1-sigma) / (Pi_i^(1-sigma) P_n^(1-sigma))
 Yw = Y.sum()
 X = (Y[:, None] * Y[None, :] / Yw
-     * tau**(1-sigma)
+<span class="cm-l">     * tau**(1-sigma)</span>
      / (Pi[None, :]**(1-sigma) * P[:, None]**(1-sigma)))
 print("双边贸易份额 X_ni/Y_n 矩阵:")
 print(np.round(X / Y[:, None], 3))
@@ -382,47 +382,47 @@ print(np.round(X / Y[:, None], 3))
       <p>下面是行业事实标准的 Stata 工作流（Silva-Tenreyro 2006；Head-Mayer 2014 手册）。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata</span><button class="copy-btn">复制</button></div>
-<pre><code>* ================================================================
-* Structural Gravity with PPML —— 标准工作流
-* 数据: 双边贸易 flow X_ni、距离、接壤、语言、殖民、RTA
-* ================================================================
+<pre><code><span class="cm-l">* ================================================================</span>
+<span class="cm-l">* Structural Gravity with PPML —— 标准工作流</span>
+<span class="cm-l">* 数据: 双边贸易 flow X_ni、距离、接壤、语言、殖民、RTA</span>
+<span class="cm-l">* ================================================================</span>
 clear all
 set more off
-* ssc install ppmlhdfe, replace   // 首次运行
+<span class="cm-l">* ssc install ppmlhdfe, replace   // 首次运行</span>
 
 use "gravity_data.dta", clear
-* 变量: flow(水平值!) exp imp year lndist contig lang colony rta
+<span class="cm-l">* 变量: flow(水平值!) exp imp year lndist contig lang colony rta</span>
 
-* ---------- 1. OLS 基准（被批判的对照） ----------
+<span class="cm-l">* ---------- 1. OLS 基准（被批判的对照） ----------</span>
 gen ln_flow = log(flow)
-reghdfe ln_flow lndist contig lang colony rta, ///
+reghdfe ln_flow lndist contig lang colony rta, <span class="cm">///</span>
     absorb(exp#year imp#year) vce(robust)
 estimates store ols_fe
 
-* ---------- 2. PPML 推荐版：ppmlhdfe ----------
-* 同时吸收出口-年、进口-年固定效应 = 时变 MR
-ppmlhdfe flow lndist contig lang colony rta ///
+<span class="cm-l">* ---------- 2. PPML 推荐版：ppmlhdfe ----------</span>
+<span class="cm-l">* 同时吸收出口-年、进口-年固定效应 = 时变 MR</span>
+ppmlhdfe flow lndist contig lang colony rta <span class="cm">///</span>
     , absorb(exp#year imp#year) vce(robust)
 estimates store ppml_fe
 
-* ---------- 3. 对比系数 ----------
-* 距离弹性 PPML 预期 -0.7 ~ -1.0；OLS 常偏到 -1.2 以下
-estimates table ols_fe ppml_fe, ///
+<span class="cm-l">* ---------- 3. 对比系数 ----------</span>
+<span class="cm-l">* 距离弹性 PPML 预期 -0.7 ~ -1.0；OLS 常偏到 -1.2 以下</span>
+estimates table ols_fe ppml_fe, <span class="cm">///</span>
     b(%9.4f) star(.1 .05 .01) keep(lndist contig lang colony rta)
 
-* ---------- 4. 边界效应（含国内贸易 X_ii） ----------
-* 需先用 (总产出 - 总出口) 构造国内贸易流
-* gen intl = (exp != imp)
-* ppmlhdfe flow lndist intl contig lang colony rta, ///
-*     absorb(exp#year imp#year) vce(robust)
-* exp(intl) 显著为负 = 边界效应；预期 exp(intl)~0.1~0.3
+<span class="cm-l">* ---------- 4. 边界效应（含国内贸易 X_ii） ----------</span>
+<span class="cm-l">* 需先用 (总产出 - 总出口) 构造国内贸易流</span>
+<span class="cm-l">* gen intl = (exp != imp)</span>
+<span class="cm-l">* ppmlhdfe flow lndist intl contig lang colony rta, ///</span>
+<span class="cm-l">*     absorb(exp#year imp#year) vce(robust)</span>
+<span class="cm-l">* exp(intl) 显著为负 = 边界效应；预期 exp(intl)~0.1~0.3</span>
 
-* ---------- 5. 聚类标准误 ----------
-* 双边数据相关性来自同一 country pair，建议 vce(cluster pair_id)
-* ppmlhdfe flow ... , absorb(exp#year imp#year) vce(cluster pair_id)
+<span class="cm-l">* ---------- 5. 聚类标准误 ----------</span>
+<span class="cm-l">* 双边数据相关性来自同一 country pair，建议 vce(cluster pair_id)</span>
+<span class="cm-l">* ppmlhdfe flow ... , absorb(exp#year imp#year) vce(cluster pair_id)</span>
 
-* ---------- 6. 缺失/分离检查 ----------
-* ppmlhdfe 会报告 dropped obs；关注"完美分离"是否合理
+<span class="cm-l">* ---------- 6. 缺失/分离检查 ----------</span>
+<span class="cm-l">* ppmlhdfe 会报告 dropped obs；关注"完美分离"是否合理</span>
 </code></pre>
       </div>
       <div class="callout warning">
@@ -636,9 +636,9 @@ countries = [f"C{i}" for i in range(N)]
 gdp = np.exp(np.random.normal(10, 1.5, N))
 dist = np.exp(np.random.normal(2, 0.5, size=(N, N)))
 np.fill_diagonal(dist, 1.0)
-lang = (np.random.uniform(size=(N,N)) < 0.2).astype(int)
-colony = (np.random.uniform(size=(N,N)) < 0.05).astype(int)
-contig = (np.random.uniform(size=(N,N)) < 0.1).astype(int)
+lang = (np.random.uniform(size=(N,N)) &lt; 0.2).astype(int)
+colony = (np.random.uniform(size=(N,N)) &lt; 0.05).astype(int)
+contig = (np.random.uniform(size=(N,N)) &lt; 0.1).astype(int)
 np.fill_diagonal(lang, 1); np.fill_diagonal(colony, 0); np.fill_diagonal(contig, 1)
 
 # ---------- 2. 模拟贸易流（真实系数） ----------

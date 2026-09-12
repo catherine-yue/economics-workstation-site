@@ -359,63 +359,63 @@
       <h2><span class="sec-num">09</span> 完整 Stata 代码</h2>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 08_multinomial_ordered.do</span><button class="copy-btn">复制</button></div>
-        <pre><code>*==============================================================*
-* 多项 / 有序选择：MNL, IIA, Ordered, Brant, gologit2, clogit
-*==============================================================*
+        <pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* 多项 / 有序选择：MNL, IIA, Ordered, Brant, gologit2, clogit</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set more off
 
-* ---------- A. 多项 Logit（个体特征为主） ----------
-* 示例：被访者职业选择 occ (1=blue, 2=white, 3=service)
-use "https://www.stata-press.com/data/r16/gsem_multinomial.dta", clear
+<span class="cm-l">* ---------- A. 多项 Logit（个体特征为主） ----------</span>
+<span class="cm-l">* 示例：被访者职业选择 occ (1=blue, 2=white, 3=service)</span>
+use "https:<span class="cm">//www.stata-press.com/data/r16/gsem_multinomial.dta", clear</span>
 
-* (A1) 基准类 = 1(蓝领)
+<span class="cm-l">* (A1) 基准类 = 1(蓝领)</span>
 mlogit occ i.female grade, base(1)
 estimates store MNL1
 
-* (A2) ★ Hausman-McFadden IIA 检验：剔除 service 后看系数是否稳定
-* ssc install mlogtest, replace
+<span class="cm-l">* (A2) ★ Hausman-McFadden IIA 检验：剔除 service 后看系数是否稳定</span>
+<span class="cm-l">* ssc install mlogtest, replace</span>
 mlogtest, hausman
 
-* (A3) 平均边际效应（每个 outcome 分别报）
+<span class="cm-l">* (A3) 平均边际效应（每个 outcome 分别报）</span>
 margins, dydx(female grade) outcome(1)
 margins, dydx(female grade) outcome(2)
 margins, dydx(female grade) outcome(3)
 
-* ---------- B. Multinomial Probit 对照 ----------
+<span class="cm-l">* ---------- B. Multinomial Probit 对照 ----------</span>
 mprobit occ i.female grade
 estimates store MNP1
 
-* ---------- C. Ordered Logit（有序因变量） ----------
-* 示例：满意度 rep78 或教育层次
-use "https://www.stata-press.com/data/r16/auto.dta", clear
-* 构造一个 0/1/2 的有序变量
-gen order = (rep78 > 3) + (rep78 > 4)
+<span class="cm-l">* ---------- C. Ordered Logit（有序因变量） ----------</span>
+<span class="cm-l">* 示例：满意度 rep78 或教育层次</span>
+use "https:<span class="cm">//www.stata-press.com/data/r16/auto.dta", clear</span>
+<span class="cm-l">* 构造一个 0/1/2 的有序变量</span>
+gen order = (rep78 &gt; 3) + (rep78 &gt; 4)
 
 ologit order foreign price mpg
 estimates store OLOGIT
 
-* (C1) ★ Brant 检验：平行回归假设
-* ssc install brant, replace
+<span class="cm-l">* (C1) ★ Brant 检验：平行回归假设</span>
+<span class="cm-l">* ssc install brant, replace</span>
 brant, detail
 
-* (C2) Ordered Probit 对照
+<span class="cm-l">* (C2) Ordered Probit 对照</span>
 oprobit order foreign price mpg
 
-* ---------- D. gologit2：放松平行假设 ----------
-* ssc install gologit2, replace
+<span class="cm-l">* ---------- D. gologit2：放松平行假设 ----------</span>
+<span class="cm-l">* ssc install gologit2, replace</span>
 gologit2 order foreign price mpg, lrforce
-* 仅对违反假设的变量放松：
-gologit2 order foreign price mpg, pl(foreign)  // price/mpg 仍平行
+<span class="cm-l">* 仅对违反假设的变量放松：</span>
+gologit2 order foreign price mpg, pl(foreign)  <span class="cm">// price/mpg 仍平行</span>
 
-* ---------- E. 条件 Logit clogit（长格式） ----------
-* 数据结构：id(个体) alt(备选=1..J) choice(是否被选)  time  cost
-* 先 reshape long
-* gen choice = (alt == chosen_alt)
-* clogit choice time cost, group(id)
-* 等价：面板固定效应 Logit
+<span class="cm-l">* ---------- E. 条件 Logit clogit（长格式） ----------</span>
+<span class="cm-l">* 数据结构：id(个体) alt(备选=1..J) choice(是否被选)  time  cost</span>
+<span class="cm-l">* 先 reshape long</span>
+<span class="cm-l">* gen choice = (alt == chosen_alt)</span>
+<span class="cm-l">* clogit choice time cost, group(id)</span>
+<span class="cm-l">* 等价：面板固定效应 Logit</span>
 webuse union3, clear
-xtlogit union age grade, fe          // 固定效应 Logit，内部用条件似然
+xtlogit union age grade, fe          <span class="cm">// 固定效应 Logit，内部用条件似然</span>
 </code></pre>
       </div>
     </div>

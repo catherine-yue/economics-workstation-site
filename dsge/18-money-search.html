@@ -276,12 +276,12 @@ q_max = 1.0      # 无摩擦时 DM 最优交易量（归一化为 1）
 # ---------- 2. 给定通胀 pi，求稳态流动性溢价 theta ----------
 # Equation 5: 1+pi = (1/β) * (1 + alpha*theta)
 def solve_theta(pi):
-    # theta 必须 >=0
+    # theta 必须 &gt;=0
     theta = ((1 + pi) / beta - 1.0) / alpha
     return max(theta, 0.0)
 
 # ---------- 3. DM 交易量 q：持币越少，能买的量越小 ----------
-# 直觉：无摩擦(theta=0)时 q=q_max；通胀抬高持币成本 -> 持币下降 -> DM 交易量下降
+# 直觉：无摩擦(theta=0)时 q=q_max；通胀抬高持币成本 -&gt; 持币下降 -&gt; DM 交易量下降
 # 用一个递减的近似 q(theta) = q_max / (1 + theta)
 def dm_quantity(theta):
     return q_max / (1.0 + theta)

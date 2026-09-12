@@ -299,24 +299,24 @@
       <h2><span class="sec-num">05</span> 代码块1：Stata ologit/oprobit 估计 BR 模型</h2>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* Bresnahan-Reiss (1991) 市场进入模型 — Stata 实现
-* 模拟数据: 200 个市场, n_firms=进入企业数(0..5),
-*           pop=市场规模(对数人口), income=市场收入
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* Bresnahan-Reiss (1991) 市场进入模型 — Stata 实现</span>
+<span class="cm-l">* 模拟数据: 200 个市场, n_firms=进入企业数(0..5),</span>
+<span class="cm-l">*           pop=市场规模(对数人口), income=市场收入</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set more off
-set seed 20240912                    // 固定随机种子, 结果可复现
+set seed 20240912                    <span class="cm">// 固定随机种子, 结果可复现</span>
 set obs 200
 
-* --- 1. 模拟市场数据 ---
-gen pop      = rnormal()              // 市场规模(标准化)
-gen income   = rnormal()              // 另一市场特征
-gen eps      = rnormal()              // 不可观测利润冲击
-* 真实结构利润潜变量: pop 正向吸引进入, income 负向
+<span class="cm-l">* --- 1. 模拟市场数据 ---</span>
+gen pop      = rnormal()              <span class="cm">// 市场规模(标准化)</span>
+gen income   = rnormal()              <span class="cm">// 另一市场特征</span>
+gen eps      = rnormal()              <span class="cm">// 不可观测利润冲击</span>
+<span class="cm-l">* 真实结构利润潜变量: pop 正向吸引进入, income 负向</span>
 gen latent   = 0.9*pop - 0.3*income + eps
 
-* 按门槛把潜利润切成有序企业数 (0..5)
+<span class="cm-l">* 按门槛把潜利润切成有序企业数 (0..5)</span>
 gen n_firms = .
 replace n_firms = 0 if latent &lt; -1.2
 replace n_firms = 1 if latent &gt;= -1.2 &amp; latent &lt; 0.0
@@ -325,24 +325,24 @@ replace n_firms = 3 if latent &gt;=  1.2 &amp; latent &lt; 2.4
 replace n_firms = 4 if latent &gt;=  2.4 &amp; latent &lt; 3.6
 replace n_firms = 5 if latent &gt;=  3.6
 
-* --- 2. 有序 probit 估计 ---
+<span class="cm-l">* --- 2. 有序 probit 估计 ---</span>
 oprobit n_firms pop income
 estimates store br_probit
 
-* 门槛/cutoff 解释: 第 n 个企业进入的利润门槛
+<span class="cm-l">* 门槛/cutoff 解释: 第 n 个企业进入的利润门槛</span>
 estimates table br_probit, keep(/cut)
 
-* --- 3. 有序 logit 稳健性 ---
+<span class="cm-l">* --- 3. 有序 logit 稳健性 ---</span>
 ologit n_firms pop income
 estimates store br_logit
 
-* --- 4. 预测: 给定市场特征预测进入企业数 ---
-predict p1 p2 p3 p4 p5, pr          // 各类别概率
-* 期望企业数 = sum_n n * P(N=n)
+<span class="cm-l">* --- 4. 预测: 给定市场特征预测进入企业数 ---</span>
+predict p1 p2 p3 p4 p5, pr          <span class="cm">// 各类别概率</span>
+<span class="cm-l">* 期望企业数 = sum_n n * P(N=n)</span>
 gen E_n = 0*p0 + 1*p1 + 2*p2 + 3*p3 + 4*p4 + 5*p5
 sum E_n
 
-* --- 5. 反事实: 市场规模 pop 增加 1 个标准差 ---
+<span class="cm-l">* --- 5. 反事实: 市场规模 pop 增加 1 个标准差 ---</span>
 replace pop = pop + 1.0
 predict E_n_cf, pr
 gen E_n_cf2 = 0*p0 + 1*p1 + 2*p2 + 3*p3 + 4*p4 + 5*p5

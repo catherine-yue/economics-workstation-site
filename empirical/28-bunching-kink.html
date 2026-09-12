@@ -293,46 +293,46 @@
 
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · bunching.do（一：官方/社区命令 + 模拟数据）</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* Bunching / Kink 演示：Saez (2010) 弹性估计
-* 情境：月收入 z，在 z*=5000 处边际税率从 t0=0.03 跳到 t1=0.10
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* Bunching / Kink 演示：Saez (2010) 弹性估计</span>
+<span class="cm-l">* 情境：月收入 z，在 z*=5000 处边际税率从 t0=0.03 跳到 t1=0.10</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set more off
 set seed 20260911
 
-* --- 首次运行安装 ---
-* ssc install bunching, replace       // 社区命令，自动做反事实多项式+bootstrap
-* ssc install estout,   replace
+<span class="cm-l">* --- 首次运行安装 ---</span>
+<span class="cm-l">* ssc install bunching, replace       // 社区命令，自动做反事实多项式+bootstrap</span>
+<span class="cm-l">* ssc install estout,   replace</span>
 
-* --- 1. 模拟数据：能力 n ~ LogNormal，常数弹性 e=0.3 ---
-* 无 kink 时 z0 = n*(1-t0)^e；有 kink 时，z0>5000 的人被"挤"到 5000
+<span class="cm-l">* --- 1. 模拟数据：能力 n ~ LogNormal，常数弹性 e=0.3 ---</span>
+<span class="cm-l">* 无 kink 时 z0 = n*(1-t0)^e；有 kink 时，z0&gt;5000 的人被"挤"到 5000</span>
 set obs 50000
-gen n = exp(rnormal(8.5, 0.6))        // 能力分布
+gen n = exp(rnormal(8.5, 0.6))        <span class="cm">// 能力分布</span>
 local e_true = 0.3
 local t0 = 0.03
 local t1 = 0.10
 local zstar = 5000
-gen z0 = n*(1-`t0')^`e_true'          // 无 kink 时的潜在收入
+gen z0 = n*(1-`t0')^`e_true'          <span class="cm">// 无 kink 时的潜在收入</span>
 gen z = z0
-* 把 z0 落在 [5000, 5000+dz*] 的边际个体挤到拐点
-* dz* 由弹性公式反推：dz*/z* = e*(t1-t0)/(1-t0)
+<span class="cm-l">* 把 z0 落在 [5000, 5000+dz*] 的边际个体挤到拐点</span>
+<span class="cm-l">* dz* 由弹性公式反推：dz*/z* = e*(t1-t0)/(1-t0)</span>
 local dz = `zstar' * `e_true' * (`t1'-`t0')/(1-`t0')
-replace z = `zstar' if z0>=`zstar' & z0<=`zstar'+`dz'
+replace z = `zstar' if z0&gt;=`zstar' &amp; z0&lt;=`zstar'+`dz'
 
-* --- 2. 用社区命令 bunching 跑（推荐主回归）---
-* z 是 running variable，a(5000) 指定拐点，nomore= 不截断右侧
-bunching z, a(`zstar') ///
-    polynomial(4)            ///  4 阶多项式拟合反事实
-    required(500)            ///  excluded window 左侧 500
-    cf(500)                  ///  excluded window 右侧 500
-    binwidth(100)            ///  每 bin 100 元
-    start(-2000)             ///  图的左界
-    generate(bunch)          ///  输出估计值到 r()
+<span class="cm-l">* --- 2. 用社区命令 bunching 跑（推荐主回归）---</span>
+<span class="cm-l">* z 是 running variable，a(5000) 指定拐点，nomore= 不截断右侧</span>
+bunching z, a(`zstar') <span class="cm">///</span>
+    polynomial(4)            <span class="cm">///  4 阶多项式拟合反事实</span>
+    required(500)            <span class="cm">///  excluded window 左侧 500</span>
+    cf(500)                  <span class="cm">///  excluded window 右侧 500</span>
+    binwidth(100)            <span class="cm">///  每 bin 100 元</span>
+    start(-2000)             <span class="cm">///  图的左界</span>
+    generate(bunch)          <span class="cm">///  输出估计值到 r()</span>
     graph(title("Bunching：个税税率跳档处的聚束"))
 
-* --- 3. 手写版本：histogram + 多项式 + excess mass + bootstrap ---
-* 分 bin
+<span class="cm-l">* --- 3. 手写版本：histogram + 多项式 + excess mass + bootstrap ---</span>
+<span class="cm-l">* 分 bin</span>
 local binw = 100
 local zmin = 2000
 local zmax = 10000
@@ -341,7 +341,7 @@ matrix cnt = J(`nb',1,.)
 forvalues j=1/`nb' {
     local lo = `zmin' + (`j'-1)*`binw'
     local hi = `zmin' + `j'*`binw'
-    quietly count if z>=`lo' & z<`hi'
+    quietly count if z&gt;=`lo' &amp; z&lt;`hi'
     matrix cnt[`j',1] = r(N)
 }
 clear
@@ -352,62 +352,62 @@ forvalues j=1/`nb' {
     quietly replace cnt = cnt[`j',1] in `j'
     quietly replace zc  = `zmin' + (`j'-0.5)*`binw' in `j'
 }
-gen rel = zc - `zstar'          // 相对拐点的位置
+gen rel = zc - `zstar'          <span class="cm">// 相对拐点的位置</span>
 
-* 多项式拟合反事实：排除拐点左右各 500 元
-gen excluded = (abs(rel)<=500)
+<span class="cm-l">* 多项式拟合反事实：排除拐点左右各 500 元</span>
+gen excluded = (abs(rel)&lt;=500)
 reg cnt c.rel##c.rel##c.rel##c.rel i.excluded
-* 解释：四次多项式 + excluded 虚拟变量；
-* excluded 虚拟变量的系数和就是该窗口内被"挤掉"的人数
+<span class="cm-l">* 解释：四次多项式 + excluded 虚拟变量；</span>
+<span class="cm-l">* excluded 虚拟变量的系数和就是该窗口内被"挤掉"的人数</span>
 predict cnt_hat
-* excess mass = 实际 - 反事实（在 excluded 窗口内）
+<span class="cm-l">* excess mass = 实际 - 反事实（在 excluded 窗口内）</span>
 gen diff = cnt - cnt_hat if excluded==1
 sum diff, detail
 scalar B = r(sum)
-* 拐点处反事实密度
-sum cnt_hat if abs(rel)<=`binw'/2
+<span class="cm-l">* 拐点处反事实密度</span>
+sum cnt_hat if abs(rel)&lt;=`binw'/2
 scalar h0 = r(mean)/`binw'
 scalar zstar = `zstar'
-* Saez 弹性
+<span class="cm-l">* Saez 弹性</span>
 scalar e_hat = (B/(h0*zstar)) / ((`t1'-`t0')/(1-`t0'))
 display "Excess mass B = " B
 display "Saez elasticity e_hat = " e_hat " (true = `e_true')"
 
-* 画直方图 + 反事实线
-twoway (bar cnt zc, barwidth(80) color(gs12)) ///
-       (line cnt_hat zc, lwidth(2) lcolor(navy)), ///
-       xline(`zstar', lpattern(dash) lcolor(maroon)) ///
-       legend(label(1 实际人数) label(2 反事实密度)) ///
-       xtitle("月应纳税所得额") ytitle("每 bin 人数") ///
+<span class="cm-l">* 画直方图 + 反事实线</span>
+twoway (bar cnt zc, barwidth(80) color(gs12)) <span class="cm">///</span>
+       (line cnt_hat zc, lwidth(2) lcolor(navy)), <span class="cm">///</span>
+       xline(`zstar', lpattern(dash) lcolor(maroon)) <span class="cm">///</span>
+       legend(label(1 实际人数) label(2 反事实密度)) <span class="cm">///</span>
+       xtitle("月应纳税所得额") ytitle("每 bin 人数") <span class="cm">///</span>
        title("Bunching 手写估计：反事实多项式与 excess mass")
 </code></pre>
     </div>
 
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · bunching.do（二：bootstrap 标准误）</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* Bootstrap 标准误：对个体有放回重抽样，重复全流程
-*==============================================================*
-* 把上面"模拟数据"段保留为程序，用 bootstrap 调用
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* Bootstrap 标准误：对个体有放回重抽样，重复全流程</span>
+<span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* 把上面"模拟数据"段保留为程序，用 bootstrap 调用</span>
 cap prog drop bunching_est
 prog define bunching_est, rclass
     version 16
     syntax , [zstar(real 5000) binw(real 100) w(real 500) t0(real .03) t1(real .10)]
     tempvar bin rel excl
     gen `bin' = floor((z - (`zstar'-3000))/`binw')
-    * 直接调用 bunching 命令的返回值
-    bunching z, a(`zstar') polynomial(4) required(`w') cf(`w') binwidth(`binw') ///
+<span class="cm-l">    * 直接调用 bunching 命令的返回值</span>
+    bunching z, a(`zstar') polynomial(4) required(`w') cf(`w') binwidth(`binw') <span class="cm">///</span>
         start(-2000) quiet
-    return scalar e = r(e)          // 若命令返回弹性，直接取
-    return scalar b = r(b)          // 标准化 excess mass
+    return scalar e = r(e)          <span class="cm">// 若命令返回弹性，直接取</span>
+    return scalar b = r(b)          <span class="cm">// 标准化 excess mass</span>
 end
 
-* 运行 bootstrap（500 次，演示用；正式文章建议 1000-2000 次）
-bootstrap e=r(e) b=r(b), reps(500) seed(20260911) ///
+<span class="cm-l">* 运行 bootstrap（500 次，演示用；正式文章建议 1000-2000 次）</span>
+bootstrap e=r(e) b=r(b), reps(500) seed(20260911) <span class="cm">///</span>
     saving("bunching_boot.dta", replace): bunching_est
 estat bootstrap, all
-* 输出：e 的偏差、标准误、正态/百分位/BCa 置信区间
-* 报告时建议用 BCa 或 percentile 区间，而非正态近似
+<span class="cm-l">* 输出：e 的偏差、标准误、正态/百分位/BCa 置信区间</span>
+<span class="cm-l">* 报告时建议用 BCa 或 percentile 区间，而非正态近似</span>
 </code></pre>
     </div>
 
@@ -429,7 +429,7 @@ e_true, t0, t1, zstar = 0.3, 0.03, 0.10, 5000
 z0 = n * (1 - t0) ** e_true
 dz = zstar * e_true * (t1 - t0) / (1 - t0)
 z = z0.copy()
-bunch_mask = (z0 >= zstar) & (z0 <= zstar + dz)
+bunch_mask = (z0 &gt;= zstar) &amp; (z0 &lt;= zstar + dz)
 z[bunch_mask] = zstar                      # 把边际个体挤到拐点
 
 # --- 2. 分 bin ---
@@ -440,13 +440,13 @@ cnt, _ = np.histogram(z, bins=edges)
 
 # --- 3. 多项式拟合反事实（排除拐点 ±500） ---
 rel = centers - zstar
-excluded = np.abs(rel) <= 500
+excluded = np.abs(rel) &lt;= 500
 mask = ~excluded
 coef = np.polyfit(rel[mask], cnt[mask], 4)
 cnt_hat = np.polyval(coef, rel)
 
 B = (cnt[excluded] - cnt_hat[excluded]).sum()
-h0 = cnt_hat[np.abs(rel) <= binw / 2].mean() / binw
+h0 = cnt_hat[np.abs(rel) &lt;= binw / 2].mean() / binw
 e_hat = (B / (h0 * zstar)) / ((t1 - t0) / (1 - t0))
 print(f"Excess mass B = {B:.1f}")
 print(f"Saez elasticity e_hat = {e_hat:.3f}  (true = {e_true})")

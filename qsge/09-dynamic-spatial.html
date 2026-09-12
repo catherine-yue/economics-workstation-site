@@ -392,7 +392,7 @@
 <pre><code># ============================================================
 # 动态空间一般均衡求解器 (Dynamic Spatial GE Solver)
 # 结构: 每期静态EK出清 + 迁移Bellman(Type-I极值) + 人口运动
-# 参考: Caliendo, Dvorkin & Parro (2019, Econometrica)
+# 参考: Caliendo, Dvorkin &amp; Parro (2019, Econometrica)
 # 仅依赖 numpy; log-sum-exp 手写保证数值稳定
 # ============================================================
 import numpy as np
@@ -426,7 +426,7 @@ def static_ek(L, T, d, H, theta, bc, damp=0.6, tol=1e-9, it=3000):
         sales = (pi * spend[:, None]).sum(axis=0)       # i地在各地的销售额
         w_new = sales / np.maximum(L, 1e-12)
         w_new = w_new / w_new.sum()                     # 归一化(只识别相对工资)
-        if np.max(np.abs(w_new - w)) < tol:
+        if np.max(np.abs(w_new - w)) &lt; tol:
             w = w_new; break
         w = damp * w_new + (1 - damp) * w
     Q = (1 - bc) * w * L / H                            # 住房出清
@@ -454,7 +454,7 @@ def steady_state(L0, T, d, mig, H, theta, bc, beta, nu,
             a = (lu[None, :] - np.log(mig) + beta * V[None, :]) / nu   # (n,k)
             V_new = nu * logsumexp(a, axis=1)
             V_new -= V_new.mean()                       # 去掉公共常数
-            if np.max(np.abs(V_new - V)) < 1e-12:
+            if np.max(np.abs(V_new - V)) &lt; 1e-12:
                 V = V_new; break
             V = 0.5 * V_new + 0.5 * V
         # 迁移概率矩阵 m[n,i] = softmax over i of a
@@ -463,7 +463,7 @@ def steady_state(L0, T, d, mig, H, theta, bc, beta, nu,
         # 稳态人口 = m.T 的主右特征向量 (幂迭代)
         L_new = m.T @ L
         L_new = L_new / L_new.sum()
-        if np.max(np.abs(L_new - L)) < tol:
+        if np.max(np.abs(L_new - L)) &lt; tol:
             L = L_new; break
         L = 0.5 * L_new + 0.5 * L
     T_eff = T * L ** xi
@@ -508,7 +508,7 @@ def transition(L_old, ss_new, T, d_path, mig_path, H, theta, bc,
             _, _, _, _, U_new[t] = static_ek(L_path[t], T_eff, d_path[t], H, theta, bc)
         err = np.max(np.abs(U_new - U_path))
         U_path = 0.5 * U_new + 0.5 * U_path             # 阻尼
-        if err < 1e-7:
+        if err &lt; 1e-7:
             break
     # 动态福利: 全经济人均期望效用的时间序列
     welf = [(L_path[t] * U_path[t]).sum() / L_path[t].sum()

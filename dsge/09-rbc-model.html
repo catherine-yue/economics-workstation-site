@@ -569,77 +569,77 @@
       <h3>完整 .mod 代码</h3>
       <div class="code-block">
         <div class="code-header"><span class="lang">Dynare / rbc_baseline.mod</span><button class="copy-btn">复制</button></div>
-        <pre><code>// ============================================================
-// 09-rbc-baseline.mod ——  RBC 基准模型（社会计划者配置）
-// 运行：在 MATLAB/Octave 中执行  dynare rbc_baseline.mod
-// 模型：CRRA(对数)消费 + 凸劳动，Cobb-Douglas 生产，AR(1) 技术
-// 周期：季度
-// ============================================================
+        <pre><code><span class="cm">// ============================================================</span>
+<span class="cm">// 09-rbc-baseline.mod ——  RBC 基准模型（社会计划者配置）</span>
+<span class="cm">// 运行：在 MATLAB/Octave 中执行  dynare rbc_baseline.mod</span>
+<span class="cm">// 模型：CRRA(对数)消费 + 凸劳动，Cobb-Douglas 生产，AR(1) 技术</span>
+<span class="cm">// 周期：季度</span>
+<span class="cm">// ============================================================</span>
 
-// ---------- 第1步：声明内生变量 ----------
-var Y      // 产出 Output（GDP）
-    C      // 消费 Consumption
-    I      // 投资 Investment
-    K      // 期初资本 Stock of capital
-    N      // 劳动 Hours worked
-    w      // 实际工资 Real wage
-    r_k    // 资本租金率 Rental rate of capital
-    A;     // 全要素生产率 TFP
+<span class="cm">// ---------- 第1步：声明内生变量 ----------</span>
+var Y      <span class="cm">// 产出 Output（GDP）</span>
+    C      <span class="cm">// 消费 Consumption</span>
+    I      <span class="cm">// 投资 Investment</span>
+    K      <span class="cm">// 期初资本 Stock of capital</span>
+    N      <span class="cm">// 劳动 Hours worked</span>
+    w      <span class="cm">// 实际工资 Real wage</span>
+    r_k    <span class="cm">// 资本租金率 Rental rate of capital</span>
+    A;     <span class="cm">// 全要素生产率 TFP</span>
 
-// ---------- 第1步：声明外生冲击 ----------
-varexo eps_a;   // 技术冲击 innovation，白噪声
+<span class="cm">// ---------- 第1步：声明外生冲击 ----------</span>
+varexo eps_a;   <span class="cm">// 技术冲击 innovation，白噪声</span>
 
-// ---------- 第2步：声明参数 ----------
-parameters beta    // 主观贴现因子（季度）
-           sigma   // 相对风险厌恶 = 1/EIS
-           chi     // 劳动负效用权重
-           varphi  // Frisch 弹性倒数
-           alpha   // 资本收入份额
-           delta   // 季度折旧率
-           rho_a   // 技术冲击持续性
-           sig_a;  // 技术冲击标准差
+<span class="cm">// ---------- 第2步：声明参数 ----------</span>
+parameters beta    <span class="cm">// 主观贴现因子（季度）</span>
+           sigma   <span class="cm">// 相对风险厌恶 = 1/EIS</span>
+           chi     <span class="cm">// 劳动负效用权重</span>
+           varphi  <span class="cm">// Frisch 弹性倒数</span>
+           alpha   <span class="cm">// 资本收入份额</span>
+           delta   <span class="cm">// 季度折旧率</span>
+           rho_a   <span class="cm">// 技术冲击持续性</span>
+           sig_a;  <span class="cm">// 技术冲击标准差</span>
 
-// ---------- 第2步：赋值（校准值，见第6节） ----------
-beta   = 0.99;    // 季度贴现，对应年化实际利率约4%
-sigma  = 1.0;     // 对数效用 U(C)=log(C)
-chi    = 5.55;    // 反推：使稳态 N≈1/3
-varphi = 1.0;     // Frisch 弹性 = 1
-alpha  = 0.33;    // 资本份额 ≈ 1/3
-delta  = 0.025;   // 季度折旧，年化约10%
-rho_a  = 0.95;    // 技术冲击持续性（Solow残差估计）
-sig_a  = 0.007;   // 技术冲击标准差（季度，约0.7%）
+<span class="cm">// ---------- 第2步：赋值（校准值，见第6节） ----------</span>
+beta   = 0.99;    <span class="cm">// 季度贴现，对应年化实际利率约4%</span>
+sigma  = 1.0;     <span class="cm">// 对数效用 U(C)=log(C)</span>
+chi    = 5.55;    <span class="cm">// 反推：使稳态 N≈1/3</span>
+varphi = 1.0;     <span class="cm">// Frisch 弹性 = 1</span>
+alpha  = 0.33;    <span class="cm">// 资本份额 ≈ 1/3</span>
+delta  = 0.025;   <span class="cm">// 季度折旧，年化约10%</span>
+rho_a  = 0.95;    <span class="cm">// 技术冲击持续性（Solow残差估计）</span>
+sig_a  = 0.007;   <span class="cm">// 技术冲击标准差（季度，约0.7%）</span>
 
-// ---------- 第3步：model 块（非线性原始形式） ----------
+<span class="cm">// ---------- 第3步：model 块（非线性原始形式） ----------</span>
 model;
-// (1) 消费-资本欧拉方程：u'(C_t)=beta E_t{u'(C_{t+1})*(1-delta+r_k_{t+1})}
-//     对数效用下 u'(C)=1/C；r_k_{t+1}=alpha*A_{t+1}*K_{t+1}^{alpha-1}*N_{t+1}^{1-alpha}
+<span class="cm">// (1) 消费-资本欧拉方程：u'(C_t)=beta E_t{u'(C_{t+1})*(1-delta+r_k_{t+1})}</span>
+<span class="cm">//     对数效用下 u'(C)=1/C；r_k_{t+1}=alpha*A_{t+1}*K_{t+1}^{alpha-1}*N_{t+1}^{1-alpha}</span>
 1/C = beta*1/C(+1)*( 1 - delta + alpha*A(+1)*K(+1)^(alpha-1)*N(+1)^(1-alpha) );
 
-// (2) 劳动供给条件：MRS = MPL = w_t
-//     chi*N^varphi*C^sigma = (1-alpha)*A*K^alpha*N^(1-alpha-1) = w
+<span class="cm">// (2) 劳动供给条件：MRS = MPL = w_t</span>
+<span class="cm">//     chi*N^varphi*C^sigma = (1-alpha)*A*K^alpha*N^(1-alpha-1) = w</span>
 chi*N^varphi*C^sigma = (1-alpha)*A*K^alpha*N^(1-alpha-1);
 
-// (3) 实际工资定义（MPL）
+<span class="cm">// (3) 实际工资定义（MPL）</span>
 w = (1-alpha)*A*K^alpha*N^(1-alpha-1);
 
-// (4) 资本租金定义（MPK）
+<span class="cm">// (4) 资本租金定义（MPK）</span>
 r_k = alpha*A*K^(alpha-1)*N^(1-alpha);
 
-// (5) 生产函数（总供给）
+<span class="cm">// (5) 生产函数（总供给）</span>
 Y = A*K^alpha*N^(1-alpha);
 
-// (6) 资源约束：产出 = 消费 + 投资（封闭经济，无政府）
+<span class="cm">// (6) 资源约束：产出 = 消费 + 投资（封闭经济，无政府）</span>
 Y = C + I;
 
-// (7) 资本积累方程：今天的投资 + 折旧后旧资本 = 明天的资本
+<span class="cm">// (7) 资本积累方程：今天的投资 + 折旧后旧资本 = 明天的资本</span>
 K(+1) = (1-delta)*K + I;
 
-// (8) 技术过程：log A 服从 AR(1)，eps_a 是 iid 白噪声
+<span class="cm">// (8) 技术过程：log A 服从 AR(1)，eps_a 是 iid 白噪声</span>
 log(A) = rho_a*log(A(-1)) + eps_a;
 end;
 
-// ---------- 第4步：initval（稳态求解器的初始猜测） ----------
-// 从解析稳态拿：A=1，N=1/3，K 由资本劳动比估算约 4~10
+<span class="cm">// ---------- 第4步：initval（稳态求解器的初始猜测） ----------</span>
+<span class="cm">// 从解析稳态拿：A=1，N=1/3，K 由资本劳动比估算约 4~10</span>
 initval;
 A = 1.0;
 N = 0.33;
@@ -651,21 +651,21 @@ w = 2.0;
 r_k = 0.035;
 end;
 
-// ---------- 第5步：求解稳态 ----------
+<span class="cm">// ---------- 第5步：求解稳态 ----------</span>
 steady;
 
-// ---------- 第6步：检查 Blanchard-Kahn 条件 ----------
-// 应输出："required number of eigenvalues found"
+<span class="cm">// ---------- 第6步：检查 Blanchard-Kahn 条件 ----------</span>
+<span class="cm">// 应输出："required number of eigenvalues found"</span>
 check;
 
-// ---------- 设定外生冲击分布 ----------
+<span class="cm">// ---------- 设定外生冲击分布 ----------</span>
 shocks;
-var eps_a = sig_a^2;   // 冲击方差 = 0.007^2
+var eps_a = sig_a^2;   <span class="cm">// 冲击方差 = 0.007^2</span>
 end;
 
-// ---------- 第7步：一阶扰动求解 + 40期 IRF ----------
-// order=1：一阶Taylor近似；irf=40：画40期
-// 列出想画图的变量：Y C I N K w r_k
+<span class="cm">// ---------- 第7步：一阶扰动求解 + 40期 IRF ----------</span>
+<span class="cm">// order=1：一阶Taylor近似；irf=40：画40期</span>
+<span class="cm">// 列出想画图的变量：Y C I N K w r_k</span>
 stoch_simul(order=1, irf=40) Y C I N K w r_k;</code></pre>
       </div>
       <div class="callout tip">

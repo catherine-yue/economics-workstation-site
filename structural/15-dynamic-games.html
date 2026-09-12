@@ -341,7 +341,7 @@
 #      min_z  neg_loglik(z)
 #      s.t.   Bellman_eq_constraint(z) == 0
 #             KKT_complementarity(z) == 0
-#             theta_lb <= theta <= theta_ub
+#             theta_lb &lt;= theta &lt;= theta_ub
 # 3. IPOPT 利用问题的稀疏结构（每个 Bellman 约束只涉及少数状态）
 #    用内点法一次性收敛, 无需外层-内层嵌套。
 #
@@ -370,7 +370,7 @@ Ericson-Pakes (1995) 简化版 —— 2 对称企业动态博弈 MPE 求解
     未成功则 a 下一阶 (模拟折旧/技术过时), 截断在边界
   - 当期利润 pi(a, ao) = a - 0.6*ao - 0.1  (自身状态高有利, 对手高不利)
   - 贴现因子 beta = 0.9
-对称 MPE: 两家企业使用同一策略表 pol[a, ao] (自身a, 对手ao -> 投资x)
+对称 MPE: 两家企业使用同一策略表 pol[a, ao] (自身a, 对手ao -&gt; 投资x)
 """
 import numpy as np
 
@@ -458,7 +458,7 @@ print("\n=== 均衡策略表 pol[a, ao] ===")
 print("行=自身状态 a, 列=对手状态 ao, 值=均衡投资水平 x*")
 print("     ao=0  ao=1  ao=2  ao=3  ao=4")
 for a in range(NA):
-    print(f"a={a}  " + "  ".join(f"{int(pol[a, j]):>3d}" for j in range(NA)))
+    print(f"a={a}  " + "  ".join(f"{int(pol[a, j]):&gt;3d}" for j in range(NA)))
 
 print("\n=== 均衡价值函数 V(a, ao) ===")
 print("     ao=0    ao=1    ao=2    ao=3    ao=4")

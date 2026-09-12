@@ -259,54 +259,54 @@
       <p>下面用模拟数据在 Stata 中复现 GaR：构造金融条件指数 FCI → 模拟 GDP 增长（其条件方差依赖 FCI）→ 对多个分位点做 qreg → 计算 GaR 时间序列 → 画系数分位图。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 分位数回归 + Growth-at-Risk</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ============================================================
-*  Stata: Quantile Regression & Growth-at-Risk 完整复现
-* ============================================================
+        <pre><code><span class="cm-l">* ============================================================</span>
+<span class="cm-l">*  Stata: Quantile Regression &amp; Growth-at-Risk 完整复现</span>
+<span class="cm-l">* ============================================================</span>
 clear all
 set seed 20240101
 set obs 200
 
-* ---------- 1. 模拟数据：金融条件 FCI -> GDP 增长 ----------
-* FCI：正值=金融条件宽松，负值=收紧
+<span class="cm-l">* ---------- 1. 模拟数据：金融条件 FCI -&gt; GDP 增长 ----------</span>
+<span class="cm-l">* FCI：正值=金融条件宽松，负值=收紧</span>
 gen t = _n
 tsset t
-gen fci = 0.8*l.fci + rnormal()            // FCI 自回归
+gen fci = 0.8*l.fci + rnormal()            <span class="cm">// FCI 自回归</span>
 replace fci = fci[_n-1] if _n==1
 
-* GDP 增长：均值受 FCI 影响，条件方差也受 FCI 影响（脆弱增长机制）
-gen sigma = exp(-0.8*fci)                   // FCI 越差 sigma 越大
+<span class="cm-l">* GDP 增长：均值受 FCI 影响，条件方差也受 FCI 影响（脆弱增长机制）</span>
+gen sigma = exp(-0.8*fci)                   <span class="cm">// FCI 越差 sigma 越大</span>
 gen gdp_growth = 0.5 + 0.6*fci + sigma*rnormal()
 gen l_gdp = l.gdp_growth
 
-* ---------- 2. 单分位点 QR：tau=0.05 ----------
+<span class="cm-l">* ---------- 2. 单分位点 QR：tau=0.05 ----------</span>
 qreg gdp_growth fci l_gdp, quantile(0.05) vce(bootstrap, reps=500)
 est store q05
-* 关注 fci 的系数：tau=0.05 时应显著为负且绝对值大
+<span class="cm-l">* 关注 fci 的系数：tau=0.05 时应显著为负且绝对值大</span>
 
-* ---------- 3. 多分位点联立 ----------
+<span class="cm-l">* ---------- 3. 多分位点联立 ----------</span>
 foreach tau in 0.05 0.25 0.50 0.75 0.95 {
     qreg gdp_growth fci l_gdp, quantile(`tau')
     est store q`=substr("`tau'",3,2)'
 }
-esttab q05 q25 q50 q75 q95, keep(fci l_gdp) se ///
-    mtitles("p5" "p25" "p50" "p75" "p95") ///
+esttab q05 q25 q50 q75 q95, keep(fci l_gdp) se <span class="cm">///</span>
+    mtitles("p5" "p25" "p50" "p75" "p95") <span class="cm">///</span>
     star(* 0.1 ** 0.05 *** 0.01)
 
-* ---------- 4. Bootstrap 分位数回归（更可靠的标准误）----------
-* bsqreg 用 bootstrap 估计 QR 的协方差矩阵
+<span class="cm-l">* ---------- 4. Bootstrap 分位数回归（更可靠的标准误）----------</span>
+<span class="cm-l">* bsqreg 用 bootstrap 估计 QR 的协方差矩阵</span>
 bsqreg gdp_growth fci l_gdp, quantile(0.05) reps(500)
 
-* ---------- 5. 工具变量分位数回归 ivqreg ----------
-* 若担心 FCI 内生（央行逆周期调整），可用工具变量
-* ssc install ivqreg
-* ivqreg gdp_growth l_gdp (fci = instrument), quantile(0.05)
+<span class="cm-l">* ---------- 5. 工具变量分位数回归 ivqreg ----------</span>
+<span class="cm-l">* 若担心 FCI 内生（央行逆周期调整），可用工具变量</span>
+<span class="cm-l">* ssc install ivqreg</span>
+<span class="cm-l">* ivqreg gdp_growth l_gdp (fci = instrument), quantile(0.05)</span>
 
-* ---------- 6. 计算 GaR 时间序列（滚动估计）----------
+<span class="cm-l">* ---------- 6. 计算 GaR 时间序列（滚动估计）----------</span>
 gen gar_p5 = .
 gen gar_p50 = .
 gen gar_p95 = .
 forvalues t = 60/200 {
-    * 用前 t-1 期数据估计
+<span class="cm-l">    * 用前 t-1 期数据估计</span>
     quietly qreg gdp_growth fci l_gdp in 1/`=`t'-1', quantile(0.05)
     predict resid_p5, xb
     qui replace gar_p5 = resid_p5[`t'] in `t'
@@ -319,14 +319,14 @@ forvalues t = 60/200 {
     drop resid_p5 resid_p50 resid_p95
 }
 
-* ---------- 7. 画 GaR 时间序列 + 系数分位图 ----------
-twoway (rarea gar_p5 gar_p95 t, fcolor(gs12) lcolor(none)) ///
-       (line gar_p50 t, lcolor(navy) lwidth(med)) ///
-       (line gdp_growth t, lcolor(red) lwidth(med)), ///
-       title("GDP 增长分布与 Growth-at-Risk") ///
+<span class="cm-l">* ---------- 7. 画 GaR 时间序列 + 系数分位图 ----------</span>
+twoway (rarea gar_p5 gar_p95 t, fcolor(gs12) lcolor(none)) <span class="cm">///</span>
+       (line gar_p50 t, lcolor(navy) lwidth(med)) <span class="cm">///</span>
+       (line gdp_growth t, lcolor(red) lwidth(med)), <span class="cm">///</span>
+       title("GDP 增长分布与 Growth-at-Risk") <span class="cm">///</span>
        legend(label(1 "5%-95% 区间") label(2 "中位数") label(3 "实际增长"))
 
-* 系数沿分位变化图：手动循环估计并记录 fci 系数
+<span class="cm-l">* 系数沿分位变化图：手动循环估计并记录 fci 系数</span>
 gen tau_list = .
 gen beta_fci = .
 local i = 1
@@ -336,8 +336,8 @@ forvalues tau = 5(5)95 {
     qui replace beta_fci = _b[fci] in `i'
     local i = `i' + 1
 }
-twoway connected beta_fci tau_list, ///
-    title("FCI 系数沿 GDP 增长分布分位的变化") ///
+twoway connected beta_fci tau_list, <span class="cm">///</span>
+    title("FCI 系数沿 GDP 增长分布分位的变化") <span class="cm">///</span>
     yline(0, lcolor(red) lpattern(dash))
 </code></pre>
       </div>

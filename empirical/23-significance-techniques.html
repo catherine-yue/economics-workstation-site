@@ -333,36 +333,36 @@
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · A1_样本筛选.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
-* 真实效应偏弱(beta=0.2)，演示"换样本=换问题"
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
+<span class="cm-l">* 真实效应偏弱(beta=0.2)，演示"换样本=换问题"</span>
 set seed 101
 set obs 1000
 gen id = _n
-gen year = 2005 + mod(_n,15)          // 2005-2019
-gen soe = runiform()&gt;0.5              // 国企虚拟
+gen year = 2005 + mod(_n,15)          <span class="cm">// 2005-2019</span>
+gen soe = runiform()&gt;0.5              <span class="cm">// 国企虚拟</span>
 gen x  = rnormal()
-gen y  = 0.2*x + rnormal(0,1.2)       // 真实效应偏弱
+gen y  = 0.2*x + rnormal(0,1.2)       <span class="cm">// 真实效应偏弱</span>
 
-* === 2. 核心操作 ===
-* ✓ 合法：事前由政策时点限定 2011 年起
+<span class="cm-l">* === 2. 核心操作 ===</span>
+<span class="cm-l">* ✓ 合法：事前由政策时点限定 2011 年起</span>
 reg y x if year&gt;=2011
-* ✓ 合法：事前理论关心国企子样本
+<span class="cm-l">* ✓ 合法：事前理论关心国企子样本</span>
 reg y x if soe==1
-* ✓ 组间差异必须走交互项检验（不能比两张分样本表）
+<span class="cm-l">* ✓ 组间差异必须走交互项检验（不能比两张分样本表）</span>
 gen x_soe = x*soe
 reg y x soe x_soe
 
-* === 3. 检验与输出 ===
-test x_soe                            // 组间差异是否显著
+<span class="cm-l">* === 3. 检验与输出 ===</span>
+test x_soe                            <span class="cm">// 组间差异是否显著</span>
 
-* ⛔ 红线演示（仅理解风险，勿用于正式研究）：
-*   事后从 2005..2019 逐年试窗口，挑一个显著的写正文
-* forvalues s=2005/2019 {
-*     quietly reg y x if year&gt;=`s'
-*     display "起始年=`s'  系数=" %6.3f _b[x] "  p=" %6.3f (2*ttail(e(df_r),abs(_b[x]/_se[x])))
-* }
-* 上面"扫窗口"只能作为 specification curve 整体报告，
-* 绝不能只挑其中一个显著窗口写进正文。</code></pre>
+<span class="cm-l">* ⛔ 红线演示（仅理解风险，勿用于正式研究）：</span>
+<span class="cm-l">*   事后从 2005..2019 逐年试窗口，挑一个显著的写正文</span>
+<span class="cm-l">* forvalues s=2005/2019 {</span>
+<span class="cm-l">*     quietly reg y x if year&gt;=`s'</span>
+<span class="cm-l">*     display "起始年=`s'  系数=" %6.3f _b[x] "  p=" %6.3f (2*ttail(e(df_r),abs(_b[x]/_se[x])))</span>
+<span class="cm-l">* }</span>
+<span class="cm-l">* 上面"扫窗口"只能作为 specification curve 整体报告，</span>
+<span class="cm-l">* 绝不能只挑其中一个显著窗口写进正文。</span></code></pre>
       </div>
 
       <h3><span class="tech-label">A2</span>样本量与功效：SE ∝ 1/√N 的双刃剑</h3>
@@ -377,23 +377,23 @@ test x_soe                            // 组间差异是否显著
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · A2_样本量功效.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
-* 真实斜率固定为 0.03（经济意义极小），只让 N 变化
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
+<span class="cm-l">* 真实斜率固定为 0.03（经济意义极小），只让 N 变化</span>
 set seed 202
 
-* === 2. 核心操作：循环不同样本量，跑同一个回归 ===
-* === 3. 检验与输出：打印 N / 系数 / t 值 ===
+<span class="cm-l">* === 2. 核心操作：循环不同样本量，跑同一个回归 ===</span>
+<span class="cm-l">* === 3. 检验与输出：打印 N / 系数 / t 值 ===</span>
 forvalues n=200(4950)10000 {
     preserve
     quietly set obs `n'
     gen x = rnormal()
-    gen y = 0.03*x + rnormal(0,1)     // 真实斜率始终 0.03
+    gen y = 0.03*x + rnormal(0,1)     <span class="cm">// 真实斜率始终 0.03</span>
     quietly reg y x
     display "N=" %6.0f `n' "  b=" %6.4f _b[x] "  t=" %6.2f (_b[x]/_se[x])
     restore
 }
-* ✓ 合法结论：N 越大 t 越大，但效应量始终 0.03；
-*   大样本下的"显著"必须配经济显著性换算，否则是误导。</code></pre>
+<span class="cm-l">* ✓ 合法结论：N 越大 t 越大，但效应量始终 0.03；</span>
+<span class="cm-l">*   大样本下的"显著"必须配经济显著性换算，否则是误导。</span></code></pre>
       </div>
 
       <h3><span class="tech-label">A3</span>缺失值处理：complete-case / 插补 / 删高缺失变量</h3>
@@ -408,21 +408,21 @@ forvalues n=200(4950)10000 {
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · A3_缺失值.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 303
 set obs 8000
 gen x = rnormal()
 gen y = 0.3*x + rnormal()
 gen ctrl_missing = .
-replace ctrl_missing = rnormal() in 1/7500      // 仅前7500个有值，500个缺失
+replace ctrl_missing = rnormal() in 1/7500      <span class="cm">// 仅前7500个有值，500个缺失</span>
 gen ctrl_other = rnormal()
 
-* === 2. 核心操作：同一核心变量，含/不含高缺失控制 ===
-* === 3. 检验与输出：对比两套 N、系数、SE ===
-reg y x ctrl_missing ctrl_other                // 含高缺失变量：N 只剩 7500
-reg y x ctrl_other                             // 删掉高缺失变量：N 回到 8000
-* ✓ 合法：报告两套 N，并说明删除理由（如该变量缺失率&gt;90%）
-* ⛔ 红线：发现删完后 x 变显著，就悄悄把 ctrl_missing 从表里删掉</code></pre>
+<span class="cm-l">* === 2. 核心操作：同一核心变量，含/不含高缺失控制 ===</span>
+<span class="cm-l">* === 3. 检验与输出：对比两套 N、系数、SE ===</span>
+reg y x ctrl_missing ctrl_other                <span class="cm">// 含高缺失变量：N 只剩 7500</span>
+reg y x ctrl_other                             <span class="cm">// 删掉高缺失变量：N 回到 8000</span>
+<span class="cm-l">* ✓ 合法：报告两套 N，并说明删除理由（如该变量缺失率&gt;90%）</span>
+<span class="cm-l">* ⛔ 红线：发现删完后 x 变显著，就悄悄把 ctrl_missing 从表里删掉</span></code></pre>
       </div>
 
       <h3><span class="tech-label">A4</span>极端值处理：winsorize（压回）vs trim（删除）</h3>
@@ -437,30 +437,30 @@ reg y x ctrl_other                             // 删掉高缺失变量：N 回�
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · A4_极端值.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
-* ssc install winsor2
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
+<span class="cm-l">* ssc install winsor2</span>
 set seed 404
 set obs 2000
 gen year = 2010 + mod(_n,10)
 gen ind  = ceil(runiform()*20)
 gen x = rnormal()
-replace x = 50 in 1/20                 // 20个极端值
+replace x = 50 in 1/20                 <span class="cm">// 20个极端值</span>
 gen y = 0.3*x + rnormal(0,1.5)
 
-* === 2. 核心操作：三种缩尾方式 ===
-* ✓ 压回(winsor)：保留观测数，把尾部压到 1%/99% 分位
+<span class="cm-l">* === 2. 核心操作：三种缩尾方式 ===</span>
+<span class="cm-l">* ✓ 压回(winsor)：保留观测数，把尾部压到 1%/99% 分位</span>
 winsor2 x, cuts(1 99) suffix(_w)
-* ✓ 按年份分组缩尾（消除跨年量纲漂移）
+<span class="cm-l">* ✓ 按年份分组缩尾（消除跨年量纲漂移）</span>
 winsor2 x, cuts(1 99) suffix(_wy) by(year)
-* ✓ 按行业分组缩尾
+<span class="cm-l">* ✓ 按行业分组缩尾</span>
 winsor2 x, cuts(1 99) suffix(_wi) by(ind)
 
-* === 3. 检验与输出：esttab 对比三列 ===
+<span class="cm-l">* === 3. 检验与输出：esttab 对比三列 ===</span>
 reg y x      ; est store raw
 reg y x_w    ; est store w1
 reg y x_wy   ; est store w_year
 esttab raw w1 w_year, keep(x x_w x_wy) b(%9.3f) se star(*.1 **.05 ***.01)
-* ⛔ 红线：不要从 cuts(1 99)/(2 98)/(5 95) 里挑一个显著的写正文</code></pre>
+<span class="cm-l">* ⛔ 红线：不要从 cuts(1 99)/(2 98)/(5 95) 里挑一个显著的写正文</span></code></pre>
       </div>
 
       <h3><span class="tech-label">A5</span>先取对数还是先缩尾：顺序不同，结果不同</h3>
@@ -475,27 +475,27 @@ esttab raw w1 w_year, keep(x x_w x_wy) b(%9.3f) se star(*.1 **.05 ***.01)
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · A5_顺序.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 505
 set obs 3000
-gen rev = exp(rnormal(3,1.5))          // 右偏的营收
+gen rev = exp(rnormal(3,1.5))          <span class="cm">// 右偏的营收</span>
 gen x   = rnormal()
 gen y   = 0.2*x + 0.1*ln(rev+1) + rnormal()
 
-* === 2. 核心操作：两种工序顺序 ===
-* 顺序1：先缩尾后 log
+<span class="cm-l">* === 2. 核心操作：两种工序顺序 ===</span>
+<span class="cm-l">* 顺序1：先缩尾后 log</span>
 winsor2 rev, cuts(1 99) suffix(_w)
 gen ln_rev1 = ln(rev_w + 1)
-* 顺序2：先 log 后缩尾
+<span class="cm-l">* 顺序2：先 log 后缩尾</span>
 gen ln_rev0 = ln(rev + 1)
 winsor2 ln_rev0, cuts(1 99) suffix(_w)
 
-* === 3. 检验与输出：对比两版系数 ===
+<span class="cm-l">* === 3. 检验与输出：对比两版系数 ===</span>
 reg y x ln_rev1   ; est store order1
 reg y x ln_rev0_w ; est store order2
 esttab order1 order2, b(%9.3f) se
-* ✓ 把你采用的那套顺序写进数据清洗章节，另一套放附录即可
-* ⛔ 红线：两种顺序都跑一遍，挑显著的那种写论文</code></pre>
+<span class="cm-l">* ✓ 把你采用的那套顺序写进数据清洗章节，另一套放附录即可</span>
+<span class="cm-l">* ⛔ 红线：两种顺序都跑一遍，挑显著的那种写论文</span></code></pre>
       </div>
 
       <h3><span class="tech-label">A6</span>影响诊断：Cook's D / DFBETA / leave-one-out</h3>
@@ -510,25 +510,25 @@ esttab order1 order2, b(%9.3f) se
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · A6_影响诊断.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 606
 set obs 1200
 gen id = _n
 gen x = rnormal()
-replace x = 12 in 1/5                  // 5个高杠杆点
+replace x = 12 in 1/5                  <span class="cm">// 5个高杠杆点</span>
 gen y = 0.3*x + rnormal(0,1.5)
 
-* === 2. 核心操作：影响诊断三剑客 ===
+<span class="cm-l">* === 2. 核心操作：影响诊断三剑客 ===</span>
 reg y x
-predict cook, cooksd                   // Cook's D &gt; 4/N 视为高影响
+predict cook, cooksd                   <span class="cm">// Cook's D &gt; 4/N 视为高影响</span>
 predict lev, leverage
-dfbeta                                 // 逐点删去后 x 系数变化
+dfbeta                                 <span class="cm">// 逐点删去后 x 系数变化</span>
 
-* === 3. 检验与输出：定位并处理 ===
+<span class="cm-l">* === 3. 检验与输出：定位并处理 ===</span>
 list id x y cook if cook &gt; 4/_N
-* ✓ 合法：经查是错误观测（如多打一个零），有依据地剔除
+<span class="cm-l">* ✓ 合法：经查是错误观测（如多打一个零），有依据地剔除</span>
 reg y x if cook &lt;= 4/_N
-* ⛔ 红线方向：把"按 b_x 排序删观测"做成循环（见 F1）——切勿使用</code></pre>
+<span class="cm-l">* ⛔ 红线方向：把"按 b_x 排序删观测"做成循环（见 F1）——切勿使用</span></code></pre>
       </div>
     </div>
 
@@ -548,25 +548,25 @@ reg y x if cook &lt;= 4/_N
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · B1_控制变量.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 707
 set obs 1500
 gen x = rnormal()
-gen c1 = rnormal()                      // 企业控制
-gen c2 = rnormal()                      // 行业控制(制造缺失)
+gen c1 = rnormal()                      <span class="cm">// 企业控制</span>
+gen c2 = rnormal()                      <span class="cm">// 行业控制(制造缺失)</span>
 replace c2 = . in 1/200
 gen y = 0.25*x + 0.3*c1 + 0.5*c2 + rnormal()
 
-* === 2. 核心操作：控制集逐级加入 ===
+<span class="cm-l">* === 2. 核心操作：控制集逐级加入 ===</span>
 reg y x            ; est store m1
 reg y x c1         ; est store m2
 reg y x c1 c2      ; est store m3
 
-* === 3. 检验与输出：Model1-3 对比表 ===
-esttab m1 m2 m3, keep(x c1 c2) b(%9.3f) se star(*.1 **.05 ***.01) ///
+<span class="cm-l">* === 3. 检验与输出：Model1-3 对比表 ===</span>
+esttab m1 m2 m3, keep(x c1 c2) b(%9.3f) se star(*.1 **.05 ***.01) <span class="cm">///</span>
     mtitles("Model1 无控制" "Model2 企业控制" "Model3 全控制")
-* ✓ 注意 m3 的 N 比 m2 小200（因 c2 缺失）——正文必须写明
-* ⛔ 红线：逐格试 c1..c10 哪个加进去 x 就显著，只留那个</code></pre>
+<span class="cm-l">* ✓ 注意 m3 的 N 比 m2 小200（因 c2 缺失）——正文必须写明</span>
+<span class="cm-l">* ⛔ 红线：逐格试 c1..c10 哪个加进去 x 就显著，只留那个</span></code></pre>
       </div>
 
       <h3><span class="tech-label">B2</span>核心变量的定义方式：水平/变化/滞后/比例/0-1/阶段</h3>
@@ -581,29 +581,29 @@ esttab m1 m2 m3, keep(x c1 c2) b(%9.3f) se star(*.1 **.05 ***.01) ///
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · B2_核心变量定义.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 808
 set obs 1200
 gen id = ceil(_n/6)
 gen year = 2010 + mod(_n,6)
 xtset id year
 gen policy = rnormal()
-gen y = 0.2*l.policy + rnormal()        // 真实效应来自滞后一期
+gen y = 0.2*l.policy + rnormal()        <span class="cm">// 真实效应来自滞后一期</span>
 
-* === 2. 核心操作：同一政策的多种操作化 ===
-gen policy_l1 = l.policy                 // 滞后一期
-gen policy_d  = d.policy                 // 一阶差分
-gen policy_dum = policy&gt;0               // 0-1 虚拟
-gen policy_stage = cond(year&lt;=2012,0,cond(year&lt;=2015,1,2))  // 阶段
+<span class="cm-l">* === 2. 核心操作：同一政策的多种操作化 ===</span>
+gen policy_l1 = l.policy                 <span class="cm">// 滞后一期</span>
+gen policy_d  = d.policy                 <span class="cm">// 一阶差分</span>
+gen policy_dum = policy&gt;0               <span class="cm">// 0-1 虚拟</span>
+gen policy_stage = cond(year&lt;=2012,0,cond(year&lt;=2015,1,2))  <span class="cm">// 阶段</span>
 
-* === 3. 检验与输出：四种定义对比 ===
+<span class="cm-l">* === 3. 检验与输出：四种定义对比 ===</span>
 reg y policy      ; est store def_level
 reg y policy_l1   ; est store def_lag
 reg y policy_d    ; est store def_diff
 reg y i.policy_stage#c.policy ; est store def_stage
 esttab def_level def_lag def_diff, b(%9.3f) se star(*.1 **.05 ***.01)
-* ✓ 主定义事前锁定（本例理论预期滞后），其余定义作稳健性
-* ⛔ 红线：水平/变化/比例/虚拟五六种全跑，只挑显著的写正文</code></pre>
+<span class="cm-l">* ✓ 主定义事前锁定（本例理论预期滞后），其余定义作稳健性</span>
+<span class="cm-l">* ⛔ 红线：水平/变化/比例/虚拟五六种全跑，只挑显著的写正文</span></code></pre>
       </div>
 
       <h3><span class="tech-label">B3</span>变量变换：ln / 人均 / 比率 / 增长率 / 标准化 / 连续→分类</h3>
@@ -618,24 +618,24 @@ esttab def_level def_lag def_diff, b(%9.3f) se star(*.1 **.05 ***.01)
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · B3_变量变换.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 909
 set obs 1500
-gen x_raw = exp(rnormal(0,1))          // 右偏
+gen x_raw = exp(rnormal(0,1))          <span class="cm">// 右偏</span>
 gen y = 0.3*ln(x_raw) + rnormal()
 
-* === 2. 核心操作：两类变换 ===
-* ✓ 合法：log 改善分布（不改变测量构念）
+<span class="cm-l">* === 2. 核心操作：两类变换 ===</span>
+<span class="cm-l">* ✓ 合法：log 改善分布（不改变测量构念）</span>
 gen ln_x = ln(x_raw)
-* ✓ 合法：z-score 标准化（便于跨变量比较）
+<span class="cm-l">* ✓ 合法：z-score 标准化（便于跨变量比较）</span>
 sum ln_x
 gen z_x = (ln_x-r(mean))/r(sd)
 
-* === 3. 检验与输出 ===
+<span class="cm-l">* === 3. 检验与输出 ===</span>
 reg y ln_x
 reg y z_x
-* ⛔ 红线方向：在10/25/50/75分位数上逐个试切点
-* xtile x_bin = x_raw, nq(2)  // 切点必须事前定，不能事后挑</code></pre>
+<span class="cm-l">* ⛔ 红线方向：在10/25/50/75分位数上逐个试切点</span>
+<span class="cm-l">* xtile x_bin = x_raw, nq(2)  // 切点必须事前定，不能事后挑</span></code></pre>
       </div>
 
       <h3><span class="tech-label">B4</span>变量量级 / 单位 / 倒数处理（逆向指标正向化）</h3>
@@ -650,19 +650,19 @@ reg y z_x
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · B4_逆向指标.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 111
 set obs 1000
-gen cost = rnormal(0,1)                 // 融资成本(越高越差)
-gen y = -0.3*cost + rnormal()           // 成本越高，y越低
+gen cost = rnormal(0,1)                 <span class="cm">// 融资成本(越高越差)</span>
+gen y = -0.3*cost + rnormal()           <span class="cm">// 成本越高，y越低</span>
 
-* === 2. 核心操作：逆向指标正向化 ===
-* ✓ 事前定义：融资便利 = -成本（正向指标），全论文只此一处定义
+<span class="cm-l">* === 2. 核心操作：逆向指标正向化 ===</span>
+<span class="cm-l">* ✓ 事前定义：融资便利 = -成本（正向指标），全论文只此一处定义</span>
 gen ease = -cost
 
-* === 3. 检验与输出 ===
-reg y ease                              // 预期为正，与故事一致
-* ⛔ 红线：为了"系数显著为负"，有时报 cost 有时报 -cost</code></pre>
+<span class="cm-l">* === 3. 检验与输出 ===</span>
+reg y ease                              <span class="cm">// 预期为正，与故事一致</span>
+<span class="cm-l">* ⛔ 红线：为了"系数显著为负"，有时报 cost 有时报 -cost</span></code></pre>
       </div>
 
       <h3><span class="tech-label">B5</span>企业年龄控制：上市年限 / 成立年限取对数 +1</h3>
@@ -677,21 +677,21 @@ reg y ease                              // 预期为正，与故事一致
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · B5_企业年龄.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 222
 set obs 2000
 gen listyear = 1990 + floor(runiform()*30)
 gen year = 2020
-gen age = year - listyear               // 上市年限
-gen lnage = ln(1+age)                   // 取对数+1 缓解偏态
+gen age = year - listyear               <span class="cm">// 上市年限</span>
+gen lnage = ln(1+age)                   <span class="cm">// 取对数+1 缓解偏态</span>
 gen x = rnormal()
 gen y = 0.2*x - 0.01*age + rnormal()
 
-* === 2. 核心操作：两种年龄控制对比 ===
-* === 3. 检验与输出 ===
+<span class="cm-l">* === 2. 核心操作：两种年龄控制对比 ===</span>
+<span class="cm-l">* === 3. 检验与输出 ===</span>
 reg y x age
-reg y x lnage                           // ✓ 推荐：对数化后更稳健
-* 注意：上市年限与成立年限是两个构念，主口径一种，另一种仅作稳健性</code></pre>
+reg y x lnage                           <span class="cm">// ✓ 推荐：对数化后更稳健</span>
+<span class="cm-l">* 注意：上市年限与成立年限是两个构念，主口径一种，另一种仅作稳健性</span></code></pre>
       </div>
     </div>
 
@@ -716,27 +716,27 @@ reg y x lnage                           // ✓ 推荐：对数化后更稳健
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · C1_换模型.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 333
 set obs 1500
 gen id = ceil(_n/5)
 gen x = rnormal()
 gen y_latent = 0.5*x + rnormal()
-gen y_bin = (y_latent&gt;0)                // 二值因变量
-gen y_count = poisson(0.6+0.4*x)        // 计数因变量
+gen y_bin = (y_latent&gt;0)                <span class="cm">// 二值因变量</span>
+gen y_count = poisson(0.6+0.4*x)        <span class="cm">// 计数因变量</span>
 
-* === 2. 核心操作：按因变量性质选模型 ===
-* === 3. 检验与输出：不同估计量对比 ===
-reg y_bin x        ; est store ols_lpm      // LPM(仅作稳健性)
+<span class="cm-l">* === 2. 核心操作：按因变量性质选模型 ===</span>
+<span class="cm-l">* === 3. 检验与输出：不同估计量对比 ===</span>
+reg y_bin x        ; est store ols_lpm      <span class="cm">// LPM(仅作稳健性)</span>
 logit y_bin x      ; est store logit
 probit y_bin x     ; est store probit
 xtset id
-xtlogit y_bin x, fe                         // FE logit 只用组内变异
+xtlogit y_bin x, fe                         <span class="cm">// FE logit 只用组内变异</span>
 poisson y_count x  ; est store poisson
 nbreg y_count x    ; est store negbin
 esttab ols_lpm logit probit, b(%9.3f) se star(*.1 **.05 ***.01)
-* ✓ 主模型按因变量性质选；其他模型作稳健性全报告，边际效应用 margins 换算
-* ⛔ 红线：把 OLS/logit/probit/Poisson/negbin 全跑一遍挑显著的</code></pre>
+<span class="cm-l">* ✓ 主模型按因变量性质选；其他模型作稳健性全报告，边际效应用 margins 换算</span>
+<span class="cm-l">* ⛔ 红线：把 OLS/logit/probit/Poisson/negbin 全跑一遍挑显著的</span></code></pre>
       </div>
 
       <h3><span class="tech-label">C2</span>固定效应组合：year / firm / country / industry / 交互固定效应</h3>
@@ -751,23 +751,23 @@ esttab ols_lpm logit probit, b(%9.3f) se star(*.1 **.05 ***.01)
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · C2_固定效应.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 444
 set obs 2000
 gen firm = ceil(_n/10)
 gen year = 2010 + mod(_n,10)
 gen ind  = ceil(runiform()*15)
-gen x = rnormal() + 0.3*rnormal(ind)    // 行业层面冲击
+gen x = rnormal() + 0.3*rnormal(ind)    <span class="cm">// 行业层面冲击</span>
 gen y = 0.3*x + rnormal(firm) + rnormal(year)
 
-* === 2. 核心操作：固定效应组合逐级升级 ===
-* === 3. 检验与输出：三档 FE 对比 ===
+<span class="cm-l">* === 2. 核心操作：固定效应组合逐级升级 ===</span>
+<span class="cm-l">* === 3. 检验与输出：三档 FE 对比 ===</span>
 reghdfe y x, absorb(firm) vce(cluster firm)        ; est store fe_firm
 reghdfe y x, absorb(firm year) vce(cluster firm)   ; est store fe_2way
 reghdfe y x, absorb(ind#year) vce(cluster ind)      ; est store fe_indyear
 esttab fe_firm fe_2way fe_indyear, keep(x) b(%9.3f) se star(*.1 **.05 ***.01)
-* ✓ 基准 FE 事前定（企业面板通常双向 FE），逐级报告观察稳定区间
-* ⛔ 红线边缘：逐个加 FE 直到核心变量「恰好显著」</code></pre>
+<span class="cm-l">* ✓ 基准 FE 事前定（企业面板通常双向 FE），逐级报告观察稳定区间</span>
+<span class="cm-l">* ⛔ 红线边缘：逐个加 FE 直到核心变量「恰好显著」</span></code></pre>
       </div>
 
       <h3><span class="tech-label">C3</span>行业代码粒度：i.Ind1 / i.Ind2 / i.Ind3</h3>
@@ -782,23 +782,23 @@ esttab fe_firm fe_2way fe_indyear, keep(x) b(%9.3f) se star(*.1 **.05 ***.01)
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · C3_行业粒度.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 555
 set obs 2000
-gen ind1 = ceil(runiform()*20)           // 一位
-gen ind2 = ind1*10 + ceil(runiform()*5) // 两位(100个)
-gen ind3 = ind2*10 + ceil(runiform()*3) // 三位(300个)
+gen ind1 = ceil(runiform()*20)           <span class="cm">// 一位</span>
+gen ind2 = ind1*10 + ceil(runiform()*5) <span class="cm">// 两位(100个)</span>
+gen ind3 = ind2*10 + ceil(runiform()*3) <span class="cm">// 三位(300个)</span>
 gen x = rnormal()
 gen y = 0.3*x + rnormal(ind2) + rnormal()
 
-* === 2. 核心操作：三种行业粒度 ===
-* === 3. 检验与输出：粒度对比（系数稳、SE变）===
+<span class="cm-l">* === 2. 核心操作：三种行业粒度 ===</span>
+<span class="cm-l">* === 3. 检验与输出：粒度对比（系数稳、SE变）===</span>
 reghdfe y x, absorb(i.ind1) vce(cluster ind1) ; est store g1
 reghdfe y x, absorb(i.ind2) vce(cluster ind2) ; est store g2
 reghdfe y x, absorb(i.ind3) vce(cluster ind3) ; est store g3
 esttab g1 g2 g3, keep(x) b(%9.3f) se star(*.1 **.05 ***.01)
-* ✓ 按行业分类惯例选定基准粒度，各粒度稳健性并列
-* ⛔ 红线：正文用两位、附录换三位才显著却不解释</code></pre>
+<span class="cm-l">* ✓ 按行业分类惯例选定基准粒度，各粒度稳健性并列</span>
+<span class="cm-l">* ⛔ 红线：正文用两位、附录换三位才显著却不解释</span></code></pre>
       </div>
 
       <h3><span class="tech-label">C4</span>函数形式：线性 / U 型 / 倒 U / 门槛 / 分段 / 调节</h3>
@@ -813,24 +813,24 @@ esttab g1 g2 g3, keep(x) b(%9.3f) se star(*.1 **.05 ***.01)
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · C4_函数形式.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 666
 set obs 1500
 gen x = rnormal(-2,2)
-gen y = 1 - 0.4*x^2 + rnormal()        // 真实倒U
+gen y = 1 - 0.4*x^2 + rnormal()        <span class="cm">// 真实倒U</span>
 
-* === 2. 核心操作：从线性误设到正确函数形式 ===
-reg y x                                 // 线性误设：平均斜率≈0
+<span class="cm-l">* === 2. 核心操作：从线性误设到正确函数形式 ===</span>
+reg y x                                 <span class="cm">// 线性误设：平均斜率≈0</span>
 gen x2 = x^2
-reg y c.x##c.x                          // = reg y x c.x#c.x
+reg y c.x##c.x                          <span class="cm">// = reg y x c.x#c.x</span>
 
-* === 3. 检验与输出 ===
-test x2                                 // 二次项显著=非线性成立
+<span class="cm-l">* === 3. 检验与输出 ===</span>
+test x2                                 <span class="cm">// 二次项显著=非线性成立</span>
 gen stage = cond(x&lt;0,0,1)
 reg y c.x##i.stage
-margins, dydx(x) at(stage=(0 1))       // 两阶段各自边际效应
-* ✓ 事前有非线性假设 + RESET/lowess 诊断，报告拐点是否在支撑集内
-* ⛔ 红线：盲目试二次、三次、分段、门槛直到显著</code></pre>
+margins, dydx(x) at(stage=(0 1))       <span class="cm">// 两阶段各自边际效应</span>
+<span class="cm-l">* ✓ 事前有非线性假设 + RESET/lowess 诊断，报告拐点是否在支撑集内</span>
+<span class="cm-l">* ⛔ 红线：盲目试二次、三次、分段、门槛直到显著</span></code></pre>
       </div>
 
       <h3><span class="tech-label">C5</span>高维固定效应：xtreg 与 reghdfe 对照、R² 分项</h3>
@@ -845,7 +845,7 @@ margins, dydx(x) at(stage=(0 1))       // 两阶段各自边际效应
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · C5_高维FE.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 777
 set obs 3000
 gen firm = ceil(_n/20)
@@ -853,16 +853,16 @@ gen year = 2010 + mod(_n,10)
 gen x = rnormal()
 gen y = 0.3*x + rnormal(firm) + rnormal(year)
 
-* === 2. 核心操作：xtreg vs reghdfe ===
+<span class="cm-l">* === 2. 核心操作：xtreg vs reghdfe ===</span>
 xtset firm year
 xtreg y x i.year, fe                 ; est store xtreg_fe
 reghdfe y x, absorb(firm year)       ; est store reghdfe_r2
 
-* === 3. 检验与输出：R² 分项与实际估计 N ===
+<span class="cm-l">* === 3. 检验与输出：R² 分项与实际估计 N ===</span>
 esttab xtreg_fe reghdfe_r2, keep(x) b(%9.3f) se
-* reghdfe 输出会显示 absorbed FE 个数与 R² 分解（within/overall）
+<span class="cm-l">* reghdfe 输出会显示 absorbed FE 个数与 R² 分解（within/overall）</span>
 display "实际估计 N = " e(N)
-* ✓ 报告 e(N) 与组结构；比 raw 小很多时说明 singleton 被剔除</code></pre>
+<span class="cm-l">* ✓ 报告 e(N) 与组结构；比 raw 小很多时说明 singleton 被剔除</span></code></pre>
       </div>
 
       <h3><span class="tech-label">C6</span>因变量稀有事件：relogit / Firth logit / case-control</h3>
@@ -877,22 +877,22 @@ display "实际估计 N = " e(N)
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · C6_稀有事件.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
-* ssc install firthlogit
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
+<span class="cm-l">* ssc install firthlogit</span>
 set seed 888
 set obs 3000
 gen x = rnormal()
 gen y_latent = -3 + 0.5*x + rnormal()
-gen rare = (y_latent&gt;0)                 // 事件仅约5%
+gen rare = (y_latent&gt;0)                 <span class="cm">// 事件仅约5%</span>
 
-* === 2. 核心操作：普通 logit vs Firth 校正 ===
-sum rare                                 // 先确认稀有程度
+<span class="cm-l">* === 2. 核心操作：普通 logit vs Firth 校正 ===</span>
+sum rare                                 <span class="cm">// 先确认稀有程度</span>
 
-* === 3. 检验与输出：系数对比 ===
+<span class="cm-l">* === 3. 检验与输出：系数对比 ===</span>
 logit rare x                ; est store plain_logit
 firthlogit rare x, iter(100) ; est store firth
 esttab plain_logit firth, b(%9.3f) se star(*.1 **.05 ***.01)
-* ✓ 稀有事件下普通 logit 系数通常偏大，firth 更可靠；报告处理组比例</code></pre>
+<span class="cm-l">* ✓ 稀有事件下普通 logit 系数通常偏大，firth 更可靠；报告处理组比例</span></code></pre>
       </div>
     </div>
 
@@ -912,25 +912,25 @@ esttab plain_logit firth, b(%9.3f) se star(*.1 **.05 ***.01)
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · D1_标准误.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 999
 set obs 2000
 gen firm = ceil(_n/5)
 gen ind  = ceil(runiform()*20)
 gen x = rnormal()
-gen y = 0.3*x + rnormal(ind) + rnormal()   // 同行业残差相关
+gen y = 0.3*x + rnormal(ind) + rnormal()   <span class="cm">// 同行业残差相关</span>
 
-* === 2. 核心操作：同一系数，五种标准误 ===
-* === 3. 检验与输出：esttab 对比 t/p ===
+<span class="cm-l">* === 2. 核心操作：同一系数，五种标准误 ===</span>
+<span class="cm-l">* === 3. 检验与输出：esttab 对比 t/p ===</span>
 reg y x, vce(ols)                     ; est store s_ols
 reg y x, vce(robust)                  ; est store s_rob
 reg y x, vce(cluster firm)            ; est store s_firm
 reghdfe y x, absorb(ind) vce(cluster ind) ; est store s_ind
-* 双向聚类
+<span class="cm-l">* 双向聚类</span>
 reghdfe y x, absorb(ind) vce(cluster ind firm) ; est store s_two
 esttab s_ols s_rob s_firm s_ind s_two, keep(x) b(%9.3f) se star(*.1 **.05 ***.01)
-* ✓ 合法：在方法论节论证聚类层级，报告最保守且可辩护的那列
-* ⛔ 红线：哪一列最窄就只报哪一列</code></pre>
+<span class="cm-l">* ✓ 合法：在方法论节论证聚类层级，报告最保守且可辩护的那列</span>
+<span class="cm-l">* ⛔ 红线：哪一列最窄就只报哪一列</span></code></pre>
       </div>
 
       <h3><span class="tech-label">D2</span>加权：country / firm / population / sampling weights</h3>
@@ -949,20 +949,20 @@ esttab s_ols s_rob s_firm s_ind s_two, keep(x) b(%9.3f) se star(*.1 **.05 ***.01
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · D2_加权.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 1010
 set obs 1500
 gen country = ceil(runiform()*10)
-gen pop = runiform()*1000              // 各国人口权重
+gen pop = runiform()*1000              <span class="cm">// 各国人口权重</span>
 gen x = rnormal()
 gen y = 0.2*x + rnormal(country)
 
-* === 2. 核心操作：不加权 vs 加权 ===
-* === 3. 检验与输出 ===
-reg y x                                 // 不加权：每个国家等权
-reg y x [pw=pop]                        // 人口加权：估计"人口意义上的"平均效应
-* ✓ 合法：目标总体本就是人口加权平均，理论上本就该加权，且两版同表报告
-* ⛔ 红线：发现不加权不显著、加权后才显著，就只报加权版</code></pre>
+<span class="cm-l">* === 2. 核心操作：不加权 vs 加权 ===</span>
+<span class="cm-l">* === 3. 检验与输出 ===</span>
+reg y x                                 <span class="cm">// 不加权：每个国家等权</span>
+reg y x [pw=pop]                        <span class="cm">// 人口加权：估计"人口意义上的"平均效应</span>
+<span class="cm-l">* ✓ 合法：目标总体本就是人口加权平均，理论上本就该加权，且两版同表报告</span>
+<span class="cm-l">* ⛔ 红线：发现不加权不显著、加权后才显著，就只报加权版</span></code></pre>
       </div>
     </div>
 
@@ -982,24 +982,24 @@ reg y x [pw=pop]                        // 人口加权：估计"人口意义上
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · E1_滞后.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 1212
 set obs 1200
 gen id = ceil(_n/6)
 gen year = 2010 + mod(_n,6)
 xtset id year
 gen x = rnormal()
-gen y = 0.3*l2.x + rnormal()          // 真实效应滞后两期
+gen y = 0.3*l2.x + rnormal()          <span class="cm">// 真实效应滞后两期</span>
 
-* === 2. 核心操作：当期与各阶滞后 ===
-* === 3. 检验与输出：L0-L3 对比 ===
-reg y x        ; est store lag0        // 当期：弱
+<span class="cm-l">* === 2. 核心操作：当期与各阶滞后 ===</span>
+<span class="cm-l">* === 3. 检验与输出：L0-L3 对比 ===</span>
+reg y x        ; est store lag0        <span class="cm">// 当期：弱</span>
 reg y l1.x     ; est store lag1
-reg y l2.x     ; est store lag2        // 理论预期的传导期
+reg y l2.x     ; est store lag2        <span class="cm">// 理论预期的传导期</span>
 reg y l3.x     ; est store lag3
 esttab lag0 lag1 lag2 lag3, b(%9.3f) se star(*.1 **.05 ***.01)
-* ✓ 合法：理论说"政策两期后起效"，主报 L2，其余作稳健性
-* ⛔ 红线：L1..L5 全扫一遍，哪个星多报哪个</code></pre>
+<span class="cm-l">* ✓ 合法：理论说"政策两期后起效"，主报 L2，其余作稳健性</span>
+<span class="cm-l">* ⛔ 红线：L1..L5 全扫一遍，哪个星多报哪个</span></code></pre>
       </div>
 
       <h3><span class="tech-label">E2</span>平行趋势不通过：事件研究与"观测值合并检验"</h3>
@@ -1014,7 +1014,7 @@ esttab lag0 lag1 lag2 lag3, b(%9.3f) se star(*.1 **.05 ***.01)
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · E2_平行趋势.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 1313
 set obs 1500
 gen firm = ceil(_n/5)
@@ -1022,18 +1022,18 @@ gen year = 2005 + mod(_n,10)
 gen treat = (firm&gt;100)
 gen post  = year&gt;=2012
 gen x = rnormal()
-gen y = 0.4*treat*post + 0.2*treat*(year-2012) + rnormal()  // 事前就有趋势
+gen y = 0.4*treat*post + 0.2*treat*(year-2012) + rnormal()  <span class="cm">// 事前就有趋势</span>
 
-* === 2. 核心操作：完整事件研究（含全部 leads）===
+<span class="cm-l">* === 2. 核心操作：完整事件研究（含全部 leads）===</span>
 gen rel = year - 2012
 forvalues k=-4/3 {
     gen e`k' = treat*(rel==`k')
 }
 
-* === 3. 检验与输出：看 pre 期系数 ===
+<span class="cm-l">* === 3. 检验与输出：看 pre 期系数 ===</span>
 reghdfe y e-4(1/0) e1 e2 e3, absorb(firm year) vce(cluster firm)
-* ✓ 合法：报告全部事前系数；本例 e-4..e-1 显著=平行趋势不通过，应承认识别受限
-* ⛔ 红线：只画 e0 之后的部分"显得平行"，把漂移期裁掉</code></pre>
+<span class="cm-l">* ✓ 合法：报告全部事前系数；本例 e-4..e-1 显著=平行趋势不通过，应承认识别受限</span>
+<span class="cm-l">* ⛔ 红线：只画 e0 之后的部分"显得平行"，把漂移期裁掉</span></code></pre>
       </div>
 
       <h3><span class="tech-label">E3</span>逐步回归选控制变量：按显著性逐步加入</h3>
@@ -1048,23 +1048,23 @@ reghdfe y e-4(1/0) e1 e2 e3, absorb(firm year) vce(cluster firm)
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · E3_逐步回归.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 1414
 set obs 1200
 gen y = rnormal()
-* 制造20个纯噪声控制变量
+<span class="cm-l">* 制造20个纯噪声控制变量</span>
 forvalues j=1/20 {
     gen c`j' = rnormal()
 }
 gen x = rnormal() + 0.2*c1
 replace y = y + 0.1*x
 
-* === 2. 核心操作：stepwise 按 p 值逐步选控制 ===
-* === 3. 检验与输出：观察噪声变量被选入 ===
-* ⛔ 红线演示（仅理解风险，勿用于正式研究）：
-*   被选入的控制里混着纯噪声，核心 x 的 p 值被玩弄，SE 还低估
+<span class="cm-l">* === 2. 核心操作：stepwise 按 p 值逐步选控制 ===</span>
+<span class="cm-l">* === 3. 检验与输出：观察噪声变量被选入 ===</span>
+<span class="cm-l">* ⛔ 红线演示（仅理解风险，勿用于正式研究）：</span>
+<span class="cm-l">*   被选入的控制里混着纯噪声，核心 x 的 p 值被玩弄，SE 还低估</span>
 stepwise, pe(0.05): reg y x c1-c20
-* ✓ 诚实替代：控制集由理论事前决定，如
+<span class="cm-l">* ✓ 诚实替代：控制集由理论事前决定，如</span>
 reg y x c1 c3 c7</code></pre>
       </div>
     </div>
@@ -1094,44 +1094,44 @@ reg y x c1 c3 c7</code></pre>
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · G1_event_study.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
-* ssc install eventdd, replace
-* ssc install coefplot,  replace
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
+<span class="cm-l">* ssc install eventdd, replace</span>
+<span class="cm-l">* ssc install coefplot,  replace</span>
 set seed 2301
 set obs 600
 gen id = ceil(_n/6)
 gen year = 2005 + mod(_n,10)
-gen g = cond(id&lt;=60, 2012, 0)            // 前60个2012年处理，其余never-treated
+gen g = cond(id&lt;=60, 2012, 0)            <span class="cm">// 前60个2012年处理，其余never-treated</span>
 xtset id year
 gen treat = (g!=0 &amp; year&gt;=g)
 gen rel = year - g if g!=0
 gen y = 0.8*treat + rnormal(id) + rnormal(year) + rnormal()
 
-* === 2. 核心操作：两种实现 ===
-* 方法1：eventdd 一键出图（含95% CI）
-*   lead(4) lag(3)：政策前4期、政策后3期；baseline(-1)：以 k=-1 为基准
-eventdd y i.year, timevar(rel) lead(4) lag(3) baseline(-1) ///
-    controls(i.id) cluster(id) graph_op( ///
-    yline(0, lcolor(red)) xline(0.5, lpattern(dash)) ///
-    title("事件研究图：leads/lags 与95%置信带") ///
+<span class="cm-l">* === 2. 核心操作：两种实现 ===</span>
+<span class="cm-l">* 方法1：eventdd 一键出图（含95% CI）</span>
+<span class="cm-l">*   lead(4) lag(3)：政策前4期、政策后3期；baseline(-1)：以 k=-1 为基准</span>
+eventdd y i.year, timevar(rel) lead(4) lag(3) baseline(-1) <span class="cm">///</span>
+    controls(i.id) cluster(id) graph_op( <span class="cm">///</span>
+    yline(0, lcolor(red)) xline(0.5, lpattern(dash)) <span class="cm">///</span>
+    title("事件研究图：leads/lags 与95%置信带") <span class="cm">///</span>
     ytitle("估计系数") xtitle("相对政策时点 k"))
-* 方法2：reghdfe 手写 leads/lags（更透明，推荐主回归用）
+<span class="cm-l">* 方法2：reghdfe 手写 leads/lags（更透明，推荐主回归用）</span>
 forvalues k=-4/3 {
     local kk = `k' + 100
     gen e`kk' = (rel==`k') if g!=0
     replace e`kk' = 0 if g==0
 }
-* 省略 e099 (即 k=-1) 作为基准
+<span class="cm-l">* 省略 e099 (即 k=-1) 作为基准</span>
 
-* === 3. 检验与输出：系数图 ===
-reghdfe y e096 e097 e098 e100 e101 e102 e103, ///
+<span class="cm-l">* === 3. 检验与输出：系数图 ===</span>
+reghdfe y e096 e097 e098 e100 e101 e102 e103, <span class="cm">///</span>
     absorb(id year) vce(cluster id)
-coefplot, keep(e096 e097 e098 e100 e101 e102 e103) vertical ///
-    yline(0) xline(4.5, lp(dash)) ///
-    order(e096 e097 e098 e100 e101 e102 e103) ///
+coefplot, keep(e096 e097 e098 e100 e101 e102 e103) vertical <span class="cm">///</span>
+    yline(0) xline(4.5, lp(dash)) <span class="cm">///</span>
+    order(e096 e097 e098 e100 e101 e102 e103) <span class="cm">///</span>
     title("手写 leads/lags 事件研究图")
-* ✓ 看图：pre期 e096/e097/e098 应贴0；post期 e100..e103 显著为正
-* ⛔ 红线：只画 post 期"显得平行"，裁掉漂移的远端 leads</code></pre>
+<span class="cm-l">* ✓ 看图：pre期 e096/e097/e098 应贴0；post期 e100..e103 显著为正</span>
+<span class="cm-l">* ⛔ 红线：只画 post 期"显得平行"，裁掉漂移的远端 leads</span></code></pre>
       </div>
 
       <h3><span class="tech-label">G2</span>pre-trend 联合 F 检验与 pretrends（Roth 2022）：不能把"不显著"当"平行趋势成立"</h3>
@@ -1146,8 +1146,8 @@ coefplot, keep(e096 e097 e098 e100 e101 e102 e103) vertical ///
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · G2_pretrends_roth.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段；连续运行 G1 后可直接复用，删除本段）===
-* ssc install pretrends, replace
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段；连续运行 G1 后可直接复用，删除本段）===</span>
+<span class="cm-l">* ssc install pretrends, replace</span>
 set seed 2301
 set obs 600
 gen id = ceil(_n/6)
@@ -1163,28 +1163,28 @@ forvalues k=-4/3 {
     replace e`kk' = 0 if g==0
 }
 
-* === 2. 核心操作 ===
-* (1) pre 期 leads 联合 F 检验
-reghdfe y e096 e097 e098 e100 e101 e102 e103, ///
+<span class="cm-l">* === 2. 核心操作 ===</span>
+<span class="cm-l">* (1) pre 期 leads 联合 F 检验</span>
+reghdfe y e096 e097 e098 e100 e101 e102 e103, <span class="cm">///</span>
     absorb(id year) vce(cluster id)
 
-* === 3. 检验与输出 ===
-test e096 e097 e098          // H0: pre期系数全=0
-* ✓ p&gt;0.05 只能说"不能拒绝平行趋势"，不能说"平行趋势成立"
-*
-* (2) Roth (2022) pretrends：评估本检验对真实 pre-trend 的功效
-* pretrends, leads(4) lag(0) post(3)
-*   关键输出: Power of pre-trend test (5% level) ≈ 0.3x
-*   解读：power 只有 0.35 时，真实 pre-trend 即使把 ATT 偏误 20%，
-*   你也有 65% 概率检验不出来，应配合 Rambachan-Roth 敏感性界。
-*
-* (3) 观测量合并检验：远端 leads 观测太少时合并相邻期
+<span class="cm-l">* === 3. 检验与输出 ===</span>
+test e096 e097 e098          <span class="cm">// H0: pre期系数全=0</span>
+<span class="cm-l">* ✓ p&gt;0.05 只能说"不能拒绝平行趋势"，不能说"平行趋势成立"</span>
+<span class="cm-l">*</span>
+<span class="cm-l">* (2) Roth (2022) pretrends：评估本检验对真实 pre-trend 的功效</span>
+<span class="cm-l">* pretrends, leads(4) lag(0) post(3)</span>
+<span class="cm-l">*   关键输出: Power of pre-trend test (5% level) ≈ 0.3x</span>
+<span class="cm-l">*   解读：power 只有 0.35 时，真实 pre-trend 即使把 ATT 偏误 20%，</span>
+<span class="cm-l">*   你也有 65% 概率检验不出来，应配合 Rambachan-Roth 敏感性界。</span>
+<span class="cm-l">*</span>
+<span class="cm-l">* (3) 观测量合并检验：远端 leads 观测太少时合并相邻期</span>
 gen e_pre_early = (rel&lt;=-3) if g!=0
 replace e_pre_early = 0 if g==0
-reghdfe y e_pre_early e098 e100 e101 e102 e103, ///
+reghdfe y e_pre_early e098 e100 e101 e102 e103, <span class="cm">///</span>
     absorb(id year) vce(cluster id)
-* ✓ 合并必须在看结果前由"该期观测太少"这一客观理由决定
-* ⛔ 红线：发现合并后"恰好平行"才合并</code></pre>
+<span class="cm-l">* ✓ 合并必须在看结果前由"该期观测太少"这一客观理由决定</span>
+<span class="cm-l">* ⛔ 红线：发现合并后"恰好平行"才合并</span></code></pre>
       </div>
 
       <h3><span class="tech-label">G3</span>安慰剂检验（placebo test）：虚构处理时间 / 虚构处理组</h3>
@@ -1199,7 +1199,7 @@ reghdfe y e_pre_early e098 e100 e101 e102 e103, ///
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · G3_placebo.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 2303
 set obs 600
 gen id = ceil(_n/6)
@@ -1209,21 +1209,21 @@ xtset id year
 gen treat = (g!=0 &amp; year&gt;=g)
 gen y = 0.8*treat + rnormal(id) + rnormal(year) + rnormal()
 
-* === 2. 核心操作：两种安慰剂 ===
-* (a) 虚构处理时间：把政策时点提前到 2008（伪政策）
+<span class="cm-l">* === 2. 核心操作：两种安慰剂 ===</span>
+<span class="cm-l">* (a) 虚构处理时间：把政策时点提前到 2008（伪政策）</span>
 gen treat_fake = (g!=0 &amp; year&gt;=2008)
 
-* === 3. 检验与输出 ===
+<span class="cm-l">* === 3. 检验与输出 ===</span>
 reghdfe y treat_fake, absorb(id year) vce(cluster id)
-* ✓ 期望：treat_fake 不显著（真实政策是 2012）；若显著 → 平行趋势可疑
-* (b) 随机分配伪处理组：500 次蒙特卡洛
-permute treat, reps(500) seed(2303) ///
-    saving("placebo_dist.dta", replace): ///
+<span class="cm-l">* ✓ 期望：treat_fake 不显著（真实政策是 2012）；若显著 → 平行趋势可疑</span>
+<span class="cm-l">* (b) 随机分配伪处理组：500 次蒙特卡洛</span>
+permute treat, reps(500) seed(2303) <span class="cm">///</span>
+    saving("placebo_dist.dta", replace): <span class="cm">///</span>
     reghdfe y treat, absorb(id year) vce(cluster id)
 use "placebo_dist.dta", clear
 sum _b_treat, detail
-* 看 p10/p50/p90；真实 0.8 若在 p99 右侧 → 安慰剂通过
-* ⛔ 红线：伪时点从 1998 扫到 2010，挑一个"刚好不显著"的写进论文</code></pre>
+<span class="cm-l">* 看 p10/p50/p90；真实 0.8 若在 p99 右侧 → 安慰剂通过</span>
+<span class="cm-l">* ⛔ 红线：伪时点从 1998 扫到 2010，挑一个"刚好不显著"的写进论文</span></code></pre>
       </div>
 
       <h3><span class="tech-label">G4</span>动态效应检验：post 期系数的趋势</h3>
@@ -1238,7 +1238,7 @@ sum _b_treat, detail
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · G4_dynamic.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段；连续运行 G1 后可复用）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段；连续运行 G1 后可复用）===</span>
 set seed 2301
 set obs 600
 gen id = ceil(_n/6)
@@ -1254,17 +1254,17 @@ forvalues k=-4/3 {
     replace e`kk' = 0 if g==0
 }
 
-* === 2. 核心操作：post 期动态效应检验 ===
-* === 3. 检验与输出 ===
-reghdfe y e096 e097 e098 e100 e101 e102 e103, ///
+<span class="cm-l">* === 2. 核心操作：post 期动态效应检验 ===</span>
+<span class="cm-l">* === 3. 检验与输出 ===</span>
+reghdfe y e096 e097 e098 e100 e101 e102 e103, <span class="cm">///</span>
     absorb(id year) vce(cluster id)
-* (i) post 期联合显著性
+<span class="cm-l">* (i) post 期联合显著性</span>
 test e100 e101 e102 e103
-* (ii) post 期线性趋势：相邻期增量是否相等（单调）
+<span class="cm-l">* (ii) post 期线性趋势：相邻期增量是否相等（单调）</span>
 test (e101 - e100) = (e102 - e101) = (e103 - e102)
-* 若拒绝 → post 期不是线性单调，需解释曲线形状
-* ✓ 诚实写法：把 e100..e103 全部列在主回归表里，动态预期在引言就写好
-* ⛔ 红线：只挑 e101 一个显著系数说「政策第2年起作用」</code></pre>
+<span class="cm-l">* 若拒绝 → post 期不是线性单调，需解释曲线形状</span>
+<span class="cm-l">* ✓ 诚实写法：把 e100..e103 全部列在主回归表里，动态预期在引言就写好</span>
+<span class="cm-l">* ⛔ 红线：只挑 e101 一个显著系数说「政策第2年起作用」</span></code></pre>
       </div>
 
       <h3><span class="tech-label">G5</span>交叠 DID 下的 pre-trend 诊断：csdid / did_imputation / eventstudyinteract</h3>
@@ -1279,13 +1279,13 @@ test (e101 - e100) = (e102 - e101) = (e103 - e102)
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · G5_staggered_pretrend.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
-* ssc install csdid, replace
-* ssc install drdid,  replace
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
+<span class="cm-l">* ssc install csdid, replace</span>
+<span class="cm-l">* ssc install drdid,  replace</span>
 set seed 2305
 set obs 200
 gen id = _n
-* 三队列：g=2008 (50个), g=2012 (50个), g=0 never-treated (100个)
+<span class="cm-l">* 三队列：g=2008 (50个), g=2012 (50个), g=0 never-treated (100个)</span>
 gen g = cond(_n&lt;=50, 2008, cond(_n&lt;=100, 2012, 0))
 expand 11
 bysort id: gen year = 1999 + _n
@@ -1293,15 +1293,15 @@ xtset id year
 gen treat = (g!=0 &amp; year&gt;=g)
 gen y = 0.8*treat + rnormal(id) + rnormal(year) + rnormal()
 
-* === 2. 核心操作：csdid 主估计 + 事件时间聚合 ===
+<span class="cm-l">* === 2. 核心操作：csdid 主估计 + 事件时间聚合 ===</span>
 csdid y, ivar(id) time(year) gvar(g) method(dripw)
 estat event
 
-* === 3. 检验与输出：干净的事件研究图 ===
-csdid_plot, title("csdid 事件研究图（交叠 DID 专用）") ///
+<span class="cm-l">* === 3. 检验与输出：干净的事件研究图 ===</span>
+csdid_plot, title("csdid 事件研究图（交叠 DID 专用）") <span class="cm">///</span>
     legend(off) yline(0)
-* ✓ 关键：在 csdid 输出上做 pre 期 leads(k&lt;0) 联合 Wald 检验，
-*   并配合 pretrends(Roth 2022) 报告功效；TWFE 事件图在此会被负权重污染</code></pre>
+<span class="cm-l">* ✓ 关键：在 csdid 输出上做 pre 期 leads(k&lt;0) 联合 Wald 检验，</span>
+<span class="cm-l">*   并配合 pretrends(Roth 2022) 报告功效；TWFE 事件图在此会被负权重污染</span></code></pre>
       </div>
 
       <h3><span class="tech-label">G6</span>平行趋势不通过时：诊断原因与合法处理方案</h3>
@@ -1320,7 +1320,7 @@ csdid_plot, title("csdid 事件研究图（交叠 DID 专用）") ///
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · G6_when_fail.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段；连续运行 G5 后可复用）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段；连续运行 G5 后可复用）===</span>
 set seed 2305
 set obs 200
 gen id = _n
@@ -1333,27 +1333,27 @@ gen y = 0.8*treat + rnormal(id) + rnormal(year) + rnormal()
 gen alpha_i = rnormal()
 gen gamma_t = rnormal()
 
-* === 2. 核心操作：四条合法补救路径 ===
-* 方案1：局部窗口——仅用政策前后±数年（窗口须事前由制度依据决定）
+<span class="cm-l">* === 2. 核心操作：四条合法补救路径 ===</span>
+<span class="cm-l">* 方案1：局部窗口——仅用政策前后±数年（窗口须事前由制度依据决定）</span>
 preserve
     keep if year&gt;=2006 &amp; year&lt;=2014
     csdid y, ivar(id) time(year) gvar(g) method(dripw)
     estat event
 restore
-* 方案2：csdid 加协变量做条件平行趋势（IPW 平衡可观测特征）
-csdid y alpha_i gamma_t, ivar(id) time(year) gvar(g) ///
+<span class="cm-l">* 方案2：csdid 加协变量做条件平行趋势（IPW 平衡可观测特征）</span>
+csdid y alpha_i gamma_t, ivar(id) time(year) gvar(g) <span class="cm">///</span>
     method(dripw) covariates(alpha_i gamma_t)
 estat event
-* 方案3（注释示例）：Bacon 分解找出污染队列
-* bacondecomp y treat, ddetail
-* 方案4（注释示例）：Rambachan-Roth 敏感性界，报告不同 Mbar 下 ATT 的 CI
+<span class="cm-l">* 方案3（注释示例）：Bacon 分解找出污染队列</span>
+<span class="cm-l">* bacondecomp y treat, ddetail</span>
+<span class="cm-l">* 方案4（注释示例）：Rambachan-Roth 敏感性界，报告不同 Mbar 下 ATT 的 CI</span>
 
-* === 3. 检验与输出 ===
-* ✓ 合法：窗口/协变量/敏感性界均须在看结果前由制度理由决定，并全部报告
-* ⛔ 红线（严禁）：
-*   - 全样本不通过后回头把窗口改成±2年"凑通过"
-*   - 把漂移严重的队列删掉，理由是"该组异常"
-*   - 正文只报"pre-trend 通过"，附录才出现不通过的版本</code></pre>
+<span class="cm-l">* === 3. 检验与输出 ===</span>
+<span class="cm-l">* ✓ 合法：窗口/协变量/敏感性界均须在看结果前由制度理由决定，并全部报告</span>
+<span class="cm-l">* ⛔ 红线（严禁）：</span>
+<span class="cm-l">*   - 全样本不通过后回头把窗口改成±2年"凑通过"</span>
+<span class="cm-l">*   - 把漂移严重的队列删掉，理由是"该组异常"</span>
+<span class="cm-l">*   - 正文只报"pre-trend 通过"，附录才出现不通过的版本</span></code></pre>
       </div>
     </div>
 
@@ -1379,25 +1379,25 @@ estat event
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · H1_bad_control.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 2311
 set obs 2000
 gen X = rnormal()
-gen U = rnormal()                       // 不可观测混淆(前定)
-gen M = 0.5*X + U + rnormal()          // 中介：X→M（处理后）
+gen U = rnormal()                       <span class="cm">// 不可观测混淆(前定)</span>
+gen M = 0.5*X + U + rnormal()          <span class="cm">// 中介：X→M（处理后）</span>
 gen Y = 0.4*X + 0.3*M + U + rnormal()
 
-* === 2. 核心操作：对比"不含M" vs "坏控制加M" ===
-* === 3. 检验与输出 ===
-* ✓ 主回归（合法）：只控制前定变量 U，不控制处理后变量 M
+<span class="cm-l">* === 2. 核心操作：对比"不含M" vs "坏控制加M" ===</span>
+<span class="cm-l">* === 3. 检验与输出 ===</span>
+<span class="cm-l">* ✓ 主回归（合法）：只控制前定变量 U，不控制处理后变量 M</span>
 reg Y X U
-* 真实总效应 X→Y ≈ 0.4 + 0.3*0.5 = 0.55
-* ⛔ 坏控制（红线演示）：把中介 M 当控制
+<span class="cm-l">* 真实总效应 X→Y ≈ 0.4 + 0.3*0.5 = 0.55</span>
+<span class="cm-l">* ⛔ 坏控制（红线演示）：把中介 M 当控制</span>
 reg Y X M U
-* 系数会从 0.55 掉到 ≈0.4 —— "控制掉"了 X→M→Y 这条通路
-* ✓ 合法机制检验：两步法，不把 M 塞进 X→Y 主回归
-reg M X U           ; est store stage1   // X→M
-reg Y X U           ; est store total     // X→Y 总效应</code></pre>
+<span class="cm-l">* 系数会从 0.55 掉到 ≈0.4 —— "控制掉"了 X→M→Y 这条通路</span>
+<span class="cm-l">* ✓ 合法机制检验：两步法，不把 M 塞进 X→Y 主回归</span>
+reg M X U           ; est store stage1   <span class="cm">// X→M</span>
+reg Y X U           ; est store total     <span class="cm">// X→Y 总效应</span></code></pre>
       </div>
 
       <h3><span class="tech-label">H2</span>异质性分析：事前理论分组 vs 事后挑子样本</h3>
@@ -1412,22 +1412,22 @@ reg Y X U           ; est store total     // X→Y 总效应</code></pre>
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · H2_heterogeneity.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 2312
 set obs 2000
 gen X = rnormal()
-gen H = runiform()&gt;0.5                  // 异质性维度(事前定义)
-gen Y = 0.3*X + 0.1*X*H + rnormal()     // 真实异质性很小
+gen H = runiform()&gt;0.5                  <span class="cm">// 异质性维度(事前定义)</span>
+gen Y = 0.3*X + 0.1*X*H + rnormal()     <span class="cm">// 真实异质性很小</span>
 
-* === 2. 核心操作：全样本交互项 ===
-* === 3. 检验与输出 ===
+<span class="cm-l">* === 2. 核心操作：全样本交互项 ===</span>
+<span class="cm-l">* === 3. 检验与输出 ===</span>
 reg Y c.X##i.H
-test 1.H#c.X                            // 组间差异是否显著
-* ✓ 即使 test 不显著，也要如实报；异质性方向事前预测
-* ⛔ 红线：分样本各跑一次，挑带星的那张讲故事
-* reg Y X if H==1
-* reg Y X if H==0
-* 错误：两个独立回归的系数不能直接比，必须用交互项 test</code></pre>
+test 1.H#c.X                            <span class="cm">// 组间差异是否显著</span>
+<span class="cm-l">* ✓ 即使 test 不显著，也要如实报；异质性方向事前预测</span>
+<span class="cm-l">* ⛔ 红线：分样本各跑一次，挑带星的那张讲故事</span>
+<span class="cm-l">* reg Y X if H==1</span>
+<span class="cm-l">* reg Y X if H==0</span>
+<span class="cm-l">* 错误：两个独立回归的系数不能直接比，必须用交互项 test</span></code></pre>
       </div>
 
       <h3><span class="tech-label">H3</span>多重检验校正：Bonferroni / Holm / Benjamini-Hochberg (FDR)</h3>
@@ -1442,27 +1442,27 @@ test 1.H#c.X                            // 组间差异是否显著
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · H3_multiple_testing.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
-* ssc install multproc, replace
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
+<span class="cm-l">* ssc install multproc, replace</span>
 set seed 2313
 set obs 1500
 gen X = rnormal()
-* 构造 6 个"因变量"，其中 2 个真有信号、4 个纯噪声
+<span class="cm-l">* 构造 6 个"因变量"，其中 2 个真有信号、4 个纯噪声</span>
 forvalues j=1/6 {
     gen Y`j' = cond(`j'&lt;=2, 0.25*X, 0) + rnormal()
 }
 
-* === 2. 核心操作：未校正扫描 m 个检验 ===
-* === 3. 检验与输出 ===
+<span class="cm-l">* === 2. 核心操作：未校正扫描 m 个检验 ===</span>
+<span class="cm-l">* === 3. 检验与输出 ===</span>
 forvalues j=1/6 {
     reg Y`j' X
     display "Y`j': p=" %6.4n (2*ttail(e(df_r),_b[X]/_se[X]))
 }
-* 把 6 个 p 值存成矩阵，做三种校正（按实际输出填 p 向量）：
-* matrix pvec = (p1,p2,p3,p4,p5,p6)
-* multproc, p(pvec) methods(bonferroni holm benjamini)
-* ✓ 主假设(1个)不校正；探索性(6-20个)报告 BH-FDR 校正后 p
-* ⛔ 红线：跑 20 个检验只挑显著的报，从不校正</code></pre>
+<span class="cm-l">* 把 6 个 p 值存成矩阵，做三种校正（按实际输出填 p 向量）：</span>
+<span class="cm-l">* matrix pvec = (p1,p2,p3,p4,p5,p6)</span>
+<span class="cm-l">* multproc, p(pvec) methods(bonferroni holm benjamini)</span>
+<span class="cm-l">* ✓ 主假设(1个)不校正；探索性(6-20个)报告 BH-FDR 校正后 p</span>
+<span class="cm-l">* ⛔ 红线：跑 20 个检验只挑显著的报，从不校正</span></code></pre>
       </div>
 
       <h3><span class="tech-label">H4</span>Specification Curve（规格曲线，Simonsohn, Simmons &amp; Nelson 2020）</h3>
@@ -1477,7 +1477,7 @@ forvalues j=1/6 {
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · H4_spec_curve.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
 set seed 2314
 set obs 2000
 gen id = ceil(_n/10)
@@ -1487,8 +1487,8 @@ gen c2 = rnormal()
 gen c3 = rnormal()
 gen y = 0.2*x + 0.3*c1 + rnormal()
 
-* === 2. 核心操作：遍历合理规格（控制集 × 聚类方式）===
-* === 3. 检验与输出：收集系数矩阵 ===
+<span class="cm-l">* === 2. 核心操作：遍历合理规格（控制集 × 聚类方式）===</span>
+<span class="cm-l">* === 3. 检验与输出：收集系数矩阵 ===</span>
 matrix sc = J(1, 8, .)
 local j = 0
 foreach cset in " " "c1" "c1 c2" "c1 c2 c3" {
@@ -1499,8 +1499,8 @@ foreach cset in " " "c1" "c1 c2" "c1 c2 c3" {
     }
 }
 matrix list sc
-* ✓ 诚实结论：报告中位数系数与"同号规格占比"（如 7/8 同号）
-* ⛔ 红线：只挑 8 个里 1 个显著的写正文，其余不提</code></pre>
+<span class="cm-l">* ✓ 诚实结论：报告中位数系数与"同号规格占比"（如 7/8 同号）</span>
+<span class="cm-l">* ⛔ 红线：只挑 8 个里 1 个显著的写正文，其余不提</span></code></pre>
       </div>
 
       <h3><span class="tech-label">H5</span>样本量 / 功效报告（power analysis）</h3>
@@ -1515,16 +1515,16 @@ matrix list sc
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · H5_power.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（本块无需模拟数据，直接调用 Stata 内置 power）===
-* === 2. 核心操作：事前 + 事后功效 ===
-* === 3. 检验与输出 ===
-* 事前：双样本均值差异，要检出 δ=0.3 SD，power=0.8，α=0.05
+<pre><code><span class="cm-l">* === 1. 模拟数据（本块无需模拟数据，直接调用 Stata 内置 power）===</span>
+<span class="cm-l">* === 2. 核心操作：事前 + 事后功效 ===</span>
+<span class="cm-l">* === 3. 检验与输出 ===</span>
+<span class="cm-l">* 事前：双样本均值差异，要检出 δ=0.3 SD，power=0.8，α=0.05</span>
 power twomeans 0, diff(0.3) power(0.8) alpha(0.05)
-* 事后：N=200 时，能以 80% 功效检出多大的处理效应（MDE）
+<span class="cm-l">* 事后：N=200 时，能以 80% 功效检出多大的处理效应（MDE）</span>
 power twomeans 0, n(200) power(0.8) alpha(0.05)
-* DID 语境手算：SE(β)=0.15，临界 t≈1.96+0.84=2.80，MDE=2.80*0.15=0.42
-* ✓ 诚实写法：点估计 0.15 &lt; MDE 0.42 时，应写"不能检出效应"而非"无效应"
-* ⛔ 红线：功效不足却把「不显著」写成「政策无影响」</code></pre>
+<span class="cm-l">* DID 语境手算：SE(β)=0.15，临界 t≈1.96+0.84=2.80，MDE=2.80*0.15=0.42</span>
+<span class="cm-l">* ✓ 诚实写法：点估计 0.15 &lt; MDE 0.42 时，应写"不能检出效应"而非"无效应"</span>
+<span class="cm-l">* ⛔ 红线：功效不足却把「不显著」写成「政策无影响」</span></code></pre>
       </div>
 
       <h3><span class="tech-label">H6</span>置信区间与等价检验（TOST, two one-sided tests）</h3>
@@ -1539,25 +1539,25 @@ power twomeans 0, n(200) power(0.8) alpha(0.05)
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · H6_TOST.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* === 1. 模拟数据（套用时删除本段）===
-* ssc install ttost, replace
+<pre><code><span class="cm-l">* === 1. 模拟数据（套用时删除本段）===</span>
+<span class="cm-l">* ssc install ttost, replace</span>
 set seed 2316
 set obs 2000
 gen x = rnormal()
-gen y = 0.05*x + rnormal(0,1)         // 真实效应很小(0.05)
+gen y = 0.05*x + rnormal(0,1)         <span class="cm">// 真实效应很小(0.05)</span>
 
-* === 2. 核心操作：常规回归 vs TOST ===
-* === 3. 检验与输出 ===
+<span class="cm-l">* === 2. 核心操作：常规回归 vs TOST ===</span>
+<span class="cm-l">* === 3. 检验与输出 ===</span>
 reg y x
-* ✗ 错误写法：看到 p=0.18 就写"政策无影响"
-* TOST：事前设等价界值 δ=0.1（|β|&lt;0.1 即无经济意义）
-* ttost 做两个单侧检验：
-*   H0a: β&gt;=0.1  vs H1a: β&lt;0.1
-*   H0b: β&lt;=-0.1 vs H1b: β&gt;-0.1
-*   两个都拒绝 → β ∈ [-0.1,0.1] → 等价于0
-* ttost, coef(x) eqv(0.1)
-* ✓ 界值 0.1 必须事前由经济意义定；报告 95% CI 是否落在 ±δ 内
-* ⛔ 红线：跑完 TOST 不通过再换 δ=0.2 凑通过</code></pre>
+<span class="cm-l">* ✗ 错误写法：看到 p=0.18 就写"政策无影响"</span>
+<span class="cm-l">* TOST：事前设等价界值 δ=0.1（|β|&lt;0.1 即无经济意义）</span>
+<span class="cm-l">* ttost 做两个单侧检验：</span>
+<span class="cm-l">*   H0a: β&gt;=0.1  vs H1a: β&lt;0.1</span>
+<span class="cm-l">*   H0b: β&lt;=-0.1 vs H1b: β&gt;-0.1</span>
+<span class="cm-l">*   两个都拒绝 → β ∈ [-0.1,0.1] → 等价于0</span>
+<span class="cm-l">* ttost, coef(x) eqv(0.1)</span>
+<span class="cm-l">* ✓ 界值 0.1 必须事前由经济意义定；报告 95% CI 是否落在 ±δ 内</span>
+<span class="cm-l">* ⛔ 红线：跑完 TOST 不通过再换 δ=0.2 凑通过</span></code></pre>
       </div>
     </div>
 
@@ -1585,34 +1585,34 @@ reg y x
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · F1_留一系数排序删样本（红线·仅识别用）.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*=================================================================
-* F1 【红线手法 · 严禁用于正式研究】
-* 留一法回归 + 按系数排序删样本，直到核心变量显著
-* 收录目的：让你认识它、在审稿/复现时能识破它
-*=================================================================
-* === 1. （本块无模拟数据；假设已加载含 y x controls 的真实数据）===
+<pre><code><span class="cm-l">*=================================================================</span>
+<span class="cm-l">* F1 【红线手法 · 严禁用于正式研究】</span>
+<span class="cm-l">* 留一法回归 + 按系数排序删样本，直到核心变量显著</span>
+<span class="cm-l">* 收录目的：让你认识它、在审稿/复现时能识破它</span>
+<span class="cm-l">*=================================================================</span>
+<span class="cm-l">* === 1. （本块无模拟数据；假设已加载含 y x controls 的真实数据）===</span>
 ssc install rangestat
 gen _i = 1
 gen _t = 1
 
-* === 2. 核心操作：对每个观测做"剔除自身"的回归，得留一系数 b_x ===
-*   by(_i) 分组、i(_t 0 0) 单点窗口、excludeself 排除自身
+<span class="cm-l">* === 2. 核心操作：对每个观测做"剔除自身"的回归，得留一系数 b_x ===</span>
+<span class="cm-l">*   by(_i) 分组、i(_t 0 0) 单点窗口、excludeself 排除自身</span>
 rangestat (reg) y x controls, by(_i) i(_t 0 0) excludeself
 
-* === 3. 检验与输出：按系数排序删样本（⛔ 红线演示）===
-* ⛔ 要把系数"调显著为负"：按系数升序，删最拖后腿那批
+<span class="cm-l">* === 3. 检验与输出：按系数排序删样本（⛔ 红线演示）===</span>
+<span class="cm-l">* ⛔ 要把系数"调显著为负"：按系数升序，删最拖后腿那批</span>
 gsort b_x
-drop if _n&lt;=20          // 一次删20个；不显著就继续删，直到显著
+drop if _n&lt;=20          <span class="cm">// 一次删20个；不显著就继续删，直到显著</span>
 save data1.dta, replace
-* ⛔ 要把系数"调显著为正"：按系数降序
+<span class="cm-l">* ⛔ 要把系数"调显著为正"：按系数降序</span>
 gsort -b_x
 drop if _n&lt;=120
 save data2.dta, replace
-* 识别特征(审稿人视角)：
-*   - 删的数量(20/120)与"经济理由"毫无关系，纯由显著性决定
-*   - 全样本不显著、删完才显著；删除模式单调对齐系数
-* ✓ 诚实替代：Cook's D/DFBETA 只删"已确认录入错误"的观测，
-*   附录列出删除清单与理由；样本定义事前预注册</code></pre>
+<span class="cm-l">* 识别特征(审稿人视角)：</span>
+<span class="cm-l">*   - 删的数量(20/120)与"经济理由"毫无关系，纯由显著性决定</span>
+<span class="cm-l">*   - 全样本不显著、删完才显著；删除模式单调对齐系数</span>
+<span class="cm-l">* ✓ 诚实替代：Cook's D/DFBETA 只删"已确认录入错误"的观测，</span>
+<span class="cm-l">*   附录列出删除清单与理由；样本定义事前预注册</span></code></pre>
       </div>
     </div>
 

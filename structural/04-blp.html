@@ -625,7 +625,7 @@ def contraction_mapping(S_obs, X, p, sigma_alpha, v,
         delta_new -= delta_new.mean()
         diff = np.max(np.abs(delta_new - delta))
         delta = delta_new
-        if diff < tol:
+        if diff &lt; tol:
             break
     return delta
 

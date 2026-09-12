@@ -452,7 +452,7 @@ end;</code></pre>
            mode_check,               % 在众数处打印梯度/Hessian, 检查识别
            % ----- MCMC 抽样 -----
            mh_replic=200000,         % 每条链抽样数 (建议 10万-50万; 太少不收敛)
-           mh_nblocks=2,             % 并行链数 (>=2 才能做 BGR 诊断)
+           mh_nblocks=2,             % 并行链数 (&gt;=2 才能做 BGR 诊断)
            mh_jscale=0.3,            % 提议分布跳跃尺度: 调接受率, 目标 20-40%
            mh_drop=0.2,              % 丢弃前 20% 作为 burn-in
            prior_trunc=0,            % 先验截断 (0=不截断, 与分布默认支持一致)
@@ -554,10 +554,10 @@ model(linear);
   r = rho_r*r(-1) + (1-rho_r)*(phi_pi*pi + phi_y*y) + em;
   % 技术过程
   a = rho_a*a(-1) + ea;
-  % ===== 观测方程: 模型变量 -> 数据 =====
+  % ===== 观测方程: 模型变量 -&gt; 数据 =====
   obs_y  = y;            % 产出循环 (已是百分数)
-  obs_pi = 400*pi;       % 季度通胀 -> 年化百分数
-  obs_r  = 400*r;        % 季度利率 -> 年化百分数
+  obs_pi = 400*pi;       % 季度通胀 -&gt; 年化百分数
+  obs_r  = 400*r;        % 季度利率 -&gt; 年化百分数
 end;
 
 % ---------- 5. 稳态与求解 ----------
@@ -580,11 +580,11 @@ estimation(datafile='data_cn.csv',
 
 % ---------- 7. 后处理 ----------
 % Dynare 输出到 oo_ 结构:
-%   oo_.PosteriorTheoreticalMoments  -> 后验均值/中位数/HPD
-%   oo_.MeanBvsPrior                 -> 先验后验对比
-%   oo_.PosteriorIRF                 -> 贝叶斯 IRF
-%   oo_.MarginalDensity              -> log 边际似然
-%   oo_.SmoothedShocks               -> 历史分解所需平滑冲击
+%   oo_.PosteriorTheoreticalMoments  -&gt; 后验均值/中位数/HPD
+%   oo_.MeanBvsPrior                 -&gt; 先验后验对比
+%   oo_.PosteriorIRF                 -&gt; 贝叶斯 IRF
+%   oo_.MarginalDensity              -&gt; log 边际似然
+%   oo_.SmoothedShocks               -&gt; 历史分解所需平滑冲击
 
 % Shocks decomposition (历史分解):
 % shocks_decomposition(plot);

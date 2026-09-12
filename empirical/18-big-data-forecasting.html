@@ -380,8 +380,8 @@ y = np.zeros(T)
 for t in range(1, T):
     lin = 0.7 * X[t, 0] + 0.5 * X[t, 1] - 0.4 * X[t, 2] \
           + 0.3 * X[t, 3] + 0.2 * X[t, 4]
-    # 非线性: 只有当 X[t,5] > 0 时 X[t,6] 才起作用 (门限效应)
-    nonlinear = 1.2 * X[t, 6] * (X[t, 5] > 0)
+    # 非线性: 只有当 X[t,5] &gt; 0 时 X[t,6] 才起作用 (门限效应)
+    nonlinear = 1.2 * X[t, 6] * (X[t, 5] &gt; 0)
     y[t] = 0.8 * y[t-1] + lin + nonlinear + np.random.randn() * 0.5
 
 # ================================================================
@@ -445,7 +445,7 @@ rmse = {k: np.sqrt(np.mean((v - y_oos)**2)) for k, v in results.items()}
 mae  = {k: np.mean(np.abs(v - y_oos))       for k, v in results.items()}
 
 base_rmse = rmse["AR(1)基准"]
-print("\n{:15s} {:>10s} {:>10s} {:>10s}".format("模型", "RMSE", "MAE", "相对RMSE"))
+print("\n{:15s} {:&gt;10s} {:&gt;10s} {:&gt;10s}".format("模型", "RMSE", "MAE", "相对RMSE"))
 for k in results:
     print(f"{k:15s} {rmse[k]:10.4f} {mae[k]:10.4f} {rmse[k]/base_rmse:10.4f}")
 
@@ -473,7 +473,7 @@ e_ar = results["AR(1)基准"] - y_oos
 for k in ["Ridge", "Lasso", "ElasticNet", "RandomForest"]:
     e_k = results[k] - y_oos
     dm, p = dm_test(e_k, e_ar, h=1)
-    sig = "***" if p < 0.01 else ("**" if p < 0.05 else ("*" if p < 0.1 else ""))
+    sig = "***" if p &lt; 0.01 else ("**" if p &lt; 0.05 else ("*" if p &lt; 0.1 else ""))
     print(f"  {k:15s} DM = {dm:7.3f}  p = {p:6.4f} {sig}")
 
 # ================================================================
@@ -501,16 +501,16 @@ print(imp.head(10).round(4))
     <p>Stata 16 起内置了完整的 Lasso 系列命令（<code class="inline">lasso</code>、<code class="inline">elasticnet</code>、<code class="inline">ridge</code>），支持交叉验证选 $\lambda$、样本外预测。下面这段代码演示用模拟宏观数据做 Elastic Net 滚动窗口预测。</p>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · bigdata_forecast.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* Stata 大数据宏观预测: Elastic Net + 滚动窗口
-* 命令: elasticnet (Stata 16+ 内置, 无需 ssc install)
-* 参考: Medeiros et al. (2021 JBES)
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* Stata 大数据宏观预测: Elastic Net + 滚动窗口</span>
+<span class="cm-l">* 命令: elasticnet (Stata 16+ 内置, 无需 ssc install)</span>
+<span class="cm-l">* 参考: Medeiros et al. (2021 JBES)</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set more off
 set seed 20260911
 
-* --- 1. 构造模拟宏观数据: T=480, p=50 ---
+<span class="cm-l">* --- 1. 构造模拟宏观数据: T=480, p=50 ---</span>
 set obs 480
 gen t = _n
 forvalues j=1/50 {
@@ -519,33 +519,33 @@ forvalues j=1/50 {
 gen y = .
 replace y = 0 in 1
 forvalues t=2/480 {
-    local lin = 0.7*x1[`t'] + 0.5*x2[`t'] - 0.4*x3[`t'] ///
+    local lin = 0.7*x1[`t'] + 0.5*x2[`t'] - 0.4*x3[`t'] <span class="cm">///</span>
               + 0.3*x4[`t'] + 0.2*x5[`t']
-    local nonlin = 1.2*x6[`t']*(x7[`t']>0)
+    local nonlin = 1.2*x6[`t']*(x7[`t']&gt;0)
     replace y = 0.8*y[`t'-1] + `lin' + `nonlin' + rnormal()*0.5 in `t'
 }
 
-* --- 2. Elastic Net 主命令 (在全样本上做 CV, 仅作演示) ---
-* 语法:
-*   elasticnet  y  x1-x50, l1options(...) cv(5)
-*   l1options(alpha(0.5)) 表示 Elastic Net; alpha(1)=Lasso, alpha(0)=Ridge
-*   可选: selection(cv) 用 5 折 CV 选 lambda
+<span class="cm-l">* --- 2. Elastic Net 主命令 (在全样本上做 CV, 仅作演示) ---</span>
+<span class="cm-l">* 语法:</span>
+<span class="cm-l">*   elasticnet  y  x1-x50, l1options(...) cv(5)</span>
+<span class="cm-l">*   l1options(alpha(0.5)) 表示 Elastic Net; alpha(1)=Lasso, alpha(0)=Ridge</span>
+<span class="cm-l">*   可选: selection(cv) 用 5 折 CV 选 lambda</span>
 elasticnet y x1-x50, l1options(alpha(0.5)) cv(5) selection(cv)
 
-* 查看 CV 结果: 哪条 lambda 最优
+<span class="cm-l">* 查看 CV 结果: 哪条 lambda 最优</span>
 elasticnet, cvplot
-* 列出被选中的变量 (系数非零)
+<span class="cm-l">* 列出被选中的变量 (系数非零)</span>
 elasticnet, lassocoef display(coef)
 
-* --- 3. 滚动窗口样本外预测 ---
-* 初始训练: t=1..240, 测试: t=241..480
+<span class="cm-l">* --- 3. 滚动窗口样本外预测 ---</span>
+<span class="cm-l">* 初始训练: t=1..240, 测试: t=241..480</span>
 gen yhat_en = .
 forvalues t=241/479 {
     quietly {
-        * 在 [1, t] 上训练
-        elasticnet y x1-x50 if t &lt;= `t', ///
+<span class="cm-l">        * 在 [1, t] 上训练</span>
+        elasticnet y x1-x50 if t &lt;= `t', <span class="cm">///</span>
             l1options(alpha(0.5)) cv(5) selection(cv)
-        * 预测 t+1
+<span class="cm-l">        * 预测 t+1</span>
         predict yhat_temp if t==`t', xb
         replace yhat_en = yhat_temp[_n+1] if t==`t'
         drop yhat_temp
@@ -553,7 +553,7 @@ forvalues t=241/479 {
     display "Rolling OOS: t = " `t'
 }
 
-* --- 4. 计算 RMSE / MAE (样本外) ---
+<span class="cm-l">* --- 4. 计算 RMSE / MAE (样本外) ---</span>
 gen err = y - yhat_en if t &gt;= 242 &amp; !missing(yhat_en)
 quietly summarize err
 gen rmse_en = sqrt(mean(err^2))
@@ -561,7 +561,7 @@ gen mae_en  = mean(abs(err))
 display "Elastic Net OOS RMSE = " rmse_en
 display "Elastic Net OOS MAE  = " mae_en
 
-* --- 5. 对照: 简单 AR(1) 基准 ---
+<span class="cm-l">* --- 5. 对照: 简单 AR(1) 基准 ---</span>
 gen y_lag = L.y
 reg y y_lag if t &lt;= 240
 predict yhat_ar if t &gt;= 241, xb
@@ -571,8 +571,8 @@ gen rmse_ar = sqrt(mean(err_ar^2))
 display "AR(1)    OOS RMSE = " rmse_ar
 display "相对 RMSE (EN/AR) = " rmse_en / rmse_ar
 
-* --- 6. Python 集成: 在 Stata 里直接调 sklearn 做 RF/XGBoost ---
-* Stata 16+ 支持 python 命令, 可直接调用 Python 环境
+<span class="cm-l">* --- 6. Python 集成: 在 Stata 里直接调 sklearn 做 RF/XGBoost ---</span>
+<span class="cm-l">* Stata 16+ 支持 python 命令, 可直接调用 Python 环境</span>
 python:
 import pandas as pd, numpy as np
 from sklearn.ensemble import RandomForestRegressor
@@ -596,7 +596,7 @@ Data.addVarDouble("yhat_rf")
 Data.store("yhat_rf", None, preds.tolist())
 end
 
-* 计算 RF 相对 RMSE
+<span class="cm-l">* 计算 RF 相对 RMSE</span>
 gen err_rf = y - yhat_rf if t &gt;= 242 &amp; !missing(yhat_rf)
 quietly summarize err_rf
 display "Random Forest OOS RMSE = " sqrt(mean(err_rf^2))

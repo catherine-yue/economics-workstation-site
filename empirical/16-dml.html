@@ -498,36 +498,36 @@ print(dml_plr_lasso$summary())
       <p>Stata 用户有两个主流选择：(1) <strong><code class="inline">ddml</code></strong>（Chernozhukov et al. 2024, Stata Journal）原生实现 DML；(2) <strong><code class="inline">pystacked</code></strong>，通过 Python 后端调用 sklearn 模型，常与 DML 配合。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · ddml 命令</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ============================================================
-* 08.1 Stata: ddml 做部分线性模型 DML
-* ssc install ddml
-* ssc install rforest    // 随机森林后端
-* ============================================================
+        <pre><code><span class="cm-l">* ============================================================</span>
+<span class="cm-l">* 08.1 Stata: ddml 做部分线性模型 DML</span>
+<span class="cm-l">* ssc install ddml</span>
+<span class="cm-l">* ssc install rforest    // 随机森林后端</span>
+<span class="cm-l">* ============================================================</span>
 clear all
 set seed 3141
 set obs 5000
 
-* --- 模拟数据 ---
+<span class="cm-l">* --- 模拟数据 ---</span>
 drawnorm X1-X20, means(0) sds(1)
 gen D = tanh(X1 + X2) + rnormal()
 gen Y = 0.5*D + tanh(X3 + X4) + rnormal()
 
-* --- 初始化 ddml 环境 ---
+<span class="cm-l">* --- 初始化 ddml 环境 ---</span>
 ddml init partial, kfolds(5)
 
-* --- 第一阶段：用随机森林拟合 E[Y|X] 和 E[D|X] ---
+<span class="cm-l">* --- 第一阶段：用随机森林拟合 E[Y|X] 和 E[D|X] ---</span>
 ddml E[Y|X]: rforest Y X1-X20, type(reg)
 ddml E[D|X]: rforest D X1-X20, type(reg)
 
-* --- 第二阶段：在残差上估计 theta ---
+<span class="cm-l">* --- 第二阶段：在残差上估计 theta ---</span>
 ddml estimate, robust
 
-* --- 查看结果 ---
+<span class="cm-l">* --- 查看结果 ---</span>
 ddml summary
-* 输出 theta、标准误、p 值、置信区间
-* 预期 theta 接近 0.5
+<span class="cm-l">* 输出 theta、标准误、p 值、置信区间</span>
+<span class="cm-l">* 预期 theta 接近 0.5</span>
 
-* --- 换 Lasso ---
+<span class="cm-l">* --- 换 Lasso ---</span>
 ddml init partial, kfolds(5)
 ddml E[Y|X]: lasso Y X1-X20
 ddml E[D|X]: lasso D X1-X20
@@ -718,38 +718,38 @@ print(f"不做 cross-fitting 的 ATE = {score_nocf.mean():.4f}  (通常偏差更
       <p>Stata 内置 <code class="inline">teffects aipw</code>，一行命令完成"倾向得分 logit + 结果回归 OLS"的双重稳健估计，并用 <code class="inline">osample()</code> 标记共同支撑样本。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · teffects aipw（模拟数据，set seed）</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ============================================================
-* 13.1 Stata: teffects aipw 双重稳健 ATE
-* 模拟数据：真实 ATE ≈ 1
-* ============================================================
+        <pre><code><span class="cm-l">* ============================================================</span>
+<span class="cm-l">* 13.1 Stata: teffects aipw 双重稳健 ATE</span>
+<span class="cm-l">* 模拟数据：真实 ATE ≈ 1</span>
+<span class="cm-l">* ============================================================</span>
 clear all
 set seed 20240101
 set obs 2000
 
 drawnorm X1 X2 X3, means(0) sds(1)
 
-* 倾向得分 e(X) = invlogit(X1 + 0.5*X2)
+<span class="cm-l">* 倾向得分 e(X) = invlogit(X1 + 0.5*X2)</span>
 gen double linp = X1 + 0.5*X2
 gen double e_x  = invlogit(linp)
 gen byte D = runiform() &lt; e_x
 
-* 结果：m1(X)=1+X1, m0(X)=0.5*X2
+<span class="cm-l">* 结果：m1(X)=1+X1, m0(X)=0.5*X2</span>
 gen double Y = D*(1 + X1) + (1-D)*(0.5*X2) + rnormal()
 
-* --- AIPW：(结果回归变量) 在前，(处理变量) 在后 ---
-* 语法：teffects aipw y (处理方程协变量) (处理变量)
+<span class="cm-l">* --- AIPW：(结果回归变量) 在前，(处理变量) 在后 ---</span>
+<span class="cm-l">* 语法：teffects aipw y (处理方程协变量) (处理变量)</span>
 teffects aipw Y (X1 X2 X3) (D), osample(oor)
-* osample() 生成共同支撑标记 oor（=0 表示倾向得分极端、缺共同支撑）
+<span class="cm-l">* osample() 生成共同支撑标记 oor（=0 表示倾向得分极端、缺共同支撑）</span>
 
-* --- 诊断：检查共同支撑 ---
-teffects overlap        // 画处理组/对照组倾向得分分布图
-count if oor == 1        // 数出被剔除的极端权重样本
-teffects stats          // 报告 ATE、POT0、POT1 及其 SE
+<span class="cm-l">* --- 诊断：检查共同支撑 ---</span>
+teffects overlap        <span class="cm">// 画处理组/对照组倾向得分分布图</span>
+count if oor == 1        <span class="cm">// 数出被剔除的极端权重样本</span>
+teffects stats          <span class="cm">// 报告 ATE、POT0、POT1 及其 SE</span>
 
-* --- 对比：纯 IPW 与纯回归调整，看 AIPW 的稳健性 ---
+<span class="cm-l">* --- 对比：纯 IPW 与纯回归调整，看 AIPW 的稳健性 ---</span>
 teffects ipw Y (X1 X2 X3) (D)
 teffects ra Y (X1 X2 X3) (D)
-* 三列 ATE 应接近；若 IPW 偏离很大而 AIPW 接近，说明结果模型在"兜底"
+<span class="cm-l">* 三列 ATE 应接近；若 IPW 偏离很大而 AIPW 接近，说明结果模型在"兜底"</span>
 </code></pre>
       </div>
 
@@ -757,29 +757,29 @@ teffects ra Y (X1 X2 X3) (D)
       <p>把 AIPW 思想搬到 DID 上，就是 Callaway &amp; Sant'Anna (2021) 的 <code class="inline">drdid</code> / <code class="inline">csdid</code>：估计"组别 × 时点"层面的 ATT(g,t)，并用双重稳健 / 矩估计给出稳健标准误，同时解决了双向固定效应 TWFE 在交错处理下的负权重问题。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · drdid / csdid（Callaway-Sant'Anna 2021）</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ============================================================
-* 13.2 Stata: drdid 双重稳健 DID（交错处理 / staggered adoption）
-* ssc install drdid
-* ssc install csdid
-* ============================================================
+        <pre><code><span class="cm-l">* ============================================================</span>
+<span class="cm-l">* 13.2 Stata: drdid 双重稳健 DID（交错处理 / staggered adoption）</span>
+<span class="cm-l">* ssc install drdid</span>
+<span class="cm-l">* ssc install csdid</span>
+<span class="cm-l">* ============================================================</span>
 
-* --- 截面 / 重复截面数据：drdid ---
-* drdid y [treat] time, ivar(panel id) [repeated]
-* 例：drdid Y D post, ivar(id)
-*   - Y     结果变量
-*   - D     处理组虚拟（=1 表示最终会被处理）
-*   - post  政策实施后虚拟
-*   drdid 内部用 AIPW/DR 估计 ATT，并报告双重稳健标准误
+<span class="cm-l">* --- 截面 / 重复截面数据：drdid ---</span>
+<span class="cm-l">* drdid y [treat] time, ivar(panel id) [repeated]</span>
+<span class="cm-l">* 例：drdid Y D post, ivar(id)</span>
+<span class="cm-l">*   - Y     结果变量</span>
+<span class="cm-l">*   - D     处理组虚拟（=1 表示最终会被处理）</span>
+<span class="cm-l">*   - post  政策实施后虚拟</span>
+<span class="cm-l">*   drdid 内部用 AIPW/DR 估计 ATT，并报告双重稳健标准误</span>
 
-* --- 面板数据：csdid（推荐，按首次处理年份 gvar 分组）---
-* webuse Hanson_2021, clear
-* csdid Y year gvar, notyet ivar(id)
-*   - gvar = 个体首次接受处理的年份（从未处理 = 0）
-* 输出：ATT(g,t) 矩阵 + 加权聚合的 overall ATT
-* 事后画动态效应图：
-* estat event
+<span class="cm-l">* --- 面板数据：csdid（推荐，按首次处理年份 gvar 分组）---</span>
+<span class="cm-l">* webuse Hanson_2021, clear</span>
+<span class="cm-l">* csdid Y year gvar, notyet ivar(id)</span>
+<span class="cm-l">*   - gvar = 个体首次接受处理的年份（从未处理 = 0）</span>
+<span class="cm-l">* 输出：ATT(g,t) 矩阵 + 加权聚合的 overall ATT</span>
+<span class="cm-l">* 事后画动态效应图：</span>
+<span class="cm-l">* estat event</span>
 
-* --- 下面用模拟面板演示语法结构 ---
+<span class="cm-l">* --- 下面用模拟面板演示语法结构 ---</span>
 clear all
 set seed 20240101
 set obs 1000
@@ -787,15 +787,15 @@ gen long id = _n
 expand 10
 bysort id: gen year = 2010 + _n - 1
 bysort id: gen double x = rnormal()
-* 组别 gvar：id 尾号 1=2015 处理，2=2017 处理，其余=0（对照）
+<span class="cm-l">* 组别 gvar：id 尾号 1=2015 处理，2=2017 处理，其余=0（对照）</span>
 gen gvar = cond(mod(id,3)==1, 2015, cond(mod(id,3)==2, 2017, 0))
 gen post = (year &gt;= gvar) &amp; (gvar &gt; 0)
 gen Y = 1.2*post + x + rnormal()
 
-* csdid Y gvar, timevar(year) ivar(id) notyet
-* estat event
-* 若 csdid 不可用，退回 drdid：
-* drdid Y post, ivar(id)
+<span class="cm-l">* csdid Y gvar, timevar(year) ivar(id) notyet</span>
+<span class="cm-l">* estat event</span>
+<span class="cm-l">* 若 csdid 不可用，退回 drdid：</span>
+<span class="cm-l">* drdid Y post, ivar(id)</span>
 </code></pre>
       </div>
 

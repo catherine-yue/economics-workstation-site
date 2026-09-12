@@ -328,7 +328,7 @@ def hat_ek(Lambda, X, tau_hat, theta, tol=1e-9, max_iter=50000, damp=0.5):
         hat_w_new = hat_w_new * X.sum() / (hat_w_new * X).sum()
 
         # 收敛
-        if np.max(np.abs(excess - 1.0)) < tol:
+        if np.max(np.abs(excess - 1.0)) &lt; tol:
             hat_w = hat_w_new
             break
         hat_w = hat_w_new
@@ -396,9 +396,9 @@ tau_hat_autarky = np.ones((N, N))
 tau_hat_autarky[~np.eye(N, dtype=bool)] = 1e6   # 跨国成本无穷大
 hat_w_auto, hat_lam_auto, hat_W_auto = hat_ek(Lambda, X, tau_hat_autarky, theta)
 print("\n" + "=" * 60)
-print("反事实：完全自给自足（跨国成本 -> ∞）")
-print(f"  福利变化 hat_W（应 < 1）: {np.round(hat_W_auto[:5], 4)}")
-# 注意：hat_W_auto = hat_lam_nn^(-1/theta)，自给自足下 hat_lam_nn -> 1/lam_nn，所以 hat_W_auto = lam_nn^(1/theta) < 1
+print("反事实：完全自给自足（跨国成本 -&gt; ∞）")
+print(f"  福利变化 hat_W（应 &lt; 1）: {np.round(hat_W_auto[:5], 4)}")
+# 注意：hat_W_auto = hat_lam_nn^(-1/theta)，自给自足下 hat_lam_nn -&gt; 1/lam_nn，所以 hat_W_auto = lam_nn^(1/theta) &lt; 1
 # 与 04 页 ACR 公式一致：W_trade/W_autarky = lam_nn^(-1/theta)
 </code></pre>
       </div>

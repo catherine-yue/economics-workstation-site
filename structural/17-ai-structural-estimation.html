@@ -407,7 +407,7 @@ def bellman_residual(n=512):
     k,b,z,g,d,rho,sig = sample_state(n)
     kp, bp = k_grid.view(1,-1), b_grid.view(1,-1)
     inv = kp - (1-d.view(-1,1))*k.view(-1,1)          # 净投资
-    c_adj = g.view(-1,1)*(inv.abs()>1e-6).float() + .5*PSI*inv**2  # 固定+二次调整成本
+    c_adj = g.view(-1,1)*(inv.abs()&gt;1e-6).float() + .5*PSI*inv**2  # 固定+二次调整成本
     div_k = profit(k.view(-1,1), z.view(-1,1)) - c_adj - b.view(-1,1)
     div = div_k.unsqueeze(2) + (bp/(1+R)).view(1,1,NB)            # 现金流 (n,NK,NB)
     zp = rho.view(-1,1)*z.view(-1,1) + sig.view(-1,1)*torch.randn(n,NZ)  # z' AR(1)
@@ -440,7 +440,7 @@ def simulate_moments(g0, d0, r0, s0, T=30, N=16):   # 用训练好的值网络�
     for t in range(T):
         kp, bp = k_grid.view(1,-1), b_grid.view(1,-1)
         inv = kp - (1-d0)*k.view(-1,1)
-        ca = g0*(inv.abs()>1e-6).float() + .5*PSI*inv**2
+        ca = g0*(inv.abs()&gt;1e-6).float() + .5*PSI*inv**2
         div = (profit(k.view(-1,1),z.view(-1,1))-ca-b.view(-1,1)).unsqueeze(-1) \
               + (bp/(1+R)).view(1,1,NB)
         zp = r0*z.view(-1,1) + s0*torch.randn(N,NZ)
@@ -450,7 +450,7 @@ def simulate_moments(g0, d0, r0, s0, T=30, N=16):   # 用训练好的值网络�
         sN[...,3]=g0; sN[...,4]=d0; sN[...,5]=r0; sN[...,6]=s0
         VN = Vnet(sN.reshape(-1,7)).reshape(N,NK,NB,NZ).mean(-1)
         best = (div + BETA_DISC*VN).reshape(N,-1).argmax(1)   # 最优 (k',b')
-        kn, bn = k_grid[best//NB], b_grid[best%NB]
+        kn, bn = k_grid[best<span class="cm">//NB], b_grid[best%NB]</span>
         inv_hist.append(((kn-(1-d0)*k)/k).mean()); lev_hist.append((b/k).mean())
         k,b,z = kn, bn, r0*z + s0*torch.randn(N)
     return torch.tensor([torch.stack(inv_hist[10:]).mean(),

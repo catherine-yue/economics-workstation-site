@@ -340,103 +340,103 @@
       <p>下面是一个<strong>完整可运行</strong>的双部门（部门 1 = 上游，部门 2 = 下游）IO-DSGE。上游部门 1 的中间投入卖给下游部门 2；两部门各有自己的 Calvo 概率 $\theta_1,\theta_2$ 与 TFP 冲击。运行 <code class="inline">dynare multi_sector.mod</code>。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Dynare / multi_sector.mod（双部门 IO-DSGE）</span><button class="copy-btn">复制</button></div>
-        <pre><code>// ============================================================
-// multi_sector.mod  ——  双部门 NK-DSGE + 投入产出链
-// 部门1: 上游（如能源/原材料），产品卖给部门2作中间投入
-// 部门2: 下游（如制造业），用部门1中间品 + 劳动生产
-// 两部门各有：异质 Calvo 概率、异质 TFP 冲击
-// 运行：dynare multi_sector.mod
-// ============================================================
+        <pre><code><span class="cm">// ============================================================</span>
+<span class="cm">// multi_sector.mod  ——  双部门 NK-DSGE + 投入产出链</span>
+<span class="cm">// 部门1: 上游（如能源/原材料），产品卖给部门2作中间投入</span>
+<span class="cm">// 部门2: 下游（如制造业），用部门1中间品 + 劳动生产</span>
+<span class="cm">// 两部门各有：异质 Calvo 概率、异质 TFP 冲击</span>
+<span class="cm">// 运行：dynare multi_sector.mod</span>
+<span class="cm">// ============================================================</span>
 
-// ---------- 内生变量（部门1 下标1，部门2 下标2） ----------
-var  y1 y2          // 两部门产出缺口
-     pi1 pi2        // 两部门部门通胀
-     pi             // 总体通胀（消费篮子加权）
-     mc1 mc2        // 两部门实际边际成本
-     n1 n2          // 两部门就业
-     w              // 共同实际工资
-     rrn            // 自然利率（需求侧）
-     z1 z2          // 两部门对数 TFP（外生状态）
-     i              // 名义政策利率（总体 Taylor 规则）
-     p1_rel p2_rel; // 部门相对价格（这里取相对偏离）
+<span class="cm">// ---------- 内生变量（部门1 下标1，部门2 下标2） ----------</span>
+var  y1 y2          <span class="cm">// 两部门产出缺口</span>
+     pi1 pi2        <span class="cm">// 两部门部门通胀</span>
+     pi             <span class="cm">// 总体通胀（消费篮子加权）</span>
+     mc1 mc2        <span class="cm">// 两部门实际边际成本</span>
+     n1 n2          <span class="cm">// 两部门就业</span>
+     w              <span class="cm">// 共同实际工资</span>
+     rrn            <span class="cm">// 自然利率（需求侧）</span>
+     z1 z2          <span class="cm">// 两部门对数 TFP（外生状态）</span>
+     i              <span class="cm">// 名义政策利率（总体 Taylor 规则）</span>
+     p1_rel p2_rel; <span class="cm">// 部门相对价格（这里取相对偏离）</span>
 
-// ---------- 外生冲击 ----------
+<span class="cm">// ---------- 外生冲击 ----------</span>
 varexo eps_z1 eps_z2 eps_d;
 
-// ---------- 参数 ----------
+<span class="cm">// ---------- 参数 ----------</span>
 parameters beta sigma varphi epsilon ...
-           theta1 theta2        // 两部门异质 Calvo 概率
-           k1 k2                // 两部门 NKPC 斜率（由 theta 推）
-           a12                  // 部门2 每单位产出用部门1中间品的份额
-           alpha2               // 部门2 劳动份额（1-alpha2 即中间品份额）
-           b1 b2                // 部门1、2在消费篮子中的权重（b1+b2=1）
+           theta1 theta2        <span class="cm">// 两部门异质 Calvo 概率</span>
+           k1 k2                <span class="cm">// 两部门 NKPC 斜率（由 theta 推）</span>
+           a12                  <span class="cm">// 部门2 每单位产出用部门1中间品的份额</span>
+           alpha2               <span class="cm">// 部门2 劳动份额（1-alpha2 即中间品份额）</span>
+           b1 b2                <span class="cm">// 部门1、2在消费篮子中的权重（b1+b2=1）</span>
            phi_pi phi_y rho_z rho_d;
 
-// ---------- 校准 ----------
+<span class="cm">// ---------- 校准 ----------</span>
 beta    = 0.99;
 sigma   = 1.0;
 varphi  = 1.0;
 epsilon = 6.0;
 
-// 部门1（上游/能源）价格调得勤 -> theta1 小；
-// 部门2（下游/制造）价格粘 -> theta2 大
-theta1  = 0.55;     // 上游约 2 季度调一次价
-theta2  = 0.80;     // 下游约 5 季度调一次价
-k1 = (1-theta1)*(1-beta*theta1)/theta1;   // 上游 NKPC 斜率大（灵活）
-k2 = (1-theta2)*(1-beta*theta2)/theta2;   // 下游 NKPC 斜率小（粘性）
+<span class="cm">// 部门1（上游/能源）价格调得勤 -&gt; theta1 小；</span>
+<span class="cm">// 部门2（下游/制造）价格粘 -&gt; theta2 大</span>
+theta1  = 0.55;     <span class="cm">// 上游约 2 季度调一次价</span>
+theta2  = 0.80;     <span class="cm">// 下游约 5 季度调一次价</span>
+k1 = (1-theta1)*(1-beta*theta1)/theta1;   <span class="cm">// 上游 NKPC 斜率大（灵活）</span>
+k2 = (1-theta2)*(1-beta*theta2)/theta2;   <span class="cm">// 下游 NKPC 斜率小（粘性）</span>
 
-// 投入产出关键参数：a12 = 部门2 用部门1 中间品的份额
-a12     = 0.35;     // 下游 35% 成本来自购买上游中间品
-alpha2  = 0.65;     // 下游 65% 成本来自劳动（1-alpha2-a12=0 简化）
-b1      = 0.30;     // 上游最终品占消费篮子 30%
-b2      = 0.70;     // 下游最终品占消费篮子 70%
+<span class="cm">// 投入产出关键参数：a12 = 部门2 用部门1 中间品的份额</span>
+a12     = 0.35;     <span class="cm">// 下游 35% 成本来自购买上游中间品</span>
+alpha2  = 0.65;     <span class="cm">// 下游 65% 成本来自劳动（1-alpha2-a12=0 简化）</span>
+b1      = 0.30;     <span class="cm">// 上游最终品占消费篮子 30%</span>
+b2      = 0.70;     <span class="cm">// 下游最终品占消费篮子 70%</span>
 
 phi_pi  = 1.5;
 phi_y   = 0.125;
 rho_z   = 0.90;
 rho_d   = 0.80;
 
-// ---------- model 块 ----------
+<span class="cm">// ---------- model 块 ----------</span>
 model;
-// (1) 部门1 边际成本：只用劳动（上游不买别人中间品，简化）
-//     mc1 = varphi*n1 + sigma*y1 - z1   （单部门劳动-边际成本桥）
+<span class="cm">// (1) 部门1 边际成本：只用劳动（上游不买别人中间品，简化）</span>
+<span class="cm">//     mc1 = varphi*n1 + sigma*y1 - z1   （单部门劳动-边际成本桥）</span>
 mc1 = varphi*n1 + sigma*y1 - z1;
 
-// (2) 部门2 边际成本：关键！含 IO 传导
-//     部门2 成本 = 工资项 + 上游部门1 价格/成本项（权重 a12）
-//     即 Eq.M4：mc2 = alpha2*w + a12*mc1 - z2
+<span class="cm">// (2) 部门2 边际成本：关键！含 IO 传导</span>
+<span class="cm">//     部门2 成本 = 工资项 + 上游部门1 价格/成本项（权重 a12）</span>
+<span class="cm">//     即 Eq.M4：mc2 = alpha2*w + a12*mc1 - z2</span>
 mc2 = alpha2*w + a12*mc1 - z2;
 
-// (3) 部门1 NKPC（斜率 k1 大 -> 灵活）
+<span class="cm">// (3) 部门1 NKPC（斜率 k1 大 -&gt; 灵活）</span>
 pi1 = beta*pi1(+1) + k1*mc1;
 
-// (4) 部门2 NKPC（斜率 k2 小 -> 粘）
+<span class="cm">// (4) 部门2 NKPC（斜率 k2 小 -&gt; 粘）</span>
 pi2 = beta*pi2(+1) + k2*mc2;
 
-// (5) 总体通胀 = 消费篮子加权（Eq.M7 聚合）
+<span class="cm">// (5) 总体通胀 = 消费篮子加权（Eq.M7 聚合）</span>
 pi  = b1*pi1 + b2*pi2;
 
-// (6) 共同工资与部门就业的劳动供给桥（简化：w = varphi*n + sigma*y）
-//     两部门在统一劳动市场上竞争
+<span class="cm">// (6) 共同工资与部门就业的劳动供给桥（简化：w = varphi*n + sigma*y）</span>
+<span class="cm">//     两部门在统一劳动市场上竞争</span>
 w   = varphi*n1 + sigma*y1;
-w   = varphi*n2 + sigma*y2;   // 同一工资，两边都满足（冗余恒等，供 Dynare 求解）
+w   = varphi*n2 + sigma*y2;   <span class="cm">// 同一工资，两边都满足（冗余恒等，供 Dynare 求解）</span>
 
-// (7) 资源 / 需求侧（简化 IS：总体产出缺口由实际利率调节）
+<span class="cm">// (7) 资源 / 需求侧（简化 IS：总体产出缺口由实际利率调节）</span>
 y1 = y1(+1) - (1/sigma)*( i - pi(+1) - rrn );
 y2 = y2(+1) - (1/sigma)*( i - pi(+1) - rrn );
 
-// (8) 货币政策：总体 Taylor 规则
+<span class="cm">// (8) 货币政策：总体 Taylor 规则</span>
 i = phi_pi*pi + phi_y*(b1*y1 + b2*y2);
 
-// (9) 部门 TFP 外生过程
+<span class="cm">// (9) 部门 TFP 外生过程</span>
 z1 = rho_z*z1(-1) + eps_z1;
 z2 = rho_z*z2(-1) + eps_z2;
 
-// (10) 需求侧自然利率
+<span class="cm">// (10) 需求侧自然利率</span>
 rrn = rho_d*rrn(-1) + eps_d;
 end;
 
-// ---------- 稳态初始值（全 0，对数偏离） ----------
+<span class="cm">// ---------- 稳态初始值（全 0，对数偏离） ----------</span>
 initval;
  y1=0; y2=0; pi1=0; pi2=0; pi=0; mc1=0; mc2=0;
  n1=0; n2=0; w=0; rrn=0; z1=0; z2=0; i=0;
@@ -444,15 +444,15 @@ end;
 steady;
 check;
 
-// ---------- 冲击分布 ----------
+<span class="cm">// ---------- 冲击分布 ----------</span>
 shocks;
-var eps_z1 = (0.01)^2;    // 上游 TFP 冲击
-var eps_z2 = (0.01)^2;     // 下游 TFP 冲击
-var eps_d  = (0.01)^2;     // 总需求冲击
+var eps_z1 = (0.01)^2;    <span class="cm">// 上游 TFP 冲击</span>
+var eps_z2 = (0.01)^2;     <span class="cm">// 下游 TFP 冲击</span>
+var eps_d  = (0.01)^2;     <span class="cm">// 总需求冲击</span>
 end;
 
-// ---------- 求解并画 IRF（40 期） ----------
-// 重点观察：eps_z1（上游能源）如何通过 a12 传导到 mc2 -> pi2 -> 总体 pi
+<span class="cm">// ---------- 求解并画 IRF（40 期） ----------</span>
+<span class="cm">// 重点观察：eps_z1（上游能源）如何通过 a12 传导到 mc2 -&gt; pi2 -&gt; 总体 pi</span>
 stoch_simul(order=1, irf=40) y1 y2 pi1 pi2 pi mc1 mc2 i;</code></pre>
       </div>
       <div class="callout tip">
@@ -481,7 +481,7 @@ import numpy as np
 # ---------- 1. 构造 4 部门 IO 矩阵 A ----------
 # 行 i = 产品供给方，列 j = 产品需求方；
 # a[i,j] = 部门 j 每生产 1 元要从部门 i 买多少元
-# 示例网络：能源(0)->化工(1)->制造(2)->服务(3)，并允许回流
+# 示例网络：能源(0)-&gt;化工(1)-&gt;制造(2)-&gt;服务(3)，并允许回流
 A = np.array([
     # 能源 化工 制造 服务
     [0.20, 0.30, 0.05, 0.10],   # 能源卖给各下游（自己+化工+制造+服务）
@@ -492,31 +492,31 @@ A = np.array([
 J = A.shape[0]
 names = ["能源", "化工", "制造", "服务"]
 
-# 校验：每列之和应 <= 1（其余是劳动/增加值份额）
+# 校验：每列之和应 &lt;= 1（其余是劳动/增加值份额）
 colsum = A.sum(axis=0)
 print("各部门中间投入合计（剩余为劳动/增加值）:")
 for j in range(J):
     print(f"  部门{names[j]}: 中间品={colsum[j]:.2f}, 增加值={1-colsum[j]:.2f}")
 
 # ---------- 2. Leontief 逆 (I - A)^{-1} ----------
-# 投入产出恒等式 Y = A Y + F  =>  Y = (I-A)^{-1} F
+# 投入产出恒等式 Y = A Y + F  =&gt;  Y = (I-A)^{-1} F
 I = np.eye(J)
 Leontief_inv = np.linalg.inv(I - A)
 print("\n=== Leontief 逆矩阵 (完全消耗系数) ===")
 print(np.round(Leontief_inv, 3))
 
-# ---------- 3. 价格传导：上游成本冲击 -> 全网价格 ----------
+# ---------- 3. 价格传导：上游成本冲击 -&gt; 全网价格 ----------
 # Eq.M5:  P_hat = (I - A.T)^{-1} (w - z)
 # 这里给"能源(部门0)"一个负 TFP 冲击（成本上升），
-# 等价于其成本项 z_hat = -0.05（负技术进步 -> 涨价压力 +0.05）
+# 等价于其成本项 z_hat = -0.05（负技术进步 -&gt; 涨价压力 +0.05）
 shock = np.zeros(J)
 shock[0] = 0.05   # 能源部门成本/价格上行 5%
-# 价格沿网络传导：解 P = A.T P + shock  =>  P = (I - A.T)^{-1} shock
+# 价格沿网络传导：解 P = A.T P + shock  =&gt;  P = (I - A.T)^{-1} shock
 P_resp = np.linalg.inv(I - A.T) @ shock
 print("\n=== 能源部门成本 +5%% 后，各部门价格的网络传导 ===")
 for j in range(J):
     bar = "█" * int(abs(P_resp[j]) * 100)
-    print(f"  部门{names[j]:<4}: 价格 +{P_resp[j]*100:6.2f}%  {bar}")
+    print(f"  部门{names[j]:&lt;4}: 价格 +{P_resp[j]*100:6.2f}%  {bar}")
 print("解读：能源冲击不只是能源涨价，还被 (I-A.T)^-1 放大、")
 print("      扩散到化工/制造/服务，且越下游累计涨幅越大。")
 
@@ -530,7 +530,7 @@ total_pull = Leontief_inv.sum(axis=0)
 order = np.argsort(-total_pull)
 print("按'总拉动乘数'从大到小：")
 for rank, k in enumerate(order, 1):
-    print(f"  第{rank}名 部门{names[k]:<4}: 总拉动乘数 = {total_pull[k]:.3f}")
+    print(f"  第{rank}名 部门{names[k]:&lt;4}: 总拉动乘数 = {total_pull[k]:.3f}")
 
 # ---------- 5. 网络中心性 ----------
 # 前向中心性（出度）：部门 i 卖给下游的总量
@@ -539,7 +539,7 @@ out_degree = A.sum(axis=1)
 in_degree  = A.sum(axis=0)
 print("\n=== 网络中心性 ===")
 for j in range(J):
-    print(f"  部门{names[j]:<4}: 前向(出度)={out_degree[j]:.3f}, "
+    print(f"  部门{names[j]:&lt;4}: 前向(出度)={out_degree[j]:.3f}, "
           f"后向(入度)={in_degree[j]:.3f}, "
           f"Leontief列和={total_pull[j]:.3f}")
 
@@ -551,7 +551,7 @@ print("\n=== 能源 TFP 冲击后，制造部门价格的传导-衰减路径 ===
 print("期数  制造部门价格响应")
 for t in range(T):
     path = (Leontief_inv[2, 0]) * (rho ** t) * shock[0]
-    print(f"  t={t:<2}: {path*100:7.3f}%")
+    print(f"  t={t:&lt;2}: {path*100:7.3f}%")
 print("直觉：冲击当期制造价格已因能源涨价而上升（通过 Leontief 逆 [2,0]），")
 print("      随后随能源冲击自身按 rho=0.9 缓慢衰减。")</code></pre>
       </div>

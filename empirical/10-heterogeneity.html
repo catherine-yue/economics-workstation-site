@@ -229,27 +229,27 @@
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 分组回归</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ===== 02.1 按所有制分组：国有 vs 非国有 =====
-reghdfe Y X $Xctrl if SOE==1, absorb(id year) vce(cluster id)   // 国有
+        <pre><code><span class="cm-l">* ===== 02.1 按所有制分组：国有 vs 非国有 =====</span>
+reghdfe Y X $Xctrl if SOE==1, absorb(id year) vce(cluster id)   <span class="cm">// 国有</span>
 est store h_soe
-reghdfe Y X $Xctrl if SOE==0, absorb(id year) vce(cluster id)   // 非国有
+reghdfe Y X $Xctrl if SOE==0, absorb(id year) vce(cluster id)   <span class="cm">// 非国有</span>
 est store h_nonsoe
-esttab h_soe h_nonsoe, keep(X) se star(* 0.1 ** 0.05 *** 0.01) ///
+esttab h_soe h_nonsoe, keep(X) se star(* 0.1 ** 0.05 *** 0.01) <span class="cm">///</span>
     mtitles("国有" "非国有")
 
-* ===== 02.2 按地区分组：东部 vs 中西部 =====
+<span class="cm-l">* ===== 02.2 按地区分组：东部 vs 中西部 =====</span>
 reghdfe Y X $Xctrl if east==1, absorb(id year) vce(cluster id)
 est store h_east
 reghdfe Y X $Xctrl if east==0, absorb(id year) vce(cluster id)
 est store h_west
 
-* ===== 02.3 按规模分组：大企业 vs 中小企业 =====
+<span class="cm-l">* ===== 02.3 按规模分组：大企业 vs 中小企业 =====</span>
 xtile size_grp = lnasset, nq(2)
 reghdfe Y X $Xctrl if size_grp==1, absorb(id year) vce(cluster id)
 est store h_small
 reghdfe Y X $Xctrl if size_grp==2, absorb(id year) vce(cluster id)
 est store h_large
-esttab h_small h_large, keep(X) se star(* 0.1 ** 0.05 *** 0.01) ///
+esttab h_small h_large, keep(X) se star(* 0.1 ** 0.05 *** 0.01) <span class="cm">///</span>
     mtitles("中小企业" "大企业")
 </code></pre>
       </div>
@@ -266,21 +266,21 @@ esttab h_small h_large, keep(X) se star(* 0.1 ** 0.05 *** 0.01) ///
       <p>当分组变量是连续变量（如融资约束指数、市场化程度）时，做法完全相同：把 $D$ 换成连续变量 $Z$，交互项为 $x\times Z$，$\beta_2$ 度量 $Z$ 每上升一单位时 $x\to y$ 斜率的变化。为降低多重共线性，连续变量通常先中心化。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 交互项法（虚拟变量 + 连续变量）</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ===== 03.1 分组虚拟变量交互 =====
+        <pre><code><span class="cm-l">* ===== 03.1 分组虚拟变量交互 =====</span>
 gen XxD = X * SOE
 reghdfe Y X SOE XxD $Xctrl, absorb(id year) vce(cluster id)
-* XxD 的系数 beta2 显著 => 国有/非国有两组效应差异显著
-* D=1 组总效应 = _b[X] + _b[XxD]
+<span class="cm-l">* XxD 的系数 beta2 显著 =&gt; 国有/非国有两组效应差异显著</span>
+<span class="cm-l">* D=1 组总效应 = _b[X] + _b[XxD]</span>
 
-* ===== 03.2 连续变量交互（先中心化）=====
+<span class="cm-l">* ===== 03.2 连续变量交互（先中心化）=====</span>
 center SA_index, prefix(c_)
 gen XxcSA = X * c_SA_index
 reghdfe Y X c_SA_index XxcSA $Xctrl, absorb(id year) vce(cluster id)
 
-* ===== 03.3 用因子变量语法自动生成交互并做简单效应 =====
+<span class="cm-l">* ===== 03.3 用因子变量语法自动生成交互并做简单效应 =====</span>
 reghdfe Y c.X##i.SOE $Xctrl, absorb(id year) vce(cluster id)
-margins SOE, dydx(X)          // 分别给出 SOE=0/1 两组 X 的边际效应
-marginsplot                   // 画两组边际效应及置信区间对比
+margins SOE, dydx(X)          <span class="cm">// 分别给出 SOE=0/1 两组 X 的边际效应</span>
+marginsplot                   <span class="cm">// 画两组边际效应及置信区间对比</span>
 </code></pre>
       </div>
     </div>
@@ -297,28 +297,28 @@ marginsplot                   // 画两组边际效应及置信区间对比
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · SUR / bdiff 费舍尔组合检验 / 交互项 Wald</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ===== 04.1 似无相关回归 suest 检验组间差异 =====
-* 注意：suest 不能直接用 reghdfe，先用 regress/xtreg 估计并存储
+        <pre><code><span class="cm-l">* ===== 04.1 似无相关回归 suest 检验组间差异 =====</span>
+<span class="cm-l">* 注意：suest 不能直接用 reghdfe，先用 regress/xtreg 估计并存储</span>
 reg Y X $Xctrl if SOE==1
 est store g1
 reg Y X $Xctrl if SOE==0
 est store g0
 suest g1 g0
-* 检验两组的 X 系数是否相等
+<span class="cm-l">* 检验两组的 X 系数是否相等</span>
 test [g1_mean]X = [g0_mean]X
-* 输出差异与 p 值：p<0.05 => 组间系数差异显著
+<span class="cm-l">* 输出差异与 p 值：p&lt;0.05 =&gt; 组间系数差异显著</span>
 
-* ===== 04.2 费舍尔组合检验：bdiff 命令 =====
-* ssc install bdiff
-* 语法：bdiff, group(分组变量) model(回归模型) reps(次数)
-bdiff, group(SOE) model(reghdfe Y X $Xctrl, absorb(id year) vce(cluster id)) ///
+<span class="cm-l">* ===== 04.2 费舍尔组合检验：bdiff 命令 =====</span>
+<span class="cm-l">* ssc install bdiff</span>
+<span class="cm-l">* 语法：bdiff, group(分组变量) model(回归模型) reps(次数)</span>
+bdiff, group(SOE) model(reghdfe Y X $Xctrl, absorb(id year) vce(cluster id)) <span class="cm">///</span>
     reps(1000) seed(20240101)
-* 输出经验 p 值：diff_p<0.05 => 组间差异显著
+<span class="cm-l">* 输出经验 p 值：diff_p&lt;0.05 =&gt; 组间差异显著</span>
 
-* ===== 04.3 交互项法：直接 Wald 检验（最简洁）=====
+<span class="cm-l">* ===== 04.3 交互项法：直接 Wald 检验（最简洁）=====</span>
 gen XxD = X*SOE
 reghdfe Y X SOE XxD $Xctrl, absorb(id year) vce(cluster id)
-test XxD                 // H0: beta2 = 0，等价于组间系数无差异
+test XxD                 <span class="cm">// H0: beta2 = 0，等价于组间系数无差异</span>
 </code></pre>
       </div>
     </div>
@@ -334,27 +334,27 @@ test XxD                 // H0: beta2 = 0，等价于组间系数无差异
       <p>通过比较 $\beta_1(\tau)$ 在 $\tau=0.1,0.25,0.5,0.75,0.9$ 处的轨迹，可以看到效应是否随 $y$ 分布位置系统性变化。建议同时画<strong>系数分位图（coefplot over quantiles）</strong>：横轴为分位点，纵轴为 $\hat{\beta}_1(\tau)$ 及其置信区间，与 OLS 的水平线对比。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 分位数回归 qreg</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ===== 05.1 单个分位点 =====
+        <pre><code><span class="cm-l">* ===== 05.1 单个分位点 =====</span>
 qreg Y X $Xctrl, quantile(0.25) vce(bootstrap, reps(500))
 est store q25
 
-* ===== 05.2 多个分位点联立（分位数回归）=====
+<span class="cm-l">* ===== 05.2 多个分位点联立（分位数回归）=====</span>
 qreg Y X $Xctrl, quantile(0.10)
 est store q10
 qreg Y X $Xctrl, quantile(0.50)
 est store q50
 qreg Y X $Xctrl, quantile(0.90)
 est store q90
-esttab q10 q50 q90, keep(X) se star(* 0.1 ** 0.05 *** 0.01) ///
+esttab q10 q50 q90, keep(X) se star(* 0.1 ** 0.05 *** 0.01) <span class="cm">///</span>
     mtitles("10分位" "50分位(中位)" "90分位")
 
-* ===== 05.3 面板分位数回归（需 xtqreg / usereghdfe）=====
-* ssc install xtqreg
+<span class="cm-l">* ===== 05.3 面板分位数回归（需 xtqreg / usereghdfe）=====</span>
+<span class="cm-l">* ssc install xtqreg</span>
 xtqreg Y X $Xctrl, quantile(0.50)
 
-* ===== 05.4 画系数沿分位变化图 =====
-* 循环估计 0.05~0.95 各分位，记录系数，再 coefplot
-* 与 OLS 水平线对比，看效应是否随分位系统性上升/下降
+<span class="cm-l">* ===== 05.4 画系数沿分位变化图 =====</span>
+<span class="cm-l">* 循环估计 0.05~0.95 各分位，记录系数，再 coefplot</span>
+<span class="cm-l">* 与 OLS 水平线对比，看效应是否随分位系统性上升/下降</span>
 </code></pre>
       </div>
     </div>
@@ -437,47 +437,47 @@ xtqreg Y X $Xctrl, quantile(0.50)
       <h3>9.3 Stata 完整代码</h3>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · qreg / ivqreg / qte / rifreg</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ============================================================
-* 09.3 QTE 分位数处理效应（模拟数据，set seed）
-* ssc install qte        // Firpo(2007) 无条件 QTE
-* ssc install rif       // RIF 回归相关
-* ============================================================
+        <pre><code><span class="cm-l">* ============================================================</span>
+<span class="cm-l">* 09.3 QTE 分位数处理效应（模拟数据，set seed）</span>
+<span class="cm-l">* ssc install qte        // Firpo(2007) 无条件 QTE</span>
+<span class="cm-l">* ssc install rif       // RIF 回归相关</span>
+<span class="cm-l">* ============================================================</span>
 clear all
 set seed 20240101
 set obs 2000
 drawnorm X1 X2 X3, means(0) sds(1)
 
-* 倾向得分 + 结果：处理效应随 Y 分布变化
+<span class="cm-l">* 倾向得分 + 结果：处理效应随 Y 分布变化</span>
 gen double e_x = invlogit(X1 + 0.5*X2)
 gen byte D = runiform() &lt; e_x
-* 真实 QTE：低分位效应大、高分位效应小（处理压缩分布）
+<span class="cm-l">* 真实 QTE：低分位效应大、高分位效应小（处理压缩分布）</span>
 gen double u = rnormal()
 gen double Y0 = X2 + u
-gen double Y1 = Y0 + (1.5 - 1.0*norm(u))   // 低分位(u小)效应≈1.5，高分位≈0.5
+gen double Y1 = Y0 + (1.5 - 1.0*norm(u))   <span class="cm">// 低分位(u小)效应≈1.5，高分位≈0.5</span>
 gen double Y  = D*Y1 + (1-D)*Y0
 
-* ---- (1) 条件分位数回归：处理组 vs 对照组 ----
+<span class="cm-l">* ---- (1) 条件分位数回归：处理组 vs 对照组 ----</span>
 qreg Y D X1 X2 X3, quantile(0.10) vce(boot, reps(500))
 est store q10
 qreg Y D X1 X2 X3, quantile(0.50) vce(boot, reps(500))
 est store q50
 qreg Y D X1 X2 X3, quantile(0.90) vce(boot, reps(500))
 est store q90
-esttab q10 q50 q90, keep(D) se star(* 0.1 ** 0.05 *** 0.01) ///
+esttab q10 q50 q90, keep(D) se star(* 0.1 ** 0.05 *** 0.01) <span class="cm">///</span>
     mtitles("10分位" "50分位" "90分位")
-* D 的系数即"条件 QTE"，应看到从 1.5 降到 0.5 的轨迹
+<span class="cm-l">* D 的系数即"条件 QTE"，应看到从 1.5 降到 0.5 的轨迹</span>
 
-* ---- (2) 无条件 QTE：Firpo (2007) 重新加权 ----
-* qte Y D X1 X2 X3, q(0.1 0.25 0.5 0.75 0.9)
-* 输出各无条件分位点的 QTE 及 bootstrap SE
+<span class="cm-l">* ---- (2) 无条件 QTE：Firpo (2007) 重新加权 ----</span>
+<span class="cm-l">* qte Y D X1 X2 X3, q(0.1 0.25 0.5 0.75 0.9)</span>
+<span class="cm-l">* 输出各无条件分位点的 QTE 及 bootstrap SE</span>
 
-* ---- (3) 工具变量分位数处理效应（若 D 内生）----
-* ivqreg Y D X1 X2 X3 (Z = 工具变量), quantile(0.5)
+<span class="cm-l">* ---- (3) 工具变量分位数处理效应（若 D 内生）----</span>
+<span class="cm-l">* ivqreg Y D X1 X2 X3 (Z = 工具变量), quantile(0.5)</span>
 
-* ---- (4) RIF 回归：处理对无条件分位数的边际效应 ----
-* 先生成第 q 分位的 RIF，再回归 Y~D+X
-* 例：rifreg Y D X1 X2 X3, rif(q(0.5))
-* 循环 q=0.1...0.9，记录 D 的系数，画 QTE 轨迹图
+<span class="cm-l">* ---- (4) RIF 回归：处理对无条件分位数的边际效应 ----</span>
+<span class="cm-l">* 先生成第 q 分位的 RIF，再回归 Y~D+X</span>
+<span class="cm-l">* 例：rifreg Y D X1 X2 X3, rif(q(0.5))</span>
+<span class="cm-l">* 循环 q=0.1...0.9，记录 D 的系数，画 QTE 轨迹图</span>
 </code></pre>
       </div>
     </div>
@@ -507,42 +507,42 @@ esttab q10 q50 q90, keep(D) se star(* 0.1 ** 0.05 *** 0.01) ///
       <h3>10.4 Stata 完整代码</h3>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · oaxaca / rifreg / dfl 分解</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ============================================================
-* 10.4 分布分解（模拟数据，set seed）
-* ssc install oaxaca, replace
-* ssc install rif, replace       // RIF 回归
-* ============================================================
+        <pre><code><span class="cm-l">* ============================================================</span>
+<span class="cm-l">* 10.4 分布分解（模拟数据，set seed）</span>
+<span class="cm-l">* ssc install oaxaca, replace</span>
+<span class="cm-l">* ssc install rif, replace       // RIF 回归</span>
+<span class="cm-l">* ============================================================</span>
 clear all
 set seed 20240101
 set obs 3000
-gen byte group = _n &lt; 1500          // A=1（如处理组）, B=0
+gen byte group = _n &lt; 1500          <span class="cm">// A=1（如处理组）, B=0</span>
 drawnorm educ exper, means(0) sds(1)
-* A 组特征更好、回报率更高
+<span class="cm-l">* A 组特征更好、回报率更高</span>
 gen double Y = 0.8*group + (1 + 0.6*group)*educ + (0.3 + 0.2*group)*exper + rnormal()
 
-* ---- (1) 均值 Oaxaca-Blinder 分解 ----
+<span class="cm-l">* ---- (1) 均值 Oaxaca-Blinder 分解 ----</span>
 oaxaca Y educ exper, by(group) detail
-* 输出：总差异 = 解释部分(特征) + 未解释部分(回报)
+<span class="cm-l">* 输出：总差异 = 解释部分(特征) + 未解释部分(回报)</span>
 
-* ---- (2) DFL 重新加权（手工倾向得分加权）----
+<span class="cm-l">* ---- (2) DFL 重新加权（手工倾向得分加权）----</span>
 logit group educ exper
 predict double pA, pr
 gen double dfl_w = cond(group==1, 1, pA/(1-pA)) * (1-0.5)/0.5
-* dfl_w 把 B 组加权成 A 组的协变量分布；
-* 用 dfl_w 加权比较 A、B 的 Y 分布（直方图 / 分位数差）
+<span class="cm-l">* dfl_w 把 B 组加权成 A 组的协变量分布；</span>
+<span class="cm-l">* 用 dfl_w 加权比较 A、B 的 Y 分布（直方图 / 分位数差）</span>
 
-* ---- (3) RIF 分解：在各分位上重复 Oaxaca ----
-* 对 q=0.1,0.5,0.9 分别构造 RIF 并做分解
-* 循环：
+<span class="cm-l">* ---- (3) RIF 分解：在各分位上重复 Oaxaca ----</span>
+<span class="cm-l">* 对 q=0.1,0.5,0.9 分别构造 RIF 并做分解</span>
+<span class="cm-l">* 循环：</span>
 foreach q in 0.1 0.5 0.9 {
-    * 生成第 q 分位的 RIF（用 rif 包或手工：
-    *   RIF = q + (q - 1(Y&lt;=q)) / f_Y(q)）
-    * 再对 RIF 跑 oaxaca
+<span class="cm-l">    * 生成第 q 分位的 RIF（用 rif 包或手工：</span>
+<span class="cm-l">    *   RIF = q + (q - 1(Y&lt;=q)) / f_Y(q)）</span>
+<span class="cm-l">    * 再对 RIF 跑 oaxaca</span>
     di "=== 分位 `q` 的 RIF 分解 ==="
-    * oaxaca rif_Y educ exper, by(group)
+<span class="cm-l">    * oaxaca rif_Y educ exper, by(group)</span>
 }
-* 画出"分位数 — 特征效应 / 回报效应"两条曲线，
-* 即 FFL (2009) 标准的分布分解图
+<span class="cm-l">* 画出"分位数 — 特征效应 / 回报效应"两条曲线，</span>
+<span class="cm-l">* 即 FFL (2009) 标准的分布分解图</span>
 </code></pre>
       </div>
     </div>

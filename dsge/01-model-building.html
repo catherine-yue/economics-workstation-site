@@ -380,7 +380,7 @@
 % 本页只搭结构；FOC 与 steady_state_model 在后续页补完
 % ============================================================
 
-// ---------- 1. 变量声明 ----------
+<span class="cm">// ---------- 1. 变量声明 ----------</span>
 var Y C N pi i r mc Y_gap;
 %  Y: 产出  C: 消费  N: 就业  pi: 通胀  i: 名义利率
 %  r: 实际利率  mc: 实际边际成本  Y_gap: 产出缺口
@@ -388,22 +388,22 @@ var Y C N pi i r mc Y_gap;
 varexo eps_a eps_m;
 %  eps_a: 技术冲击  eps_m: 货币政策冲击
 
-// ---------- 2. 参数声明 ----------
+<span class="cm">// ---------- 2. 参数声明 ----------</span>
 parameters beta sigma phi alpha theta eps_p rho_a rho_i phi_pi phi_y;
 
 % 校准参数（标准 NK 教材值）
-beta     = 0.99;     % 季度主观贴现因子 -> 稳态年化实际利率约 4%
+beta     = 0.99;     % 季度主观贴现因子 -&gt; 稳态年化实际利率约 4%
 sigma    = 1.0;      % CRRA 系数（=1 即 log utility）
 phi      = 5.0;      % Frisch 劳动供给弹性的倒数
 alpha    = 0.25;     % 生产函数中劳动份额为 (1-alpha)
 theta    = 0.75;     % Calvo 不调价概率（平均价格持续 4 季度）
-eps_p    = 9.0;      % 中间品替代弹性 -> 稳态加成 1.5 (=9/8)
+eps_p    = 9.0;      % 中间品替代弹性 -&gt; 稳态加成 1.5 (=9/8)
 rho_a    = 0.9;      % 技术冲击 AR(1) 系数
 rho_i    = 0.8;      % 利率平滑系数
-phi_pi   = 1.5;      % Taylor rule 通胀反应系数（>1 满足 Taylor principle）
+phi_pi   = 1.5;      % Taylor rule 通胀反应系数（&gt;1 满足 Taylor principle）
 phi_y    = 0.5/4;    % Taylor rule 产出缺口反应系数
 
-// ---------- 3. 模型方程（下一页补完 FOC）----------
+<span class="cm">// ---------- 3. 模型方程（下一页补完 FOC）----------</span>
 model;
 % --- 家庭欧拉方程（待第 3 页推导后补）---
 % 1/C^sigma = beta*(1/r(+1)) * 1/C(+1)^sigma;
@@ -430,12 +430,12 @@ A = rho_a*A(-1) + eps_a;
 % pi = beta*pi(+1) + kappa*Y_gap;
 end;
 
-// ---------- 4. 稳态（待第 4 页补完）----------
+<span class="cm">// ---------- 4. 稳态（待第 4 页补完）----------</span>
 steady_state_model;
   % 见 03-steady-state.html
 end;
 
-// ---------- 5. 求解与模拟 ----------
+<span class="cm">// ---------- 5. 求解与模拟 ----------</span>
 shocks;
 var eps_a; stderr 0.01;
 var eps_m; stderr 0.0025;

@@ -491,10 +491,10 @@ sigma  = 1.0;           % 相对风险厌恶 (IS 斜率 1/sigma)
 varphi = 1.0;           % Frisch 劳动供给倒数
 kappa  = 0.05;          % NKPC 斜率 (Calvo 0.75 附近)
 rho_i  = 0.75;          % 利率平滑
-phi_pi = 1.5;           % Taylor 对通胀 (>1 => 主动货币 AM)
+phi_pi = 1.5;           % Taylor 对通胀 (&gt;1 =&gt; 主动货币 AM)
 phi_y  = 0.125;         % Taylor 对产出
 rho_d  = 0.90;          % 财政持续性
-phi_b  = 0.10;          % 债务反馈 (>阈值 => 被动财政 PF)
+phi_b  = 0.10;          % 债务反馈 (&gt;阈值 =&gt; 被动财政 PF)
 phi_yf = 0.10;          % 自动稳定器
 rho_g  = 0.80;          % 政府支出 AR 持续性
 rho_cp = 0.50;          % 成本推动冲击持续性
@@ -534,14 +534,14 @@ steady;
 resid;
 
 % ---------- 5. 求解并模拟 ----------
-% 默认 AM/PF 组合: phi_pi>1 且 phi_b 足够大 => 鞍点唯一稳定
+% 默认 AM/PF 组合: phi_pi&gt;1 且 phi_b 足够大 =&gt; 鞍点唯一稳定
 stoch_simul(order=1, irf=30, nograph)
   y pi i b g tau;
 
 % ---------- 6. 制度切换实验(手动改参数后重跑) ----------
-% 实验A: FTPL 组合 => 设 phi_pi=0.8, phi_b=0  => 仍可解但价格由财政驱动
-% 实验B: AM/AF    => 设 phi_pi=1.5, phi_b=0  => Blanchard-Kahn 失败(预期)
-% 实验C: PM/PF    => 设 phi_pi=0.8, phi_b=0.1 => indeterminacy 警告
+% 实验A: FTPL 组合 =&gt; 设 phi_pi=0.8, phi_b=0  =&gt; 仍可解但价格由财政驱动
+% 实验B: AM/AF    =&gt; 设 phi_pi=1.5, phi_b=0  =&gt; Blanchard-Kahn 失败(预期)
+% 实验C: PM/PF    =&gt; 设 phi_pi=0.8, phi_b=0.1 =&gt; indeterminacy 警告
 </code></pre>
       </div>
       <div class="callout warning"><div class="callout-title">运行要点</div><p>把 <code>phi_b</code> 从 0.10 改成 0（主动财政 AF），再把 <code>phi_pi</code> 调成 0.8（被动货币 PM），即可模拟 FTPL 组合；此时 Dynare 仍可解，但价格/通胀的驱动源从货币冲击转向财政冲击。若 AM/AF（phi_pi&gt;1 且 phi_b=0）会直接报 Blanchard-Kahn 条件失败——这是检验"组合稳定性"的天然试验。</p></div>

@@ -274,26 +274,26 @@
       <p>Imai 等人指出，即便 X 是随机分配的，<strong>M 与 Y 之间仍可能存在未观测混杂</strong>（因为 M 通常不是随机分配的），所以传统中介只能给出"关联上的中介"，要上升到"因果中介"需要序列可忽略性（sequential ignorability）假设，并做敏感度分析。这一点是本节最重要的诚实立场。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 中介三步 / Sobel / Bootstrap / Imai 因果中介</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ===== 04.1 Baron-Kenny 三步法 =====
-* 第一步：总效应 c
+        <pre><code><span class="cm-l">* ===== 04.1 Baron-Kenny 三步法 =====</span>
+<span class="cm-l">* 第一步：总效应 c</span>
 reg Y X $Xctrl, vce(cluster id)
 est store step1
 
-* 第二步：a 路径 X -> M
+<span class="cm-l">* 第二步：a 路径 X -&gt; M</span>
 reg M X $Xctrl, vce(cluster id)
 est store step2
 scalar a = _b[X]
 
-* 第三步：同时纳入 X 与 M
+<span class="cm-l">* 第三步：同时纳入 X 与 M</span>
 reg Y X M $Xctrl, vce(cluster id)
 est store step3
 scalar bp = _b[M]
 scalar cp = _b[X]
 esttab step1 step2 step3, se star(* 0.1 ** 0.05 *** 0.01)
 
-* ===== 04.2 Sobel 检验（手工）=====
-scalar sa = _se[X]          // a 的标准误（第二步回归后）
-* 注意：bp、cp 来自第三步；重新跑第二步取 se
+<span class="cm-l">* ===== 04.2 Sobel 检验（手工）=====</span>
+scalar sa = _se[X]          <span class="cm">// a 的标准误（第二步回归后）</span>
+<span class="cm-l">* 注意：bp、cp 来自第三步；重新跑第二步取 se</span>
 reg M X $Xctrl, vce(cluster id)
 scalar a=_b[X], sa=_se[X]
 reg Y X M $Xctrl, vce(cluster id)
@@ -304,25 +304,25 @@ scalar Z_sobel = indirect/se_ab
 disp "间接效应 a*b = " indirect
 disp "Sobel Z = " Z_sobel
 
-* ===== 04.3 Bootstrap 中介（推荐，不依赖正态）=====
-* ssc install mediation  （或使用 Hayes 的 medeff/medsem）
-* 方法A：medeff 做 Bootstrap 间接效应
+<span class="cm-l">* ===== 04.3 Bootstrap 中介（推荐，不依赖正态）=====</span>
+<span class="cm-l">* ssc install mediation  （或使用 Hayes 的 medeff/medsem）</span>
+<span class="cm-l">* 方法A：medeff 做 Bootstrap 间接效应</span>
 medeff (regress M X $Xctrl) (regress Y X M $Xctrl), treat(X) mediate(M) sims(1000)
 
-* 方法B：连乘间接效应 + Bootstrap 置信区间
-bootstrap r(indirect), reps(1000) seed(20240101): ///
+<span class="cm-l">* 方法B：连乘间接效应 + Bootstrap 置信区间</span>
+bootstrap r(indirect), reps(1000) seed(20240101): <span class="cm">///</span>
     mediation_boot, xvar(X) mvar(M) yvar(Y)
 
-* ===== 04.4 Imai 因果中介分析 + 敏感度分析 =====
-* 安装：net install st0289.pkg （或 ssc install med4way）
-* 回归中介模型与结果模型，估计 ACME / ADE / TE
+<span class="cm-l">* ===== 04.4 Imai 因果中介分析 + 敏感度分析 =====</span>
+<span class="cm-l">* 安装：net install st0289.pkg （或 ssc install med4way）</span>
+<span class="cm-l">* 回归中介模型与结果模型，估计 ACME / ADE / TE</span>
 regress M X $Xctrl
 est store m_mod
 regress Y X M $Xctrl
 est store y_mod
-* 输出 ACME（间接）、ADE（直接）、总效应及其比例
+<span class="cm-l">* 输出 ACME（间接）、ADE（直接）、总效应及其比例</span>
 mediation, treat(X) mediate(M) sims(1000)
-* 敏感度分析：rho 取何值时间接效应不再显著
+<span class="cm-l">* 敏感度分析：rho 取何值时间接效应不再显著</span>
 medsens, rho(-0.5(0.05)0.5)
 </code></pre>
       </div>
@@ -336,21 +336,21 @@ medsens, rho(-0.5(0.05)0.5)
       <p><strong>(2) 交互项法</strong>：直接加入 X 与渠道变量 M 的交互项，系数为正则说明渠道放大了效应。交互项模型见下节。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 渠道检验：分组回归 + 交互项</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ===== 05.1 渠道检验：分组回归 =====
-* 按融资约束(SA指数)中位数分高/低两组
+        <pre><code><span class="cm-l">* ===== 05.1 渠道检验：分组回归 =====</span>
+<span class="cm-l">* 按融资约束(SA指数)中位数分高/低两组</span>
 xtile SA_group = SA_index, nq(2)
 
-reghdfe Y X $Xctrl if SA_group==1, absorb(id year) vce(cluster id)  // 低约束组
+reghdfe Y X $Xctrl if SA_group==1, absorb(id year) vce(cluster id)  <span class="cm">// 低约束组</span>
 est store ch_low
-reghdfe Y X $Xctrl if SA_group==2, absorb(id year) vce(cluster id)  // 高约束组
+reghdfe Y X $Xctrl if SA_group==2, absorb(id year) vce(cluster id)  <span class="cm">// 高约束组</span>
 est store ch_high
-esttab ch_low ch_high, keep(X) se star(* 0.1 ** 0.05 *** 0.01) ///
+esttab ch_low ch_high, keep(X) se star(* 0.1 ** 0.05 *** 0.01) <span class="cm">///</span>
     mtitles("低融资约束" "高融资约束")
 
-* ===== 05.2 渠道检验：交互项法 =====
+<span class="cm-l">* ===== 05.2 渠道检验：交互项法 =====</span>
 gen X_by_channel = X * SA_index
 reghdfe Y X SA_index X_by_channel $Xctrl, absorb(id year) vce(cluster id)
-* 交互项 X_by_channel 显著 => 渠道强度调节了 X 的效应
+<span class="cm-l">* 交互项 X_by_channel 显著 =&gt; 渠道强度调节了 X 的效应</span>
 </code></pre>
       </div>
     </div>
@@ -365,19 +365,19 @@ reghdfe Y X SA_index X_by_channel $Xctrl, absorb(id year) vce(cluster id)
       <p>其中 $\beta_1$ 是 $Z=0$ 时 X 的效应；$\beta_2$ 是 Z 每增加一单位、X→Y 斜率的变化（调节效应）；$X$ 对 $Y$ 的总偏效应为 $\partial Y/\partial X=\beta_1+\beta_2 Z$。报告调节效应时，常画<strong>简单斜率图（simple slope plot）</strong>：在 Z 取 ±1 标准差时画出 X→Y 的斜率及其置信区间。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 调节效应与简单斜率图</span><button class="copy-btn">复制</button></div>
-        <pre><code>* ===== 06.1 调节效应：交互项（连续Z）=====
-* 对连续Z中心化，减少共线性
+        <pre><code><span class="cm-l">* ===== 06.1 调节效应：交互项（连续Z）=====</span>
+<span class="cm-l">* 对连续Z中心化，减少共线性</span>
 center SA_index, prefix(c_)
 gen X_x_cZ = X * c_SA_index
 reghdfe Y X c_SA_index X_x_cZ $Xctrl, absorb(id year) vce(cluster id)
 
-* ===== 06.2 画简单斜率图（Z = 均值±1SD）=====
-* ssc install marginsplot
-margins, dydx(X) at(c_SA_index=(-1 0 1))   // 标准化Z取 -1,0,+1
-marginsplot, title("Moderation: effect of X at different Z") ///
+<span class="cm-l">* ===== 06.2 画简单斜率图（Z = 均值±1SD）=====</span>
+<span class="cm-l">* ssc install marginsplot</span>
+margins, dydx(X) at(c_SA_index=(-1 0 1))   <span class="cm">// 标准化Z取 -1,0,+1</span>
+marginsplot, title("Moderation: effect of X at different Z") <span class="cm">///</span>
     yline(0)
 
-* ===== 06.3 分组虚拟变量 D 的交互（异质性调节）=====
+<span class="cm-l">* ===== 06.3 分组虚拟变量 D 的交互（异质性调节）=====</span>
 gen XxD = X * D
 reghdfe Y X D XxD $Xctrl, absorb(id year) vce(cluster id)
 </code></pre>

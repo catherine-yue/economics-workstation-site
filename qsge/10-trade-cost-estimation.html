@@ -314,45 +314,45 @@
       <p>当代引力估计的金标准是 <code>ppmlhdfe</code>（Correia, Guimarães, Zylkin 2020）：PPML 估计 + 高维固定效应，自动吸收出口国/进口国/时间固定效应，且保留零贸易流。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · ppmlhdfe 结构引力</span><button class="copy-btn">复制</button></div>
-<pre><code>* ============================================================
-* 结构引力 PPML 估计 + 贸易成本弹性 (Anderson-van Wincoop 2003)
-* 数据: 双边贸易流面板, 每对(i,n,t)一行
-* 需要: ssc install ppmlhdfe, replace
-* ============================================================
+<pre><code><span class="cm-l">* ============================================================</span>
+<span class="cm-l">* 结构引力 PPML 估计 + 贸易成本弹性 (Anderson-van Wincoop 2003)</span>
+<span class="cm-l">* 数据: 双边贸易流面板, 每对(i,n,t)一行</span>
+<span class="cm-l">* 需要: ssc install ppmlhdfe, replace</span>
+<span class="cm-l">* ============================================================</span>
 clear all
 set more off
 
-* --- 0. 载入双边贸易数据 ---
-* flow_ni : n从i进口额(水平值, 不是对数!)
+<span class="cm-l">* --- 0. 载入双边贸易数据 ---</span>
+<span class="cm-l">* flow_ni : n从i进口额(水平值, 不是对数!)</span>
 use "gravity_panel.dta", clear
 
-* 构造时间×出口国 / 时间×进口国固定效应(吸收MR)
-egen exp_yr = group(exp_iso year)      // 出口国-时间 FE
-egen imp_yr = group(imp_iso year)      // 进口国-时间 FE
+<span class="cm-l">* 构造时间×出口国 / 时间×进口国固定效应(吸收MR)</span>
+egen exp_yr = group(exp_iso year)      <span class="cm">// 出口国-时间 FE</span>
+egen imp_yr = group(imp_iso year)      <span class="cm">// 进口国-时间 FE</span>
 
-* --- 1. PPML 基准: 出口国-时间 + 进口国-时间 FE ---
-* 这是 AER 2003 之后的标准: 严格控制多边阻力
-ppmlhdfe flow_ni ln_dist ln_tariff contig comlang rta, ///
+<span class="cm-l">* --- 1. PPML 基准: 出口国-时间 + 进口国-时间 FE ---</span>
+<span class="cm-l">* 这是 AER 2003 之后的标准: 严格控制多边阻力</span>
+ppmlhdfe flow_ni ln_dist ln_tariff contig comlang rta, <span class="cm">///</span>
     absorb(exp_yr imp_yr) cluster(pair_id)
-* 系数解释:
-*   ln_dist 系数 = -(sigma-1)*rho  (贸易成本的距离弹性)
-*   ln_tariff 系数 = -(sigma-1)    (关税弹性, 直接得 sigma-1)
-*   rta 系数 >0: 区域贸易协定降低成本
+<span class="cm-l">* 系数解释:</span>
+<span class="cm-l">*   ln_dist 系数 = -(sigma-1)*rho  (贸易成本的距离弹性)</span>
+<span class="cm-l">*   ln_tariff 系数 = -(sigma-1)    (关税弹性, 直接得 sigma-1)</span>
+<span class="cm-l">*   rta 系数 &gt;0: 区域贸易协定降低成本</span>
 
-* --- 2. 边境效应: 加 "同国内部" 虚拟变量 ---
-gen same_country = (exp_iso == imp_iso)   // 国内销售=1
-ppmlhdfe flow_ni ln_dist same_country contig comlang, ///
+<span class="cm-l">* --- 2. 边境效应: 加 "同国内部" 虚拟变量 ---</span>
+gen same_country = (exp_iso == imp_iso)   <span class="cm">// 国内销售=1</span>
+ppmlhdfe flow_ni ln_dist same_country contig comlang, <span class="cm">///</span>
     absorb(exp_yr imp_yr) cluster(pair_id)
-* exp(_b[same_country]) 即国内贸易相对跨境的倍数(边境效应)
+<span class="cm-l">* exp(_b[same_country]) 即国内贸易相对跨境的倍数(边境效应)</span>
 
-* --- 3. 用估出的 sigma-1 换算贸易成本弹性 ---
-* 若 ln_tariff 系数为 -1.5, 则 sigma-1 = 1.5, sigma = 2.5
-* 贸易成本 tau 每升 10%, 贸易流下降 1.5*10% = 15%
+<span class="cm-l">* --- 3. 用估出的 sigma-1 换算贸易成本弹性 ---</span>
+<span class="cm-l">* 若 ln_tariff 系数为 -1.5, 则 sigma-1 = 1.5, sigma = 2.5</span>
+<span class="cm-l">* 贸易成本 tau 每升 10%, 贸易流下降 1.5*10% = 15%</span>
 
-* --- 4. 稳健性: 对比 OLS 对数化(故意保留零流问题) ---
+<span class="cm-l">* --- 4. 稳健性: 对比 OLS 对数化(故意保留零流问题) ---</span>
 gen ln_flow = ln(flow_ni)
 reg ln_flow ln_dist contig comlang i.exp_iso i.imp_iso i.year
-* 注意: 这条 OLS 会自动丢掉 flow_ni=0 的行, 系数有偏
+<span class="cm-l">* 注意: 这条 OLS 会自动丢掉 flow_ni=0 的行, 系数有偏</span>
 </code></pre>
       </div>
 

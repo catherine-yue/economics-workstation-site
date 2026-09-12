@@ -346,7 +346,7 @@ from numpy.polynomial.hermite_e import hermegauss
 
 # ---------- 1. 模型参数 ----------
 T, R   = 50, 40        # 总期数 / 工作期数 (后10期退休)
-beta   = 0.96          # 主观贴现率 (impatient: beta(1+r)<1)
+beta   = 0.96          # 主观贴现率 (impatient: beta(1+r)&lt;1)
 r      = 0.02          # 无风险利率
 Rf     = 1.0 + r
 sigma  = 2.0           # 相对风险厌恶 (EIS=1/sigma)
@@ -388,7 +388,7 @@ for t in range(R, 0, -1):
         m_t = c_t + ap                          # 内生现金网格
         me[i], ce[i] = m_t, c_t
     # 借贷约束: 最小现金处 c=m (即 a=a_min=0)
-    if me[0] > a_min:
+    if me[0] &gt; a_min:
         me = np.concatenate([[a_min], me]); ce = np.concatenate([[a_min], ce])
     o = np.argsort(me); me, ce = me[o], ce[o]  # 单调化
     policy[t] = lambda m, me=me, ce=ce: np.interp(m, me, ce, left=me[0], right=me[-1])
@@ -476,36 +476,36 @@ def gmm_obj(theta):
 res = minimize(gmm_obj, x0=[0.0], method='Nelder-Mead')
 print(f"估计的平均消费增长 delta0 = {res.x[0]:.4f}")
 print(f"消费增长样本标准差 = {dep.std():.4f}")
-# 过度识别检验: 工具个数(2个排除性工具) > 待估参数(1个)
+# 过度识别检验: 工具个数(2个排除性工具) &gt; 待估参数(1个)
 print(f"矩条件个数 = {Z.shape[1]}, 待估参数 = 1, 自由度={Z.shape[1]-1}")
 </code></pre>
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* 欧拉方程 GMM 估计 (Runkle 1991) — Stata 版
-* 数据: 家庭面板 id-year, 变量 lnc=log消费, lny=log收入
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* 欧拉方程 GMM 估计 (Runkle 1991) — Stata 版</span>
+<span class="cm-l">* 数据: 家庭面板 id-year, 变量 lnc=log消费, lny=log收入</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set more off
 use "panel_lifecycle.dta", clear
 xtset id year
 
-* 消费增长
+<span class="cm-l">* 消费增长</span>
 gen dlnc = D.lnc
 gen dlny = D.lny
 
-* 欧拉方程: dlnc_{t+1} = a + e
-* 工具: 滞后2期的消费/收入增长 (t期信息集, 与e_{t+1}正交)
-* 用滞后变量作工具, 规避当期测量误差与预期误差的同期相关
+<span class="cm-l">* 欧拉方程: dlnc_{t+1} = a + e</span>
+<span class="cm-l">* 工具: 滞后2期的消费/收入增长 (t期信息集, 与e_{t+1}正交)</span>
+<span class="cm-l">* 用滞后变量作工具, 规避当期测量误差与预期误差的同期相关</span>
 ivregress gmm dlnc L2.dlnc L2.dlny, wmatrix(robust)
 estimates store euler_iv
 
-* 过度识别 Hansen J 检验 ( estat overid )
+<span class="cm-l">* 过度识别 Hansen J 检验 ( estat overid )</span>
 estat overid
 
-* 若要识别 sigma: 结合已知 r 与校准 beta,
-* 由 delta0 = (1/sigma)*(ln beta + ln(1+r)) 反推 sigma = (ln beta + ln(1+r))/delta0
+<span class="cm-l">* 若要识别 sigma: 结合已知 r 与校准 beta,</span>
+<span class="cm-l">* 由 delta0 = (1/sigma)*(ln beta + ln(1+r)) 反推 sigma = (ln beta + ln(1+r))/delta0</span>
 </code></pre>
       </div>
       <div class="callout tip">

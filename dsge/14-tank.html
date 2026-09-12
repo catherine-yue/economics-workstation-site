@@ -344,9 +344,9 @@
 <pre><code>% ============================================================
 % TANK 两主体新凯恩斯模型
 %   家庭: 1-lambda 的 RANK(走欧拉) + lambda 的 HtM(花光收入)
-%   厂商: Calvo 粘性定价 -> NKPC
+%   厂商: Calvo 粘性定价 -&gt; NKPC
 %   政策: Taylor 规则(带平滑) + 比例税/一次性转移(平衡预算)
-%   对照: 把 lambda 设 0 => 退化为 RANK
+%   对照: 把 lambda 设 0 =&gt; 退化为 RANK
 % 变量小写为对数偏离稳态
 % ============================================================
 var
@@ -373,7 +373,7 @@ lambda = 0.35;     % HtM 占比(美国0.2-0.4, 中国CHFS 0.3-0.5)
 % NKPC 斜率 kappa = (1-theta)(1-beta*theta)/theta
 kappa  = (1-theta)*(1-beta*theta)/theta;
 rho_i  = 0.80;     % 利率平滑
-phi_pi = 1.5;      % Taylor 对通胀(须 >1, Taylor 原理)
+phi_pi = 1.5;      % Taylor 对通胀(须 &gt;1, Taylor 原理)
 phi_y  = 0.125;    % Taylor 对产出(季度化)
 rho_g  = 0.90;     % 财政冲击持续性
 psi    = 0.30;     % 财政向需求传导(教学校准)
@@ -428,7 +428,7 @@ stoch_simul(order=1, irf=30, nograph) y cR cH c pi i g;
       <div class="code-block">
         <div class="code-header"><span class="lang">Python · tank_solver.py（线性打靶求 IRF）</span><button class="copy-btn">复制</button></div>
 <pre><code>"""
-TANK 求解器: 对数线性化系统 -> IRF (线性打靶法)
+TANK 求解器: 对数线性化系统 -&gt; IRF (线性打靶法)
 完美预期下 E_t x_{t+1} = x_{t+1}; 终端 y_T=pi_T=i_T=g_T=0
 仅依赖 numpy; set seed = 42
 """
@@ -445,20 +445,20 @@ def solve_tank(lam, T=60, beta=0.99, sigma=1.0, kappa=0.1275,
     for t in range(T):
         # (1) IS: y_t = y_{t+1} - a_s*(i_t - pi_{t+1}) + b_g*g_t
         r = idx(0, t); A[r, idx(0, t)] += 1.0
-        if t + 1 < T:
+        if t + 1 &lt; T:
             A[r, idx(0, t+1)] += -1.0; A[r, idx(1, t+1)] += -a_s
         A[r, idx(2, t)] += a_s; A[r, idx(3, t)] += -b_g
         # (2) NKPC: pi_t = beta*pi_{t+1} + kappa*y_t
         r = idx(1, t); A[r, idx(1, t)] += 1.0; A[r, idx(0, t)] += -kappa
-        if t + 1 < T: A[r, idx(1, t+1)] += -beta
+        if t + 1 &lt; T: A[r, idx(1, t+1)] += -beta
         # (3) Taylor: i_t = rho_i*i_{t-1} + (1-rho_i)(phi_pi*pi+phi_y*y) + e_i
         r = idx(2, t); A[r, idx(2, t)] += 1.0
-        if t - 1 >= 0: A[r, idx(2, t-1)] += -rho_i
+        if t - 1 &gt;= 0: A[r, idx(2, t-1)] += -rho_i
         A[r, idx(1, t)] += -(1-rho_i)*phi_pi
         A[r, idx(0, t)] += -(1-rho_i)*phi_y
         # (4) g: g_t = rho_g*g_{t-1} + e_g
         r = idx(3, t); A[r, idx(3, t)] += 1.0
-        if t - 1 >= 0: A[r, idx(3, t-1)] += -rho_g
+        if t - 1 &gt;= 0: A[r, idx(3, t-1)] += -rho_g
     def irf(kind):
         b = rhs.copy()
         if kind == 'i': b[idx(2, 0)] += 1.0     # 货币冲击在 t=0
@@ -474,21 +474,21 @@ def solve_tank(lam, T=60, beta=0.99, sigma=1.0, kappa=0.1275,
         <div class="code-header"><span class="lang">Python · tank_vs_rank.py（λ 扫描 + 乘数对比）</span><button class="copy-btn">复制</button></div>
 <pre><code># 在 4.2 定义 solve_tank 后运行
 lams = [0.0, 0.20, 0.35, 0.50]
-print(f"{'lam':>6}{'a_s':>9}{'货币y谷值':>12}{'财政乘数':>10}")
+print(f"{'lam':&gt;6}{'a_s':&gt;9}{'货币y谷值':&gt;12}{'财政乘数':&gt;10}")
 rank_mult = None
 for lam in lams:
     s = solve_tank(lam)
-    y_mon = s['mon'][0][:12].min()                 # 紧缩=>y负向谷值
+    y_mon = s['mon'][0][:12].min()                 # 紧缩=&gt;y负向谷值
     mult  = s['fis'][0][0] / s['fis'][3][0]        # y0 / g0
     if lam == 0.0: rank_mult = mult
-    print(f"{lam:>6.2f}{s['a_s']:>9.3f}{y_mon:>12.3f}{mult:>10.3f}")
+    print(f"{lam:&gt;6.2f}{s['a_s']:&gt;9.3f}{y_mon:&gt;12.3f}{mult:&gt;10.3f}")
 # 实跑输出:
 #  lam    a_s   货币y谷值   财政乘数
-#  0.00   1.000    -2.616      1.095   <- RANK
+#  0.00   1.000    -2.616      1.095   &lt;- RANK
 #  0.20   0.800    -2.235      1.474
-#  0.35   0.650    -1.922      1.938   <- 基准 TANK
+#  0.35   0.650    -1.922      1.938   &lt;- 基准 TANK
 #  0.50   0.500    -1.579      2.726
-# 结论: lambda 越大 -> 利率敏感度 a_s 越小 -> 货币政策越钝;
+# 结论: lambda 越大 -&gt; 利率敏感度 a_s 越小 -&gt; 货币政策越钝;
 #                     财政乘数越大 (HtM 的 MPC=1 放大需求)
 </code></pre>
       </div>

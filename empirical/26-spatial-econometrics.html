@@ -276,65 +276,65 @@
     <h2><span class="sec-num">06</span> 完整 Stata 代码（spregress）</h2>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · spatial_demo.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* ============================================================
-* 空间计量完整演示
-* 场景：N=30 省，研究 FDI 对 lnGDP 的影响，考虑空间溢出
-* ============================================================
+<pre><code><span class="cm-l">* ============================================================</span>
+<span class="cm-l">* 空间计量完整演示</span>
+<span class="cm-l">* 场景：N=30 省，研究 FDI 对 lnGDP 的影响，考虑空间溢出</span>
+<span class="cm-l">* ============================================================</span>
 clear all
 set seed 20240103
 set obs 30
 
-* --- 1. 模拟数据 ---
+<span class="cm-l">* --- 1. 模拟数据 ---</span>
 gen province = _n
-gen lon = rnormal(110, 8)              // 经度
-gen lat = rnormal(35, 6)               // 纬度
-gen fdi = rnormal(5, 2)                // FDI
-gen inv = rnormal(10, 3)               // 国内投资
-gen hum = rnormal(8, 1.5)              // 人力资本
+gen lon = rnormal(110, 8)              <span class="cm">// 经度</span>
+gen lat = rnormal(35, 6)               <span class="cm">// 纬度</span>
+gen fdi = rnormal(5, 2)                <span class="cm">// FDI</span>
+gen inv = rnormal(10, 3)               <span class="cm">// 国内投资</span>
+gen hum = rnormal(8, 1.5)              <span class="cm">// 人力资本</span>
 gen eps = rnormal(0, 0.3)
 
-* --- 2. 构造空间权重矩阵（邻接 + k-nearest 两种）---
-* Stata 16+ 的 sp 命令族：
-* spset province lon lat, coords          // 声明空间数据
-* spmatrix create contiguity W, replace   // 邻接权重
-* spmatrix create idistance Wdist, replace // 反距离权重
-* spmatrix normalize W, spectral          // 行标准化
+<span class="cm-l">* --- 2. 构造空间权重矩阵（邻接 + k-nearest 两种）---</span>
+<span class="cm-l">* Stata 16+ 的 sp 命令族：</span>
+<span class="cm-l">* spset province lon lat, coords          // 声明空间数据</span>
+<span class="cm-l">* spmatrix create contiguity W, replace   // 邻接权重</span>
+<span class="cm-l">* spmatrix create idistance Wdist, replace // 反距离权重</span>
+<span class="cm-l">* spmatrix normalize W, spectral          // 行标准化</span>
 
-* --- 3. Moran's I 检验 ---
-* 先 OLS 残差
+<span class="cm-l">* --- 3. Moran's I 检验 ---</span>
+<span class="cm-l">* 先 OLS 残差</span>
 reg ln_GDP fdi inv hum
 predict e, resid
-* spatreg e, weights(W) id(province)     // Moran's I on residuals
-* 输出 Moran I z p - 若 p&lt;0.05 说明存在空间自相关
+<span class="cm-l">* spatreg e, weights(W) id(province)     // Moran's I on residuals</span>
+<span class="cm-l">* 输出 Moran I z p - 若 p&lt;0.05 说明存在空间自相关</span>
 
-* --- 4. 空间回归：SAR / SEM / SDM ---
-* 假设结果变量是 y
+<span class="cm-l">* --- 4. 空间回归：SAR / SEM / SDM ---</span>
+<span class="cm-l">* 假设结果变量是 y</span>
 gen y = 2 + 0.3*fdi + 0.2*inv + 0.1*hum + eps
 
-* (a) SAR：因变量空间滞后
-spregress y fdi inv hum, dlmx iv(W)    // IV 法（推荐）
-* spregress y fdi inv hum, mle dlmx      // MLE 法
-estat moran                            // 残差 Moran's I
+<span class="cm-l">* (a) SAR：因变量空间滞后</span>
+spregress y fdi inv hum, dlmx iv(W)    <span class="cm">// IV 法（推荐）</span>
+<span class="cm-l">* spregress y fdi inv hum, mle dlmx      // MLE 法</span>
+estat moran                            <span class="cm">// 残差 Moran's I</span>
 
-* (b) SEM：误差空间相关
+<span class="cm-l">* (b) SEM：误差空间相关</span>
 spregress y fdi inv hum, error iv(W)
 
-* (c) SDM：默认起点（同时含 WY 和 WX）
+<span class="cm-l">* (c) SDM：默认起点（同时含 WY 和 WX）</span>
 spregress y fdi inv hum, dlmx durbin(W) iv(W)
-*   durbin(W) 自动加入 W*fdi W*inv W*hum
-*   dlmx 自动输出直接/间接/总效应分解
+<span class="cm-l">*   durbin(W) 自动加入 W*fdi W*inv W*hum</span>
+<span class="cm-l">*   dlmx 自动输出直接/间接/总效应分解</span>
 
-* --- 5. 模型选择：SDM 是否能退化为 SAR / SEM？---
-* SDM 估计后：
-* test [Wx]fdi [Wx]inv [Wx]hum         // H0: theta=0 → SAR
-* 若不拒绝 → 用 SAR 即可
-* 若拒绝 → SDM 必要
+<span class="cm-l">* --- 5. 模型选择：SDM 是否能退化为 SAR / SEM？---</span>
+<span class="cm-l">* SDM 估计后：</span>
+<span class="cm-l">* test [Wx]fdi [Wx]inv [Wx]hum         // H0: theta=0 → SAR</span>
+<span class="cm-l">* 若不拒绝 → 用 SAR 即可</span>
+<span class="cm-l">* 若拒绝 → SDM 必要</span>
 
-* --- 6. 面板数据：spxtregress ---
-* 若为面板数据 (N 省 × T 年)：
-* spxtregress y fdi inv hum, fe dlmx durbin(W) iv(W)
-* spxtregress y fdi inv hum, re dlmx durbin(W) iv(W)
-* Hausman 检验选择 fe vs re
+<span class="cm-l">* --- 6. 面板数据：spxtregress ---</span>
+<span class="cm-l">* 若为面板数据 (N 省 × T 年)：</span>
+<span class="cm-l">* spxtregress y fdi inv hum, fe dlmx durbin(W) iv(W)</span>
+<span class="cm-l">* spxtregress y fdi inv hum, re dlmx durbin(W) iv(W)</span>
+<span class="cm-l">* Hausman 检验选择 fe vs re</span>
 </code></pre>
     </div>
     <div class="callout tip">

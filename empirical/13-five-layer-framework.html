@@ -343,12 +343,12 @@
       </ul>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · Sample 层诊断</span><button class="copy-btn">复制</button></div>
-<pre><code>* 对比"被删" vs "被留"的样本在 X、Y 上是否系统不同
+<pre><code><span class="cm-l">* 对比"被删" vs "被留"的样本在 X、Y 上是否系统不同</span>
 gen kept = !missing(output, capital, labor)
-ttest output, by(kept)        // 被删组 vs 保留组的 output 均值
+ttest output, by(kept)        <span class="cm">// 被删组 vs 保留组的 output 均值</span>
 ttest capital, by(kept)
 ttest labor, by(kept)
-* 如果 t 检验显著，说明删除不是随机的，Sample 层有选择偏误</code></pre>
+<span class="cm-l">* 如果 t 检验显著，说明删除不是随机的，Sample 层有选择偏误</span></code></pre>
       </div>
 
       <h3>Data 层检查清单与命令</h3>

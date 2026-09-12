@@ -514,7 +514,7 @@ def solve_bellman(theta1, theta2, tol=1e-9, max_iter=5000):
         V_new = bellman_operator(V, theta1, theta2)
         diff = np.max(np.abs(V_new - V))
         V = V_new
-        if diff < tol:
+        if diff &lt; tol:
             break
     # 计算 CCP
     V_max = V.max(axis=1, keepdims=True)
@@ -545,7 +545,7 @@ print(f"更换率 (d=1 的比例): {data[:,1].mean():.3f}")
 # ---------- 5. 似然函数 + MLE ----------
 def neg_loglik(params, data):
     theta1, theta2 = params
-    if theta2 <= 0:
+    if theta2 &lt;= 0:
         return 1e10
     try:
         V, P_choice = solve_bellman(theta1, theta2)

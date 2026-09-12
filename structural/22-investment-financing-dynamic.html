@@ -428,21 +428,21 @@ KP = k_grid[None,None,None,:,None]
 BP = b_grid[None,None,None,None,:]
 
 i_mat  = KP - (1-delta)*K                       # 投资
-fixed  = gamma0 * (np.abs(i_mat) > 1e-8)        # 固定调整成本
+fixed  = gamma0 * (np.abs(i_mat) &gt; 1e-8)        # 固定调整成本
 C_mat  = fixed + 0.5*gamma1*(i_mat/K)**2 * K    # 总调整成本
 pi_kz  = ZL*K**alpha - f                        # 经营利润
 
 d_mat  = ((1-tau)*pi_kz - i_mat - C_mat
           + tau*r*B - B + BP/(1+r))             # 净股利
-div_net = np.where(d_mat < 0, d_mat - lam*(-d_mat), d_mat)  # 外部股权溢价
-feasible = (d_mat <= e_max + 1e-9)
+div_net = np.where(d_mat &lt; 0, d_mat - lam*(-d_mat), d_mat)  # 外部股权溢价
+feasible = (d_mat &lt;= e_max + 1e-9)
 div_net = np.where(feasible, div_net, -1e10)
 
 # ---------- 4. VFI ----------
 V = np.zeros((nk, nb, nz))
 for it in range(800):
     # EV_at_z[kp,bp,z] = sum_z' V[kp,bp,z'] * Pi[z,z']
-    EV_at_z = np.einsum('kbs,zs->kbz', V, Pi)
+    EV_at_z = np.einsum('kbs,zs-&gt;kbz', V, Pi)
     # 广播到候选维
     EV_full = np.zeros((nk, nb, nz, nk, nb))
     for kp in range(nk):
@@ -450,20 +450,20 @@ for it in range(800):
             EV_full[:,:,:,kp,bp] = EV_at_z[kp,bp,:][None,None,:]
     cand = np.where(feasible, div_net + beta*EV_full, -1e10)
     V_new = cand.max(axis=(3, 4))
-    if np.max(np.abs(V_new - V)) < 1e-6:
+    if np.max(np.abs(V_new - V)) &lt; 1e-6:
         print(f"收敛于 iter {it}")
         V = V_new; break
     V = V_new
 
 # ---------- 5. 决策规则 ----------
-EV_at_z = np.einsum('kbs,zs->kbz', V, Pi)
+EV_at_z = np.einsum('kbs,zs-&gt;kbz', V, Pi)
 EV_full = np.zeros((nk, nb, nz, nk, nb))
 for kp in range(nk):
     for bp in range(nb):
         EV_full[:,:,:,kp,bp] = EV_at_z[kp,bp,:][None,None,:]
 cand = np.where(feasible, div_net + beta*EV_full, -1e10)
 flat = cand.reshape(nk*nb*nz, nk*nb).argmax(axis=1)
-kp_idx = (flat // nb).reshape(nk,nb,nz)
+kp_idx = (flat <span class="cm">// nb).reshape(nk,nb,nz)</span>
 bp_idx = (flat  % nb).reshape(nk,nb,nz)
 
 k_pol = k_grid[kp_idx]
@@ -472,8 +472,8 @@ ik_pol = i_pol / k_grid[:,None,None]
 
 # 输出: 中位状态下的投资率
 print("政策规则 (中位 k, 中位 b):")
-for zi in [0, nz//2, nz-1]:
-    print(f"  z={z_level[zi]:.2f}: i/k={ik_pol[nk//2,nb//2,zi]:+.3f}")
+for zi in [0, nz<span class="cm">//2, nz-1]:</span>
+    print(f"  z={z_level[zi]:.2f}: i/k={ik_pol[nk<span class="cm">//2,nb//2,zi]:+.3f}")</span>
 print("代码块1 完成 ✓")
 </code></pre>
       </div>
@@ -547,9 +547,9 @@ def simulate(sol, N=500, T=40, seed=42):
     z_lvl, Pi = sol['z_level'], sol['Pi']
     nk, nb, nz = len(k_g), len(b_g), len(z_lvl)
     # 初始状态: 从中位区间随机
-    k_i = rng.integers(nk//3, 2*nk//3, size=N)
-    b_i = rng.integers(nb//3, 2*nb//3, size=N)
-    z_i = rng.integers(nz//2, size=N)
+    k_i = rng.integers(nk<span class="cm">//3, 2*nk//3, size=N)</span>
+    b_i = rng.integers(nb<span class="cm">//3, 2*nb//3, size=N)</span>
+    z_i = rng.integers(nz<span class="cm">//2, size=N)</span>
 
     def next_z(zi):
         cum = np.cumsum(Pi[zi], axis=1)
@@ -568,13 +568,13 @@ def simulate(sol, N=500, T=40, seed=42):
         pi = z_now*k_now**sol['alpha'] - sol['f']
         cf = (1-sol['tau'])*pi
         q  = (sol['V'][k_i,b_i,z_i] + b_now) / k_now
-        fixed = sol['gamma0']*(np.abs(i) > 1e-8)
+        fixed = sol['gamma0']*(np.abs(i) &gt; 1e-8)
         C = fixed + 0.5*sol['gamma1']*(i/k_now)**2 * k_now
         d = ((1-sol['tau'])*pi - i - C + sol['tau']*sol['r']*b_now
              - b_now + b_g[bp]/(1+sol['r']))
-        if t >= burn:
+        if t &gt;= burn:
             Ik.append(ik); CF.append(cf/k_now); Lev.append(b_now/k_now)
-            TobQ.append(q); Iss.append((d < 0).astype(float))
+            TobQ.append(q); Iss.append((d &lt; 0).astype(float))
         k_i, b_i, z_i = kp, bp, next_z(z_i)
     return dict(ik=np.array(Ik), cf_k=np.array(CF), lev=np.array(Lev),
                 q=np.array(TobQ), issue=np.array(Iss))
@@ -586,7 +586,7 @@ def moments(sim):
     return np.array([
         ik.mean(),                  # m1: 平均投资率 E[i/k]
         ik.std(),                   # m2: 投资率波动率 Std(i/k)
-        np.mean(np.abs(ik) > 0.2),  # m3: lumpy investment 频率
+        np.mean(np.abs(ik) &gt; 0.2),  # m3: lumpy investment 频率
         cf.mean(),                  # m4: 平均 CF/K
         lev.mean(),                 # m5: 平均杠杆率 E[b/k]
         np.corrcoef(ik, cf)[0,1],   # m6: 投资-现金流相关
@@ -599,7 +599,7 @@ sim = simulate(sol_true, N=500, T=40, seed=20240912)
 m_hat = moments(sim)
 print("数据矩:", np.round(m_hat, 4))
 # 实测输出:
-#   E[i/k]=0.203  Std(i/k)=0.074  P(|i/k|>0.2)=0.120
+#   E[i/k]=0.203  Std(i/k)=0.074  P(|i/k|&gt;0.2)=0.120
 #   E[CF/k]=0.472 E[b/k]=1.373  Corr(i,CF)=0.210
 #   E[q]=6.62     P(issue)=0.004
 print("代码块2 完成 ✓")
@@ -641,7 +641,7 @@ W = np.diag(1.0 / np.maximum(np.abs(m_data), 1e-3)**2)
 # 2. SMM 目标函数
 def smm_objective(params):
     g1, sig = params
-    if g1 <= 0.05 or g1 > 5.0 or sig < 0.02 or sig > 0.4:
+    if g1 &lt;= 0.05 or g1 &gt; 5.0 or sig &lt; 0.02 or sig &gt; 0.4:
         return 1e10
     sol = solve_model(gamma1=g1, lam=0.05, sigma=sig, **GRID)
     m_sim = moments(simulate(sol, N=600, T=40, seed=99))

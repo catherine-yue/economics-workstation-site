@@ -397,12 +397,12 @@ bids_pooled = bids.flatten()
 
 # 第一步: 核密度估计 g_B
 kde_g = gaussian_kde(bids_pooled, bw_method='silverman')
-def emp_cdf(b, data): return np.mean(data <= b)
+def emp_cdf(b, data): return np.mean(data &lt;= b)
 
 # 第二步: 伪估值 v_hat = b + 1/(N-1) * G_B(b)/g_B(b)
 def pseudo_value(b, N, kde, data):
     Gb = emp_cdf(b, data); gb = kde(b)[0]
-    if gb < 1e-6: return np.nan
+    if gb &lt; 1e-6: return np.nan
     return b + (1.0/(N-1)) * (Gb/gb)
 
 v_hat = np.array([pseudo_value(b, N, kde_g, bids_pooled) for b in bids_pooled])

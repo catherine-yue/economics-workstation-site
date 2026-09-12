@@ -315,47 +315,47 @@
 
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · bayes_ols_probit.do</span><button class="copy-btn">复制</button></div>
-<pre><code>*==============================================================*
-* 贝叶斯 OLS + 贝叶斯 Probit：bayesmh 完整流程 + 收敛诊断
-*==============================================================*
+<pre><code><span class="cm-l">*==============================================================*</span>
+<span class="cm-l">* 贝叶斯 OLS + 贝叶斯 Probit：bayesmh 完整流程 + 收敛诊断</span>
+<span class="cm-l">*==============================================================*</span>
 clear all
 set more off
 set seed 20260911
 
-* --- 1. 模拟数据：Y = 1 + 0.5*X + eps ---
+<span class="cm-l">* --- 1. 模拟数据：Y = 1 + 0.5*X + eps ---</span>
 set obs 500
 gen X = rnormal()
 gen eps = rnormal()
 gen Y = 1 + 0.5*X + eps
-gen D = (1 + 0.5*X + eps > 0)        // Probit 的二值结果
+gen D = (1 + 0.5*X + eps &gt; 0)        <span class="cm">// Probit 的二值结果</span>
 
-* --- 2. 贝叶斯 OLS：bayesmh ---
-* 语法：bayesmh 似然, likelihood(...) prior(...)
-* 无信息正态先验 beta ~ N(0, 100)；sigma ~ Half-Normal
-bayesmh Y, likelihood(regress({y} {beta:X _cons}, var({var}))) ///
-    prior({beta:X _cons}:, flat)            ///  无信息先验
-    prior({var}:, igamma(1e-3,1e-3))        ///  方差逆伽马
-    chains(4)                                ///  4 条链
-    montecarlo(saving("bayes_ols.ster", replace) seed(20260911)) ///
+<span class="cm-l">* --- 2. 贝叶斯 OLS：bayesmh ---</span>
+<span class="cm-l">* 语法：bayesmh 似然, likelihood(...) prior(...)</span>
+<span class="cm-l">* 无信息正态先验 beta ~ N(0, 100)；sigma ~ Half-Normal</span>
+bayesmh Y, likelihood(regress({y} {beta:X _cons}, var({var}))) <span class="cm">///</span>
+    prior({beta:X _cons}:, flat)            <span class="cm">///  无信息先验</span>
+    prior({var}:, igamma(1e-3,1e-3))        <span class="cm">///  方差逆伽马</span>
+    chains(4)                                <span class="cm">///  4 条链</span>
+    montecarlo(saving("bayes_ols.ster", replace) seed(20260911)) <span class="cm">///</span>
     nchains(4) burnin(1000) mcmcsize(2000)
-* 收敛诊断：bayesstats 内置
+<span class="cm-l">* 收敛诊断：bayesstats 内置</span>
 bayesstats summary {beta:X _cons}
-bayesstats ic                            // DIC / WAIC 模型比较
-* trace plot
+bayesstats ic                            <span class="cm">// DIC / WAIC 模型比较</span>
+<span class="cm-l">* trace plot</span>
 bayesgraph diagnostics {beta:X}
 
-* --- 3. 贝叶斯 Probit：Albert-Chib 数据增广 ---
-* bayesmh 自动处理 probit 似然
-bayesmh D, likelihood(probit({y} {b:X _cons})) ///
-    prior({b:X _cons}:, flat) ///
+<span class="cm-l">* --- 3. 贝叶斯 Probit：Albert-Chib 数据增广 ---</span>
+<span class="cm-l">* bayesmh 自动处理 probit 似然</span>
+bayesmh D, likelihood(probit({y} {b:X _cons})) <span class="cm">///</span>
+    prior({b:X _cons}:, flat) <span class="cm">///</span>
     chains(4) burnin(1000) mcmcsize(2000)
 bayesstats summary {b:X}
-* 解释：后验 P(b_X > 0 | data) 直接可读，无需 p 值
+<span class="cm-l">* 解释：后验 P(b_X &gt; 0 | data) 直接可读，无需 p 值</span>
 
-* --- 4. 收敛诊断（必做） ---
-* R-hat < 1.01；ESS > 400；trace plot 平稳
-* bayesstats ess  输出 effective sample size
-* bayesstats grubin  Gelman-Rubin R-hat
+<span class="cm-l">* --- 4. 收敛诊断（必做） ---</span>
+<span class="cm-l">* R-hat &lt; 1.01；ESS &gt; 400；trace plot 平稳</span>
+<span class="cm-l">* bayesstats ess  输出 effective sample size</span>
+<span class="cm-l">* bayesstats grubin  Gelman-Rubin R-hat</span>
 bayesstats ess {beta:X _cons}
 bayesstats grubin, estimates("bayes_ols.ster")
 </code></pre>
@@ -378,7 +378,7 @@ n = 500
 X = rng.normal(size=n)
 eps = rng.normal(size=n)
 Y_latent = 1 + 0.5*X + eps
-D = (Y_latent > 0).astype(int)
+D = (Y_latent &gt; 0).astype(int)
 
 # --- 2. 定义贝叶斯 Probit 模型 ---
 with pm.Model() as probit_model:
@@ -397,16 +397,16 @@ with probit_model:
 # --- 4. 收敛诊断 ---
 print(az.summary(trace, var_names=['beta_0', 'beta_X']))
 # 关键指标：
-#   r_hat < 1.01  ✓
-#   ess_bulk > 400 ✓
-#   ess_tail > 400 ✓
+#   r_hat &lt; 1.01  ✓
+#   ess_bulk &gt; 400 ✓
+#   ess_tail &gt; 400 ✓
 az.plot_trace(trace, var_names=['beta_0', 'beta_X']); plt.tight_layout()
 az.plot_posterior(trace, var_names=['beta_X'], ref_val=0); plt.show()
 
-# --- 5. 后验推断：P(beta_X > 0 | data) ---
+# --- 5. 后验推断：P(beta_X &gt; 0 | data) ---
 post_beta_X = trace.posterior['beta_X'].values.flatten()
-p_positive = (post_beta_X > 0).mean()
-print(f"P(beta_X > 0 | data) = {p_positive:.3f}  (true = 0.5)")
+p_positive = (post_beta_X &gt; 0).mean()
+print(f"P(beta_X &gt; 0 | data) = {p_positive:.3f}  (true = 0.5)")
 print(f"95% 可信区间: {np.percentile(post_beta_X, [2.5, 97.5])}")
 </code></pre>
     </div>

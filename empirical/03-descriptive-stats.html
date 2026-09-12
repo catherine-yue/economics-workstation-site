@@ -224,24 +224,24 @@
 
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · summarize 与 tabstat</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  02-summarize-tabstat.do
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  02-summarize-tabstat.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 sysuse nlsw88, clear
 
-* 1) 基础 summarize
+<span class="cm-l">* 1) 基础 summarize</span>
 summarize wage tenure ttl_exp
 
-* 2) detail：给出完整分位数与偏度峰度
+<span class="cm-l">* 2) detail：给出完整分位数与偏度峰度</span>
 summarize wage, detail
 
-* 3) tabstat：自定义要报告的统计量
-*    statistics() 可填：mean sd p50 p25 p75 min max skewness kurtosis
-tabstat wage tenure ttl_exp, ///
+<span class="cm-l">* 3) tabstat：自定义要报告的统计量</span>
+<span class="cm-l">*    statistics() 可填：mean sd p50 p25 p75 min max skewness kurtosis</span>
+tabstat wage tenure ttl_exp, <span class="cm">///</span>
     statistics(n mean sd p50 min max) columns(statistics)
 
-* 4) 按年份分组的 tabstat（面板里常用）
-* tabstat wage tenure, by(year) statistics(mean sd) columns(statistics)
+<span class="cm-l">* 4) 按年份分组的 tabstat（面板里常用）</span>
+<span class="cm-l">* tabstat wage tenure, by(year) statistics(mean sd) columns(statistics)</span>
 </code></pre>
       </div>
     </div>
@@ -256,25 +256,25 @@ tabstat wage tenure ttl_exp, ///
       </ul>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 标签系统全套写法</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  03-label-system.do
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  03-label-system.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 sysuse nlsw88, clear
 
-* 1) 变量标签：一句话写清楚
+<span class="cm-l">* 1) 变量标签：一句话写清楚</span>
 label variable wage     "小时工资 (USD)"
 label variable tenure    "在当前雇主任职年限"
 label variable ttl_exp  "总工作经验 (年)"
 label variable collgrad "是否大学毕业"
 label variable south    "是否居住在南部"
 
-* 2) 值标签：定义一次，反复用
-*    label define 名字 数字 "文字" [数字 "文字" ...]
+<span class="cm-l">* 2) 值标签：定义一次，反复用</span>
+<span class="cm-l">*    label define 名字 数字 "文字" [数字 "文字" ...]</span>
 label define yesno_lbl 0 "No" 1 "Yes"
-* 把标签贴到变量上
+<span class="cm-l">* 把标签贴到变量上</span>
 label values collgrad south yesno_lbl
 
-* 3) 看效果
+<span class="cm-l">* 3) 看效果</span>
 describe wage tenure collgrad
 tab collgrad
 tab south
@@ -292,28 +292,28 @@ tab south
       <p>面板数据里，"按年份看均值变化"、"按行业看差异"是描述性统计的高频操作。Stata 里 <code class="inline">bysort 分组变量: 命令</code>（可简写为 <code class="inline">bys</code>）就是这个用途。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · bysort 分组</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  04-bysort.do
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  04-bysort.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 sysuse nlsw88, clear
 
-* 1) 按是否大学毕业分组 summarize
+<span class="cm-l">* 1) 按是否大学毕业分组 summarize</span>
 bysort collgrad: summarize wage tenure
 
-* 2) 等价的 bys 简写
+<span class="cm-l">* 2) 等价的 bys 简写</span>
 bys collgrad: summarize wage
 
-* 3) 多个分组变量：按 (是否大学毕业 × 是否在南部)
+<span class="cm-l">* 3) 多个分组变量：按 (是否大学毕业 × 是否在南部)</span>
 bysort collgrad south: summarize wage
 
-* 4) 先排序再分组（Stata 会自动 sort，但显式写更安全）
+<span class="cm-l">* 4) 先排序再分组（Stata 会自动 sort，但显式写更安全）</span>
 sort collgrad
 by collgrad: summarize wage
 
-* 5) 计算组内均值并保留
+<span class="cm-l">* 5) 计算组内均值并保留</span>
 bysort collgrad: egen wage_mean_coll = mean(wage)
 
-* 6) 分组 + tabulate：列联表
+<span class="cm-l">* 6) 分组 + tabulate：列联表</span>
 tab collgrad south, row col
 </code></pre>
       </div>
@@ -329,23 +329,23 @@ tab collgrad south, row col
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · pwcorr 带星号</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  05-pwcorr.do
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  05-pwcorr.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 sysuse nlsw88, clear
 
-* 1) 基础相关系数矩阵
+<span class="cm-l">* 1) 基础相关系数矩阵</span>
 pwcorr wage tenure ttl_exp age collgrad
 
-* 2) 带 p 值
+<span class="cm-l">* 2) 带 p 值</span>
 pwcorr wage tenure ttl_exp age collgrad, sig
 
-* 3) 带星号（最常用！）
-*    star(.05) 表示 |r| 显著在 5% 水平时打 *
+<span class="cm-l">* 3) 带星号（最常用！）</span>
+<span class="cm-l">*    star(.05) 表示 |r| 显著在 5% 水平时打 *</span>
 pwcorr wage tenure ttl_exp age collgrad, sig star(.05)
 
-* 4) 注意：corr 命令是 listwise deletion
-*    与 pwcorr 结果可能略不同，论文里统一用 pwcorr
+<span class="cm-l">* 4) 注意：corr 命令是 listwise deletion</span>
+<span class="cm-l">*    与 pwcorr 结果可能略不同，论文里统一用 pwcorr</span>
 </code></pre>
       </div>
       <div class="callout warning">
@@ -375,36 +375,36 @@ pwcorr wage tenure ttl_exp age collgrad, sig star(.05)
 
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · estpost + esttab 导出 Table 1</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  06-estpost-esttab.do  —— 一键导出三线表
-*--------------------------------------------------------------*
-ssc install estout, replace    // 首次运行时安装
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  06-estpost-esttab.do  —— 一键导出三线表</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
+ssc install estout, replace    <span class="cm">// 首次运行时安装</span>
 
 sysuse nlsw88, clear
 
-* 先把变量标签打好（关键！）
+<span class="cm-l">* 先把变量标签打好（关键！）</span>
 label variable wage     "Hourly wage (USD)"
 label variable tenure   "Tenure (years)"
 label variable ttl_exp "Total experience (years)"
 label variable age      "Age"
 label variable collgrad "College graduate (1=Yes)"
 
-* ---------- 1) estpost 打包描述性统计 ----------
-estpost tabstat wage tenure ttl_exp age collgrad, ///
+<span class="cm-l">* ---------- 1) estpost 打包描述性统计 ----------</span>
+estpost tabstat wage tenure ttl_exp age collgrad, <span class="cm">///</span>
     statistics(n mean sd p50 min max) columns(statistics)
 
-* ---------- 2) esttab 渲染成三线表 ----------
-* cells() 控制列布局：mean(fmt(3)) sd(fmt(3)) ...
-esttab . using "output/Table1_descriptive.rtf", replace ///
-    cells("count(fmt(0)) mean(fmt(3)) sd(fmt(3)) p50(fmt(3)) min(fmt(3)) max(fmt(3))") ///
-    noobs nonumber nomtitle label ///
-    title("Table 1. Descriptive Statistics") ///
+<span class="cm-l">* ---------- 2) esttab 渲染成三线表 ----------</span>
+<span class="cm-l">* cells() 控制列布局：mean(fmt(3)) sd(fmt(3)) ...</span>
+esttab . using "output/Table1_descriptive.rtf", replace <span class="cm">///</span>
+    cells("count(fmt(0)) mean(fmt(3)) sd(fmt(3)) p50(fmt(3)) min(fmt(3)) max(fmt(3))") <span class="cm">///</span>
+    noobs nonumber nomtitle label <span class="cm">///</span>
+    title("Table 1. Descriptive Statistics") <span class="cm">///</span>
     collabels("N" "Mean" "Std Dev" "Median" "Min" "Max")
 
-* ---------- 3) 相关系数矩阵也走 estout 流程 ----------
+<span class="cm-l">* ---------- 3) 相关系数矩阵也走 estout 流程 ----------</span>
 estpost correlate wage tenure ttl_exp age, matrix listwise
-esttab . using "output/Table2_corr.rtf", replace ///
-    unstack not noobs nonumber label ///
+esttab . using "output/Table2_corr.rtf", replace <span class="cm">///</span>
+    unstack not noobs nonumber label <span class="cm">///</span>
     title("Table 2. Correlation Matrix")
 </code></pre>
       </div>
@@ -420,31 +420,31 @@ esttab . using "output/Table2_corr.rtf", replace ///
       </ul>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · putexcel 与 outreg2</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  07-export.do
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  07-export.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 sysuse nlsw88, clear
 
-* ---------- 路径 A：outreg2 导出回归表 ----------
+<span class="cm-l">* ---------- 路径 A：outreg2 导出回归表 ----------</span>
 ssc install outreg2, replace
 reg wage tenure ttl_exp collgrad
-outreg2 using "output/reg_baseline.doc", ///
-    tstat alpha(0.01 0.05 0.1) symbol(***, **, *) ///
-    keep(tenure ttl_exp collgrad) ///
+outreg2 using "output/reg_baseline.doc", <span class="cm">///</span>
+    tstat alpha(0.01 0.05 0.1) symbol(***, **, *) <span class="cm">///</span>
+    keep(tenure ttl_exp collgrad) <span class="cm">///</span>
     title("Table 3. Baseline Regression") replace
 
-* ---------- 路径 B：putexcel 精细控制 ----------
-* 1) 先把统计量存成标量
+<span class="cm-l">* ---------- 路径 B：putexcel 精细控制 ----------</span>
+<span class="cm-l">* 1) 先把统计量存成标量</span>
 quietly summarize wage
 scalar n    = r(N)
 scalar mean = r(mean)
 scalar sd   = r(sd)
 
-* 2) putexcel 写到 .xlsx
+<span class="cm-l">* 2) putexcel 写到 .xlsx</span>
 putexcel set "output/desc_summary.xlsx", replace
 putexcel A1 = ("Variable") B1 = ("N") C1 = ("Mean") D1 = ("SD")
 putexcel A2 = ("wage") B2 = (n) C2 = (mean) D2 = (sd)
-* 打开 Excel 即可看到 Table
+<span class="cm-l">* 打开 Excel 即可看到 Table</span>
 </code></pre>
       </div>
     </div>
@@ -460,33 +460,33 @@ putexcel A2 = ("wage") B2 = (n) C2 = (mean) D2 = (sd)
       </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · histogram 与 kdensity</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  08-visualize.do
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  08-visualize.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 sysuse nlsw88, clear
 
-* 1) 直方图（默认频率）
-histogram wage, ///
-    title("Hourly Wage Distribution") ///
-    xtitle("Hourly wage (USD)") ///
+<span class="cm-l">* 1) 直方图（默认频率）</span>
+histogram wage, <span class="cm">///</span>
+    title("Hourly Wage Distribution") <span class="cm">///</span>
+    xtitle("Hourly wage (USD)") <span class="cm">///</span>
     ytitle("Frequency")
 graph export "output/hist_wage.png", replace width(1600)
 
-* 2) 直方图 + 正态密度叠加（freq 改为 density）
-histogram wage, frequency normal ///
+<span class="cm-l">* 2) 直方图 + 正态密度叠加（freq 改为 density）</span>
+histogram wage, frequency normal <span class="cm">///</span>
     title("Wage Histogram with Normal Overlay")
 
-* 3) 核密度估计（kdensity）
-kdensity wage, ///
-    title("Kernel Density of Wage") ///
+<span class="cm-l">* 3) 核密度估计（kdensity）</span>
+kdensity wage, <span class="cm">///</span>
+    title("Kernel Density of Wage") <span class="cm">///</span>
     xtitle("Hourly wage (USD)")
 graph export "output/kdensity_wage.png", replace width(1600)
 
-* 4) 分组叠加：处理组 vs 控制组的密度对比
-*    这在 DID / RDD 论文里几乎是标配
-kdensity wage if collgrad==0, lcolor(navy)  ///
-    || kdensity wage if collgrad==1, lcolor(maroon) ///
-    legend(label(1 "Non-college") label(2 "College")) ///
+<span class="cm-l">* 4) 分组叠加：处理组 vs 控制组的密度对比</span>
+<span class="cm-l">*    这在 DID / RDD 论文里几乎是标配</span>
+kdensity wage if collgrad==0, lcolor(navy)  <span class="cm">///</span>
+    || kdensity wage if collgrad==1, lcolor(maroon) <span class="cm">///</span>
+    legend(label(1 "Non-college") label(2 "College")) <span class="cm">///</span>
     title("Wage Density: College vs. Non-college")
 graph export "output/kdensity_bygroup.png", replace width(1600)
 </code></pre>

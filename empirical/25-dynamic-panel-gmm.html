@@ -268,80 +268,80 @@
     <p>下面这段代码完整演示：(1) 模拟企业动态面板数据（投资依赖滞后投资、现金流、Q）；(2) 混合 OLS / FE / 差分 GMM / 系统 GMM 四种估计量对比；(3) AR / Hansen 诊断。</p>
     <div class="code-block">
       <div class="code-header"><span class="lang">stata · dynamic_panel_gmm.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* ============================================================
-* 动态面板 GMM 完整演示
-* 场景：企业投资 I/K 依赖滞后 I/K、现金流 CF/K、Tobin's Q
-* 数据：N=500 企业 × T=15 年
-* ============================================================
+<pre><code><span class="cm-l">* ============================================================</span>
+<span class="cm-l">* 动态面板 GMM 完整演示</span>
+<span class="cm-l">* 场景：企业投资 I/K 依赖滞后 I/K、现金流 CF/K、Tobin's Q</span>
+<span class="cm-l">* 数据：N=500 企业 × T=15 年</span>
+<span class="cm-l">* ============================================================</span>
 clear all
 set seed 20240102
 set obs 7500
 gen firm = ceil(_n/15)
 bysort firm: gen year = 2000 + _n
 
-* --- 1. 模拟动态面板 ---
-* 个体固定效应 mu_i
+<span class="cm-l">* --- 1. 模拟动态面板 ---</span>
+<span class="cm-l">* 个体固定效应 mu_i</span>
 gen mu_i = rnormal(0, 0.5) in 1/500
 bysort firm: replace mu_i = mu_i[1]
 
-* 严格外生变量：CF/K, Q
+<span class="cm-l">* 严格外生变量：CF/K, Q</span>
 gen cf = rnormal(0.1, 0.05)
 gen q  = rnormal(1.5, 0.5)
 
-* 动态因变量：I/K 依赖滞后 I/K（rho=0.6）+ CF + Q + mu_i + eps
+<span class="cm-l">* 动态因变量：I/K 依赖滞后 I/K（rho=0.6）+ CF + Q + mu_i + eps</span>
 gen ik = .
 replace ik = 0.1 + mu_i in 1/7500
 forvalues t = 2/15 {
-    bysort firm: replace ik = 0.1 + 0.6*ik[_n-1] + 0.3*cf + 0.05*q + mu_i + rnormal(0,0.1) ///
+    bysort firm: replace ik = 0.1 + 0.6*ik[_n-1] + 0.3*cf + 0.05*q + mu_i + rnormal(0,0.1) <span class="cm">///</span>
         if year == 2000 + `t'
 }
-* 第一期
+<span class="cm-l">* 第一期</span>
 bysort firm: replace ik = 0.1 + mu_i + rnormal(0,0.1) if year==2000
 
 xtset firm year
 
-* --- 2. 四种估计量对比 ---
-* (a) 混合 OLS（上偏）
+<span class="cm-l">* --- 2. 四种估计量对比 ---</span>
+<span class="cm-l">* (a) 混合 OLS（上偏）</span>
 reg L.ik cf q, robust
 est store OLS
 
-* (b) 固定效应（下偏，Nickell bias）
+<span class="cm-l">* (b) 固定效应（下偏，Nickell bias）</span>
 xtreg ik L.ik cf q i.year, fe robust
 est store FE
 
-* (c) 差分 GMM（Arellano-Bond 1991）
-* ssc install xtabond2, replace
-xtabond2 ik L.ik cf q i.year, ///
-    gmm(L.ik, lag(2 4))        ///  工具：L.ik 的 t-2 到 t-4 滞后
-    iv(cf q i.year)            ///  严格外生变量作 IV
-    twostep small robust       ///  两步法 + Windmeijer 修正
-    noleveleq                  ///  差分 GMM（不加水平方程）
+<span class="cm-l">* (c) 差分 GMM（Arellano-Bond 1991）</span>
+<span class="cm-l">* ssc install xtabond2, replace</span>
+xtabond2 ik L.ik cf q i.year, <span class="cm">///</span>
+    gmm(L.ik, lag(2 4))        <span class="cm">///  工具：L.ik 的 t-2 到 t-4 滞后</span>
+    iv(cf q i.year)            <span class="cm">///  严格外生变量作 IV</span>
+    twostep small robust       <span class="cm">///  两步法 + Windmeijer 修正</span>
+    noleveleq                  <span class="cm">///  差分 GMM（不加水平方程）</span>
 est store DIFFGMM
-estat abond                     ///  AR(1) / AR(2) 检验
-estat sargan                    ///  Sargan 检验（同方差下有效）
+estat abond                     <span class="cm">///  AR(1) / AR(2) 检验</span>
+estat sargan                    <span class="cm">///  Sargan 检验（同方差下有效）</span>
 
-* (d) 系统 GMM（Blundell-Bond 1998）
-xtabond2 ik L.ik cf q i.year, ///
-    gmm(L.ik, lag(2 4))        ///
-    iv(cf q i.year)            ///
-    twostep small robust       ///
-    h(2)                       ///  水平方程用 lag(2) 起
+<span class="cm-l">* (d) 系统 GMM（Blundell-Bond 1998）</span>
+xtabond2 ik L.ik cf q i.year, <span class="cm">///</span>
+    gmm(L.ik, lag(2 4))        <span class="cm">///</span>
+    iv(cf q i.year)            <span class="cm">///</span>
+    twostep small robust       <span class="cm">///</span>
+    h(2)                       <span class="cm">///  水平方程用 lag(2) 起</span>
 est store SYSGMM
 estat abond
 
-* --- 3. 报告工具变量个数 ---
-* 查看 xtabond2 输出底部：
-*   Number of instruments = ??
-*   AR(1) p = 0.000  (应显著)
-*   AR(2) p = 0.2??  (应 &gt; 0.10)
-*   Hansen p = 0.???  (应 &gt; 0.10)
-*   工具数应 &lt; N=500
+<span class="cm-l">* --- 3. 报告工具变量个数 ---</span>
+<span class="cm-l">* 查看 xtabond2 输出底部：</span>
+<span class="cm-l">*   Number of instruments = ??</span>
+<span class="cm-l">*   AR(1) p = 0.000  (应显著)</span>
+<span class="cm-l">*   AR(2) p = 0.2??  (应 &gt; 0.10)</span>
+<span class="cm-l">*   Hansen p = 0.???  (应 &gt; 0.10)</span>
+<span class="cm-l">*   工具数应 &lt; N=500</span>
 
-* --- 4. 汇总对比 ---
-esttab OLS FE DIFFGMM SYSGMM, ///
-    b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) ///
-    mtitles("Pooled OLS" "FE" "Diff GMM" "Sys GMM") ///
-    stats(N N_g inst ar2p hansenp, fmt(0 0 0 3 3)) ///
+<span class="cm-l">* --- 4. 汇总对比 ---</span>
+esttab OLS FE DIFFGMM SYSGMM, <span class="cm">///</span>
+    b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) <span class="cm">///</span>
+    mtitles("Pooled OLS" "FE" "Diff GMM" "Sys GMM") <span class="cm">///</span>
+    stats(N N_g inst ar2p hansenp, fmt(0 0 0 3 3)) <span class="cm">///</span>
     title("动态面板四种估计量对比")
 </code></pre>
     </div>

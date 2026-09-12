@@ -318,7 +318,7 @@ for i in range(N_m):
 
 # 季度 GDP：每 3 个月的因子均值 → 模拟 GDP 季度同比
 # 先把因子聚合成季度，再加噪声；这里按季度索引 q=0,1,2,...,Q-1
-Q = T_m // 3
+Q = T_m <span class="cm">// 3</span>
 gdp_true = np.zeros(Q)
 for q in range(Q):
     gdp_true[q] = 1.2 + 0.6 * f[3*q:3*q+3].mean() + np.random.normal(0, 0.4)
@@ -411,12 +411,12 @@ print(f"DFM 相对精度提升：{(1-rmse_dfm/rmse_naive)*100:.1f}%")
         <div class="code-header"><span class="lang">MATLAB · Nowcasting Toolbox 骨架</span><button class="copy-btn">复制</button></div>
         <pre><code>%% ================================================
 %  MATLAB: 用 ECB Nowcasting Toolbox 做 GDP nowcast
-%  安装：https://github.com/european-central-bank/Nowcasting
+%  安装：https:<span class="cm">//github.com/european-central-bank/Nowcasting</span>
 % =================================================
 clear; clc;
 
 % ---- 1. 读入混频数据（第一列为日期，其余为指标；季度 GDP 行内留空即缺失）----
-% 数据列顺序建议：月度硬指标 -> 月度软指标 -> 金融指标 -> 季度 GDP
+% 数据列顺序建议：月度硬指标 -&gt; 月度软指标 -&gt; 金融指标 -&gt; 季度 GDP
 [data, dates] = xlsread('mixed_data.xlsx');   % data(T,N), 缺失用 NaN
 series_names  = {'IndProd','Retail','PMI_Hc','PMI_Svc','CPI','FedFunds','GDPq'};
 

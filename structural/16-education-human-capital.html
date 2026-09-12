@@ -403,7 +403,7 @@ print("\n=== 模拟 20 个个体的教育-工作路径 ===")
 print("(t, s, e, d=1表示上学)")
 for i in range(5):
     path = simulate_one(seed=i)
-    print(f"个体{i}: " + " -> ".join(f"(t{t},s{s},e{e},{'上学' if d==1 else '工作'})"
+    print(f"个体{i}: " + " -&gt; ".join(f"(t{t},s{s},e{e},{'上学' if d==1 else '工作'})"
                                        for (t,s,e,d) in path))
 
 # ---------- 6. 教育回报率的结构含义 ----------
@@ -424,58 +424,58 @@ print("若 A1 下降到 0.0 (教育无工资溢价), 上学动机应主要来自
 
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · Mincer 方程 OLS / Heckman / IV</span><button class="copy-btn">复制</button></div>
-        <pre><code>*==============================================================
-*  Mincer 工资方程: OLS / Heckman 选择修正 / 工具变量
-*  数据: cfps_wage.dta (中国家庭追踪调查微观样本)
-*  变量:
-*    lnw        对数小时工资
-*    edu        受教育年限
-*    exp        潜在工作经验 (年龄-教育-6)
-*    exp2       经验平方/100
-*    participation  劳动参与哑变量 (1=工作)
-*    college_proximity  Card(1995) 式IV: 成长地附近有无大学
-*    mom_edu, father_income  家庭背景 (用于 Heckman 排除约束)
-*==============================================================
+        <pre><code><span class="cm-l">*==============================================================</span>
+<span class="cm-l">*  Mincer 工资方程: OLS / Heckman 选择修正 / 工具变量</span>
+<span class="cm-l">*  数据: cfps_wage.dta (中国家庭追踪调查微观样本)</span>
+<span class="cm-l">*  变量:</span>
+<span class="cm-l">*    lnw        对数小时工资</span>
+<span class="cm-l">*    edu        受教育年限</span>
+<span class="cm-l">*    exp        潜在工作经验 (年龄-教育-6)</span>
+<span class="cm-l">*    exp2       经验平方/100</span>
+<span class="cm-l">*    participation  劳动参与哑变量 (1=工作)</span>
+<span class="cm-l">*    college_proximity  Card(1995) 式IV: 成长地附近有无大学</span>
+<span class="cm-l">*    mom_edu, father_income  家庭背景 (用于 Heckman 排除约束)</span>
+<span class="cm-l">*==============================================================</span>
 
 clear all
 set more off
 use "cfps_wage.dta", clear
 
-* --- (0) 构造变量 ---
+<span class="cm-l">* --- (0) 构造变量 ---</span>
 gen exp2 = exp^2 / 100
 lab var lnw            "对数小时工资"
 lab var edu            "受教育年限"
 lab var exp            "潜在经验"
 lab var exp2           "经验平方/100"
 
-* --- (1) OLS 基准 Mincer 方程 (含能力偏差, 仅作对照) ---
+<span class="cm-l">* --- (1) OLS 基准 Mincer 方程 (含能力偏差, 仅作对照) ---</span>
 reg lnw edu exp exp2 i.province i.year, robust
 estimates store OLS
-* 系数 edu 是"简单教育回报率", 但混杂能力偏差
+<span class="cm-l">* 系数 edu 是"简单教育回报率", 但混杂能力偏差</span>
 
-* --- (2) Heckman 选择模型: 修正"只有工作者才观察到工资"的选择偏误 ---
-* 第一阶段: 劳动参与方程 (排除变量 mom_edu, father_income 不进工资方程)
-* 第二阶段: 工资方程 (加逆 Mills ratio lambda)
-heckman lnw exp exp2 i.province i.year, ///
-    select(participation = edu mom_edu father_income exp exp2) ///
+<span class="cm-l">* --- (2) Heckman 选择模型: 修正"只有工作者才观察到工资"的选择偏误 ---</span>
+<span class="cm-l">* 第一阶段: 劳动参与方程 (排除变量 mom_edu, father_income 不进工资方程)</span>
+<span class="cm-l">* 第二阶段: 工资方程 (加逆 Mills ratio lambda)</span>
+heckman lnw exp exp2 i.province i.year, <span class="cm">///</span>
+    select(participation = edu mom_edu father_income exp exp2) <span class="cm">///</span>
     robust
 estimates store Heckman
-* 若 lambda 显著, 说明存在选择偏误, Heckman 修正必要
+<span class="cm-l">* 若 lambda 显著, 说明存在选择偏误, Heckman 修正必要</span>
 
-* --- (3) 工具变量 IV: Card(1995) college proximity 作教育的 IV ---
-* 排他性约束: 成长地附近有无大学影响上学成本 (相关性),
-*             但不直接影响成年后的工资 (外生性)
-ivregress 2sls lnw exp exp2 i.province i.year ///
+<span class="cm-l">* --- (3) 工具变量 IV: Card(1995) college proximity 作教育的 IV ---</span>
+<span class="cm-l">* 排他性约束: 成长地附近有无大学影响上学成本 (相关性),</span>
+<span class="cm-l">*             但不直接影响成年后的工资 (外生性)</span>
+ivregress 2sls lnw exp exp2 i.province i.year <span class="cm">///</span>
     (edu = college_proximity), robust
 estimates store IV
-estat firststage          // 检查弱工具变量 (F>10)
-estat overid              // 过度识别检验 (若有多个IV)
+estat firststage          <span class="cm">// 检查弱工具变量 (F&gt;10)</span>
+estat overid              <span class="cm">// 过度识别检验 (若有多个IV)</span>
 
-* --- (4) 对比三种估计的教育回报率 ---
-estimates table OLS Heckman IV, ///
+<span class="cm-l">* --- (4) 对比三种估计的教育回报率 ---</span>
+estimates table OLS Heckman IV, <span class="cm">///</span>
     b(%9.4f) star(0.1 0.05 0.01) keep(edu)
-* 典型结果: OLS 偏低(能力偏差方向取决于假设),
-*           Heckman/IV 通常给出更高的"边际"教育回报率
+<span class="cm-l">* 典型结果: OLS 偏低(能力偏差方向取决于假设),</span>
+<span class="cm-l">*           Heckman/IV 通常给出更高的"边际"教育回报率</span>
 </code></pre>
       </div>
     </div>

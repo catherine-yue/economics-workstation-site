@@ -238,34 +238,34 @@
 
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 缺失值诊断</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  02-missing-diagnose.do  —— 缺失值诊断
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  02-missing-diagnose.do  —— 缺失值诊断</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 clear all
 set more off
 
-* 用 Stata 自带的 nlsw88 演示（女性工资面板，含不少缺失）
+<span class="cm-l">* 用 Stata 自带的 nlsw88 演示（女性工资面板，含不少缺失）</span>
 sysuse nlsw88, clear
 
-* 1) misstable summarize：看连续变量的缺失计数与占比
-*    输出 Unabbrev. / Obs. / Unique / Mean / Min / Max
+<span class="cm-l">* 1) misstable summarize：看连续变量的缺失计数与占比</span>
+<span class="cm-l">*    输出 Unabbrev. / Obs. / Unique / Mean / Min / Max</span>
 misstable summarize
 
-* 2) misstable patterns：按"哪几个变量同时缺失"分组统计
-*    这一步能告诉你缺失是不是结构性的（成批缺失）
+<span class="cm-l">* 2) misstable patterns：按"哪几个变量同时缺失"分组统计</span>
+<span class="cm-l">*    这一步能告诉你缺失是不是结构性的（成批缺失）</span>
 misstable patterns wage tenure ttl_exp collgrad
 
-* 3) mvpatterns：等价命令，但输出更紧凑
+<span class="cm-l">* 3) mvpatterns：等价命令，但输出更紧凑</span>
 mvpatterns wage tenure ttl_exp
 
-* 4) 关键检查：是否把缺失写成了哨兵值（如 -999, 9999, 空字符串）
-*    对数值变量，看最小值是否异常地小
+<span class="cm-l">* 4) 关键检查：是否把缺失写成了哨兵值（如 -999, 9999, 空字符串）</span>
+<span class="cm-l">*    对数值变量，看最小值是否异常地小</span>
 summarize wage tenure ttl_exp, detail
 
-* 5) 把"伪缺失"替换成真正的 .（Stata 缺失值）
-*    假设原始数据里 -999 代表缺失
-* replace wage = . if wage == -999
-* replace tenure = . if tenure == -999
+<span class="cm-l">* 5) 把"伪缺失"替换成真正的 .（Stata 缺失值）</span>
+<span class="cm-l">*    假设原始数据里 -999 代表缺失</span>
+<span class="cm-l">* replace wage = . if wage == -999</span>
+<span class="cm-l">* replace tenure = . if tenure == -999</span>
 </code></pre>
       </div>
 
@@ -294,41 +294,41 @@ summarize wage tenure ttl_exp, detail
 
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 缺失值处理三种策略</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  03-missing-handling.do  —— drop / impute / ipolate
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  03-missing-handling.do  —— drop / impute / ipolate</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 clear all
 set more off
 
-* 先用 sysuse auto 构造一个含缺失的迷你面板
+<span class="cm-l">* 先用 sysuse auto 构造一个含缺失的迷你面板</span>
 sysuse auto, clear
 keep make price mpg weight
 gen year = 1978
 
-* 人为制造一些缺失（演示用）
+<span class="cm-l">* 人为制造一些缺失（演示用）</span>
 replace price = . if _n == 5
 replace price = . if _n == 10
 replace mpg    = . if _n == 3
 
-* ---------- 策略 A：listwise deletion（整行删除） ----------
-* 只要回归所需任一变量缺失，就丢掉这一行。
-* 注意：regress 命令默认就做这件事（listwise deletion）。
-* 显式写法：
+<span class="cm-l">* ---------- 策略 A：listwise deletion（整行删除） ----------</span>
+<span class="cm-l">* 只要回归所需任一变量缺失，就丢掉这一行。</span>
+<span class="cm-l">* 注意：regress 命令默认就做这件事（listwise deletion）。</span>
+<span class="cm-l">* 显式写法：</span>
 preserve
     drop if missing(price, mpg, weight)
-    count          // 看一下删完还剩多少
+    count          <span class="cm">// 看一下删完还剩多少</span>
 restore
 
-* ---------- 策略 B：分组均值 / 中位数插补 ----------
-* 按 foreign（是否进口车）分组，用组内中位数填补 price 的缺失
-* 注意：插补会人为压缩方差，建议只在缺失很少时用
+<span class="cm-l">* ---------- 策略 B：分组均值 / 中位数插补 ----------</span>
+<span class="cm-l">* 按 foreign（是否进口车）分组，用组内中位数填补 price 的缺失</span>
+<span class="cm-l">* 注意：插补会人为压缩方差，建议只在缺失很少时用</span>
 bysort foreign: egen price_med = median(price)
 gen price_imp = price
 replace price_imp = price_med if missing(price)
 
-* ---------- 策略 C：ipolate 线性插值（面板内时间插值） ----------
-* ipolate 适合"同一公司在时间序列上偶尔缺一年"的场景。
-* 下面用一个手工构造的公司-年份序列演示：
+<span class="cm-l">* ---------- 策略 C：ipolate 线性插值（面板内时间插值） ----------</span>
+<span class="cm-l">* ipolate 适合"同一公司在时间序列上偶尔缺一年"的场景。</span>
+<span class="cm-l">* 下面用一个手工构造的公司-年份序列演示：</span>
 clear
 set obs 10
 gen id = 1
@@ -337,15 +337,15 @@ gen roe = .
 replace roe = 0.05 in 1
 replace roe = 0.08 in 4
 replace roe = 0.06 in 8
-* 在同一 id 内部，按 year 排序后插值
+<span class="cm-l">* 在同一 id 内部，按 year 排序后插值</span>
 bysort id (year): ipolate roe year, gen(roe_ipol)
 list year roe roe_ipol
 
-* ---------- 策略 D：多重插补（MICE 的简单版） ----------
-* Stata 原生 mi 命令族；缺失比例大时更稳健。
-* mi set flong
-* mi register imputed wage tenure ttl_exp
-* mi impute chained (regress) wage tenure = collgrad smsa, add(5)
+<span class="cm-l">* ---------- 策略 D：多重插补（MICE 的简单版） ----------</span>
+<span class="cm-l">* Stata 原生 mi 命令族；缺失比例大时更稳健。</span>
+<span class="cm-l">* mi set flong</span>
+<span class="cm-l">* mi register imputed wage tenure ttl_exp</span>
+<span class="cm-l">* mi impute chained (regress) wage tenure = collgrad smsa, add(5)</span>
 </code></pre>
       </div>
 
@@ -372,13 +372,13 @@ list year roe roe_ipol
 
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 异常值识别</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  04-outlier-detect.do
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  04-outlier-detect.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 sysuse auto, clear
 
-* ---- 方法 1：箱线图法（IQR） ----
-* 用 summarize, detail 拿四分位数
+<span class="cm-l">* ---- 方法 1：箱线图法（IQR） ----</span>
+<span class="cm-l">* 用 summarize, detail 拿四分位数</span>
 summarize price, detail
 scalar q1 = r(p25)
 scalar q3 = r(p75)
@@ -387,30 +387,30 @@ scalar lo_box = q1 - 1.5*iqr
 scalar hi_box = q3 + 1.5*iqr
 display "箱线图下界 = " lo_box "  上界 = " hi_box
 
-* 标记异常值
-gen outlier_box = (price < lo_box | price > hi_box) if !missing(price)
+<span class="cm-l">* 标记异常值</span>
+gen outlier_box = (price &lt; lo_box | price &gt; hi_box) if !missing(price)
 tab outlier_box
 
-* ---- 方法 2：3σ 法则 ----
+<span class="cm-l">* ---- 方法 2：3σ 法则 ----</span>
 summarize price
 scalar mu = r(mean)
 scalar sd = r(sd)
-gen outlier_3sd = (abs(price - mu) > 3*sd) if !missing(price)
+gen outlier_3sd = (abs(price - mu) &gt; 3*sd) if !missing(price)
 tab outlier_3sd
 
-* ---- 方法 3：MAD（中位数绝对偏差，更稳健） ----
-* 1.4826 是让 MAD 在正态下等价于标准差的常数
+<span class="cm-l">* ---- 方法 3：MAD（中位数绝对偏差，更稳健） ----</span>
+<span class="cm-l">* 1.4826 是让 MAD 在正态下等价于标准差的常数</span>
 quietly summarize price, detail
 scalar med = r(p50)
 gen abs_dev = abs(price - med)
 quietly summarize abs_dev, detail
 scalar mad = 1.4826 * r(p50)
-gen outlier_mad = (abs(price - med) > 3*mad) if !missing(price)
+gen outlier_mad = (abs(price - med) &gt; 3*mad) if !missing(price)
 tab outlier_mad
 
-* ---- 画箱线图直观检查 ----
-graph box price, over(foreign) ///
-    title("Price 箱线图（按是否进口车分组）") ///
+<span class="cm-l">* ---- 画箱线图直观检查 ----</span>
+graph box price, over(foreign) <span class="cm">///</span>
+    title("Price 箱线图（按是否进口车分组）") <span class="cm">///</span>
     ytitle("Price (USD)")
 graph export "output/boxplot_price.png", replace width(1600)
 </code></pre>
@@ -435,36 +435,36 @@ graph export "output/boxplot_price.png", replace width(1600)
 
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · winsorize 缩尾</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  05-winsorize.do  —— 缩尾处理
-*--------------------------------------------------------------*
-ssc install winsor2, replace    // 首次运行时安装
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  05-winsorize.do  —— 缩尾处理</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
+ssc install winsor2, replace    <span class="cm">// 首次运行时安装</span>
 
 sysuse auto, clear
 
-* ---- 写法 A：winsor2（推荐，外部命令）----
-* 1% 双侧缩尾，生成新变量 price_w1
+<span class="cm-l">* ---- 写法 A：winsor2（推荐，外部命令）----</span>
+<span class="cm-l">* 1% 双侧缩尾，生成新变量 price_w1</span>
 winsor2 price, cuts(1 99) suffix(_w1)
-* 5% 双侧缩尾
+<span class="cm-l">* 5% 双侧缩尾</span>
 winsor2 price, cuts(5 95) suffix(_w5)
 
-* 同时对多个变量缩尾
+<span class="cm-l">* 同时对多个变量缩尾</span>
 winsor2 price mpg weight length, cuts(1 99) suffix(_w1)
 
-* 按年份分组缩尾（面板里非常重要！每年单独算分位数）
-* winsor2 roe lev size, cuts(1 99) suffix(_w1) by(year)
+<span class="cm-l">* 按年份分组缩尾（面板里非常重要！每年单独算分位数）</span>
+<span class="cm-l">* winsor2 roe lev size, cuts(1 99) suffix(_w1) by(year)</span>
 
-* 对比缩尾前后
+<span class="cm-l">* 对比缩尾前后</span>
 summarize price price_w1 price_w5
 
-* ---- 写法 B：纯手工（不依赖外部命令） ----
-* 1% 双侧缩尾
+<span class="cm-l">* ---- 写法 B：纯手工（不依赖外部命令） ----</span>
+<span class="cm-l">* 1% 双侧缩尾</span>
 quietly summarize price, detail
 scalar lo = r(p1)
 scalar hi = r(p99)
 gen price_manual_w1 = price
-replace price_manual_w1 = lo if price < lo & !missing(price)
-replace price_manual_w1 = hi if price > hi & !missing(price)
+replace price_manual_w1 = lo if price &lt; lo &amp; !missing(price)
+replace price_manual_w1 = hi if price &gt; hi &amp; !missing(price)
 </code></pre>
       </div>
 
@@ -481,29 +481,29 @@ replace price_manual_w1 = hi if price > hi & !missing(price)
 
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 重复值处理</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  06-duplicates.do  —— 重复值处理
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  06-duplicates.do  —— 重复值处理</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 sysuse nlsw88, clear
 
-* 1) 报告按 idcode（员工 ID）的重复情况
+<span class="cm-l">* 1) 报告按 idcode（员工 ID）的重复情况</span>
 duplicates report idcode
 
-* 2) 列出重复的具体观测
+<span class="cm-l">* 2) 列出重复的具体观测</span>
 duplicates list idcode in 1/50
 
-* 3) 给每个重复组打标签
+<span class="cm-l">* 3) 给每个重复组打标签</span>
 duplicates tag idcode, gen(dup_flag)
-tab dup_flag      // 0 表示唯一，&gt;0 表示重复
+tab dup_flag      <span class="cm">// 0 表示唯一，&gt;0 表示重复</span>
 
-* 4) 标准做法：保留每组中最新的一条
-*    （按某个"优先级变量"排序后 keep 第一条）
-* 假设我们有一个报表版本号 vers，数值大的更新
-* gsort idcode -vers
-* by idcode: keep if _n == 1
-* duplicates report idcode   // 再验证一次
+<span class="cm-l">* 4) 标准做法：保留每组中最新的一条</span>
+<span class="cm-l">*    （按某个"优先级变量"排序后 keep 第一条）</span>
+<span class="cm-l">* 假设我们有一个报表版本号 vers，数值大的更新</span>
+<span class="cm-l">* gsort idcode -vers</span>
+<span class="cm-l">* by idcode: keep if _n == 1</span>
+<span class="cm-l">* duplicates report idcode   // 再验证一次</span>
 
-* 5) 如果只是完全重复的行（所有变量都一样），直接 drop
+<span class="cm-l">* 5) 如果只是完全重复的行（所有变量都一样），直接 drop</span>
 duplicates drop
 </code></pre>
       </div>
@@ -512,14 +512,14 @@ duplicates drop
       <p>从 CSMAR 导出的变量名常常是 <code class="inline">A001001000</code> 这种无意义编码，必须重命名为 <code class="inline">roe</code>、<code class="inline">lev</code> 这种可读名字。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 重命名与批量操作</span><button class="copy-btn">复制</button></div>
-<pre><code>* 单个重命名
+<pre><code><span class="cm-l">* 单个重命名</span>
 rename A001001000 roe
 rename B002003000 lev
 
-* 批量重命名：把所有 year 前缀统一
-rename (yr_*) (year_*)   // yr_a -&gt; year_a
+<span class="cm-l">* 批量重命名：把所有 year 前缀统一</span>
+rename (yr_*) (year_*)   <span class="cm">// yr_a -&gt; year_a</span>
 
-* 批量：去掉下划线统一小写
+<span class="cm-l">* 批量：去掉下划线统一小写</span>
 rename *, lower
 </code></pre>
       </div>
@@ -531,36 +531,36 @@ rename *, lower
       <p>Stata 的变量类型分三类：<code class="inline">byte/int/long/float/double</code>（数值型）、<code class="inline">str1-str244</code>（字符串）、以及带 value label 的分类变量。CSMAR 导出的行业代码常常是字符串"行业代码 1 位 + 4 位数字"，需要先 destring。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 类型转换</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  07-type-convert.do
-*--------------------------------------------------------------*
-* 字符串 -&gt; 数值（去掉非数字字符后转）
-* destring industry, replace ignore(" ")
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  07-type-convert.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">* 字符串 -&gt; 数值（去掉非数字字符后转）</span>
+<span class="cm-l">* destring industry, replace ignore(" ")</span>
 
-* 数值 -&gt; 字符串
+<span class="cm-l">* 数值 -&gt; 字符串</span>
 tostring year, replace
 
-* 把"四位行业代码"截成"一位大类"（证监会行业分类）
+<span class="cm-l">* 把"四位行业代码"截成"一位大类"（证监会行业分类）</span>
 gen industry1 = real(substr(industry_code, 1, 1))
 
-* 把数值型 id 保留前导零：股票代码在 Stata 里常被吞掉前导 0
-gen stkcd_str = string(stkcd, "%06.0f")   // 1 -&gt; "000001"
+<span class="cm-l">* 把数值型 id 保留前导零：股票代码在 Stata 里常被吞掉前导 0</span>
+gen stkcd_str = string(stkcd, "%06.0f")   <span class="cm">// 1 -&gt; "000001"</span>
 
-* ---------- 标签系统：label variable / label define ----------
-* 这是让 esttab 导出的三线表"看得懂"的关键
+<span class="cm-l">* ---------- 标签系统：label variable / label define ----------</span>
+<span class="cm-l">* 这是让 esttab 导出的三线表"看得懂"的关键</span>
 sysuse auto, clear
 
-* 1) 变量标签（出现在 describe / 输出表格里）
+<span class="cm-l">* 1) 变量标签（出现在 describe / 输出表格里）</span>
 label variable price    "汽车价格 (USD)"
 label variable mpg      "每加仑英里数"
 label variable weight   "整车重量 (lbs)"
 label variable foreign  "是否进口车"
 
-* 2) 值标签（把 0/1 翻译成文字）
+<span class="cm-l">* 2) 值标签（把 0/1 翻译成文字）</span>
 label define foreign_lbl 0 "本土" 1 "进口"
 label values foreign foreign_lbl
 
-* 3) 看效果
+<span class="cm-l">* 3) 看效果</span>
 describe
 tab foreign
 </code></pre>
@@ -583,30 +583,30 @@ tab foreign
       <p>注意：对数不能取非正数。财务数据里经常出现"现金流为负"或"研发支出为 0"，标准处理是 <code class="inline">ln(x+1)</code> 或 <code class="inline">ln(max(x, 0) + 1)</code>，后者在中文论文里被称为 <strong>log(1+x) 变换</strong>。</p>
       <div class="code-block">
         <div class="code-header"><span class="lang">Stata · 对数变换与常用变量构造</span><button class="copy-btn">复制</button></div>
-<pre><code>*--------------------------------------------------------------*
-*  08-log-transform.do
-*--------------------------------------------------------------*
+<pre><code><span class="cm-l">*--------------------------------------------------------------*</span>
+<span class="cm-l">*  08-log-transform.do</span>
+<span class="cm-l">*--------------------------------------------------------------*</span>
 sysuse auto, clear
 
-* 1) 标准对数变换（要求 price &gt; 0）
+<span class="cm-l">* 1) 标准对数变换（要求 price &gt; 0）</span>
 gen ln_price = ln(price)
 label variable ln_price "ln(价格)"
 
-* 2) 含零/负值时的"稳健对数"：ln(1+x)
-*    常用于 R&amp;D、广告支出这类常有 0 的变量
-gen rd = runiform()*100          // 模拟 R&amp;D 支出
+<span class="cm-l">* 2) 含零/负值时的"稳健对数"：ln(1+x)</span>
+<span class="cm-l">*    常用于 R&amp;D、广告支出这类常有 0 的变量</span>
+gen rd = runiform()*100          <span class="cm">// 模拟 R&amp;D 支出</span>
 gen ln_rd = ln(rd + 1)
 label variable ln_rd "ln(1+R&amp;D)"
 
-* 3) 财务实证中常见的核心变量构造（CSMAR 口径）
-* gen size = ln(total_assets)                          // 企业规模
-* gen lev  = total_liab / total_assets                 // 资产负债率
-* gen roa  = net_profit / total_assets                 // 总资产收益率
-* gen roe  = net_profit / total_equity                 // 净资产收益率
-* gen tbq  = (market_cap + total_liab) / total_assets // 托宾 Q
-* gen soe  = (state_owned_share &gt;= 0.3)                // 国企虚拟变量
+<span class="cm-l">* 3) 财务实证中常见的核心变量构造（CSMAR 口径）</span>
+<span class="cm-l">* gen size = ln(total_assets)                          // 企业规模</span>
+<span class="cm-l">* gen lev  = total_liab / total_assets                 // 资产负债率</span>
+<span class="cm-l">* gen roa  = net_profit / total_assets                 // 总资产收益率</span>
+<span class="cm-l">* gen roe  = net_profit / total_equity                 // 净资产收益率</span>
+<span class="cm-l">* gen tbq  = (market_cap + total_liab) / total_assets // 托宾 Q</span>
+<span class="cm-l">* gen soe  = (state_owned_share &gt;= 0.3)                // 国企虚拟变量</span>
 
-* 4) 描述一下看分布是否对称
+<span class="cm-l">* 4) 描述一下看分布是否对称</span>
 summarize price ln_price, detail
 </code></pre>
       </div>

@@ -420,14 +420,14 @@ def solve_rrh(N=10, theta=4.0, kappa=6.0, beta=0.75,
         # Step 2-3: 内循环 房价+人口 不动点
         for inner in range(200):
             real_inc = w[None, :] / (Q[:, None] ** (1 - beta)
-                                      * P[:, None] ** beta)
+<span class="cm-l">                                      * P[:, None] ** beta)</span>
             attr = np.sum(B * real_inc ** kappa, axis=1)
             lam = B * real_inc ** kappa / attr[:, None]
             L = Lbar * attr / attr.sum()
             Lw = np.sum(lam * L[:, None], axis=0)
             wage_inc = np.sum(lam * w[None, :], axis=1) * L
             Q_new = (1 - beta) * wage_inc / H
-            if np.max(np.abs(Q_new - Q)) < 1e-9:
+            if np.max(np.abs(Q_new - Q)) &lt; 1e-9:
                 Q = Q_new; break
             Q = 0.5 * Q_new + 0.5 * Q
 
@@ -440,7 +440,7 @@ def solve_rrh(N=10, theta=4.0, kappa=6.0, beta=0.75,
         w_new = w_new / w_new.sum()
         err = np.max(np.abs(w_new - w))
         w = w_new
-        if err < tol:
+        if err &lt; tol:
             print(f"收敛于第 {it} 轮, err={err:.2e}"); break
 
     return dict(w=w, Q=Q, L=L, Lw=Lw, P=P, pi=pi, lam=lam)
@@ -491,7 +491,7 @@ def invert_rrh(w0, Q0, P0, lam0, pi0, d, theta, kappa, beta):
         T_new = np.array([pi0[i, i] * denom[i]
                           for i in range(N)])
         T_new = T_new / T_new.sum()
-        if np.max(np.abs(T_new - T)) < 1e-12:
+        if np.max(np.abs(T_new - T)) &lt; 1e-12:
             T = T_new; break
         T = 0.5 * T_new + 0.5 * T
 

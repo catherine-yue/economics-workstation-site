@@ -390,7 +390,7 @@
 E-stability 数值检验: 对简化 reduced form y_t = mu + alpha E*y_{t+1} + delta w_t
 PLM: y_t = a + b w_t,  T(a)=mu+alpha*a,  T(b)=delta+alpha*rho*b
 REE: a*=mu/(1-alpha),  b*=delta/(1-alpha*rho)
-E-stability: DT = diag(alpha, alpha*rho) 的特征值实部 < 1
+E-stability: DT = diag(alpha, alpha*rho) 的特征值实部 &lt; 1
 """
 import numpy as np
 
@@ -398,19 +398,19 @@ def check_estability(alpha, rho, verbose=True):
     DT = np.array([[alpha, 0.0],
                    [0.0,    alpha*rho]])
     eig = np.linalg.eigvals(DT)
-    stable = np.all(np.real(eig) < 1.0)
+    stable = np.all(np.real(eig) &lt; 1.0)
     if verbose:
         print(f"alpha={alpha:.3f}, rho={rho:.3f}")
         print(f"  DT 特征值: {eig}")
-        print(f"  最大实部 {np.max(np.real(eig)):.4f}  -> E-stable? {stable}")
+        print(f"  最大实部 {np.max(np.real(eig)):.4f}  -&gt; E-stable? {stable}")
     return stable, eig
 
-# 教科书 NK 校准: Taylor 原则 phi_pi>1 对应 alpha 较小
+# 教科书 NK 校准: Taylor 原则 phi_pi&gt;1 对应 alpha 较小
 for alpha in [0.5, 0.9, 1.1]:
     check_estability(alpha, rho=0.8)
 # 输出: alpha=0.5 与 0.9 时 E-stable; alpha=1.1 时 E-unstable
 # 经济含义: 央行反应越温和(phi_pi 接近 1), 前向系数 alpha 越大,
-#           学习动态越可能发散 => 通胀脱锚风险.
+#           学习动态越可能发散 =&gt; 通胀脱锚风险.
 </code></pre>
       </div>
       <p><strong>用法</strong>：在你的完整 NK/中尺度模型里，把 PLM 系数堆成向量 $\theta$，数值扰动 T-map 得到 $DT(\theta^*)$（或用自动微分），跑上面的特征值检查即可。这比"先跑模拟看是否收敛"快几个数量级，是论文 robustness 章节的标准动作。</p>
@@ -498,7 +498,7 @@ plt.tight_layout(); plt.savefig("learning_convergence.png", dpi=130); plt.show()
 # 输出渐近样本均值, 看 CG 是否围绕 REE 波动
 print(f"RLS  末段均值: a={a_dec[-200:].mean():.3f}, b={b_dec[-200:].mean():.3f}")
 print(f"CG   末段均值: a={a_cg[-200:].mean():.3f}, b={b_cg[-200:].mean():.3f}")
-print(f"CG   末段标准差: a={a_cg[-200:].std():.3f}, b={b_cg[-200:].std():.3f}  <-- 内生波动")
+print(f"CG   末段标准差: a={a_cg[-200:].std():.3f}, b={b_cg[-200:].std():.3f}  &lt;-- 内生波动")
 </code></pre>
       </div>
 
@@ -646,10 +646,10 @@ def coibion_gorodnichenko_reg(actual, forecast):
     se = np.sqrt(np.diag(cov))
     t_stat = beta_CG / se[1]
     print(f"alpha={alpha:.4f}, beta_CG={beta_CG:.4f} (t={t_stat:.2f})")
-    print("RE 被拒绝 (beta_CG>0 显著)?" , abs(t_stat) > 1.96 and beta_CG > 0)
+    print("RE 被拒绝 (beta_CG&gt;0 显著)?" , abs(t_stat) &gt; 1.96 and beta_CG &gt; 0)
     return alpha, beta_CG
 
-# 模拟: 恒定增益学习生成的预测 => CG 回归应显著为正
+# 模拟: 恒定增益学习生成的预测 =&gt; CG 回归应显著为正
 rng = np.random.default_rng(0)
 T = 400
 pi = np.zeros(T); pi[0] = 2.0

@@ -561,70 +561,70 @@
       <h3>10.4 完整 .mod 代码</h3>
       <div class="code-block">
         <div class="code-header"><span class="lang">Dynare / nk_three_equation.mod</span><button class="copy-btn">复制</button></div>
-        <pre><code>// ============================================================
-// nk_three_equation.mod  ——  新凯恩斯三方程模型（完整 .mod）
-// 运行：dynare nk_three_equation.mod
-// 模型：IS曲线 + NKPC + Taylor规则（满足 Taylor 原理 phi_pi=1.5）
-// ============================================================
+        <pre><code><span class="cm">// ============================================================</span>
+<span class="cm">// nk_three_equation.mod  ——  新凯恩斯三方程模型（完整 .mod）</span>
+<span class="cm">// 运行：dynare nk_three_equation.mod</span>
+<span class="cm">// 模型：IS曲线 + NKPC + Taylor规则（满足 Taylor 原理 phi_pi=1.5）</span>
+<span class="cm">// ============================================================</span>
 
-// ---------- 第 1 块：内生变量声明 ----------
-// 所有变量均为偏离稳态的对数/百分点（季度频率）
-var  y        // 产出缺口  y_t = Y_t / Y_t^n 的对数偏离
-     pi       // 通胀缺口  pi_t （零通胀稳态附近的百分点偏离）
-     i        // 名义利率偏离（季度口径，非年化）
-     rn       // 自然利率  r_t^n（灵活价格下的实际利率）
-     mshock;  // Taylor 规则中的货币政策冲击项（AR(1)）
+<span class="cm">// ---------- 第 1 块：内生变量声明 ----------</span>
+<span class="cm">// 所有变量均为偏离稳态的对数/百分点（季度频率）</span>
+var  y        <span class="cm">// 产出缺口  y_t = Y_t / Y_t^n 的对数偏离</span>
+     pi       <span class="cm">// 通胀缺口  pi_t （零通胀稳态附近的百分点偏离）</span>
+     i        <span class="cm">// 名义利率偏离（季度口径，非年化）</span>
+     rn       <span class="cm">// 自然利率  r_t^n（灵活价格下的实际利率）</span>
+     mshock;  <span class="cm">// Taylor 规则中的货币政策冲击项（AR(1)）</span>
 
-// ---------- 第 2 块：外生冲击声明 ----------
-varexo eps_m    // 货币政策创新：进入 mshock 的白噪声
-       eps_rn;  // 自然利率创新：进入 rn 的白噪声
+<span class="cm">// ---------- 第 2 块：外生冲击声明 ----------</span>
+varexo eps_m    <span class="cm">// 货币政策创新：进入 mshock 的白噪声</span>
+       eps_rn;  <span class="cm">// 自然利率创新：进入 rn 的白噪声</span>
 
-// ---------- 第 3 块：参数声明 ----------
+<span class="cm">// ---------- 第 3 块：参数声明 ----------</span>
 parameters beta sigma phi varphi epsilon theta ...
            kappa phi_pi phi_y rho_rn rho_m;
 
-// ---------- 第 4 块：深参数校准（与 §8 一致） ----------
-beta    = 0.99;   // 季度贴现因子，对应年实际利率约 4%
-sigma   = 1.0;    // 相对风险厌恶 = 1（log 消费效用）
-varphi  = 1.0;    // Frisch 劳动供给弹性的倒数
-epsilon = 6.0;    // CES 替代弹性，稳态 markup = epsilon/(epsilon-1) = 1.2
-theta   = 0.75;   // Calvo 每期不能调价的厂商比例（季度调价概率 0.25）
+<span class="cm">// ---------- 第 4 块：深参数校准（与 §8 一致） ----------</span>
+beta    = 0.99;   <span class="cm">// 季度贴现因子，对应年实际利率约 4%</span>
+sigma   = 1.0;    <span class="cm">// 相对风险厌恶 = 1（log 消费效用）</span>
+varphi  = 1.0;    <span class="cm">// Frisch 劳动供给弹性的倒数</span>
+epsilon = 6.0;    <span class="cm">// CES 替代弹性，稳态 markup = epsilon/(epsilon-1) = 1.2</span>
+theta   = 0.75;   <span class="cm">// Calvo 每期不能调价的厂商比例（季度调价概率 0.25）</span>
 
-// 由深参数推出 NKPC 斜率（在 .mod 里直接算，避免手抄错）
+<span class="cm">// 由深参数推出 NKPC 斜率（在 .mod 里直接算，避免手抄错）</span>
 kappa   = (1-theta)*(1-beta*theta)/theta * (sigma+varphi)/(1+epsilon*varphi);
 
-// ---------- 第 5 块：政策参数与冲击持续性 ----------
-phi_pi  = 1.5;    // Taylor 规则对通胀的反应（>1，满足 Taylor 原理）
-phi_y   = 0.125;  // 对产出缺口的反应（=0.5/4，年度系数季度化）
-rho_rn  = 0.9;    // 自然利率冲击 AR(1) 持续性
-rho_m   = 0.5;    // 货币政策冲击 AR(1) 持续性
+<span class="cm">// ---------- 第 5 块：政策参数与冲击持续性 ----------</span>
+phi_pi  = 1.5;    <span class="cm">// Taylor 规则对通胀的反应（&gt;1，满足 Taylor 原理）</span>
+phi_y   = 0.125;  <span class="cm">// 对产出缺口的反应（=0.5/4，年度系数季度化）</span>
+rho_rn  = 0.9;    <span class="cm">// 自然利率冲击 AR(1) 持续性</span>
+rho_m   = 0.5;    <span class="cm">// 货币政策冲击 AR(1) 持续性</span>
 
-// ---------- 第 6 块：model 块（三方程 + 两个外生过程） ----------
+<span class="cm">// ---------- 第 6 块：model 块（三方程 + 两个外生过程） ----------</span>
 model;
-// (1) 前望 IS 曲线
-//     y_t = E_t y_{t+1} - (1/sigma)*(i_t - E_t pi_{t+1} - rn_t)
-//     直觉：实际利率上升 -> 当期产出缺口下降
+<span class="cm">// (1) 前望 IS 曲线</span>
+<span class="cm">//     y_t = E_t y_{t+1} - (1/sigma)*(i_t - E_t pi_{t+1} - rn_t)</span>
+<span class="cm">//     直觉：实际利率上升 -&gt; 当期产出缺口下降</span>
 y = y(+1) - (1/sigma)*( i - pi(+1) - rn );
 
-// (2) 新凯恩斯菲利普斯曲线 NKPC
-//     pi_t = beta*E_t pi_{t+1} + kappa*y_t
-//     直觉：正产出缺口 -> 边际成本上升 -> 当期通胀上升
+<span class="cm">// (2) 新凯恩斯菲利普斯曲线 NKPC</span>
+<span class="cm">//     pi_t = beta*E_t pi_{t+1} + kappa*y_t</span>
+<span class="cm">//     直觉：正产出缺口 -&gt; 边际成本上升 -&gt; 当期通胀上升</span>
 pi = beta*pi(+1) + kappa*y;
 
-// (3) Taylor 规则（含货币政策冲击项 mshock）
-//     i_t = phi_pi*pi_t + phi_y*y_t + mshock_t
+<span class="cm">// (3) Taylor 规则（含货币政策冲击项 mshock）</span>
+<span class="cm">//     i_t = phi_pi*pi_t + phi_y*y_t + mshock_t</span>
 i = phi_pi*pi + phi_y*y + mshock;
 
-// (4) 自然利率外生 AR(1) 过程
-//     rn_t = rho_rn * rn_{t-1} + eps_rn_t
+<span class="cm">// (4) 自然利率外生 AR(1) 过程</span>
+<span class="cm">//     rn_t = rho_rn * rn_{t-1} + eps_rn_t</span>
 rn = rho_rn*rn(-1) + eps_rn;
 
-// (5) 货币政策冲击项服从 AR(1)
-//     mshock_t = rho_m * mshock_{t-1} + eps_m_t
+<span class="cm">// (5) 货币政策冲击项服从 AR(1)</span>
+<span class="cm">//     mshock_t = rho_m * mshock_{t-1} + eps_m_t</span>
 mshock = rho_m*mshock(-1) + eps_m;
 end;
 
-// ---------- 第 7 块：稳态初始值（所有对数偏离 = 0） ----------
+<span class="cm">// ---------- 第 7 块：稳态初始值（所有对数偏离 = 0） ----------</span>
 initval;
 y       = 0;
 pi      = 0;
@@ -633,18 +633,18 @@ rn      = 0;
 mshock  = 0;
 end;
 
-// 求解稳态（线性模型下就是原点），并打印 Blanchard-Kahn 诊断
+<span class="cm">// 求解稳态（线性模型下就是原点），并打印 Blanchard-Kahn 诊断</span>
 steady;
 check;
 
-// ---------- 第 8 块：外新冲击分布 ----------
+<span class="cm">// ---------- 第 8 块：外新冲击分布 ----------</span>
 shocks;
-var eps_m   = (0.0025)^2;   // 货币政策冲击标准差约 0.25%（季度利率单位）
-var eps_rn  = (0.01)^2;     // 自然利率冲击标准差约 1%
+var eps_m   = (0.0025)^2;   <span class="cm">// 货币政策冲击标准差约 0.25%（季度利率单位）</span>
+var eps_rn  = (0.01)^2;     <span class="cm">// 自然利率冲击标准差约 1%</span>
 end;
 
-// ---------- 第 9 块：一阶扰动求解，画 40 期 IRF ----------
-// order=1：一阶线性近似；irf=40：画 40 个季度的脉冲响应
+<span class="cm">// ---------- 第 9 块：一阶扰动求解，画 40 期 IRF ----------</span>
+<span class="cm">// order=1：一阶线性近似；irf=40：画 40 个季度的脉冲响应</span>
 stoch_simul(order=1, irf=40) y pi i rn mshock;</code></pre>
       </div>
 
@@ -773,10 +773,10 @@ stoch_simul(order=1, irf=40) y pi i rn mshock;</code></pre>
       <h3>12.6 Dynare 估计命令片段</h3>
       <div class="code-block">
         <div class="code-header"><span class="lang">Dynare / 估计块（追加在 .mod 末尾）</span><button class="copy-btn">复制</button></div>
-        <pre><code>// === 观测变量声明（与数据列对应） ===
+        <pre><code><span class="cm">// === 观测变量声明（与数据列对应） ===</span>
 varobs pi i y;
 
-// === 待估参数与先验（estimated_params 块） ===
+<span class="cm">// === 待估参数与先验（estimated_params 块） ===</span>
 estimated_params;
 phi_pi,  normal_pdf,   1.50, 0.25;
 phi_y,   normal_pdf,   0.125,0.05;
@@ -787,14 +787,14 @@ rho_rn,  beta_pdf,     0.90, 0.05;
 rho_m,   beta_pdf,     0.50, 0.20;
 stderr eps_rn, inv_gamma_pdf, 1.00, Inf;
 stderr eps_m,  inv_gamma_pdf, 0.25, Inf;
-// 稳态通胀与趋势增长（观测方程截距）
+<span class="cm">// 稳态通胀与趋势增长（观测方程截距）</span>
 pie_star, gamma_pdf,   0.50, 0.10;
 gy,      normal_pdf,   0.40, 0.10;
 end;
 
-// === 数据文件（三列：pi, i, 产出同比差分，季度） ===
-// 数据文件 nk_data.m 或 .xlsx，列顺序与 varobs 一致
-// 运行：dynare nk_estimate.mod
+<span class="cm">// === 数据文件（三列：pi, i, 产出同比差分，季度） ===</span>
+<span class="cm">// 数据文件 nk_data.m 或 .xlsx，列顺序与 varobs 一致</span>
+<span class="cm">// 运行：dynare nk_estimate.mod</span>
 estimation(datafile=nk_data, xls_sheet=Sheet1, ...
            mode_compute=6, ...            % 用优化器找后验众数
            mh_replic=200000, ...          % 20万步 MCMC
