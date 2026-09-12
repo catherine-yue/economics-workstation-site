@@ -270,10 +270,18 @@
 
       <h3><span class="tech-label">A1</span>样本筛选：换年份 / 剔除特殊时期 / 子样本</h3>
       <p><b>是什么：</b>用 <code class="inline">if</code> 限定估计样本，例如 <code class="inline">if Year&gt;=2011</code>、<code class="inline">if SOE==1</code>、剔除 2008 金融危机或 2015 股灾。<b>为什么能改显著性：</b>样本期变了，X 与 Y 的共变结构、处理强度、噪声水平全变；子样本（国企/民企、东中西部）更直接地重新定义了"你在回答谁的因果问题"。<b>合法性判别：</b>如果窗口是由制度时点（政策实施年份、会计准则变更）或研究问题本身（只关心 2011 年政策之后）<em>事前</em>决定的，合法；如果是跑完全样本不显著，回头把 2015–2018 剔除、把国企单拎出来，那就是事后挑子样本，是红线。<b>审稿人如何识破：</b>正文样本区间与数据附录对不上、稳健性表里全样本与子样本方向相反却只报告显著那张、删改理由与正文叙事巧合。<b>诚实替代：</b>主回归报全样本；子样本、剔除危机年放进稳健性并全部报告；删样本的理由在论文设计阶段就写死。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>在回归前需要按制度时点、政策年份或理论限定估计样本窗口，或做国企/民企等子样本分析时。</p>
+        <p><b>【代码思路】</b>① 模拟 1000 个企业-年观测，含国企虚拟与一个偏弱的真实效应；② 核心操作：用 if 限定 2011 年后样本、单独跑国企子样本，再用交互项 x*soe 在全样本上检验组间差异；③ 输出：reg/test 三列对比，并注释掉“逐年扫窗口”的红线循环。</p>
+        <p><b>【套用你的数据】</b>删除 clear/set seed/set obs/gen 模拟行，换成 use 你的数据.dta；year→你的年份变量、soe→你的分组变量、x→核心解释变量、y→被解释变量；reg 与 test 保留。</p>
+        <p><b>【怎么看结果】</b>重点看 reg y x if year>=2011 的系数与 p；再看 test x_soe 的 F/p——组间差异必须由交互项检验，不能比两张分样本表。若取消注释红线循环，会逐年打印系数，可观察同一效应在不同窗口下符号是否翻转。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：事前政策窗口 if year>=2011、reg + test 交互项验异质性。⛔ 红线（注释中）：forvalues s=2005/2019 逐年扫窗口挑显著者，只能作为 specification curve 整体报告。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · A1_样本筛选.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* A1 样本筛选：合法(事前制度窗口) vs 红线(事后挑子样本)
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
+* 真实效应偏弱(beta=0.2)，演示"换样本=换问题"
 set seed 101
 set obs 1000
 gen id = _n
@@ -282,51 +290,72 @@ gen soe = runiform()&gt;0.5              // 国企虚拟
 gen x  = rnormal()
 gen y  = 0.2*x + rnormal(0,1.2)       // 真实效应偏弱
 
-* (合法)事前由政策时点限定：2011年起
+* === 2. 核心操作 ===
+* ✓ 合法：事前由政策时点限定 2011 年起
 reg y x if year&gt;=2011
-* (合法)事前理论关心国企子样本，并报告交互项组间差异
+* ✓ 合法：事前理论关心国企子样本
 reg y x if soe==1
+* ✓ 组间差异必须走交互项检验（不能比两张分样本表）
 gen x_soe = x*soe
 reg y x soe x_soe
-test x_soe                            // 必须用交互项验组间差异
 
-* (红线演示，勿用于正式研究) 事后从2005..2019逐年试窗口
+* === 3. 检验与输出 ===
+test x_soe                            // 组间差异是否显著
+
+* ⛔ 红线演示（仅理解风险，勿用于正式研究）：
+*   事后从 2005..2019 逐年试窗口，挑一个显著的写正文
 * forvalues s=2005/2019 {
-*   quietly reg y x if year&gt;=`s'
-*   display "起始年=`s'  系数=" %6.3f _b[x] "  p=" %6.3f (2*ttail(e(df_r),abs(_b[x]/_se[x])))
+*     quietly reg y x if year&gt;=`s'
+*     display "起始年=`s'  系数=" %6.3f _b[x] "  p=" %6.3f (2*ttail(e(df_r),abs(_b[x]/_se[x])))
 * }
-* 上面这段"扫窗口"在论文里只能作为敏感性曲线(specification curve)整体报告，
-* 绝不能只挑其中一个显著的窗口写进正文。
-</code></pre>
+* 上面"扫窗口"只能作为 specification curve 整体报告，
+* 绝不能只挑其中一个显著窗口写进正文。</code></pre>
       </div>
 
       <h3><span class="tech-label">A2</span>样本量与功效：SE ∝ 1/√N 的双刃剑</h3>
       <p><b>是什么：</b>OLS 标准误近似与 √N 成反比，N 翻四倍，SE 减半。<b>机制：</b>大样本下哪怕效应只有 0.02，也能被 t=β/SE 算出显著；小样本下真效应 0.4 也可能因功效不足而不显著。<b>合法性判别：</b>为提升功效而合规地扩样本、合并不平衡面板，合法；但反过来，<em>靠堆 N 把一个经济意义可忽略的系数"刷"成三星，却不报告效应量与经济显著性</em>，属于误导。<b>审稿人如何识破：</b>N 动辄十万、系数小到小数点后三位、论文却不换算成"占被解释变量均值百分之几"。<b>诚实替代：</b>每个星号旁配标准化效应与"X 加 1 个 SD 对 Y 的实际影响"，区分统计显著与经济显著（详见姊妹页根因 2）。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>审稿人质疑“样本太大把小效应刷显著”，或需要向读者说明统计显著≠经济显著时。</p>
+        <p><b>【代码思路】</b>① 不固定 N，而是循环 N=200→10000；② 每个 N 重新抽样生成同一个小效应(beta=0.03)的 x、y 并回归；③ 逐次 display 打印 N、系数、t 值，观察 t 随 N 上升而系数不变。</p>
+        <p><b>【套用你的数据】</b>本块几乎纯演示；套用时改为对真实数据 reg y x 后 display 标准化效应 = _b[x]*sd(x)/sd(y)，把 beta 换算成“x 每变 1 个 SD，y 变几个 SD”。</p>
+        <p><b>【怎么看结果】</b>看输出表：N 从 200 到 10000 时 b 稳定在 0.03 附近、t 从约 0.4 升到约 3。结论——效应量没变，是 N 把它“刷”显著的。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：展示 N-t 关系并换算经济显著性。⛔ 需警惕：用超大 N 把 0.03 的效应写成重大发现却不报告效应量，属误导。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · A2_样本量功效.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* A2 样本量：同一小效应，N=200 不显著，N=20000 显著
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
+* 真实斜率固定为 0.03（经济意义极小），只让 N 变化
 set seed 202
+
+* === 2. 核心操作：循环不同样本量，跑同一个回归 ===
+* === 3. 检验与输出：打印 N / 系数 / t 值 ===
 forvalues n=200(4950)10000 {
     preserve
     quietly set obs `n'
     gen x = rnormal()
-    gen y = 0.03*x + rnormal(0,1)     // 真实斜率极小(0.03)
+    gen y = 0.03*x + rnormal(0,1)     // 真实斜率始终 0.03
     quietly reg y x
     display "N=" %6.0f `n' "  b=" %6.4f _b[x] "  t=" %6.2f (_b[x]/_se[x])
     restore
 }
-* 观察：N 越大 t 越大，但效应量始终是0.03
-* 结论：大样本下的"显著"必须配经济显著性换算，否则是误导
-</code></pre>
+* ✓ 合法结论：N 越大 t 越大，但效应量始终 0.03；
+*   大样本下的"显著"必须配经济显著性换算，否则是误导。</code></pre>
       </div>
 
       <h3><span class="tech-label">A3</span>缺失值处理：complete-case / 插补 / 删高缺失变量</h3>
       <p><b>是什么：</b>常见做法有三种——完整观测回归（Stata 默认，自动丢掉任一变量缺失的行）、多重插补、以及<em>直接删掉那个缺失率很高的变量</em>。<b>机制：</b>删掉一个高缺失控制变量后，原来被它拖累的那几千个观测"复活"，样本量从 68138 涨到 75000，核心变量的系数和 SE 随之改变。<b>合法性判别：</b>一个变量缺失率 90%、几乎不含信息，删掉它并在文中说明口径变化，合法；但如果删它纯粹是因为"删完之后核心变量碰巧显著"，且你不报告删前删后的样本量与系数对比，就是操纵。<b>审稿人如何识破：</b>描述性统计表 N 与回归表 N 对不上、稳健性附录里不同模型 N 忽大忽小又无解释。<b>诚实替代：</b>每个变量报告缺失率；删变量前后两套结果并列；必要时用 <code class="inline">mi impute</code> 多重插补做敏感性。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>加控制变量后 N 明显变化，或某变量缺失率很高、需要决定保留还是删除时。</p>
+        <p><b>【代码思路】</b>① 模拟 8000 个观测，其中 ctrl_missing 仅前 7500 个有值；② 先把高缺失变量放进回归(N=7500)，③ 再删掉它重跑(N=8000)，对比系数与 SE。</p>
+        <p><b>【套用你的数据】</b>删除模拟行换 use 你的数据.dta；先用 misstable sum 你的变量 查缺失率；保留“含/不含高缺失变量”两套回归并列。</p>
+        <p><b>【怎么看结果】</b>重点看两次输出的 N（7500 vs 8000）和 x 的系数、SE——N 变大后 SE 变小、系数可能变显著，这一口径变化正文必须写明。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：报告删前后两套 N 与系数、说明删除理由。⛔ 红线：删完发现 x 变显著就悄悄把该变量从表里删掉且不报告。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · A3_缺失值.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* A3 删高缺失控制变量导致 N 变化
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 303
 set obs 8000
 gen x = rnormal()
@@ -335,22 +364,28 @@ gen ctrl_missing = .
 replace ctrl_missing = rnormal() in 1/7500      // 仅前7500个有值，500个缺失
 gen ctrl_other = rnormal()
 
-* 含高缺失变量：N 只剩 7500
-reg y x ctrl_missing ctrl_other
-* 删掉高缺失变量：N 回到 8000，样本变大、SE 变小
-reg y x ctrl_other
-* 诚实做法：报告两套 N，并说明删除理由
-* 不诚实做法：发现删完后 x 变显著，就悄悄把 ctrl_missing 从表里删掉
-</code></pre>
+* === 2. 核心操作：同一核心变量，含/不含高缺失控制 ===
+* === 3. 检验与输出：对比两套 N、系数、SE ===
+reg y x ctrl_missing ctrl_other                // 含高缺失变量：N 只剩 7500
+reg y x ctrl_other                             // 删掉高缺失变量：N 回到 8000
+* ✓ 合法：报告两套 N，并说明删除理由（如该变量缺失率&gt;90%）
+* ⛔ 红线：发现删完后 x 变显著，就悄悄把 ctrl_missing 从表里删掉</code></pre>
       </div>
 
       <h3><span class="tech-label">A4</span>极端值处理：winsorize（压回）vs trim（删除）</h3>
       <p><b>是什么：</b><code class="inline">winsor2 var, cuts(1 99)</code> 把首尾 1% 的观测压到 1%/99% 分位数（保留观测数）；trim 则直接删掉首尾分位。还可按年份/行业分组缩尾：<code class="inline">by(Year)</code>、<code class="inline">by(Ind)</code>。<b>机制：</b>OLS 最小化平方误差，极端值拥有不成比例的杠杆；压回或删除会改变斜率与 SE，<em>连控制变量的极端值也会把核心系数的 SE 撑大</em>。<b>合法性判别：</b>缩尾分位（1%/2%/5%）必须在分析前按惯例或数据分布预定，并多档并列报告；从几档里挑显著那档写正文、其余删稿，是 Simmons et al. (2011) 证明的假阳性制造机。<b>审稿人如何识破：</b>正文用 1% 而附录出现 2%、5% 结果方向相反却不解释。<b>诚实替代：</b>先做 Cook's D/DFBETA（见 A6）诊断哪个点真正驱动系数，再有依据地处理；分位档位全报告。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>财务/会计变量含长尾极端值，决定用全局还是分组缩尾、缩到哪一档分位时。</p>
+        <p><b>【代码思路】</b>① ssc install winsor2；模拟 20 个极端值(x=50)；② 分别做全局 1/99、按年、按行业三种缩尾；③ esttab 对比原始/压回/分年压回三列。</p>
+        <p><b>【套用你的数据】</b>删除模拟行；winsor2 你的连续变量, cuts(1 99) suffix(_w)；分位档位(1%/2%/5%)事前固定并多档并列；by(year)/by(ind) 换成你的分组变量。</p>
+        <p><b>【怎么看结果】</b>对比 raw / w1 / w_year 三列 x 的系数与 SE：极端值被压回后系数更稳定。不要从 1/2/5% 多档里事后挑显著那档。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：事前固定分位、多档并列、by(year/ind) 分组缩尾。⛔ 红线：从 cuts(1 99)/(2 98)/(5 95) 里挑一个显著的写正文。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · A4_极端值.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* A4 winsor2 压回 vs trim 删除；可 by(Year)/by(Ind) 分组
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 * ssc install winsor2
-clear all
 set seed 404
 set obs 2000
 gen year = 2010 + mod(_n,10)
@@ -359,33 +394,42 @@ gen x = rnormal()
 replace x = 50 in 1/20                 // 20个极端值
 gen y = 0.3*x + rnormal(0,1.5)
 
-* 压回(winsor)：保留观测数，把尾部压到分位
+* === 2. 核心操作：三种缩尾方式 ===
+* ✓ 压回(winsor)：保留观测数，把尾部压到 1%/99% 分位
 winsor2 x, cuts(1 99) suffix(_w)
-* 按年份分组缩尾（消除跨年量纲漂移）
+* ✓ 按年份分组缩尾（消除跨年量纲漂移）
 winsor2 x, cuts(1 99) suffix(_wy) by(year)
-* 按行业分组缩尾
+* ✓ 按行业分组缩尾
 winsor2 x, cuts(1 99) suffix(_wi) by(ind)
 
+* === 3. 检验与输出：esttab 对比三列 ===
 reg y x      ; est store raw
 reg y x_w    ; est store w1
 reg y x_wy   ; est store w_year
 esttab raw w1 w_year, keep(x x_w x_wy) b(%9.3f) se star(*.1 **.05 ***.01)
-* 红线：不要从 cuts(1 99)/(2 98)/(5 95) 里挑一个显著的写正文
-</code></pre>
+* ⛔ 红线：不要从 cuts(1 99)/(2 98)/(5 95) 里挑一个显著的写正文</code></pre>
       </div>
 
       <h3><span class="tech-label">A5</span>先取对数还是先缩尾：顺序不同，结果不同</h3>
       <p><b>是什么：</b>财务变量通常要 <code class="inline">ln(1+x)</code> 又要缩尾，但"先 log 后 winsor"与"先 winsor 后 log"是两道不同的工序。<b>机制：</b>对数把右偏分布压对称，再缩尾压的是<em>对数后</em>的尾部；先缩尾压的是<em>原始尺度</em>的尾部，两者落在数据上的切点完全不同，系数会有可见差异。<b>合法性判别：</b>这本身不是红线，但它是一个被低估的自由度——你不能把两种顺序都跑一遍、挑显著的那种写论文。<b>审稿人如何识破：</b>数据附录里变量构造顺序含糊，"对数化与缩尾处理"一句带过。<b>诚实替代：</b>在数据清洗章节固定并写死 pipeline（"先对连续变量在 1%/99% 缩尾，再取自然对数"），顺序不随结果变动；两种顺序都稳健的结果更可信，可作附录。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>财务变量既要 ln(1+x) 又要缩尾，需要在数据清洗章节固定处理工序时。</p>
+        <p><b>【代码思路】</b>① 模拟右偏营收 rev；② 构造“先缩尾后 log”与“先 log 后缩尾”两版 ln_rev；③ 分别回归用 esttab 对比系数。</p>
+        <p><b>【套用你的数据】</b>删除模拟行；把 rev 换成你的右偏财务变量；两版都跑，主口径一种写进数据清洗节，另一版放附录。</p>
+        <p><b>【怎么看结果】</b>对比 order1 / order2 两列系数：接近说明稳健；若差异可见，更说明顺序必须事前固定、不能随结果换。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：固定 pipeline 并写死顺序、两版都稳健更可信。⛔ 红线：两种顺序都跑一遍挑显著的那种写论文。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · A5_顺序.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* A5 先 log 还是先 winsor：固定 pipeline，不要试
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 505
 set obs 3000
 gen rev = exp(rnormal(3,1.5))          // 右偏的营收
 gen x   = rnormal()
 gen y   = 0.2*x + 0.1*ln(rev+1) + rnormal()
 
+* === 2. 核心操作：两种工序顺序 ===
 * 顺序1：先缩尾后 log
 winsor2 rev, cuts(1 99) suffix(_w)
 gen ln_rev1 = ln(rev_w + 1)
@@ -393,19 +437,27 @@ gen ln_rev1 = ln(rev_w + 1)
 gen ln_rev0 = ln(rev + 1)
 winsor2 ln_rev0, cuts(1 99) suffix(_w)
 
+* === 3. 检验与输出：对比两版系数 ===
 reg y x ln_rev1   ; est store order1
 reg y x ln_rev0_w ; est store order2
 esttab order1 order2, b(%9.3f) se
-* 把你采用的那套顺序写进数据清洗章节，另一套放附录即可
-</code></pre>
+* ✓ 把你采用的那套顺序写进数据清洗章节，另一套放附录即可
+* ⛔ 红线：两种顺序都跑一遍，挑显著的那种写论文</code></pre>
       </div>
 
       <h3><span class="tech-label">A6</span>影响诊断：Cook's D / DFBETA / leave-one-out</h3>
       <p><b>是什么：</b>用 <code class="inline">predict, cooksd</code>、<code class="inline">dfbeta</code>、<code class="inline">leave-one-out</code> 找出"删掉它整个拟合会大变"的观测。<b>机制：</b>极端值（x 或 y 离群）<em>不等于</em>有影响力观测——真正牵着 OLS 走的是同时高杠杆、高残差的点。<b>合法性判别：</b>影响诊断是<em>合法</em>工具：发现某点 Cook's D&gt;4/N 且经查是录入错误（如多打一个零），有明确理由删除并说明。但如果用它<em>按对核心系数的贡献排序、系统性删除让系数不显著的点</em>，就越过红线进入 F1。<b>审稿人如何识破：</b>删掉的点没有任何数据错误记录、删除数量与位置随迭代变化。<b>诚实替代：</b>诊断出问题点后，要么修正数据错误，要么把"含/不含该点"两列并列；样本定义分析前确定。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>怀疑少数观测驱动了核心系数，用 Cook's D / DFBETA 做影响诊断时。</p>
+        <p><b>【代码思路】</b>① 模拟 5 个高杠杆点(x=12)；② 回归后 predict cooksd/leverage、dfbeta；③ 列出 Cook>4/N 的点，合法剔除后重跑对比。</p>
+        <p><b>【套用你的数据】</b>删除模拟行；对真实 reg y x 后 predict cook, cooksd；list ... if cook>4/_N；只有经查证确为录入错误才删。</p>
+        <p><b>【怎么看结果】</b>看 list 输出的高影响点数量，以及删前/删后 x 系数变化；Cook>4/N 且 leverage 高的点才是真“牵着 OLS 走”的点。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：Cook/DFBETA 诊断 + 有明确错误记录才删。⛔ 红线方向：按对核心系数的贡献排序系统性删观测（见 F1）。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · A6_影响诊断.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* A6 Cook's D / DFBETA：极端值≠有影响力
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 606
 set obs 1200
 gen id = _n
@@ -413,16 +465,17 @@ gen x = rnormal()
 replace x = 12 in 1/5                  // 5个高杠杆点
 gen y = 0.3*x + rnormal(0,1.5)
 
+* === 2. 核心操作：影响诊断三剑客 ===
 reg y x
-predict cook, cooksd                   // Cook's D > 4/N 视为高影响
+predict cook, cooksd                   // Cook's D &gt; 4/N 视为高影响
 predict lev, leverage
 dfbeta                                 // 逐点删去后 x 系数变化
-list id x y cook if cook &gt; 4/_N
 
-* 合法：经查是错误观测，有依据地剔除
+* === 3. 检验与输出：定位并处理 ===
+list id x y cook if cook &gt; 4/_N
+* ✓ 合法：经查是错误观测（如多打一个零），有依据地剔除
 reg y x if cook &lt;= 4/_N
-* 红线方向：把"按 b_x 排序删观测"做成循环（见 F1）——切勿使用
-</code></pre>
+* ⛔ 红线方向：把"按 b_x 排序删观测"做成循环（见 F1）——切勿使用</code></pre>
       </div>
     </div>
 
@@ -432,10 +485,17 @@ reg y x if cook &lt;= 4/_N
 
       <h3><span class="tech-label">B1</span>控制变量组合：Model1→Model2→Model3</h3>
       <p><b>是什么：</b>从"只放核心解释变量"逐步加入企业层面、行业层面、宏观层面控制，用 <code class="inline">esttab</code> 输出 Model1–3 对比。<b>机制：</b>加控制变量同时做三件事——改变遗漏变量偏误、改变共线性（坏控制/对撞控制会引入偏误）、以及<em>因为新控制变量有缺失值而悄悄改变样本</em>。<b>合法性判别：</b>控制集由理论与文献惯例决定、逐级报告、无论核心系数是否显著都照报，合法；<em>按 p 值逐个试加控制变量，直到核心变量变显著</em>，是经典数据挖掘。<b>审稿人如何识破：</b>Model1 不显著、Model3 突然三颗星、加入的那个"救命"控制变量与论文叙事关系牵强。<b>诚实替代：</b>事前确定基准控制集；逐步加入仅用于展示稳健性；注意每加一个控制 N 是否变化并说明。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>论文要逐级报告“无控制→企业控制→全控制”三张 Model，观察核心系数稳定性时。</p>
+        <p><b>【代码思路】</b>① 模拟 c2 制造 200 个缺失；② m1/m2/m3 逐级加入控制；③ esttab 输出对比，并提醒 m3 的 N 因 c2 缺失而变小。</p>
+        <p><b>【套用你的数据】</b>删除模拟行；m1=reg y x、m2=加企业控制、m3=加行业/宏观控制；每加一个控制核对 e(N) 是否变化并在正文说明。</p>
+        <p><b>【怎么看结果】</b>看 esttab 三列 x 系数是否稳定；m3 的 N 比 m2 小 200 必须写明。若 m1 不显著、m3 突然三颗星且那个“救命”控制与叙事牵强，警惕数据挖掘。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：理论驱动逐级报告、无论显著与否都报、说明 N 变化。⛔ 红线：按 p 值逐个试控制直到核心变量变显著。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · B1_控制变量.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* B1 控制变量逐级加入，esttab 输出 Model1-3
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 707
 set obs 1500
 gen x = rnormal()
@@ -444,90 +504,127 @@ gen c2 = rnormal()                      // 行业控制(制造缺失)
 replace c2 = . in 1/200
 gen y = 0.25*x + 0.3*c1 + 0.5*c2 + rnormal()
 
-reg y x                              ; est store m1
-reg y x c1                           ; est store m2
-reg y x c1 c2                        ; est store m3
+* === 2. 核心操作：控制集逐级加入 ===
+reg y x            ; est store m1
+reg y x c1         ; est store m2
+reg y x c1 c2      ; est store m3
+
+* === 3. 检验与输出：Model1-3 对比表 ===
 esttab m1 m2 m3, keep(x c1 c2) b(%9.3f) se star(*.1 **.05 ***.01) ///
     mtitles("Model1 无控制" "Model2 企业控制" "Model3 全控制")
-* 注意 m3 的 N 比 m2 小200（因 c2 缺失）——正文必须写明
-* 红线：逐格试 c1..c10 哪个加进去 x 就显著，只留那个
-</code></pre>
+* ✓ 注意 m3 的 N 比 m2 小200（因 c2 缺失）——正文必须写明
+* ⛔ 红线：逐格试 c1..c10 哪个加进去 x 就显著，只留那个</code></pre>
       </div>
 
       <h3><span class="tech-label">B2</span>核心变量的定义方式：水平/变化/滞后/比例/0-1/阶段</h3>
       <p><b>是什么：</b>同一个"政策冲击"，可以用水平值、一阶差分（变化率）、滞后项、占 GDP 比例、是否实施的 0-1 虚拟、或"实施前/中/后"阶段变量来测。<b>机制：</b>换一种操作化，往往等于换了一个被识别的参数——阶段异质性不是"把 p 调小"，而是在回答另一个问题。<b>合法性判别：</b>事前理论给出核心变量的主定义，其余定义作为稳健性；把"水平、变化、比例、虚拟"五六种全部跑一遍只挑显著的写正文，红线。<b>审稿人如何识破：</b>变量定义在引言与稳健性里来回切换、不同定义下系数方向都变了却只讨论显著那张。<b>诚实替代：</b>主定义事前锁定；多操作化结果做成一张稳健性表，方向一致才称"稳健"，方向不一就如实讨论。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>同一政策冲击有水平/滞后/差分/0-1虚拟/阶段多种操作化，需要事前锁定主定义时。</p>
+        <p><b>【代码思路】</b>① 构造面板与政策变量 policy；② 生成滞后、一阶差分、虚拟、阶段四种操作化；③ 四列回归 esttab 对比。</p>
+        <p><b>【套用你的数据】</b>删除模拟与 xtset；把 policy 换成你的核心政策变量；主定义事前由理论锁定（如“滞后一期传导”），其余定义作稳健性。</p>
+        <p><b>【怎么看结果】</b>看 esttab 各列系数方向与显著性：主定义那列写正文；若不同定义方向都变了、只讨论显著那张，就是不诚实。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：事前锁定主定义、多操作化做稳健性表。⛔ 红线：水平/变化/比例/虚拟五六种全跑，只挑显著的写正文。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · B2_核心变量定义.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* B2 核心变量多种操作化，事前锁定主定义
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 808
 set obs 1200
 gen id = ceil(_n/6)
 gen year = 2010 + mod(_n,6)
 xtset id year
 gen policy = rnormal()
-gen y = 0.2*l.policy + rnormal()
+gen y = 0.2*l.policy + rnormal()        // 真实效应来自滞后一期
 
-gen policy_l1 = l.policy               // 滞后一期
-gen policy_d  = d.policy               // 一阶差分
-gen policy_dum = policy&gt;0              // 0-1 虚拟
+* === 2. 核心操作：同一政策的多种操作化 ===
+gen policy_l1 = l.policy                 // 滞后一期
+gen policy_d  = d.policy                 // 一阶差分
+gen policy_dum = policy&gt;0               // 0-1 虚拟
 gen policy_stage = cond(year&lt;=2012,0,cond(year&lt;=2015,1,2))  // 阶段
 
+* === 3. 检验与输出：四种定义对比 ===
 reg y policy      ; est store def_level
-reg y policy_l1  ; est store def_lag
+reg y policy_l1   ; est store def_lag
 reg y policy_d    ; est store def_diff
-reg y i.policy_stage#c.policy        ; est store def_stage
+reg y i.policy_stage#c.policy ; est store def_stage
 esttab def_level def_lag def_diff, b(%9.3f) se star(*.1 **.05 ***.01)
-</code></pre>
+* ✓ 主定义事前锁定（本例理论预期滞后），其余定义作稳健性
+* ⛔ 红线：水平/变化/比例/虚拟五六种全跑，只挑显著的写正文</code></pre>
       </div>
 
       <h3><span class="tech-label">B3</span>变量变换：ln / 人均 / 比率 / 增长率 / 标准化 / 连续→分类</h3>
       <p><b>是什么：</b>对 X 或 Y 取对数、除以人口换算成人均、换成比率或增长率、z-score 标准化、或把连续变量切成高中低三组。<b>机制：</b>要区分两类变换——<em>改善分布</em>（log 把右偏压对称、标准化便于跨变量比较，不改变你在测什么）与<em>改变测量构念</em>（GDP 换成人均 GDP、连续政策强度换成"是否实施"，回答的是不同问题）。<b>合法性判别：</b>log、标准化合法；连续变量为了"造出一个显著断点/分组"而硬切分类（如把融资约束在中位数切一刀，试多个切点），是红线。<b>审稿人如何识破：</b>分组切点在论文中随稳健性表漂移。<b>诚实替代：</b>连续变量主回归用连续形式；分组仅用于叙事性异质性，切点事前定（中位数、三分位）并用交互项检验。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>连续变量右偏需要改善分布，或要把政策强度分组做叙事性异质性时。</p>
+        <p><b>【代码思路】</b>① 模拟右偏 x_raw；② 做 log 与 z-score 两种“改善分布”的变换并回归；③ 注释掉事后挑切点的 xtile 红线。</p>
+        <p><b>【套用你的数据】</b>删除模拟；对右偏变量取 ln，或标准化 gen z=(x-r(mean))/r(sd)；连续变量主回归用连续形式，分组切点事前定（中位数/三分位）。</p>
+        <p><b>【怎么看结果】</b>reg y ln_x 与 reg y z_x 的 t 值等价；标准化后系数可读为“x 一个 SD 对 y 的影响”。红线注释演示了为何不能事后试切点。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：log、z-score 改善分布。⛔ 红线：在 10/25/50/75 分位上逐个试切点，硬造出一个显著分组。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · B3_变量变换.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* B3 改善分布(log/标准化) vs 改变构念(连续切分类)
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 909
 set obs 1500
 gen x_raw = exp(rnormal(0,1))          // 右偏
 gen y = 0.3*ln(x_raw) + rnormal()
 
-* 合法：log 改善分布
+* === 2. 核心操作：两类变换 ===
+* ✓ 合法：log 改善分布（不改变测量构念）
 gen ln_x = ln(x_raw)
-reg y ln_x
-* 合法：标准化
+* ✓ 合法：z-score 标准化（便于跨变量比较）
 sum ln_x
 gen z_x = (ln_x-r(mean))/r(sd)
+
+* === 3. 检验与输出 ===
+reg y ln_x
 reg y z_x
-* 红线方向：在10/25/50/75分位数上逐个试切点
-* xtile x_bin = x_raw, nq(2)  // 切点必须事前定，不能事后挑
-</code></pre>
+* ⛔ 红线方向：在10/25/50/75分位数上逐个试切点
+* xtile x_bin = x_raw, nq(2)  // 切点必须事前定，不能事后挑</code></pre>
       </div>
 
       <h3><span class="tech-label">B4</span>变量量级 / 单位 / 倒数处理（逆向指标正向化）</h3>
       <p><b>是什么：</b>把"融资成本"换成"融资可得性"、用 1/x 或负号把逆向指标转为正向、把万元换成亿元。<b>机制：</b>单位只影响系数大小不影响 t 值；但<em>逆向指标的符号</em>直接决定系数正负与星号方向。<b>合法性判别：</b>逆向指标正向化是常规、必须在变量构造节事前定义；为了让故事"方向好看"而反复在正向/负向定义间切换，红线。<b>审稿人如何识破：</b>同一变量在不同表里一会叫"成本"一会叫"便利"、符号忽正忽负。<b>诚实替代：</b>每个变量给出唯一、事前的方向定义与计算公式；稳健性不改变方向定义。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>核心解释变量是“成本/污染/风险”等逆向指标，需要一次性正向化时。</p>
+        <p><b>【代码思路】</b>① 模拟 cost 越高 y 越低；② 事前定义 ease=-cost 正向指标；③ 回归确认系数为正、与故事方向一致。</p>
+        <p><b>【套用你的数据】</b>删除模拟；对逆向指标只定义一次 gen ease=-cost（或 1/cost），在变量构造节写死公式，全论文不再切换。</p>
+        <p><b>【怎么看结果】</b>reg y ease 系数应为正（“便利提升 y”）；若为负说明符号方向理解有误。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：事前定义一次方向、稳健性不改变方向。⛔ 红线：为让故事“方向好看”有时报 cost 有时报 -cost。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · B4_逆向指标.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* B4 逆向指标正向化：事前定义一次，不再改
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 111
 set obs 1000
 gen cost = rnormal(0,1)                 // 融资成本(越高越差)
 gen y = -0.3*cost + rnormal()           // 成本越高，y越低
 
-* 事前定义：融资便利 = -成本（正向指标）
+* === 2. 核心操作：逆向指标正向化 ===
+* ✓ 事前定义：融资便利 = -成本（正向指标），全论文只此一处定义
 gen ease = -cost
+
+* === 3. 检验与输出 ===
 reg y ease                              // 预期为正，与故事一致
-* 红线：为了"系数显著为负"，有时报 cost 有时报 -cost
-</code></pre>
+* ⛔ 红线：为了"系数显著为负"，有时报 cost 有时报 -cost</code></pre>
       </div>
 
       <h3><span class="tech-label">B5</span>企业年龄控制：上市年限 / 成立年限取对数 +1</h3>
       <p><b>是什么：</b>控制企业年龄时，常用 <code class="inline">gen age = year - listyear</code>（上市年限）或成立年份差，并取 <code class="inline">ln(1+age)</code> 缓解偏态。<b>机制：</b>年龄通常右偏（大量年轻企业、少数老牌企业），不取对数时极端老企业会拉大 SE；取 ln(1+age) 让分布更对称。<b>合法性判别：</b>这是常规做法，本身不涉红线；要注意的是"上市年限"与"成立年限"是两个不同构念，不能哪个显著用哪个。<b>审稿人如何识破：</b>变量名含糊为"企业年龄"，实则在两套口径间游移。<b>诚实替代：</b>写明用上市年限还是成立年限；主口径一种，另一种作稳健性。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>控制企业年龄/上市年限，缓解其右偏分布对 SE 的影响时。</p>
+        <p><b>【代码思路】</b>① 模拟 listyear；② 构造 age=year-listyear 与 lnage=ln(1+age)；③ 对比线性 age 与对数 age 两版回归。</p>
+        <p><b>【套用你的数据】</b>删除模拟；gen age=year-listyear（上市年限）或成立年差；gen lnage=ln(1+age)；写明用上市年限还是成立年限。</p>
+        <p><b>【怎么看结果】</b>对比 reg y x age 与 reg y x lnage 的 x 系数稳定性；lnage 更稳健，极端老企业不再拉大 SE。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：ln(1+age) 常规做法、写明口径。⛔ 红线：“上市年限”与“成立年限”哪个显著用哪个。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · B5_企业年龄.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* B5 企业年龄控制：ln(1+age)
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 222
 set obs 2000
 gen listyear = 1990 + floor(runiform()*30)
@@ -536,9 +633,12 @@ gen age = year - listyear               // 上市年限
 gen lnage = ln(1+age)                   // 取对数+1 缓解偏态
 gen x = rnormal()
 gen y = 0.2*x - 0.01*age + rnormal()
+
+* === 2. 核心操作：两种年龄控制对比 ===
+* === 3. 检验与输出 ===
 reg y x age
-reg y x lnage                           // 推荐：对数化后更稳健
-</code></pre>
+reg y x lnage                           // ✓ 推荐：对数化后更稳健
+* 注意：上市年限与成立年限是两个构念，主口径一种，另一种仅作稳健性</code></pre>
       </div>
     </div>
 
@@ -548,10 +648,17 @@ reg y x lnage                           // 推荐：对数化后更稳健
 
       <h3><span class="tech-label">C1</span>换估计模型：OLS / logit / probit / xtlogit / reghdfe / stcox / Poisson / negbin</h3>
       <p><b>是什么：</b>因变量是 0-1 用 logit/probit，面板二值用 xtlogit，计数用 Poisson/negbin，生存数据用 stcox，连续用 OLS/reghdfe。<b>机制：</b>不同估计量对分布假设、异质性处理、小样本偏误的处理不同；FE logit 只用组内变异，丢弃组间信息，系数可能与 pooled logit 差很多。<b>合法性判别：</b>模型选择应由因变量性质（连续/二值/计数/生存）与理论决定；把 OLS、logit、probit、Poisson、negbin 全跑一遍挑显著的，红线。<b>审稿人如何识破：</b>二值因变量正文用 OLS 却在附录换成 logit 才显著。<b>诚实替代：</b>主模型按因变量性质选；其他模型作为稳健性全报告；边际效应要换算出来比较。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>因变量为二值/计数/连续，需要按数据性质选主模型并做模型稳健性时。</p>
+        <p><b>【代码思路】</b>① 模拟二值 y_bin 与计数 y_count；② 跑 LPM/logit/probit/xtlogit/Poisson/negbin；③ esttab 对比。</p>
+        <p><b>【套用你的数据】</b>删除模拟；0-1 因变量用 logit/probit（LPM 仅稳健性）、计数用 Poisson/negbin；模型由因变量性质事前定。</p>
+        <p><b>【怎么看结果】</b>看 esttab 各列系数方向是否一致；logit/probit 系数不可直接比，要用 margins 换算边际效应；FE logit 只用组内变异。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：按因变量性质选主模型、其他全报告作稳健性。⛔ 红线：OLS/logit/probit/Poisson/negbin 全跑挑显著的。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · C1_换模型.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* C1 按因变量性质选模型，不要试
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 333
 set obs 1500
 gen id = ceil(_n/5)
@@ -560,23 +667,33 @@ gen y_latent = 0.5*x + rnormal()
 gen y_bin = (y_latent&gt;0)                // 二值因变量
 gen y_count = poisson(0.6+0.4*x)        // 计数因变量
 
-reg y_bin x        ; est store ols_lpm      // LPM(可作稳健性)
+* === 2. 核心操作：按因变量性质选模型 ===
+* === 3. 检验与输出：不同估计量对比 ===
+reg y_bin x        ; est store ols_lpm      // LPM(仅作稳健性)
 logit y_bin x      ; est store logit
 probit y_bin x     ; est store probit
 xtset id
-xtlogit y_bin x, fe                         // FE logit 只用组内
+xtlogit y_bin x, fe                         // FE logit 只用组内变异
 poisson y_count x  ; est store poisson
 nbreg y_count x    ; est store negbin
 esttab ols_lpm logit probit, b(%9.3f) se star(*.1 **.05 ***.01)
-</code></pre>
+* ✓ 主模型按因变量性质选；其他模型作稳健性全报告，边际效应用 margins 换算
+* ⛔ 红线：把 OLS/logit/probit/Poisson/negbin 全跑一遍挑显著的</code></pre>
       </div>
 
       <h3><span class="tech-label">C2</span>固定效应组合：year / firm / country / industry / 交互固定效应</h3>
       <p><b>是什么：</b>用 <code class="inline">reghdfe y x, absorb(Year Ind2)</code> 吸收年份、企业、国家、行业，或双向/三向交互固定效应（country×year、industry×year）。<b>机制：</b>每加一层 FE，吸收掉那一层的不可观测异质性，但也消耗自由度、改变识别来源（从截面变异变成只靠企业内时序变异）。<b>合法性判别：</b>FE 组合由经济结构决定（面板企业数据通常双向 FE）；逐个加 FE 直到核心变量"恰好显著"，是红线边缘。<b>审稿人如何识破：</b>FE 层级在稳健性表里跳来跳去、系数符号随 FE 增加而翻转。<b>诚实替代：</b>基准 FE 事前定；从少到多逐级报告，观察系数稳定区间。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>面板数据需要决定吸收企业/年份/行业交互固定效应的层级组合时。</p>
+        <p><b>【代码思路】</b>① 模拟含行业层面冲击的面板；② reghdfe 分别 absorb(firm)、(firm year)、(ind#year)；③ esttab 对比系数稳定区间。</p>
+        <p><b>【套用你的数据】</b>删除模拟；reghdfe y x, absorb(你的FE层级) vce(cluster ...)；FE 组合由经济结构事前定。</p>
+        <p><b>【怎么看结果】</b>三列 x 系数的稳定区间；FE 越多识别越靠组内变异；若系数随 FE 增加而翻转，说明识别来源脆弱。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：按经济结构定基准 FE、从少到多逐级报告。⛔ 红线边缘：逐个加 FE 到“恰好显著”。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · C2_固定效应.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* C2 固定效应组合：reghdfe 吸收多维 FE
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 444
 set obs 2000
 gen firm = ceil(_n/10)
@@ -585,62 +702,92 @@ gen ind  = ceil(runiform()*15)
 gen x = rnormal() + 0.3*rnormal(ind)    // 行业层面冲击
 gen y = 0.3*x + rnormal(firm) + rnormal(year)
 
-reghdfe y x, absorb(firm) vce(cluster firm)            ; est store fe_firm
-reghdfe y x, absorb(firm year) vce(cluster firm)       ; est store fe_2way
-reghdfe y x, absorb(ind#year) vce(cluster ind)         ; est store fe_indyear
+* === 2. 核心操作：固定效应组合逐级升级 ===
+* === 3. 检验与输出：三档 FE 对比 ===
+reghdfe y x, absorb(firm) vce(cluster firm)        ; est store fe_firm
+reghdfe y x, absorb(firm year) vce(cluster firm)   ; est store fe_2way
+reghdfe y x, absorb(ind#year) vce(cluster ind)      ; est store fe_indyear
 esttab fe_firm fe_2way fe_indyear, keep(x) b(%9.3f) se star(*.1 **.05 ***.01)
-</code></pre>
+* ✓ 基准 FE 事前定（企业面板通常双向 FE），逐级报告观察稳定区间
+* ⛔ 红线边缘：逐个加 FE 直到核心变量「恰好显著」</code></pre>
       </div>
 
       <h3><span class="tech-label">C3</span>行业代码粒度：i.Ind1 / i.Ind2 / i.Ind3</h3>
       <p><b>是什么：</b>用一位/两位/三位行业代码分别作为固定效应或聚类层级：<code class="inline">i.Ind1</code>、<code class="inline">i.Ind2</code>、<code class="inline">i.Ind3</code>。<b>机制：</b>粒度越细，吸收的行业异质性越细，但聚类数随之变化、标准误自由度改变；聚类层级从一位变三位，SE 可能从显著变不显著。<b>合法性判别：</b>不同粒度作为稳健性报告合法；挑"恰好显著"的粒度写正文，红线。<b>审稿人如何识破：</b>正文用两位行业 FE，附录换成三位才显著却不解释。<b>诚实替代：</b>按国民经济行业分类惯例选定基准粒度，各粒度稳健性并列。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>行业代码有一位/两位/三位多种粒度，需要选 FE 与聚类层级并做稳健性时。</p>
+        <p><b>【代码思路】</b>① 模拟 ind1/ind2/ind3 三级行业码；② 分别在各粒度上 absorb + cluster；③ esttab 对比系数稳、SE 变。</p>
+        <p><b>【套用你的数据】</b>删除模拟；按国民经济行业分类惯例定基准粒度；各粒度稳健性并列报告。</p>
+        <p><b>【怎么看结果】</b>三列 x 系数应稳定，但 SE 随聚类粒度变（聚类数越多 SE 越小）；挑最可辩护的粒度写正文。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：各粒度稳健性并列。⛔ 红线：挑“恰好显著”的粒度写正文。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · C3_行业粒度.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* C3 行业代码粒度 Ind1/Ind2/Ind3
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 555
 set obs 2000
-gen ind1 = ceil(runiform()*20)          // 一位
-gen ind2 = ind1*10 + ceil(runiform()*5)// 两位(100个)
-gen ind3 = ind2*10 + ceil(runiform()*3)// 三位(300个)
+gen ind1 = ceil(runiform()*20)           // 一位
+gen ind2 = ind1*10 + ceil(runiform()*5) // 两位(100个)
+gen ind3 = ind2*10 + ceil(runiform()*3) // 三位(300个)
 gen x = rnormal()
 gen y = 0.3*x + rnormal(ind2) + rnormal()
 
+* === 2. 核心操作：三种行业粒度 ===
+* === 3. 检验与输出：粒度对比（系数稳、SE变）===
 reghdfe y x, absorb(i.ind1) vce(cluster ind1) ; est store g1
 reghdfe y x, absorb(i.ind2) vce(cluster ind2) ; est store g2
 reghdfe y x, absorb(i.ind3) vce(cluster ind3) ; est store g3
 esttab g1 g2 g3, keep(x) b(%9.3f) se star(*.1 **.05 ***.01)
-</code></pre>
+* ✓ 按行业分类惯例选定基准粒度，各粒度稳健性并列
+* ⛔ 红线：正文用两位、附录换三位才显著却不解释</code></pre>
       </div>
 
       <h3><span class="tech-label">C4</span>函数形式：线性 / U 型 / 倒 U / 门槛 / 分段 / 调节</h3>
       <p><b>是什么：</b>加入二次项 <code class="inline">c.X##c.X</code> 识别 U 型/倒 U，加入交互 <code class="inline">c.X##i.Stage</code> 识别调节/阶段，或门槛、分段回归。<b>机制：</b>真实关系是非线性时硬套线性，平均斜率≈0 造成"假不显著"；加正确函数形式后关系显现。<b>合法性判别：</b>有理论假设 + RESET/图形诊断支持的非线性，合法；盲目试二次、三次、分段、门槛各种形式直到显著，红线。<b>审稿人如何识破：</b>二次项显著但拐点落在数据范围之外、门槛值是搜出来的而非制度给定。<b>诚实替代：</b>事前提出非线性假设；RESET 与 lowess 诊断；报告拐点是否在支撑集内、均值处边际效应。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>怀疑线性关系其实是 U 型/倒 U，或存在阶段/分组调节效应时。</p>
+        <p><b>【代码思路】</b>① 模拟真实倒 U；② 先跑线性（平均斜率≈0），再加二次项 c.x##c.x 并 test；③ 用交互 c.x##i.stage + margins 报告阶段边际效应。</p>
+        <p><b>【套用你的数据】</b>删除模拟；事前提出非线性假设；reg y c.x##c.x 后 test 二次项；margins 报告均值处与拐点的边际效应。</p>
+        <p><b>【怎么看结果】</b>线性不显著但二次项显著=函数形式误设；看 test x2 的 F/p，并确认拐点落在数据支撑集内。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：理论+RESET 支持的非线性、报告拐点位置。⛔ 红线：试二次/三次/分段/门槛各种形式到显著。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · C4_函数形式.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* C4 二次项识别 U 型/倒 U；交互识别调节
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 666
 set obs 1500
 gen x = rnormal(-2,2)
 gen y = 1 - 0.4*x^2 + rnormal()        // 真实倒U
 
+* === 2. 核心操作：从线性误设到正确函数形式 ===
 reg y x                                 // 线性误设：平均斜率≈0
 gen x2 = x^2
 reg y c.x##c.x                          // = reg y x c.x#c.x
-test x2                                 // 二次项显著=非线性
-* 调节/阶段：c.x##i.Stage
+
+* === 3. 检验与输出 ===
+test x2                                 // 二次项显著=非线性成立
 gen stage = cond(x&lt;0,0,1)
 reg y c.x##i.stage
 margins, dydx(x) at(stage=(0 1))       // 两阶段各自边际效应
-</code></pre>
+* ✓ 事前有非线性假设 + RESET/lowess 诊断，报告拐点是否在支撑集内
+* ⛔ 红线：盲目试二次、三次、分段、门槛直到显著</code></pre>
       </div>
 
       <h3><span class="tech-label">C5</span>高维固定效应：xtreg 与 reghdfe 对照、R² 分项</h3>
       <p><b>是什么：</b><code class="inline">xtreg, fe</code> 只能吸收一维面板 FE；<code class="inline">reghdfe</code> 用 Frisch–Waugh–Lovel 残差化吸收多维高维 FE，并汇报 within/overall 及各固定效应贡献的 R²。<b>机制：</b>高维 FE 下 <code class="inline">xtreg</code> 要么跑不动、要么吸收不全；reghdfe 的 R² 拆解能告诉你固定效应解释了多少变异。<b>合法性判别：</b>用 reghdfe 合法且高效；但要注意<em>吸收 FE 后实际参与估计的样本可能变少</em>（ singleton 组被丢弃），隐瞒这一变化属误导。<b>审稿人如何识破：</b>样本量比 raw data 小很多却不说明 singleton 剔除。<b>诚实替代：</b>reghdfe 后报告 e(N) 与组结构；附 xtreg 对照。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>面板用 reghdfe 吸收多维 FE，需要报告 R² 分解与 singleton 样本变化时。</p>
+        <p><b>【代码思路】</b>① xtreg, fe 与 reghdfe 对照；② esttab 比系数；③ display e(N) 检查被 absorb 掉的 singleton 组。</p>
+        <p><b>【套用你的数据】</b>删除模拟；xtset 后 xtreg y x i.year, fe 与 reghdfe y x, absorb(firm year) 对照；务必报告 e(N)。</p>
+        <p><b>【怎么看结果】</b>两列 x 系数；reghdfe 输出 absorbed FE 个数与 within/overall R²；e(N) 比 raw 小就要说明 singleton 被剔除。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：reghdfe + R² 分项 + 报告样本变化。⛔ 需警惕：隐瞒吸收 FE 后样本变小属误导。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · C5_高维FE.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* C5 xtreg vs reghdfe；R² 分项；singleton 样本
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 777
 set obs 3000
 gen firm = ceil(_n/20)
@@ -648,35 +795,46 @@ gen year = 2010 + mod(_n,10)
 gen x = rnormal()
 gen y = 0.3*x + rnormal(firm) + rnormal(year)
 
+* === 2. 核心操作：xtreg vs reghdfe ===
 xtset firm year
-xtreg y x i.year, fe                    ; est store xtreg_fe
-reghdfe y x, absorb(firm year)          ; est store reghdfe_r2
+xtreg y x i.year, fe                 ; est store xtreg_fe
+reghdfe y x, absorb(firm year)       ; est store reghdfe_r2
+
+* === 3. 检验与输出：R² 分项与实际估计 N ===
 esttab xtreg_fe reghdfe_r2, keep(x) b(%9.3f) se
-* reghdfe 输出会显示 absorbed FE 个数与 R² 分解
-* 检查 singleton：被 absorb 掉的单观测组
+* reghdfe 输出会显示 absorbed FE 个数与 R² 分解（within/overall）
 display "实际估计 N = " e(N)
-</code></pre>
+* ✓ 报告 e(N) 与组结构；比 raw 小很多时说明 singleton 被剔除</code></pre>
       </div>
 
       <h3><span class="tech-label">C6</span>因变量稀有事件：relogit / Firth logit / case-control</h3>
       <p><b>是什么：</b>二值因变量里事件（如违约、退市）只占 1–2% 时，普通 logit 系数会严重高估（分离问题），需用 <code class="inline">firthlogit</code>（Firth 惩罚似然）或 <code class="inline">relogit</code>（King &amp; Zeng 稀有事件 logit 校正）。<b>机制：</b>稀有事件下 MLE 有限样本偏误，系数绝对值被推大。<b>合法性判别：</b>诊断出稀有事件后采用校正模型，合法且更诚实；用普通 logit 硬报一个偏大的"显著"系数，反而是不规范。<b>审稿人如何识破：</b>处理组占比不到 2% 却用普通 logit 报大系数。<b>诚实替代：</b>报告处理组比例；firthlogit/relogit 作稳健性；注意 case-control 抽样下总体效应需重新加权。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>二值因变量事件占比很低（违约/退市/失败<5%），普通 logit 系数疑似高估时。</p>
+        <p><b>【代码思路】</b>① ssc install firthlogit；模拟事件率约 5%；② sum 确认稀有程度；③ 普通 logit 与 Firth 校正 logit 对比。</p>
+        <p><b>【套用你的数据】</b>删除模拟；先 sum 你的二值因变量看处理组比例；<5% 时改用 firthlogit（Firth 惩罚似然）或 relogit。</p>
+        <p><b>【怎么看结果】</b>看 esttab 两列：稀有事件下普通 logit 系数绝对值通常偏大，firth 更可靠；case-control 抽样需重新加权。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：诊断出稀有事件后采用校正模型更诚实。⛔ 不规范：小样本二值变量硬用普通 logit 报偏大系数。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · C6_稀有事件.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* C6 稀有事件因变量：firthlogit / relogit
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 * ssc install firthlogit
-clear all
 set seed 888
 set obs 3000
 gen x = rnormal()
 gen y_latent = -3 + 0.5*x + rnormal()
 gen rare = (y_latent&gt;0)                 // 事件仅约5%
 
-sum rare                                 // 确认稀有程度
-logit rare x           ; est store plain_logit
-firthlogit rare x, iter(100)            ; est store firth
+* === 2. 核心操作：普通 logit vs Firth 校正 ===
+sum rare                                 // 先确认稀有程度
+
+* === 3. 检验与输出：系数对比 ===
+logit rare x                ; est store plain_logit
+firthlogit rare x, iter(100) ; est store firth
 esttab plain_logit firth, b(%9.3f) se star(*.1 **.05 ***.01)
-* 稀有事件下普通 logit 系数通常偏大，firth 更可靠
-</code></pre>
+* ✓ 稀有事件下普通 logit 系数通常偏大，firth 更可靠；报告处理组比例</code></pre>
       </div>
     </div>
 
@@ -686,10 +844,17 @@ esttab plain_logit firth, b(%9.3f) se star(*.1 **.05 ***.01)
 
       <h3><span class="tech-label">D1</span>标准误与聚类：ordinary / robust / cluster / two-way</h3>
       <p><b>是什么：</b>系数 β 不变，但标准误可以从普通 OLS、异方差稳健（robust）、单维聚类（个体/行业）到双向聚类（行业×年份）逐级放宽。<b>机制：</b>t = β / SE，<em>同一个 β，只换标准误算法，p 值就能从 0.02 跳到 0.20</em>——这是所有旋钮里性价比最高、也最容易被滥用的一个。<b>合法性判别：</b>标准误必须按数据的真实相关结构选（误差在哪一层相关就聚到哪一层），聚类数太少（&lt;约 40–50）要用 wild cluster bootstrap；<em>把四种 SE 全试一遍、挑最窄的那个写正文</em>，是审稿人最警惕的红线边缘行为。<b>审稿人如何识破：</b>正文用的是从未在方法论上辩护过的那种 SE；OLS 显著、聚类后立刻不显著却仍宣称"稳健"。<b>诚实替代：</b>在方法论节明确论证聚类层级；四种 SE 同表对比；选最保守且有理论依据的。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>同一系数需要在 OLS/robust/单维聚类/双向聚类之间选择标准误时。</p>
+        <p><b>【代码思路】</b>① 模拟同行业残差相关；② 同一回归跑五种 vce；③ esttab 对比系数不变、SE 与 p 全变。</p>
+        <p><b>【套用你的数据】</b>删除模拟；按数据真实相关结构选聚类层级；聚类数<40-50 用 wild cluster bootstrap；五种 SE 同表报告。</p>
+        <p><b>【怎么看结果】</b>重点看同一 x 系数下五列 SE 与星号：t=β/SE，p 从 0.02 跳到 0.20 就发生在这一步；选最保守且有理论依据那列。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：方法论节论证聚类层级、报告最保守可辩护的列。⛔ 红线边缘：四种 SE 全试、挑最窄那列写正文。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · D1_标准误.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* D1 同一系数，四种标准误，p 值天差地别
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 999
 set obs 2000
 gen firm = ceil(_n/5)
@@ -697,15 +862,17 @@ gen ind  = ceil(runiform()*20)
 gen x = rnormal()
 gen y = 0.3*x + rnormal(ind) + rnormal()   // 同行业残差相关
 
-reg y x, vce(ols)                    ; est store s_ols
-reg y x, vce(robust)                 ; est store s_rob
-reg y x, vce(cluster firm)           ; est store s_firm
+* === 2. 核心操作：同一系数，五种标准误 ===
+* === 3. 检验与输出：esttab 对比 t/p ===
+reg y x, vce(ols)                     ; est store s_ols
+reg y x, vce(robust)                  ; est store s_rob
+reg y x, vce(cluster firm)            ; est store s_firm
 reghdfe y x, absorb(ind) vce(cluster ind) ; est store s_ind
 * 双向聚类
 reghdfe y x, absorb(ind) vce(cluster ind firm) ; est store s_two
 esttab s_ols s_rob s_firm s_ind s_two, keep(x) b(%9.3f) se star(*.1 **.05 ***.01)
-* 红线：哪一列最窄就只报哪一列；合法：论证后报告最保守且可辩护的那列
-</code></pre>
+* ✓ 合法：在方法论节论证聚类层级，报告最保守且可辩护的那列
+* ⛔ 红线：哪一列最窄就只报哪一列</code></pre>
       </div>
 
       <h3><span class="tech-label">D2</span>加权：country / firm / population / sampling weights</h3>
@@ -714,10 +881,17 @@ esttab s_ols s_rob s_firm s_ind s_two, keep(x) b(%9.3f) se star(*.1 **.05 ***.01
         <div class="callout-title">⛔ D2 不可逾越的规范线</div>
         <p>先跑不加权——不显著；再加一个"人口权重"——显著了；于是正文只报加权版。这是教科书式 p-hacking。<strong>权重不是用来调 p 值的旋钮。</strong>正确顺序是：抽样设计/理论决定你<em>本来就该</em>加权，无论结果显著与否都加权，并把未加权版作为对照放上桌。</p>
       </div>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>抽样调查数据或宏国数据，需要用抽样/人口权重估计目标总体平均效应时。</p>
+        <p><b>【代码思路】</b>① 模拟各国人口权重 pop；② 不加权回归（各国等权）；③ [pw=pop] 人口加权回归对比。</p>
+        <p><b>【套用你的数据】</b>删除模拟；权重来源（抽样概率倒数、人口权重）事前说明；不加权与加权两版同表报告并解释差异。</p>
+        <p><b>【怎么看结果】</b>看两版系数/SE 差异：加权改变的是“估计哪个总体的 ATE”；若符号相反要解释，不能只挑显著那版。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：抽样设计/理论本就该加权、无论显著与否都加。⛔ 红线：不加权不显著、加权后才显著就只报加权版。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · D2_加权.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* D2 加权：必须有抽样设计/理论依据
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 1010
 set obs 1500
 gen country = ceil(runiform()*10)
@@ -725,13 +899,12 @@ gen pop = runiform()*1000              // 各国人口权重
 gen x = rnormal()
 gen y = 0.2*x + rnormal(country)
 
-* 不加权：每个国家等权
-reg y x
-* 人口加权：估计"人口意义上的"平均效应
-reg y x [pw=pop]
-* 合法：因为目标总体是全球人口加权平均，理论上本就该加权重
-* 红线：发现不加权不显著、加权后才显著，就只报加权版
-</code></pre>
+* === 2. 核心操作：不加权 vs 加权 ===
+* === 3. 检验与输出 ===
+reg y x                                 // 不加权：每个国家等权
+reg y x [pw=pop]                        // 人口加权：估计"人口意义上的"平均效应
+* ✓ 合法：目标总体本就是人口加权平均，理论上本就该加权，且两版同表报告
+* ⛔ 红线：发现不加权不显著、加权后才显著，就只报加权版</code></pre>
       </div>
     </div>
 
@@ -741,10 +914,17 @@ reg y x [pw=pop]
 
       <h3><span class="tech-label">E1</span>时间结构 / Lag：X_t→Y_t 不显著，但 X_{t-1}→Y_t 显著</h3>
       <p><b>是什么：</b>把解释变量从当期换成滞后一期/二期/三期 <code class="inline">L1.x / L2.x / L3.x</code>，或换成移动平均。<b>机制：</b>政策传导、预期调整需要时间，滞后效应可能比当期更合理；但<em>逐期扫描 L1..L5 直到某一期显著</em>，本质是多重检验。<b>合法性判别：</b>滞后阶数必须由经济理论（传导期、财报披露时滞）事前决定；<strong>合理性要注意</strong>——不能纯靠数据扫出来。<b>审稿人如何识破：</b>只报告 L2 显著、L1/L3 不显著却无任何理论解释为何是二期。<b>诚实替代：</b>事前声明主滞后阶；各阶滞后同表报告；用 AIC/BIC 或理论而非显著性定阶。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>政策传导存在时滞，需要事前定滞后阶并做各阶稳健性时。</p>
+        <p><b>【代码思路】</b>① 面板数据，真实效应设为滞后两期；② 跑当期与 L1/L2/L3 四列；③ esttab 对比各阶系数。</p>
+        <p><b>【套用你的数据】</b>删除模拟与 xtset；主滞后阶由理论（传导期、财报披露时滞）事前定；各阶同表报告，不用 AIC/BIC 以外的显著性定阶。</p>
+        <p><b>【怎么看结果】</b>四列中应是理论预期那阶最显著；只报告某一阶显著、其余阶不显著却无理论解释=事后扫出来。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：理论定主阶、各阶同表。⛔ 红线：L1..L5 全扫，哪个星多报哪个。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · E1_滞后.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* E1 滞后结构：理论定阶，不逐期扫显著
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 1212
 set obs 1200
 gen id = ceil(_n/6)
@@ -753,22 +933,30 @@ xtset id year
 gen x = rnormal()
 gen y = 0.3*l2.x + rnormal()          // 真实效应滞后两期
 
+* === 2. 核心操作：当期与各阶滞后 ===
+* === 3. 检验与输出：L0-L3 对比 ===
 reg y x        ; est store lag0        // 当期：弱
 reg y l1.x     ; est store lag1
 reg y l2.x     ; est store lag2        // 理论预期的传导期
 reg y l3.x     ; est store lag3
 esttab lag0 lag1 lag2 lag3, b(%9.3f) se star(*.1 **.05 ***.01)
-* 合法：理论说"政策两期后起效"，主报 L2，其余稳健性
-* 红线：L1..L5 全扫一遍，哪个星多报哪个
-</code></pre>
+* ✓ 合法：理论说"政策两期后起效"，主报 L2，其余作稳健性
+* ⛔ 红线：L1..L5 全扫一遍，哪个星多报哪个</code></pre>
       </div>
 
       <h3><span class="tech-label">E2</span>平行趋势不通过：事件研究与"观测值合并检验"</h3>
       <p><b>是什么：</b>DID 中事件研究图显示事前趋势不平行时，常见"补救"包括合并处理时点、剔除事件前异常期、把多个政策事件合并成一个处理强度变量。<b>机制：</b>平行趋势是 DID 识别的核心假设；事前趋势显著本身就是在告诉你"这组比较不可比"，合并事件窗口可能掩盖问题。<b>合法性判别：</b>如果事前确有<em>制度上合理</em>的事件合并依据（多批次政策、统一政策实施），合并并报告动态效应合法；<em>仅仅因为不合并就不显著、合并后才平行</em>，则是掩盖识别失败。<b>审稿人如何识破：</b>事件研究图被"美化"、前趋势系数被删掉几期、合并处理时点的理由牵强。<b>诚实替代：</b>完整事件研究图（含 pre-trend 全部期）；事前趋势检验明确报告；不通过就承认识别受限，换 RDD/IV，而不是缝合趋势。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>做 DID 时诊断事前趋势是否平行、画完整事件研究图时。</p>
+        <p><b>【代码思路】</b>① 模拟一个“事前就有趋势”的处理组；② 构造 rel 与 e-4..e3 事件虚拟；③ reghdfe 报告全部 pre 期系数。</p>
+        <p><b>【套用你的数据】</b>删除模拟；gen rel=year-政策年；forvalues 生成 leads/lags；reghdfe 吸收 firm year 并聚类 firm。</p>
+        <p><b>【怎么看结果】</b>重点看 e-4..e-1 是否显著——本例模拟了事前趋势，应显著=平行趋势不通过，应承认识别受限。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：报告全部事前系数、如实诊断。⛔ 红线：只画 e0 之后“显得平行”，把漂移期裁掉。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · E2_平行趋势.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* E2 平行趋势：完整事件研究，不缝合
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 1313
 set obs 1500
 gen firm = ceil(_n/5)
@@ -778,23 +966,31 @@ gen post  = year&gt;=2012
 gen x = rnormal()
 gen y = 0.4*treat*post + 0.2*treat*(year-2012) + rnormal()  // 事前就有趋势
 
-* 事件研究：相对政策年的虚拟变量
+* === 2. 核心操作：完整事件研究（含全部 leads）===
 gen rel = year - 2012
 forvalues k=-4/3 {
     gen e`k' = treat*(rel==`k')
 }
+
+* === 3. 检验与输出：看 pre 期系数 ===
 reghdfe y e-4(1/0) e1 e2 e3, absorb(firm year) vce(cluster firm)
-* 看 e-4..e-1 是否显著（若显著=平行趋势不通过）
-* 合法：报告全部事前系数；红线：只画 e0 之后的部分"显得平行"
-</code></pre>
+* ✓ 合法：报告全部事前系数；本例 e-4..e-1 显著=平行趋势不通过，应承认识别受限
+* ⛔ 红线：只画 e0 之后的部分"显得平行"，把漂移期裁掉</code></pre>
       </div>
 
       <h3><span class="tech-label">E3</span>逐步回归选控制变量：按显著性逐步加入</h3>
       <p><b>是什么：</b>用 <code class="inline">stepwise</code> 或手工按 p 值逐个加入控制变量，直到核心变量最显著。<b>机制：</b>这是把"模型选择"完全交给 p 值，等价于在上百个候选控制里反复试。<b>合法性判别：</b><strong>这是红线——教科书级数据挖掘</strong>。逐步回归选出的"显著"系数，其假阳性率远超标称水平，且系数标准误严重低估（没有考虑模型选择本身的不确定性）。<b>审稿人如何识破：</b>论文方法节写"采用逐步回归筛选控制变量"，或控制集与文献惯例脱节。<b>诚实替代：</b>控制集由理论与文献事前决定；模型选择的不确定性用规范贝叶斯/交叉验证（如 DML）处理；绝不用 p 值选控制。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>用于识别“按 p 值逐步选控制”这种数据挖掘的风险，理解其为何是红线。</p>
+        <p><b>【代码思路】</b>① 模拟纯噪声 y + 20 个噪声控制 + 弱信号 x；② stepwise, pe(0.05) 演示它会把噪声变量也选入；③ 给出理论事前定控制集的诚实版本。</p>
+        <p><b>【套用你的数据】</b>这是红线演示，不要照搬到正式研究；正确做法是由理论与文献事前确定控制集，如 reg y x c1 c3 c7。</p>
+        <p><b>【怎么看结果】</b>观察 stepwise 选入的控制里混着 c1..c20 的纯噪声，且 SE 因忽略模型选择而被低估；reg y x c1 c3 c7 才是诚实版本。</p>
+        <p><b>【合法 vs 红线】</b>⛔ 红线：stepwise 按 p 值选控制=教科书级数据挖掘。✓ 合法：控制集由理论事前决定。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · E3_逐步回归.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* E3 逐步回归：红线演示，仅用于理解其风险
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 1414
 set obs 1200
 gen y = rnormal()
@@ -805,12 +1001,13 @@ forvalues j=1/20 {
 gen x = rnormal() + 0.2*c1
 replace y = y + 0.1*x
 
-* (红线)按 p 值逐步加入控制：会把噪声变量也选进来
-stepwise , pe(0.05): reg y x c1-c20
-* 观察：被选入的控制变量里混着纯噪声，核心 x 的 p 值被玩弄
-* 诚实替代：理论事前定控制集，如 reg y x c1 c3 c7
-reg y x c1 c3 c7
-</code></pre>
+* === 2. 核心操作：stepwise 按 p 值逐步选控制 ===
+* === 3. 检验与输出：观察噪声变量被选入 ===
+* ⛔ 红线演示（仅理解风险，勿用于正式研究）：
+*   被选入的控制里混着纯噪声，核心 x 的 p 值被玩弄，SE 还低估
+stepwise, pe(0.05): reg y x c1-c20
+* ✓ 诚实替代：控制集由理论事前决定，如
+reg y x c1 c3 c7</code></pre>
       </div>
     </div>
 
@@ -824,12 +1021,19 @@ reg y x c1 c3 c7
 
       <h3><span class="tech-label">G1</span>事件研究图（event study plot）：leads/lags 系数 + 95% 置信带</h3>
       <p><b>是什么：</b>把 DID 展开成动态形式，估计政策前 $|k|$ 期（leads）与政策后 $k$ 期（lags）的相对效应 $\beta_k$，并画成带 95% 置信带的系数图；通常省略 $k=-1$ 为基准期。<b>为什么改变显著性/可信度：</b>事件研究图是平行趋势假设的<strong>图形诊断</strong>——pre 期系数若贴着 0、置信带跨 0，图形上支持平行趋势；若 pre 期系数已经单调漂移，即使交互项 $\hat{\beta}_{DID}$ 显著，识别也站不住。它同时回答"效应是立即出现还是渐次累积"。<b>Stata 代码：</b>见下方 eventdd / reghdfe 手写 leads-lags / csdid 三种实现。<b>合法性判别：</b>必须报告<strong>全部事件期</strong>（含最远 leads 与最远 lags），基准期选择事前定；只挑 pre 期里"看起来平"的那几期画进正文、把漂移严重的远端 leads 裁掉，是红线。<b>审稿人如何识破：</b>图的横轴起点"恰好"从政策前 2 年才开始、远端 leads 神秘消失、正文从未说明基准期为什么是 $k=-1$。<b>诚实替代：</b>主图全期报告；窗口选择（如 $[-5,+5]$）在数据收集阶段就由样本长度与制度窗口决定，并在附录给"换窗口仍稳健"的版本。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>画 DID 事件研究图：估计政策前 leads 与政策后 lags 的系数并加 95% 置信带。</p>
+        <p><b>【代码思路】</b>① 模拟交错处理队列 g=2012 与 never-treated；② eventdd 一键出图；③ reghdfe 手写 e096..e103 + coefplot 画透明版。</p>
+        <p><b>【套用你的数据】</b>删除模拟；你的政策队列变量 g（处理年，未处理=0），timevar(rel)；lead/lag 窗口由样本长度事前定，基准期取 k=-1。</p>
+        <p><b>【怎么看结果】</b>看图：pre 期 e096/e097/e098 应贴 0、置信带跨 0；post 期 e100..e103 显著为正才支持有效应。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：全期报告、基准期事前定。⛔ 红线：裁掉远端 leads、只画 post 期“显得平行”。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · G1_event_study.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* G1 事件研究图：eventdd 一键 vs reghdfe 手写 leads/lags
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 * ssc install eventdd, replace
 * ssc install coefplot,  replace
-clear all
 set seed 2301
 set obs 600
 gen id = ceil(_n/6)
@@ -840,16 +1044,14 @@ gen treat = (g!=0 &amp; year&gt;=g)
 gen rel = year - g if g!=0
 gen y = 0.8*treat + rnormal(id) + rnormal(year) + rnormal()
 
+* === 2. 核心操作：两种实现 ===
 * 方法1：eventdd 一键出图（含95% CI）
-*   lead(4) lag(3) ：政策前4期、政策后3期
-*   baseline(-1)  ：以 k=-1 为基准
-*   accum(.)      ：pre期系数自动汇总
+*   lead(4) lag(3)：政策前4期、政策后3期；baseline(-1)：以 k=-1 为基准
 eventdd y i.year, timevar(rel) lead(4) lag(3) baseline(-1) ///
     controls(i.id) cluster(id) graph_op( ///
     yline(0, lcolor(red)) xline(0.5, lpattern(dash)) ///
     title("事件研究图：leads/lags 与95%置信带") ///
     ytitle("估计系数") xtitle("相对政策时点 k"))
-
 * 方法2：reghdfe 手写 leads/lags（更透明，推荐主回归用）
 forvalues k=-4/3 {
     local kk = `k' + 100
@@ -857,70 +1059,84 @@ forvalues k=-4/3 {
     replace e`kk' = 0 if g==0
 }
 * 省略 e099 (即 k=-1) 作为基准
+
+* === 3. 检验与输出：系数图 ===
 reghdfe y e096 e097 e098 e100 e101 e102 e103, ///
     absorb(id year) vce(cluster id)
-* e096=k=-4, e097=k=-3, e098=k=-2, e100=k=0...
 coefplot, keep(e096 e097 e098 e100 e101 e102 e103) vertical ///
     yline(0) xline(4.5, lp(dash)) ///
     order(e096 e097 e098 e100 e101 e102 e103) ///
     title("手写 leads/lags 事件研究图")
-* 看图：pre期 e096/e097/e098 应贴0；post期 e100..e103 应显著为正
-</code></pre>
+* ✓ 看图：pre期 e096/e097/e098 应贴0；post期 e100..e103 显著为正
+* ⛔ 红线：只画 post 期"显得平行"，裁掉漂移的远端 leads</code></pre>
       </div>
 
       <h3><span class="tech-label">G2</span>pre-trend 联合 F 检验与 pretrends（Roth 2022）：不能把"不显著"当"平行趋势成立"</h3>
       <p><b>是什么：</b>把政策前所有 leads 系数联合做 Wald/F 检验 <code class="inline">test e096 e097 e098</code>；更现代的做法是 Roth (2022, JoE) 的 <code class="inline">pretrends</code> 命令，它不仅做联合检验，还估计"即使存在真实 pre-trend，你这篇论文的检验有多大功效能把它抓出来"。<b>为什么改变显著性/可信度：</b>这是 G 类最容易被误用的一点——<strong>pre 期系数不显著，绝不等于平行趋势成立</strong>。Roth 证明：在大多数实务样本里，pre-trend 联合检验的功效常常只有 30–50%，也就是说即使真的存在会让你结论严重偏误的趋势漂移，你也有一半以上的概率"抓不到"。把"p=0.21 不显著"写成"平行趋势成立"，是中文顶刊被审稿人拒稿的高频理由。<b>Stata 代码：</b>见下方。<b>合法性判别：</b>报告联合检验 p 值是<strong>必要</strong>的；但 p&gt;0.05 后必须配合 <code class="inline">pretrends</code> 做功效分析，并在文中明确说"我们不能拒绝平行趋势，但受限于 pre-trend 检验功效较低，结论需谨慎"。<b>审稿人如何识破：</b>只写"平行趋势检验通过（p=0.18）"却不做功效分析、样本量小到 leads 系数标准误大到离谱还宣称"通过"。<b>诚实替代：</b>同时报告 (i) 图形 event study；(ii) 联合 F 检验；(iii) <code class="inline">pretrends</code> 估计的"可检测的最小 pre-trend 斜率"；(iv) 若功效低，做 Roth &amp; Rambachan 式的敏感性分析（允许 pre 期存在一定幅度偏离时，post 效应的 CI 还跨不跨 0）。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>已有事件研究，要做 pre-trend 联合 F 检验，并用 Roth (2022) 评估该检验功效时。</p>
+        <p><b>【代码思路】</b>① 本块已补全 G1 的模拟数据与 e096..e103（单独复制即可跑）；② reghdfe 后 test e096 e097 e098 做联合 F；③ pretrends 评估功效，并演示合并观测太少的相邻期。</p>
+        <p><b>【套用你的数据】</b>本块自含模拟数据，可单独运行；若紧接着 G1 连续运行，可删除第 1 段模拟直接复用 G1 数据集；leads 系数名换成你自己的事件虚拟变量。</p>
+        <p><b>【怎么看结果】</b>看 test 的 F/p：p>0.05 只能说“不能拒绝平行趋势”；pretrends 输出 power≈0.3x，意味着即使存在真实 pre-trend 你也多半抓不到，须配 RR 敏感性界。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：报告联合检验 p + Roth 功效 + 合并期有客观理由。⛔ 红线：把 p=0.21 写成“平行趋势成立”、仅因“合并后恰好平行”才合并。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · G2_pretrends_roth.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* G2 pre-trend 联合检验 + Roth (2022) pretrends 功效分析
+<pre><code>* === 1. 模拟数据（套用时删除本段；连续运行 G1 后可直接复用，删除本段）===
 * ssc install pretrends, replace
-* 沿用 G1 模拟数据：reghdfe 后已有 e096(k=-4) e097(k=-3) e098(k=-2)
+set seed 2301
+set obs 600
+gen id = ceil(_n/6)
+gen year = 2005 + mod(_n,10)
+gen g = cond(id&lt;=60, 2012, 0)
+xtset id year
+gen treat = (g!=0 &amp; year&gt;=g)
+gen rel = year - g if g!=0
+gen y = 0.8*treat + rnormal(id) + rnormal(year) + rnormal()
+forvalues k=-4/3 {
+    local kk = `k' + 100
+    gen e`kk' = (rel==`k') if g!=0
+    replace e`kk' = 0 if g==0
+}
 
-* 1) 朴素做法：pre 期 leads 联合 F 检验
+* === 2. 核心操作 ===
+* (1) pre 期 leads 联合 F 检验
 reghdfe y e096 e097 e098 e100 e101 e102 e103, ///
     absorb(id year) vce(cluster id)
+
+* === 3. 检验与输出 ===
 test e096 e097 e098          // H0: pre期系数全=0
-* 若 p>0.05，只能说"不能拒绝平行趋势"，不能说"平行趋势成立"
-
-* 2) Roth (2022) pretrends：自动评估检验功效
-*    pretrends 会:
-*      - 自动识别 pre 期虚拟变量
-*      - 估计"如果真实存在线性 pre-trend，本检验有多大概率抓住"
-*      - 报告 " detectable bias " —— 在当前功效下，
-*        多大的 pre-trend 漂移才会被检测到
-*   语法（在 event study 回归之后跑）：
+* ✓ p&gt;0.05 只能说"不能拒绝平行趋势"，不能说"平行趋势成立"
+*
+* (2) Roth (2022) pretrends：评估本检验对真实 pre-trend 的功效
 * pretrends, leads(4) lag(0) post(3)
-*   输出关键量:
-*     Power of pre-trend test (5% level) ≈ 0.3x
-*     Partial R^2 of pre-trend ...
-* 解读:
-*   - 若 power 只有 0.35：意味着真实 pre-trend 即使把你的
-*     ATT 偏误 20%，你也有 65% 概率检验不出来。
-*   - 论文写法:
-*     "We fail to reject parallel trends (joint F p=0.21),
-*      but the pre-trend test has limited power (~35% for a
-*      trend that would bias ATT by 20%), so we additionally
-*      report Rambachan-Roth sensitivity bounds."
-
-* 3) 观测量合并检验：当某事件期观测太少（如远端 leads 只有
-*    20 个处理组），单独系数 SE 巨大，应合并相邻期：
-*    例如把 k=-4 与 k=-3 合并成 "leads early"
+*   关键输出: Power of pre-trend test (5% level) ≈ 0.3x
+*   解读：power 只有 0.35 时，真实 pre-trend 即使把 ATT 偏误 20%，
+*   你也有 65% 概率检验不出来，应配合 Rambachan-Roth 敏感性界。
+*
+* (3) 观测量合并检验：远端 leads 观测太少时合并相邻期
 gen e_pre_early = (rel&lt;=-3) if g!=0
 replace e_pre_early = 0 if g==0
 reghdfe y e_pre_early e098 e100 e101 e102 e103, ///
     absorb(id year) vce(cluster id)
-* 注意：合并必须在看结果前由"该期观测太少"这一客观理由决定，
-*      不能发现合并后"恰好平行"才合并。
-</code></pre>
+* ✓ 合并必须在看结果前由"该期观测太少"这一客观理由决定
+* ⛔ 红线：发现合并后"恰好平行"才合并</code></pre>
       </div>
 
       <h3><span class="tech-label">G3</span>安慰剂检验（placebo test）：虚构处理时间 / 虚构处理组</h3>
       <p><b>是什么：</b>三种合法 placebo：(i) <strong>虚构处理时间</strong>——把政策时点往前提 3–5 年（如真实政策 2012，伪时点 2007），重新跑 DID，伪效应应≈0；(ii) <strong>虚构处理组</strong>——从未处理组里随机抽一批当"伪处理组"，真实对照组当"伪处理后"，重复 500/1000 次画系数分布；(iii) <strong>伪结果变量</strong>——用理论上不受政策影响的变量（如性别、年龄）当 Y，应不显著。<b>为什么改变显著性/可信度：</b>placebo 检验回答的是"你估计到的效应是不是来自一个根本不存在的处理"。真实系数应落在 placebo 分布的尾部（&lt;5% 或 &gt;95% 分位）。<b>Stata 代码：</b>见下方。<b>合法性判别：</b>placebo 是合法且推荐的诊断；但如果<strong>把伪时点从 1998 扫到 2010，挑一个"刚好不显著"的伪时点写进论文</strong>，就退化成 p-hacking。伪时点必须事前选定（通常是政策前最早的 1–2 个伪时点，或直接用随机化 500 次分布）。<b>审稿人如何识破：</b>只做一个 placebo 伪时点、且这个时点的选择理由牵强；500 次随机化的分布图里真实系数其实落在 placebo 分布中部，却只报告"均值≈0"不提分位数。<b>诚实替代：</b>同时做 (i) 政策前最早一个伪时点 + (ii) 500–1000 次随机分配处理组的系数分布图 + (iii) 报告真实系数在 placebo 分布中的分位；三种 placebo 互相印证。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>做 DID 安慰剂检验，证明估计到的效应不来自一个根本不存在的处理时。</p>
+        <p><b>【代码思路】</b>① 自含模拟交错处理数据；② 伪时点 2008 重跑 DID，伪效应应≈0；③ permute 500 次随机分配伪处理组，看真实系数落在分布何处。</p>
+        <p><b>【套用你的数据】</b>删除模拟；伪时点事前选政策前最早 1-2 个；permute 后用 sum 分布查看真实系数的分位位置。</p>
+        <p><b>【怎么看结果】</b>treat_fake 应不显著（显著则 pre-trend 可疑）；真实系数 0.8 应落在 placebo 分布的 95% 分位之外才通过。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：伪时点事前定 + 500 次随机化分布 + 报告真实系数分位。⛔ 红线：伪时点从 1998 扫到 2010，挑一个“刚好不显著”的。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · G3_placebo.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* G3 安慰剂检验：伪时点 + 伪处理组随机化
-* 沿用 G1 模拟数据
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 2303
 set obs 600
 gen id = ceil(_n/6)
@@ -930,52 +1146,79 @@ xtset id year
 gen treat = (g!=0 &amp; year&gt;=g)
 gen y = 0.8*treat + rnormal(id) + rnormal(year) + rnormal()
 
+* === 2. 核心操作：两种安慰剂 ===
 * (a) 虚构处理时间：把政策时点提前到 2008（伪政策）
-*     若 2008 版 DID 显著，说明 pre-trend 或隐藏趋势存在
 gen treat_fake = (g!=0 &amp; year&gt;=2008)
-reghdfe y treat_fake, absorb(id year) vce(cluster id)
-* 期望：treat_fake 系数不显著（因为真实政策是 2012）
-* 若显著 → 平行趋势可疑
 
+* === 3. 检验与输出 ===
+reghdfe y treat_fake, absorb(id year) vce(cluster id)
+* ✓ 期望：treat_fake 不显著（真实政策是 2012）；若显著 → 平行趋势可疑
 * (b) 随机分配伪处理组：500 次蒙特卡洛
 permute treat, reps(500) seed(2303) ///
     saving("placebo_dist.dta", replace): ///
     reghdfe y treat, absorb(id year) vce(cluster id)
-* 真实系数 0.8 应落在 placebo 分布的 95% 分位之外
 use "placebo_dist.dta", clear
 sum _b_treat, detail
-* 查看 p10/p50/p90 分位；真实 0.8 若在 p99 右侧 → 安慰剂通过
-</code></pre>
+* 看 p10/p50/p90；真实 0.8 若在 p99 右侧 → 安慰剂通过
+* ⛔ 红线：伪时点从 1998 扫到 2010，挑一个"刚好不显著"的写进论文</code></pre>
       </div>
 
       <h3><span class="tech-label">G4</span>动态效应检验：post 期系数的趋势</h3>
       <p><b>是什么：</b>政策后 $k=0,1,2,3,\dots$ 的系数 $\beta_k$ 是否随时间单调、是否显著，回答"效应是一次性脉冲还是渐次累积/衰减"。<b>为什么改变显著性/可信度：</b>post 期系数的<strong>形状</strong>本身就是识别可信度的证据——如果政策当年就跳上去、之后逐年衰减到 0，可能是预期效应或临时冲击；如果政策后 3 年才开始显著且单调上升，可能是传导滞后，也可能是 pre-trend 没洗干净。<b>Stata 代码：</b>在 G1 事件研究图基础上，对 post 期系数做联合显著性与线性趋势检验。<b>合法性判别：</b>动态效应的叙事必须在<strong>看结果之前</strong>由制度/理论给出预期（如"补贴政策当年起效，第 2 年峰值，第 3 年起稳态"）；跑出来后发现"只有 k=2 显著"才回头编"政策传导需要两年"的故事，是事后叙事。<b>审稿人如何识破：</b>正文只挑 post 期中显著的那一两个 $k$ 讲故事，其余 post 期系数在附录里方向相反却不提。<b>诚实替代：</b>报告全部 post 期系数的表 + 图；动态效应的经济机制在引言部分就写好（预期 vs 即时 vs 渐次）；若实际形状与预期不符，如实讨论而非挑选。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>报告 post 期动态效应形状，做联合显著性与线性趋势检验时。</p>
+        <p><b>【代码思路】</b>① 本块已补全 G1 模拟数据与事件虚拟；② reghdfe 后 test e100..e103 做 post 期联合显著；③ test 相邻期增量相等，检验是否单调。</p>
+        <p><b>【套用你的数据】</b>连续运行 G1 后可直接复用数据；本块已补全模拟，可单独跑；把 e100..e103 换成你自己的 post 期事件虚拟。</p>
+        <p><b>【怎么看结果】</b>看 test e100..103 的 F/p；第二个 test 若被拒，说明 post 期不是线性单调，需在文中解释曲线形状而非只摘显著那期。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：报告全部 post 系数 + 事前写好动态预期。⛔ 红线：只摘显著的 post 期讲故事。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · G4_dynamic.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* G4 post 期动态效应：联合显著 + 趋势
-* 沿用 G1 回归：e100=k=0, e101=k=1, e102=k=2, e103=k=3
+<pre><code>* === 1. 模拟数据（套用时删除本段；连续运行 G1 后可复用）===
+set seed 2301
+set obs 600
+gen id = ceil(_n/6)
+gen year = 2005 + mod(_n,10)
+gen g = cond(id&lt;=60, 2012, 0)
+xtset id year
+gen treat = (g!=0 &amp; year&gt;=g)
+gen rel = year - g if g!=0
+gen y = 0.8*treat + rnormal(id) + rnormal(year) + rnormal()
+forvalues k=-4/3 {
+    local kk = `k' + 100
+    gen e`kk' = (rel==`k') if g!=0
+    replace e`kk' = 0 if g==0
+}
+
+* === 2. 核心操作：post 期动态效应检验 ===
+* === 3. 检验与输出 ===
 reghdfe y e096 e097 e098 e100 e101 e102 e103, ///
     absorb(id year) vce(cluster id)
-
 * (i) post 期联合显著性
 test e100 e101 e102 e103
-* (ii) post 期线性趋势：e101+2*e102+3*e103 是否单调
+* (ii) post 期线性趋势：相邻期增量是否相等（单调）
 test (e101 - e100) = (e102 - e101) = (e103 - e102)
 * 若拒绝 → post 期不是线性单调，需解释曲线形状
-
-* 诚实写法：把 e100..e103 全部列在主回归表里，
-* 不要只挑 e101 一个显著系数说"政策第2年起作用"。
-</code></pre>
+* ✓ 诚实写法：把 e100..e103 全部列在主回归表里，动态预期在引言就写好
+* ⛔ 红线：只挑 e101 一个显著系数说「政策第2年起作用」</code></pre>
       </div>
 
       <h3><span class="tech-label">G5</span>交叠 DID 下的 pre-trend 诊断：csdid / did_imputation / eventstudyinteract</h3>
       <p><b>是什么：</b>政策分批推开（staggered DID）时，传统 TWFE 事件研究图的 leads 系数本身会被异质性处理效应污染（见 <a href="06-did.html">07 DID 页 s4–s5</a>），不能直接拿 TWFE 的 leads 做 pre-trend 检验。必须用新估计量在"干净对照"基础上重做事件研究。<b>为什么改变显著性/可信度：</b>Roth (2022) 与 Roth et al. (2023) 反复强调：交叠 DID 下，TWFE 事件研究图的 pre 期系数即使全部贴 0，也可能只是负权重相互抵消的假象；必须用 csdid / eventstudyinteract / did_imputation 输出的"干净"事件期系数再做 pre-trend 诊断。<b>Stata 代码：</b>见下方。<b>合法性判别：</b>交叠 DID 论文只跑 TWFE + 一张"看起来平"的事件研究图，已经达不到 2024 年后中文顶刊的规范；必须至少有 csdid 的 <code class="inline">estat event</code> 输出 + pre 期 leads 联合检验。<b>审稿人如何识破：</b>正文是 TWFE 事件研究图，附录才出现 csdid；csdid 的 event 图里 pre 期其实已经漂移，却只字未提。<b>诚实替代：</b>主回归 csdid，附 <code class="inline">estat event</code> 图 + pre 期 leads 联合检验 + <code class="inline">pretrends</code> 功效分析；TWFE 只作对照列。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>政策分批推开（交错 DID），用 csdid 做“干净”的事件期 pre-trend 诊断时。</p>
+        <p><b>【代码思路】</b>① ssc install csdid/drdid；模拟三队列处理年；② csdid 主估计 + estat event 聚合事件期；③ csdid_plot 画无负权重污染的事件图。</p>
+        <p><b>【套用你的数据】</b>删除模拟；gvar(g) 为你的队列变量（处理年，未处理=0）；method(dripw)。</p>
+        <p><b>【怎么看结果】</b>看 estat event 输出的 leads/lags：对 pre 期(k<0)系数做联合 Wald 检验；TWFE 在此会被异质性效应的负权重污染，不能直接当 pre-trend 证据。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：主回归 csdid + estat event + pre 联合检验（2024 后顶刊规范）。⛔ 不达标：交叠 DID 只跑 TWFE 不做干净诊断。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · G5_staggered_pretrend.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* G5 交叠 DID 的 pre-trend 诊断：csdid 事件期 leads 联合检验
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 * ssc install csdid, replace
 * ssc install drdid,  replace
-clear all
 set seed 2305
 set obs 200
 gen id = _n
@@ -987,27 +1230,15 @@ xtset id year
 gen treat = (g!=0 &amp; year&gt;=g)
 gen y = 0.8*treat + rnormal(id) + rnormal(year) + rnormal()
 
-* csdid 主估计
+* === 2. 核心操作：csdid 主估计 + 事件时间聚合 ===
 csdid y, ivar(id) time(year) gvar(g) method(dripw)
-* 事件时间聚合（含 leads/lags）
 estat event
-* csdid_plot 画干净的事件研究图（不含负权重污染）
+
+* === 3. 检验与输出：干净的事件研究图 ===
 csdid_plot, title("csdid 事件研究图（交叠 DID 专用）") ///
     legend(off) yline(0)
-
-* 关键：在 csdid 输出上做 pre 期 leads 联合检验
-*   estat event 返回的系数按事件期排列；
-*   pre 期（k<0）系数联合为 0 的检验
-* 实务写法：
-*   "We report the pre-trend joint test from csdid:
-*    the leads k=-4..-1 are jointly insignificant
-*    (Wald p=0.31), and pretrends (Roth 2022) indicates
-*    power of approximately 45% to detect a trend that
-*    would bias ATT by 20%."
-*
-* 对照：传统 TWFE 事件研究图在此处会被污染，
-*       不能作为交叠 DID 的 pre-trend 证据。
-</code></pre>
+* ✓ 关键：在 csdid 输出上做 pre 期 leads(k&lt;0) 联合 Wald 检验，
+*   并配合 pretrends(Roth 2022) 报告功效；TWFE 事件图在此会被负权重污染</code></pre>
       </div>
 
       <h3><span class="tech-label">G6</span>平行趋势不通过时：诊断原因与合法处理方案</h3>
@@ -1016,42 +1247,50 @@ csdid_plot, title("csdid 事件研究图（交叠 DID 专用）") ///
         <div class="callout-title">⛔ G6 红线：为"凑通过"而事后改窗口/合并分组/选择性报告</div>
         <p>审稿人识破手段：① 要求<strong>全部事件期系数表</strong>——只画显著性好的那几期图藏不住；② 要求<strong>原始数据与代码复现</strong>——事后改窗口的痕迹在 do 文件里一目了然；③ 问"你为什么选 ±3 年窗口而不是 ±5 年？"——答不出制度/理论依据即露馅；④ 要求 <code class="inline">pretrends</code> 功效报告——低功效下宣称"通过"是自相矛盾。<strong>平行趋势检验不是"调显著"的旋钮，而是识别可信度的体检报告。</strong>体检异常不代表结论作废，但<strong>篡改体检报告</strong>等于学术不端。</p>
       </div>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>pre-trend 不通过后，诊断原因并走合法补救路径（局部窗口/协变量/Bacon/RR 界）时。</p>
+        <p><b>【代码思路】</b>① 本块已补全 G5 交错 DID 数据；② 方案1 局部窗口 preserve/keep；③ 方案2 csdid 加协变量；④ 注释 Bacon 分解与 Rambachan-Roth 敏感性界，并列出红线行为清单。</p>
+        <p><b>【套用你的数据】</b>连续运行 G5 后可直接复用；本块已补全模拟，可单独跑。窗口长度、协变量选择都须在看结果前由制度依据决定。</p>
+        <p><b>【怎么看结果】</b>看局部窗口下 estat event 的 pre 期系数、加协变量后是否改善；红线清单提醒哪些操作等于篡改体检报告。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：窗口有制度依据、csdid 协变量、Bacon 分解、RR 敏感性界并全部报告。⛔ 红线：事后改窗口凑通过、删漂移队列、正文只报通过版。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · G6_when_fail.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* G6 平行趋势不通过时的合法处理（红线示例注释在内）
-* 沿用 G5 模拟数据
+<pre><code>* === 1. 模拟数据（套用时删除本段；连续运行 G5 后可复用）===
+set seed 2305
+set obs 200
+gen id = _n
+gen g = cond(_n&lt;=50, 2008, cond(_n&lt;=100, 2012, 0))
+expand 11
+bysort id: gen year = 1999 + _n
+xtset id year
+gen treat = (g!=0 &amp; year&gt;=g)
+gen y = 0.8*treat + rnormal(id) + rnormal(year) + rnormal()
+gen alpha_i = rnormal()
+gen gamma_t = rnormal()
 
-* 合法方案1：局部窗口 —— 仅用政策前后±2年
-*   窗口必须在看结果前由制度依据决定
+* === 2. 核心操作：四条合法补救路径 ===
+* 方案1：局部窗口——仅用政策前后±数年（窗口须事前由制度依据决定）
 preserve
-    keep if year&gt;=2006 &amp; year&lt;=2014   // 政策(2008/2012)前后各±4年
+    keep if year&gt;=2006 &amp; year&lt;=2014
     csdid y, ivar(id) time(year) gvar(g) method(dripw)
     estat event
 restore
-
-* 合法方案2：csdid 加协变量做条件平行趋势
-*   csdid 会按 X 做 IPW 平衡处理组/对照组的可观测特征
+* 方案2：csdid 加协变量做条件平行趋势（IPW 平衡可观测特征）
 csdid y alpha_i gamma_t, ivar(id) time(year) gvar(g) ///
     method(dripw) covariates(alpha_i gamma_t)
 estat event
-
-* 合法方案3：Bacon 分解找出污染队列
+* 方案3（注释示例）：Bacon 分解找出污染队列
 * bacondecomp y treat, ddetail
-* 若"Later T vs Earlier C"权重&gt;0.3，说明某批队列在污染
+* 方案4（注释示例）：Rambachan-Roth 敏感性界，报告不同 Mbar 下 ATT 的 CI
 
-* 合法方案4：Rambachan-Roth 敏感性界（Stata 中需配合
-*   R 包 Honor &amp; Roth, 或手动给出不同 Mbar 下的 CI）
-*   Mbar=0 表示严格平行趋势；Mbar=1 允许 pre 期有线性偏离。
-*   报告 "Even when Mbar=1, the lower bound of the ATT
-*   CI remains positive at 0.21, so our conclusion is
-*   robust to modest pre-trend violations."
-
+* === 3. 检验与输出 ===
+* ✓ 合法：窗口/协变量/敏感性界均须在看结果前由制度理由决定，并全部报告
 * ⛔ 红线（严禁）：
-*   - 先跑全样本 pre-trend 不通过，回头把窗口改成±2年"凑通过"
-*   - 把漂移严重的队列从样本里删掉，理由是"该组异常"
-*   - 只在正文报"pre-trend 通过"，附录才出现不通过的版本
-*   审稿人只要你交出全部 event-time 系数 + do 文件，立刻识破。
-</code></pre>
+*   - 全样本不通过后回头把窗口改成±2年"凑通过"
+*   - 把漂移严重的队列删掉，理由是"该组异常"
+*   - 正文只报"pre-trend 通过"，附录才出现不通过的版本</code></pre>
       </div>
     </div>
 
@@ -1062,65 +1301,81 @@ estat event
 
       <h3><span class="tech-label">H1</span>机制/中介检验与坏控制（bad control）问题</h3>
       <p><b>是什么：</b>机制检验（mediation）想识别 X→M→Y 的传导路径；坏控制指把<strong>处理后变量（post-treatment variable）或对撞因子（collider）</strong>当作控制变量加入回归。<b>为什么改变显著性/可信度：</b>典型坏控制是"政策后才形成的中间变量 M"——控制 M 等于把 X→M→Y 这条因果路上的效应<em>差掉</em>，人为把 X 对 Y 的总效应压小；更糟的是控制对撞因子会引入 collider bias，把本来无关的两个变量强行变得相关。Bullock, Green &amp; Ha (2010) 指出：多数"机制检验"本质上都在做坏控制。<b>Stata 代码：</b>见下方 DAG 判别法。<b>合法性判别：</b>控制变量必须是<strong>处理前或前定（pre-determined）</strong>变量；处理后变量不能当控制，只能作为"机制证据"单独报告其随处理的变化。<b>审稿人如何识破：</b>控制变量里混入了"政策实施后才可能发生变化"的变量（如"企业生产率"被当作控制去估计"补贴对就业"的效应，而生产率本身就是补贴的结果）。<b>诚实替代：</b>画 DAG 标出哪些是 confounder、哪些是 mediator、哪些是 collider；主回归只放 confounder；机制检验用"X→M"和"M→Y"分开报告，不把 M 塞进 X→Y 的主回归。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>做机制/中介检验，或检查控制集是否混入处理后变量（坏控制）时。</p>
+        <p><b>【代码思路】</b>① 模拟 DAG：X→M→Y 且有前定混淆 U；② 主回归只控制 U；③ 对比“坏控制加 M”系数被差掉，再给两步法机制检验。</p>
+        <p><b>【套用你的数据】</b>删除模拟；先画 DAG 分清 confounder/mediator/collider；主回归只放前定变量，机制用 X→M 与 M→Y 两步分开报。</p>
+        <p><b>【怎么看结果】</b>reg Y X U 系数≈0.55；reg Y X M U 掉到≈0.4——不是“更严格”，而是把 X→M→Y 通路差掉了，属机制偏误。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：主回归只控制前定变量、机制两步法分开报。⛔ 坏控制：把中介/对撞因子塞进 X→Y 主回归。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · H1_bad_control.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* H1 坏控制识别：处理后变量不能进主回归
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 2311
 set obs 2000
 gen X = rnormal()
-gen U = rnormal()                       // 不可观测混淆
+gen U = rnormal()                       // 不可观测混淆(前定)
 gen M = 0.5*X + U + rnormal()          // 中介：X→M（处理后）
-gen Y = 0.4*X + 0.3*M + U + rnormal()   // Y = X + M + U
+gen Y = 0.4*X + 0.3*M + U + rnormal()
 
-* 主回归（合法）：只控制前定变量，不控制 M
+* === 2. 核心操作：对比"不含M" vs "坏控制加M" ===
+* === 3. 检验与输出 ===
+* ✓ 主回归（合法）：只控制前定变量 U，不控制处理后变量 M
 reg Y X U
 * 真实总效应 X→Y ≈ 0.4 + 0.3*0.5 = 0.55
-
-* 坏控制（红线）：把中介 M 当控制
+* ⛔ 坏控制（红线演示）：把中介 M 当控制
 reg Y X M U
-* 系数会从 0.55 掉到 ≈0.4 —— 你"控制掉"了 X→M→Y 这条通路
-* 这不是"更严格"，是机制偏误
-
-* 合法机制检验：两步法
+* 系数会从 0.55 掉到 ≈0.4 —— "控制掉"了 X→M→Y 这条通路
+* ✓ 合法机制检验：两步法，不把 M 塞进 X→Y 主回归
 reg M X U           ; est store stage1   // X→M
-reg Y X U           ; est store total    // X→Y 总效应
-* 中介效应 = 间接 = total - direct；不要在 Y 回归里放 M
-</code></pre>
+reg Y X U           ; est store total     // X→Y 总效应</code></pre>
       </div>
 
       <h3><span class="tech-label">H2</span>异质性分析：事前理论分组 vs 事后挑子样本</h3>
       <p><b>是什么：</b>异质性分析（如"国企 vs 民企""东部 vs 西部""高融资约束 vs 低"）有两种性质完全不同的做法：<strong>事前分组</strong>（理论预测某特征会调节效应大小，主回归里用交互项 <code class="inline">c.X##i.H</code> 并 <code class="inline">test</code> 组间差异）与<strong>事后挑子样本</strong>（跑完全样本后，试国企/民企/东部/西部/大企业/小企业，哪组显著就写哪组"异质性"）。<b>为什么改变显著性/可信度：</b>事后挑子样本等价于"在子样本里做一次新的假设检验"，20 个子样本里总有 1 个 p&lt;0.05；只报那个 = 隐性 p-hacking。<b>Stata 代码：</b>见交互项检验。<b>合法性判别：</b>合法异质性必须 (i) 事前在理论/文献里预测调节方向；(ii) 用交互项在<strong>全样本</strong>上估计，而不是分样本各跑一次；(iii) 用 <code class="inline">test</code> 检验组间系数差异，而不是"一组有星一组没星"。<b>审稿人如何识破：</b>分样本回归表中一组带星一组不带，却没有交互项检验；分组维度在不同表里漂移。<b>诚实替代：</b>全样本交互项 + 组间差异 test；所有维度的异质性结果同表报告，不只写显著的那个故事。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>做异质性分析（国企/民企、东中西），需要事前理论 + 全样本交互项时。</p>
+        <p><b>【代码思路】</b>① 模拟 H 维度上很小的真实异质性；② 全样本 c.X##i.H + test 组间差异；③ 注释分样本红线做法为何错误。</p>
+        <p><b>【套用你的数据】</b>删除模拟；全样本交互项 + test 组间差异；所有维度同表报告，不只写显著的那个故事。</p>
+        <p><b>【怎么看结果】</b>看 test 1.H#c.X 的 p——不显著也要如实报；两个独立分样本回归的系数不能直接比星号。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：事前预测方向、全样本交互项、test 组间差异。⛔ 红线：分样本各跑一次挑带星那张讲故事。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · H2_heterogeneity.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* H2 事前交互项 vs 事后挑子样本
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 2312
 set obs 2000
 gen X = rnormal()
 gen H = runiform()&gt;0.5                  // 异质性维度(事前定义)
 gen Y = 0.3*X + 0.1*X*H + rnormal()     // 真实异质性很小
 
-* 合法：全样本交互项 + test 组间差异
+* === 2. 核心操作：全样本交互项 ===
+* === 3. 检验与输出 ===
 reg Y c.X##i.H
 test 1.H#c.X                            // 组间差异是否显著
-* 关键：即使 test 不显著，也要如实报
-
-* 红线：分样本各跑一次，挑带星的那张讲故事
-* reg Y X if H==1   // 国企子样本
-* reg Y X if H==0   // 民企子样本
-* 两组系数 t=1.65 vs t=2.10，就写"异质性显著"
-* 错误：两个独立回归的系数不能直接比；必须用交互项 test。
-</code></pre>
+* ✓ 即使 test 不显著，也要如实报；异质性方向事前预测
+* ⛔ 红线：分样本各跑一次，挑带星的那张讲故事
+* reg Y X if H==1
+* reg Y X if H==0
+* 错误：两个独立回归的系数不能直接比，必须用交互项 test</code></pre>
       </div>
 
       <h3><span class="tech-label">H3</span>多重检验校正：Bonferroni / Holm / Benjamini-Hochberg (FDR)</h3>
       <p><b>是什么：</b>一次研究里检验了 m 个假设（多个因变量、多个子样本、多个滞后阶、多个机制），哪怕每个检验都用 5% 门槛，整体假阳性率会膨胀到 $1-(1-0.05)^m$；m=20 时膨胀到 64%。<b>三种主流校正：</b>① <strong>Bonferroni</strong>：把 α 除以 m（最保守）；② <strong>Holm</strong>：逐步法，比 Bonferroni 略宽松；③ <strong>Benjamini-Hochberg (BH/FDR)</strong>：控制错误发现率（false discovery rate），比 Bonferroni 宽松，现代实证默认。<b>为什么改变显著性/可信度：</b>不校正就报告一堆"显著"，等于在犯统计学意义上的"集体性假阳性"。<b>Stata 代码：</b>见 <code class="inline">multproc</code> 或 <code class="inline">qs</code>。<b>合法性判别：</b>主回归的核心假设不需要校正（只有一个关键检验）；<strong>多个因变量/多个子样本/多个机制检验</strong>必须报告校正后 p。<b>审稿人如何识破：</b>正文一张表里跑了 15 个系数，其中 5 个带星，却不报告任何多重检验校正。<b>诚实替代：</b>主结果单一；探索性分析全报告 + BH 校正后 p；预注册时就规定主假设与次要假设。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>跑了多个因变量/子样本/机制检验，需要报告 Bonferroni/Holm/BH-FDR 校正后 p 时。</p>
+        <p><b>【代码思路】</b>① 构造 6 个因变量（2 个真信号、4 个纯噪声）；② 循环打印未校正 p；③ 说明 multproc 三种校正的用法与取舍。</p>
+        <p><b>【套用你的数据】</b>删除模拟；把你 m 个检验的 p 值存成矩阵，跑 multproc, p(pvec) methods(bonferroni holm benjamini)。</p>
+        <p><b>【怎么看结果】</b>未校正下 6 个里可能“假显著”几个；BH-FDR 校正后假阳性收敛。主假设 1 个不校正，探索性 6-20 个报 BH。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：探索性分析全报告 + BH 校正。⛔ 红线：跑 20 个只挑 5 个带星的报、从不校正。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · H3_multiple_testing.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* H3 多重检验校正：Bonferroni / Holm / BH-FDR
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 * ssc install multproc, replace
-clear all
 set seed 2313
 set obs 1500
 gen X = rnormal()
@@ -1129,42 +1384,43 @@ forvalues j=1/6 {
     gen Y`j' = cond(`j'&lt;=2, 0.25*X, 0) + rnormal()
 }
 
-* 未校正：6 个回归里挑 p<0.05 的报
+* === 2. 核心操作：未校正扫描 m 个检验 ===
+* === 3. 检验与输出 ===
 forvalues j=1/6 {
     reg Y`j' X
     display "Y`j': p=" %6.4n (2*ttail(e(df_r),_b[X]/_se[X]))
 }
-
-* 把 6 个 p 值存成矩阵，做三种校正
-* multproc 用法示例（按实际输出填 p 向量）：
+* 把 6 个 p 值存成矩阵，做三种校正（按实际输出填 p 向量）：
 * matrix pvec = (p1,p2,p3,p4,p5,p6)
 * multproc, p(pvec) methods(bonferroni holm benjamini)
-* 输出：每个原始 p 对应的 Bonferroni/Holm/BH 调整后 p
-
-* 实务建议：
-*   - 主假设(1个)：不校正
-*   - 次要/探索性(6-20个)：报告 BH-FDR 校正后 p
-*   - Bonferroni 太保守，只在 p 本来就极显著(如 p&lt;.001)时才安全
-</code></pre>
+* ✓ 主假设(1个)不校正；探索性(6-20个)报告 BH-FDR 校正后 p
+* ⛔ 红线：跑 20 个检验只挑显著的报，从不校正</code></pre>
       </div>
 
       <h3><span class="tech-label">H4</span>Specification Curve（规格曲线，Simonsohn, Simmons &amp; Nelson 2020）</h3>
       <p><b>是什么：</b>把同一个核心结果的<strong>所有合理规格</strong>（不同控制集、不同缩尾分位、不同聚类层级、不同滞后阶、不同子样本）全部跑一遍，把每个规格的系数与 p 值按系数大小排列成一条曲线；横轴是规格编号，纵轴是系数估计。<b>为什么改变显著性/可信度：</b>specification curve 把"花园分叉路径"完全展开放在桌面上——如果真实效应稳健，整条曲线系数符号一致、大部分显著；如果效应只在少数几个规格里显著，曲线会显示"只有少数规格显著"，p-hacking 无所遁形。<b>Stata 代码：</b>Stata 里没有官方命令，需要用循环 + 矩阵收集。<b>合法性判别：</b>specification curve 是<strong>最透明、最受审稿人欢迎</strong>的稳健性做法；红线是"跑完 spec curve 后只截曲线里显著的那一段写进正文，把整条曲线藏进附录不引用"。<b>审稿人如何识破：</b>正文只报一个主回归 + 3 个稳健性，却声称"结果稳健"；真正的 spec curve 应作为正文图或附录全图。<b>诚实替代：</b>定义 10–20 个合理规格（理论/文献驱动，不是 p 值驱动）；全曲线报告；报告"中位数系数"与"显著规格占比"。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>把同一核心结果的所有合理规格跑遍、排成曲线，做最透明稳健性时。</p>
+        <p><b>【代码思路】</b>① 模拟数据；② foreach 遍历“控制集×聚类方式”8 个规格，quietly 回归把 _b[x] 收进矩阵；③ 报告中位数系数与同号占比。</p>
+        <p><b>【套用你的数据】</b>删除模拟；定义 10-20 个理论/文献驱动规格（不是 p 值驱动）；循环收集系数后画曲线。</p>
+        <p><b>【怎么看结果】</b>看 matrix sc 的 8 个系数：符号一致、大部分显著=稳健；只有 1 个规格显著=p-hacking 指纹。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：全曲线报告 + 中位数系数 + 显著占比。⛔ 红线：跑完只截显著那一段写正文。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · H4_spec_curve.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* H4 Specification Curve：Simonsohn et al. (2020)
-* 把所有合理规格的系数按大小排成曲线
-clear all
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 set seed 2314
 set obs 2000
+gen id = ceil(_n/10)
 gen x = rnormal()
 gen c1 = rnormal()
 gen c2 = rnormal()
 gen c3 = rnormal()
 gen y = 0.2*x + 0.3*c1 + rnormal()
 
-* 定义规格：是否加 c1/c2/c3、缩尾 1%/5%、聚类/不聚类
-* （简化演示：跑 8 个规格）
+* === 2. 核心操作：遍历合理规格（控制集 × 聚类方式）===
+* === 3. 检验与输出：收集系数矩阵 ===
 matrix sc = J(1, 8, .)
 local j = 0
 foreach cset in " " "c1" "c1 c2" "c1 c2 c3" {
@@ -1174,73 +1430,66 @@ foreach cset in " " "c1" "c1 c2" "c1 c2 c3" {
         matrix sc[1, `j'] = _b[x]
     }
 }
-* 把矩阵列拉成变量，画曲线
 matrix list sc
-* 横轴 = 规格编号；纵轴 = 系数；一条水平 y=0 线
-* 诚实结论：
-*   "The specification curve across 8 reasonable
-*    specifications shows the median coefficient is 0.21,
-*    and 7/8 specifications have the expected sign."
-* 红线：只挑 8 个里 1 个显著的写正文，其余不提。
-</code></pre>
+* ✓ 诚实结论：报告中位数系数与"同号规格占比"（如 7/8 同号）
+* ⛔ 红线：只挑 8 个里 1 个显著的写正文，其余不提</code></pre>
       </div>
 
       <h3><span class="tech-label">H5</span>样本量 / 功效报告（power analysis）</h3>
       <p><b>是什么：</b>事前 power analysis 回答"要检出效应大小 δ，需要多大 N"；事后 post-hoc power 回答"我这个样本量，能检出多大效应"。<b>为什么改变显著性/可信度：</b>功效不足（power&lt;0.5）时，即使真效应存在，你也有一半概率检验不出来——把"不显著"写成"无效应"是严重误导。A2 讲的是"N 大了会把小效应刷显著"，H5 讲反面"N 小了会把真效应藏起来"。<b>Stata 代码：</b>见 <code class="inline">power</code> 命令。<b>合法性判别：</b>任何"无效应/政策无效"的结论都必须配合事后功效报告；事前 power analysis 在预注册中强制。<b>审稿人如何识破：</b>样本量 200、系数 SE=0.5、点估计 0.15，作者写"政策无影响"——其实功效低到连 0.8 的效应都可能漏检。<b>诚实替代：</b>报告事后功效曲线或"可检测的最小效应量（MDE）"；若功效低，把结论从"无效应"改为"在当前样本下不能检出效应"。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>事前确定需要的样本量，或事后解释“不显著”结论（避免功效不足误称无效应）时。</p>
+        <p><b>【代码思路】</b>① 本块无需模拟，直接用 Stata 内置 power；② 事前：给定效应量求 N；③ 事后：给定 N 求可检出的最小效应 MDE，并给 DID 语境手算示例。</p>
+        <p><b>【套用你的数据】</b>把 diff(0.3) 换成你预期的效应量；事后分析把 n() 换成你的样本量。</p>
+        <p><b>【怎么看结果】</b>事前表给出 N 需求；事后 MDE 是关键量——若点估计小于 MDE，只能写“不能检出效应”，不能写“无效应”。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：事前 power + 事后 MDE + 诚实措辞。⛔ 误导：不报告功效就喊“政策无效”。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · H5_power.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* H5 功效分析：事前 + 事后
-* Stata 13+ 内置 power 命令
-
+<pre><code>* === 1. 模拟数据（本块无需模拟数据，直接调用 Stata 内置 power）===
+* === 2. 核心操作：事前 + 事后功效 ===
+* === 3. 检验与输出 ===
 * 事前：双样本均值差异，要检出 δ=0.3 SD，power=0.8，α=0.05
 power twomeans 0, diff(0.3) power(0.8) alpha(0.05)
-
-* 事后：N=200 时，能以 80% 功效检出多大的处理效应？
-*   输出 MDE (minimum detectable effect)
+* 事后：N=200 时，能以 80% 功效检出多大的处理效应（MDE）
 power twomeans 0, n(200) power(0.8) alpha(0.05)
-
-* DID 语境下更实用的事后功效：
-*   假设 SE(β)=0.15，要 80% 功效、双侧 5%，
-*   临界 t≈1.96+0.84=2.80，MDE = 2.80*0.15 = 0.42
-*   含义：只有真实 |ATT|>0.42，你才有 80% 概率检出。
-*   若你的点估计是 0.15，诚实写法:
-*   "We cannot rule out an effect as large as 0.42
-*    with 80% power; our null result should not be
-*    interpreted as evidence of no effect."
-</code></pre>
+* DID 语境手算：SE(β)=0.15，临界 t≈1.96+0.84=2.80，MDE=2.80*0.15=0.42
+* ✓ 诚实写法：点估计 0.15 &lt; MDE 0.42 时，应写"不能检出效应"而非"无效应"
+* ⛔ 红线：功效不足却把「不显著」写成「政策无影响」</code></pre>
       </div>
 
       <h3><span class="tech-label">H6</span>置信区间与等价检验（TOST, two one-sided tests）</h3>
       <p><b>是什么：</b>"不显著"≠"无效应"。TOST 是一种<em>试图证明效应足够小</em>的检验：先在事前设定一个"等价界值 δ"（如 |效应|&lt;0.1 即视为实际等价于 0），然后做两个单侧检验——H0: β≥δ vs H1: β&lt;δ，以及 H0: β≤−δ vs H1: β&gt;−δ；两个都拒绝才称"在 ±δ 内等价于 0"。<b>为什么改变显著性/可信度：</b>直接把 p=0.34 写成"政策无影响"是统计学错误；正确的"无效应"声明必须用 TOST 或 CI 落在 ±δ 内。<b>Stata 代码：</b>见 <code class="inline">ttost</code>（ssc install ttost）。<b>合法性判别：</b>等价界值 δ 必须事前由经济意义决定（如"效应小于 0.05 个 SD 即无经济意义"），不能事后挑一个让自己通过的 δ。<b>审稿人如何识破：</b>不显著就写"无效应"、从不报 CI 范围、从不报等价界值。<b>诚实替代：</b>主结果永远报系数 + 95% CI；若要声称"无效应"，做 TOST 并报告 δ 的选择依据；把"不显著"严格表述为"在当前样本与功效下不能拒绝零假设"。</p>
+      <div class="callout info">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>点估计不显著、想声称“效应可忽略/等价于 0”时，用 TOST 而非直接下结论。</p>
+        <p><b>【代码思路】</b>① ssc install ttost；模拟小效应 0.05；② 常规回归 p 不显著；③ 设定事前界值 δ=0.1，做两个单侧检验判断 CI 是否落在 ±δ 内。</p>
+        <p><b>【套用你的数据】</b>删除模拟；等价界值 δ 必须事前由经济意义定（如 |β|<0.1 即无经济意义）；或直接报告 95% CI 是否落在 ±δ 内。</p>
+        <p><b>【怎么看结果】</b>reg p=0.18 不能说“无效应”；只有 TOST 两个单侧都拒绝、CI⊂[-0.1,0.1] 才称统计等价。</p>
+        <p><b>【合法 vs 红线】</b>✓ 合法：事前定 δ + TOST + CI 报告。⛔ 红线：把“不显著”当“无效应”，或事后换 δ 凑通过。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · H6_TOST.do</span><button class="copy-btn">复制</button></div>
-<pre><code>* H6 TOST 等价检验：把"不显著"升级为"统计上等价于0"
+<pre><code>* === 1. 模拟数据（套用时删除本段）===
 * ssc install ttost, replace
-clear all
 set seed 2316
 set obs 2000
 gen x = rnormal()
 gen y = 0.05*x + rnormal(0,1)         // 真实效应很小(0.05)
 
-* 常规回归：p 不显著
+* === 2. 核心操作：常规回归 vs TOST ===
+* === 3. 检验与输出 ===
 reg y x
-* 看到 p=0.18，错误写法："政策无影响"
-
-* TOST：设定等价界值 δ=0.1（即 |β|<0.1 视为无经济意义）
-*   ttost 会做两个单侧检验：
-*     H0a: β >= 0.1    vs H1a: β < 0.1
-*     H0b: β <= -0.1   vs H1b: β > -0.1
-*   两个都拒绝 → β 在 [-0.1, 0.1] 内 → 等价于0
-* ttost coef=x, 0.1     // 或用回归后的 e() 直接做
-
-* 关键：等价界值 0.1 必须在事前由经济意义定，
-*      不能跑完 TOST 发现不通过，再换 δ=0.2 凑通过。
-* 诚实写法:
-*   "The 95% CI for β is [-0.03, 0.13], which lies
-*    within our pre-specified equivalence bounds of
-*    ±0.10; we therefore conclude the policy has at
-*    most a negligible effect."
-</code></pre>
+* ✗ 错误写法：看到 p=0.18 就写"政策无影响"
+* TOST：事前设等价界值 δ=0.1（|β|&lt;0.1 即无经济意义）
+* ttost 做两个单侧检验：
+*   H0a: β&gt;=0.1  vs H1a: β&lt;0.1
+*   H0b: β&lt;=-0.1 vs H1b: β&gt;-0.1
+*   两个都拒绝 → β ∈ [-0.1,0.1] → 等价于0
+* ttost, coef(x) eqv(0.1)
+* ✓ 界值 0.1 必须事前由经济意义定；报告 95% CI 是否落在 ±δ 内
+* ⛔ 红线：跑完 TOST 不通过再换 δ=0.2 凑通过</code></pre>
       </div>
     </div>
 
@@ -1258,6 +1507,14 @@ reg y x
       <div class="callout danger">
         <div class="callout-title">⛔ 以下代码为红线手法，原样收录仅供识别与复现审计，<strong>禁止用于你的研究</strong></div>
       </div>
+      <div class="callout danger">
+        <div class="callout-title">代码使用指南</div>
+        <p><b>【适用情形】</b>仅用于识别与复现审计这种红线手法，绝不能用于你自己的研究。</p>
+        <p><b>【代码思路】</b>① 假设已加载含 y/x/controls 的真实数据；② rangestat 对每个观测做“剔除自身”的留一回归得到 b_x；③ gsort + drop 演示按系数排序系统性删样本直到显著。</p>
+        <p><b>【套用你的数据】</b>不要套用——本块收录目的是让你在审稿/自己的复现代码里认出它。诚实替代是 Cook's D/DFBETA 只删已确认录入错误的观测，并预注册样本定义。</p>
+        <p><b>【怎么看结果】</b>识别特征：删除数量(20/120)与经济理由无关、全样本不显著删完才显著、代码里出现 gsort b_x + drop if _n<=N 这种语句。</p>
+        <p><b>【合法 vs 红线】</b>⛔ 整块都是红线演示：按回归结果反选样本是最典型的 data dredging。✓ 诚实替代：只删有外部错误记录的观测并附删除清单。</p>
+      </div>
       <div class="code-block">
         <div class="code-header"><span class="lang">stata · F1_留一系数排序删样本（红线·仅识别用）.do</span><button class="copy-btn">复制</button></div>
 <pre><code>*=================================================================
@@ -1265,30 +1522,29 @@ reg y x
 * 留一法回归 + 按系数排序删样本，直到核心变量显著
 * 收录目的：让你认识它、在审稿/复现时能识破它
 *=================================================================
+* === 1. （本块无模拟数据；假设已加载含 y x controls 的真实数据）===
 ssc install rangestat
 gen _i = 1
 gen _t = 1
-* 对每个观测做"剔除该观测后"的回归，得到留一法系数 b_x
-* (by(_i) 分组、i(_t 0 0) 在单点上做窗口；excludeself 排除自身)
+
+* === 2. 核心操作：对每个观测做"剔除自身"的回归，得留一系数 b_x ===
+*   by(_i) 分组、i(_t 0 0) 单点窗口、excludeself 排除自身
 rangestat (reg) y x controls, by(_i) i(_t 0 0) excludeself
 
-* --- 若要把系数"调显著为负"：按系数升序排列，删系数最小(最拖后腿)的那批 ---
+* === 3. 检验与输出：按系数排序删样本（⛔ 红线演示）===
+* ⛔ 要把系数"调显著为负"：按系数升序，删最拖后腿那批
 gsort b_x
 drop if _n&lt;=20          // 一次删20个；不显著就继续删，直到显著
 save data1.dta, replace
-
-* --- 若要把系数"调显著为正"：按系数降序排列 ---
+* ⛔ 要把系数"调显著为正"：按系数降序
 gsort -b_x
 drop if _n&lt;=120
 save data2.dta, replace
-
 * 识别特征(审稿人视角)：
 *   - 删的数量(20/120)与"经济理由"毫无关系，纯由显著性决定
-*   - 全样本回归不显著，删完才显著；删除模式单调对齐系数
-*   - 复现代码里会出现 gsort b_x + drop if _n<=N 这种语句
-* 诚实替代：Cook's D/DFBETA 只删"已确认录入错误"的观测，
-*           并在附录列出删除清单与理由；样本定义事前预注册。
-</code></pre>
+*   - 全样本不显著、删完才显著；删除模式单调对齐系数
+* ✓ 诚实替代：Cook's D/DFBETA 只删"已确认录入错误"的观测，
+*   附录列出删除清单与理由；样本定义事前预注册</code></pre>
       </div>
     </div>
 
