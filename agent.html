@@ -61,18 +61,32 @@
 </div>
 
 <script>
-// ================= 前端 RAG：加载站内语料 =================
+// ================= 前端 RAG：加载站内语料（分4份并行，逐份重试） =================
 let CHUNKS = [];
+const CHUNK_PARTS = ['chunks_0.json', 'chunks_1.json', 'chunks_2.json', 'chunks_3.json'];
 (async function loadChunks() {
-  try {
-    const resp = await fetch('api/chunks.json');
-    const data = await resp.json();
-    CHUNKS = data.chunks || [];
-    console.log('chunks loaded:', CHUNKS.length);
+  setHint('⏳ 正在加载站内教程语料（首次约 3-8 秒）…');
+  const loaded = [];
+  await Promise.all(CHUNK_PARTS.map(async (part, idx) => {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const resp = await fetch('api/' + part);
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        const data = await resp.json();
+        loaded[idx] = data.chunks || [];
+        return;
+      } catch (e) {
+        if (attempt === 2) loaded[idx] = [];
+        else await new Promise((r) => setTimeout(r, 1500));
+      }
+    }
+  }));
+  CHUNKS = [].concat(...loaded);
+  console.log('chunks loaded:', CHUNKS.length);
+  if (CHUNKS.length > 1000) {
     setHint('已加载站内 ' + CHUNKS.length + ' 条教程片段。');
-  } catch (e) {
-    console.error('chunks load failed', e);
-    setHint('⚠️ 站内语料加载失败，检索功能不可用。请刷新重试。');
+  } else {
+    setHint('⚠️ 部分语料加载失败（当前 ' + CHUNKS.length + ' 条），请刷新重试。');
   }
 })();
 
