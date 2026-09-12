@@ -28,7 +28,7 @@
     <details class="side-block emp" open style="--blk:#d9a25f">
       <summary class="side-block-head">
         <span class="block-badge" style="background:#d9a25f">EMP</span>
-        <span class="block-label">实证论文<i class="block-sub">实证 · 30页</i></span>
+        <span class="block-label">实证论文<i class="block-sub">实证 · 29页</i></span>
         <span class="block-arrow">▾</span>
       </summary>
       <div class="side-block-body">
@@ -58,17 +58,16 @@
         <a class="nav-item" href="17-causal-forest.html"><span class="num">19</span>因果森林与政策学习 <span class="diff advanced">进阶</span></a>
         <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">20</span>非参/半参方法 <span class="diff advanced">进阶</span></a>
         <a class="nav-item active" href="30-bayesian-empirical.html"><span class="num">21</span>贝叶斯实证推断 <span class="diff advanced">进阶</span></a>
-        <a class="nav-item" href="11-significance-practice.html"><span class="num">22</span>显著性诊断实务</a>
-        <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span>显著性手法库与规范判别</a>
+        <a class="nav-item" href="23-significance-techniques.html"><span class="num">22</span>显著性手法库与规范判别</a>
         <div class="side-stage"><span class="stage-num">⑤</span>预测与前沿应用</div>
-        <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">24</span>大数据宏观预测</a>
-        <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">25</span>即时预测与DFM</a>
-        <a class="nav-item" href="20-quantile-gar.html"><span class="num">26</span>分位数回归与GaR</a>
-        <a class="nav-item" href="21-text-analysis.html"><span class="num">27</span>文本分析与叙事冲击</a>
-        <a class="nav-item" href="22-tvp-var.html"><span class="num">28</span>TVP-VAR与风险溯源</a>
+        <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">23</span>大数据宏观预测</a>
+        <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">24</span>即时预测与DFM</a>
+        <a class="nav-item" href="20-quantile-gar.html"><span class="num">25</span>分位数回归与GaR</a>
+        <a class="nav-item" href="21-text-analysis.html"><span class="num">26</span>文本分析与叙事冲击</a>
+        <a class="nav-item" href="22-tvp-var.html"><span class="num">27</span>TVP-VAR与风险溯源</a>
         <div class="side-stage"><span class="stage-num">⑥</span>论文工程</div>
-        <a class="nav-item" href="12-replication-workflow.html"><span class="num">29</span>论文复现流程</a>
-        <a class="nav-item" href="13-five-layer-framework.html"><span class="num">30</span>五层框架</a>
+        <a class="nav-item" href="12-replication-workflow.html"><span class="num">28</span>论文复现流程</a>
+        <a class="nav-item" href="13-five-layer-framework.html"><span class="num">29</span>五层框架</a>
       </div>
     </details>
     <details class="side-block dsge" style="--blk:#6fa8dc">
@@ -206,7 +205,7 @@
       </div>
       <div class="prereq-item">
         <div class="prereq-label">④ 站内前置页面</div>
-        <div class="prereq-body">与 <a href="../dsge/06-bayesian-estimation.html">DSGE 贝叶斯估计（05）</a>、<a href="11-significance-practice.html">11 显著性诊断实务</a>、<a href="04-baseline-regression.html">04 基准回归</a>互链。</div>
+        <div class="prereq-body">与 <a href="../dsge/06-bayesian-estimation.html">DSGE 贝叶斯估计（05）</a>、<a href="04-baseline-regression.html">04 基准回归</a>互链。</div>
       </div>
       <div class="prereq-item">
         <div class="prereq-label">⑤ 难度分级</div>
@@ -545,7 +544,7 @@ print(az.summary(trace_h, var_names=['mu_a','sigma_a','beta']))
     <h2><span class="sec-num">08</span> 交叉链接</h2>
     <ul>
       <li><strong>与 <a href="../dsge/06-bayesian-estimation.html">DSGE 贝叶斯估计（05）</a></strong>：DSGE 是贝叶斯推断在宏观结构模型中的主战场。本页讲一般原理，DSGE 页讲具体模型实现（Dynare 的先验、MCMC、IRF）。</li>
-      <li><strong>与 <a href="11-significance-practice.html">11 显著性诊断实务</a></strong>：贝叶斯后验概率 $P(\theta&gt;0|Y)$ 是 p 值的贝叶斯替代。读那一页的 p 值批判部分，再回到本页看贝叶斯如何解决同一问题。</li>
+      <li><strong>关于 p 值与后验概率</strong>：贝叶斯后验概率 $P(\theta>0|Y)$ 是 p 值的贝叶斯替代，能给出"参数为正的概率"这一更直观的陈述。</li>
       <li><strong>与 <a href="04-baseline-regression.html">04 基准回归</a>、<a href="05-endogeneity-iv.html">05 IV</a></strong>：贝叶斯 OLS 在无信息先验下退化为频率 OLS，是贝叶斯与频率派的"桥梁"。</li>
       <li><strong>与 <a href="15-potential-outcomes-dag.html">15 潜在结果与因果图</a></strong>：Imbens–Rubin (2015) 把因果推断贝叶斯化，与潜在结果框架天然衔接。</li>
     </ul>
@@ -554,13 +553,13 @@ print(az.summary(trace_h, var_names=['mu_a','sigma_a','beta']))
 
   <div class="page-nav">
     <a href="29-nonparametric-semiparametric.html" class="prev">
-      <div class="nav-label">← 上一节</div>
-      <div class="nav-title">非参/半参方法</div>
-    </a>
-    <a href="index.html" class="next">
-      <div class="nav-label">回到实证总览 →</div>
-      <div class="nav-title">实证总览与路线</div>
-    </a>
+        <div class="nav-label">上一节 ←</div>
+        <div class="nav-title">非参/半参方法</div>
+      </a>
+    <a href="23-significance-techniques.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">显著性操作手法库与学术规范判别</div>
+      </a>
   </div>
 
 </div></div>

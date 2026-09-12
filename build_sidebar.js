@@ -14,7 +14,7 @@ const ROOT = __dirname;
 /* ---------------- 导航数据 ---------------- */
 const BLOCKS = [
   {
-    id: 'emp', badge: 'EMP', label: '实证论文', sub: '实证 · 30页',
+    id: 'emp', badge: 'EMP', label: '实证论文', sub: '实证 · 29页',
     color: '#d9a25f', dir: 'empirical', index: 'index.html', indexName: '实证总览与路线',
     stages: [
       { stage: '① 研究设计与识别策略', items: [
@@ -45,7 +45,6 @@ const BLOCKS = [
         { f: '17-causal-forest.html', name: '因果森林与政策学习', adv: true },
         { f: '29-nonparametric-semiparametric.html', name: '非参/半参方法', adv: true },
         { f: '30-bayesian-empirical.html', name: '贝叶斯实证推断', adv: true },
-        { f: '11-significance-practice.html', name: '显著性诊断实务' },
         { f: '23-significance-techniques.html', name: '显著性手法库与规范判别' },
       ]},
       { stage: '⑤ 预测与前沿应用', items: [

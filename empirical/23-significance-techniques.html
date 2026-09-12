@@ -28,7 +28,7 @@
     <details class="side-block emp" open style="--blk:#d9a25f">
       <summary class="side-block-head">
         <span class="block-badge" style="background:#d9a25f">EMP</span>
-        <span class="block-label">实证论文<i class="block-sub">实证 · 30页</i></span>
+        <span class="block-label">实证论文<i class="block-sub">实证 · 29页</i></span>
         <span class="block-arrow">▾</span>
       </summary>
       <div class="side-block-body">
@@ -58,17 +58,16 @@
         <a class="nav-item" href="17-causal-forest.html"><span class="num">19</span>因果森林与政策学习 <span class="diff advanced">进阶</span></a>
         <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">20</span>非参/半参方法 <span class="diff advanced">进阶</span></a>
         <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">21</span>贝叶斯实证推断 <span class="diff advanced">进阶</span></a>
-        <a class="nav-item" href="11-significance-practice.html"><span class="num">22</span>显著性诊断实务</a>
-        <a class="nav-item active" href="23-significance-techniques.html"><span class="num">23</span>显著性手法库与规范判别</a>
+        <a class="nav-item active" href="23-significance-techniques.html"><span class="num">22</span>显著性手法库与规范判别</a>
         <div class="side-stage"><span class="stage-num">⑤</span>预测与前沿应用</div>
-        <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">24</span>大数据宏观预测</a>
-        <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">25</span>即时预测与DFM</a>
-        <a class="nav-item" href="20-quantile-gar.html"><span class="num">26</span>分位数回归与GaR</a>
-        <a class="nav-item" href="21-text-analysis.html"><span class="num">27</span>文本分析与叙事冲击</a>
-        <a class="nav-item" href="22-tvp-var.html"><span class="num">28</span>TVP-VAR与风险溯源</a>
+        <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">23</span>大数据宏观预测</a>
+        <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">24</span>即时预测与DFM</a>
+        <a class="nav-item" href="20-quantile-gar.html"><span class="num">25</span>分位数回归与GaR</a>
+        <a class="nav-item" href="21-text-analysis.html"><span class="num">26</span>文本分析与叙事冲击</a>
+        <a class="nav-item" href="22-tvp-var.html"><span class="num">27</span>TVP-VAR与风险溯源</a>
         <div class="side-stage"><span class="stage-num">⑥</span>论文工程</div>
-        <a class="nav-item" href="12-replication-workflow.html"><span class="num">29</span>论文复现流程</a>
-        <a class="nav-item" href="13-five-layer-framework.html"><span class="num">30</span>五层框架</a>
+        <a class="nav-item" href="12-replication-workflow.html"><span class="num">28</span>论文复现流程</a>
+        <a class="nav-item" href="13-five-layer-framework.html"><span class="num">29</span>五层框架</a>
       </div>
     </details>
     <details class="side-block dsge" style="--blk:#6fa8dc">
@@ -183,15 +182,15 @@
     <div class="page-header">
       <span class="tag">实证论文 · 研究伦理与透明度</span>
       <h1>显著性操作手法库与学术规范判别 Significance Toolkit &amp; Research-Integrity Discipline</h1>
-      <p class="desc">这不是教你 p-hacking。本页把实证研究中<strong>所有可能改变显著性的操作手法</strong>系统梳理为 35 种，按"样本数据 / 变量测量 / 模型估计 / 统计推断 / 时间识别 / DID 因果诊断 / 透明度与多重检验"七大类组织，每一种都讲清作用机制、可运行的 Stata 实现、<strong>合法性判别</strong>（何时是合法的稳健性与设定选择，何时是 p-hacking 红线）、审稿人如何识破、以及诚实替代做法。与姊妹页 <a href="11-significance-practice.html" style="color:var(--primary)">《显著性诊断实务》</a>互为表里：那一页教你"不显著时怎么找病因"，这一页教你"每一次动手里哪一笔是治病、哪一笔是操纵"。</p>
+      <p class="desc">这不是教你 p-hacking。本页把实证研究中<strong>所有可能改变显著性的操作手法</strong>系统梳理为 35 种，按"样本数据 / 变量测量 / 模型估计 / 统计推断 / 时间识别 / DID 因果诊断 / 透明度与多重检验"七大类组织，每一种都讲清作用机制、可运行的 Stata 实现、<strong>合法性判别</strong>（何时是合法的稳健性与设定选择，何时是 p-hacking 红线）、审稿人如何识破、以及诚实替代做法。本页的核心立场：合法性取决于"设定是否事前确定、动机是否真实、报告是否透明"，而不是手法本身。</p>
     </div>
 
     <div class="prereq-box">
       <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
       <div class="prereq-grid">
         <div class="prereq-item">
-          <div class="prereq-label">① 姊妹页（必读）</div>
-          <div class="prereq-body">先读 <a href="11-significance-practice.html">12 显著性诊断实务</a>：功效、效应量、共线性、影响点、函数形式、测量误差、遗漏变量、异质性、多重检验十大根因。本页是它的"操作手法地图"，两页互为补充。</div>
+          <div class="prereq-label">① 本页定位</div>
+          <div class="prereq-body">本页回答"每一次操作手法合法与否"：把 35 种可能改变显著性的操作按论文写作阶段组织，每种给出机制、可运行 Stata 实现、合法 vs 红线判别与诚实替代做法。</div>
         </div>
         <div class="prereq-item">
           <div class="prereq-label">② 方法前置</div>
@@ -1718,18 +1717,18 @@ save data2.dta, replace
 
       <div class="callout info">
         <div class="callout-title">ℹ 姊妹页阅读建议</div>
-        <p>本页回答"每一次操作合法与否"；姊妹页 <a href="11-significance-practice.html">12 显著性诊断实务</a>回答"结果不显著时如何系统找病因"。两页配合使用：先用诊断实务定位根因，再回本页核对你准备采取的修正站在花园的哪一边。</p>
+        <p>本页回答"每一次操作合法与否"。使用方式：先确定你在论文的哪个阶段（数据准备 / 模型估计 / 因果识别 / 稳健性报告），再查对应阶段的手法，逐条核对你准备采取的动作是合法稳健性还是 p-hacking 红线。</p>
       </div>
     </div>
 
     <div class="page-nav">
-      <a href="11-significance-practice.html" class="prev">
-        <div class="nav-label">← 姊妹页</div>
-        <div class="nav-title">显著性诊断与规范推断（十大根因）</div>
+      <a href="30-bayesian-empirical.html" class="prev">
+        <div class="nav-label">上一节 ←</div>
+        <div class="nav-title">贝叶斯实证推断</div>
       </a>
-      <a href="index.html" class="next">
-        <div class="nav-label">实证总览 →</div>
-        <div class="nav-title">实证论文路线图与总览</div>
+      <a href="18-big-data-forecasting.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">大数据宏观预测</div>
       </a>
     </div>
 
