@@ -14,7 +14,7 @@ const ROOT = __dirname;
 /* ---------------- 导航数据 ---------------- */
 const BLOCKS = [
   {
-    id: 'emp', badge: 'EMP', label: '实证论文', sub: '实证 · 29页',
+    id: 'emp', badge: 'EMP', label: '实证论文', sub: '实证 · 28页',
     color: '#d9a25f', dir: 'empirical', index: 'index.html', indexName: '实证总览与路线',
     stages: [
       { stage: '① 研究设计与识别策略', items: [
@@ -56,7 +56,6 @@ const BLOCKS = [
       ]},
       { stage: '⑥ 论文工程', items: [
         { f: '12-replication-workflow.html', name: '论文复现流程' },
-        { f: '13-five-layer-framework.html', name: '五层框架' },
       ]},
     ],
   },

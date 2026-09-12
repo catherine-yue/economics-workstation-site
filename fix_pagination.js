@@ -36,7 +36,6 @@ const ORDER = [
   '21-text-analysis.html',
   '22-tvp-var.html',
   '12-replication-workflow.html',
-  '13-five-layer-framework.html',
 ];
 
 const INDEX = 'index.html';
