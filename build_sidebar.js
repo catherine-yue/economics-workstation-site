@@ -14,7 +14,7 @@ const ROOT = __dirname;
 /* ---------------- 导航数据 ---------------- */
 const BLOCKS = [
   {
-    id: 'emp', badge: 'EMP', label: '实证论文', sub: '实证 · 28页',
+    id: 'emp', badge: 'EMP', label: '实证论文', sub: '实证 · 29页',
     color: '#d9a25f', dir: 'empirical', index: 'index.html', indexName: '实证总览与路线',
     stages: [
       { stage: '① 研究设计与识别策略', items: [
@@ -31,6 +31,7 @@ const BLOCKS = [
         { f: '04-baseline-regression.html', name: '基准回归' },
         { f: '05-endogeneity-iv.html', name: '内生性与IV' },
         { f: '06-did.html', name: 'DID双重差分' },
+        { f: '31-ddd-triple-difference.html', name: '三重差分 DDD' },
         { f: '07-rdd.html', name: 'RDD断点回归' },
         { f: '24-synthetic-control.html', name: '合成控制法 SCM' },
         { f: '25-dynamic-panel-gmm.html', name: '动态面板 GMM' },

@@ -17,6 +17,7 @@ const ORDER = [
   '04-baseline-regression.html',
   '05-endogeneity-iv.html',
   '06-did.html',
+  '31-ddd-triple-difference.html',
   '07-rdd.html',
   '24-synthetic-control.html',
   '25-dynamic-panel-gmm.html',

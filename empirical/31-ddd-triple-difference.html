@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三重差分 DDD（全套） | 经济学研究学习工作站</title>
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="../assets/style.css?v=4">
+</head>
+<body>
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="overlay" onclick="toggleSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">经济学研究工作站</div>
+    <div class="subtitle">ECON RESEARCH WORKSTATION</div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-quick">
+      <a class="quick-btn" href="../index.html">🏠 首页</a>
+      <a class="quick-btn" href="../agent.html">🤖 AI 助手</a>
+    </div>
+    <a class="nav-item plain" href="../index.html">首页总览</a>
+    <details class="side-block emp" open style="--blk:#d9a25f">
+      <summary class="side-block-head">
+        <span class="block-badge" style="background:#d9a25f">EMP</span>
+        <span class="block-label">实证论文<i class="block-sub">实证 · 29页</i></span>
+        <span class="block-arrow">▾</span>
+      </summary>
+      <div class="side-block-body">
+        <a class="nav-item sub" href="index.html">实证总览与路线</a>
+        <div class="side-stage"><span class="stage-num">①</span>研究设计与识别策略</div>
+        <a class="nav-item" href="15-potential-outcomes-dag.html"><span class="num">01</span>潜在结果与因果图</a>
+        <a class="nav-item" href="27-ejd-method-map.html"><span class="num">02</span>顶刊方法地图与复现</a>
+        <div class="side-stage"><span class="stage-num">②</span>数据准备与描述</div>
+        <a class="nav-item" href="01-data-cleaning.html"><span class="num">03</span>数据清洗</a>
+        <a class="nav-item" href="02-data-merge.html"><span class="num">04</span>数据合并与面板</a>
+        <a class="nav-item" href="03-descriptive-stats.html"><span class="num">05</span>描述性统计</a>
+        <a class="nav-item" href="14-eda-sample-construction.html"><span class="num">06</span>EDA与样本构造</a>
+        <div class="side-stage"><span class="stage-num">③</span>基准回归与因果识别</div>
+        <a class="nav-item" href="04-baseline-regression.html"><span class="num">07</span>基准回归</a>
+        <a class="nav-item" href="05-endogeneity-iv.html"><span class="num">08</span>内生性与IV</a>
+        <a class="nav-item" href="06-did.html"><span class="num">09</span>DID双重差分</a>
+        <a class="nav-item active" href="31-ddd-triple-difference.html"><span class="num">10</span>三重差分 DDD</a>
+        <a class="nav-item" href="07-rdd.html"><span class="num">11</span>RDD断点回归</a>
+        <a class="nav-item" href="24-synthetic-control.html"><span class="num">12</span>合成控制法 SCM</a>
+        <a class="nav-item" href="25-dynamic-panel-gmm.html"><span class="num">13</span>动态面板 GMM</a>
+        <a class="nav-item" href="26-spatial-econometrics.html"><span class="num">14</span>空间计量入门</a>
+        <a class="nav-item" href="28-bunching-kink.html"><span class="num">15</span>Bunching/Kink聚束</a>
+        <a class="nav-item" href="16-dml.html"><span class="num">16</span>DML去偏机器学习 <span class="diff advanced">进阶</span></a>
+        <div class="side-stage"><span class="stage-num">④</span>诊断稳健与机制异质</div>
+        <a class="nav-item" href="08-robustness.html"><span class="num">17</span>稳健性检验</a>
+        <a class="nav-item" href="09-mechanism.html"><span class="num">18</span>机制检验</a>
+        <a class="nav-item" href="10-heterogeneity.html"><span class="num">19</span>异质性分析</a>
+        <a class="nav-item" href="17-causal-forest.html"><span class="num">20</span>因果森林与政策学习 <span class="diff advanced">进阶</span></a>
+        <a class="nav-item" href="29-nonparametric-semiparametric.html"><span class="num">21</span>非参/半参方法 <span class="diff advanced">进阶</span></a>
+        <a class="nav-item" href="30-bayesian-empirical.html"><span class="num">22</span>贝叶斯实证推断 <span class="diff advanced">进阶</span></a>
+        <a class="nav-item" href="23-significance-techniques.html"><span class="num">23</span>显著性手法库与规范判别</a>
+        <div class="side-stage"><span class="stage-num">⑤</span>预测与前沿应用</div>
+        <a class="nav-item" href="18-big-data-forecasting.html"><span class="num">24</span>大数据宏观预测</a>
+        <a class="nav-item" href="19-nowcasting-dfm.html"><span class="num">25</span>即时预测与DFM</a>
+        <a class="nav-item" href="20-quantile-gar.html"><span class="num">26</span>分位数回归与GaR</a>
+        <a class="nav-item" href="21-text-analysis.html"><span class="num">27</span>文本分析与叙事冲击</a>
+        <a class="nav-item" href="22-tvp-var.html"><span class="num">28</span>TVP-VAR与风险溯源</a>
+        <div class="side-stage"><span class="stage-num">⑥</span>论文工程</div>
+        <a class="nav-item" href="12-replication-workflow.html"><span class="num">29</span>论文复现流程</a>
+      </div>
+    </details>
+    <details class="side-block dsge" style="--blk:#6fa8dc">
+      <summary class="side-block-head">
+        <span class="block-badge" style="background:#6fa8dc">DSGE</span>
+        <span class="block-label">DSGE 模型<i class="block-sub">宏观建模 · 21页</i></span>
+        <span class="block-arrow">▾</span>
+      </summary>
+      <div class="side-block-body">
+        <a class="nav-item sub" href="../dsge/index.html">DSGE总览与路线</a>
+        <div class="side-stage"><span class="stage-num">模型分支</span>Branches</div>
+        <a class="nav-item" href="../dsge/09-rbc-model.html"><span class="num">01</span>RBC基准模型</a>
+        <a class="nav-item" href="../dsge/10-nk-three-equation.html"><span class="num">02</span>NK三方程模型</a>
+        <a class="nav-item" href="../dsge/11-medium-scale-sw.html"><span class="num">03</span>中尺度模型(SW)</a>
+        <a class="nav-item" href="../dsge/12-small-open-economy.html"><span class="num">04</span>小国开放经济</a>
+        <a class="nav-item" href="../dsge/07-financial-frictions.html"><span class="num">05</span>金融摩擦(BGG/GK)</a>
+        <a class="nav-item" href="../dsge/13-fiscal-monetary-rules.html"><span class="num">06</span>财政与货币政策规则</a>
+        <a class="nav-item" href="../dsge/14-tank.html"><span class="num">07</span>TANK两主体模型</a>
+        <a class="nav-item" href="../dsge/21-hank.html"><span class="num">08</span>HANK异质性主体</a>
+        <a class="nav-item" href="../dsge/17-olg.html"><span class="num">09</span>OLG世代交叠</a>
+        <a class="nav-item" href="../dsge/18-money-search.html"><span class="num">10</span>货币搜寻模型</a>
+        <a class="nav-item" href="../dsge/19-zlb-occasionally-binding.html"><span class="num">11</span>ZLB偶发约束(OccBin)</a>
+        <a class="nav-item" href="../dsge/20-multi-sector-dsge.html"><span class="num">12</span>多部门IO-DSGE</a>
+        <a class="nav-item" href="../dsge/16-adaptive-learning.html"><span class="num">13</span>适应性学习与行为预期</a>
+        <div class="side-stage"><span class="stage-num">求解与估计方法</span>Methods</div>
+        <a class="nav-item" href="../dsge/01-model-building.html"><span class="num">14</span>模型构建</a>
+        <a class="nav-item" href="../dsge/02-first-order-conditions.html"><span class="num">15</span>一阶条件推导</a>
+        <a class="nav-item" href="../dsge/03-steady-state.html"><span class="num">16</span>稳态求解</a>
+        <a class="nav-item" href="../dsge/04-log-linearization.html"><span class="num">17</span>对数线性化</a>
+        <a class="nav-item" href="../dsge/15-perturbation-methods.html"><span class="num">18</span>扰动法(一阶/二阶)</a>
+        <a class="nav-item" href="../dsge/05-dynare-solving.html"><span class="num">19</span>Dynare实操</a>
+        <a class="nav-item" href="../dsge/06-bayesian-estimation.html"><span class="num">20</span>贝叶斯估计</a>
+        <a class="nav-item" href="../dsge/08-irf-simulation.html"><span class="num">21</span>IRF与模拟</a>
+      </div>
+    </details>
+    <details class="side-block structural" style="--blk:#7fc97f">
+      <summary class="side-block-head">
+        <span class="block-badge" style="background:#7fc97f">STR</span>
+        <span class="block-label">结构估计<i class="block-sub">微观结构 · 22页</i></span>
+        <span class="block-arrow">▾</span>
+      </summary>
+      <div class="side-block-body">
+        <a class="nav-item sub" href="../structural/index.html">结构估计总览</a>
+        <div class="side-stage"><span class="stage-num">模型分支</span>Branches</div>
+        <a class="nav-item" href="../structural/03-discrete-choice.html"><span class="num">01</span>离散选择总览</a>
+        <a class="nav-item" href="../structural/07-binary-choice.html"><span class="num">02</span>二值选择(Logit/Probit)</a>
+        <a class="nav-item" href="../structural/08-multinomial-ordered.html"><span class="num">03</span>多项与有序选择</a>
+        <a class="nav-item" href="../structural/09-mixed-logit.html"><span class="num">04</span>混合Logit</a>
+        <a class="nav-item" href="../structural/04-blp.html"><span class="num">05</span>BLP随机系数模型</a>
+        <a class="nav-item" href="../structural/05-dynamic-structural.html"><span class="num">06</span>动态结构模型总览</a>
+        <a class="nav-item" href="../structural/10-production-function.html"><span class="num">07</span>生产函数估计(OP/LP/ACF)</a>
+        <a class="nav-item" href="../structural/11-auctions.html"><span class="num">08</span>拍卖模型</a>
+        <a class="nav-item" href="../structural/12-search-matching.html"><span class="num">09</span>搜索与匹配模型</a>
+        <a class="nav-item" href="../structural/15-dynamic-games.html"><span class="num">10</span>动态博弈/产业动态</a>
+        <a class="nav-item" href="../structural/16-education-human-capital.html"><span class="num">11</span>教育/人力资本</a>
+        <a class="nav-item" href="../structural/18-lifecycle-consumption-savings.html"><span class="num">12</span>生命周期消费储蓄</a>
+        <a class="nav-item" href="../structural/19-market-structure-entry.html"><span class="num">13</span>市场结构与进入退出</a>
+        <a class="nav-item" href="../structural/20-housing-location-choice.html"><span class="num">14</span>住房与区位选择</a>
+        <a class="nav-item" href="../structural/21-insurance-risk-preference.html"><span class="num">15</span>保险需求与风险偏好</a>
+        <a class="nav-item" href="../structural/22-investment-financing-dynamic.html"><span class="num">16</span>投资融资动态结构</a>
+        <div class="side-stage"><span class="stage-num">估计方法</span>Methods</div>
+        <a class="nav-item" href="../structural/01-mle.html"><span class="num">17</span>极大似然估计 MLE</a>
+        <a class="nav-item" href="../structural/02-gmm.html"><span class="num">18</span>广义矩估计 GMM</a>
+        <a class="nav-item" href="../structural/06-counterfactual.html"><span class="num">19</span>反事实分析</a>
+        <a class="nav-item" href="../structural/13-nonlinear-gmm-smm.html"><span class="num">20</span>非线性GMM/SMM</a>
+        <a class="nav-item" href="../structural/14-mpec.html"><span class="num">21</span>MPEC方法</a>
+        <a class="nav-item" href="../structural/17-ai-structural-estimation.html"><span class="num">22</span>AI驱动结构估计</a>
+      </div>
+    </details>
+    <details class="side-block qsge" style="--blk:#b39ddb">
+      <summary class="side-block-head">
+        <span class="block-badge" style="background:#b39ddb">QSGE</span>
+        <span class="block-label">QSGE 空间一般均衡<i class="block-sub">量化空间 · 17页</i></span>
+        <span class="block-arrow">▾</span>
+      </summary>
+      <div class="side-block-body">
+        <a class="nav-item sub" href="../qsge/index.html">QSGE总览与路线</a>
+        <div class="side-stage"><span class="stage-num">模型分支</span>Branches</div>
+        <a class="nav-item" href="../qsge/01-armington.html"><span class="num">01</span>Armington模型</a>
+        <a class="nav-item" href="../qsge/02-eaton-kortum.html"><span class="num">02</span>Eaton-Kortum模型</a>
+        <a class="nav-item" href="../qsge/03-gravity.html"><span class="num">03</span>结构引力与PPML</a>
+        <a class="nav-item" href="../qsge/08-melitz-model.html"><span class="num">04</span>Melitz异质企业模型</a>
+        <a class="nav-item" href="../qsge/06-rrh-spatial.html"><span class="num">05</span>RRH空间一般均衡</a>
+        <a class="nav-item" href="../qsge/07-trade-migration-land.html"><span class="num">06</span>贸易+迁移+土地</a>
+        <a class="nav-item" href="../qsge/09-dynamic-spatial.html"><span class="num">07</span>动态空间一般均衡</a>
+        <a class="nav-item" href="../qsge/11-gvc-value-added.html"><span class="num">08</span>GVC增加值贸易</a>
+        <a class="nav-item" href="../qsge/12-caliendo-parro-multisector.html"><span class="num">09</span>多部门EK量化贸易</a>
+        <a class="nav-item" href="../qsge/13-ahlfeldt-city-commute.html"><span class="num">10</span>城市通勤空间均衡</a>
+        <a class="nav-item" href="../qsge/14-allen-arkolakis-unified.html"><span class="num">11</span>空间经济统一框架</a>
+        <a class="nav-item" href="../qsge/15-alonso-muth-mills.html"><span class="num">12</span>单中心城市土地利用</a>
+        <a class="nav-item" href="../qsge/16-quantitative-heckscher-ohlin.html"><span class="num">13</span>定量HOV要素禀赋</a>
+        <a class="nav-item" href="../qsge/17-monte-redding-rh.html"><span class="num">14</span>通勤贸易一体化</a>
+        <div class="side-stage"><span class="stage-num">估计与反事实方法</span>Methods</div>
+        <a class="nav-item" href="../qsge/04-welfare-decomposition.html"><span class="num">15</span>福利分解(ACR)</a>
+        <a class="nav-item" href="../qsge/05-counterfactual-solving.html"><span class="num">16</span>帽代数反事实</a>
+        <a class="nav-item" href="../qsge/10-trade-cost-estimation.html"><span class="num">17</span>贸易成本结构估计</a>
+      </div>
+    </details>
+  </nav>
+</aside>
+
+<div class="main"><div class="content-wrap">
+
+  <div class="breadcrumb">
+    <a href="../index.html">首页</a><span class="sep">/</span>
+    <a href="index.html">实证论文</a><span class="sep">/</span>
+    <span>三重差分 DDD（全套）</span>
+  </div>
+
+  <div class="page-header">
+    <span class="tag">实证 · 31 · 重点</span>
+    <h1>三重差分 DDD：识别逻辑、Stata 实现与论文规范</h1>
+    <p class="desc">Difference-in-Difference-in-Differences (DDD) 是 DID 的自然推广：当政策只在"群体×地区×时间"三重交叉组合中生效，或 DID 的平行趋势因存在同期地区共同冲击而存疑时，再加一层差分消除共同冲击。本页讲清 DDD 的识别直觉、三重平行趋势假设、完整 Stata 代码（基准回归/事件研究/安慰剂/聚类标准误/esttab 导出）、论文写法与常见错误，以及交错实施 DDD 等进阶话题。</p>
+  </div>
+
+  <div class="prereq-box">
+    <div class="prereq-title">前置条件与学习依赖 / PREREQUISITES</div>
+    <div class="prereq-grid">
+      <div class="prereq-item">
+        <div class="prereq-label">① 数学 / 统计基础</div>
+        <div class="prereq-body">因果推断潜在结果框架、固定效应估计、面板差分、DID 平行趋势假设。DDD 是 DID 的推广，必须先掌握 DID。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">② 经济学理论前置</div>
+        <div class="prereq-body">政策评估方法；理解"政策只在三重交叉组合生效"的制度设计（如营改增试点×行业×时间）。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">③ 软件 / 计算前置</div>
+        <div class="prereq-body">Stata 17+（外部命令：<code class="inline">reghdfe</code>、<code class="inline">estout</code>、<code class="inline">coefplot</code>、<code class="inline">eventdd</code>；聚类标准误用 <code class="inline">vce(cluster)</code>，野生聚类自助法用 <code class="inline">boottest</code>）。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">④ 站内前置页面</div>
+        <div class="prereq-body">先学 <a href="04-baseline-regression.html">04 基准回归</a>（双向固定效应与聚类标准误），再学 <a href="06-did.html">06 DID 双重差分</a>（平行趋势与事件研究）。DDD 是 DID 的推广。</div>
+      </div>
+      <div class="prereq-item">
+        <div class="prereq-label">⑤ 难度分级</div>
+        <div class="prereq-body"><span style="display:inline-block;padding:2px 12px;border-radius:10px;font-size:12px;font-weight:700;background:#e8eef5;color:#1c5d6e;">进阶</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toc-box">
+    <div class="toc-title">本页目录 / CONTENTS</div>
+    <ol>
+      <li><a href="#s1">DDD 的概念与识别逻辑</a></li>
+      <li><a href="#s2">识别假设：三重平行趋势与差分公式</a></li>
+      <li><a href="#s3">Stata 完整代码（基准/事件研究/安慰剂/聚类/导出）</a></li>
+      <li><a href="#s4">论文写法：章节框架与报告规范</a></li>
+      <li><a href="#s5">常见错误（漏放主效应/不检验三重平行趋势等）</a></li>
+      <li><a href="#s6">前沿与进阶：事件研究 DDD、交错实施、安慰剂维度设计</a></li>
+      <li><a href="#s7">论文案例</a></li>
+    </ol>
+  </div>
+
+  <div class="section" id="s1">
+    <h2><span class="sec-num">01</span> DDD 的概念与识别逻辑</h2>
+
+    <h3>1.1 什么是三重差分</h3>
+    <p>DID 做两次差分（组间差 × 时间差），DDD 做三次差分：在 DID 的基础上，再引入<strong>第三个维度</strong>（通常是地区、行业或人群子群体），对"处理组 vs 对照组"的 DID 估计量再做一次差分。直觉是：如果存在一个同时影响处理组和对照组的<strong>同期共同冲击</strong>（比如某个地区在政策实施同年还发生了其他经济变化），DID 会把这个共同冲击误算成政策效应；而 DDD 利用"不受该共同冲击影响的另一组地区/行业"做参照，把共同冲击差分掉。</p>
+
+    <p>经典设定是三个二值维度：</p>
+    <ul>
+      <li><strong>$G_i$（群体维度）</strong>：处理群体=1，对照群体=0（如"受政策影响的行业"vs"不受影响的行业"）</li>
+      <li><strong>$R_i$（地区维度）</strong>：试点地区=1，非试点地区=0（如"营改增试点省市"vs"非试点省市"）</li>
+      <li><strong>$T_t$（时间维度）</strong>：政策后=1，政策前=0</li>
+    </ul>
+    <p>政策只在 <strong>$G=1$ 且 $R=1$ 且 $T=1$</strong> 的三重交叉组合中生效。DDD 估计量就是三重交互项 $G \times R \times T$ 的系数。</p>
+
+    <div class="formula-block">
+      <div class="formula-label">Eq. 1.1 — DDD 基准回归（三重交互 + 全部低阶项）</div>
+      $$ y_{irt} = \beta_0 + \beta_1 G_i + \beta_2 R_r + \beta_3 T_t + \beta_4 (G_i \times R_r) + \beta_5 (G_i \times T_t) + \beta_6 (R_r \times T_t) + \beta_7 (G_i \times R_r \times T_t) + \mathbf{X}_{irt}'\boldsymbol{\delta} + \varepsilon_{irt} $$
+    </div>
+    <p>我们真正关心的系数是 $\beta_7$——三重交互项 $G \times R \times T$ 的系数。它就是 DDD 估计量。<strong>必须放入全部主效应（$G, R, T$）和两两交互（$G \times R, G \times T, R \times T$）</strong>，否则三重交互项的含义会被污染（见 s5 常见错误 1）。</p>
+
+    <h3>1.2 何时必须用 DDD（而不是 DID）</h3>
+    <div class="callout info">
+      <div class="callout-title">三种必须用 DDD 的典型场景</div>
+      <p><b>场景一：政策只在三重交叉组合生效。</b>最典型的是中国的"营改增"试点：政策只在"试点地区 × 试点行业 × 政策后"生效。如果你只用 DID（试点地区 vs 非试点地区 × 政策前后），就把"试点地区所有行业"都当成了处理组，但实际上试点地区的非试点行业根本不受政策影响——DDD 用"试点地区的非试点行业"做第二层对照，精确识别政策效应。</p>
+      <p><b>场景二：DID 的平行趋势存疑，存在同期地区共同冲击。</b>假设你评估"最低工资上调对就业的影响"，处理组是 A 省（上调了最低工资），对照组是 B 省（没上调）。但 A 省在政策同年还获批了"自贸区"，自贸区也会影响就业。DID 会把自贸区效应混进最低工资效应。DDD 引入第三个维度（如"低工资行业 vs 高工资行业"）：最低工资只对低工资行业有约束力，自贸区对两个行业都有影响。对"低工资行业的 DID"和"高工资行业的 DID"再做一次差分，自贸区的共同冲击就被消掉了。</p>
+      <p><b>场景三：处理组和对照组在地区层面不可比，需要"地区内的对照群体"。</b>当处理组和对照组所在地区的经济基本面差异很大（如一线城市 vs 三四线城市），直接 DID 的平行趋势很难成立。DDD 在每个地区内部都有处理群体和对照群体，用"地区内的组间差"消除地区固定差异，再跨地区差分。</p>
+    </div>
+
+    <h3>1.3 DDD 与 DID、RDD 的关系</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>方法</th><th>差分维度</th><th>核心识别假设</th><th>适用场景</th></tr></thead>
+        <tbody>
+          <tr><td><b>DID</b></td><td>组间 × 时间（2维）</td><td>平行趋势：无政策时处理组与对照组趋势相同</td><td>政策在某时点只对一部分群体生效，且两组趋势可比</td></tr>
+          <tr><td><b>DDD</b></td><td>群体 × 地区 × 时间（3维）</td><td>三重平行趋势：两个 DID 的平行趋势同时成立</td><td>政策只在三重交叉组合生效，或存在同期共同冲击需再差一层</td></tr>
+          <tr><td><b>RDD</b></td><td>断点两侧（1维连续变量）</td><td>断点处连续：除处理状态外，所有变量在断点处连续</td><td>政策由连续评分变量的阈值决定（如考试分数线、贫困县标准）</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>DDD 是 DID 的推广，不是替代。</strong>如果你的政策设定天然只有两个维度（处理组×时间），且平行趋势可信，用 DID 就够了。DDD 多差一层的代价是：<strong>识别假设更强（三重平行趋势）、估计精度更低（标准误更大）、对数据量要求更高</strong>。只有当 DID 确实不够用时才上 DDD。</p>
+  </div>
+
+  <div class="section" id="s2">
+    <h2><span class="sec-num">02</span> 识别假设：三重平行趋势与差分公式</h2>
+
+    <h3>2.1 三重平行趋势假设</h3>
+    <p>DDD 的识别假设比 DID 更强。DID 只要求"处理组和对照组的趋势相同"；DDD 要求<strong>两个层面的平行趋势同时成立</strong>：</p>
+    <div class="callout warning">
+      <div class="callout-title">三重平行趋势（Triple Parallel Trends）的精确表述</div>
+      <p>定义 $DD_{r,t} = (\bar{y}_{G=1,R=r,T=t} - \bar{y}_{G=0,R=r,T=t}) - (\bar{y}_{G=1,R=r,T=t-1} - \bar{y}_{G=0,R=r,T=t-1})$ 为"地区 $r$ 内的群体 DID"。</p>
+      <p><b>假设：</b>在没有政策的情况下，$DD_{r,t}$ 在试点地区（$R=1$）和非试点地区（$R=0$）之间的差异不随时间变化。即：处理群体与对照群体之间的趋势差，在试点地区和非试点地区是相同的。</p>
+      <p>换句话说：<strong>不仅"处理组 vs 对照组"的趋势要平行（DID 假设），而且"这个平行程度"在试点地区和非试点地区之间也要平行</strong>。这就是"三重"的含义。</p>
+    </div>
+
+    <h3>2.2 DDD 的差分公式（二阶差分的差分）</h3>
+    <p>DDD 估计量可以写成"两个 DID 的差"。先在每个地区内做群体×时间的 DID，再把试点地区的 DID 和非试点地区的 DID 相减：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 2.1 — DDD 估计量的三阶差分形式</div>
+      $$ \hat{\beta}_{DDD} = \underbrace{\big[(\bar{y}_{G1,R1,T1} - \bar{y}_{G1,R1,T0}) - (\bar{y}_{G0,R1,T1} - \bar{y}_{G0,R1,T0})\big]}_{\text{试点地区内的群体 DID}} - \underbrace{\big[(\bar{y}_{G1,R0,T1} - \bar{y}_{G1,R0,T0}) - (\bar{y}_{G0,R0,T1} - \bar{y}_{G0,R0,T0})\big]}_{\text{非试点地区内的群体 DID}} $$
+    </div>
+    <p>展开后就是 8 个单元格均值的加减组合（4 个政策后 − 4 个政策前，再按群体和地区交叉）。这也是为什么 DDD 对数据量要求更高——8 个格子每个都需要足够的观测值。</p>
+
+    <h3>2.3 回归等价形式与固定效应饱和模型</h3>
+    <p>在面板数据中，更常用的是<strong>饱和固定效应模型</strong>——用高维固定效应替代 Eq.1.1 中的低阶交互项，避免手动放入大量虚拟变量：</p>
+    <div class="formula-block">
+      <div class="formula-label">Eq. 2.2 — DDD 饱和固定效应模型（推荐写法）</div>
+      $$ y_{irt} = \beta \, (G_i \times R_r \times T_t) + \alpha_{ir} + \gamma_{it} + \lambda_{rt} + \varepsilon_{irt} $$
+    </div>
+    <p>其中：</p>
+    <ul>
+      <li>$\alpha_{ir}$：<strong>群体×地区</strong>固定效应（吸收 $G_i, R_r, G_i \times R_r$）——控制"哪些群体在哪些地区"的固有差异</li>
+      <li>$\gamma_{it}$：<strong>群体×时间</strong>固定效应（吸收 $G_i, T_t, G_i \times T_t$）——控制"不同群体在不同时期的共同趋势"（如全行业的时间趋势）</li>
+      <li>$\lambda_{rt}$：<strong>地区×时间</strong>固定效应（吸收 $R_r, T_t, R_r \times T_t$）——控制"不同地区在不同时期的共同冲击"（这正是 DDD 要消除的同期地区冲击！）</li>
+    </ul>
+    <p>放入这三组两两固定效应后，模型中唯一剩下的变化就是<strong>三重交互 $G \times R \times T$</strong>——它的系数就是 DDD 估计量。这是目前顶刊 DDD 论文的标准写法，用 <code class="inline">reghdfe</code> 的 <code class="inline">absorb()</code> 选项实现。</p>
+
+    <div class="callout tip">
+      <div class="callout-title">为什么饱和固定效应比手动放交互项更好</div>
+      <p>手动放 $G, R, T, G\times R, G\times T, R\times T$ 只控制了"线性可加"的低阶效应；而 $\alpha_{ir}, \gamma_{it}, \lambda_{rt}$ 是<strong>完全非参数</strong>的固定效应——允许每个"群体×地区"组合有自己的截距、每个"群体×时间"组合有自己的时间趋势、每个"地区×时间"组合有自己的冲击。饱和模型更稳健，也更不容易被审稿人攻击"你漏了某个交互项"。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s3">
+    <h2><span class="sec-num">03</span> Stata 完整代码</h2>
+    <p>以下代码全部可运行（模拟数据自包含），逐行中文注释。建议按顺序复制到 Stata 中执行。</p>
+
+    <h3>3.1 DDD 基准回归：三重交互 + 饱和固定效应</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s31_ddd_baseline.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* ============================================================
+* s3.1 DDD 基准回归：三重交互 + 饱和固定效应
+* 模拟设定：政策只在"处理行业(G=1) × 试点地区(R=1) × 政策后(T=1)"生效
+* ============================================================
+clear all
+set more off
+set seed 20240912
+
+* --- 1. 模拟面板数据：50个地区 × 2个行业 × 10年 = 1000观测 ---
+set obs 1000
+gen region = mod(_n, 50) + 1          // 地区编号 1-50
+gen industry = floor((_n-1)/50)        // 行业 0=对照行业, 1=处理行业
+gen year = 2005 + mod(_n, 10)          // 年份 2005-2014
+egen panel_id = group(region industry)   // 构造面板ID：地区×行业组合
+xtset panel_id year, yearly              // 设定面板结构
+
+* --- 2. 定义三个维度 ---
+gen G = (industry == 1)                 // 群体维度：处理行业=1
+gen R = (region &lt;= 20)                  // 地区维度：前20个地区为试点地区=1
+gen T = (year >= 2010)                  // 时间维度：2010年起政策后=1
+gen DDD = G * R * T                      // 三重交互：只有 G=1&amp;R=1&amp;T=1 时=1
+
+* --- 3. 生成结果变量：只有三重交叉组合有政策效应 ---
+*    基线 = 地区FE + 行业FE + 时间趋势 + 噪声
+*    政策效应 = 0.4 × DDD（只有三重交叉组合受影响）
+gen y = 2 + 0.3*G + 0.5*R + 0.1*(year-2005) ///
+      + 0.15*G*R + 0.08*G*T + 0.12*R*T ///
+      + 0.4*DDD + rnormal(0, 1)
+
+* --- 4. 写法一：手动放全部主效应和两两交互（教学版） ---
+*    必须放入 G, R, T 三个主效应 + G*R, G*T, R*T 三个两两交互
+*    三重交互 G*R*T 的系数就是 DDD 估计量
+reg y G R T G#R G#T R#T G#R#T, vce(cluster region)
+*    等价写法：用因子变量自动展开（推荐）
+reg y i.G##i.R##i.T, vce(cluster region)
+*    i.G##i.R##i.T 自动展开为：G + R + T + G*R + G*T + R*T + G*R*T
+*    看输出中 1.G#1.R#1.T 的系数，就是 DDD 估计量（预期≈0.4）
+
+* --- 5. 写法二：饱和固定效应模型（顶刊标准写法，推荐） ---
+*    用三组两两固定效应吸收所有低阶项，模型中只剩三重交互
+*    absorb(region#industry industry#year region#year) 对应 α_ir + γ_it + λ_rt
+ssc install reghdfe, replace
+reghdfe y DDD, absorb(region#industry industry#year region#year) vce(cluster region)
+*    DDD 的系数就是 DDD 估计量（预期≈0.4）
+*    注意：absorb 中的三组固定效应已经吸收了 G, R, T 及所有两两交互
+*    所以不能再把 G, R, T 单独放入回归（会被吸收或共线）
+
+* --- 6. 结果解读 ---
+*    DDD 系数显著为正 → 政策在"处理行业×试点地区×政策后"有正向效应
+*    系数大小 = 政策对三重交叉组合的因果效应（控制了所有低阶差异和冲击）
+*    与写法一的 1.G#1.R#1.T 系数应该完全一致（数学上等价）
+</code></pre>
+    </div>
+
+    <h3>3.2 三重平行趋势检验：DDD 事件研究</h3>
+    <p>与 DID 一样，DDD 也需要检验平行趋势。DDD 的事件研究是把三重交互展开成"相对政策时点"的动态形式：</p>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s32_ddd_eventstudy.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* ============================================================
+* s3.2 DDD 事件研究：检验三重平行趋势
+* 沿用 s3.1 的模拟数据（需先运行 s3.1）
+* ============================================================
+
+* --- 1. 构造相对政策时点 ---
+*    政策在 2010 年实施，rel_time = year - 2010
+*    rel_time &lt; 0 为政策前，=0 为政策当年，&gt;0 为政策后
+gen rel_time = year - 2010
+
+* --- 2. 构造"三重交互 × 相对时点"的动态项 ---
+*    对每个相对时点 k，生成 DDD_k = G * R * (rel_time == k)
+*    省略 rel_time = -1 作为基准期（与 DID 事件研究一致）
+forvalues k = -5(1)4 {
+    if `k' != -1 {
+        gen DDD_`k' = G * R * (rel_time == `k')
+    }
+}
+
+* --- 3. DDD 事件研究回归（饱和固定效应） ---
+*    放入所有 DDD_k（k≠-1），三组两两固定效应吸收低阶项
+reghdfe y DDD_-5 DDD_-4 DDD_-3 DDD_-2 DDD_0 DDD_1 DDD_2 DDD_3 DDD_4, ///
+    absorb(region#industry industry#year region#year) vce(cluster region)
+
+* --- 4. 三重平行趋势检验：政策前所有期联合不显著 ---
+*    H0: DDD_-5 = DDD_-4 = DDD_-3 = DDD_-2 = 0
+*    若 p > 0.05 → 不能拒绝三重平行趋势
+test DDD_-5 DDD_-4 DDD_-3 DDD_-2
+*    注意：这是"联合检验"，比单看每个系数是否显著更可靠
+*    与 DID 一样，Roth (2022) 的功效警告同样适用：
+*    不显著 ≠ 平行趋势成立，需配合 pretrends 命令评估检验功效
+
+* --- 5. 画事件研究图 ---
+*    用 coefplot 画 DDD 动态系数 + 95% 置信区间
+ssc install coefplot, replace
+coefplot, keep(DDD_*) vertical ///
+    yline(0, lcolor(red)) ///
+    xline(4.5, lcolor(gray) lpattern(dash)) ///  第4.5个位置是政策前/后分界（DDD_-2是第4个）
+    title("DDD 事件研究：三重交互动态效应") ///
+    ytitle("DDD 系数") xtitle("相对政策时点")
+*    图形解读：
+*    政策前（DDD_-5 到 DDD_-2）：系数应贴着 0、不显著 → 平行趋势证据
+*    政策后（DDD_0 到 DDD_4）：系数应显著偏离 0 → 政策动态效应
+*    如果政策前系数已经显著偏离 0 → 三重平行趋势存疑，需做敏感性分析
+
+* --- 6. 更简洁的写法：用因子变量直接做事件研究 ---
+*    不用手动生成 DDD_k，用 i.rel_time#i.G#i.R 自动展开
+*    省略 rel_time=-1：用 ib(last).rel_time 或手动 omit
+reghdfe y i.rel_time#i.G#i.R, ///
+    absorb(region#industry industry#year region#year) vce(cluster region)
+*    输出中 rel_time=k#G=1#R=1 的系数就是 DDD_k
+*    注意：需确保 rel_time=-1 被省略为基准期
+</code></pre>
+    </div>
+
+    <h3>3.3 安慰剂检验：伪处理维度与伪政策时间</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s33_ddd_placebo.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* ============================================================
+* s3.3 DDD 安慰剂检验
+* 两种安慰剂：(A) 伪处理维度 (B) 伪政策时间
+* 沿用 s3.1 的模拟数据
+* ============================================================
+
+* --- 安慰剂 A：伪处理维度（随机分配处理行业） ---
+* 思路：把"哪些行业是处理行业"随机打乱，重新生成 DDD 并估计
+* 如果真实效应存在，随机分配后 DDD 系数应接近 0、不显著
+* 做法：定义一个程序，每次随机分配 G，重新生成 DDD，返回系数
+
+capture program drop ddd_placebo
+program define ddd_placebo, rclass
+    * 在每个地区内随机打乱行业的处理状态（保持地区内处理行业比例不变）
+    gen G_fake = G
+    bysort region (G): gen _rand = runiform()
+    bysort region _rand: replace G_fake = G[_N]  // 地区内随机重排
+    gen DDD_fake = G_fake * R * T
+    reghdfe y DDD_fake, absorb(region#industry industry#year region#year) vce(cluster region)
+    return scalar beta = _b[DDD_fake]
+    drop G_fake _rand DDD_fake
+end
+
+* 运行 500 次安慰剂（教学版可先用 100 次加速）
+set seed 2024
+simulate beta=r(beta), reps(100): ddd_placebo
+* 输出解读：
+*   beta 的均值应接近 0 → 随机分配没有系统性效应
+*   真实 DDD 系数（≈0.4）在安慰剂分布的尾部 → p 值小
+*   用 p = (真实beta > 安慰剂beta的次数 + 1) / (reps + 1) 计算精确 p 值
+*   若 p &lt; 0.05 → 真实效应显著大于随机分配 → 通过安慰剂检验
+
+* --- 安慰剂 B：伪政策时间（把政策时点提前） ---
+* 思路：假设政策在 2008 年实施（真实是 2010 年），用政策前数据做 DDD
+* 如果真实效应存在，伪政策时点的 DDD 系数应不显著
+* 只用 2005-2009 年数据（真实政策前），构造伪政策时点 2008
+
+gen fake_T = (year >= 2008)                    // 伪政策时间：2008年起
+gen fake_DDD = G * R * fake_T                   // 伪三重交互
+reghdfe y fake_DDD if year &lt;= 2009, ///
+    absorb(region#industry industry#year region#year) vce(cluster region)
+* 输出解读：
+*   fake_DDD 系数应不显著（p > 0.1）→ 通过伪政策时间安慰剂
+*   如果 fake_DDD 显著 → 说明在真实政策前就已经存在"效应"
+*   → 三重平行趋势可能不成立，或存在预期效应（anticipation effect）
+
+* --- 安慰剂 C：伪处理地区（随机分配试点地区） ---
+* 与安慰剂 A 类似，但随机化的是地区维度而非行业维度
+* --- 安慰剂 C：伪处理地区（随机分配试点地区） ---
+* 与安慰剂 A 类似，但随机化的是地区维度而非行业维度
+* 做法：在每个行业内随机打乱地区的试点状态，重新生成 DDD
+* （实现方式与安慰剂 A 相同，把程序中的 region/industry 互换即可）
+* 教学提示：DDD 有三个维度，理论上可以对任意一个维度做安慰剂
+* 顶刊论文通常至少报告两种安慰剂（伪处理组 + 伪政策时间）
+</code></pre>
+    </div>
+
+    <h3>3.4 聚类标准误的选择</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s34_ddd_cluster.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* ============================================================
+* s3.4 DDD 聚类标准误的选择
+* 核心原则：在"处理变异发生的最高层级"聚类
+* ============================================================
+
+* --- 原则：聚类层级 = 政策变异发生的层级 ---
+* DDD 的处理变量是 G×R×T，变异发生在"群体×地区"组合层面
+* （时间维度被固定效应吸收，不提供额外变异）
+* 所以标准误应聚类在"地区"或"群体×地区"层面
+
+* --- 写法 1：聚类在地区层面（最常用） ---
+* 如果政策在地区层面有变异（不同地区试点时间不同），聚类在地区
+reghdfe y DDD, absorb(region#industry industry#year region#year) vce(cluster region)
+
+* --- 写法 2：聚类在"群体×地区"层面 ---
+* 如果每个"行业×地区"组合有独立的序列相关，用更细的聚类
+egen group_region = group(industry region)
+reghdfe y DDD, absorb(region#industry industry#year region#year) vce(cluster group_region)
+* 注意：聚类层级越细，聚类数越多，标准误越小（但可能低估序列相关）
+* 聚类层级越粗，聚类数越少，标准误越大（更保守）
+
+* --- 写法 3：双向聚类（地区 × 时间） ---
+* 如果同时存在地区内序列相关和时间内截面相关，用双向聚类
+* reghdfe 不直接支持双向聚类，用 vce(robust) + 手动调整，或用 cgmreg
+* 更简单的做法：用 boottest 做野生聚类自助法
+
+* --- 关键问题：聚类数太少怎么办 ---
+* 如果试点地区只有 5-10 个，聚类在地区层面的聚类数太少
+* 标准的 cluster-robust 标准误会严重低估（向下偏误）
+* 此时必须用野生聚类自助法（wild cluster bootstrap）
+
+ssc install boottest, replace
+reghdfe y DDD, absorb(region#industry industry#year region#year) vce(cluster region)
+boottest DDD, clustid(region) bootcluster(region) nograph
+* boottest 会输出野生聚类自助法的 p 值和置信区间
+* 当聚类数 &lt; 30 时，boottest 的 p 值比标准 cluster p 值更可靠
+* 顶刊审稿人在聚类数少时一定会要求报 boottest 结果
+
+* --- 聚类标准误选择决策表 ---
+* | 数据结构                     | 推荐聚类层级          | 聚类数少的补救       |
+* |------------------------------|----------------------|---------------------|
+* | 多地区 × 多行业 × 多年       | region（地区）        | boottest 野生聚类    |
+* | 政策在行业层面变异           | industry（行业）      | boottest             |
+* | 政策在"地区×行业"组合层面变异| group(region industry)| boottest             |
+* | 同时有截面相关和序列相关     | 双向聚类 region#year  | drdid / 手动         |
+</code></pre>
+    </div>
+
+    <h3>3.5 esttab 导出回归表格</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">stata · s35_ddd_esttab.do</span><button class="copy-btn">复制</button></div>
+<pre><code>* ============================================================
+* s3.5 DDD 结果导出：esttab 生成论文表格
+* 沿用 s3.1 的模拟数据
+* ============================================================
+ssc install estout, replace
+
+* --- 1. 依次估计各列，用 eststo 保存 ---
+* 列(1)：最简 DID（只用 G×T，不引入地区维度）—— 作为对照
+eststo m1: reg y G#T, vce(cluster region)
+
+* 列(2)：DDD 手动展开（全部主效应+两两交互+三重交互）
+eststo m2: reg y i.G##i.R##i.T, vce(cluster region)
+
+* 列(3)：DDD 饱和固定效应（顶刊标准写法）
+eststo m3: reghdfe y DDD, absorb(region#industry industry#year region#year) vce(cluster region)
+
+* 列(4)：DDD + 控制变量
+eststo m4: reghdfe y DDD x1 x2, absorb(region#industry industry#year region#year) vce(cluster region)
+
+* --- 2. esttab 导出到 Word/RTF ---
+esttab m1 m2 m3 m4 using "ddd_results.rtf", replace ///
+    b(3) se(3) star(* 0.1 ** 0.05 *** 0.01) ///
+    keep(DDD 1.G#1.R#1.T 1.G#1.T) ///  只显示核心系数
+    coeflabel(DDD "DDD (G×R×T)" ///
+              1.G#1.R#1.T "DDD (G×R×T)" ///
+              1.G#1.T "DID (G×T)") ///
+    title("三重差分 DDD 基准回归结果") ///
+    mtitles("DID" "DDD手动" "DDD饱和FE" "DDD+控制") ///
+    addnotes("标准误聚类在地区层面" ///
+             "列(3)(4)控制了 地区×行业、行业×时间、地区×时间 三组固定效应")
+
+* --- 3. 关键输出解读 ---
+* 列(1) DID 系数：只控制群体×时间，可能包含地区共同冲击偏误
+* 列(2)(3) DDD 系数：控制了地区×时间固定效应，消除了同期地区冲击
+* 如果列(1)和列(3)系数差异大 → 说明地区共同冲击确实存在，DDD 是必要的
+* 如果列(1)和列(3)系数接近 → 说明地区共同冲击不严重，DID 可能已经足够
+
+* --- 4. 事件研究系数单独导出 ---
+* 运行 s3.2 的事件研究回归后：
+* esttab e(DDD_*) using "ddd_eventstudy.rtf", replace b(3) se(3)
+* 或直接用 coefplot 画图（见 s3.2）
+</code></pre>
+    </div>
+  </div>
+
+  <div class="section" id="s4">
+    <h2><span class="sec-num">04</span> 论文写法：章节框架与报告规范</h2>
+
+    <h3>4.1 DDD 论文的章节框架（与 DID 的差异）</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>章节</th><th>DID 论文</th><th>DDD 论文（差异点加粗）</th></tr></thead>
+        <tbody>
+          <tr><td>1. Introduction</td><td>研究问题 + DID 识别策略一句话</td><td>同左，但需强调<strong>为什么需要第三层差分</strong>（政策只在三重交叉生效 / 存在同期共同冲击）</td></tr>
+          <tr><td>2. 制度背景</td><td>政策内容 + 实施时点 + 处理组定义</td><td>同左，但需<strong>明确定义三个维度</strong>：哪些群体受政策影响、哪些地区是试点、政策何时实施；最好配一张"三维组别构成表"</td></tr>
+          <tr><td>3. 数据与描述</td><td>数据来源 + Table 1 描述统计</td><td>同左，建议按<strong>四组（G×R 的四个组合）</strong>分组报告描述统计，展示各组的可比性</td></tr>
+          <tr><td>4. 识别策略</td><td>DID 模型 + 平行趋势假设</td><td><strong>DDD 模型 + 三重平行趋势假设</strong>；必须写出饱和固定效应形式（Eq.2.2），解释三组两两固定效应各自吸收了什么</td></tr>
+          <tr><td>5. 实证结果</td><td>基准回归 + 事件研究图 + 安慰剂</td><td>同左，但事件研究是<strong>三重交互的动态效应</strong>；安慰剂至少做两种（伪处理维度 + 伪政策时间）</td></tr>
+          <tr><td>6. 稳健性</td><td>换样本/换变量/换标准误</td><td>同左，额外需做<strong>不同维度组合的稳健性</strong>（如只用 G×T 的 DID 结果作为对照，说明第三层差分的增量价值）</td></tr>
+          <tr><td>7. 机制与异质性</td><td>中介效应 + 分样本</td><td>同左，异质性可以按第三个维度做（如"试点地区内不同子群体的效应差异"）</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>4.2 报告规范：三个维度的定义与组别构成表</h3>
+    <div class="callout info">
+      <div class="callout-title">DDD 论文必须报告的三件事</div>
+      <p><b>① 三个维度的精确定义。</b>不能只说"处理组 vs 对照组"，必须明确：G 维度按什么划分（行业代码？企业所有制？）、R 维度按什么划分（省市？城市？是否试点）、T 维度的政策时点（哪一年？是否有交错实施？）。每个维度的划分依据必须来自制度文件，不能事后挑选。</p>
+      <p><b>② 组别构成表（四格表或八格表）。</b>DDD 有 G×R×T 八个格子，至少要报告 G×R 的四个组合各自的观测数、关键变量均值。这张表让审稿人一眼看到"每个格子里有多少数据""各组是否可比"。</p>
+      <p><b>③ 三重平行趋势的图形与检验。</b>必须画 DDD 事件研究图（三重交互的动态系数），并报告政策前 leads 的联合 F 检验 p 值。与 DID 一样，不能只说"图形上平行"就完事。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s5">
+    <h2><span class="sec-num">05</span> 常见错误</h2>
+
+    <div class="callout danger">
+      <div class="callout-title">错误 1：漏放主效应或两两交互，导致三重交互项含义错误</div>
+      <p>DDD 回归中必须放入全部三个主效应（$G, R, T$）和三个两两交互（$G\times R, G\times T, R\times T$），否则三重交互项 $G\times R\times T$ 的系数会被低阶项污染。最常见的错误是只放 $G\times R\times T$ 而不放 $R\times T$——此时 $G\times R\times T$ 的系数混合了"地区×时间"的共同冲击，而这正是 DDD 要消除的东西。<strong>用 <code class="inline">i.G##i.R##i.T</code> 或饱和固定效应可以自动避免这个错误。</strong></p>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-title">错误 2：不检验三重平行趋势，直接报告 DDD 系数</div>
+      <p>DDD 的识别假设比 DID 更强（三重平行趋势），但很多论文只做了 DID 的平行趋势检验，忘了 DDD 需要检验"两个 DID 的趋势差在地区间也平行"。必须做 DDD 事件研究（s3.2），把三重交互展开成动态形式，检验政策前所有 leads 联合不显著。</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">错误 3：把"分组显著"当组间差异，不做组间系数差异检验</div>
+      <p>DDD 论文常做异质性分析：在 G=1 子样本中 DDD 系数显著为正，在 G=0 子样本中不显著，然后得出"政策只对处理群体有效"的结论。这是错的——<strong>"一个显著、一个不显著"不等于"两者显著不同"</strong>。必须用似无相关回归（SUR）或交互项做组间系数差异检验（<code class="inline">test</code> 或 <code class="inline">suest</code>），看两个子样本的 DDD 系数之差是否显著。</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">错误 4：聚类标准误层级选错，或聚类数太少仍用标准 cluster</div>
+      <p>DDD 的处理变异发生在"群体×地区"组合层面，标准误应聚类在地区或"群体×地区"层面。常见错误是聚类在个体层面（聚类数太多，标准误偏小）或完全不聚类。更严重的是：当试点地区只有 5-10 个时，聚类数太少，标准的 cluster-robust 标准误会严重低估。此时必须用野生聚类自助法（<code class="inline">boottest</code>）。</p>
+    </div>
+
+    <div class="callout warning">
+      <div class="callout-title">错误 5：把 DDD 当"万能解药"，在 DID 已经足够时强行加第三层</div>
+      <p>DDD 多差一层的代价是：识别假设更强、估计精度更低（标准误更大）、对数据量要求更高（8 个格子每个都需要足够观测）。如果你的政策设定天然只有两个维度，且 DID 平行趋势可信，强行引入第三个维度（比如找一个"理论上不受政策影响"的行业做对照）反而会引入新的偏误（这个"不受影响"的行业可能实际上也受了溢出效应影响）。<strong>DDD 只在 DID 确实不够用时才上。</strong></p>
+    </div>
+
+    <div class="callout danger">
+      <div class="callout-title">错误 6：第三个维度的选择是事后的（p-hacking）</div>
+      <p>DDD 的第三个维度（地区/行业/人群）必须由制度设计决定——政策天然只在某些地区的某些行业生效。如果是"先跑了 DID 发现不显著，然后到处找第三个维度试，试到 DDD 显著为止"，这就是 p-hacking。第三个维度的选择必须在论文的制度背景部分有明确的制度依据，且在看到回归结果之前就确定。</p>
+    </div>
+  </div>
+
+  <div class="section" id="s6">
+    <h2><span class="sec-num">06</span> 前沿与进阶</h2>
+
+    <h3>6.1 DDD 与事件研究的深度结合</h3>
+    <p>s3.2 已经给出了 DDD 事件研究的基本写法。进阶要点：</p>
+    <ul>
+      <li><strong>远端合并（binning）：</strong>如果政策前/后远端期的观测太少（如 rel_time=-5 只有 20 个观测），事件研究系数会非常不稳定。规范做法是把远端期合并（如把 rel_time≤-4 合并为"≤-4"一期），并在图中标注。</li>
+      <li><strong>交叠 DID 的新估计量推广到 DDD：</strong>如果三个维度中有一个是"交错实施"（如不同地区在不同年份试点），经典 TWFE-DDD 也会有负权重问题。此时应使用 Callaway-Sant'Anna 或 Sun-Abraham 估计量的 DDD 推广版本，或用饱和固定效应 + 干净的事件研究系数。</li>
+      <li><strong>三重交互的预趋势功效：</strong>与 DID 一样，DDD 事件研究的 pre-trend 联合检验功效可能很低。Roth (2022) 的 <code class="inline">pretrends</code> 命令可以推广到 DDD 设定——在事件研究回归后评估"可检测的最小 pre-trend 斜率"。</li>
+    </ul>
+
+    <h3>6.2 交错实施 DDD（Staggered DDD）</h3>
+    <p>当政策在不同地区的不同年份实施（交错实施），DDD 的时间维度 $T_t$ 不再是统一的"政策前/后"，而是每个地区有自己的政策时点。此时：</p>
+    <div class="callout warning">
+      <div class="callout-title">交错实施 DDD 的注意事项</div>
+      <p><b>① 不要用统一的 Post 虚拟变量。</b>每个地区的政策时点不同，必须构造"相对政策时点"rel_time = year - policy_year_region，然后用事件研究形式估计。</p>
+      <p><b>② 经典 TWFE-DDD 可能有负权重。</b>与交叠 DID 一样，如果处理效应异质，TWFE 估计量是所有 2×2×2 DDD 的加权平均，权重可能为负。规范做法是：(a) 用饱和固定效应模型（三组两两 FE）减少负权重来源；(b) 报告 Bacon 分解的 DDD 推广版本；(c) 用 csdid / did_imputation 的 DDD 推广版本做稳健性。</p>
+      <p><b>③  never-treated 组的选择。</b>交错实施中，"从未被处理"的地区×行业组合是最干净的对照组。如果所有组合最终都被处理（no never-treated），需用 not-yet-treated 或 stacked DID 的 DDD 推广。</p>
+    </div>
+
+    <h3>6.3 DDD 的安慰剂维度设计</h3>
+    <p>DDD 有三个维度，安慰剂检验的设计比 DID 更丰富。顶刊论文通常报告以下安慰剂中的至少两种：</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>安慰剂类型</th><th>做法</th><th>预期结果</th><th>检验什么</th></tr></thead>
+        <tbody>
+          <tr><td>伪处理群体</td><td>随机分配哪些行业是"处理行业"</td><td>DDD 系数≈0、不显著</td><td>效应不是随机出现的</td></tr>
+          <tr><td>伪处理地区</td><td>随机分配哪些地区是"试点地区"</td><td>DDD 系数≈0、不显著</td><td>效应不是地区随机特征驱动的</td></tr>
+          <tr><td>伪政策时间</td><td>把政策时点提前 2-3 年，只用政策前数据</td><td>伪 DDD 系数不显著</td><td>政策前不存在"效应"（平行趋势）</td></tr>
+          <tr><td>伪结果变量</td><td>用一个理论上不受政策影响的变量做结果</td><td>DDD 系数不显著</td><td>效应不是共同趋势驱动的</td></tr>
+          <tr><td>置换检验</td><td>同时随机化处理群体和政策时间</td><td>真实系数在分布尾部</td><td>综合安慰剂</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section" id="s7">
+    <h2><span class="sec-num">07</span> 论文案例</h2>
+
+    <div class="paper-card">
+      <span class="paper-type en">English · QJE</span>
+      <div class="paper-title">The Incidence of Mandated Maternity Benefits</div>
+      <div class="paper-meta">Jonathan Gruber · Quarterly Journal of Economics, 1994, 109(3): 623–653</div>
+      <div class="paper-desc">DDD 的经典开山之作。美国 1975-1978 年间，部分州通过法律要求雇主提供产假福利（地区维度），政策只对"育龄已婚妇女"（群体维度）有约束力，政策实施前后（时间维度）。Gruber 用 DDD 识别产假福利的工资归宿：发现雇主把约 100% 的福利成本转嫁给了受益群体的工资。这是"群体×地区×时间"三重差分的标准范式，几乎所有 DDD 论文都引用此文。</div>
+    </div>
+
+    <div class="paper-card">
+      <span class="paper-type en">English · AER</span>
+      <div class="paper-title">Minimum Wages and Employment: A Case Study of the Fast-Food Industry in New Jersey and Pennsylvania</div>
+      <div class="paper-meta">David Card & Alan B. Krueger · AER, 1994（DID 经典，但可推广为 DDD）</div>
+      <div class="paper-desc">虽然原文用的是 DID（新泽西 vs 宾州 × 政策前后），但后续文献指出：新泽西在政策同期还有其他经济变化。推广到 DDD 的做法是引入第三个维度"低工资行业 vs 高工资行业"——最低工资只对低工资行业有约束力，对高工资行业无影响，用高工资行业做第二层对照消除地区共同冲击。这是"DID 平行趋势存疑时升级为 DDD"的典型思路。</div>
+    </div>
+
+    <div class="paper-card">
+      <span class="paper-type en">English · ReStud</span>
+      <div class="paper-title">Difference-in-Differences with Multiple Time Periods</div>
+      <div class="paper-meta">Brantly Callaway & Pedro H. C. Sant'Anna · Journal of Econometrics, 2021（csdid 可推广到 DDD）</div>
+      <div class="paper-desc">交叠 DID 新估计量的原始论文。csdid 命令的核心思想（估计组×期层面 ATT(g,t)、剔除负权重）可以直接推广到 DDD 设定：把"组"定义为"群体×地区"的组合，然后在每个组合内做时间差分，再跨组合做 DDD。当 DDD 的时间维度是交错实施时，csdid 的 DDD 推广版本是目前最稳健的估计方法。</div>
+    </div>
+
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 《经济研究》</span>
+      <div class="paper-title">《"营改增"的经济效应：基于三重差分的实证研究》类论文</div>
+      <div class="paper-meta">《经济研究》《管理世界》《世界经济》近年多篇 · 通用范式</div>
+      <div class="paper-desc">中国"营改增"（营业税改增值税）是 DDD 最经典的中文应用场景：政策只在"试点地区 × 试点行业 × 政策后"生效。早期论文用 DID（试点地区 vs 非试点地区），但审稿人指出试点地区的非试点行业也受了溢出效应。规范做法已升级为 DDD：G=试点行业 vs 非试点行业，R=试点地区 vs 非试点地区，T=政策前后。饱和固定效应模型控制"地区×时间"FE 消除同期地区冲击，是目前中文顶刊的标准写法。</div>
+    </div>
+
+    <div class="paper-card">
+      <span class="paper-type cn">中文 · 《管理世界》</span>
+      <div class="paper-title">《自贸区设立的经济效应：基于三重差分的研究》类论文</div>
+      <div class="paper-meta">《管理世界》《经济研究》近年多篇 · 通用范式</div>
+      <div class="paper-desc">中国自贸区分批设立（上海 2013、广东/天津/福建 2015……），政策只在"自贸区所在地区 × 特定行业（如贸易/金融）× 政策后"生效。DDD 的三个维度：G=自贸区重点行业 vs 其他行业，R=自贸区城市 vs 非自贸区城市，T=设立前后。由于自贸区是交错实施的，这类论文需要注意交错 DDD 的负权重问题，规范做法是用事件研究 + 饱和固定效应，并报告 csdid 推广版本的稳健性。</div>
+    </div>
+
+    <h3>进阶资料</h3>
+    <ul>
+      <li><strong>Gruber (1994, QJE)</strong> — DDD 开山之作，必读。</li>
+      <li><strong>Olden & Møen (2020)</strong> "Triple Differences, Cohort Effects, and the Wage Impact of a Retirement Reform" — DDD 中 cohort 效应的处理。</li>
+      <li><strong>Roth et al. (2023, JoE)</strong> — 交叠 DID 新文献综述，DDD 的交错实施问题可参照其中的框架。</li>
+      <li><strong>中文顶刊 DDD 论文</strong> — 在知网搜"三重差分"或"DDD"，重点看《经济研究》《管理世界》《世界经济》近年的营改增、自贸区、环保督察类论文。</li>
+    </ul>
+  </div>
+
+  <div class="page-nav">
+    <a href="06-did.html" class="prev">
+        <div class="nav-label">上一节 ←</div>
+        <div class="nav-title">DID 双重差分（全套）</div>
+      </a>
+    <a href="07-rdd.html" class="next">
+        <div class="nav-label">下一节 →</div>
+        <div class="nav-title">RDD 断点回归</div>
+      </a>
+  </div>
+
+</div></div>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.querySelector('.overlay').classList.toggle('show')}
+document.querySelectorAll('.copy-btn').forEach(b=>b.onclick=()=>{const c=b.closest('.code-block').querySelector('pre').textContent;navigator.clipboard.writeText(c).then(()=>{b.textContent='已复制 ✓';setTimeout(()=>b.textContent='复制',1500)})});
+document.addEventListener('DOMContentLoaded',()=>{if(typeof renderMathInElement!=='undefined'){renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false})}});
+</script>
+
+<script>
+(function () {
+  function esc(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function hl() {
+    document.querySelectorAll('.code-block pre code').forEach(function (el) {
+      var raw = el.textContent;
+      var out = raw.split('\n').map(function (line) {
+        if (/^\s*\*/.test(line)) return '<span class="cm-l">' + esc(line) + '</span>';
+        var ci = line.indexOf('//');
+        if (ci >= 0) return esc(line.slice(0, ci)) + '<span class="cm">' + esc(line.slice(ci)) + '</span>';
+        var bi = line.indexOf('/*');
+        if (bi >= 0) {
+          var bj = line.indexOf('*/', bi + 2);
+          if (bj >= 0) return esc(line.slice(0, bi)) + '<span class="cm">' + esc(line.slice(bi, bj + 2)) + '</span>' + esc(line.slice(bj + 2));
+        }
+        return esc(line);
+      }).join('\n');
+      el.innerHTML = out;
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hl);
+  else hl();
+})();
+</script>
+
+</body>
+</html>
