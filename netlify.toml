@@ -1,8 +1,0 @@
-# 经济学研究学习工作站 - Netlify 配置
-# 将 /api/* 请求代理到 Netlify Functions（chat.js）
-
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
-  force = true
